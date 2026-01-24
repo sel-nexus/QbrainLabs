@@ -88,12 +88,12 @@ class Workshop(Base):
     config = Column(JSONType, default={}) # Stores criteria weights
     
     # Add active_use_case_id to track which item is being voted on
-    active_use_case_id = Column(GUID(), ForeignKey("use_cases.id"), nullable=True)
+    active_use_case_id = Column(GUID(), ForeignKey("use_cases.id", use_alter=True, name="fk_workshop_active_use_case"), nullable=True)
  
     facilitator = relationship("User", back_populates="workshops")
     participants = relationship("Participant", back_populates="workshop")
     use_cases = relationship("UseCase", back_populates="workshop", foreign_keys="[UseCase.workshop_id]")
-    active_use_case = relationship("UseCase", foreign_keys=[active_use_case_id])
+    active_use_case = relationship("UseCase", foreign_keys=[active_use_case_id], post_update=True)
 
 class Vote(Base):
     __tablename__ = "votes"
@@ -108,9 +108,11 @@ class Vote(Base):
     use_case = relationship("UseCase", back_populates="votes")
     participant = relationship("Participant", back_populates="votes")
 
-# Relationships
-UseCase.votes = relationship("Vote", back_populates="use_case")
-Participant.votes = relationship("Vote", back_populates="participant")
+
+class ParticipantRole(str, enum.Enum):
+    PARTICIPANT = "PARTICIPANT"
+    FACILITATOR = "FACILITATOR"
+    PENDING_FACILITATOR = "PENDING_FACILITATOR"
 
 class Participant(Base):
     __tablename__ = "participants"
@@ -118,11 +120,12 @@ class Participant(Base):
     id = Column(GUID(), primary_key=True, default=uuid.uuid4)
     workshop_id = Column(GUID(), ForeignKey("workshops.id"), nullable=False)
     display_name = Column(String, nullable=False)
+    role = Column(String, default=ParticipantRole.PARTICIPANT)
     # Simple logic: if they rejoin with same session storage, we trust them in MVP.
     # In prod, issue a signed JWT.
     
     workshop = relationship("Workshop", back_populates="participants")
-    use_cases = relationship("UseCase", back_populates="author")
+    use_cases = relationship("UseCase", back_populates="participant")
 
 class UseCase(Base):
     __tablename__ = "use_cases"
@@ -140,9 +143,12 @@ class UseCase(Base):
     
     status = Column(String, default="PENDING") # PENDING, APPROVED, REJECTED
     
-    participant = relationship("Participant", back_populates="use_cases") 
-    workshop = relationship("Workshop", back_populates="use_cases")
-    author = relationship("Participant") # redundancy for clarity
+    participant = relationship("Participant", back_populates="use_cases", foreign_keys=[participant_id])
+    workshop = relationship("Workshop", back_populates="use_cases", foreign_keys=[workshop_id])
 
 # Add relationship on Workshop as well
 
+
+# Relationships defined after classes
+UseCase.votes = relationship("Vote", back_populates="use_case")
+Participant.votes = relationship("Vote", back_populates="participant")

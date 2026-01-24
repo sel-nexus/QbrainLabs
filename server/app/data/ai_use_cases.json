@@ -1,0 +1,32 @@
+[
+    {
+        "title": "Automated Invoice Processing",
+        "description": "Use OCR and LLM extraction to parse PDF invoices and feed data into SAP.",
+        "category": "Process Automation",
+        "kpi": "Reduce manual entry time by 80%"
+    },
+    {
+        "title": "Customer Support Chatbot",
+        "description": "RAG-based chatbot to answer customer queries using internal knowledge base.",
+        "category": "Customer Experience",
+        "kpi": "Deflect 40% of L1 support tickets"
+    },
+    {
+        "title": "Predictive Maintenance",
+        "description": "Analyze sensor data to predict equipment failure before it happens.",
+        "category": "Predictive Analytics",
+        "kpi": "Reduce downtime by 20%"
+    },
+    {
+        "title": "Generative Marketing Copy",
+        "description": "Generate personalized email marketing copy for different customer segments.",
+        "category": "Generative AI",
+        "kpi": "Increase click-through rate by 15%"
+    },
+    {
+        "title": "Code Migration Assistant",
+        "description": "Use LLMs to convert legacy COBOL code to Java.",
+        "category": "Software Engineering",
+        "kpi": "Accelerate migration by 50%"
+    }
+]

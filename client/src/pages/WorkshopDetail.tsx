@@ -14,6 +14,7 @@ export function WorkshopDetail() {
     const [currentPhase, setCurrentPhase] = useState<string>('');
     const [activeCardId, setActiveCardId] = useState<string | null>(null);
     const [results, setResults] = useState<any[]>([]);
+    const [pendingFacilitators, setPendingFacilitators] = useState<any[]>([]);
 
     useEffect(() => {
         fetchWorkshop();
@@ -40,11 +41,18 @@ export function WorkshopDetail() {
             toast.info(`Phase changed to ${data.phase}`);
         });
 
+        socket.on('facilitator_request', (data: any) => {
+            setPendingFacilitators(prev => [...prev, data]);
+            toast.info(`${data.display_name} requested facilitator access`);
+        });
+
         return () => {
             socket.off('new_submission');
             socket.off('participant_joined');
             socket.off('active_card_update');
+            socket.off('active_card_update');
             socket.off('workshop_state_change');
+            socket.off('facilitator_request');
         };
     }, [id]);
 
@@ -93,6 +101,18 @@ export function WorkshopDetail() {
         } catch (e) {
             console.error(e);
             toast.error("Failed to activate card");
+        }
+    };
+
+    const handleFacilitatorAction = async (participantId: string, role: string) => {
+        try {
+            await api.patch(`/participants/${participantId}/role`, { role });
+            // Remove from list
+            setPendingFacilitators(prev => prev.filter(p => p.participant_id !== participantId));
+            toast.success(`User ${role === 'FACILITATOR' ? 'approved' : 'denied'}`);
+        } catch (e) {
+            console.error(e);
+            toast.error("Failed to update role");
         }
     };
 
@@ -235,16 +255,49 @@ export function WorkshopDetail() {
                     </div>
 
                     <div>
-                        <div className="bg-surface-800 rounded-xl p-6 border border-white/10 sticky top-6">
-                            <h2 className="text-lg font-bold mb-4">Workshop Stats</h2>
-                            <div className="space-y-4">
-                                <div className="flex justify-between">
-                                    <span className="text-gray-400">Participants</span>
-                                    <span className="font-mono">--</span>
+                        <div className="bg-surface-800 rounded-xl p-6 border border-white/10 sticky top-6 space-y-6">
+                            {pendingFacilitators.length > 0 && (
+                                <div className="bg-brand-violet/10 border border-brand-violet/30 rounded-lg p-4 animate-in fade-in slide-in-from-right-4">
+                                    <h3 className="text-sm font-bold text-brand-violet mb-3 flex items-center justify-between">
+                                        Facilitator Requests
+                                        <span className="bg-brand-violet text-white text-[10px] px-1.5 py-0.5 rounded-full">{pendingFacilitators.length}</span>
+                                    </h3>
+                                    <div className="space-y-3">
+                                        {pendingFacilitators.map((pf) => (
+                                            <div key={pf.participant_id} className="bg-surface-900/50 p-3 rounded border border-white/5">
+                                                <div className="text-sm font-bold mb-2">{pf.display_name}</div>
+                                                <div className="flex gap-2">
+                                                    <Button
+                                                        className="h-7 text-xs px-2 flex-1"
+                                                        onClick={() => handleFacilitatorAction(pf.participant_id, 'FACILITATOR')}
+                                                    >
+                                                        Approve
+                                                    </Button>
+                                                    <Button
+                                                        variant="secondary"
+                                                        className="h-7 text-xs px-2 flex-1 bg-white/5 hover:bg-white/10"
+                                                        onClick={() => handleFacilitatorAction(pf.participant_id, 'PARTICIPANT')}
+                                                    >
+                                                        Deny
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                                <div className="flex justify-between">
-                                    <span className="text-gray-400">Submissions</span>
-                                    <span className="font-mono">{useCases.length}</span>
+                            )}
+
+                            <div>
+                                <h2 className="text-lg font-bold mb-4">Workshop Stats</h2>
+                                <div className="space-y-4">
+                                    <div className="flex justify-between">
+                                        <span className="text-gray-400">Participants</span>
+                                        <span className="font-mono">--</span>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <span className="text-gray-400">Submissions</span>
+                                        <span className="font-mono">{useCases.length}</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

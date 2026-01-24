@@ -13,6 +13,7 @@ export function JoinWorkshop() {
     const [name, setName] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [isFacilitator, setIsFacilitator] = useState(false);
 
     const handleJoin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -24,14 +25,16 @@ export function JoinWorkshop() {
         try {
             const { data } = await api.post('/join', {
                 pin: pin.toUpperCase(),
-                display_name: name
+                display_name: name,
+                role: isFacilitator ? "FACILITATOR" : "PARTICIPANT"
             });
 
             // Save session info
             const session = {
                 participantId: data.participant_id,
                 workshopId: data.workshop_id,
-                name: name
+                name: name,
+                role: data.role
             };
             localStorage.setItem('hm_session', JSON.stringify(session));
 
@@ -79,6 +82,17 @@ export function JoinWorkshop() {
                             {error}
                         </div>
                     )}
+
+                    <div className="flex items-center space-x-2 justify-center">
+                        <input
+                            type="checkbox"
+                            id="facilitator"
+                            checked={isFacilitator}
+                            onChange={(e) => setIsFacilitator(e.target.checked)}
+                            className="w-4 h-4 rounded border-gray-600 bg-surface-900"
+                        />
+                        <label htmlFor="facilitator" className="text-sm text-gray-400">Join as Facilitator</label>
+                    </div>
 
                     <Button
                         type="submit"

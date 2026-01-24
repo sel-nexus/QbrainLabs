@@ -43,6 +43,10 @@ app.include_router(usecases.router, prefix="/api/usecases", tags=["usecases"])
 app.include_router(votes.router, prefix="/api/votes", tags=["votes"])
 app.include_router(results.router, prefix="/api/results", tags=["results"])
 
+from app.api import ai
+app.include_router(ai.router, prefix="/api/ai", tags=["ai"])
+
+
 @app.get("/")
 def read_root():
     return {"message": "Hotspot Matrix API is running"}

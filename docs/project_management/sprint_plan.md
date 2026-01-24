@@ -1,4 +1,5 @@
 # Hotspot Matrix - Development Sprint Plan
+> **Status:** MVP Completed (Sprints 1-6)
 
 This plan outlines the phased execution of the Hotspot Matrix application, ensuring a logical progression from backend foundation to complex real-time visualization.
 
@@ -68,7 +69,7 @@ This plan outlines the phased execution of the Hotspot Matrix application, ensur
 
 ## Sprint 5: Visualization & Hotspot Matrix
 **Goal:** Render the final insights.
-**Focus:** US05 (Visualization), D3.js (Switched to Recharts), Drill-down.
+**Focus:** US05 (Visualization), Recharts, Drill-down.
 
 ### Tasks
 - [x] **Frontend (Visualizer):**
@@ -91,4 +92,27 @@ This plan outlines the phased execution of the Hotspot Matrix application, ensur
     - [x] "Export to PDF/CSV" button for Facilitator (Implemented CSV Export).
     - [x] "Re-connect" logic for spotty wifi (Handled via generic socket connect error toasts).
 - [x] **Testing:**
-    - [x] Load test WebSockets (Validated via successful build and manual verify).
+- [x] Load test WebSockets (Validated via successful build and manual verify).
+
+## Sprint 7: Intelligence & Acquisition (Planned)
+**Goal:** Enhance user value with AI tools and drive adoption via a high-converting landing page.
+**Focus:** US07 (AI Intelligence), US08 (Landing Page).
+
+### Tasks
+- [ ] **AI & RAG Engine (US07):**
+    - [ ] **Infrastructure:** Setup Vector Database (ChromaDB/pgvector).
+    - [ ] **Backend:** Implement RAG pipeline (Ingest, Embed, Retrieve).
+    - [ ] **API:** `POST /api/ai/enhance` and `POST /api/ai/feasibility`.
+    - [ ] **Frontend:** "Magic Wand" assistant in Use Case Form.
+- [ ] **Landing Page (US08):**
+    - [ ] **Design:** Implement Hero section with Dual CTAs (Create/Join).
+    - [ ] **Content:** "How it Works" visualization and "Trusted By" sections.
+    - [ ] **SEO:** Meta tags and OpenGraph setup.
+    - [ ] **Route:** Expose public `/` marketing page.
+
+## Future Roadmap & Improvements
+- [ ] **Authentication:** Replace simple ID mechanism with robust User Accounts (OAuth2).
+- [ ] **Persistence:** Migrate from SQLite/In-Memory to PostgreSQL and Redis for production.
+- [ ] **Deployment:** Dockerize full stack for cloud deployment.
+- [ ] **Multi-Session:** Support multiple concurrent active workshops per facilitator.
+- [ ] **Advanced Analytics:** Heatmaps, detailed user agreement/disagreement metrics.
