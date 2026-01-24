@@ -2,9 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.core.database import get_db
-from app.models.models import Workshop, Participant, WorkshopStatus, ParticipantRole
+from app.models.models import Workshop, Participant, WorkshopStatus, ParticipantRole, User
 from app.schemas.participant import JoinRequest, JoinResponse
 from app.core.socket_manager import sio
+from app.api.auth import get_current_user
 
 router = APIRouter()
 
@@ -64,8 +65,10 @@ from app.schemas.participant import RoleUpdate
 async def update_role(
     participant_id: str,
     update_in: RoleUpdate,
+    current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
+    """Update participant role. Requires authentication (facilitator only)."""
     result = await db.execute(select(Participant).where(Participant.id == participant_id))
     participant = result.scalars().first()
     

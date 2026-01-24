@@ -1,6 +1,7 @@
-from sqlalchemy import Column, String, Boolean, ForeignKey, Enum, Text
+from sqlalchemy import Column, String, Boolean, ForeignKey, Enum, Text, DateTime
 from sqlalchemy.types import TypeDecorator, CHAR, String as SAString
 from sqlalchemy.dialects.postgresql import UUID as PGUUID, JSONB as PGJSONB
+from datetime import datetime
 import json
 
 # Compatibility helpers for SQLite
@@ -64,6 +65,10 @@ class User(Base):
     full_name = Column(String)
     is_admin = Column(Boolean, default=False)  # Admin users have elevated permissions
     
+    # Timestamps
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
     workshops = relationship("Workshop", back_populates="facilitator")
 
 class WorkshopStatus(str, enum.Enum):
@@ -90,6 +95,10 @@ class Workshop(Base):
     
     # Add active_use_case_id to track which item is being voted on
     active_use_case_id = Column(GUID(), ForeignKey("use_cases.id", use_alter=True, name="fk_workshop_active_use_case"), nullable=True)
+    
+    # Timestamps
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
  
     facilitator = relationship("User", back_populates="workshops")
     participants = relationship("Participant", back_populates="workshop")

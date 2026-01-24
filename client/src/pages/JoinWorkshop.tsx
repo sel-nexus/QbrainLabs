@@ -5,7 +5,8 @@ import { Input } from '../components/ui/Input';
 import { api } from '../lib/api';
 import { useSession } from '../context/SessionContext';
 import { motion } from 'framer-motion';
-import { ArrowRight, Loader2, ArrowLeft } from 'lucide-react';
+import { ArrowRight, Loader2, ArrowLeft, UserCircle } from 'lucide-react';
+import { ParticipantAuth } from '../components/ParticipantAuth';
 
 export function JoinWorkshop() {
     const navigate = useNavigate();
@@ -15,11 +16,24 @@ export function JoinWorkshop() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [isFacilitator, setIsFacilitator] = useState(false);
+    const [showAdvancedAuth, setShowAdvancedAuth] = useState(false);
 
-
-    // ...
     const { login } = useSession();
-    // ...
+
+    const handleAdvancedAuthSuccess = (data: { token: string; participant: any; mode: 'anonymous' | 'registered' }) => {
+        // Store token for future requests
+        localStorage.setItem('participant_token', data.token);
+        
+        // Login via session context
+        login({
+            participantId: data.participant.id,
+            workshopId: '', // Will be set when joining
+            name: data.participant.display_name,
+            role: 'PARTICIPANT'
+        });
+        
+        navigate('/lobby');
+    };
 
     const handleJoin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -113,8 +127,45 @@ export function JoinWorkshop() {
                     >
                         {loading ? <Loader2 className="animate-spin" /> : <span className="flex items-center">Join <ArrowRight className="ml-2 w-4 h-4" /></span>}
                     </Button>
+
+                    {/* Toggle to advanced auth */}
+                    <button
+                        type="button"
+                        onClick={() => setShowAdvancedAuth(true)}
+                        className="w-full text-sm text-gray-400 hover:text-brand-violet transition-colors flex items-center justify-center gap-2"
+                    >
+                        <UserCircle className="w-4 h-4" />
+                        Sign in to track contributions
+                    </button>
                 </form>
             </motion.div>
+
+            {/* Advanced Auth Modal */}
+            {showAdvancedAuth && (
+                <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+                    <motion.div
+                        initial={{ scale: 0.95, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        className="bg-surface-900 rounded-xl border border-white/10 p-6 w-full max-w-md"
+                    >
+                        <h2 className="text-xl font-bold mb-4 text-center">Join Workshop</h2>
+                        
+                        {/* PIN display if provided */}
+                        {pin && (
+                            <div className="text-center mb-4 p-2 bg-surface-800 rounded-lg">
+                                <span className="text-gray-400 text-sm">Workshop PIN: </span>
+                                <span className="font-mono font-bold text-brand-violet">{pin.toUpperCase()}</span>
+                            </div>
+                        )}
+                        
+                        <ParticipantAuth
+                            workshopPin={pin.toUpperCase()}
+                            onAuthSuccess={handleAdvancedAuthSuccess}
+                            onCancel={() => setShowAdvancedAuth(false)}
+                        />
+                    </motion.div>
+                </div>
+            )}
         </div>
     );
 }

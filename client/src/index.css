@@ -20,16 +20,113 @@
   --shadow-glow: 0 0 20px rgba(124, 58, 237, 0.5);
 }
 
-
-
+/* Theme CSS Custom Properties */
 :root {
+  /* Default: Contrast Mode (Dark) */
+  --theme-bg-primary: hsl(225, 25%, 10%);
+  --theme-bg-secondary: hsl(225, 20%, 15%);
+  --theme-bg-tertiary: hsl(225, 20%, 20%);
+  --theme-text-primary: #ffffff;
+  --theme-text-secondary: #a0aec0;
+  --theme-text-muted: #718096;
+  --theme-border-color: rgba(255, 255, 255, 0.1);
+  --theme-border-hover: rgba(255, 255, 255, 0.2);
+  --theme-card-bg: hsla(225, 25%, 15%, 0.6);
+  --theme-accent: hsl(250, 100%, 65%);
+  --theme-accent-hover: hsl(250, 100%, 70%);
   color-scheme: dark;
 }
 
+[data-theme="light"] {
+  /* Light Mode */
+  --theme-bg-primary: #ffffff;
+  --theme-bg-secondary: #f7fafc;
+  --theme-bg-tertiary: #edf2f7;
+  --theme-text-primary: #1a202c;
+  --theme-text-secondary: #4a5568;
+  --theme-text-muted: #718096;
+  --theme-border-color: #e2e8f0;
+  --theme-border-hover: #cbd5e0;
+  --theme-card-bg: rgba(255, 255, 255, 0.9);
+  --theme-accent: hsl(250, 100%, 55%);
+  --theme-accent-hover: hsl(250, 100%, 50%);
+  color-scheme: light;
+}
+
+[data-theme="contrast"] {
+  /* Contrast Mode (High Contrast Dark) */
+  --theme-bg-primary: hsl(225, 25%, 10%);
+  --theme-bg-secondary: hsl(225, 20%, 15%);
+  --theme-bg-tertiary: hsl(225, 20%, 20%);
+  --theme-text-primary: #ffffff;
+  --theme-text-secondary: #a0aec0;
+  --theme-text-muted: #718096;
+  --theme-border-color: rgba(255, 255, 255, 0.1);
+  --theme-border-hover: rgba(255, 255, 255, 0.2);
+  --theme-card-bg: hsla(225, 25%, 15%, 0.6);
+  --theme-accent: hsl(250, 100%, 65%);
+  --theme-accent-hover: hsl(250, 100%, 70%);
+  color-scheme: dark;
+}
+
+/* Smooth theme transitions */
+* {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+/* Respect reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none;
+  }
+}
+
 body {
-  @apply bg-surface-900 text-gray-200 font-body antialiased selection:bg-brand-violet selection:text-white;
+  background-color: var(--theme-bg-primary);
+  color: var(--theme-text-primary);
+  @apply font-body antialiased selection:bg-brand-violet selection:text-white;
 }
 
 #root {
   @apply min-h-screen flex flex-col;
+}
+
+/* Theme-aware utility classes */
+.theme-bg-primary {
+  background-color: var(--theme-bg-primary);
+}
+
+.theme-bg-secondary {
+  background-color: var(--theme-bg-secondary);
+}
+
+.theme-bg-tertiary {
+  background-color: var(--theme-bg-tertiary);
+}
+
+.theme-text-primary {
+  color: var(--theme-text-primary);
+}
+
+.theme-text-secondary {
+  color: var(--theme-text-secondary);
+}
+
+.theme-border {
+  border-color: var(--theme-border-color);
+}
+
+.theme-card {
+  background-color: var(--theme-card-bg);
+  border-color: var(--theme-border-color);
+}
+
+/* Hide scrollbar utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }

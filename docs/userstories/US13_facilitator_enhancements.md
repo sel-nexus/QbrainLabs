@@ -3,8 +3,9 @@
 **Epic:** AI Hotspot Flow - Enterprise Backlog  
 **Module:** Facilitator Tools & Survey Management  
 **Story Type:** Feature  
-**Priority:** High  
-**Story Points:** 21
+**Story Points:** 21  
+**Status:** ✅ IMPLEMENTED - Sprint 15  
+**Implementation Date:** January 24, 2026
 
 ---
 
@@ -884,6 +885,241 @@ socket.on('wordcloud:updated', {
 5. Should word clouds filter profanity or inappropriate content?
 6. Can facilitators schedule survey activation for a specific time?
 7. Should the system support branching logic (conditional questions)?
+
+---
+
+## Feature: Use Case Upload for Workshops
+
+### User Story
+
+**As a** Workshop Facilitator,  
+**I want to** upload existing use cases for a workshop,  
+**So that** participants can view and prioritize pre-defined use cases instead of creating new ones from scratch.
+
+### Description
+
+Facilitators often have a set of pre-identified use cases that need to be prioritized during a workshop. This feature allows facilitators to upload these use cases in bulk, eliminating the need for participants to manually enter them. Uploaded use cases become immediately available for participants to view and plot on the prioritization matrix.
+
+### Functional Requirements
+
+#### 1. Use Case Upload Interface
+- **Upload Methods:**
+  - CSV file upload
+  - Excel file upload (.xlsx, .xls)
+  - Manual entry form for individual use cases
+  - Copy-paste from spreadsheet (tab-delimited)
+
+- **Supported Fields:**
+  - Use Case Title (required)
+  - Problem Description (required)
+  - Target User (optional)
+  - Expected KPI (optional)
+  - AI Category (optional)
+  - Data Readiness (optional, 1-5)
+  - Additional Notes (optional)
+
+- **Template Download:**
+  - Provide downloadable CSV/Excel template
+  - Include sample data and field descriptions
+  - Support multiple languages (future)
+
+#### 2. Upload Workflow
+- **Step 1:** Select upload method (file or manual)
+- **Step 2:** Upload file or enter data
+- **Step 3:** Preview and validate imported data
+- **Step 4:** Map columns (if needed for CSV/Excel)
+- **Step 5:** Review validation errors
+- **Step 6:** Confirm and import use cases
+- **Step 7:** View imported use cases in workshop
+
+#### 3. Validation & Error Handling
+- **Validation Rules:**
+  - Title is required and unique within workshop
+  - Title max length: 80 characters
+  - Problem description max length: 500 characters
+  - AI Category must match predefined options
+  - Data Readiness must be 1-5 if provided
+
+- **Error Handling:**
+  - Display row-by-row validation errors
+  - Allow fixing errors before import
+  - Skip invalid rows option
+  - Partial import with error report
+
+#### 4. Use Case Management Post-Upload
+- Edit individual use cases
+- Delete use cases (with confirmation)
+- Reorder use cases
+- Mark use cases as active/inactive
+- Bulk operations (delete, activate, deactivate)
+
+### Acceptance Criteria
+
+#### Scenario 1: Upload Use Cases via CSV
+**Given** a facilitator is managing a workshop  
+**When** they click "Upload Use Cases"  
+**Then** they see upload options (CSV, Excel, Manual)  
+**When** they select CSV and upload a valid file  
+**Then** they see a preview of the imported data  
+**And** they can map columns to fields  
+**When** they confirm the import  
+**Then** the use cases are added to the workshop  
+**And** participants can view them immediately
+
+#### Scenario 2: Upload with Validation Errors
+**Given** a facilitator uploads a CSV with some invalid rows  
+**When** validation runs  
+**Then** they see errors highlighted for each invalid row  
+**And** they can choose to fix, skip, or cancel  
+**When** they choose to skip invalid rows  
+**Then** only valid use cases are imported  
+**And** they receive a summary of skipped rows
+
+#### Scenario 3: Manual Use Case Entry
+**Given** a facilitator wants to add a single use case  
+**When** they click "Add Use Case Manually"  
+**Then** they see a form with all use case fields  
+**When** they fill in required fields and save  
+**Then** the use case is added to the workshop  
+**And** it appears in the use case list
+
+#### Scenario 4: Download Template
+**Given** a facilitator wants to prepare use cases offline  
+**When** they click "Download Template"  
+**Then** they receive a CSV/Excel file with headers  
+**And** the file includes sample data and instructions  
+**And** field descriptions are included as comments
+
+### Technical Implementation
+
+#### Frontend Components
+- `UseCaseUploader.tsx` - Main upload interface
+- `FileDropzone.tsx` - Drag-and-drop file upload
+- `ColumnMapper.tsx` - CSV/Excel column mapping
+- `UseCasePreview.tsx` - Preview imported data
+- `ValidationErrorList.tsx` - Display validation errors
+- `UseCaseManagement.tsx` - List and manage use cases
+- `UseCaseForm.tsx` - Manual entry form
+
+#### Backend Endpoints
+```typescript
+// Upload use cases from file
+POST /api/workshops/:pin/use-cases/upload
+Request: multipart/form-data
+{
+  "file": File (CSV or Excel),
+  "facilitator_id": "UUID",
+  "column_mapping": {
+    "title": "Column A",
+    "problem_description": "Column B",
+    ...
+  }
+}
+Response: {
+  "imported_count": number,
+  "skipped_count": number,
+  "errors": [
+    {
+      "row": number,
+      "field": "string",
+      "message": "string"
+    }
+  ],
+  "use_cases": [...]
+}
+
+// Add single use case
+POST /api/workshops/:pin/use-cases
+Request: {
+  "facilitator_id": "UUID",
+  "title": "string",
+  "problem_description": "string",
+  "target_user": "string",
+  "expected_kpi": "string",
+  "ai_category": "string",
+  "data_readiness": number
+}
+Response: {
+  "use_case_id": "UUID",
+  "created_at": "ISODate"
+}
+
+// Get all uploaded use cases for workshop
+GET /api/workshops/:pin/use-cases
+Response: {
+  "use_cases": [
+    {
+      "use_case_id": "UUID",
+      "title": "string",
+      "problem_description": "string",
+      "target_user": "string",
+      "expected_kpi": "string",
+      "ai_category": "string",
+      "data_readiness": number,
+      "status": "active|inactive",
+      "source": "uploaded|participant",
+      "created_at": "ISODate"
+    }
+  ]
+}
+
+// Update use case
+PUT /api/workshops/:pin/use-cases/:use_case_id
+Request: {
+  "facilitator_id": "UUID",
+  "title": "string",
+  ...
+}
+
+// Delete use case
+DELETE /api/workshops/:pin/use-cases/:use_case_id
+Request: {
+  "facilitator_id": "UUID"
+}
+
+// Bulk operations
+POST /api/workshops/:pin/use-cases/bulk
+Request: {
+  "facilitator_id": "UUID",
+  "action": "delete|activate|deactivate",
+  "use_case_ids": ["UUID"]
+}
+
+// Download template
+GET /api/use-cases/template?format=csv|xlsx
+Response: File download
+```
+
+#### Database Schema
+```json
+{
+  "_id": ObjectId,
+  "use_case_id": "UUID",
+  "workshop_pin": "string",
+  "title": "string",
+  "problem_description": "string",
+  "target_user": "string",
+  "expected_kpi": "string",
+  "ai_category": "string",
+  "data_readiness": number,
+  "status": "active|inactive",
+  "source": "uploaded|participant",
+  "uploaded_by": "UUID (facilitator_id)",
+  "created_at": "ISODate",
+  "updated_at": "ISODate"
+}
+```
+
+### Definition of Done (Use Case Upload)
+- [ ] File upload (CSV/Excel) implemented
+- [ ] Column mapping interface functional
+- [ ] Validation with error reporting
+- [ ] Manual entry form working
+- [ ] Template download available
+- [ ] Edit/delete use cases functional
+- [ ] Bulk operations working
+- [ ] API endpoints tested
+- [ ] Integration with participant view verified
 
 ---
 

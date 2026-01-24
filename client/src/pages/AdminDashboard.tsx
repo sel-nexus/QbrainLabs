@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
-import { Plus, Users, LogOut, Key, Shield } from 'lucide-react';
+import { Plus, Users, LogOut, Key, Shield, Brain } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { api } from '../lib/api';
 import { toast } from 'sonner';
@@ -72,6 +72,9 @@ export function AdminDashboard() {
                             <Shield className="w-5 h-5" />
                         </Button>
                     )}
+                    <Button variant="ghost" onClick={() => navigate('/knowledge-base')} title="AI Knowledge Base">
+                        <Brain className="w-5 h-5" />
+                    </Button>
                     <Button variant="ghost" onClick={() => setShowChangePassword(true)} title="Change Password">
                         <Key className="w-5 h-5" />
                     </Button>

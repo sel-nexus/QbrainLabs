@@ -9,7 +9,8 @@ import {
     LogOut,
     TrendingUp,
     Activity,
-    CheckCircle
+    CheckCircle,
+    Brain
 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 
@@ -141,6 +142,13 @@ export function AdminPanel() {
                             <span className="font-medium">Users</span>
                         </button>
                         <button
+                            onClick={() => navigate('/knowledge-base')}
+                            className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-white/5 hover:text-white transition"
+                        >
+                            <Brain className="w-5 h-5" />
+                            <span className="font-medium">AI Knowledge Base</span>
+                        </button>
+                        <button
                             onClick={() => navigate('/dashboard')}
                             className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-400 hover:bg-white/5 hover:text-white transition"
                         >
@@ -216,7 +224,7 @@ export function AdminPanel() {
                     {/* Quick Actions */}
                     <div className="bg-surface-800 rounded-xl p-6 border border-white/10">
                         <h3 className="text-xl font-bold text-white mb-4">Quick Actions</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                             <button
                                 onClick={() => navigate('/admin/workshops')}
                                 className="p-4 bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 transition text-left"
@@ -232,6 +240,14 @@ export function AdminPanel() {
                                 <Users className="w-8 h-8 text-blue-400 mb-2" />
                                 <div className="text-white font-medium">Manage Users</div>
                                 <div className="text-sm text-gray-400">Create and manage facilitators</div>
+                            </button>
+                            <button
+                                onClick={() => navigate('/knowledge-base')}
+                                className="p-4 bg-white/5 hover:bg-white/10 rounded-lg border border-white/10 transition text-left"
+                            >
+                                <Brain className="w-8 h-8 text-pink-400 mb-2" />
+                                <div className="text-white font-medium">AI Knowledge Base</div>
+                                <div className="text-sm text-gray-400">Browse industry use cases</div>
                             </button>
                             <button
                                 onClick={() => navigate('/dashboard')}

@@ -1,0 +1,498 @@
+{
+  "templates": [
+    {
+      "id": "healthcare-patient-experience",
+      "name": "Healthcare - Patient Experience Survey",
+      "description": "Assess patient satisfaction and identify areas for improvement in healthcare delivery",
+      "industry": "healthcare",
+      "category": "post_workshop",
+      "tags": ["patient", "satisfaction", "healthcare", "quality"],
+      "questions": [
+        {
+          "text": "How would you rate your overall experience with our healthcare services?",
+          "type": "rating",
+          "required": true,
+          "config": {"scale": 5, "labels": ["Very Poor", "Poor", "Average", "Good", "Excellent"]}
+        },
+        {
+          "text": "Which aspects of care were most important to you?",
+          "type": "multiple_select",
+          "required": true,
+          "options": ["Wait times", "Staff friendliness", "Communication", "Treatment effectiveness", "Facility cleanliness", "Follow-up care"]
+        },
+        {
+          "text": "How likely are you to recommend our services to others?",
+          "type": "rating",
+          "required": true,
+          "config": {"scale": 10, "labels": ["Not at all likely", "", "", "", "", "", "", "", "", "Extremely likely"]}
+        },
+        {
+          "text": "What could we do to improve your experience?",
+          "type": "textarea",
+          "required": false,
+          "config": {"max_length": 1000}
+        }
+      ]
+    },
+    {
+      "id": "healthcare-clinical-workflow",
+      "name": "Healthcare - Clinical Workflow Assessment",
+      "description": "Evaluate clinical workflow efficiency and identify bottlenecks",
+      "industry": "healthcare",
+      "category": "pre_workshop",
+      "tags": ["clinical", "workflow", "efficiency", "process"],
+      "questions": [
+        {
+          "text": "How would you rate the efficiency of current clinical workflows?",
+          "type": "rating",
+          "required": true,
+          "config": {"scale": 5, "labels": ["Very Inefficient", "Inefficient", "Neutral", "Efficient", "Very Efficient"]}
+        },
+        {
+          "text": "Which processes cause the most delays in patient care?",
+          "type": "multiple_select",
+          "required": true,
+          "options": ["Patient intake", "Documentation", "Lab results", "Medication dispensing", "Discharge process", "Insurance verification", "Specialist referrals"]
+        },
+        {
+          "text": "Please rate the following statements about your workflow:",
+          "type": "likert",
+          "required": true,
+          "config": {
+            "scale": 5,
+            "labels": ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"],
+            "statements": [
+              "I have access to all information needed for patient care",
+              "Communication between departments is effective",
+              "Technology supports rather than hinders my work",
+              "I can complete documentation in a timely manner"
+            ]
+          }
+        },
+        {
+          "text": "What is the biggest challenge you face in your daily workflow?",
+          "type": "textarea",
+          "required": true,
+          "config": {"max_length": 500}
+        }
+      ]
+    },
+    {
+      "id": "finance-risk-assessment",
+      "name": "Finance - Risk Assessment Survey",
+      "description": "Evaluate organizational risk awareness and management practices",
+      "industry": "finance",
+      "category": "validation",
+      "tags": ["risk", "compliance", "finance", "assessment"],
+      "questions": [
+        {
+          "text": "How confident are you in your organization's risk management framework?",
+          "type": "rating",
+          "required": true,
+          "config": {"scale": 5, "labels": ["Not Confident", "Slightly Confident", "Moderately Confident", "Very Confident", "Extremely Confident"]}
+        },
+        {
+          "text": "Which risk categories are most relevant to your operations?",
+          "type": "multiple_select",
+          "required": true,
+          "options": ["Credit risk", "Market risk", "Operational risk", "Compliance risk", "Cybersecurity risk", "Liquidity risk", "Reputational risk"]
+        },
+        {
+          "text": "How frequently does your team review risk assessments?",
+          "type": "multiple_choice",
+          "required": true,
+          "options": ["Daily", "Weekly", "Monthly", "Quarterly", "Annually", "Rarely/Never"]
+        },
+        {
+          "text": "What emerging risks concern you most?",
+          "type": "textarea",
+          "required": false,
+          "config": {"max_length": 800}
+        }
+      ]
+    },
+    {
+      "id": "finance-compliance-readiness",
+      "name": "Finance - Compliance Readiness Check",
+      "description": "Assess readiness for regulatory compliance requirements",
+      "industry": "finance",
+      "category": "readiness",
+      "tags": ["compliance", "regulatory", "audit", "readiness"],
+      "questions": [
+        {
+          "text": "Rate your organization's compliance readiness:",
+          "type": "likert",
+          "required": true,
+          "config": {
+            "scale": 5,
+            "labels": ["Not Ready", "Partially Ready", "Moderately Ready", "Mostly Ready", "Fully Ready"],
+            "statements": [
+              "Documentation is complete and up-to-date",
+              "Staff are trained on compliance requirements",
+              "Monitoring systems are in place",
+              "Incident response procedures are documented",
+              "Third-party vendors are properly vetted"
+            ]
+          }
+        },
+        {
+          "text": "Which compliance areas need the most attention?",
+          "type": "multiple_select",
+          "required": true,
+          "options": ["Data privacy (GDPR/CCPA)", "Anti-money laundering", "Know Your Customer", "Financial reporting", "Cybersecurity", "Consumer protection"]
+        },
+        {
+          "text": "What resources do you need to improve compliance?",
+          "type": "textarea",
+          "required": false,
+          "config": {"max_length": 600}
+        }
+      ]
+    },
+    {
+      "id": "retail-customer-journey",
+      "name": "Retail - Customer Journey Survey",
+      "description": "Map and evaluate the customer shopping experience",
+      "industry": "retail",
+      "category": "validation",
+      "tags": ["customer", "journey", "retail", "experience"],
+      "questions": [
+        {
+          "text": "How did you first discover our products/services?",
+          "type": "multiple_choice",
+          "required": true,
+          "options": ["Social media", "Search engine", "Word of mouth", "Advertisement", "In-store visit", "Email marketing", "Other"]
+        },
+        {
+          "text": "Rate your experience at each stage of your shopping journey:",
+          "type": "likert",
+          "required": true,
+          "config": {
+            "scale": 5,
+            "labels": ["Very Poor", "Poor", "Average", "Good", "Excellent"],
+            "statements": [
+              "Finding products I wanted",
+              "Product information availability",
+              "Checkout process",
+              "Payment options",
+              "Delivery/pickup experience"
+            ]
+          }
+        },
+        {
+          "text": "What would make you more likely to shop with us again?",
+          "type": "multiple_select",
+          "required": true,
+          "options": ["Lower prices", "Better product selection", "Faster delivery", "Loyalty rewards", "Improved website/app", "Better customer service", "More payment options"]
+        },
+        {
+          "text": "Please share any additional feedback about your shopping experience:",
+          "type": "textarea",
+          "required": false,
+          "config": {"max_length": 800}
+        }
+      ]
+    },
+    {
+      "id": "manufacturing-process-efficiency",
+      "name": "Manufacturing - Process Efficiency Assessment",
+      "description": "Evaluate manufacturing process efficiency and identify improvement opportunities",
+      "industry": "manufacturing",
+      "category": "pre_workshop",
+      "tags": ["manufacturing", "efficiency", "process", "lean"],
+      "questions": [
+        {
+          "text": "How would you rate the overall efficiency of your production line?",
+          "type": "rating",
+          "required": true,
+          "config": {"scale": 5, "labels": ["Very Inefficient", "Inefficient", "Average", "Efficient", "Very Efficient"]}
+        },
+        {
+          "text": "Which areas experience the most downtime?",
+          "type": "multiple_select",
+          "required": true,
+          "options": ["Equipment maintenance", "Material shortages", "Quality issues", "Changeover time", "Staff availability", "IT/System issues", "Supply chain delays"]
+        },
+        {
+          "text": "Rate the following aspects of your manufacturing process:",
+          "type": "likert",
+          "required": true,
+          "config": {
+            "scale": 5,
+            "labels": ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"],
+            "statements": [
+              "Equipment is well-maintained and reliable",
+              "Quality control processes are effective",
+              "Inventory levels are optimized",
+              "Production schedules are realistic",
+              "Safety protocols are followed consistently"
+            ]
+          }
+        },
+        {
+          "text": "What is the biggest bottleneck in your production process?",
+          "type": "textarea",
+          "required": true,
+          "config": {"max_length": 500}
+        }
+      ]
+    },
+    {
+      "id": "technology-user-experience",
+      "name": "Technology - User Experience Survey",
+      "description": "Gather feedback on software/product user experience",
+      "industry": "technology",
+      "category": "post_workshop",
+      "tags": ["ux", "user experience", "software", "feedback"],
+      "questions": [
+        {
+          "text": "How easy is it to use our product?",
+          "type": "rating",
+          "required": true,
+          "config": {"scale": 5, "labels": ["Very Difficult", "Difficult", "Neutral", "Easy", "Very Easy"]}
+        },
+        {
+          "text": "Which features do you use most frequently?",
+          "type": "multiple_select",
+          "required": true,
+          "options": ["Dashboard", "Reports", "Data entry", "Search", "Notifications", "Settings", "Integrations", "Mobile app"]
+        },
+        {
+          "text": "Rate the following aspects of the product:",
+          "type": "likert",
+          "required": true,
+          "config": {
+            "scale": 5,
+            "labels": ["Very Poor", "Poor", "Average", "Good", "Excellent"],
+            "statements": [
+              "Visual design and layout",
+              "Navigation and menu structure",
+              "Performance and speed",
+              "Error messages and help text",
+              "Mobile responsiveness"
+            ]
+          }
+        },
+        {
+          "text": "What features would you like to see added or improved?",
+          "type": "textarea",
+          "required": false,
+          "config": {"max_length": 1000}
+        }
+      ]
+    },
+    {
+      "id": "technology-feature-prioritization",
+      "name": "Technology - Feature Prioritization",
+      "description": "Gather input on feature priorities for product development",
+      "industry": "technology",
+      "category": "alignment",
+      "tags": ["features", "prioritization", "product", "roadmap"],
+      "questions": [
+        {
+          "text": "How important are the following potential features to you?",
+          "type": "likert",
+          "required": true,
+          "config": {
+            "scale": 5,
+            "labels": ["Not Important", "Slightly Important", "Moderately Important", "Very Important", "Critical"],
+            "statements": [
+              "Advanced analytics dashboard",
+              "Mobile app improvements",
+              "Third-party integrations",
+              "Automation capabilities",
+              "Collaboration features",
+              "Custom reporting"
+            ]
+          }
+        },
+        {
+          "text": "What is the single most important improvement we could make?",
+          "type": "text",
+          "required": true,
+          "config": {"max_length": 200}
+        },
+        {
+          "text": "How would you rate the current product roadmap communication?",
+          "type": "rating",
+          "required": true,
+          "config": {"scale": 5, "labels": ["Very Poor", "Poor", "Average", "Good", "Excellent"]}
+        },
+        {
+          "text": "Any additional features or improvements you'd like to suggest?",
+          "type": "textarea",
+          "required": false,
+          "config": {"max_length": 800}
+        }
+      ]
+    },
+    {
+      "id": "general-pre-workshop",
+      "name": "General - Pre-Workshop Assessment",
+      "description": "Gather participant expectations and baseline knowledge before a workshop",
+      "industry": "general",
+      "category": "pre_workshop",
+      "tags": ["workshop", "assessment", "expectations", "baseline"],
+      "questions": [
+        {
+          "text": "What are your main goals for this workshop?",
+          "type": "multiple_select",
+          "required": true,
+          "options": ["Learn new skills", "Network with peers", "Solve specific problems", "Generate new ideas", "Align with team", "Get expert guidance", "Other"]
+        },
+        {
+          "text": "How familiar are you with the workshop topic?",
+          "type": "rating",
+          "required": true,
+          "config": {"scale": 5, "labels": ["Not Familiar", "Slightly Familiar", "Moderately Familiar", "Very Familiar", "Expert"]}
+        },
+        {
+          "text": "What specific questions do you hope to have answered?",
+          "type": "textarea",
+          "required": true,
+          "config": {"max_length": 500}
+        },
+        {
+          "text": "What challenges are you currently facing related to this topic?",
+          "type": "textarea",
+          "required": false,
+          "config": {"max_length": 500}
+        }
+      ]
+    },
+    {
+      "id": "general-post-workshop",
+      "name": "General - Post-Workshop Feedback",
+      "description": "Collect feedback after a workshop to measure effectiveness",
+      "industry": "general",
+      "category": "post_workshop",
+      "tags": ["workshop", "feedback", "evaluation", "improvement"],
+      "questions": [
+        {
+          "text": "How would you rate the overall workshop experience?",
+          "type": "rating",
+          "required": true,
+          "config": {"scale": 5, "labels": ["Very Poor", "Poor", "Average", "Good", "Excellent"]}
+        },
+        {
+          "text": "Rate the following aspects of the workshop:",
+          "type": "likert",
+          "required": true,
+          "config": {
+            "scale": 5,
+            "labels": ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"],
+            "statements": [
+              "The content was relevant to my needs",
+              "The facilitator was knowledgeable and engaging",
+              "The pace was appropriate",
+              "I learned actionable insights",
+              "The workshop met my expectations"
+            ]
+          }
+        },
+        {
+          "text": "What was the most valuable part of the workshop?",
+          "type": "textarea",
+          "required": true,
+          "config": {"max_length": 500}
+        },
+        {
+          "text": "What could be improved for future workshops?",
+          "type": "textarea",
+          "required": false,
+          "config": {"max_length": 500}
+        },
+        {
+          "text": "How likely are you to recommend this workshop to a colleague?",
+          "type": "rating",
+          "required": true,
+          "config": {"scale": 10, "labels": ["Not at all likely", "", "", "", "", "", "", "", "", "Extremely likely"]}
+        }
+      ]
+    },
+    {
+      "id": "general-change-readiness",
+      "name": "General - Change Readiness Assessment",
+      "description": "Assess organizational readiness for change initiatives",
+      "industry": "general",
+      "category": "readiness",
+      "tags": ["change", "readiness", "transformation", "assessment"],
+      "questions": [
+        {
+          "text": "How would you describe your organization's attitude toward change?",
+          "type": "multiple_choice",
+          "required": true,
+          "options": ["Resistant to change", "Cautious about change", "Neutral", "Open to change", "Embraces change"]
+        },
+        {
+          "text": "Rate your agreement with the following statements:",
+          "type": "likert",
+          "required": true,
+          "config": {
+            "scale": 5,
+            "labels": ["Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree"],
+            "statements": [
+              "Leadership supports this change initiative",
+              "Employees understand why change is needed",
+              "Resources are available to support the change",
+              "Communication about the change is clear",
+              "Training will be provided for new processes"
+            ]
+          }
+        },
+        {
+          "text": "What are the biggest barriers to successful change?",
+          "type": "multiple_select",
+          "required": true,
+          "options": ["Lack of leadership support", "Insufficient resources", "Employee resistance", "Unclear communication", "Competing priorities", "Technical challenges", "Cultural barriers"]
+        },
+        {
+          "text": "What would help you embrace this change more effectively?",
+          "type": "textarea",
+          "required": false,
+          "config": {"max_length": 600}
+        }
+      ]
+    },
+    {
+      "id": "general-roi-estimation",
+      "name": "General - ROI Estimation Survey",
+      "description": "Gather data to estimate return on investment for initiatives",
+      "industry": "general",
+      "category": "roi",
+      "tags": ["roi", "value", "estimation", "business case"],
+      "questions": [
+        {
+          "text": "How much time do you currently spend on the process/task being improved?",
+          "type": "multiple_choice",
+          "required": true,
+          "options": ["Less than 1 hour/week", "1-5 hours/week", "5-10 hours/week", "10-20 hours/week", "More than 20 hours/week"]
+        },
+        {
+          "text": "What percentage of time savings do you expect from this initiative?",
+          "type": "rating",
+          "required": true,
+          "config": {"scale": 5, "labels": ["0-20%", "20-40%", "40-60%", "60-80%", "80-100%"]}
+        },
+        {
+          "text": "Which benefits do you expect from this initiative?",
+          "type": "multiple_select",
+          "required": true,
+          "options": ["Cost reduction", "Time savings", "Quality improvement", "Risk reduction", "Revenue increase", "Customer satisfaction", "Employee satisfaction", "Compliance improvement"]
+        },
+        {
+          "text": "Estimate the annual cost of the current process/problem:",
+          "type": "multiple_choice",
+          "required": false,
+          "options": ["Less than $10,000", "$10,000 - $50,000", "$50,000 - $100,000", "$100,000 - $500,000", "More than $500,000", "Unknown"]
+        },
+        {
+          "text": "Please describe any additional value or benefits you anticipate:",
+          "type": "textarea",
+          "required": false,
+          "config": {"max_length": 500}
+        }
+      ]
+    }
+  ]
+}

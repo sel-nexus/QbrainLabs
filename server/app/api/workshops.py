@@ -4,6 +4,8 @@ from sqlalchemy.future import select
 from app.core.database import get_db
 from app.models import Workshop, User, Participant, ParticipantRole
 from app.schemas.workshop import WorkshopCreate, WorkshopResponse, PendingFacilitator
+from app.api.auth import get_current_user, oauth2_scheme
+from typing import Optional
 import random
 import string
 
@@ -23,22 +25,11 @@ async def list_workshops(db: AsyncSession = Depends(get_db)):
 @router.post("/", response_model=WorkshopResponse, status_code=status.HTTP_201_CREATED)
 async def create_workshop(
     workshop_in: WorkshopCreate,
+    current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    # TODO: Get actual current user from Auth context. For now, creating a dummy user or failing if none exists.
-    # For MVP Sprint 1, we will mock a user ID or create one on the fly for demonstration if Auth isn't fully ready.
-    # Let's verify if we have a user.
-    
-    # Check for at least one user to assign as facilitator
-    result = await db.execute(select(User))
-    user = result.scalars().first()
-    
-    if not user:
-        # Create a default admin user for Sprint 1 dev
-        user = User(email="admin@example.com", password_hash="dummy", full_name="Admin")
-        db.add(user)
-        await db.commit()
-        await db.refresh(user)
+    """Create a new workshop. Requires authentication."""
+    user = current_user
 
     pin = generate_pin()
     
@@ -87,8 +78,10 @@ from app.schemas.workshop_actions import PhaseUpdate
 async def update_phase(
     workshop_id: str,
     phase_in: PhaseUpdate,
+    current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
+    """Update workshop phase. Requires authentication (facilitator only)."""
     result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
     workshop = result.scalars().first()
     if not workshop:
@@ -110,8 +103,10 @@ from app.models.models import UseCase
 async def set_active_card(
     workshop_id: str,
     action: ActivateCard,
+    current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
+    """Set active use case card. Requires authentication (facilitator only)."""
     result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
     workshop = result.scalars().first()
     if not workshop:

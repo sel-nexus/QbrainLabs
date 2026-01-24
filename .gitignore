@@ -1,0 +1,14 @@
+# Environment files
+.env
+.env.production
+.env.local
+.env*.local
+
+# Python virtual environments
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# OS files
+.DS_Store

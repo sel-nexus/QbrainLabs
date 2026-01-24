@@ -42,3 +42,56 @@ async def join_workshop(sid, data):
                     'phase': workshop.current_phase,
                     'active_use_case_id': str(workshop.active_use_case_id) if workshop.active_use_case_id else None
                 }, to=sid)
+
+
+# ==================== Survey WebSocket Events ====================
+
+@sio.event
+async def join_survey(sid, data):
+    """Join a survey room for real-time updates"""
+    survey_id = data.get('survey_id')
+    if survey_id:
+        sio.enter_room(sid, f"survey_{survey_id}")
+        print(f"SID {sid} joined survey room {survey_id}")
+
+
+@sio.event
+async def leave_survey(sid, data):
+    """Leave a survey room"""
+    survey_id = data.get('survey_id')
+    if survey_id:
+        sio.leave_room(sid, f"survey_{survey_id}")
+        print(f"SID {sid} left survey room {survey_id}")
+
+
+async def emit_survey_response_submitted(survey_id: str, data: dict):
+    """Emit when a participant submits a survey response"""
+    await sio.emit('survey:response_submitted', data, room=f"survey_{survey_id}")
+
+
+async def emit_survey_participant_started(survey_id: str, data: dict):
+    """Emit when a participant starts a survey"""
+    await sio.emit('survey:participant_started', data, room=f"survey_{survey_id}")
+
+
+async def emit_survey_participant_completed(survey_id: str, data: dict):
+    """Emit when a participant completes a survey"""
+    await sio.emit('survey:participant_completed', data, room=f"survey_{survey_id}")
+
+
+async def emit_survey_status_changed(survey_id: str, old_status: str, new_status: str):
+    """Emit when survey status changes"""
+    await sio.emit('survey:status_changed', {
+        'survey_id': survey_id,
+        'old_status': old_status,
+        'new_status': new_status
+    }, room=f"survey_{survey_id}")
+
+
+async def emit_wordcloud_updated(survey_id: str, question_id: str, words: list):
+    """Emit word cloud updates for real-time visualization"""
+    await sio.emit('wordcloud:updated', {
+        'survey_id': survey_id,
+        'question_id': question_id,
+        'words': words
+    }, room=f"survey_{survey_id}")

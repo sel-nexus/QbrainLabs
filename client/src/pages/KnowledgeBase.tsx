@@ -1,0 +1,463 @@
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
+import {
+    Brain,
+    Search,
+    Building2,
+    Cpu,
+    TrendingUp,
+    Clock,
+    ChevronRight,
+    ArrowLeft,
+    BookOpen,
+    Filter,
+    X
+} from 'lucide-react';
+import { Button } from '../components/ui/Button';
+
+interface Industry {
+    id: string;
+    name: string;
+    icon: string;
+    use_case_count: number;
+}
+
+interface KnowledgeBaseOverview {
+    total_industries: number;
+    total_use_cases: number;
+    total_categories: number;
+    total_technologies: number;
+    industries: Industry[];
+}
+
+interface UseCaseTemplate {
+    id: string;
+    title: string;
+    description: string;
+    category: string;
+    complexity: string;
+    data_requirements: string;
+    typical_roi: string;
+    implementation_time: string;
+    technologies: string[];
+    kpis: string[];
+}
+
+interface SearchResult {
+    id: string;
+    title: string;
+    description: string;
+    industry: string;
+    industry_name: string;
+    category: string;
+    complexity: string;
+    typical_roi: string;
+    relevance_score: number;
+}
+
+interface IndustryDetail {
+    id: string;
+    name: string;
+    icon: string;
+    use_cases: UseCaseTemplate[];
+}
+
+export function KnowledgeBase() {
+    const navigate = useNavigate();
+    const [overview, setOverview] = useState<KnowledgeBaseOverview | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+    const [searching, setSearching] = useState(false);
+    const [selectedIndustry, setSelectedIndustry] = useState<IndustryDetail | null>(null);
+    const [selectedUseCase, setSelectedUseCase] = useState<UseCaseTemplate | null>(null);
+    const [currentUser, setCurrentUser] = useState<any>(null);
+
+    useEffect(() => {
+        const authToken = localStorage.getItem('authToken');
+        const userStr = localStorage.getItem('currentUser');
+
+        if (!authToken || !userStr) {
+            toast.error('Please log in to access the Knowledge Base');
+            navigate('/facilitator-login');
+            return;
+        }
+
+        setCurrentUser(JSON.parse(userStr));
+        fetchOverview();
+    }, [navigate]);
+
+    const fetchOverview = async () => {
+        try {
+            const authToken = localStorage.getItem('authToken');
+            const response = await fetch('http://localhost:8000/api/knowledge-base/overview', {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+
+            if (!response.ok) throw new Error('Failed to fetch overview');
+            const data = await response.json();
+            setOverview(data);
+        } catch (error) {
+            console.error('Error:', error);
+            toast.error('Failed to load Knowledge Base');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSearch = async () => {
+        if (searchQuery.length < 2) return;
+        
+        setSearching(true);
+        try {
+            const authToken = localStorage.getItem('authToken');
+            const response = await fetch(
+                `http://localhost:8000/api/knowledge-base/search?query=${encodeURIComponent(searchQuery)}`,
+                { headers: { 'Authorization': `Bearer ${authToken}` } }
+            );
+
+            if (!response.ok) throw new Error('Search failed');
+            const data = await response.json();
+            setSearchResults(data);
+        } catch (error) {
+            console.error('Error:', error);
+            toast.error('Search failed');
+        } finally {
+            setSearching(false);
+        }
+    };
+
+    const fetchIndustry = async (industryId: string) => {
+        try {
+            const authToken = localStorage.getItem('authToken');
+            const response = await fetch(
+                `http://localhost:8000/api/knowledge-base/industries/${industryId}`,
+                { headers: { 'Authorization': `Bearer ${authToken}` } }
+            );
+
+            if (!response.ok) throw new Error('Failed to fetch industry');
+            const data = await response.json();
+            setSelectedIndustry(data);
+        } catch (error) {
+            console.error('Error:', error);
+            toast.error('Failed to load industry details');
+        }
+    };
+
+    const getComplexityColor = (complexity: string) => {
+        switch (complexity.toLowerCase()) {
+            case 'low': return 'text-green-400 bg-green-500/10';
+            case 'medium': return 'text-yellow-400 bg-yellow-500/10';
+            case 'high': return 'text-red-400 bg-red-500/10';
+            default: return 'text-gray-400 bg-gray-500/10';
+        }
+    };
+
+    const getIndustryIcon = (icon: string) => {
+        return <Building2 className="w-6 h-6" />;
+    };
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-surface-900 flex items-center justify-center">
+                <div className="text-white text-xl">Loading Knowledge Base...</div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="min-h-screen bg-surface-900">
+            {/* Header */}
+            <header className="bg-surface-800 border-b border-white/10">
+                <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+                    <div className="flex items-center gap-3">
+                        <button onClick={() => navigate(-1)} className="text-gray-400 hover:text-white">
+                            <ArrowLeft className="w-5 h-5" />
+                        </button>
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center">
+                            <Brain className="w-6 h-6 text-white" />
+                        </div>
+                        <div>
+                            <h1 className="text-xl font-bold text-white">AI Knowledge Base</h1>
+                            <p className="text-xs text-gray-400">Industry Use Case Library</p>
+                        </div>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        {currentUser && (
+                            <div className="text-right">
+                                <div className="text-sm text-white font-medium">{currentUser.full_name || currentUser.email}</div>
+                                <div className="text-xs text-purple-400">{currentUser.is_admin ? 'Administrator' : 'Facilitator'}</div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            </header>
+
+            <main className="max-w-7xl mx-auto px-6 py-8">
+                {/* Search Section */}
+                <div className="bg-surface-800 rounded-xl p-6 border border-white/10 mb-8">
+                    <div className="flex items-center gap-4">
+                        <div className="flex-1 relative">
+                            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                            <input
+                                type="text"
+                                placeholder="Search AI use cases (e.g., 'fraud detection', 'chatbot', 'predictive maintenance')"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                                className="w-full pl-12 pr-4 py-3 bg-surface-700 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            />
+                        </div>
+                        <Button onClick={handleSearch} disabled={searching || searchQuery.length < 2}>
+                            {searching ? 'Searching...' : 'Search'}
+                        </Button>
+                    </div>
+
+                    {/* Search Results */}
+                    {searchResults.length > 0 && (
+                        <div className="mt-6">
+                            <div className="flex items-center justify-between mb-4">
+                                <h3 className="text-lg font-semibold text-white">
+                                    Search Results ({searchResults.length})
+                                </h3>
+                                <button
+                                    onClick={() => { setSearchResults([]); setSearchQuery(''); }}
+                                    className="text-gray-400 hover:text-white"
+                                >
+                                    <X className="w-5 h-5" />
+                                </button>
+                            </div>
+                            <div className="space-y-3">
+                                {searchResults.map((result) => (
+                                    <div
+                                        key={result.id}
+                                        className="p-4 bg-surface-700 rounded-lg border border-white/5 hover:border-purple-500/50 cursor-pointer transition"
+                                        onClick={() => {
+                                            fetchIndustry(result.industry);
+                                        }}
+                                    >
+                                        <div className="flex items-start justify-between">
+                                            <div className="flex-1">
+                                                <h4 className="text-white font-medium">{result.title}</h4>
+                                                <p className="text-sm text-gray-400 mt-1 line-clamp-2">{result.description}</p>
+                                                <div className="flex items-center gap-3 mt-2">
+                                                    <span className="text-xs text-purple-400">{result.industry_name}</span>
+                                                    <span className="text-xs text-gray-500">•</span>
+                                                    <span className="text-xs text-gray-400">{result.category}</span>
+                                                    <span className="text-xs text-gray-500">•</span>
+                                                    <span className={`text-xs px-2 py-0.5 rounded ${getComplexityColor(result.complexity)}`}>
+                                                        {result.complexity}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div className="text-right ml-4">
+                                                <div className="text-sm text-green-400">{result.typical_roi}</div>
+                                                <div className="text-xs text-gray-500 mt-1">
+                                                    {Math.round(result.relevance_score * 100)}% match
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                {/* Stats Overview */}
+                {overview && !selectedIndustry && (
+                    <>
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                            <div className="bg-surface-800 rounded-xl p-6 border border-white/10">
+                                <div className="flex items-center gap-3 mb-3">
+                                    <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                                        <Building2 className="w-5 h-5 text-purple-400" />
+                                    </div>
+                                </div>
+                                <div className="text-3xl font-bold text-white">{overview.total_industries}</div>
+                                <div className="text-sm text-gray-400">Industries</div>
+                            </div>
+                            <div className="bg-surface-800 rounded-xl p-6 border border-white/10">
+                                <div className="flex items-center gap-3 mb-3">
+                                    <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                                        <BookOpen className="w-5 h-5 text-blue-400" />
+                                    </div>
+                                </div>
+                                <div className="text-3xl font-bold text-white">{overview.total_use_cases}</div>
+                                <div className="text-sm text-gray-400">Use Case Templates</div>
+                            </div>
+                            <div className="bg-surface-800 rounded-xl p-6 border border-white/10">
+                                <div className="flex items-center gap-3 mb-3">
+                                    <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center">
+                                        <Filter className="w-5 h-5 text-green-400" />
+                                    </div>
+                                </div>
+                                <div className="text-3xl font-bold text-white">{overview.total_categories}</div>
+                                <div className="text-sm text-gray-400">Categories</div>
+                            </div>
+                            <div className="bg-surface-800 rounded-xl p-6 border border-white/10">
+                                <div className="flex items-center gap-3 mb-3">
+                                    <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
+                                        <Cpu className="w-5 h-5 text-amber-400" />
+                                    </div>
+                                </div>
+                                <div className="text-3xl font-bold text-white">{overview.total_technologies}</div>
+                                <div className="text-sm text-gray-400">Technologies</div>
+                            </div>
+                        </div>
+
+                        {/* Industries Grid */}
+                        <h2 className="text-2xl font-bold text-white mb-6">Browse by Industry</h2>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {overview.industries.map((industry) => (
+                                <button
+                                    key={industry.id}
+                                    onClick={() => fetchIndustry(industry.id)}
+                                    className="bg-surface-800 rounded-xl p-6 border border-white/10 hover:border-purple-500/50 transition text-left group"
+                                >
+                                    <div className="flex items-center justify-between mb-4">
+                                        <div className="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                                            {getIndustryIcon(industry.icon)}
+                                        </div>
+                                        <ChevronRight className="w-5 h-5 text-gray-500 group-hover:text-purple-400 transition" />
+                                    </div>
+                                    <h3 className="text-lg font-semibold text-white mb-1">{industry.name}</h3>
+                                    <p className="text-sm text-gray-400">{industry.use_case_count} use case templates</p>
+                                </button>
+                            ))}
+                        </div>
+                    </>
+                )}
+
+                {/* Industry Detail View */}
+                {selectedIndustry && !selectedUseCase && (
+                    <div>
+                        <button
+                            onClick={() => setSelectedIndustry(null)}
+                            className="flex items-center gap-2 text-gray-400 hover:text-white mb-6"
+                        >
+                            <ArrowLeft className="w-4 h-4" />
+                            Back to Industries
+                        </button>
+
+                        <div className="flex items-center gap-4 mb-8">
+                            <div className="w-16 h-16 rounded-xl bg-purple-500/10 flex items-center justify-center">
+                                {getIndustryIcon(selectedIndustry.icon)}
+                            </div>
+                            <div>
+                                <h2 className="text-2xl font-bold text-white">{selectedIndustry.name}</h2>
+                                <p className="text-gray-400">{selectedIndustry.use_cases.length} use case templates</p>
+                            </div>
+                        </div>
+
+                        <div className="space-y-4">
+                            {selectedIndustry.use_cases.map((uc) => (
+                                <div
+                                    key={uc.id}
+                                    onClick={() => setSelectedUseCase(uc)}
+                                    className="bg-surface-800 rounded-xl p-6 border border-white/10 hover:border-purple-500/50 cursor-pointer transition"
+                                >
+                                    <div className="flex items-start justify-between">
+                                        <div className="flex-1">
+                                            <div className="flex items-center gap-3 mb-2">
+                                                <h3 className="text-lg font-semibold text-white">{uc.title}</h3>
+                                                <span className={`text-xs px-2 py-0.5 rounded ${getComplexityColor(uc.complexity)}`}>
+                                                    {uc.complexity}
+                                                </span>
+                                            </div>
+                                            <p className="text-gray-400 mb-4">{uc.description}</p>
+                                            <div className="flex flex-wrap gap-2">
+                                                {uc.technologies.slice(0, 4).map((tech) => (
+                                                    <span key={tech} className="text-xs px-2 py-1 bg-surface-700 text-gray-300 rounded">
+                                                        {tech}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <div className="text-right ml-6">
+                                            <div className="flex items-center gap-2 text-green-400 mb-2">
+                                                <TrendingUp className="w-4 h-4" />
+                                                <span className="text-sm font-medium">{uc.typical_roi}</span>
+                                            </div>
+                                            <div className="flex items-center gap-2 text-gray-400">
+                                                <Clock className="w-4 h-4" />
+                                                <span className="text-sm">{uc.implementation_time}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* Use Case Detail View */}
+                {selectedUseCase && (
+                    <div>
+                        <button
+                            onClick={() => setSelectedUseCase(null)}
+                            className="flex items-center gap-2 text-gray-400 hover:text-white mb-6"
+                        >
+                            <ArrowLeft className="w-4 h-4" />
+                            Back to {selectedIndustry?.name}
+                        </button>
+
+                        <div className="bg-surface-800 rounded-xl p-8 border border-white/10">
+                            <div className="flex items-start justify-between mb-6">
+                                <div>
+                                    <div className="flex items-center gap-3 mb-2">
+                                        <h2 className="text-2xl font-bold text-white">{selectedUseCase.title}</h2>
+                                        <span className={`text-sm px-3 py-1 rounded ${getComplexityColor(selectedUseCase.complexity)}`}>
+                                            {selectedUseCase.complexity} Complexity
+                                        </span>
+                                    </div>
+                                    <p className="text-gray-400">{selectedUseCase.category}</p>
+                                </div>
+                                <div className="text-right">
+                                    <div className="text-2xl font-bold text-green-400">{selectedUseCase.typical_roi}</div>
+                                    <div className="text-sm text-gray-400">Typical ROI</div>
+                                </div>
+                            </div>
+
+                            <p className="text-lg text-gray-300 mb-8">{selectedUseCase.description}</p>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                <div className="bg-surface-700 rounded-lg p-4">
+                                    <h4 className="text-sm font-medium text-gray-400 mb-2">Data Requirements</h4>
+                                    <p className="text-white">{selectedUseCase.data_requirements}</p>
+                                </div>
+                                <div className="bg-surface-700 rounded-lg p-4">
+                                    <h4 className="text-sm font-medium text-gray-400 mb-2">Implementation Time</h4>
+                                    <p className="text-white">{selectedUseCase.implementation_time}</p>
+                                </div>
+                            </div>
+
+                            <div className="mb-8">
+                                <h4 className="text-sm font-medium text-gray-400 mb-3">Technologies</h4>
+                                <div className="flex flex-wrap gap-2">
+                                    {selectedUseCase.technologies.map((tech) => (
+                                        <span key={tech} className="px-3 py-1.5 bg-purple-500/10 text-purple-400 rounded-lg text-sm">
+                                            {tech}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div>
+                                <h4 className="text-sm font-medium text-gray-400 mb-3">Key Performance Indicators</h4>
+                                <div className="flex flex-wrap gap-2">
+                                    {selectedUseCase.kpis.map((kpi) => (
+                                        <span key={kpi} className="px-3 py-1.5 bg-green-500/10 text-green-400 rounded-lg text-sm">
+                                            {kpi}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </main>
+        </div>
+    );
+}

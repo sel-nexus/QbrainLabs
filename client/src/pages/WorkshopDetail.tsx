@@ -3,8 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import { socket } from '../lib/socket';
 import { Button } from '../components/ui/Button';
-import { Play, TrendingUp, Download, ArrowLeft } from 'lucide-react';
+import { Play, TrendingUp, Download, ArrowLeft, FileText, BarChart3 } from 'lucide-react';
 import { ResultsChart } from '../components/ResultsChart';
+import { WorkshopInsights } from '../components/WorkshopInsights';
+import { AnalyticsDashboard } from '../components/AnalyticsDashboard';
+import { SurveyList, SurveyBuilder, SurveyResults } from '../components/survey';
 import { toast } from 'sonner';
 import { QRCodeSVG } from 'qrcode.react';
 import { Modal } from '../components/ui/Modal';
@@ -20,6 +23,9 @@ export function WorkshopDetail() {
     const [results, setResults] = useState<any[]>([]);
     const [pendingFacilitators, setPendingFacilitators] = useState<any[]>([]);
     const [showQR, setShowQR] = useState(false);
+    const [surveyView, setSurveyView] = useState<'list' | 'create' | 'edit' | 'results' | null>(null);
+    const [selectedSurveyId, setSelectedSurveyId] = useState<string | null>(null);
+    const [showAnalytics, setShowAnalytics] = useState(false);
 
     useEffect(() => {
         fetchWorkshop();
@@ -202,23 +208,47 @@ export function WorkshopDetail() {
 
             {currentPhase === 'ANALYSIS' ? (
                 <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
-                    <h2 className="text-2xl font-bold">Strategic Matrix</h2>
-                    <ResultsChart data={results} />
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-                        {results.map((r: any) => (
-                            <div key={r.id} className="bg-surface-800 p-4 rounded-xl border border-white/5">
-                                <div className="flex justify-between items-start mb-2">
-                                    <h3 className="font-bold">{r.title}</h3>
-                                    <span className="text-brand-violet font-mono font-bold text-xl">{r.total_score}</span>
-                                </div>
-                                <div className="text-sm text-gray-400 space-y-1">
-                                    <div className="flex justify-between"><span>Feasibility</span> <span>{r.scores['Feasibility']}</span></div>
-                                    <div className="flex justify-between"><span>Value</span> <span>{r.scores['Business Value']}</span></div>
-                                </div>
-                            </div>
-                        ))}
+                    {/* View Toggle */}
+                    <div className="flex items-center justify-between">
+                        <div className="flex gap-2">
+                            <Button 
+                                variant={!showAnalytics ? 'primary' : 'secondary'}
+                                onClick={() => setShowAnalytics(false)}
+                            >
+                                <TrendingUp className="w-4 h-4 mr-2" /> Matrix View
+                            </Button>
+                            <Button 
+                                variant={showAnalytics ? 'primary' : 'secondary'}
+                                onClick={() => setShowAnalytics(true)}
+                            >
+                                <BarChart3 className="w-4 h-4 mr-2" /> Analytics
+                            </Button>
+                        </div>
                     </div>
+
+                    {showAnalytics ? (
+                        <AnalyticsDashboard workshopId={id!} workshopTitle={workshop?.title} />
+                    ) : (
+                        <>
+                            <h2 className="text-2xl font-bold">Strategic Matrix</h2>
+                            <ResultsChart data={results} />
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+                                {results.map((r: any) => (
+                                    <div key={r.id} className="bg-surface-800 p-4 rounded-xl border border-white/5">
+                                        <div className="flex justify-between items-start mb-2">
+                                            <h3 className="font-bold">{r.title}</h3>
+                                            <span className="text-brand-violet font-mono font-bold text-xl">{r.total_score}</span>
+                                        </div>
+                                        <div className="text-sm text-gray-400 space-y-1">
+                                            <div className="flex justify-between"><span>Feasibility</span> <span>{r.scores['Feasibility']}</span></div>
+                                            <div className="flex justify-between"><span>Value</span> <span>{r.scores['Business Value']}</span></div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </>
+                    )}
                 </div>
             ) : (
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -318,6 +348,44 @@ export function WorkshopDetail() {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* AI Insights */}
+                            {id && <WorkshopInsights workshopId={id} />}
+
+                            {/* Surveys Section */}
+                            <div className="pt-4 border-t border-white/10">
+                                <div className="flex items-center justify-between mb-3">
+                                    <h3 className="text-sm font-semibold text-gray-400">Surveys</h3>
+                                    <Button
+                                        variant="ghost"
+                                        className="h-7 text-xs"
+                                        onClick={() => {
+                                            setSurveyView('create');
+                                            setSelectedSurveyId(null);
+                                        }}
+                                    >
+                                        <FileText className="w-3 h-3 mr-1" />
+                                        New
+                                    </Button>
+                                </div>
+                                {surveyView === null && id && (
+                                    <SurveyList
+                                        workshopId={id}
+                                        onCreateSurvey={() => {
+                                            setSurveyView('create');
+                                            setSelectedSurveyId(null);
+                                        }}
+                                        onEditSurvey={(surveyId) => {
+                                            setSurveyView('edit');
+                                            setSelectedSurveyId(surveyId);
+                                        }}
+                                        onViewResults={(surveyId) => {
+                                            setSurveyView('results');
+                                            setSelectedSurveyId(surveyId);
+                                        }}
+                                    />
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -353,6 +421,36 @@ export function WorkshopDetail() {
                     </Button>
                 </div>
             </Modal>
+
+            {/* Survey Builder Modal */}
+            {(surveyView === 'create' || surveyView === 'edit') && id && (
+                <div className="fixed inset-0 bg-black/50 z-50 overflow-y-auto">
+                    <div className="min-h-screen py-8 px-4">
+                        <div className="max-w-4xl mx-auto bg-surface-900 rounded-xl border border-white/10 p-6">
+                            <SurveyBuilder
+                                workshopId={id}
+                                surveyId={surveyView === 'edit' ? selectedSurveyId || undefined : undefined}
+                                onSave={() => setSurveyView(null)}
+                                onCancel={() => setSurveyView(null)}
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Survey Results Modal */}
+            {surveyView === 'results' && selectedSurveyId && (
+                <div className="fixed inset-0 bg-black/50 z-50 overflow-y-auto">
+                    <div className="min-h-screen py-8 px-4">
+                        <div className="max-w-4xl mx-auto bg-surface-900 rounded-xl border border-white/10 p-6">
+                            <SurveyResults
+                                surveyId={selectedSurveyId}
+                                onClose={() => setSurveyView(null)}
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

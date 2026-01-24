@@ -59,18 +59,36 @@ async def get_system_stats(
     )
     active_workshops = active_workshops_result.scalar() or 0
     
-    # Workshops created today, this week, this month
-    # Note: SQLite doesn't have great date functions, so we'll return 0 for now
-    # In production with PostgreSQL, we'd use proper date filtering
+    # Workshops created today (PostgreSQL compatible)
+    today = datetime.utcnow().date()
+    today_start = datetime.combine(today, datetime.min.time())
+    workshops_today_result = await db.execute(
+        select(func.count(Workshop.id)).where(Workshop.created_at >= today_start)
+    )
+    workshops_today = workshops_today_result.scalar() or 0
+    
+    # Workshops this week (last 7 days)
+    week_ago = datetime.utcnow() - timedelta(days=7)
+    workshops_week_result = await db.execute(
+        select(func.count(Workshop.id)).where(Workshop.created_at >= week_ago)
+    )
+    workshops_this_week = workshops_week_result.scalar() or 0
+    
+    # Workshops this month (last 30 days)
+    month_ago = datetime.utcnow() - timedelta(days=30)
+    workshops_month_result = await db.execute(
+        select(func.count(Workshop.id)).where(Workshop.created_at >= month_ago)
+    )
+    workshops_this_month = workshops_month_result.scalar() or 0
     
     return SystemStats(
         total_workshops=total_workshops,
         total_users=total_users,
         total_participants=total_participants,
         active_workshops=active_workshops,
-        workshops_today=0,  # TODO: Implement with PostgreSQL
-        workshops_this_week=0,
-        workshops_this_month=0
+        workshops_today=workshops_today,
+        workshops_this_week=workshops_this_week,
+        workshops_this_month=workshops_this_month
     )
 
 

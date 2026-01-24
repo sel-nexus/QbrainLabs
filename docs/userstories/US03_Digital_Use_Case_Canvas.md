@@ -384,6 +384,217 @@ Response:
 
 ---
 
+## Feature: View Uploaded Use Cases for Prioritization
+
+### User Story
+
+**As a** Workshop Member (Participant),  
+**I want to** view use cases that have been uploaded by the facilitator,  
+**So that** I can review them and plot/prioritize them on the matrix based on their value and feasibility.
+
+### Description
+
+When a facilitator uploads pre-defined use cases for a workshop, participants need a way to view these use cases before plotting them on the prioritization matrix. This feature provides a dedicated interface for participants to browse, search, and review uploaded use cases, enabling informed decision-making during the prioritization exercise.
+
+### Functional Requirements
+
+#### 1. Uploaded Use Cases List View
+- **List Display:**
+  - Card-based view of all uploaded use cases
+  - Grid or list toggle option
+  - Show key fields: Title, AI Category, Data Readiness
+  - Visual indicator for use case status (active/inactive)
+  
+- **Sorting Options:**
+  - Alphabetical (A-Z, Z-A)
+  - By AI Category
+  - By Data Readiness score
+  - Recently added
+
+- **Filtering Options:**
+  - Filter by AI Category
+  - Filter by Data Readiness level
+  - Show only unscored use cases
+  - Show only my scored use cases
+
+#### 2. Use Case Detail View
+- **Full Information Display:**
+  - Use Case Title
+  - Problem Description
+  - Target User
+  - Expected KPI
+  - AI Category (with icon)
+  - Data Readiness (visual scale)
+  - Additional Notes (if any)
+  
+- **Actions Available:**
+  - "Plot on Matrix" button
+  - "Score This Use Case" button
+  - Mark as reviewed
+  - Add to favorites/watchlist
+
+#### 3. Search Functionality
+- Full-text search across title and description
+- Real-time search results
+- Highlight matching terms
+- Search history (recent searches)
+
+#### 4. Integration with Prioritization Matrix
+- Quick access to plot use case on matrix
+- View current position on matrix (if already plotted)
+- See aggregated scores from other participants
+- Compare with participant-submitted use cases
+
+### Acceptance Criteria
+
+#### Scenario 1: View List of Uploaded Use Cases
+**Given** a participant has joined a workshop with uploaded use cases  
+**When** they navigate to "View Use Cases" or "Browse Use Cases"  
+**Then** they see a list of all active uploaded use cases  
+**And** each use case shows title, category, and data readiness  
+**And** they can switch between card and list view
+
+#### Scenario 2: View Use Case Details
+**Given** a participant is viewing the use case list  
+**When** they click on a use case card  
+**Then** they see the full details in a modal or detail page  
+**And** they see all available information about the use case  
+**And** they have options to score or plot the use case
+
+#### Scenario 3: Search and Filter Use Cases
+**Given** a participant is viewing uploaded use cases  
+**When** they enter a search term  
+**Then** results filter in real-time  
+**And** matching terms are highlighted  
+**When** they apply category filter "Generative AI"  
+**Then** only use cases in that category are shown
+
+#### Scenario 4: Plot Use Case from List
+**Given** a participant is viewing an uploaded use case  
+**When** they click "Plot on Matrix"  
+**Then** they are taken to the scoring/plotting interface  
+**And** the use case details are pre-loaded  
+**And** they can assign their priority scores
+
+#### Scenario 5: Empty State
+**Given** a participant joins a workshop  
+**When** no use cases have been uploaded by the facilitator  
+**Then** they see a message: "No use cases have been uploaded yet"  
+**And** they see instructions to submit their own use cases
+
+### Technical Implementation
+
+#### Frontend Components
+- `UploadedUseCasesList.tsx` - Main list container
+- `UseCaseCard.tsx` - Individual use case card component
+- `UseCaseDetailModal.tsx` - Detail view modal
+- `UseCaseSearch.tsx` - Search input with filters
+- `UseCaseFilters.tsx` - Filter sidebar/dropdown
+- `ViewToggle.tsx` - Grid/List view toggle
+- `PlotFromListButton.tsx` - Quick action to plot
+
+#### Backend Endpoints
+```typescript
+// Get all uploaded use cases for participant view
+GET /api/workshops/:pin/use-cases/participant
+Query params: {
+  "search": "string",
+  "category": "string",
+  "data_readiness": number,
+  "sort_by": "title|category|data_readiness|created_at",
+  "sort_order": "asc|desc",
+  "page": number,
+  "limit": number
+}
+Response: {
+  "use_cases": [
+    {
+      "use_case_id": "UUID",
+      "title": "string",
+      "problem_description": "string",
+      "target_user": "string",
+      "expected_kpi": "string",
+      "ai_category": "string",
+      "data_readiness": number,
+      "source": "uploaded",
+      "has_my_score": boolean,
+      "my_score": {
+        "value_score": number,
+        "feasibility_score": number
+      } | null,
+      "aggregate_scores": {
+        "avg_value": number,
+        "avg_feasibility": number,
+        "total_scores": number
+      }
+    }
+  ],
+  "total": number,
+  "page": number,
+  "limit": number
+}
+
+// Get single use case details
+GET /api/workshops/:pin/use-cases/:use_case_id
+Response: {
+  "use_case_id": "UUID",
+  "title": "string",
+  "problem_description": "string",
+  "target_user": "string",
+  "expected_kpi": "string",
+  "ai_category": "string",
+  "data_readiness": number,
+  "additional_notes": "string",
+  "source": "uploaded",
+  "created_at": "ISODate",
+  "my_score": {...} | null,
+  "aggregate_scores": {...}
+}
+
+// Mark use case as reviewed
+POST /api/workshops/:pin/use-cases/:use_case_id/reviewed
+Request: {
+  "session_id": "UUID"
+}
+Response: {
+  "success": true,
+  "reviewed_at": "ISODate"
+}
+```
+
+### UI/UX Design Notes
+
+#### List View Layout
+- **Header:** Search bar + filter buttons + view toggle
+- **Main Content:** Responsive grid (2-4 columns based on screen)
+- **Cards:** Title, truncated description, category badge, data readiness stars
+- **Pagination:** Load more button or infinite scroll
+
+#### Detail Modal
+- Full-width on mobile, centered modal on desktop
+- Clear visual hierarchy
+- Prominent CTA buttons
+- Easy dismiss (X button, click outside, ESC key)
+
+#### Visual Indicators
+- **Category Badges:** Color-coded by AI category
+- **Data Readiness:** Star rating display
+- **Scored Status:** Checkmark icon if already scored
+- **Source Badge:** "Uploaded" vs "Participant Submitted"
+
+### Definition of Done (View Uploaded Use Cases)
+- [ ] List view with card display implemented
+- [ ] Detail view modal functional
+- [ ] Search functionality working
+- [ ] Filters working (category, data readiness)
+- [ ] Sort options functional
+- [ ] "Plot on Matrix" integration working
+- [ ] Empty state displayed correctly
+- [ ] Mobile responsive design verified
+- [ ] Accessibility audit passed
+
+---
+
 ## Future Enhancements
 
 - AI-powered suggestions for KPIs based on problem description

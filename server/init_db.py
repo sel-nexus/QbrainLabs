@@ -3,6 +3,14 @@ Database initialization script
 Creates default admin user if it doesn't exist
 """
 import asyncio
+import os
+from pathlib import Path
+from dotenv import load_dotenv
+
+# Load .env file from project root before importing app modules
+env_path = Path(__file__).parent.parent / ".env"
+load_dotenv(env_path, override=True)
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.core.database import engine, Base, AsyncSessionLocal
