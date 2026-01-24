@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { api } from '../lib/api';
-import { Loader2, Check, Sparkles, AlertTriangle } from 'lucide-react';
+import { Loader2, Check, Sparkles, AlertTriangle, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
+import { Modal } from './ui/Modal';
 
 interface UseCaseCanvasProps {
     session: any;
@@ -16,6 +17,8 @@ export function UseCaseCanvas({ session }: UseCaseCanvasProps) {
     const [enhancing, setEnhancing] = useState(false);
     const [checkingFeasibility, setCheckingFeasibility] = useState(false);
     const [feasibilityData, setFeasibilityData] = useState<{ score: string, reason: string } | null>(null);
+    const [duplicateData, setDuplicateData] = useState<any>(null);
+    const [showDuplicateModal, setShowDuplicateModal] = useState(false);
 
     // Form State
     const [formData, setFormData] = useState({
@@ -36,6 +39,30 @@ export function UseCaseCanvas({ session }: UseCaseCanvasProps) {
         e.preventDefault();
         setLoading(true);
 
+        // 1. Check Duplicates
+        try {
+            const { data } = await api.post('/ai/duplicates', {
+                workshop_id: session.workshopId,
+                title: formData.title,
+                description: formData.description
+            });
+
+            if (data.is_duplicate) {
+                setDuplicateData(data);
+                setShowDuplicateModal(true);
+                setLoading(false);
+                return;
+            }
+        } catch (e) {
+            console.error("Duplicate check failed, proceeding anyway", e);
+        }
+
+        // 2. Proceed if no duplicates
+        await submitUseCase();
+    };
+
+    const submitUseCase = async () => {
+        setLoading(true);
         try {
             await api.post('/usecases/', {
                 ...formData,
@@ -44,7 +71,6 @@ export function UseCaseCanvas({ session }: UseCaseCanvasProps) {
             });
 
             setSuccess(true);
-            // Clear form (keeping category)
             setFormData(prev => ({
                 title: '',
                 description: '',
@@ -53,10 +79,11 @@ export function UseCaseCanvas({ session }: UseCaseCanvasProps) {
                 target_user: '',
                 category: prev.category
             }));
+            setShowDuplicateModal(false);
 
         } catch (err) {
             console.error(err);
-            alert("Failed to submit. Try again.");
+            toast.error("Failed to submit. Try again.");
         } finally {
             setLoading(false);
         }
@@ -200,8 +227,8 @@ export function UseCaseCanvas({ session }: UseCaseCanvasProps) {
                                 initial={{ opacity: 0, height: 0 }}
                                 animate={{ opacity: 1, height: 'auto' }}
                                 className={`text-sm p-3 rounded border ${feasibilityData.score === 'High' ? 'bg-semantic-success/10 border-semantic-success/30 text-semantic-success' :
-                                        feasibilityData.score === 'Medium' ? 'bg-yellow-500/10 border-yellow-500/30 text-yellow-500' :
-                                            'bg-semantic-danger/10 border-semantic-danger/30 text-semantic-danger'
+                                    feasibilityData.score === 'Medium' ? 'bg-yellow-500/10 border-yellow-500/30 text-yellow-500' :
+                                        'bg-semantic-danger/10 border-semantic-danger/30 text-semantic-danger'
                                     }`}
                             >
                                 <span className="font-bold">Feasibility: {feasibilityData.score}</span> — {feasibilityData.reason}
@@ -238,6 +265,43 @@ export function UseCaseCanvas({ session }: UseCaseCanvasProps) {
                     </div>
                 </form>
             </motion.div>
+
+            <Modal isOpen={showDuplicateModal} onClose={() => setShowDuplicateModal(false)} title="Similar Idea Detected">
+                <div className="space-y-4">
+                    <div className="bg-orange-500/10 border border-orange-500/30 rounded-lg p-4 flex gap-3">
+                        <AlertCircle className="w-5 h-5 text-orange-500 shrink-0" />
+                        <div>
+                            <p className="text-sm font-bold text-orange-500">Wait! We found a similar submission.</p>
+                            <p className="text-sm text-gray-300 mt-1">{duplicateData?.message}</p>
+                        </div>
+                    </div>
+
+                    <div className="bg-surface-900 p-4 rounded border border-white/5">
+                        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Your Title</h4>
+                        <p className="font-bold mb-3">{formData.title}</p>
+
+                        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Existing Title</h4>
+                        <p className="font-bold text-brand-violet">{duplicateData?.similar_to_title}</p>
+                    </div>
+
+                    <div className="flex gap-3 pt-2">
+                        <Button
+                            variant="secondary"
+                            className="flex-1"
+                            onClick={() => setShowDuplicateModal(false)}
+                        >
+                            Cancel & Edit
+                        </Button>
+                        <Button
+                            className="flex-1 bg-brand-violet hover:bg-brand-violet/90"
+                            onClick={submitUseCase}
+                            disabled={loading}
+                        >
+                            {loading ? <Loader2 className="animate-spin" /> : 'Submit Anyway'}
+                        </Button>
+                    </div>
+                </div>
+            </Modal>
         </div>
     );
 }

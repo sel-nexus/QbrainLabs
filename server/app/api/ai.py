@@ -1,6 +1,11 @@
 from fastapi import APIRouter, HTTPException
-from app.schemas.ai import EnhanceRequest, EnhanceResponse, FeasibilityRequest, FeasibilityResponse
+from app.schemas.ai import EnhanceRequest, EnhanceResponse, FeasibilityRequest, FeasibilityResponse, DuplicateCheckRequest, DuplicateCheckResponse
 from app.services.rag_service import rag_service
+from fastapi import Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
+from app.core.database import get_db
+from app.models.models import UseCase
 
 router = APIRouter()
 
@@ -28,5 +33,29 @@ async def check_feasibility(request: FeasibilityRequest):
             reason=result.get("reason", "Analysis failed"),
             is_mock=result.get("is_mock", False)
         )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/duplicates", response_model=DuplicateCheckResponse)
+async def check_duplicates(
+    request: DuplicateCheckRequest,
+    db: AsyncSession = Depends(get_db)
+):
+    try:
+        # Fetch existing use cases for this workshop
+        result = await db.execute(
+            select(UseCase).where(UseCase.workshop_id == request.workshop_id)
+        )
+        use_cases = result.scalars().all()
+        
+        # Format for service: List[Dict]
+        existing_items = [
+            {"id": str(uc.id), "title": uc.title, "description": uc.description}
+            for uc in use_cases
+        ]
+        
+        result = await rag_service.check_duplicates(request.title, request.description, existing_items)
+        return result
+        
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

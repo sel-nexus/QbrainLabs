@@ -1,25 +1,26 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UseCaseCanvas } from '../components/UseCaseCanvas';
 import { socket } from '../lib/socket';
+import { useSession } from '../context/SessionContext';
+import { Button } from '../components/ui/Button';
+import { LogOut } from 'lucide-react';
 
 export function IntakePhase() {
     const navigate = useNavigate();
-    const [session, setSession] = useState<any>(null);
+    const { session, logout } = useSession();
+
+    const handleLeave = () => {
+        if (confirm("Are you sure you want to leave the workshop? Your unsaved drafts might be lost.")) {
+            logout();
+            navigate('/');
+        }
+    };
 
     useEffect(() => {
-        const stored = localStorage.getItem('hm_session');
-        if (!stored) {
+        if (!session) {
             navigate('/');
             return;
-        }
-        const parsed = JSON.parse(stored);
-        setSession(parsed);
-
-        // Ensure socket connected
-        if (!socket.connected) {
-            socket.connect();
-            socket.emit('join_workshop', { workshop_id: parsed.workshopId });
         }
 
         const onStateChange = (data: any) => {
@@ -31,7 +32,7 @@ export function IntakePhase() {
             socket.off('workshop_state_change', onStateChange);
         };
 
-    }, [navigate]);
+    }, [navigate, session]);
 
     if (!session) return null;
 
@@ -44,6 +45,9 @@ export function IntakePhase() {
                         <div className="w-2 h-2 rounded-full bg-semantic-success animate-pulse" />
                         <span className="text-xs text-gray-400 font-mono">LIVE</span>
                     </div>
+                    <Button variant="ghost" onClick={handleLeave} className="text-gray-400 hover:text-white ml-2">
+                        <LogOut className="w-4 h-4" />
+                    </Button>
                 </div>
             </header>
 

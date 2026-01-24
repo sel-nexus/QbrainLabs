@@ -3,29 +3,30 @@ import { useNavigate } from 'react-router-dom';
 import { ScoringCard } from '../components/ScoringCard';
 import { api } from '../lib/api';
 import { socket } from '../lib/socket';
+import { useSession } from '../context/SessionContext';
+import { Button } from '../components/ui/Button';
+import { LogOut } from 'lucide-react';
 
 export function ScoringPhase() {
     const navigate = useNavigate();
-    const [session, setSession] = useState<any>(null);
+    const { session, logout } = useSession();
     const [workshop, setWorkshop] = useState<any>(null);
+
+    const handleLeave = () => {
+        if (confirm("Are you sure you want to leave the scoring session?")) {
+            logout();
+            navigate('/');
+        }
+    };
     const [activeCard, setActiveCard] = useState<any>(null);
 
     useEffect(() => {
-        const stored = localStorage.getItem('hm_session');
-        if (!stored) {
+        if (!session) {
             navigate('/');
             return;
         }
-        const parsed = JSON.parse(stored);
-        setSession(parsed);
 
-        fetchWorkshopConfig(parsed.workshopId);
-
-        // Ensure connection
-        if (!socket.connected) {
-            socket.connect();
-            socket.emit('join_workshop', { workshop_id: parsed.workshopId });
-        }
+        fetchWorkshopConfig(session.workshopId);
 
         socket.on('active_card_update', (data: any) => {
             console.log("Active Card Update:", data);
@@ -37,7 +38,7 @@ export function ScoringPhase() {
             socket.off('active_card_update');
         };
 
-    }, [navigate]);
+    }, [navigate, session]);
 
     const fetchWorkshopConfig = async (id: string) => {
         try {
@@ -57,7 +58,12 @@ export function ScoringPhase() {
         <div className="min-h-screen bg-surface-900 p-4 pb-20 flex flex-col items-center">
             <header className="w-full max-w-lg mx-auto flex justify-between items-center mb-6">
                 <span className="text-gray-400 text-sm">Scoring Phase</span>
-                <span className="font-mono text-brand-violet">{workshop.title}</span>
+                <div className="flex items-center gap-4">
+                    <span className="font-mono text-brand-violet">{workshop.title}</span>
+                    <Button variant="ghost" onClick={handleLeave} className="text-gray-400 hover:text-white p-2 h-auto">
+                        <LogOut className="w-4 h-4" />
+                    </Button>
+                </div>
             </header>
 
             {activeCard ? (
@@ -66,6 +72,7 @@ export function ScoringPhase() {
                     session={session}
                     activeCard={activeCard}
                     criteria={workshop.config.criteria}
+                    templateId={workshop.config.template_id}
                 />
             ) : (
                 <div className="text-center py-20 opacity-50">

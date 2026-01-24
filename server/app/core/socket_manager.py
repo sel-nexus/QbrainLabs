@@ -28,3 +28,17 @@ async def join_workshop(sid, data):
         sio.enter_room(sid, workshop_id)
         await sio.emit('participant_joined', {'sid': sid}, room=workshop_id)
         print(f"SID {sid} joined room {workshop_id}")
+        
+        # Fetch current state to allow client restoration
+        from app.core.database import AsyncSessionLocal
+        from app.models.models import Workshop
+        from sqlalchemy import select
+        
+        async with AsyncSessionLocal() as db:
+            result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
+            workshop = result.scalars().first()
+            if workshop:
+                await sio.emit('workshop_state_change', {
+                    'phase': workshop.current_phase,
+                    'active_use_case_id': str(workshop.active_use_case_id) if workshop.active_use_case_id else None
+                }, to=sid)

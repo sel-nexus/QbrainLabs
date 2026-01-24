@@ -43,8 +43,10 @@ app.include_router(usecases.router, prefix="/api/usecases", tags=["usecases"])
 app.include_router(votes.router, prefix="/api/votes", tags=["votes"])
 app.include_router(results.router, prefix="/api/results", tags=["results"])
 
-from app.api import ai
+from app.api import ai, auth, admin
 app.include_router(ai.router, prefix="/api/ai", tags=["ai"])
+app.include_router(auth.router, tags=["authentication"])
+app.include_router(admin.router, tags=["admin"])
 
 
 @app.get("/")

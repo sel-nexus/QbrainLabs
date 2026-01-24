@@ -9,16 +9,46 @@ import { motion } from 'framer-motion';
 interface Criterion {
     name: string;
     weight: number;
+    description?: string;
 }
 
 export function CreateWorkshop() {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
+    const [template, setTemplate] = useState<string>('CUSTOM');
     const [criteria, setCriteria] = useState<Criterion[]>([
         { name: 'Feasibility', weight: 50 },
         { name: 'Business Value', weight: 50 },
     ]);
+
+    const TEMPLATES = {
+        'CUSTOM': {
+            label: 'Custom / Standard',
+            criteria: [
+                { name: 'Feasibility', weight: 50 },
+                { name: 'Business Value', weight: 50 },
+            ]
+        },
+        '7_POINT_COMPREHENSIVE': {
+            label: 'Comprehensive 7-Point (US10)',
+            criteria: [
+                { name: 'Business Impact', weight: 15, description: "ROI, cost savings, revenue growth, customer satisfaction" },
+                { name: 'Strategic Alignment', weight: 15, description: "Alignment with business goals, executive support" },
+                { name: 'Scalability & Value', weight: 14, description: "Long-term impact, ability to scale" },
+                { name: 'Ease of Implementation', weight: 14, description: "Technical feasibility, integration, resource needs" },
+                { name: 'Data Readiness', weight: 14, description: "Data availability, quality, governance" },
+                { name: 'Organizational Readiness', weight: 14, description: "Leadership buy-in, workforce adaptability" },
+                { name: 'Risk & Compliance', weight: 14, description: "Regulatory, ethical, security considerations" },
+            ]
+        }
+    };
+
+    const handleTemplateChange = (tmplKey: string) => {
+        setTemplate(tmplKey);
+        // @ts-ignore
+        setCriteria([...TEMPLATES[tmplKey].criteria]);
+    };
 
     const totalWeight = criteria.reduce((sum, c) => sum + (Number(c.weight) || 0), 0);
     const isValid = title.length > 0 && totalWeight === 100;
@@ -45,7 +75,10 @@ export function CreateWorkshop() {
         try {
             await api.post('/workshops/', {
                 title,
-                config: { criteria }
+                config: {
+                    criteria,
+                    template_id: template === 'CUSTOM' ? null : template
+                }
             });
             // Navigate to dashboard or workshop lobby using the created ID
             // For now, let's just go back to dashboard
@@ -60,7 +93,7 @@ export function CreateWorkshop() {
 
     return (
         <div className="min-h-screen p-6 max-w-2xl mx-auto">
-            <Button variant="ghost" className="mb-6 pl-0" onClick={() => navigate('/')}>
+            <Button variant="ghost" className="mb-6 pl-0" onClick={() => navigate('/dashboard')}>
                 <ArrowLeft className="w-4 h-4 mr-2" /> Back
             </Button>
 
@@ -79,6 +112,25 @@ export function CreateWorkshop() {
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
                     />
+
+                    <div className="space-y-2">
+                        <label className="text-sm text-gray-400 font-medium">Evaluation Template</label>
+                        <div className="grid grid-cols-2 gap-4">
+                            {Object.entries(TEMPLATES).map(([key, btn]) => (
+                                <button
+                                    key={key}
+                                    type="button"
+                                    onClick={() => handleTemplateChange(key)}
+                                    className={`p-4 rounded-xl border text-sm font-medium transition-all ${template === key
+                                        ? 'bg-brand-500/20 border-brand-500 text-brand-200'
+                                        : 'bg-surface-800 border-white/5 text-gray-400 hover:bg-surface-700'
+                                        }`}
+                                >
+                                    {btn.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
 
                     <div className="space-y-4">
                         <div className="flex justify-between items-center">

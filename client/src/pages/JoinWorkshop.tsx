@@ -1,19 +1,25 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { api } from '../lib/api';
-import { socket } from '../lib/socket';
+import { useSession } from '../context/SessionContext';
 import { motion } from 'framer-motion';
-import { ArrowRight, Loader2 } from 'lucide-react';
+import { ArrowRight, Loader2, ArrowLeft } from 'lucide-react';
 
 export function JoinWorkshop() {
     const navigate = useNavigate();
-    const [pin, setPin] = useState('');
+    const [searchParams] = useSearchParams();
+    const [pin, setPin] = useState(searchParams.get('pin') || '');
     const [name, setName] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [isFacilitator, setIsFacilitator] = useState(false);
+
+
+    // ...
+    const { login } = useSession();
+    // ...
 
     const handleJoin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,19 +35,17 @@ export function JoinWorkshop() {
                 role: isFacilitator ? "FACILITATOR" : "PARTICIPANT"
             });
 
-            // Save session info
-            const session = {
+            // Save session info via Context
+            login({
                 participantId: data.participant_id,
                 workshopId: data.workshop_id,
                 name: name,
                 role: data.role
-            };
-            localStorage.setItem('hm_session', JSON.stringify(session));
+            });
 
-            // Connect Socket
-            socket.connect();
-            socket.emit('join_workshop', { workshop_id: data.workshop_id });
-
+            // Navigation is handled by the component or finding we are in a valid session
+            // But waiting for "state" to direct us is better?
+            // For now, default to lobby, and let lobby redirect if state is different.
             navigate('/lobby');
         } catch (err: any) {
             console.error(err);
@@ -52,7 +56,15 @@ export function JoinWorkshop() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center p-6">
+        <div className="min-h-screen flex flex-col items-center justify-center p-6 relative">
+            <Button
+                variant="ghost"
+                className="absolute top-6 left-6 text-gray-400 hover:text-white"
+                onClick={() => navigate('/')}
+            >
+                <ArrowLeft className="w-4 h-4 mr-2" /> Back
+            </Button>
+
             <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}

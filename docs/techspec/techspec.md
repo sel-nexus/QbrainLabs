@@ -56,7 +56,7 @@ graph TD
 | `title` | TEXT | |
 | `status` | ENUM | `DRAFT`, `OPEN`, `IN_PROGRESS`, `COMPLETED` |
 | `current_phase` | ENUM | `INTAKE`, `SCORING`, `ANALYSIS` |
-| `config` | JSONB | Stores weighted criteria config |
+| `config` | JSONB | Stores weighted criteria config or Template ID (e.g., "7_POINT_COMPREHENSIVE") |
 
 ### `participants`
 | Column | Type | Notes |
@@ -138,7 +138,17 @@ graph TD
 
 ## 7. Logic & Algorithms
 
-### Weighting Engine
+### Weighting Engine & Aggregation
+The system supports both custom weighted criteria and standardized templates.
+
+**For the "Comprehensive 7-Point" Template (US10):**
+Inputs: 7 dimensions (1-10 scale).
+Mapping:
+*   **Y-Axis (Value):** `AVG(Business Impact, Strategic Alignment, Scalability & Value)`
+*   **X-Axis (Feasibility):** `AVG(Ease of Implementation, Data Readiness, Organizational Readiness, (11 - Risk & Compliance))`
+    *   *Note on Risk:* Inverted scale (High Risk = Low Feasibility).
+
+**For Custom Weights:**
 Formula for calculating specific axis coordinates:
 ```python
 def calculate_score(votes, criteria_config):

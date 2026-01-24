@@ -62,6 +62,7 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     password_hash = Column(String, nullable=False)
     full_name = Column(String)
+    is_admin = Column(Boolean, default=False)  # Admin users have elevated permissions
     
     workshops = relationship("Workshop", back_populates="facilitator")
 

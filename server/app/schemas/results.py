@@ -10,3 +10,6 @@ class AggregatedResult(BaseModel):
     scores: Dict[str, float] # {"Feasibility": 75.5, "Business Value": 80.0}
     total_score: float
     vote_count: int
+    variance: float = 0.0
+    x: Optional[float] = None
+    y: Optional[float] = None

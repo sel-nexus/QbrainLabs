@@ -1,20 +1,25 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import { socket } from '../lib/socket';
 import { Button } from '../components/ui/Button';
-import { Play, TrendingUp, Download } from 'lucide-react';
+import { Play, TrendingUp, Download, ArrowLeft } from 'lucide-react';
 import { ResultsChart } from '../components/ResultsChart';
 import { toast } from 'sonner';
+import { QRCodeSVG } from 'qrcode.react';
+import { Modal } from '../components/ui/Modal';
+import { QrCode, Copy } from 'lucide-react';
 
 export function WorkshopDetail() {
     const { id } = useParams();
+    const navigate = useNavigate();
     const [workshop, setWorkshop] = useState<any>(null);
     const [useCases, setUseCases] = useState<any[]>([]);
     const [currentPhase, setCurrentPhase] = useState<string>('');
     const [activeCardId, setActiveCardId] = useState<string | null>(null);
     const [results, setResults] = useState<any[]>([]);
     const [pendingFacilitators, setPendingFacilitators] = useState<any[]>([]);
+    const [showQR, setShowQR] = useState(false);
 
     useEffect(() => {
         fetchWorkshop();
@@ -62,6 +67,9 @@ export function WorkshopDetail() {
             setWorkshop(data);
             setCurrentPhase(data.current_phase);
             setActiveCardId(data.active_use_case_id);
+            if (data.pending_facilitators) {
+                setPendingFacilitators(data.pending_facilitators);
+            }
 
             // Fetch existing use cases
             const ucData = await api.get(`/usecases/${id}`);
@@ -148,15 +156,25 @@ export function WorkshopDetail() {
     return (
         <div className="min-h-screen bg-surface-900 p-6">
             <header className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-                <div>
-                    <h1 className="text-3xl font-bold text-white">{workshop.title}</h1>
-                    <div className="flex items-center gap-2 mt-2">
-                        <span className="text-brand-magenta font-mono text-xl font-bold">{workshop.pin}</span>
-                        <span className="text-gray-400 text-sm">Join PIN</span>
-                        <span className="ml-4 px-2 py-0.5 bg-white/10 text-xs rounded uppercase tracking-wider text-gray-400 font-mono">
-                            {currentPhase}
-                        </span>
+                <div className="flex items-start gap-4">
+                    <Button variant="ghost" className="mt-1 p-2 h-auto" onClick={() => navigate('/dashboard')}>
+                        <ArrowLeft className="w-6 h-6" />
+                    </Button>
+                    <div>
+                        <h1 className="text-3xl font-bold text-white">{workshop.title}</h1>
+                        <div className="flex items-center gap-2 mt-2">
+                            <span className="text-brand-magenta font-mono text-xl font-bold">{workshop.pin}</span>
+                            <span className="text-gray-400 text-sm">Join PIN</span>
+                            <span className="ml-4 px-2 py-0.5 bg-white/10 text-xs rounded uppercase tracking-wider text-gray-400 font-mono">
+                                {currentPhase}
+                            </span>
+                        </div>
                     </div>
+                </div>
+                <div>
+                    <Button variant="ghost" className="text-sm h-8 px-2" onClick={() => setShowQR(true)}>
+                        <QrCode className="w-4 h-4 mr-2" /> Show Join Code
+                    </Button>
                 </div>
                 <div className="flex gap-4">
                     {currentPhase === 'INTAKE' && (
@@ -304,6 +322,37 @@ export function WorkshopDetail() {
                     </div>
                 </div>
             )}
+
+            <Modal isOpen={showQR} onClose={() => setShowQR(false)} title="Join Workshop">
+                <div className="flex flex-col items-center space-y-6 py-4">
+                    <div className="bg-white p-4 rounded-xl">
+                        <QRCodeSVG
+                            value={`${window.location.protocol}//${window.location.host}/join?pin=${workshop.pin}`}
+                            size={200}
+                            level="H"
+                        />
+                    </div>
+
+                    <div className="text-center space-y-2">
+                        <p className="text-gray-400 text-sm">Scan to join</p>
+                        <div className="flex items-center gap-2 bg-surface-900 p-2 rounded-lg border border-white/10">
+                            <span className="font-mono font-bold text-xl tracking-widest">{workshop.pin}</span>
+                        </div>
+                    </div>
+
+                    <Button
+                        variant="secondary"
+                        className="w-full"
+                        onClick={() => {
+                            const url = `${window.location.protocol}//${window.location.host}/join?pin=${workshop.pin}`;
+                            navigator.clipboard.writeText(url);
+                            toast.success("Link copied to clipboard");
+                        }}
+                    >
+                        <Copy className="w-4 h-4 mr-2" /> Copy Link
+                    </Button>
+                </div>
+            </Modal>
         </div>
     );
 }

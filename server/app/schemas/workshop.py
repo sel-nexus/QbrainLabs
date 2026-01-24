@@ -9,6 +9,7 @@ class Criterion(BaseModel):
 
 class WorkshopConfig(BaseModel):
     criteria: List[Criterion]
+    template_id: Optional[str] = None
 
     @validator('criteria')
     def validate_weights(cls, v):
@@ -21,12 +22,19 @@ class WorkshopCreate(BaseModel):
     title: str
     config: WorkshopConfig
 
+class PendingFacilitator(BaseModel):
+    id: UUID = Field(..., alias="participant_id")
+    display_name: str
+
 class WorkshopResponse(BaseModel):
     id: UUID
     title: str
     pin: Optional[str]
     status: str
+    current_phase: Optional[str] = "INTAKE"
+    active_use_case_id: Optional[UUID] = None
     config: WorkshopConfig
+    pending_facilitators: List[PendingFacilitator] = []
 
     class Config:
         from_attributes = True

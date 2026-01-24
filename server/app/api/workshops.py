@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.core.database import get_db
-from app.models import Workshop, User
-from app.schemas.workshop import WorkshopCreate, WorkshopResponse
+from app.models import Workshop, User, Participant, ParticipantRole
+from app.schemas.workshop import WorkshopCreate, WorkshopResponse, PendingFacilitator
 import random
 import string
 
@@ -61,7 +61,23 @@ async def get_workshop(workshop_id: str, db: AsyncSession = Depends(get_db)):
     workshop = result.scalars().first()
     if not workshop:
         raise HTTPException(status_code=404, detail="Workshop not found")
-    return workshop
+        
+    # Fetch pending facilitators
+    pf_result = await db.execute(
+        select(Participant)
+        .where(Participant.workshop_id == workshop_id)
+        .where(Participant.role == ParticipantRole.PENDING_FACILITATOR)
+    )
+    pending_list = pf_result.scalars().all()
+    
+    # Map to schema
+    response = WorkshopResponse.model_validate(workshop)
+    response.pending_facilitators = [
+        PendingFacilitator(participant_id=p.id, display_name=p.display_name) 
+        for p in pending_list
+    ]
+    
+    return response
 
 # Import socket manager
 from app.core.socket_manager import sio

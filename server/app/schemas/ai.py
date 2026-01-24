@@ -21,3 +21,15 @@ class FeasibilityResponse(BaseModel):
     score: str
     reason: str
     is_mock: bool = False
+
+class DuplicateCheckRequest(BaseModel):
+    workshop_id: str
+    title: str
+    description: str
+
+class DuplicateCheckResponse(BaseModel):
+    is_duplicate: bool
+    similarity_score: float
+    similar_to_id: Optional[str] = None
+    similar_to_title: Optional[str] = None
+    message: Optional[str] = None

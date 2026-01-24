@@ -1,0 +1,24 @@
+{
+    "name": "AI Hotspot Matrix",
+    "short_name": "AI Hotspot",
+    "description": "Collaborative AI Use Case Scoring",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#1e1e24",
+    "theme_color": "#8b5cf6",
+    "orientation": "portrait-primary",
+    "icons": [
+        {
+            "src": "/vite.svg",
+            "sizes": "192x192",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/vite.svg",
+            "sizes": "512x512",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        }
+    ]
+}

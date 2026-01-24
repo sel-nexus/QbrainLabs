@@ -8,12 +8,19 @@ interface ScoringCardProps {
     session: any;
     activeCard: any;
     criteria: any[]; // [{name: 'Feasibility', weight: 50}, ...]
+    templateId?: string;
 }
 
-export function ScoringCard({ session, activeCard, criteria }: ScoringCardProps) {
+export function ScoringCard({ session, activeCard, criteria, templateId }: ScoringCardProps) {
     const [scores, setScores] = useState<Record<string, number>>({});
     const [loading, setLoading] = useState(false);
     const [submitted, setSubmitted] = useState(false);
+
+    const is10Point = templateId === '7_POINT_COMPREHENSIVE';
+    const minVal = is10Point ? 1 : 0;
+    const maxVal = is10Point ? 10 : 100;
+    const stepVal = is10Point ? 1 : 5;
+    const defaultVal = is10Point ? 5 : 50;
 
     const handleScoreChange = (criterion: string, val: number) => {
         setScores(prev => ({ ...prev, [criterion]: val }));
@@ -73,16 +80,26 @@ export function ScoringCard({ session, activeCard, criteria }: ScoringCardProps)
                 {criteria.map((c, idx) => (
                     <div key={idx}>
                         <div className="flex justify-between mb-2">
-                            <label className="text-sm font-medium">{c.name}</label>
-                            <span className="font-mono text-brand-magenta">{scores[c.name] ?? 50}</span>
+                            <label className="text-sm font-medium flex items-center gap-2 group relative">
+                                {c.name}
+                                {c.description && (
+                                    <span className="cursor-help text-gray-500 text-xs">(?)</span>
+                                )}
+                                {c.description && (
+                                    <div className="absolute left-0 bottom-full mb-2 w-64 p-2 bg-black/90 text-xs text-white rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                                        {c.description}
+                                    </div>
+                                )}
+                            </label>
+                            <span className="font-mono text-brand-magenta">{scores[c.name] ?? defaultVal}</span>
                         </div>
                         <input
                             type="range"
-                            min="0"
-                            max="100"
-                            step="5"
+                            min={minVal}
+                            max={maxVal}
+                            step={stepVal}
                             className="w-full h-2 bg-surface-900 rounded-lg appearance-none cursor-pointer accent-brand-violet"
-                            value={scores[c.name] ?? 50}
+                            value={scores[c.name] ?? defaultVal}
                             onChange={(e) => handleScoreChange(c.name, Number(e.target.value))}
                         />
                         <div className="flex justify-between text-xs text-gray-500 mt-1">

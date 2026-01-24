@@ -10,7 +10,7 @@
 *   **Headline:** "Map AI Use Cases with Your Team" (or adaptable marketing copy).
 *   **Subheadline:** Clear value proposition about collaboration, identification, and prioritization of AI opportunities.
 *   **Dual Call-to-Action (CTA):**
-    *   **Create Workshop Card:** distinct visual weight. Includes description ("Set up a new collaborative session...") and a primary button "Sign In to Create".
+    *   **Facilitator Login Card:** distinct visual weight. Includes description ("Access your dashboard to lead workshops...") and a primary button "Facilitator Login".
     *   **Join Workshop Card:** distinct visual weight. Includes description ("Enter a workshop PIN...") and a secondary/primary button "Join Now".
     *   **Visual Separation:** Clear distinction between the two paths (Facilitator vs. Participant).
 
@@ -22,7 +22,6 @@
 *   **Visual Polish:** Use modern iconography, soft shadows, and succinct copy.
 
 ### 3. Trust & Social Proof (Research Enhancement)
-*   **Trusted By:** Section to display logos of fictional or future client companies (e.g., "Innovative teams trust AI Hotspot").
 *   **Testimonial:** A rotating or static featured testimonial highlighting the efficiency or clarity gained using the tool.
 
 ### 4. "How It Works" Visual (Research Enhancement)
@@ -36,13 +35,16 @@
 *   **SEO Optimization:** Proper meta title ("AI Hotspot - Collaborative AI Strategy Workshops"), description, and semantic HTML tags.
 *   **Performance:** Fast loading time (Lighthouse Score > 90) to ensure low bounce rate.
 
+### 6. Footer
+*   **Content:** Must display exactly: "2026 hotspotmatrix.ai, All Rights Reserved."
+
 ## Scenarios
 
 ### Scenario A: New Facilitator Arrives
-1.  User lands on `https://aihotspot.io`.
+1.  User lands on `https://hotspotmatrix.ai`.
 2.  Reads the "Map AI Use Cases" headline.
 3.  Scrolls to see "Powerful Workshop Features".
-4.  Clicks "Sign In to Create" on the Create Workshop card.
+4.  Clicks "Facilitator Login" on the specific card.
 5.  Is redirected to the Authentication/Sign-up flow.
 
 ### Scenario B: Participant Joining a Session
@@ -55,7 +57,7 @@
 ### Scenario C: Market Research Validation
 1.  User enters search term "AI workshop tool" in Google.
 2.  Lands on the page.
-3.  Sees "Trusted by" section and "How it works" steps.
+3.  Sees "How it works" steps.
 4.  Gains confidence in the tool's legitimacy and ease of use.
 5.  Proceeds to create an account.
 

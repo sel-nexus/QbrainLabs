@@ -125,4 +125,41 @@ class RAGService:
         except:
             return {"score": "Unknown", "reason": "Parse error"}
 
+    async def check_duplicates(self, candidate_title: str, candidate_desc: str, existing_items: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """
+        Checks for semantic duplicates.
+        For MVP, we use difflib SequenceMatcher if in Mock Mode or if no Vector Store for dynamic data.
+        In a full prod RAG, we would embed the candidate and compare dot-products with existing embeddings.
+        """
+        import difflib
+        
+        highest_score = 0.0
+        best_match = None
+        
+        # Combine title and desc for check
+        candidate_full = f"{candidate_title} {candidate_desc}".lower()
+        
+        for item in existing_items:
+            # Check Title Similarity
+            item_full = f"{item['title']} {item['description']}".lower()
+            
+            # Use SequenceMatcher for a robust string similarity
+            seq = difflib.SequenceMatcher(None, candidate_full, item_full)
+            score = seq.ratio()
+            
+            if score > highest_score:
+                highest_score = score
+                best_match = item
+        
+        # Threshold for "Duplicate"
+        is_duplicate = highest_score > 0.6  # 60% similarity
+        
+        return {
+            "is_duplicate": is_duplicate,
+            "similarity_score": round(highest_score, 2),
+            "similar_to_id": str(best_match['id']) if best_match else None,
+            "similar_to_title": best_match['title'] if best_match else None,
+            "message": f"Similar idea detected: '{best_match['title']}' ({int(highest_score*100)}% match)" if is_duplicate else None
+        }
+
 rag_service = RAGService()

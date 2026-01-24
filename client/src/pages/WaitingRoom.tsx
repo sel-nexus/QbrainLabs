@@ -1,21 +1,29 @@
 import { useEffect, useState } from 'react';
 import { socket } from '../lib/socket';
+import { useSession } from '../context/SessionContext';
 
 import { useNavigate } from 'react-router-dom';
+import { Button } from '../components/ui/Button';
+import { LogOut } from 'lucide-react';
 
 export function WaitingRoom() {
     const navigate = useNavigate();
+    const { session, updateRole, logout } = useSession();
     const [status, setStatus] = useState('Waiting for host...');
-    const [session, setSession] = useState<any>(null);
+
+    const handleLeave = () => {
+        logout();
+        navigate('/');
+    };
 
     useEffect(() => {
-        const stored = localStorage.getItem('hm_session');
-        if (stored) {
-            const sess = JSON.parse(stored);
-            setSession(sess);
-            if (sess.role === 'PENDING_FACILITATOR') {
-                setStatus('Waiting for Host Approval...');
-            }
+        if (!session) {
+            navigate('/');
+            return;
+        }
+
+        if (session.role === 'PENDING_FACILITATOR') {
+            setStatus('Waiting for Host Approval...');
         }
 
         // Socket listeners
@@ -31,21 +39,13 @@ export function WaitingRoom() {
 
         const onRoleUpdate = (data: any) => {
             console.log("Role update:", data);
-            const currentSession = JSON.parse(localStorage.getItem('hm_session') || '{}');
-            if (data.participant_id === currentSession.participantId) {
-                // Update local storage
-                currentSession.role = data.role;
-                localStorage.setItem('hm_session', JSON.stringify(currentSession));
-                setSession(currentSession);
+
+            if (data.participant_id === session?.participantId) {
+                updateRole(data.role);
 
                 if (data.role === 'FACILITATOR') {
                     // Redirect to Admin/Facilitator view
-                    // For MVP, maybe just stay here or go to /workshop-detail which handles Facilitator view?
-                    // Assuming /workshop/{id} is the facilitator view or similar.
-                    // The user story says "redirected to the Facilitator Dashboard".
-                    // Let's assume there is a route for it.
-                    // Looking at file list, `WorkshopDetail.tsx` seems to be it.
-                    navigate(`/workshop/${currentSession.workshopId}`);
+                    navigate(`/workshop/${session.workshopId}`);
                 } else if (data.role === 'PARTICIPANT') {
                     setStatus('Waiting for host...');
                 }
@@ -61,10 +61,17 @@ export function WaitingRoom() {
             socket.off('workshop_state_change', onStateChange);
             socket.off('participant_role_update', onRoleUpdate);
         };
-    }, [navigate]); // Add navigate dependency
+    }, [navigate, session, updateRole]);
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
+        <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center relative">
+            <Button
+                variant="ghost"
+                className="absolute top-6 right-6 text-gray-400 hover:text-white"
+                onClick={handleLeave}
+            >
+                <LogOut className="w-4 h-4 mr-2" /> Leave
+            </Button>
             <div className="relative mb-8">
                 <div className="absolute inset-0 bg-brand-violet rounded-full blur-xl opacity-20 animate-pulse" />
                 <div className="w-24 h-24 bg-surface-800 rounded-full border border-white/10 flex items-center justify-center z-10 relative">
