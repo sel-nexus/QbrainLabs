@@ -11,7 +11,6 @@ import {
     LayoutDashboard
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
-import { AdminLayout } from '../components/AdminLayout';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 const TOKEN_KEY = 'hm_auth_token';
@@ -69,7 +68,7 @@ export function AdminPanel() {
     }
 
     return (
-        <AdminLayout title="System Overview">
+        <>
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
                 {/* Total Workshops */}
@@ -159,6 +158,6 @@ export function AdminPanel() {
                     </button>
                 </div>
             </div>
-        </AdminLayout>
+        </>
     );
 }

@@ -41,7 +41,10 @@ from app.schemas.rbac import (
     FacilitatorAccessApproveRequest,
     FacilitatorAccessRejectRequest,
     FacilitatorAccessSubmitResponse,
-    WorkshopFacilitatorsResponse
+    WorkshopFacilitatorsResponse,
+    WorkshopBasicInfo,
+    FacilitatorAssignedWorkshopsResponse,
+    UpdateFacilitatorWorkshopsRequest
 )
 
 router = APIRouter(prefix="/api", tags=["facilitators"])
@@ -546,6 +549,159 @@ async def get_workshop_facilitators(
         )
         for a in assignments
     ]
+
+
+# ============== Admin: Facilitator Workshop Assignments ==============
+
+@router.get("/admin/facilitators/{facilitator_id}/workshops", response_model=FacilitatorAssignedWorkshopsResponse)
+async def get_facilitator_assigned_workshops(
+    facilitator_id: str,
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Get all workshops assigned to a specific facilitator.
+    Admin only endpoint.
+    """
+    # Get the facilitator
+    facilitator_result = await db.execute(select(User).where(User.id == facilitator_id))
+    facilitator = facilitator_result.scalars().first()
+    
+    if not facilitator:
+        raise HTTPException(status_code=404, detail="Facilitator not found")
+    
+    # Get assigned workshops
+    assigned_result = await db.execute(
+        select(WorkshopFacilitator, Workshop)
+        .join(Workshop, WorkshopFacilitator.workshop_id == Workshop.id)
+        .where(WorkshopFacilitator.facilitator_id == facilitator_id)
+    )
+    assignments = assigned_result.all()
+    
+    assigned_workshops = [
+        WorkshopBasicInfo(
+            id=str(workshop.id),
+            title=workshop.title,
+            pin=workshop.pin,
+            status=workshop.status
+        )
+        for assignment, workshop in assignments
+    ]
+    
+    return FacilitatorAssignedWorkshopsResponse(
+        facilitator_id=str(facilitator.id),
+        facilitator_name=facilitator.full_name or "",
+        facilitator_email=facilitator.email,
+        assigned_workshops=assigned_workshops
+    )
+
+
+@router.put("/admin/facilitators/{facilitator_id}/workshops", response_model=FacilitatorAssignedWorkshopsResponse)
+async def update_facilitator_workshops(
+    facilitator_id: str,
+    update_request: UpdateFacilitatorWorkshopsRequest,
+    request: Request,
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Update workshop assignments for a facilitator (batch update).
+    This replaces all current assignments with the new list.
+    Admin only endpoint.
+    """
+    # Get the facilitator
+    facilitator_result = await db.execute(select(User).where(User.id == facilitator_id))
+    facilitator = facilitator_result.scalars().first()
+    
+    if not facilitator:
+        raise HTTPException(status_code=404, detail="Facilitator not found")
+    
+    # Verify all workshop IDs exist
+    for workshop_id in update_request.workshop_ids:
+        workshop_result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
+        if not workshop_result.scalars().first():
+            raise HTTPException(status_code=404, detail=f"Workshop {workshop_id} not found")
+    
+    # Get current assignments
+    current_result = await db.execute(
+        select(WorkshopFacilitator).where(WorkshopFacilitator.facilitator_id == facilitator_id)
+    )
+    current_assignments = current_result.scalars().all()
+    current_workshop_ids = {str(a.workshop_id) for a in current_assignments}
+    
+    # Calculate workshops to add and remove
+    new_workshop_ids = set(update_request.workshop_ids)
+    to_add = new_workshop_ids - current_workshop_ids
+    to_remove = current_workshop_ids - new_workshop_ids
+    
+    # Remove old assignments
+    for assignment in current_assignments:
+        if str(assignment.workshop_id) in to_remove:
+            await db.delete(assignment)
+    
+    # Add new assignments
+    for workshop_id in to_add:
+        # Check facilitator limit for each workshop
+        fac_count_result = await db.execute(
+            select(func.count(WorkshopFacilitator.id)).where(
+                WorkshopFacilitator.workshop_id == workshop_id
+            )
+        )
+        current_count = (fac_count_result.scalar() or 0) + 1  # +1 for owner
+        
+        if current_count >= 10:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Workshop has reached maximum facilitator capacity (10)"
+            )
+        
+        new_assignment = WorkshopFacilitator(
+            workshop_id=workshop_id,
+            facilitator_id=facilitator_id,
+            assigned_by=admin.id,
+            can_edit=True,
+            can_delete=False
+        )
+        db.add(new_assignment)
+    
+    await db.commit()
+    
+    # Log the action
+    await log_role_action(
+        db=db,
+        action="facilitator_workshops_updated",
+        user_id=str(facilitator.id),
+        performed_by=str(admin.id),
+        old_value={"workshop_ids": list(current_workshop_ids)},
+        new_value={"workshop_ids": list(new_workshop_ids)},
+        request=request,
+        details=f"Workshop assignments updated for {facilitator.email}: added {len(to_add)}, removed {len(to_remove)}"
+    )
+    
+    # Get updated assignments
+    updated_result = await db.execute(
+        select(WorkshopFacilitator, Workshop)
+        .join(Workshop, WorkshopFacilitator.workshop_id == Workshop.id)
+        .where(WorkshopFacilitator.facilitator_id == facilitator_id)
+    )
+    updated_assignments = updated_result.all()
+    
+    assigned_workshops = [
+        WorkshopBasicInfo(
+            id=str(workshop.id),
+            title=workshop.title,
+            pin=workshop.pin,
+            status=workshop.status
+        )
+        for assignment, workshop in updated_assignments
+    ]
+    
+    return FacilitatorAssignedWorkshopsResponse(
+        facilitator_id=str(facilitator.id),
+        facilitator_name=facilitator.full_name or "",
+        facilitator_email=facilitator.email,
+        assigned_workshops=assigned_workshops
+    )
 
 
 # ============== Facilitator: Workshop Access ==============

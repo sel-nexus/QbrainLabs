@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { api } from '../lib/api';
@@ -213,6 +213,20 @@ export function JoinWorkshop() {
                         Sign in to track contributions
                     </button>
                 </form>
+
+                {/* Back to Home */}
+                <div className="text-center mt-8">
+                    <Link 
+                        to="/" 
+                        className={`text-sm transition-colors ${
+                            theme === 'light' 
+                                ? 'text-gray-500 hover:text-gray-700' 
+                                : 'text-gray-400 hover:text-gray-300'
+                        }`}
+                    >
+                        ← Back to Home
+                    </Link>
+                </div>
             </motion.div>
 
             {/* Advanced Auth Modal */}

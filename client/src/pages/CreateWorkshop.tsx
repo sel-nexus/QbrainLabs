@@ -6,6 +6,7 @@ import { api } from '../lib/api';
 import { useTheme } from '../context/ThemeContext';
 import { Plus, Trash2, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { TemplateSelector } from '../components/templates/TemplateSelector';
 
 interface Criterion {
     name: string;
@@ -103,6 +104,7 @@ export function CreateWorkshop() {
                         : 'bg-surface-800/60 border border-white/10'
                 }`}
             >
+                {/* Back button now in main Header */}
                 <h1 className={`text-3xl font-heading font-bold mb-2 ${
                     theme === 'light' ? 'text-gray-900' : 'text-white'
                 }`}>
@@ -121,11 +123,20 @@ export function CreateWorkshop() {
                     />
 
                     <div className="space-y-2">
-                        <label className={`text-sm font-medium ${
-                            theme === 'light' ? 'text-gray-700' : 'text-gray-300'
-                        }`}>
-                            Evaluation Template
-                        </label>
+                        <div className="flex items-center justify-between">
+                            <label className={`text-sm font-medium ${
+                                theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+                            }`}>
+                                Evaluation Template
+                            </label>
+                            <TemplateSelector
+                                onSelectTemplate={(templateData) => {
+                                    setTitle(templateData.name);
+                                    setCriteria(templateData.criteria);
+                                    setTemplate('CUSTOM');
+                                }}
+                            />
+                        </div>
                         <div className="grid grid-cols-2 gap-4">
                             {Object.entries(TEMPLATES).map(([key, btn]) => (
                                 <button

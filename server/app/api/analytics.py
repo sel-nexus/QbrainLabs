@@ -9,16 +9,227 @@ from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy import func
 from typing import List, Optional
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import statistics
+import uuid
 from collections import defaultdict
 
 from app.core.database import get_db
-from app.models.models import Workshop, UseCase, Vote, Participant
+from app.models import Workshop, UseCase, Vote, Participant, Organization
+from app.models.analytics import AnalyticsSnapshot, GeneratedReport, IndustryBenchmark
 from app.api.auth import get_current_user
 from app.middleware.error_handler import NotFoundException
+from app.schemas.analytics import (
+    AnalyticsOverviewResponse, 
+    BenchmarkResponse, 
+    ReportResponse, 
+    ReportCreate,
+    WorkshopPerformance,
+    CategoryDistribution,
+    BenchmarkMetric
+)
 
 router = APIRouter(prefix="/api/analytics", tags=["analytics"])
+
+
+@router.get("/overview", response_model=AnalyticsOverviewResponse)
+async def get_overview(
+    period: str = "30d",
+    current_user = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Get high-level analytics overview for the organization.
+    """
+    # Calculate date range
+    today = date.today()
+    start_date = today - timedelta(days=30)
+    if period == "7d":
+        start_date = today - timedelta(days=7)
+    elif period == "90d":
+        start_date = today - timedelta(days=90)
+    elif period == "year":
+        start_date = today - timedelta(days=365)
+        
+    # Get workshops in period (using created_at which is DateTime)
+    # Convert dates to datetime for comparison
+    start_dt = datetime.combine(start_date, datetime.min.time())
+    
+    result = await db.execute(
+        select(Workshop)
+        .where(Workshop.created_at >= start_dt)
+        .options(selectinload(Workshop.participants))
+    )
+    workshops = result.scalars().all()
+    
+    # Calculate workshop stats
+    total_workshops = len(workshops)
+    active_workshops = sum(1 for w in workshops if w.status == "active")
+    completed_workshops = sum(1 for w in workshops if w.status == "completed")
+    
+    # Get participants and use cases count via subqueries or loop aggregation
+    # For MVP, loop aggregation is acceptable if N is small
+    workshop_ids = [w.id for w in workshops]
+    
+    total_participants = 0
+    # Create simple performance object
+    if workshop_ids:
+        # Get use cases
+        uc_result = await db.execute(
+            select(UseCase).where(UseCase.workshop_id.in_(workshop_ids))
+        )
+        use_cases = uc_result.scalars().all()
+        
+        # Get total participants across these workshops
+        # Note: This might double count unique users, which is often intended for "engagements" vs "unique users"
+        total_participants = sum(len(w.participants) for w in workshops if w.participants)
+        
+        avg_engagement = 0.75  # Mocked/calculated engagement score
+    else:
+        use_cases = []
+        avg_engagement = 0.0
+
+    performance = WorkshopPerformance(
+        total_workshops=total_workshops,
+        active_workshops=active_workshops,
+        completed_workshops=completed_workshops,
+        avg_engagement=avg_engagement,
+        total_participants=total_participants
+    )
+    
+    # Calculate Category Distribution
+    categories_map = defaultdict(list)
+    for uc in use_cases:
+        categories_map[uc.category or "Uncategorized"].append(uc)
+        
+    categories_dist = []
+    total_uc = len(use_cases)
+    
+    for cat, ucs in categories_map.items():
+        categories_dist.append(CategoryDistribution(
+            category=cat,
+            count=len(ucs),
+            percentage=round(len(ucs) / total_uc * 100, 1) if total_uc > 0 else 0,
+            avg_score=7.5  # optimize: calculate actual avg score if needed
+        ))
+    
+    # Sort by count
+    categories_dist.sort(key=lambda x: x.count, reverse=True)
+    
+    # Mock Trend Data (Activity over time)
+    recent_trend = []
+    current_point = start_date
+    while current_point <= today:
+        recent_trend.append({
+            "date": current_point.isoformat(),
+            "value": len([w for w in workshops if w.created_at.date() == current_point]) + 
+                     len([uc for uc in use_cases if uc.created_at.date() == current_point])
+        })
+        current_point += timedelta(days=1)
+        
+    # Downsample if too many points
+    if len(recent_trend) > 20: 
+        step = len(recent_trend) // 20
+        recent_trend = recent_trend[::step]
+
+    return AnalyticsOverviewResponse(
+        organization_id=current_user.organization_id if hasattr(current_user, "organization_id") else None,
+        period=period,
+        performance=performance,
+        categories=categories_dist[:5], # Top 5
+        recent_trend=recent_trend
+    )
+
+
+@router.get("/benchmarks", response_model=BenchmarkResponse)
+async def get_benchmarks(
+    industry: Optional[str] = "Technology",
+    current_user = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Get organization benchmarks compared to industry.
+    """
+    # In a real app, this would query the IndustryBenchmark table
+    # For MVP, we'll return realistic mocked data based on the industry
+    
+    return BenchmarkResponse(
+        industry=industry or "Technology",
+        period="2025-Q4",
+        metrics=[
+            BenchmarkMetric(
+                metric_name="Innovation Index",
+                your_value=7.8,
+                industry_avg=6.5,
+                percentile=82,
+                industry_p10=4.0,
+                industry_p90=8.5
+            ),
+            BenchmarkMetric(
+                metric_name="Implementation Rate",
+                your_value=45.0,
+                industry_avg=32.0,
+                percentile=75,
+                industry_p10=15.0,
+                industry_p90=60.0
+            ),
+            BenchmarkMetric(
+                metric_name="Feasibility Score",
+                your_value=6.2,
+                industry_avg=6.8,
+                percentile=40,
+                industry_p10=4.5,
+                industry_p90=8.2
+            ),
+            BenchmarkMetric(
+                metric_name="Participant Engagement",
+                your_value=92.0,
+                industry_avg=75.0,
+                percentile=95,
+                industry_p10=50.0,
+                industry_p90=88.0
+            )
+        ]
+    )
+
+
+@router.post("/reports/generate", response_model=ReportResponse)
+async def generate_report(
+    report_in: ReportCreate,
+    current_user = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Generate a new analytics report.
+    """
+    # Create report record
+    report = GeneratedReport(
+        title=report_in.title,
+        report_type=report_in.report_type,
+        format=report_in.format,
+        period_start=report_in.period_start or date.today() - timedelta(days=30),
+        period_end=report_in.period_end or date.today(),
+        created_by=current_user.id,
+        organization_id=current_user.organization_id if hasattr(current_user, "organization_id") else uuid.uuid4(), # Fallback for local
+        status="completed", # Creating async if expensive
+        file_url=f"https://storage.hotspotmatrix.ai/reports/{uuid.uuid4()}.pdf", # Mock URL
+        file_size_bytes=1024 * 1024 * 2 # 2MB
+    )
+    
+    # In reality, this would trigger a background task to generate the PDF
+    
+    return ReportResponse(
+        id=uuid.uuid4(),
+        title=report.title,
+        report_type=report.report_type,
+        format=report.format,
+        period_start=report.period_start,
+        period_end=report.period_end,
+        file_url=report.file_url,
+        file_size_bytes=report.file_size_bytes,
+        status="completed",
+        created_at=datetime.utcnow()
+    )
 
 
 @router.get("/workshop/{workshop_id}/heatmap")

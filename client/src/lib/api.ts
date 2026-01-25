@@ -2,8 +2,11 @@ import axios from 'axios';
 
 const TOKEN_KEY = 'hm_auth_token';
 
+// Use VITE_API_URL environment variable, fallback to localhost for development
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+
 export const api = axios.create({
-    baseURL: 'http://localhost:8000/api',
+    baseURL: `${API_BASE_URL}/api`,
     headers: {
         'Content-Type': 'application/json',
     },

@@ -10,7 +10,8 @@ import { useAuth } from '../context/AuthContext';
 export function AdminDashboard() {
     const navigate = useNavigate();
     const { theme } = useTheme();
-    const { isLoading } = useAuth();
+    const { isLoading, hasRole } = useAuth();
+    const isAdmin = hasRole('admin');
     const [workshops, setWorkshops] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [showChangePassword, setShowChangePassword] = useState(false);
@@ -33,13 +34,14 @@ export function AdminDashboard() {
         }
     };
 
+    // Header is now provided by AuthenticatedLayout wrapper
     return (
-        <div className={`min-h-screen p-8 ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-900'}`}>
+        <>
             {showChangePassword && (
                 <ChangePasswordDialog onClose={() => setShowChangePassword(false)} />
             )}
 
-            <main className="max-w-6xl mx-auto">
+            <main className="max-w-6xl mx-auto px-8 pb-8">
                 <section className="flex justify-between items-end mb-8">
                     <div>
                         <h2 className={`text-3xl font-bold mb-2 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
@@ -49,9 +51,11 @@ export function AdminDashboard() {
                             Manage your active strategy sessions.
                         </p>
                     </div>
-                    <Button onClick={() => navigate('/create')}>
-                        <Plus className="w-5 h-5 mr-2" /> New Workshop
-                    </Button>
+                    {isAdmin && (
+                        <Button onClick={() => navigate('/facilitator/create')}>
+                            <Plus className="w-5 h-5 mr-2" /> New Workshop
+                        </Button>
+                    )}
                 </section>
 
                 {/* Workshop List */}
@@ -103,13 +107,17 @@ export function AdminDashboard() {
                         }`}>
                             <Users className="w-12 h-12 mb-4 opacity-50" />
                             <p>No active workshops found.</p>
-                            <Button variant="ghost" className="mt-2 text-brand-violet" onClick={() => navigate('/create')}>
-                                Create your first session
-                            </Button>
+                            {isAdmin ? (
+                                <Button variant="ghost" className="mt-2 text-brand-violet" onClick={() => navigate('/facilitator/create')}>
+                                    Create your first session
+                                </Button>
+                            ) : (
+                                <p className="text-sm mt-2 opacity-75">Contact an administrator to get assigned to workshops.</p>
+                            )}
                         </div>
                     )}
                 </div>
             </main>
-        </div>
+        </>
     );
 }

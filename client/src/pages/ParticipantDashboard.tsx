@@ -4,11 +4,11 @@ import { useSession } from '../context/SessionContext';
 import { useTheme } from '../context/ThemeContext';
 import { api } from '../lib/api';
 import { useNavigate } from 'react-router-dom';
-import { 
-    Lightbulb, 
-    BarChart3, 
-    ClipboardCheck, 
-    Loader2, 
+import {
+    Lightbulb,
+    BarChart3,
+    ClipboardCheck,
+    Loader2,
     X,
     LogOut
 } from 'lucide-react';
@@ -16,6 +16,15 @@ import { ActionTile } from '../components/ui/ActionTile';
 import { UseCaseCanvas } from '../components/UseCaseCanvas';
 import { SurveyParticipant } from '../components/survey/SurveyParticipant';
 import { Button } from '../components/ui/Button';
+import { PollResponder } from '../components/polls/PollResponder';
+import { ReactionBar } from '../components/polls/ReactionBar';
+import { ReactionOverlay } from '../components/polls/ReactionOverlay';
+import { QAPanel } from '../components/polls/QAPanel';
+import { MessageSquare, Trophy, Award } from 'lucide-react';
+import { PointsDisplay } from '../components/gamification/PointsDisplay';
+import { AchievementToast } from '../components/gamification/AchievementToast';
+import { Leaderboard } from '../components/gamification/Leaderboard';
+import { BadgeGrid } from '../components/gamification/BadgeGrid';
 
 interface UseCase {
     id: string;
@@ -39,7 +48,7 @@ interface SessionInfo {
     surveys: Survey[];
 }
 
-type ActiveModal = 'usecase' | 'survey' | null;
+type ActiveModal = 'usecase' | 'survey' | 'qa' | 'leaderboard' | 'badges' | null;
 
 export function ParticipantDashboard() {
     const navigate = useNavigate();
@@ -52,7 +61,7 @@ export function ParticipantDashboard() {
 
     const fetchSessionInfo = async () => {
         if (!session?.participantId) return;
-        
+
         try {
             const { data } = await api.get(`/session/${session.participantId}`);
             setSessionInfo(data);
@@ -146,7 +155,7 @@ export function ParticipantDashboard() {
     const currentPhase = sessionInfo?.current_phase || 'LOBBY';
     const canSubmitUseCases = ['LOBBY', 'OPEN', 'IN_PROGRESS', 'INTAKE'].includes(currentPhase);
     const canPrioritize = currentPhase === 'SCORING' && (sessionInfo?.use_cases.length || 0) > 0;
-    
+
     const activeSurvey = sessionInfo?.surveys.find(s => s.status === 'ACTIVE' && !s.completed);
     const completedSurveys = sessionInfo?.surveys.filter(s => s.completed).length || 0;
     const totalSurveys = sessionInfo?.surveys.length || 0;
@@ -154,9 +163,8 @@ export function ParticipantDashboard() {
 
     if (loading) {
         return (
-            <div className={`min-h-screen flex items-center justify-center ${
-                theme === 'light' ? 'bg-gray-50' : 'bg-surface-900'
-            }`}>
+            <div className={`min-h-screen flex items-center justify-center ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-900'
+                }`}>
                 <div className="flex items-center gap-3 text-gray-400">
                     <Loader2 className="w-6 h-6 animate-spin" />
                     <span>Loading workshop...</span>
@@ -167,23 +175,24 @@ export function ParticipantDashboard() {
 
     return (
         <div className={`min-h-screen ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-900'}`}>
+            {session?.participantId && <AchievementToast participantId={session.participantId} />}
+            <ReactionOverlay />
+            <PollResponder />
+            <ReactionBar />
             {/* Header */}
-            <header className={`sticky top-14 z-40 border-b backdrop-blur ${
-                theme === 'light' 
-                    ? 'bg-white/80 border-gray-200' 
+            <header className={`sticky top-14 z-40 border-b backdrop-blur ${theme === 'light'
+                    ? 'bg-white/80 border-gray-200'
                     : 'bg-surface-800/80 border-white/5'
-            }`}>
+                }`}>
                 <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
                     <div>
-                        <h1 className={`text-xl font-bold ${
-                            theme === 'light' ? 'text-gray-900' : 'text-white'
-                        }`}>
+                        <h1 className={`text-xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'
+                            }`}>
                             {sessionInfo?.workshop_title || 'Workshop'}
                         </h1>
                         <div className="flex items-center gap-3 mt-1">
-                            <span className={`text-sm ${
-                                theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-                            }`}>
+                            <span className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                                }`}>
                                 Welcome, {session?.name}
                             </span>
                             <span className="text-xs px-2 py-0.5 rounded-full bg-brand-violet/20 text-brand-violet font-medium">
@@ -191,10 +200,27 @@ export function ParticipantDashboard() {
                             </span>
                         </div>
                     </div>
-                    <Button variant="ghost" onClick={handleLeave} className="text-gray-400 hover:text-white">
-                        <LogOut className="w-4 h-4 mr-2" />
-                        Leave
-                    </Button>
+                    <div className="flex items-center gap-2">
+                        {session?.participantId && (
+                            <PointsDisplay participantId={session.participantId} />
+                        )}
+                        <Button variant="ghost" onClick={() => setActiveModal('leaderboard')} className="text-gray-400 hover:text-white">
+                            <Trophy className="w-4 h-4 mr-2" />
+                            Leaderboard
+                        </Button>
+                        <Button variant="ghost" onClick={() => setActiveModal('badges')} className="text-gray-400 hover:text-white">
+                            <Award className="w-4 h-4 mr-2" />
+                            Badges
+                        </Button>
+                        <Button variant="ghost" onClick={() => setActiveModal('qa')} className="text-gray-400 hover:text-white">
+                            <MessageSquare className="w-4 h-4 mr-2" />
+                            Q&A
+                        </Button>
+                        <Button variant="ghost" onClick={handleLeave} className="text-gray-400 hover:text-white">
+                            <LogOut className="w-4 h-4 mr-2" />
+                            Leave
+                        </Button>
+                    </div>
                 </div>
             </header>
 
@@ -223,10 +249,10 @@ export function ParticipantDashboard() {
                         badgeVariant={canPrioritize ? "warning" : "default"}
                         disabled={!canPrioritize}
                         disabledReason={
-                            currentPhase !== 'SCORING' 
-                                ? "Available during scoring phase" 
-                                : (sessionInfo?.use_cases.length || 0) === 0 
-                                    ? "No use cases to prioritize" 
+                            currentPhase !== 'SCORING'
+                                ? "Available during scoring phase"
+                                : (sessionInfo?.use_cases.length || 0) === 0
+                                    ? "No use cases to prioritize"
                                     : undefined
                         }
                         onClick={handlePrioritizeClick}
@@ -238,24 +264,24 @@ export function ParticipantDashboard() {
                         title="Complete Survey"
                         description={activeSurvey ? activeSurvey.title : "Provide your feedback"}
                         badge={
-                            pendingSurveys > 0 
-                                ? `${pendingSurveys} pending` 
-                                : totalSurveys > 0 
+                            pendingSurveys > 0
+                                ? `${pendingSurveys} pending`
+                                : totalSurveys > 0
                                     ? `${completedSurveys}/${totalSurveys} done`
                                     : "No surveys"
                         }
                         badgeVariant={
-                            pendingSurveys > 0 
-                                ? "warning" 
-                                : completedSurveys === totalSurveys && totalSurveys > 0 
-                                    ? "success" 
+                            pendingSurveys > 0
+                                ? "warning"
+                                : completedSurveys === totalSurveys && totalSurveys > 0
+                                    ? "success"
                                     : "default"
                         }
                         disabled={!activeSurvey}
                         disabledReason={
-                            !activeSurvey 
-                                ? totalSurveys === 0 
-                                    ? "No surveys available" 
+                            !activeSurvey
+                                ? totalSurveys === 0
+                                    ? "No surveys available"
                                     : "All surveys completed"
                                 : undefined
                         }
@@ -264,17 +290,15 @@ export function ParticipantDashboard() {
                 </div>
 
                 {/* Info Section */}
-                <div className={`mt-8 p-6 rounded-xl border ${
-                    theme === 'light' 
-                        ? 'bg-white border-gray-200' 
+                <div className={`mt-8 p-6 rounded-xl border ${theme === 'light'
+                        ? 'bg-white border-gray-200'
                         : 'bg-surface-800 border-white/10'
-                }`}>
-                    <h2 className={`text-lg font-semibold mb-4 ${
-                        theme === 'light' ? 'text-gray-900' : 'text-white'
                     }`}>
+                    <h2 className={`text-lg font-semibold mb-4 ${theme === 'light' ? 'text-gray-900' : 'text-white'
+                        }`}>
                         Workshop Use Cases ({sessionInfo?.use_cases.length || 0})
                     </h2>
-                    
+
                     {(sessionInfo?.use_cases.length || 0) === 0 ? (
                         <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
                             No use cases submitted yet. Be the first to add one!
@@ -282,21 +306,18 @@ export function ParticipantDashboard() {
                     ) : (
                         <div className="grid gap-3 max-h-64 overflow-y-auto">
                             {sessionInfo?.use_cases.map((uc) => (
-                                <div 
-                                    key={uc.id} 
-                                    className={`p-3 rounded-lg ${
-                                        theme === 'light' ? 'bg-gray-50' : 'bg-surface-700'
-                                    }`}
+                                <div
+                                    key={uc.id}
+                                    className={`p-3 rounded-lg ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-700'
+                                        }`}
                                 >
-                                    <div className={`font-medium text-sm ${
-                                        theme === 'light' ? 'text-gray-800' : 'text-white'
-                                    }`}>
+                                    <div className={`font-medium text-sm ${theme === 'light' ? 'text-gray-800' : 'text-white'
+                                        }`}>
                                         {uc.title}
                                     </div>
                                     {uc.description && (
-                                        <div className={`text-xs mt-1 line-clamp-1 ${
-                                            theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-                                        }`}>
+                                        <div className={`text-xs mt-1 line-clamp-1 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                                            }`}>
                                             {uc.description}
                                         </div>
                                     )}
@@ -307,19 +328,32 @@ export function ParticipantDashboard() {
                 </div>
             </main>
 
+            {/* QA Modal - Uses dynamic theme colors */}
+            {activeModal === 'qa' && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+                    <div className="relative w-full max-w-2xl h-[80vh] rounded-2xl overflow-hidden theme-bg-primary">
+                        <button
+                            onClick={handleModalClose}
+                            className="absolute top-4 right-4 z-10 p-2 rounded-lg transition hover:opacity-80 contrast-muted hover:theme-text-primary"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+                        <QAPanel className="h-full pt-10" />
+                    </div>
+                </div>
+            )}
+
             {/* Use Case Modal */}
             {activeModal === 'usecase' && session && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-                    <div className={`relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl ${
-                        theme === 'light' ? 'bg-gray-50' : 'bg-surface-900'
-                    }`}>
+                    <div className={`relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-900'
+                        }`}>
                         <button
                             onClick={handleModalClose}
-                            className={`absolute top-4 right-4 z-10 p-2 rounded-lg transition ${
-                                theme === 'light' 
-                                    ? 'hover:bg-gray-200 text-gray-500' 
+                            className={`absolute top-4 right-4 z-10 p-2 rounded-lg transition ${theme === 'light'
+                                    ? 'hover:bg-gray-200 text-gray-500'
                                     : 'hover:bg-surface-700 text-gray-400'
-                            }`}
+                                }`}
                         >
                             <X className="w-5 h-5" />
                         </button>
@@ -331,16 +365,14 @@ export function ParticipantDashboard() {
             {/* Survey Modal */}
             {activeModal === 'survey' && activeSurveyId && session?.participantId && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-                    <div className={`relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 ${
-                        theme === 'light' ? 'bg-white' : 'bg-surface-800'
-                    }`}>
+                    <div className={`relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 ${theme === 'light' ? 'bg-white' : 'bg-surface-800'
+                        }`}>
                         <button
                             onClick={handleModalClose}
-                            className={`absolute top-4 right-4 p-2 rounded-lg transition ${
-                                theme === 'light' 
-                                    ? 'hover:bg-gray-100 text-gray-500' 
+                            className={`absolute top-4 right-4 p-2 rounded-lg transition ${theme === 'light'
+                                    ? 'hover:bg-gray-100 text-gray-500'
                                     : 'hover:bg-surface-700 text-gray-400'
-                            }`}
+                                }`}
                         >
                             <X className="w-5 h-5" />
                         </button>
@@ -348,6 +380,55 @@ export function ParticipantDashboard() {
                             surveyId={activeSurveyId}
                             participantId={session.participantId}
                             onComplete={handleSurveyComplete}
+                        />
+                    </div>
+                </div>
+            )}
+
+            {/* Leaderboard Modal */}
+            {activeModal === 'leaderboard' && session?.workshopId && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+                    <div className={`relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 ${theme === 'light' ? 'bg-white' : 'bg-surface-800'
+                        }`}>
+                        <button
+                            onClick={handleModalClose}
+                            className={`absolute top-4 right-4 p-2 rounded-lg transition ${theme === 'light'
+                                    ? 'hover:bg-gray-100 text-gray-500'
+                                    : 'hover:bg-surface-700 text-gray-400'
+                                }`}
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+                        <Leaderboard
+                            workshopPin={session.workshopId}
+                            currentParticipantId={session.participantId}
+                        />
+                    </div>
+                </div>
+            )}
+
+            {/* Badges Modal */}
+            {activeModal === 'badges' && session?.participantId && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+                    <div className={`relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 ${theme === 'light' ? 'bg-white' : 'bg-surface-800'
+                        }`}>
+                        <div className="flex justify-between items-center mb-4">
+                            <h2 className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                                Your Badges
+                            </h2>
+                            <button
+                                onClick={handleModalClose}
+                                className={`p-2 rounded-lg transition ${theme === 'light'
+                                        ? 'hover:bg-gray-100 text-gray-500'
+                                        : 'hover:bg-surface-700 text-gray-400'
+                                    }`}
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+                        <BadgeGrid
+                            participantId={session.participantId}
+                            workshopId={session.workshopId}
                         />
                     </div>
                 </div>

@@ -1,18 +1,46 @@
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Plus, Users } from 'lucide-react';
-import { api } from '../lib/api';
 import { toast } from 'sonner';
 import { AdminLayout } from '../components/AdminLayout';
 import { Button } from '../components/ui/Button';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
+
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 export function AdminMyWorkshops() {
     const navigate = useNavigate();
     const { theme } = useTheme();
+    const { token, user, hasRole } = useAuth();
     const [workshops, setWorkshops] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const isLight = theme === 'light';
+    const isAdmin = hasRole('admin');
+
+    const fetchWorkshops = useCallback(async () => {
+        if (!token) return;
+
+        try {
+            setLoading(true);
+            // Use the facilitator workshops endpoint which filters based on user permissions
+            const response = await fetch(`${API_BASE}/api/facilitator/workshops`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) throw new Error('Failed to fetch workshops');
+
+            const data = await response.json();
+            setWorkshops(data);
+        } catch (e) {
+            console.error(e);
+            toast.error('Failed to load workshops');
+        } finally {
+            setLoading(false);
+        }
+    }, [token]);
 
     useEffect(() => {
         const authToken = localStorage.getItem('hm_auth_token');
@@ -25,26 +53,17 @@ export function AdminMyWorkshops() {
         }
 
         fetchWorkshops();
-    }, [navigate]);
-
-    const fetchWorkshops = async () => {
-        try {
-            const { data } = await api.get('/workshops/');
-            setWorkshops(data);
-        } catch (e) {
-            console.error(e);
-        } finally {
-            setLoading(false);
-        }
-    };
+    }, [navigate, fetchWorkshops]);
 
     return (
         <AdminLayout title="My Workshops">
-            <div className="flex justify-end mb-6">
-                <Button onClick={() => navigate('/create')}>
-                    <Plus className="w-5 h-5 mr-2" /> New Workshop
-                </Button>
-            </div>
+            {isAdmin && (
+                <div className="flex justify-end mb-6">
+                    <Button onClick={() => navigate('/facilitator/create')}>
+                        <Plus className="w-5 h-5 mr-2" /> New Workshop
+                    </Button>
+                </div>
+            )}
 
             {/* Workshop List */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -85,9 +104,13 @@ export function AdminMyWorkshops() {
                     <div className={`col-span-1 md:col-span-3 h-64 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center ${isLight ? 'border-gray-200 text-gray-500 bg-gray-50' : 'border-white/10 text-gray-400 bg-white/5'}`}>
                         <Users className="w-12 h-12 mb-4 opacity-50" />
                         <p>No active workshops found.</p>
-                        <Button variant="ghost" className="mt-2 text-brand-violet" onClick={() => navigate('/create')}>
-                            Create your first session
-                        </Button>
+                        {isAdmin ? (
+                            <Button variant="ghost" className="mt-2 text-brand-violet" onClick={() => navigate('/facilitator/create')}>
+                                Create your first session
+                            </Button>
+                        ) : (
+                            <p className="text-sm mt-2 opacity-75">Contact an administrator to get assigned to workshops.</p>
+                        )}
                     </div>
                 )}
             </div>

@@ -1,0 +1,140 @@
+{
+    "common": {
+        "language": "Sprache",
+        "welcome": "Willkommen",
+        "loading": "Laden...",
+        "error": "Fehler",
+        "save": "Speichern",
+        "cancel": "Abbrechen",
+        "delete": "Löschen",
+        "edit": "Bearbeiten",
+        "create": "Erstellen",
+        "submit": "Absenden",
+        "back": "Zurück",
+        "next": "Weiter",
+        "previous": "Vorherige",
+        "search": "Suchen",
+        "filter": "Filtern",
+        "export": "Exportieren",
+        "import": "Importieren",
+        "settings": "Einstellungen",
+        "help": "Hilfe",
+        "close": "Schließen",
+        "confirm": "Bestätigen",
+        "yes": "Ja",
+        "no": "Nein"
+    },
+    "nav": {
+        "home": "Startseite",
+        "login": "Anmelden",
+        "admin": "Verwaltung",
+        "dashboard": "Dashboard",
+        "profile": "Profil",
+        "logout": "Abmelden",
+        "adminPanel": "Admin-Panel",
+        "knowledgeBase": "Wissensdatenbank",
+        "changePassword": "Passwort ändern",
+        "signIn": "Anmelden",
+        "signOut": "Abmelden"
+    },
+    "auth": {
+        "login": "Anmelden",
+        "register": "Registrieren",
+        "email": "E-Mail",
+        "password": "Passwort",
+        "confirmPassword": "Passwort bestätigen",
+        "forgotPassword": "Passwort vergessen?",
+        "rememberMe": "Angemeldet bleiben",
+        "loginSuccess": "Erfolgreich angemeldet",
+        "loginError": "Anmeldung fehlgeschlagen",
+        "logoutSuccess": "Erfolgreich abgemeldet"
+    },
+    "workshop": {
+        "title": "Workshop",
+        "create": "Workshop erstellen",
+        "join": "Workshop beitreten",
+        "enterPin": "PIN eingeben",
+        "participants": "Teilnehmer",
+        "useCases": "Anwendungsfälle",
+        "scoring": "Bewertung",
+        "results": "Ergebnisse",
+        "active": "Aktiv",
+        "completed": "Abgeschlossen",
+        "pending": "Ausstehend"
+    },
+    "matrix": {
+        "title": "Priorisierungsmatrix",
+        "quickWins": "Schnelle Erfolge",
+        "strategicBets": "Strategische Wetten",
+        "lowPriority": "Niedrige Priorität",
+        "questionMarks": "Fragezeichen",
+        "feasibility": "Machbarkeit",
+        "value": "Wert"
+    },
+    "landing": {
+        "hero": {
+            "badge": "Jetzt mit KI-gestützter Bewertung",
+            "title": "KI-Anwendungsfälle kartieren",
+            "titleHighlight": "Mit Ihrem Team",
+            "subtitle": "Die kollaborative Plattform zum Identifizieren, Bewerten und Priorisieren von KI-Möglichkeiten. Verwandeln Sie Brainstorming in Minuten in eine strategische Roadmap.",
+            "facilitatorLogin": "Moderator-Login",
+            "joinSession": "Sitzung beitreten"
+        },
+        "features": {
+            "title": "Leistungsstarke Funktionen",
+            "subtitle": "Alles, was Sie für erfolgreiche KI-Priorisierungs-Workshops benötigen",
+            "aiPowered": "KI-gestützte Intelligenz",
+            "aiPoweredDesc": "Unsere RAG-Engine hilft bei der Verfeinerung von Anwendungsfällen und prüft die technische Machbarkeit in Echtzeit.",
+            "realtime": "Echtzeit-Zusammenarbeit",
+            "realtimeDesc": "Abstimmen, bewerten und Ideen synchron diskutieren. Sehen Sie Ergebnisse live auf der Matrix aktualisiert.",
+            "strategic": "Strategische Priorisierung",
+            "strategicDesc": "Ordnen Sie Möglichkeiten automatisch einer Wert-vs.-Machbarkeit-Matrix zu, um schnelle Erfolge zu finden."
+        },
+        "howItWorks": {
+            "title": "So funktioniert es",
+            "step1": "01",
+            "step1Title": "Erstellen",
+            "step1Desc": "Definieren Sie Ihre Kriterien und starten Sie einen sicheren Arbeitsbereich für Ihr Team.",
+            "step2": "02",
+            "step2Title": "Zusammenarbeiten",
+            "step2Desc": "Das Team reicht Ideen ein und KI hilft, diese in Echtzeit zu verfeinern und zu validieren.",
+            "step3": "03",
+            "step3Title": "Synthese",
+            "step3Desc": "Stimmen Sie über Wert und Machbarkeit ab und exportieren Sie dann Ihre priorisierte Roadmap."
+        },
+        "benefits": {
+            "title": "Warum Teams uns wählen",
+            "subtitle": "Bewiesene Ergebnisse von Organisationen, die ihre KI-Strategie transformiert haben",
+            "fasterStat": "75%",
+            "fasterLabel": "Schneller",
+            "fasterDesc": "Zeit für Anwendungsfall-Priorisierung",
+            "workshopsStat": "25+",
+            "workshopsLabel": "Workshops",
+            "workshopsDesc": "Erfolgreich durchgeführt",
+            "aiStat": "KI",
+            "aiLabel": "Gestützt",
+            "aiDesc": "Intelligente Unterstützung",
+            "betterStat": "3x",
+            "betterLabel": "Besser",
+            "betterDesc": "Entscheidungsergebnisse"
+        },
+        "cta": {
+            "title": "Bereit, Ihre",
+            "titleHighlight": "KI-Reise zu priorisieren?",
+            "subtitle": "Beginnen Sie noch heute mit Ihrem Team zusammenzuarbeiten und verwandeln Sie Ideen in eine umsetzbare KI-Roadmap.",
+            "getStarted": "Loslegen",
+            "joinSession": "Einer Sitzung beitreten",
+            "copyright": "© 2026 AI Hotspot Matrix. Alle Rechte vorbehalten."
+        }
+    },
+    "admin": {
+        "title": "Admin-Dashboard",
+        "users": "Benutzer",
+        "workshops": "Workshops",
+        "settings": "Einstellungen",
+        "statistics": "Statistiken",
+        "totalUsers": "Gesamtbenutzer",
+        "activeWorkshops": "Aktive Workshops",
+        "totalSubmissions": "Gesamteinreichungen"
+    }
+}

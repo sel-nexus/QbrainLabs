@@ -1,0 +1,140 @@
+{
+    "common": {
+        "language": "Langue",
+        "welcome": "Bienvenue",
+        "loading": "Chargement...",
+        "error": "Erreur",
+        "save": "Enregistrer",
+        "cancel": "Annuler",
+        "delete": "Supprimer",
+        "edit": "Modifier",
+        "create": "Créer",
+        "submit": "Soumettre",
+        "back": "Retour",
+        "next": "Suivant",
+        "previous": "Précédent",
+        "search": "Rechercher",
+        "filter": "Filtrer",
+        "export": "Exporter",
+        "import": "Importer",
+        "settings": "Paramètres",
+        "help": "Aide",
+        "close": "Fermer",
+        "confirm": "Confirmer",
+        "yes": "Oui",
+        "no": "Non"
+    },
+    "nav": {
+        "home": "Accueil",
+        "login": "Connexion",
+        "admin": "Administration",
+        "dashboard": "Tableau de bord",
+        "profile": "Profil",
+        "logout": "Déconnexion",
+        "adminPanel": "Panneau d'administration",
+        "knowledgeBase": "Base de connaissances",
+        "changePassword": "Changer le mot de passe",
+        "signIn": "Se connecter",
+        "signOut": "Se déconnecter"
+    },
+    "auth": {
+        "login": "Connexion",
+        "register": "S'inscrire",
+        "email": "E-mail",
+        "password": "Mot de passe",
+        "confirmPassword": "Confirmer le mot de passe",
+        "forgotPassword": "Mot de passe oublié?",
+        "rememberMe": "Se souvenir de moi",
+        "loginSuccess": "Connexion réussie",
+        "loginError": "Échec de la connexion",
+        "logoutSuccess": "Déconnexion réussie"
+    },
+    "workshop": {
+        "title": "Atelier",
+        "create": "Créer un atelier",
+        "join": "Rejoindre un atelier",
+        "enterPin": "Entrez le code PIN",
+        "participants": "Participants",
+        "useCases": "Cas d'utilisation",
+        "scoring": "Notation",
+        "results": "Résultats",
+        "active": "Actif",
+        "completed": "Terminé",
+        "pending": "En attente"
+    },
+    "matrix": {
+        "title": "Matrice de priorisation",
+        "quickWins": "Gains rapides",
+        "strategicBets": "Paris stratégiques",
+        "lowPriority": "Faible priorité",
+        "questionMarks": "Points d'interrogation",
+        "feasibility": "Faisabilité",
+        "value": "Valeur"
+    },
+    "landing": {
+        "hero": {
+            "badge": "Maintenant avec notation alimentée par l'IA",
+            "title": "Cartographiez les cas d'usage IA",
+            "titleHighlight": "Avec votre équipe",
+            "subtitle": "La plateforme collaborative pour identifier, noter et prioriser les opportunités IA. Transformez le brainstorming en feuille de route stratégique en quelques minutes.",
+            "facilitatorLogin": "Connexion animateur",
+            "joinSession": "Rejoindre une session"
+        },
+        "features": {
+            "title": "Fonctionnalités puissantes",
+            "subtitle": "Tout ce dont vous avez besoin pour mener des ateliers de priorisation IA réussis",
+            "aiPowered": "Intelligence alimentée par l'IA",
+            "aiPoweredDesc": "Notre moteur RAG aide à affiner les cas d'usage et vérifier la faisabilité technique en temps réel.",
+            "realtime": "Collaboration en temps réel",
+            "realtimeDesc": "Votez, notez et discutez des idées de manière synchrone. Voyez les résultats se mettre à jour en direct sur la matrice.",
+            "strategic": "Priorisation stratégique",
+            "strategicDesc": "Cartographiez automatiquement les opportunités sur une matrice Valeur vs Faisabilité pour identifier les gains rapides."
+        },
+        "howItWorks": {
+            "title": "Comment ça marche",
+            "step1": "01",
+            "step1Title": "Créer",
+            "step1Desc": "Définissez vos critères et lancez un espace de travail sécurisé pour votre équipe.",
+            "step2": "02",
+            "step2Title": "Collaborer",
+            "step2Desc": "L'équipe soumet des idées et l'IA aide à les affiner et les valider en temps réel.",
+            "step3": "03",
+            "step3Title": "Synthétiser",
+            "step3Desc": "Votez sur la valeur et la faisabilité, puis exportez votre feuille de route priorisée."
+        },
+        "benefits": {
+            "title": "Pourquoi les équipes nous choisissent",
+            "subtitle": "Résultats prouvés d'organisations qui ont transformé leur stratégie IA",
+            "fasterStat": "75%",
+            "fasterLabel": "Plus rapide",
+            "fasterDesc": "Temps de priorisation des cas d'usage",
+            "workshopsStat": "25+",
+            "workshopsLabel": "Ateliers",
+            "workshopsDesc": "Exécutés avec succès",
+            "aiStat": "IA",
+            "aiLabel": "Alimenté",
+            "aiDesc": "Assistance intelligente",
+            "betterStat": "3x",
+            "betterLabel": "Meilleur",
+            "betterDesc": "Résultats de décision"
+        },
+        "cta": {
+            "title": "Prêt à prioriser votre",
+            "titleHighlight": "Parcours IA ?",
+            "subtitle": "Commencez à collaborer avec votre équipe dès aujourd'hui et transformez les idées en une feuille de route IA actionnable.",
+            "getStarted": "Commencer",
+            "joinSession": "Rejoindre une session",
+            "copyright": "© 2026 AI Hotspot Matrix. Tous droits réservés."
+        }
+    },
+    "admin": {
+        "title": "Panneau d'administration",
+        "users": "Utilisateurs",
+        "workshops": "Ateliers",
+        "settings": "Paramètres",
+        "statistics": "Statistiques",
+        "totalUsers": "Total des utilisateurs",
+        "activeWorkshops": "Ateliers actifs",
+        "totalSubmissions": "Total des soumissions"
+    }
+}

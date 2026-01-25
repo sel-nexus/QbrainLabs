@@ -8,6 +8,7 @@ import {
     ChevronUp,
     Loader2
 } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 interface WorkshopInsight {
     workshop_id: string;
@@ -34,6 +35,7 @@ interface WorkshopInsightsProps {
 }
 
 export function WorkshopInsights({ workshopId }: WorkshopInsightsProps) {
+    const { theme } = useTheme();
     const [insights, setInsights] = useState<WorkshopInsight | null>(null);
     const [loading, setLoading] = useState(true);
     const [expanded, setExpanded] = useState(false);
@@ -87,8 +89,8 @@ export function WorkshopInsights({ workshopId }: WorkshopInsightsProps) {
 
     if (loading) {
         return (
-            <div className="bg-surface-800 rounded-xl p-4 border border-white/10">
-                <div className="flex items-center gap-2 text-gray-400">
+            <div className="theme-bg-secondary rounded-xl p-4 border theme-border">
+                <div className="flex items-center gap-2 contrast-muted">
                     <Loader2 className="w-4 h-4 animate-spin" />
                     <span className="text-sm">Loading AI insights...</span>
                 </div>
@@ -102,8 +104,8 @@ export function WorkshopInsights({ workshopId }: WorkshopInsightsProps) {
 
     if (!insights || insights.total_use_cases === 0) {
         return (
-            <div className="bg-surface-800 rounded-xl p-4 border border-white/10">
-                <div className="flex items-center gap-2 text-gray-400">
+            <div className="theme-bg-secondary rounded-xl p-4 border theme-border">
+                <div className="flex items-center gap-2 contrast-muted">
                     <Brain className="w-4 h-4" />
                     <span className="text-sm">AI insights will appear after use cases are submitted</span>
                 </div>
@@ -112,27 +114,35 @@ export function WorkshopInsights({ workshopId }: WorkshopInsightsProps) {
     }
 
     return (
-        <div className="bg-gradient-to-r from-purple-900/20 to-pink-900/20 rounded-xl border border-purple-500/20 overflow-hidden">
+        <div className={`rounded-xl border overflow-hidden ${
+            theme === 'light' 
+                ? 'bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200' 
+                : 'bg-gradient-to-r from-purple-900/20 to-pink-900/20 border-purple-500/20'
+        }`}>
             {/* Header - Always visible */}
             <button
                 onClick={() => setExpanded(!expanded)}
-                className="w-full p-4 flex items-center justify-between hover:bg-white/5 transition"
+                className={`w-full p-4 flex items-center justify-between transition ${
+                    theme === 'light' ? 'hover:bg-purple-100/50' : 'hover:bg-white/5'
+                }`}
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                        <Brain className="w-5 h-5 text-purple-400" />
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                        theme === 'light' ? 'bg-purple-100' : 'bg-purple-500/20'
+                    }`}>
+                        <Brain className="w-5 h-5 text-purple-500" />
                     </div>
                     <div className="text-left">
-                        <h3 className="text-white font-semibold">AI Insights</h3>
-                        <p className="text-sm text-gray-400">
+                        <h3 className="theme-text-primary font-semibold">AI Insights</h3>
+                        <p className="text-sm contrast-muted">
                             {insights.total_use_cases} use cases analyzed
                         </p>
                     </div>
                 </div>
                 {expanded ? (
-                    <ChevronUp className="w-5 h-5 text-gray-400" />
+                    <ChevronUp className="w-5 h-5 contrast-muted" />
                 ) : (
-                    <ChevronDown className="w-5 h-5 text-gray-400" />
+                    <ChevronDown className="w-5 h-5 contrast-muted" />
                 )}
             </button>
 
@@ -141,29 +151,35 @@ export function WorkshopInsights({ workshopId }: WorkshopInsightsProps) {
                 <div className="px-4 pb-4 space-y-4">
                     {/* AI Summary */}
                     {insights.ai_summary && (
-                        <div className="bg-surface-800/50 rounded-lg p-4">
+                        <div className={`rounded-lg p-4 ${
+                            theme === 'light' ? 'bg-white/70' : 'bg-surface-800/50'
+                        }`}>
                             <div className="flex items-start gap-3">
-                                <Lightbulb className="w-5 h-5 text-amber-400 mt-0.5" />
-                                <p className="text-gray-300 text-sm">{insights.ai_summary}</p>
+                                <Lightbulb className="w-5 h-5 text-amber-500 mt-0.5" />
+                                <p className="theme-text-secondary text-sm">{insights.ai_summary}</p>
                             </div>
                         </div>
                     )}
 
                     {/* Category Distribution */}
-                    <div className="bg-surface-800/50 rounded-lg p-4">
-                        <h4 className="text-sm font-medium text-gray-400 mb-3">Category Distribution</h4>
+                    <div className={`rounded-lg p-4 ${
+                        theme === 'light' ? 'bg-white/70' : 'bg-surface-800/50'
+                    }`}>
+                        <h4 className="text-sm font-medium contrast-muted mb-3">Category Distribution</h4>
                         <div className="space-y-2">
                             {Object.entries(insights.categories_distribution).map(([category, count]) => (
                                 <div key={category} className="flex items-center justify-between">
-                                    <span className="text-sm text-white">{category}</span>
+                                    <span className="text-sm theme-text-primary">{category}</span>
                                     <div className="flex items-center gap-2">
-                                        <div className="w-24 h-2 bg-surface-700 rounded-full overflow-hidden">
+                                        <div className={`w-24 h-2 rounded-full overflow-hidden ${
+                                            theme === 'light' ? 'bg-gray-200' : 'bg-surface-700'
+                                        }`}>
                                             <div
                                                 className="h-full bg-purple-500 rounded-full"
                                                 style={{ width: `${(count / insights.total_use_cases) * 100}%` }}
                                             />
                                         </div>
-                                        <span className="text-xs text-gray-400 w-8">{count}</span>
+                                        <span className="text-xs contrast-muted w-8">{count}</span>
                                     </div>
                                 </div>
                             ))}
@@ -171,15 +187,17 @@ export function WorkshopInsights({ workshopId }: WorkshopInsightsProps) {
                     </div>
 
                     {/* Complexity Distribution */}
-                    <div className="bg-surface-800/50 rounded-lg p-4">
-                        <h4 className="text-sm font-medium text-gray-400 mb-3">Estimated Complexity</h4>
+                    <div className={`rounded-lg p-4 ${
+                        theme === 'light' ? 'bg-white/70' : 'bg-surface-800/50'
+                    }`}>
+                        <h4 className="text-sm font-medium contrast-muted mb-3">Estimated Complexity</h4>
                         <div className="flex gap-4">
                             {Object.entries(insights.complexity_distribution).map(([level, count]) => (
                                 <div key={level} className="flex-1 text-center">
                                     <div className={`text-2xl font-bold ${getComplexityColor(level).split(' ')[0]}`}>
                                         {count}
                                     </div>
-                                    <div className="text-xs text-gray-400">{level}</div>
+                                    <div className="text-xs contrast-muted">{level}</div>
                                 </div>
                             ))}
                         </div>
@@ -187,27 +205,33 @@ export function WorkshopInsights({ workshopId }: WorkshopInsightsProps) {
 
                     {/* Recommended Templates */}
                     {insights.recommended_templates.length > 0 && (
-                        <div className="bg-surface-800/50 rounded-lg p-4">
-                            <h4 className="text-sm font-medium text-gray-400 mb-3">Recommended Templates</h4>
+                        <div className={`rounded-lg p-4 ${
+                            theme === 'light' ? 'bg-white/70' : 'bg-surface-800/50'
+                        }`}>
+                            <h4 className="text-sm font-medium contrast-muted mb-3">Recommended Templates</h4>
                             <div className="space-y-3">
                                 {insights.recommended_templates.slice(0, 3).map((template) => (
                                     <div
                                         key={template.id}
-                                        className="bg-surface-700/50 rounded-lg p-3 border border-white/5"
+                                        className={`rounded-lg p-3 border ${
+                                            theme === 'light' 
+                                                ? 'bg-gray-50 border-gray-200' 
+                                                : 'bg-surface-700/50 border-white/5'
+                                        }`}
                                     >
                                         <div className="flex items-start justify-between mb-2">
-                                            <h5 className="text-white font-medium text-sm">{template.title}</h5>
+                                            <h5 className="theme-text-primary font-medium text-sm">{template.title}</h5>
                                             <span className={`text-xs px-2 py-0.5 rounded ${getComplexityColor(template.complexity)}`}>
                                                 {template.complexity}
                                             </span>
                                         </div>
-                                        <p className="text-xs text-gray-400 mb-2 line-clamp-2">{template.description}</p>
+                                        <p className="text-xs contrast-muted mb-2 line-clamp-2">{template.description}</p>
                                         <div className="flex items-center gap-4 text-xs">
-                                            <div className="flex items-center gap-1 text-green-400">
+                                            <div className="flex items-center gap-1 text-green-500">
                                                 <TrendingUp className="w-3 h-3" />
                                                 <span>{template.typical_roi}</span>
                                             </div>
-                                            <div className="flex items-center gap-1 text-gray-400">
+                                            <div className="flex items-center gap-1 contrast-muted">
                                                 <Clock className="w-3 h-3" />
                                                 <span>{template.implementation_time}</span>
                                             </div>

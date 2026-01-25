@@ -1,10 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy import or_
 from app.core.database import get_db
 from app.models import Workshop, User, Participant, ParticipantRole
+from app.models.rbac import WorkshopFacilitator
 from app.schemas.workshop import WorkshopCreate, WorkshopResponse, PendingFacilitator
-from app.api.auth import get_current_user, oauth2_scheme
+from app.api.auth import get_current_user, oauth2_scheme, get_current_user_optional
 from typing import Optional
 import random
 import string
@@ -18,9 +20,49 @@ def generate_pin(length=6):
 from typing import List
 
 @router.get("/", response_model=List[WorkshopResponse])
-async def list_workshops(db: AsyncSession = Depends(get_db)):
-    result = await db.execute(select(Workshop).order_by(Workshop.title))
-    return result.scalars().all()
+async def list_workshops(
+    current_user: Optional[User] = Depends(get_current_user_optional),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    List workshops based on user permissions:
+    - Admins see all workshops
+    - Facilitators see only owned and assigned workshops
+    - Unauthenticated users see no workshops
+    """
+    if not current_user:
+        return []
+    
+    # Admins can see all workshops
+    if current_user.is_admin_user:
+        result = await db.execute(select(Workshop).order_by(Workshop.title))
+        return result.scalars().all()
+    
+    # Get workshops owned by the user
+    owned_result = await db.execute(
+        select(Workshop).where(Workshop.facilitator_id == current_user.id)
+    )
+    owned_workshops = list(owned_result.scalars().all())
+    owned_ids = {str(w.id) for w in owned_workshops}
+    
+    # Get workshops assigned to the user
+    assigned_result = await db.execute(
+        select(Workshop)
+        .join(WorkshopFacilitator, WorkshopFacilitator.workshop_id == Workshop.id)
+        .where(WorkshopFacilitator.facilitator_id == current_user.id)
+    )
+    assigned_workshops = assigned_result.scalars().all()
+    
+    # Combine owned and assigned workshops (avoiding duplicates)
+    all_workshops = list(owned_workshops)
+    for w in assigned_workshops:
+        if str(w.id) not in owned_ids:
+            all_workshops.append(w)
+    
+    # Sort by title
+    all_workshops.sort(key=lambda w: w.title)
+    
+    return all_workshops
 
 @router.post("/", response_model=WorkshopResponse, status_code=status.HTTP_201_CREATED)
 async def create_workshop(

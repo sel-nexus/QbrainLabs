@@ -1,27 +1,29 @@
 import { BrainCircuit, Zap, Target } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../context/ThemeContext';
-
-const features = [
-  {
-    icon: BrainCircuit,
-    title: "AI-Powered Intelligence",
-    desc: "Our RAG engine helps refine use cases and check technical feasibility in real-time."
-  },
-  {
-    icon: Zap,
-    title: "Real-Time Collaboration",
-    desc: "Vote, score, and discuss ideas synchronously. See results update live on the matrix."
-  },
-  {
-    icon: Target,
-    title: "Strategic Prioritization",
-    desc: "Automatically map opportunities to a Value vs. Feasibility matrix to find quick wins."
-  }
-];
 
 export function FeaturesTile() {
   const { theme } = useTheme();
+  const { t } = useTranslation();
+
+  const features = [
+    {
+      icon: BrainCircuit,
+      title: t('landing.features.aiPowered'),
+      desc: t('landing.features.aiPoweredDesc')
+    },
+    {
+      icon: Zap,
+      title: t('landing.features.realtime'),
+      desc: t('landing.features.realtimeDesc')
+    },
+    {
+      icon: Target,
+      title: t('landing.features.strategic'),
+      desc: t('landing.features.strategicDesc')
+    }
+  ];
 
   return (
     <section 
@@ -40,12 +42,12 @@ export function FeaturesTile() {
           <h2 className={`text-3xl sm:text-4xl font-bold mb-4 ${
             theme === 'light' ? 'text-gray-900' : 'text-white'
           }`}>
-            Powerful Features
+            {t('landing.features.title')}
           </h2>
           <p className={`text-lg max-w-2xl mx-auto ${
             theme === 'light' ? 'text-gray-600' : 'text-gray-400'
           }`}>
-            Everything you need to run successful AI prioritization workshops
+            {t('landing.features.subtitle')}
           </p>
         </motion.div>
 

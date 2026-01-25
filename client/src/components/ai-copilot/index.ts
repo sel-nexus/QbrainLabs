@@ -1,0 +1,10 @@
+// US16: AI Copilot Assistant Components
+export { CopilotPanel } from './CopilotPanel';
+export { CopilotToggle } from './CopilotToggle';
+export { SuggestionCard } from './SuggestionCard';
+export { AlertBanner } from './AlertBanner';
+export { EngagementMonitor } from './EngagementMonitor';
+export { DiscussionPrompts } from './DiscussionPrompts';
+export { SummaryGenerator } from './SummaryGenerator';
+export { CopilotSettings } from './CopilotSettings';
+export { InsightsPanel } from './InsightsPanel';

@@ -1,26 +1,28 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../context/ThemeContext';
-
-const steps = [
-  { 
-    step: "01", 
-    title: "Create", 
-    desc: "Define your criteria and launch a secure workspace for your team." 
-  },
-  { 
-    step: "02", 
-    title: "Collaborate", 
-    desc: "Team submits ideas and AI helps refine and validate them in real-time." 
-  },
-  { 
-    step: "03", 
-    title: "Synthesize", 
-    desc: "Vote on value and feasibility, then export your prioritized roadmap." 
-  }
-];
 
 export function HowItWorksTile() {
   const { theme } = useTheme();
+  const { t } = useTranslation();
+
+  const steps = [
+    { 
+      step: t('landing.howItWorks.step1'), 
+      title: t('landing.howItWorks.step1Title'), 
+      desc: t('landing.howItWorks.step1Desc') 
+    },
+    { 
+      step: t('landing.howItWorks.step2'), 
+      title: t('landing.howItWorks.step2Title'), 
+      desc: t('landing.howItWorks.step2Desc') 
+    },
+    { 
+      step: t('landing.howItWorks.step3'), 
+      title: t('landing.howItWorks.step3Title'), 
+      desc: t('landing.howItWorks.step3Desc') 
+    }
+  ];
 
   return (
     <section 
@@ -38,7 +40,7 @@ export function HowItWorksTile() {
             theme === 'light' ? 'text-gray-900' : 'text-white'
           }`}
         >
-          How It Works
+          {t('landing.howItWorks.title')}
         </motion.h2>
 
         <div className="grid md:grid-cols-3 gap-8 lg:gap-12 relative">

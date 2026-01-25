@@ -320,3 +320,29 @@ class WorkshopFacilitatorsResponse(BaseModel):
     count: int
     max_count: int = 10
     can_add_more: bool
+
+
+# ============== Facilitator Workshop Assignments ==============
+
+class WorkshopBasicInfo(BaseModel):
+    """Basic workshop info for dropdown selection"""
+    id: str
+    title: str
+    pin: Optional[str] = None
+    status: str
+    
+    class Config:
+        from_attributes = True
+
+
+class FacilitatorAssignedWorkshopsResponse(BaseModel):
+    """Response for facilitator's assigned workshops"""
+    facilitator_id: str
+    facilitator_name: str
+    facilitator_email: str
+    assigned_workshops: List[WorkshopBasicInfo]
+
+
+class UpdateFacilitatorWorkshopsRequest(BaseModel):
+    """Request to update facilitator's workshop assignments"""
+    workshop_ids: List[str]  # List of workshop IDs to assign

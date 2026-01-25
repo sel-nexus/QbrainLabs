@@ -1,9 +1,31 @@
 #!/bin/bash
 
+# Configuration
+BACKEND_PORT=8000
+FRONTEND_PORT=5173
+REDIS_PORT=6379
+
+# Colors for output
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+BOLD='\033[1m'
+
+echo -e "${BLUE}${BOLD}================================================${NC}"
+echo -e "${BLUE}${BOLD}🚀 AI Hotspot Matrix: Developer Environment Setup${NC}"
+echo -e "${BLUE}${BOLD}================================================${NC}"
+
 # Function to handle script exit and kill child processes
 cleanup() {
-    echo ""
-    echo "🛑 Stopping all services..."
+    echo -e "\n${RED}🛑 Stopping all services...${NC}"
+    
+    # Kill tail process
+    if [ -n "$TAIL_PID" ]; then
+        kill $TAIL_PID 2>/dev/null
+    fi
+    
     # Kill the specific background jobs started by this script
     if [ -n "$BACKEND_PID" ]; then
         kill $BACKEND_PID 2>/dev/null
@@ -17,67 +39,141 @@ cleanup() {
 # Trap SIGINT (Ctrl+C) and SIGTERM
 trap cleanup SIGINT SIGTERM
 
-echo "================================================"
-echo "🚀 Hotspot Matrix: Restarting Dev Environment"
-echo "================================================"
+# 1. Environment Verification
+echo -e "\n${BLUE}🔍 Verifying environment...${NC}"
 
-# 1. Kill existing processes on ports 8000 and 5173
-echo "🧹 Cleaning up occupied ports..."
-lsof -ti :8000 | xargs kill -9 2>/dev/null
-lsof -ti :5173 | xargs kill -9 2>/dev/null
+if [ ! -f ".env" ]; then
+    if [ -f ".env.example" ]; then
+        echo -e "${YELLOW}⚠️  .env not found. Copying from .env.example...${NC}"
+        cp .env.example .env
+    else
+        echo -e "${RED}❌ .env.example not found. Please create a .env file.${NC}"
+    fi
+fi
 
-# 2. Start Backend
-echo "🐍 Starting Backend (FastAPI)..."
+# 2. Port Cleanup
+echo -e "${BLUE}🧹 Cleaning up occupied ports...${NC}"
+
+kill_port() {
+    local port=$1
+    local pid=$(lsof -ti :$port)
+    if [ -n "$pid" ]; then
+        echo -e "   Stopping process on port $port (PID: $pid)..."
+        kill -9 $pid 2>/dev/null
+    fi
+}
+
+kill_port $BACKEND_PORT
+kill_port $FRONTEND_PORT
+
+# 3. Redis Check
+echo -e "${BLUE}📡 Checking for Redis...${NC}"
+if command -v redis-cli >/dev/null 2>&1; then
+    if ! redis-cli -p $REDIS_PORT ping >/dev/null 2>&1; then
+        echo -e "${YELLOW}⚠️  Redis is not running on port $REDIS_PORT. Real-time features may be limited.${NC}"
+        # Trying to start redis-server if it's available locally
+        # redis-server --daemonize yes 2>/dev/null && echo -e "${GREEN}✅ Redis started locally.${NC}"
+    else
+        echo -e "${GREEN}✅ Redis is connected.${NC}"
+    fi
+else
+    echo -e "${YELLOW}⚠️  redis-cli not found. Ensure Redis is accessible for production features.${NC}"
+fi
+
+# 4. Backend Setup
+echo -e "\n${BLUE}🐍 Setting up Backend (FastAPI)...${NC}"
 cd server
 
-# Verify venv exists
+# Virtual environment
 if [ ! -d ".venv" ]; then
-    echo "⚠️  Virtual environment not found. Creating..."
+    echo -e "${YELLOW}📦 Creating virtual environment...${NC}"
     python3 -m venv .venv
-    source .venv/bin/activate
-    pip install -r requirements.txt
-else
-    source .venv/bin/activate
 fi
+source .venv/bin/activate
 
-# Ensure critical dependencies are installed (for Supabase/PostgreSQL support)
-echo "📦 Checking dependencies..."
+# Install/Update dependencies
+echo -e "📦 Installing/Updating dependencies..."
+pip install --quiet --upgrade pip
+pip install --quiet -r requirements.txt
+
+# Ensure critical monitoring deps are present (safety net)
 python -m pip install --quiet structlog python-json-logger prometheus-client "psycopg[binary]" python-dotenv 2>/dev/null
 
-# Initialize database tables if needed
-echo "🗄️  Initializing database..."
-python init_db.py 2>/dev/null || echo "⚠️  Database init skipped (may already exist)"
+# Database Initialization, Table Creation & Migration
+echo -e "\n${BLUE}🗄️  Database Setup & Migration...${NC}"
 
-# Start Uvicorn in the background
-uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 &
-BACKEND_PID=$!
-cd ..
+# Check if PostgreSQL is accessible
+check_postgres() {
+    if command -v psql >/dev/null 2>&1; then
+        # Try to connect using DATABASE_URL from .env
+        if [ -f "../.env" ]; then
+            DB_URL=$(grep -E "^DATABASE_URL=" ../.env | cut -d '=' -f2- | tr -d '"' | tr -d "'")
+        elif [ -f ".env" ]; then
+            DB_URL=$(grep -E "^DATABASE_URL=" .env | cut -d '=' -f2- | tr -d '"' | tr -d "'")
+        fi
+        
+        if [ -n "$DB_URL" ]; then
+            # Extract connection info for display (hide password)
+            DB_HOST=$(echo "$DB_URL" | sed -n 's/.*@\([^:\/]*\).*/\1/p')
+            DB_NAME=$(echo "$DB_URL" | sed -n 's/.*\/\([^?]*\).*/\1/p')
+            echo -e "   Database: ${BOLD}$DB_NAME${NC} @ ${BOLD}$DB_HOST${NC}"
+        fi
+    fi
+}
 
-# Wait briefly for backend
-sleep 2
+check_postgres
 
-# 3. Start Frontend
-echo "⚛️  Starting Frontend (Vite)..."
-cd client
-
-# Verify node_modules
-if [ ! -d "node_modules" ]; then
-    echo "⚠️  node_modules not found. Installing..."
-    npm install
+# Run database initialization (creates tables if not exist, runs migrations)
+echo -e "${BLUE}   Checking database connection and schema...${NC}"
+if python init_db.py; then
+    echo -e "${GREEN}✅ Database initialized successfully${NC}"
+else
+    echo -e "${RED}❌ Database initialization failed!${NC}"
+    echo -e "${YELLOW}   Please check:${NC}"
+    echo -e "${YELLOW}   1. PostgreSQL is running${NC}"
+    echo -e "${YELLOW}   2. DATABASE_URL in .env is correct${NC}"
+    echo -e "${YELLOW}   3. Database 'hotspotmatrix' exists${NC}"
+    echo -e "${YELLOW}   Continuing anyway - app will retry on startup...${NC}"
 fi
 
-npm run dev &
-FRONTEND_PID=$!
+# Start Backend
+echo -e "${GREEN}✅ Backend starting on port $BACKEND_PORT...${NC}"
+uvicorn app.main:app --reload --host 0.0.0.0 --port $BACKEND_PORT > ../server.log 2>&1 &
+BACKEND_PID=$!
+
 cd ..
 
-echo "================================================"
-echo "✅ Services are up and running!"
-echo "   Backend:  http://localhost:8000/docs"
-echo "   Frontend: http://localhost:5173"
-echo ""
-echo "📝 Logs from both services will appear below."
-echo "   Press Ctrl+C to stop."
-echo "================================================"
+# 5. Frontend Setup
+echo -e "\n${BLUE}⚛️  Setting up Frontend (Vite)...${NC}"
+cd client
 
-# Wait for both processes to keep script running
+if [ ! -d "node_modules" ]; then
+    echo -e "${YELLOW}📦 node_modules not found. Installing...${NC}"
+    npm install --quiet
+fi
+
+# Start Frontend
+echo -e "${GREEN}✅ Frontend starting on port $FRONTEND_PORT...${NC}"
+npm run dev > ../client.log 2>&1 &
+FRONTEND_PID=$!
+
+cd ..
+
+# 6. Final Status
+echo -e "\n${BLUE}${BOLD}================================================${NC}"
+echo -e "${GREEN}${BOLD}✨ Environment is ready!${NC}"
+echo -e "${BLUE}Backend:  ${BOLD}http://localhost:$BACKEND_PORT/docs${NC}"
+echo -e "${BLUE}Frontend: ${BOLD}http://localhost:$FRONTEND_PORT${NC}"
+echo -e "${BLUE}${BOLD}================================================${NC}"
+echo -e "${YELLOW}📝 Streaming logs from both services below...${NC}"
+echo -e "${YELLOW}   Press Ctrl+C to stop all services.${NC}"
+echo -e "${BLUE}${BOLD}================================================${NC}\n"
+
+# Create log files if they don't exist
+touch server.log client.log
+
+# Tail the logs in a combined view
+tail -f server.log client.log &
+TAIL_PID=$!
+
 wait

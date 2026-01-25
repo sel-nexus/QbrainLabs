@@ -32,12 +32,12 @@ interface Workshop {
   can_delete: boolean;
 }
 
-const statusConfig: Record<string, { label: string; color: string; icon: React.ElementType }> = {
-  DRAFT: { label: 'Draft', color: 'bg-gray-100 text-gray-700', icon: Clock },
-  OPEN: { label: 'Open', color: 'bg-green-100 text-green-700', icon: CheckCircle2 },
-  IN_PROGRESS: { label: 'In Progress', color: 'bg-blue-100 text-blue-700', icon: Play },
-  COMPLETED: { label: 'Completed', color: 'bg-purple-100 text-purple-700', icon: CheckCircle2 },
-  PAUSED: { label: 'Paused', color: 'bg-yellow-100 text-yellow-700', icon: PauseCircle },
+const statusConfig: Record<string, { label: string; color: string; barColor: string; icon: React.ElementType }> = {
+  DRAFT: { label: 'Draft', color: 'theme-badge-neutral', barColor: 'theme-bg-tertiary', icon: Clock },
+  OPEN: { label: 'Open', color: 'theme-badge-success', barColor: 'theme-badge-success', icon: CheckCircle2 },
+  IN_PROGRESS: { label: 'In Progress', color: 'theme-badge-info', barColor: 'theme-badge-info', icon: Play },
+  COMPLETED: { label: 'Completed', color: 'theme-badge-info', barColor: 'theme-badge-info', icon: CheckCircle2 },
+  PAUSED: { label: 'Paused', color: 'theme-badge-warning', barColor: 'theme-badge-warning', icon: PauseCircle },
 };
 
 export function FacilitatorDashboard() {
@@ -103,7 +103,7 @@ export function FacilitatorDashboard() {
     return (
       <div className="min-h-screen theme-bg-secondary">
         {/* Header */}
-        <div className="bg-white border-b border-gray-100">
+        <div className="theme-card border-b" style={{ borderColor: 'var(--theme-border-color)' }}>
           <div className="max-w-7xl mx-auto px-6 py-6">
             <div className="flex items-center justify-between">
               <div>
@@ -111,7 +111,7 @@ export function FacilitatorDashboard() {
                   <LayoutDashboard className="w-7 h-7 text-brand-violet" />
                   Facilitator Dashboard
                 </h1>
-                <p className="text-gray-600 mt-1">
+                <p className="theme-text-secondary mt-1">
                   Welcome, {user?.full_name || user?.email}
                 </p>
               </div>
@@ -121,24 +121,24 @@ export function FacilitatorDashboard() {
 
         <div className="max-w-7xl mx-auto px-6 py-8">
           {/* Pending Approval Banner */}
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-8">
+          <div className="rounded-xl p-6 mb-8 theme-badge-warning border">
             <div className="flex items-start gap-4">
-              <div className="p-3 bg-amber-100 rounded-full">
-                <AlertCircle className="w-8 h-8 text-amber-600" />
+              <div className="p-3 rounded-full theme-icon-warning">
+                <AlertCircle className="w-8 h-8" />
               </div>
               <div className="flex-1">
-                <h2 className="text-xl font-bold text-amber-800 mb-2">
+                <h2 className="text-xl font-bold mb-2" style={{ color: 'var(--theme-warning-text)' }}>
                   ⏳ Account Pending Approval
                 </h2>
-                <p className="text-amber-700 mb-4">
+                <p className="mb-4 theme-text-secondary">
                   Your facilitator account is pending admin approval. You will be notified via email once your account has been activated.
                 </p>
-                <div className="bg-white/50 rounded-lg p-3 inline-block">
-                  <span className="text-amber-600 font-medium">Status:</span>
-                  <span className="ml-2 text-amber-800">Pending Review</span>
+                <div className="rounded-lg p-3 inline-block theme-bg-tertiary">
+                  <span className="font-medium" style={{ color: 'var(--theme-warning-text)' }}>Status:</span>
+                  <span className="ml-2 theme-text-primary">Pending Review</span>
                 </div>
                 <button
-                  className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-amber-100 text-amber-800 rounded-lg hover:bg-amber-200 transition-colors"
+                  className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg transition-colors theme-badge-warning hover:opacity-80"
                   onClick={() => window.location.href = 'mailto:admin@hotspotmatrix.com?subject=Facilitator%20Approval%20Request'}
                 >
                   <Mail className="w-4 h-4" />
@@ -151,10 +151,10 @@ export function FacilitatorDashboard() {
           {/* Empty Workshops Section */}
           <div>
             <h2 className="text-xl font-semibold theme-text-primary mb-4">My Workshops (0)</h2>
-            <div className="bg-white rounded-xl p-8 text-center shadow-sm border border-gray-100">
-              <LayoutDashboard className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-600 font-medium">No workshops available</p>
-              <p className="text-gray-500 text-sm mt-1">
+            <div className="rounded-xl p-8 text-center shadow-sm border theme-card">
+              <LayoutDashboard className="w-12 h-12 contrast-muted mx-auto mb-3" />
+              <p className="theme-text-secondary font-medium">No workshops available</p>
+              <p className="contrast-muted text-sm mt-1">
                 Workshops will appear here once your account is approved and you are assigned to workshops.
               </p>
             </div>
@@ -167,7 +167,7 @@ export function FacilitatorDashboard() {
   return (
     <div className="min-h-screen theme-bg-secondary">
       {/* Header */}
-      <div className="bg-white border-b border-gray-100">
+      <div className="theme-card border-b" style={{ borderColor: 'var(--theme-border-color)' }}>
         <div className="max-w-7xl mx-auto px-6 py-6">
           <div className="flex items-center justify-between">
             <div>
@@ -175,7 +175,7 @@ export function FacilitatorDashboard() {
                 <LayoutDashboard className="w-7 h-7 text-brand-violet" />
                 Facilitator Dashboard
               </h1>
-              <p className="text-gray-600 mt-1">
+              <p className="theme-text-secondary mt-1">
                 Welcome back, {user?.full_name || user?.email}
               </p>
             </div>
@@ -194,47 +194,47 @@ export function FacilitatorDashboard() {
       <div className="max-w-7xl mx-auto px-6 py-8">
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+          <div className="rounded-xl p-5 shadow-sm border theme-card">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-brand-violet/10 rounded-lg">
                 <LayoutDashboard className="w-6 h-6 text-brand-violet" />
               </div>
               <div>
-                <p className="text-3xl font-bold text-gray-900">{workshops.length}</p>
-                <p className="text-sm text-gray-500">Total Workshops</p>
+                <p className="text-3xl font-bold theme-text-primary">{workshops.length}</p>
+                <p className="text-sm contrast-muted">Total Workshops</p>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+          <div className="rounded-xl p-5 shadow-sm border theme-card">
             <div className="flex items-center gap-4">
-              <div className="p-3 bg-green-100 rounded-lg">
-                <Play className="w-6 h-6 text-green-600" />
+              <div className="p-3 rounded-lg theme-icon-success">
+                <Play className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-3xl font-bold text-gray-900">{getActiveWorkshops().length}</p>
-                <p className="text-sm text-gray-500">Active Workshops</p>
+                <p className="text-3xl font-bold theme-text-primary">{getActiveWorkshops().length}</p>
+                <p className="text-sm contrast-muted">Active Workshops</p>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+          <div className="rounded-xl p-5 shadow-sm border theme-card">
             <div className="flex items-center gap-4">
-              <div className="p-3 bg-blue-100 rounded-lg">
-                <Users className="w-6 h-6 text-blue-600" />
+              <div className="p-3 rounded-lg theme-icon-info">
+                <Users className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-3xl font-bold text-gray-900">{getTotalParticipants()}</p>
-                <p className="text-sm text-gray-500">Total Participants</p>
+                <p className="text-3xl font-bold theme-text-primary">{getTotalParticipants()}</p>
+                <p className="text-sm contrast-muted">Total Participants</p>
               </div>
             </div>
           </div>
-          <div className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+          <div className="rounded-xl p-5 shadow-sm border theme-card">
             <div className="flex items-center gap-4">
-              <div className="p-3 bg-purple-100 rounded-lg">
-                <FileText className="w-6 h-6 text-purple-600" />
+              <div className="p-3 rounded-lg bg-brand-violet/10">
+                <FileText className="w-6 h-6 text-brand-violet" />
               </div>
               <div>
-                <p className="text-3xl font-bold text-gray-900">{getTotalUseCases()}</p>
-                <p className="text-sm text-gray-500">Total Use Cases</p>
+                <p className="text-3xl font-bold theme-text-primary">{getTotalUseCases()}</p>
+                <p className="text-sm contrast-muted">Total Use Cases</p>
               </div>
             </div>
           </div>
@@ -245,15 +245,15 @@ export function FacilitatorDashboard() {
           <h2 className="text-xl font-semibold theme-text-primary mb-4">My Workshops</h2>
           
           {isLoading ? (
-            <div className="bg-white rounded-xl p-8 text-center shadow-sm border border-gray-100">
+            <div className="rounded-xl p-8 text-center shadow-sm border theme-card">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-violet mx-auto"></div>
-              <p className="mt-4 text-gray-500">Loading workshops...</p>
+              <p className="mt-4 contrast-muted">Loading workshops...</p>
             </div>
           ) : workshops.length === 0 ? (
-            <div className="bg-white rounded-xl p-8 text-center shadow-sm border border-gray-100">
-              <LayoutDashboard className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-              <p className="text-gray-600 font-medium">No workshops assigned</p>
-              <p className="text-gray-500 text-sm mt-1">
+            <div className="rounded-xl p-8 text-center shadow-sm border theme-card">
+              <LayoutDashboard className="w-12 h-12 contrast-muted mx-auto mb-3" />
+              <p className="theme-text-secondary font-medium">No workshops assigned</p>
+              <p className="contrast-muted text-sm mt-1">
                 {user?.is_admin 
                   ? 'Create a workshop to get started'
                   : 'Contact an administrator to get assigned to workshops'}
@@ -268,21 +268,16 @@ export function FacilitatorDashboard() {
                 return (
                   <div
                     key={workshop.id}
-                    className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow"
+                    className="rounded-xl shadow-sm border overflow-hidden hover:shadow-md transition-shadow theme-card"
                   >
                     {/* Status Bar */}
-                    <div className={`px-4 py-2 flex items-center justify-between ${
-                      workshop.status === 'IN_PROGRESS' ? 'bg-blue-50' :
-                      workshop.status === 'OPEN' ? 'bg-green-50' :
-                      workshop.status === 'COMPLETED' ? 'bg-purple-50' :
-                      'bg-gray-50'
-                    }`}>
+                    <div className={`px-4 py-2 flex items-center justify-between ${statusStyle.barColor}`}>
                       <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${statusStyle.color}`}>
                         <StatusIcon className="w-3.5 h-3.5" />
                         {statusStyle.label}
                       </span>
                       {workshop.pin && (
-                        <span className="text-sm font-mono text-gray-600">
+                        <span className="text-sm font-mono theme-text-secondary">
                           PIN: {workshop.pin}
                         </span>
                       )}
@@ -290,11 +285,11 @@ export function FacilitatorDashboard() {
 
                     {/* Content */}
                     <div className="p-5">
-                      <h3 className="font-semibold text-lg text-gray-900 mb-2 line-clamp-2">
+                      <h3 className="font-semibold text-lg theme-text-primary mb-2 line-clamp-2">
                         {workshop.title}
                       </h3>
                       
-                      <div className="flex items-center gap-4 text-sm text-gray-500 mb-4">
+                      <div className="flex items-center gap-4 text-sm contrast-muted mb-4">
                         <span className="flex items-center gap-1">
                           <Users className="w-4 h-4" />
                           {workshop.participant_count} participants
@@ -305,7 +300,7 @@ export function FacilitatorDashboard() {
                         </span>
                       </div>
 
-                      <p className="text-xs text-gray-400 mb-4">
+                      <p className="text-xs contrast-muted mb-4">
                         Created {formatDate(workshop.created_at)}
                       </p>
 
@@ -320,17 +315,17 @@ export function FacilitatorDashboard() {
                         </button>
                         <button
                           onClick={() => navigate(`/workshop/${workshop.id}?tab=analytics`)}
-                          className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                          className="p-2 border rounded-lg theme-hover transition-colors theme-border"
                           title="View Analytics"
                         >
-                          <BarChart3 className="w-5 h-5 text-gray-600" />
+                          <BarChart3 className="w-5 h-5 theme-text-secondary" />
                         </button>
                         <button
                           onClick={() => navigate(`/workshop/${workshop.id}?tab=export`)}
-                          className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                          className="p-2 border rounded-lg theme-hover transition-colors theme-border"
                           title="Export Data"
                         >
-                          <Download className="w-5 h-5 text-gray-600" />
+                          <Download className="w-5 h-5 theme-text-secondary" />
                         </button>
                       </div>
                     </div>
@@ -345,43 +340,43 @@ export function FacilitatorDashboard() {
         {getCompletedWorkshops().length > 0 && (
           <div>
             <h2 className="text-xl font-semibold theme-text-primary mb-4">Completed Workshops</h2>
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="rounded-xl shadow-sm border overflow-hidden theme-card">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-100">
+                <thead className="theme-bg-tertiary border-b" style={{ borderColor: 'var(--theme-border-color)' }}>
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium contrast-muted uppercase tracking-wider">
                       Workshop
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium contrast-muted uppercase tracking-wider">
                       Participants
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium contrast-muted uppercase tracking-wider">
                       Use Cases
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-medium contrast-muted uppercase tracking-wider">
                       Completed
                     </th>
-                    <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-right text-xs font-medium contrast-muted uppercase tracking-wider">
                       Actions
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100">
+                <tbody className="divide-y" style={{ borderColor: 'var(--theme-border-color)' }}>
                   {getCompletedWorkshops().map((workshop) => (
-                    <tr key={workshop.id} className="hover:bg-gray-50">
+                    <tr key={workshop.id} className="theme-hover">
                       <td className="px-6 py-4">
-                        <p className="font-medium text-gray-900">{workshop.title}</p>
+                        <p className="font-medium theme-text-primary">{workshop.title}</p>
                         {workshop.pin && (
-                          <p className="text-sm text-gray-500 font-mono">PIN: {workshop.pin}</p>
+                          <p className="text-sm contrast-muted font-mono">PIN: {workshop.pin}</p>
                         )}
                       </td>
-                      <td className="px-6 py-4 text-gray-600">
+                      <td className="px-6 py-4 theme-text-secondary">
                         {workshop.participant_count}
                       </td>
-                      <td className="px-6 py-4 text-gray-600">
+                      <td className="px-6 py-4 theme-text-secondary">
                         {workshop.use_case_count}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-500">
+                      <td className="px-6 py-4 text-sm contrast-muted">
                         {formatDate(workshop.created_at)}
                       </td>
                       <td className="px-6 py-4 text-right">

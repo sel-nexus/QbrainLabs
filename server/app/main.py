@@ -66,12 +66,13 @@ app.include_router(usecases.router, prefix="/api/usecases", tags=["usecases"])
 app.include_router(votes.router, prefix="/api/votes", tags=["votes"])
 app.include_router(results.router, prefix="/api/results", tags=["results"])
 
-from app.api import ai, auth, admin, knowledge_base, surveys, participant_auth, analytics, export, organizations, marketplace, errors, facilitators, members, settings
+from app.api import ai, auth, admin, knowledge_base, surveys, participant_auth, analytics, export, organizations, marketplace, errors, facilitators, members, settings, subscription
 app.include_router(ai.router, prefix="/api/ai", tags=["ai"])
 app.include_router(errors.router, tags=["errors"])
 app.include_router(auth.router, tags=["authentication"])
 app.include_router(admin.router, tags=["admin"])
 app.include_router(settings.router, tags=["admin-settings"])
+app.include_router(subscription.router, tags=["admin-subscription"])
 app.include_router(knowledge_base.router, tags=["knowledge-base"])
 app.include_router(surveys.router, prefix="/api", tags=["surveys"])
 app.include_router(participant_auth.router, tags=["participant-authentication"])
@@ -81,6 +82,20 @@ app.include_router(organizations.router, tags=["organizations"])
 app.include_router(marketplace.router, tags=["marketplace"])
 app.include_router(facilitators.router, tags=["facilitators"])
 app.include_router(members.router, tags=["members"])
+
+from app.api import feedback, analytics_dashboard, polls, gamification
+app.include_router(feedback.router, prefix="/api", tags=["feedback", "onboarding", "help"])
+app.include_router(analytics_dashboard.router, prefix="/api/analytics", tags=["advanced-analytics", "reporting"])
+app.include_router(polls.router, prefix="/api", tags=["polls"])
+app.include_router(gamification.router, prefix="/api/gamification", tags=["gamification"])
+
+from app.api import roi, templates, breakout, roadmap, challenge, copilot
+app.include_router(roi.router, tags=["roi"])
+app.include_router(templates.router, prefix="/api/templates", tags=["templates"])
+app.include_router(breakout.router, prefix="/api", tags=["breakout-rooms"])
+app.include_router(roadmap.router, tags=["roadmaps"])
+app.include_router(challenge.router, tags=["challenges"])
+app.include_router(copilot.router, tags=["ai-copilot"])
 
 
 @app.get("/")

@@ -82,18 +82,18 @@ export function FacilitatorRegister() {
   if (registrationComplete) {
     return (
       <div className="min-h-screen flex items-center justify-center theme-bg-secondary px-4">
-        <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8 text-center">
-          <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-green-100 flex items-center justify-center">
-            <CheckCircle className="w-8 h-8 text-green-600" />
+        <div className="max-w-md w-full rounded-2xl shadow-lg p-8 text-center theme-card border">
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full theme-icon-success flex items-center justify-center">
+            <CheckCircle className="w-8 h-8" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+          <h2 className="text-2xl font-bold theme-text-primary mb-4">
             Registration Submitted
           </h2>
-          <p className="text-gray-600 mb-6">
+          <p className="theme-text-secondary mb-6">
             Your facilitator account request has been submitted successfully. 
             An administrator will review your request and activate your account.
           </p>
-          <p className="text-sm text-gray-500 mb-8">
+          <p className="text-sm contrast-muted mb-8">
             You will receive an email notification once your account is approved.
           </p>
           <Link
@@ -117,69 +117,69 @@ export function FacilitatorRegister() {
           <h1 className="text-3xl font-bold theme-text-primary">
             Facilitator Registration
           </h1>
-          <p className="text-gray-600 mt-2">
+          <p className="theme-text-secondary mt-2">
             Create an account to facilitate workshops
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-lg p-8">
+        <div className="rounded-2xl shadow-lg p-8 theme-card border">
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Full Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium theme-text-secondary mb-1">
                 Full Name
               </label>
               <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 contrast-muted" />
                 <input
                   type="text"
                   value={formData.full_name}
                   onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-brand-violet focus:border-transparent ${
-                    errors.full_name ? 'border-red-300' : 'border-gray-200'
+                  className={`w-full pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-brand-violet focus:border-transparent theme-input ${
+                    errors.full_name ? 'border-[var(--theme-danger-text)]' : ''
                   }`}
                   placeholder="John Smith"
                 />
               </div>
               {errors.full_name && (
-                <p className="mt-1 text-sm text-red-500">{errors.full_name}</p>
+                <p className="mt-1 text-sm" style={{ color: 'var(--theme-danger-text)' }}>{errors.full_name}</p>
               )}
             </div>
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium theme-text-secondary mb-1">
                 Email Address
               </label>
               <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 contrast-muted" />
                 <input
                   type="email"
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-brand-violet focus:border-transparent ${
-                    errors.email ? 'border-red-300' : 'border-gray-200'
+                  className={`w-full pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-brand-violet focus:border-transparent theme-input ${
+                    errors.email ? 'border-[var(--theme-danger-text)]' : ''
                   }`}
                   placeholder="john@company.com"
                 />
               </div>
               {errors.email && (
-                <p className="mt-1 text-sm text-red-500">{errors.email}</p>
+                <p className="mt-1 text-sm" style={{ color: 'var(--theme-danger-text)' }}>{errors.email}</p>
               )}
             </div>
 
             {/* Organization */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Organization <span className="text-gray-400">(Optional)</span>
+              <label className="block text-sm font-medium theme-text-secondary mb-1">
+                Organization <span className="contrast-muted">(Optional)</span>
               </label>
               <div className="relative">
-                <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 contrast-muted" />
                 <input
                   type="text"
                   value={formData.organization}
                   onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-violet focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-brand-violet focus:border-transparent theme-input"
                   placeholder="Your Company"
                 />
               </div>
@@ -187,55 +187,55 @@ export function FacilitatorRegister() {
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium theme-text-secondary mb-1">
                 Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 contrast-muted" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={formData.password}
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                  className={`w-full pl-10 pr-12 py-3 border rounded-lg focus:ring-2 focus:ring-brand-violet focus:border-transparent ${
-                    errors.password ? 'border-red-300' : 'border-gray-200'
+                  className={`w-full pl-10 pr-12 py-3 rounded-lg focus:ring-2 focus:ring-brand-violet focus:border-transparent theme-input ${
+                    errors.password ? 'border-[var(--theme-danger-text)]' : ''
                   }`}
                   placeholder="Min 8 characters"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 contrast-muted hover:theme-text-primary transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
               {errors.password && (
-                <p className="mt-1 text-sm text-red-500">{errors.password}</p>
+                <p className="mt-1 text-sm" style={{ color: 'var(--theme-danger-text)' }}>{errors.password}</p>
               )}
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs contrast-muted">
                 Must contain uppercase, lowercase, and a number
               </p>
             </div>
 
             {/* Confirm Password */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium theme-text-secondary mb-1">
                 Confirm Password
               </label>
               <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 contrast-muted" />
                 <input
                   type={showPassword ? 'text' : 'password'}
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                  className={`w-full pl-10 pr-4 py-3 border rounded-lg focus:ring-2 focus:ring-brand-violet focus:border-transparent ${
-                    errors.confirmPassword ? 'border-red-300' : 'border-gray-200'
+                  className={`w-full pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-brand-violet focus:border-transparent theme-input ${
+                    errors.confirmPassword ? 'border-[var(--theme-danger-text)]' : ''
                   }`}
                   placeholder="Confirm your password"
                 />
               </div>
               {errors.confirmPassword && (
-                <p className="mt-1 text-sm text-red-500">{errors.confirmPassword}</p>
+                <p className="mt-1 text-sm" style={{ color: 'var(--theme-danger-text)' }}>{errors.confirmPassword}</p>
               )}
             </div>
 
@@ -260,7 +260,7 @@ export function FacilitatorRegister() {
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-sm text-gray-600">
+            <p className="text-sm theme-text-secondary">
               Already have an account?{' '}
               <Link
                 to="/facilitator-login"
@@ -271,12 +271,19 @@ export function FacilitatorRegister() {
             </p>
           </div>
 
-          <div className="mt-4 p-4 bg-blue-50 rounded-lg">
-            <p className="text-xs text-blue-700">
+          <div className="mt-4 p-4 rounded-lg theme-badge-info">
+            <p className="text-xs">
               <strong>Note:</strong> After registration, your account will require administrator 
               approval before you can access the system. You'll receive an email once approved.
             </p>
           </div>
+        </div>
+
+        {/* Back to Home */}
+        <div className="text-center mt-6">
+          <Link to="/" className="contrast-muted hover:theme-text-primary text-sm transition">
+            ← Back to Home
+          </Link>
         </div>
       </div>
     </div>

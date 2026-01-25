@@ -63,3 +63,98 @@ from .settings import (
     SettingsAuditLog,
     DEFAULT_SYSTEM_SETTINGS
 )
+
+from .subscription import (
+    SubscriptionTier,
+    FeatureFlag,
+    FeatureFlagOverride,
+    DEFAULT_SUBSCRIPTION_TIERS,
+    DEFAULT_FEATURE_FLAGS
+)
+
+from .knowledge_base import (
+    KBIndustry,
+    KBUseCase,
+    CategoryKeyword,
+    ComplexityRule,
+    DEFAULT_CATEGORY_KEYWORDS,
+    DEFAULT_COMPLEXITY_RULES
+)
+
+from .feedback import (
+    Feedback,
+    FeedbackType,
+    FeedbackStatus,
+    OnboardingProgress,
+    HelpArticle,
+    Tooltip,
+    UserTour,
+    UserTourProgress
+)
+
+from .analytics import (
+    AnalyticsSnapshot,
+    CustomDashboard,
+    GeneratedReport,
+    IndustryBenchmark
+)
+
+from .poll import (
+    Poll,
+    PollType,
+    PollStatus,
+    PollResponse,
+    Reaction,
+    Question,
+    QuestionUpvote
+)
+
+from .gamification import (
+    ParticipantPoint,
+    Badge,
+    ParticipantBadge,
+    Achievement,
+    WorkshopTeam,
+    TeamMember,
+    BadgeRarity
+)
+
+from .roi import (
+    ROICalculation,
+    BusinessCase
+)
+
+from .templates import (
+    WorkshopTemplate,
+    IndustryPackage,
+    UseCaseLibrary,
+    CriteriaTemplate
+)
+
+from .breakout import (
+    BreakoutRoom,
+    BreakoutRoomStatus,
+    RoomAssignment,
+    CanvasItem,
+    CanvasVote,
+    RoomMessage
+)
+
+from .roadmap import (
+    Roadmap,
+    RoadmapStatus,
+    RoadmapPhase,
+    PhaseStatus,
+    RoadmapTask,
+    TaskStatus,
+    TaskDependency,
+    DependencyType,
+    RoadmapMilestone,
+    MilestoneStatus,
+    ResourceAllocation,
+    RoadmapScenario
+)
+
+from .challenge import (
+    ChallengeCard
+)

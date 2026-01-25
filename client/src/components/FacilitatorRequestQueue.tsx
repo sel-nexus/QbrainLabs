@@ -148,21 +148,21 @@ export function FacilitatorRequestQueue({ onRefresh }: Props) {
     switch (status) {
       case 'pending':
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
+          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium theme-badge-warning">
             <Clock className="w-3 h-3" />
             Pending
           </span>
         );
       case 'approved':
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">
+          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium theme-badge-success">
             <CheckCircle className="w-3 h-3" />
             Approved
           </span>
         );
       case 'rejected':
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">
+          <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium theme-badge-danger">
             <XCircle className="w-3 h-3" />
             Rejected
           </span>
@@ -173,27 +173,27 @@ export function FacilitatorRequestQueue({ onRefresh }: Props) {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-100">
+    <div className="rounded-xl shadow-sm border theme-card">
       {/* Header */}
-      <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+      <div className="px-6 py-4 border-b flex items-center justify-between" style={{ borderColor: 'var(--theme-border-color)' }}>
         <div className="flex items-center gap-3">
           <Users className="w-5 h-5 text-brand-violet" />
-          <h2 className="text-lg font-semibold text-gray-900">
+          <h2 className="text-lg font-semibold theme-text-primary">
             Facilitator Requests
           </h2>
           {pendingCount > 0 && (
-            <span className="px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
+            <span className="px-2 py-0.5 rounded-full text-xs font-medium theme-badge-warning">
               {pendingCount} pending
             </span>
           )}
         </div>
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
-            <Filter className="w-4 h-4 text-gray-400" />
+            <Filter className="w-4 h-4 contrast-muted" />
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="text-sm border-gray-200 rounded-lg"
+              className="text-sm rounded-lg theme-input"
             >
               <option value="">All</option>
               <option value="pending">Pending</option>
@@ -203,10 +203,10 @@ export function FacilitatorRequestQueue({ onRefresh }: Props) {
           </div>
           <button
             onClick={fetchRequests}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 theme-hover rounded-lg transition-colors"
             title="Refresh"
           >
-            <RefreshCw className="w-4 h-4 text-gray-600" />
+            <RefreshCw className="w-4 h-4 theme-text-secondary" />
           </button>
         </div>
       </div>
@@ -215,22 +215,22 @@ export function FacilitatorRequestQueue({ onRefresh }: Props) {
       {isLoading ? (
         <div className="p-8 text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-violet mx-auto"></div>
-          <p className="mt-3 text-gray-500">Loading requests...</p>
+          <p className="mt-3 contrast-muted">Loading requests...</p>
         </div>
       ) : requests.length === 0 ? (
         <div className="p-8 text-center">
-          <Users className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-          <p className="text-gray-600 font-medium">No requests found</p>
-          <p className="text-gray-500 text-sm mt-1">
+          <Users className="w-12 h-12 contrast-muted mx-auto mb-3" />
+          <p className="theme-text-secondary font-medium">No requests found</p>
+          <p className="contrast-muted text-sm mt-1">
             {statusFilter === 'pending'
               ? 'No pending facilitator requests'
               : 'No facilitator requests match the filter'}
           </p>
         </div>
       ) : (
-        <div className="divide-y divide-gray-100">
+        <div className="divide-y" style={{ borderColor: 'var(--theme-border-color)' }}>
           {requests.map((request) => (
-            <div key={request.id} className="p-4 hover:bg-gray-50">
+            <div key={request.id} className="p-4 theme-hover">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
                   <div className="flex items-center gap-3 mb-2">
@@ -242,34 +242,34 @@ export function FacilitatorRequestQueue({ onRefresh }: Props) {
 
                   <div className="grid grid-cols-2 gap-4 text-sm">
                     <div>
-                      <p className="text-gray-900 font-medium">
+                      <p className="theme-text-primary font-medium">
                         {request.requester_name}
                       </p>
                       {request.requester_email ? (
-                        <p className="text-gray-500 flex items-center gap-1">
+                        <p className="contrast-muted flex items-center gap-1">
                           <Mail className="w-3 h-3" />
                           {request.requester_email}
                         </p>
                       ) : (
-                        <p className="text-gray-400 text-xs">(No email provided)</p>
+                        <p className="contrast-muted text-xs">(No email provided)</p>
                       )}
                     </div>
                     <div>
-                      <p className="text-gray-900 font-medium flex items-center gap-1">
+                      <p className="theme-text-primary font-medium flex items-center gap-1">
                         <Building className="w-3 h-3" />
                         {request.workshop_title}
                       </p>
-                      <p className="text-gray-500 font-mono text-xs">
+                      <p className="contrast-muted font-mono text-xs">
                         PIN: {request.workshop_pin}
                       </p>
-                      <p className="text-gray-400 text-xs">
+                      <p className="contrast-muted text-xs">
                         Facilitators: {request.current_facilitator_count}/
                         {request.max_facilitators}
                       </p>
                     </div>
                   </div>
 
-                  <p className="text-xs text-gray-400 mt-2">
+                  <p className="text-xs contrast-muted mt-2">
                     Requested: {formatDate(request.created_at)}
                     {request.reviewed_at && (
                       <span className="ml-3">
@@ -280,7 +280,7 @@ export function FacilitatorRequestQueue({ onRefresh }: Props) {
                   </p>
 
                   {request.rejection_reason && (
-                    <p className="text-xs text-red-600 mt-1">
+                    <p className="text-xs mt-1" style={{ color: 'var(--theme-danger-text)' }}>
                       Reason: {request.rejection_reason}
                     </p>
                   )}
@@ -290,7 +290,7 @@ export function FacilitatorRequestQueue({ onRefresh }: Props) {
                   <div className="flex items-center gap-2 ml-4">
                     <button
                       onClick={() => handleApprove(request.request_id)}
-                      className="px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors text-sm flex items-center gap-1"
+                      className="px-3 py-1.5 rounded-lg transition-colors text-sm flex items-center gap-1 theme-btn-success"
                       disabled={
                         request.current_facilitator_count >=
                         request.max_facilitators
@@ -301,7 +301,7 @@ export function FacilitatorRequestQueue({ onRefresh }: Props) {
                     </button>
                     <button
                       onClick={() => handleReject(request.request_id)}
-                      className="px-3 py-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm flex items-center gap-1"
+                      className="px-3 py-1.5 rounded-lg transition-colors text-sm flex items-center gap-1 theme-btn-danger"
                     >
                       <XCircle className="w-4 h-4" />
                       Reject

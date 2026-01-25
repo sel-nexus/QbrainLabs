@@ -1,36 +1,38 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '../../context/ThemeContext';
 import { Clock, Users, Sparkles, TrendingUp } from 'lucide-react';
 
-const benefits = [
-  {
-    icon: Clock,
-    stat: "75%",
-    label: "Faster",
-    desc: "Time for use case priority"
-  },
-  {
-    icon: Users,
-    stat: "25+",
-    label: "Workshops",
-    desc: "Successfully Executed"
-  },
-  {
-    icon: Sparkles,
-    stat: "AI",
-    label: "Powered",
-    desc: "Intelligent assistance"
-  },
-  {
-    icon: TrendingUp,
-    stat: "3x",
-    label: "Better",
-    desc: "Decision outcomes"
-  }
-];
-
 export function BenefitsTile() {
   const { theme } = useTheme();
+  const { t } = useTranslation();
+
+  const benefits = [
+    {
+      icon: Clock,
+      stat: t('landing.benefits.fasterStat'),
+      label: t('landing.benefits.fasterLabel'),
+      desc: t('landing.benefits.fasterDesc')
+    },
+    {
+      icon: Users,
+      stat: t('landing.benefits.workshopsStat'),
+      label: t('landing.benefits.workshopsLabel'),
+      desc: t('landing.benefits.workshopsDesc')
+    },
+    {
+      icon: Sparkles,
+      stat: t('landing.benefits.aiStat'),
+      label: t('landing.benefits.aiLabel'),
+      desc: t('landing.benefits.aiDesc')
+    },
+    {
+      icon: TrendingUp,
+      stat: t('landing.benefits.betterStat'),
+      label: t('landing.benefits.betterLabel'),
+      desc: t('landing.benefits.betterDesc')
+    }
+  ];
 
   return (
     <section 
@@ -62,12 +64,12 @@ export function BenefitsTile() {
           <h2 className={`text-3xl sm:text-4xl font-bold mb-4 ${
             theme === 'light' ? 'text-gray-900' : 'text-white'
           }`}>
-            Why Teams Choose Us
+            {t('landing.benefits.title')}
           </h2>
           <p className={`text-lg max-w-2xl mx-auto ${
             theme === 'light' ? 'text-gray-600' : 'text-gray-400'
           }`}>
-            Proven results from organizations that transformed their AI strategy
+            {t('landing.benefits.subtitle')}
           </p>
         </motion.div>
 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
 
@@ -65,26 +65,24 @@ export function FacilitatorLogin() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
+        <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center p-4 theme-bg-secondary">
             <div className="max-w-md w-full">
-                {/* Header */}
+                {/* Welcome Message */}
                 <div className="text-center mb-8">
-                    <Link to="/" className="inline-block mb-4">
-                        <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-                            AI Hotspot Matrix
-                        </h1>
-                    </Link>
-                    <p className="text-gray-400">
-                        {isLogin ? 'Welcome back, Facilitator' : 'Create your facilitator account'}
+                    <h2 className="text-2xl font-bold mb-2 theme-text-primary">
+                        {isLogin ? 'Welcome Back' : 'Create Account'}
+                    </h2>
+                    <p className="theme-text-secondary">
+                        {isLogin ? 'Sign in to your facilitator account' : 'Create your facilitator account'}
                     </p>
                 </div>
 
                 {/* Form Card */}
-                <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-2xl border border-white/20">
+                <div className="backdrop-blur-lg rounded-2xl p-8 shadow-2xl border theme-card">
                     <form onSubmit={handleSubmit} className="space-y-6">
                         {!isLogin && (
                             <div>
-                                <label htmlFor="full_name" className="block text-sm font-medium text-gray-300 mb-2">
+                                <label htmlFor="full_name" className="block text-sm font-medium mb-2 theme-text-secondary">
                                     Full Name
                                 </label>
                                 <input
@@ -93,14 +91,14 @@ export function FacilitatorLogin() {
                                     required={!isLogin}
                                     value={formData.full_name}
                                     onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                                    className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-violet focus:border-transparent transition theme-input"
                                     placeholder="John Doe"
                                 />
                             </div>
                         )}
 
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
+                            <label htmlFor="email" className="block text-sm font-medium mb-2 theme-text-secondary">
                                 Email Address
                             </label>
                             <input
@@ -109,13 +107,13 @@ export function FacilitatorLogin() {
                                 required
                                 value={formData.email}
                                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                                className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-violet focus:border-transparent transition theme-input"
                                 placeholder="facilitator@example.com"
                             />
                         </div>
 
                         <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+                            <label htmlFor="password" className="block text-sm font-medium mb-2 theme-text-secondary">
                                 Password
                             </label>
                             <input
@@ -124,19 +122,22 @@ export function FacilitatorLogin() {
                                 required
                                 value={formData.password}
                                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                                className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-violet focus:border-transparent transition theme-input"
                                 placeholder={isLogin ? 'Enter your password' : 'Min. 8 characters'}
                                 minLength={isLogin ? undefined : 8}
                             />
                             {!isLogin && (
-                                <p className="mt-1 text-xs text-gray-500">Password must be at least 8 characters</p>
+                                <p className="mt-1 text-xs contrast-muted">
+                                    Password must be at least 8 characters
+                                </p>
                             )}
                         </div>
 
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full py-3 px-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-lg shadow-lg hover:from-purple-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="w-full py-3 px-4 bg-brand-violet text-white font-semibold rounded-lg shadow-lg hover:bg-brand-violet/90 focus:outline-none focus:ring-2 focus:ring-brand-violet focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                            style={{ focusRingOffsetColor: 'var(--theme-bg-primary)' }}
                         >
                             {loading ? 'Processing...' : isLogin ? 'Sign In' : 'Create Account'}
                         </button>
@@ -150,19 +151,13 @@ export function FacilitatorLogin() {
                                 setIsLogin(!isLogin);
                                 setFormData({ email: '', password: '', full_name: '' });
                             }}
-                            className="text-purple-400 hover:text-purple-300 text-sm transition"
+                            className="text-sm transition text-brand-violet hover:text-brand-violet/80"
                         >
                             {isLogin ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
                         </button>
                     </div>
                 </div>
 
-                {/* Back to Home */}
-                <div className="text-center mt-6">
-                    <Link to="/" className="text-gray-400 hover:text-gray-300 text-sm transition">
-                        ← Back to Home
-                    </Link>
-                </div>
             </div>
         </div>
     );

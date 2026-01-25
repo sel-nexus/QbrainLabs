@@ -12,7 +12,11 @@ import {
     ArrowLeft,
     BookOpen,
     Filter,
-    X
+    X,
+    Globe,
+    RefreshCw,
+    Bot,
+    Plus
 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 
@@ -74,6 +78,11 @@ export function KnowledgeBase() {
     const [selectedUseCase, setSelectedUseCase] = useState<UseCaseTemplate | null>(null);
     const [currentUser, setCurrentUser] = useState<any>(null);
 
+    const [showResearchModal, setShowResearchModal] = useState(false);
+    const [researchProvider, setResearchProvider] = useState<'perplexity' | 'google'>('perplexity');
+    const [researchLoading, setResearchLoading] = useState(false);
+    const [researchResults, setResearchResults] = useState<SearchResult[]>([]);
+
     useEffect(() => {
         const authToken = localStorage.getItem('hm_auth_token');
         const userStr = localStorage.getItem('hm_user');
@@ -108,7 +117,7 @@ export function KnowledgeBase() {
 
     const handleSearch = async () => {
         if (searchQuery.length < 2) return;
-        
+
         setSearching(true);
         try {
             const authToken = localStorage.getItem('hm_auth_token');
@@ -145,6 +154,42 @@ export function KnowledgeBase() {
         }
     };
 
+    const handleResearch = async () => {
+        setResearchLoading(true);
+        setResearchResults([]);
+        try {
+            const authToken = localStorage.getItem('hm_auth_token');
+            const response = await fetch('http://localhost:8000/api/knowledge-base/refresh', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    provider: researchProvider,
+                    industry_id: selectedIndustry?.id || null
+                })
+            });
+
+            if (!response.ok) throw new Error('Research failed');
+            const data = await response.json();
+            setResearchResults(data);
+            if (data.length === 0) toast.info('No new use cases found');
+        } catch (error) {
+            console.error('Error:', error);
+            toast.error('Failed to research use cases');
+        } finally {
+            setResearchLoading(false);
+        }
+    };
+
+    const handleAddResearchItem = (item: SearchResult) => {
+        toast.success(`Added "${item.title}" to library`);
+        // In a real app, we would POST to /api/knowledge-base/add
+        // For now, we just remove it from the list to simulate adding
+        setResearchResults(prev => prev.filter(r => r.id !== item.id));
+    };
+
     const getComplexityColor = (complexity: string) => {
         switch (complexity.toLowerCase()) {
             case 'low': return 'text-green-400 bg-green-500/10';
@@ -154,7 +199,7 @@ export function KnowledgeBase() {
         }
     };
 
-    const getIndustryIcon = (icon: string) => {
+    const getIndustryIcon = () => {
         return <Building2 className="w-6 h-6" />;
     };
 
@@ -166,15 +211,13 @@ export function KnowledgeBase() {
         );
     }
 
+    // Header is now provided by AuthenticatedLayout wrapper
     return (
         <div className="min-h-screen bg-surface-900">
-            {/* Header */}
-            <header className="bg-surface-800 border-b border-white/10">
-                <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            {/* Page Header - Title and Actions */}
+            <div className="max-w-7xl mx-auto px-6 py-4">
+                <div className="flex justify-between items-center">
                     <div className="flex items-center gap-3">
-                        <button onClick={() => navigate(-1)} className="text-gray-400 hover:text-white">
-                            <ArrowLeft className="w-5 h-5" />
-                        </button>
                         <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center">
                             <Brain className="w-6 h-6 text-white" />
                         </div>
@@ -185,14 +228,152 @@ export function KnowledgeBase() {
                     </div>
                     <div className="flex items-center gap-4">
                         {currentUser && (
-                            <div className="text-right">
-                                <div className="text-sm text-white font-medium">{currentUser.full_name || currentUser.email}</div>
-                                <div className="text-xs text-purple-400">{currentUser.is_admin ? 'Administrator' : 'Facilitator'}</div>
-                            </div>
+                            <Button
+                                onClick={() => setShowResearchModal(true)}
+                                variant="secondary"
+                                className="gap-2 hidden md:flex border-purple-500/50 text-purple-400 hover:bg-purple-500/10"
+                            >
+                                <Globe className="w-4 h-4" />
+                                Research Use Cases
+                            </Button>
                         )}
                     </div>
                 </div>
-            </header>
+            </div>
+
+            {/* Research Modal */}
+            {showResearchModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+                    <div className="bg-surface-800 rounded-xl border border-white/10 w-full max-w-2xl max-h-[80vh] flex flex-col shadow-2xl">
+                        <div className="p-6 border-b border-white/10 flex justify-between items-center">
+                            <div className="flex items-center gap-3">
+                                <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
+                                    <Globe className="w-5 h-5 text-blue-400" />
+                                </div>
+                                <div>
+                                    <h2 className="text-xl font-bold text-white">Public Research Refresh</h2>
+                                    <p className="text-sm text-gray-400">Discover trending use cases from the web</p>
+                                </div>
+                            </div>
+                            <button onClick={() => setShowResearchModal(false)} className="text-gray-400 hover:text-white">
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        <div className="p-6 overflow-y-auto flex-1">
+                            {!researchResults.length && !researchLoading ? (
+                                <div className="space-y-6">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-2">Research Provider</label>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <button
+                                                onClick={() => setResearchProvider('perplexity')}
+                                                className={`p-4 rounded-lg border flex items-center gap-3 transition ${researchProvider === 'perplexity'
+                                                    ? 'bg-blue-500/10 border-blue-500 text-white'
+                                                    : 'bg-surface-700 border-white/5 text-gray-400 hover:bg-surface-600'
+                                                    }`}
+                                            >
+                                                <Bot className="w-5 h-5" />
+                                                <div className="text-left">
+                                                    <div className="font-medium">Perplexity AI</div>
+                                                    <div className="text-xs opacity-70">Deep research & citations</div>
+                                                </div>
+                                            </button>
+                                            <button
+                                                onClick={() => setResearchProvider('google')}
+                                                className={`p-4 rounded-lg border flex items-center gap-3 transition ${researchProvider === 'google'
+                                                    ? 'bg-green-500/10 border-green-500 text-white'
+                                                    : 'bg-surface-700 border-white/5 text-gray-400 hover:bg-surface-600'
+                                                    }`}
+                                            >
+                                                <Globe className="w-5 h-5" />
+                                                <div className="text-left">
+                                                    <div className="font-medium">Google Search</div>
+                                                    <div className="text-xs opacity-70">Broad web coverage</div>
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div className="bg-surface-700/50 rounded-lg p-4 border border-white/5">
+                                        <h4 className="text-sm font-medium text-white mb-2">Scope</h4>
+                                        <p className="text-sm text-gray-400">
+                                            {selectedIndustry
+                                                ? `Searching for trending AI use cases in ${selectedIndustry.name}...`
+                                                : "Searching for general trending AI use cases across all industries..."}
+                                        </p>
+                                    </div>
+
+                                    <Button onClick={handleResearch} className="w-full py-6 text-lg" disabled={researchLoading}>
+                                        {researchLoading ? (
+                                            <>
+                                                <RefreshCw className="w-5 h-5 animate-spin mr-2" />
+                                                Researching...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Globe className="w-5 h-5 mr-2" />
+                                                Start Discovery
+                                            </>
+                                        )}
+                                    </Button>
+                                </div>
+                            ) : (
+                                <div className="space-y-4">
+                                    {researchLoading && (
+                                        <div className="flex flex-col items-center justify-center py-12">
+                                            <RefreshCw className="w-8 h-8 animate-spin text-blue-400 mb-4" />
+                                            <p className="text-gray-400">Analyzing search results...</p>
+                                        </div>
+                                    )}
+
+                                    {researchResults.map((result) => (
+                                        <div key={result.id} className="bg-surface-700 rounded-lg p-4 border border-white/5 flex gap-4">
+                                            <div className="w-10 h-10 rounded-lg bg-green-500/10 flex-shrink-0 flex items-center justify-center">
+                                                <TrendingUp className="w-5 h-5 text-green-400" />
+                                            </div>
+                                            <div className="flex-1">
+                                                <div className="flex justify-between items-start">
+                                                    <div>
+                                                        <h4 className="font-medium text-white">{result.title}</h4>
+                                                        <span className="text-xs text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded mt-1 inline-block">
+                                                            {result.industry_name}
+                                                        </span>
+                                                    </div>
+                                                    <span className="text-xs text-gray-500 uppercase">{researchProvider}</span>
+                                                </div>
+                                                <p className="text-sm text-gray-400 mt-2 mb-3">{result.description}</p>
+                                                <div className="flex items-center gap-4 text-xs text-gray-500">
+                                                    <span>ROI: <span className="text-green-400">{result.typical_roi}</span></span>
+                                                    <span>•</span>
+                                                    <span>{result.category}</span>
+                                                </div>
+                                            </div>
+                                            <button
+                                                onClick={() => handleAddResearchItem(result)}
+                                                className="self-center p-2 rounded-lg bg-surface-600 hover:bg-purple-600 hover:text-white text-gray-400 transition"
+                                                title="Add to Library"
+                                            >
+                                                <Plus className="w-5 h-5" />
+                                            </button>
+                                        </div>
+                                    ))}
+
+                                    {!researchLoading && researchResults.length > 0 && (
+                                        <Button
+                                            variant="secondary"
+                                            onClick={() => { setResearchResults([]); }}
+                                            className="w-full mt-4"
+                                        >
+                                            Disconnect & Clear
+                                        </Button>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <main className="max-w-7xl mx-auto px-6 py-8">
                 {/* Search Section */}
@@ -318,7 +499,7 @@ export function KnowledgeBase() {
                                 >
                                     <div className="flex items-center justify-between mb-4">
                                         <div className="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center">
-                                            {getIndustryIcon(industry.icon)}
+                                            {getIndustryIcon()}
                                         </div>
                                         <ChevronRight className="w-5 h-5 text-gray-500 group-hover:text-purple-400 transition" />
                                     </div>
@@ -343,7 +524,7 @@ export function KnowledgeBase() {
 
                         <div className="flex items-center gap-4 mb-8">
                             <div className="w-16 h-16 rounded-xl bg-purple-500/10 flex items-center justify-center">
-                                {getIndustryIcon(selectedIndustry.icon)}
+                                {getIndustryIcon()}
                             </div>
                             <div>
                                 <h2 className="text-2xl font-bold text-white">{selectedIndustry.name}</h2>

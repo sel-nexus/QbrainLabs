@@ -162,4 +162,131 @@ class RAGService:
             "message": f"Similar idea detected: '{best_match['title']}' ({int(highest_score*100)}% match)" if is_duplicate else None
         }
 
+    async def estimate_roi(self, use_case_title: str, use_case_desc: str, industry: str = None) -> Dict[str, Any]:
+        """AI-powered ROI parameter estimation."""
+        if self.mock_mode:
+            return {
+                "estimates": {
+                    "implementation": {"low": 50000, "mid": 120000, "high": 250000, "confidence": 0.8},
+                    "infrastructure": {"low": 500, "mid": 2000, "high": 5000, "confidence": 0.7},
+                    "time_savings": {"low": 10, "mid": 30, "high": 60, "confidence": 0.6}
+                },
+                "benchmarks": [{"source": "Industry Report", "metric": "Avg ROI", "value": "250%"}],
+                "is_mock": True
+            }
+
+        from langchain.prompts import ChatPromptTemplate
+        prompt = ChatPromptTemplate.from_template("""
+        As an AI Business Analyst, estimate ROI parameters for this use case:
+        Title: {title}
+        Description: {description}
+        Industry: {industry}
+
+        Estimate cost and benefit ranges (low, mid, high) and confidence levels (0-1).
+        Include: implementation cost, monthly infrastructure cost, and weekly time savings (hours).
+
+        Return JSON only:
+        {{
+            "estimates": {{
+                "implementation": {{"low": 0, "mid": 0, "high": 0, "confidence": 0.0}},
+                "infrastructure": {{"low": 0, "mid": 0, "high": 0, "confidence": 0.0}},
+                "time_savings": {{"low": 0, "mid": 0, "high": 0, "confidence": 0.0}}
+            }},
+            "benchmarks": [{{ "source": "...", "metric": "...", "value": "..." }}]
+        }}
+        """)
+
+        chain = prompt | self.llm
+        response = await chain.ainvoke({
+            "title": use_case_title,
+            "description": use_case_desc,
+            "industry": industry or "General"
+        })
+        try:
+            res = json.loads(response.content)
+            res["is_mock"] = False
+            return res
+        except:
+            return {"error": "Failed to parse estimate"}
+
+    async def generate_business_case(self, use_case_data: Dict, roi_results: Dict) -> Dict[str, Any]:
+        """Generates a full business case narrative."""
+        if self.mock_mode:
+            return {
+                "executive_summary": "This project aims to automate core processes using AI...",
+                "problem_statement": use_case_data.get("description", ""),
+                "proposed_solution": use_case_data.get("proposed_solution", "Implement a RAG-based AI system."),
+                "financial_overview": f"Expected ROI: {roi_results.get('roi_percent')}% with a payback of {roi_results.get('payback_months')} months.",
+                "risks": "Data privacy, model accuracy, and adoption speed.",
+                "is_mock": True
+            }
+
+        from langchain.prompts import ChatPromptTemplate
+        prompt = ChatPromptTemplate.from_template("""
+        Write a professional Business Case for:
+        Use Case: {title}
+        Description: {description}
+        Solution: {solution}
+        ROI: {roi}%
+        Payback: {payback} months
+        NPV: ${npv}
+
+        Sections: Executive Summary, Problem Statement, Proposed Solution, Financial Analysis, Risk Assessment.
+        Return JSON with these keys.
+        """)
+
+        chain = prompt | self.llm
+        response = await chain.ainvoke({
+            "title": use_case_data.get("title"),
+            "description": use_case_data.get("description"),
+            "solution": use_case_data.get("proposed_solution"),
+            "roi": roi_results.get("roi_percent"),
+            "payback": roi_results.get("payback_months"),
+            "npv": roi_results.get("npv")
+        })
+        try:
+            res = json.loads(response.content)
+            res["is_mock"] = False
+            return res
+        except:
+            return {"error": "Failed to generate business case"}
+
+    async def generate_executive_presentation(self, top_use_cases: List[Dict]) -> Dict[str, Any]:
+        """Generates a summary presentation or narrative for executives."""
+        if self.mock_mode:
+            return {
+                "title": "AI Strategy Portfolio Review",
+                "executive_summary": "We have identified 3 high-impact AI opportunities...",
+                "top_recommendations": [
+                    {
+                        "title": uc.get("title"),
+                        "roi": f"{uc.get('roi')}%",
+                        "payback": f"{uc.get('payback')} months",
+                        "strategic_value": "High strategic alignment with organizational goals."
+                    } for uc in top_use_cases
+                ],
+                "implementation_roadmap": "Phase 1: Pilot top ROI case. Phase 2: Scale success stories.",
+                "is_mock": True
+            }
+
+        from langchain.prompts import ChatPromptTemplate
+        prompt = ChatPromptTemplate.from_template("""
+        Create an Executive AI Strategy Presentation summary for these top use cases:
+        {cases_json}
+
+        Focus on: Strategic alignment, financial impact, and execution roadmap.
+        Return JSON with keys: title, executive_summary, top_recommendations (list of objects with title, roi, payback, strategic_value), implementation_roadmap.
+        """)
+
+        chain = prompt | self.llm
+        response = await chain.ainvoke({
+            "cases_json": json.dumps(top_use_cases)
+        })
+        try:
+            res = json.loads(response.content)
+            res["is_mock"] = False
+            return res
+        except:
+            return {"error": "Failed to generate presentation"}
+
 rag_service = RAGService()

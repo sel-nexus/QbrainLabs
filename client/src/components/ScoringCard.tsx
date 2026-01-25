@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { Button } from './ui/Button';
 import { api } from '../lib/api';
+import { awardPoints } from '../lib/api/gamification';
 import { Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { PointsAnimation } from './gamification/PointsAnimation';
 
 interface ScoringCardProps {
     session: any;
@@ -15,6 +17,7 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
     const [scores, setScores] = useState<Record<string, number>>({});
     const [loading, setLoading] = useState(false);
     const [submitted, setSubmitted] = useState(false);
+    const [pointsEarned, setPointsEarned] = useState<number | null>(null);
 
     const is10Point = templateId === '7_POINT_COMPREHENSIVE';
     const minVal = is10Point ? 1 : 0;
@@ -34,6 +37,25 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
                 participant_id: session.participantId,
                 scores: scores
             });
+            
+            // Award points for voting
+            try {
+                const allCriteriaScored = Object.keys(scores).length === criteria.length;
+                const pointsResponse = await awardPoints(
+                    session.participantId,
+                    session.workshopId,
+                    'vote',
+                    {
+                        use_case_id: activeCard.id,
+                        consistency_bonus: allCriteriaScored
+                    }
+                );
+                setPointsEarned(pointsResponse.points_earned);
+            } catch (pointsError) {
+                console.error('Failed to award points:', pointsError);
+                // Don't fail the vote if points fail
+            }
+            
             setSubmitted(true);
         } catch (e) {
             console.error(e);
@@ -59,12 +81,19 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
     }
 
     return (
-        <motion.div
-            key={activeCard.id}
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="bg-surface-800/80 backdrop-blur border border-white/10 rounded-2xl p-6 shadow-xl max-w-lg mx-auto"
-        >
+        <>
+            {pointsEarned !== null && (
+                <PointsAnimation
+                    points={pointsEarned}
+                    onComplete={() => setPointsEarned(null)}
+                />
+            )}
+            <motion.div
+                key={activeCard.id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-surface-800/80 backdrop-blur border border-white/10 rounded-2xl p-6 shadow-xl max-w-lg mx-auto"
+            >
             <div className="mb-6">
                 <span className="text-xs text-brand-violet font-mono uppercase tracking-wider">Voting Now</span>
                 <h2 className="text-2xl font-bold text-white mt-1 ">{activeCard.title}</h2>
@@ -114,5 +143,6 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
                 {loading ? <Loader2 className="animate-spin" /> : 'Submit Vote'}
             </Button>
         </motion.div>
+        </>
     );
 }

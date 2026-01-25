@@ -9,6 +9,7 @@ from sqlalchemy import func
 from typing import List, Optional
 import json
 import difflib
+import uuid
 
 from app.core.database import get_db
 from app.api.auth import get_current_user
@@ -21,10 +22,18 @@ from app.schemas.knowledge_base import (
     Technology,
     UseCaseSearchResult,
     WorkshopInsight,
-    UseCaseAnalysis
+    UseCaseAnalysis,
+    UseCaseTemplate
 )
+from pydantic import BaseModel
+
+class RefreshRequest(BaseModel):
+    provider: str = "perplexity"  # or "google"
+    industry_id: Optional[str] = None
+    query: Optional[str] = None
 
 router = APIRouter(prefix="/api/knowledge-base", tags=["knowledge-base"])
+
 
 # Load knowledge base data
 def load_knowledge_base():
@@ -168,6 +177,71 @@ async def search_use_cases(
     # Sort by relevance
     results.sort(key=lambda x: x.relevance_score, reverse=True)
     return results[:20]  # Top 20 results
+
+
+@router.post("/refresh", response_model=List[UseCaseSearchResult])
+async def refresh_use_cases(
+    request: RefreshRequest,
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Refresh use cases from public research (simulated).
+    US26: Connects to Perplexity/Google to find trending use cases.
+    """
+    results = []
+    
+    # Simulate finding new trending use cases based on industry
+    # In a real implementation, this would call Perplexity API with a prompt like:
+    # "What are the latest trending AI use cases in {industry}?"
+    
+    industry_name = "General"
+    if request.industry_id:
+        for ind in KB_DATA.get("industries", []):
+            if ind["id"] == request.industry_id:
+                industry_name = ind["name"]
+                break
+    
+    # Mocked "Fresh" Results
+    fresh_use_cases = [
+        {
+            "id": f"fresh_{uuid.uuid4()}",
+            "title": f"Generative {industry_name} Coordinator",
+            "description": f"AI agent that autonomously coordinates {industry_name.lower()} workflows and scheduling using LLMs.",
+            "industry": request.industry_id or "tech",
+            "industry_name": industry_name,
+            "category": "Agentic AI",
+            "complexity": "High",
+            "typical_roi": "40% Efficiency Gain",
+            "relevance_score": 0.95
+        },
+        {
+            "id": f"fresh_{uuid.uuid4()}",
+            "title": f"Real-time {industry_name} Compliance Monitor",
+            "description": f"Continuous monitoring of {industry_name.lower()} operations for regulatory compliance using multimodal models.",
+            "industry": request.industry_id or "finance",
+            "industry_name": industry_name,
+            "category": "Risk & Compliance",
+            "complexity": "Medium",
+            "typical_roi": "Risk Reduction",
+            "relevance_score": 0.88
+        },
+        {
+            "id": f"fresh_{uuid.uuid4()}",
+            "title": "Quantum-Inspired Optimization",
+            "description": "Using quantum-inspired algorithms to solve complex logistics and resource allocation problems.",
+            "industry": request.industry_id or "logistics",
+            "industry_name": industry_name,
+            "category": "Optimization",
+            "complexity": "Very High",
+            "typical_roi": "15% Cost Reduction",
+            "relevance_score": 0.82
+        }
+    ]
+    
+    for item in fresh_use_cases:
+        results.append(UseCaseSearchResult(**item))
+        
+    return results
 
 
 @router.get("/workshop/{workshop_id}/insights", response_model=WorkshopInsight)

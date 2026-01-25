@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Button } from '../ui/Button';
 import { Presentation, Users } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -7,6 +8,7 @@ import { useTheme } from '../../context/ThemeContext';
 export function HeroTile() {
   const navigate = useNavigate();
   const { theme } = useTheme();
+  const { t } = useTranslation();
 
   return (
     <section 
@@ -42,7 +44,7 @@ export function HeroTile() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-magenta opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-brand-magenta" />
           </span>
-          <span>Now with AI-Powered Scoring</span>
+          <span>{t('landing.hero.badge')}</span>
         </motion.div>
 
         <motion.h1 
@@ -53,9 +55,9 @@ export function HeroTile() {
             theme === 'light' ? 'text-gray-900' : 'text-white'
           }`}
         >
-          Map AI Use Cases <br />
+          {t('landing.hero.title')} <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-violet to-brand-magenta">
-            With Your Team
+            {t('landing.hero.titleHighlight')}
           </span>
         </motion.h1>
 
@@ -67,8 +69,7 @@ export function HeroTile() {
             theme === 'light' ? 'text-gray-600' : 'text-gray-400'
           } mb-10 max-w-2xl mx-auto leading-relaxed`}
         >
-          The collaborative platform for identifying, scoring, and prioritizing AI opportunities.
-          Turn brainstorming into a strategic roadmap in minutes.
+          {t('landing.hero.subtitle')}
         </motion.p>
 
         <motion.div 
@@ -85,7 +86,7 @@ export function HeroTile() {
               theme === 'light' ? 'bg-white' : 'bg-surface-900'
             } rounded-[11px] px-8 py-4 h-full flex items-center gap-3 transition group-hover:bg-transparent`}>
               <Presentation className="w-5 h-5" />
-              <span className="font-bold">Facilitator Login</span>
+              <span className="font-bold">{t('landing.hero.facilitatorLogin')}</span>
             </div>
           </div>
 
@@ -97,7 +98,7 @@ export function HeroTile() {
             }`}
             onClick={() => navigate('/join')}
           >
-            <Users className="mr-2 w-5 h-5" /> Join Session
+            <Users className="mr-2 w-5 h-5" /> {t('landing.hero.joinSession')}
           </Button>
         </motion.div>
       </motion.div>

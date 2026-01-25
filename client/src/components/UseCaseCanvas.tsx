@@ -2,10 +2,12 @@ import { useState } from 'react';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { api } from '../lib/api';
+import { awardPoints } from '../lib/api/gamification';
 import { Loader2, Check, Sparkles, AlertTriangle, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { Modal } from './ui/Modal';
+import { PointsAnimation } from './gamification/PointsAnimation';
 
 interface UseCaseCanvasProps {
     session: any;
@@ -19,6 +21,7 @@ export function UseCaseCanvas({ session }: UseCaseCanvasProps) {
     const [feasibilityData, setFeasibilityData] = useState<{ score: string, reason: string } | null>(null);
     const [duplicateData, setDuplicateData] = useState<any>(null);
     const [showDuplicateModal, setShowDuplicateModal] = useState(false);
+    const [pointsEarned, setPointsEarned] = useState<number | null>(null);
 
     // Form State
     const [formData, setFormData] = useState({
@@ -69,6 +72,26 @@ export function UseCaseCanvas({ session }: UseCaseCanvasProps) {
                 participant_id: session.participantId,
                 workshop_id: session.workshopId
             });
+
+            // Award points for submitting use case
+            try {
+                const pointsResponse = await awardPoints(
+                    session.participantId,
+                    session.workshopId,
+                    'submit_use_case',
+                    { use_case_title: formData.title }
+                );
+                setPointsEarned(pointsResponse.points_earned);
+                
+                // Check if first to submit (bonus points)
+                // This would ideally come from the backend, but for now we'll just award base points
+                if (pointsResponse.achievements_unlocked.length > 0) {
+                    toast.success(`Badge unlocked: ${pointsResponse.achievements_unlocked.join(', ')}!`);
+                }
+            } catch (pointsError) {
+                console.error('Failed to award points:', pointsError);
+                // Don't fail the submission if points fail
+            }
 
             setSuccess(true);
             setFormData(prev => ({
@@ -134,6 +157,12 @@ export function UseCaseCanvas({ session }: UseCaseCanvasProps) {
 
     return (
         <div className="max-w-2xl mx-auto p-4">
+            {pointsEarned !== null && (
+                <PointsAnimation
+                    points={pointsEarned}
+                    onComplete={() => setPointsEarned(null)}
+                />
+            )}
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}

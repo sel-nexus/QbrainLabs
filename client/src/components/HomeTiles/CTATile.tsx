@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Button } from '../ui/Button';
 import { motion } from 'framer-motion';
 import { useTheme } from '../../context/ThemeContext';
@@ -7,6 +8,7 @@ import { ArrowRight, Sparkles } from 'lucide-react';
 export function CTATile() {
   const navigate = useNavigate();
   const { theme } = useTheme();
+  const { t } = useTranslation();
 
   return (
     <section 
@@ -46,9 +48,9 @@ export function CTATile() {
             theme === 'light' ? 'text-gray-900' : 'text-white'
           }`}
         >
-          Ready to Prioritize Your{' '}
+          {t('landing.cta.title')}{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-violet to-brand-magenta">
-            AI Journey?
+            {t('landing.cta.titleHighlight')}
           </span>
         </motion.h2>
 
@@ -61,7 +63,7 @@ export function CTATile() {
             theme === 'light' ? 'text-gray-600' : 'text-gray-400'
           }`}
         >
-          Start collaborating with your team today and transform ideas into an actionable AI roadmap.
+          {t('landing.cta.subtitle')}
         </motion.p>
 
         <motion.div 
@@ -75,7 +77,7 @@ export function CTATile() {
             onClick={() => navigate('/facilitator-login')}
             className="group h-14 px-8 text-lg bg-gradient-to-r from-brand-violet to-brand-magenta hover:brightness-110"
           >
-            Get Started
+            {t('landing.cta.getStarted')}
             <ArrowRight className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1" />
           </Button>
 
@@ -88,7 +90,7 @@ export function CTATile() {
                 : 'border-white/20 text-white hover:bg-white/10'
             }`}
           >
-            Join a Session
+            {t('landing.cta.joinSession')}
           </Button>
         </motion.div>
       </div>
@@ -102,7 +104,7 @@ export function CTATile() {
           theme === 'light' ? 'text-gray-500' : 'text-gray-600'
         }`}
       >
-        <p>&copy; 2026 AI Hotspot Matrix. All Rights Reserved.</p>
+        <p>{t('landing.cta.copyright')}</p>
       </motion.footer>
     </section>
   );
