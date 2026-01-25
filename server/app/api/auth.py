@@ -108,12 +108,15 @@ async def signup(user_data: UserCreate, db: AsyncSession = Depends(get_db)):
             detail="Email already registered"
         )
     
-    # Create new user
+    # Create new user with pending status (requires admin approval)
     hashed_password = hash_password(user_data.password)
     new_user = User(
         email=user_data.email,
         password_hash=hashed_password,
-        full_name=user_data.full_name
+        full_name=user_data.full_name,
+        role=UserRole.FACILITATOR.value,
+        status=AccountStatus.PENDING.value,
+        is_admin=False
     )
     
     db.add(new_user)
@@ -150,13 +153,9 @@ async def login(
         )
     
     # Check account status (admins bypass status check)
+    # US32: Allow pending facilitators to login (they see restricted dashboard)
     if not user.is_admin_user:
-        if user.status == AccountStatus.PENDING.value:
-            raise HTTPException(
-                status_code=status.HTTP_403_FORBIDDEN,
-                detail="Your account is pending approval. Please wait for administrator approval."
-            )
-        elif user.status == AccountStatus.DISABLED.value:
+        if user.status == AccountStatus.DISABLED.value:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Your account has been disabled. Please contact your administrator."
@@ -166,6 +165,7 @@ async def login(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Your account has been suspended. Please contact your administrator."
             )
+        # Note: PENDING status is now allowed to login per US32
     
     # Update last login
     user.last_login = datetime.utcnow()
@@ -264,7 +264,31 @@ async def register_facilitator(
     """
     Register a new facilitator account.
     Account will be in 'pending' status until approved by an admin.
+    US32: Includes rate limiting (10/day, 20/week, 50/month).
     """
+    # US32: Check rate limits before registration
+    from app.services.rate_limiting import (
+        check_registration_rate_limit,
+        log_registration,
+        RateLimitExceeded
+    )
+    
+    try:
+        await check_registration_rate_limit(db)
+    except RateLimitExceeded as e:
+        raise HTTPException(
+            status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+            detail={
+                "error": "REGISTRATION_RATE_LIMIT_EXCEEDED",
+                "message": "Maximum facilitator registrations reached for this period.",
+                "limit_type": e.limit_type,
+                "limit": e.limit,
+                "current_count": e.current_count,
+                "reset_at": e.reset_at.isoformat(),
+                "next_available_in_seconds": e.next_available_in_seconds
+            }
+        )
+    
     # Check if user already exists
     result = await db.execute(select(User).where(User.email == registration.email))
     existing_user = result.scalars().first()
@@ -291,7 +315,10 @@ async def register_facilitator(
     await db.commit()
     await db.refresh(new_user)
     
-    # Log the registration
+    # US32: Log the registration for rate limiting
+    await log_registration(db, registration.email, request)
+    
+    # Log the registration action
     from app.middleware.rbac import log_role_action
     await log_role_action(
         db=db,

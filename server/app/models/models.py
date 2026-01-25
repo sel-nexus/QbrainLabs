@@ -1,19 +1,25 @@
+"""
+Core Database Models - PostgreSQL Native
+US33: Migrated to PostgreSQL with native types (JSONB, VARCHAR(36) for UUIDs).
+"""
 from sqlalchemy import Column, String, Boolean, ForeignKey, Enum, Text, DateTime, Index
 from sqlalchemy.types import TypeDecorator, CHAR, String as SAString
-from sqlalchemy.dialects.postgresql import UUID as PGUUID, JSONB as PGJSONB
+from sqlalchemy.dialects.postgresql import JSONB as PGJSONB, TIMESTAMP
 from datetime import datetime
 import json
 import uuid
 
-# Compatibility helpers - use CHAR(36) for UUID storage
-# This ensures compatibility with databases that store UUIDs as VARCHAR
+
 class GUID(TypeDecorator):
+    """
+    UUID type for PostgreSQL.
+    Stores UUIDs as VARCHAR(36) for compatibility with existing schema.
+    Converts to/from Python uuid.UUID objects.
+    """
     impl = CHAR(36)
     cache_ok = True
 
     def load_dialect_impl(self, dialect):
-        # Always use CHAR(36) for compatibility with existing VARCHAR columns
-        # This avoids type mismatch errors with Supabase/PostgreSQL
         return dialect.type_descriptor(CHAR(36))
 
     def process_bind_param(self, value, dialect):
@@ -28,20 +34,18 @@ class GUID(TypeDecorator):
             return uuid.UUID(str(value))
         return value
 
+
 class JSONType(TypeDecorator):
-    impl = SAString
+    """
+    JSON type that uses PostgreSQL's native JSONB.
+    Provides efficient querying and indexing of JSON data.
+    """
+    impl = PGJSONB
     cache_ok = True
-    
-    def load_dialect_impl(self, dialect):
-        if dialect.name == 'postgresql':
-            return dialect.type_descriptor(PGJSONB())
-        else:
-            return dialect.type_descriptor(SAString())
 
     def process_bind_param(self, value, dialect):
         if value is None:
             return value
-        # Always convert to dict/list if it's a string
         if isinstance(value, str):
             return json.loads(value)
         return value
@@ -49,7 +53,6 @@ class JSONType(TypeDecorator):
     def process_result_value(self, value, dialect):
         if value is None:
             return value
-        # Ensure we return a dict/list, not a string
         if isinstance(value, str):
             return json.loads(value)
         return value

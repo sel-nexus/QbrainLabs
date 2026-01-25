@@ -119,6 +119,53 @@ class RoleAuditLog(Base):
     performer = relationship("User", foreign_keys=[performed_by], backref="audit_logs_performed")
 
 
+class FacilitatorRegistrationLog(Base):
+    """
+    Tracks facilitator registration attempts for rate limiting.
+    US32: Registration Rate Limiting (10/day, 20/week, 50/month)
+    """
+    __tablename__ = "facilitator_registration_log"
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    registration_timestamp = Column(DateTime, nullable=False, default=datetime.utcnow)
+    email = Column(String(255), nullable=False)
+    ip_address = Column(String(45), nullable=True)
+    user_agent = Column(Text, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+
+class FacilitatorAccessRequestStatus(str, enum.Enum):
+    """Status for facilitator access requests"""
+    PENDING = "pending"
+    APPROVED = "approved"
+    REJECTED = "rejected"
+
+
+class FacilitatorAccessRequest(Base):
+    """
+    Facilitator access requests from PIN-based workshop joins.
+    US32: Join as Facilitator via PIN feature.
+    """
+    __tablename__ = "facilitator_access_requests"
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    request_id = Column(String(50), unique=True, nullable=False)  # e.g., FAR-2026-0125-001
+    workshop_id = Column(GUID(), ForeignKey("workshops.id", ondelete="CASCADE"), nullable=False)
+    requester_name = Column(String(100), nullable=False)
+    requester_email = Column(String(255), nullable=True)  # Optional for PIN-only requests
+    requester_session_id = Column(GUID(), nullable=True)  # Link to participant session if they joined
+    status = Column(String(20), default=FacilitatorAccessRequestStatus.PENDING.value, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    reviewed_at = Column(DateTime, nullable=True)
+    reviewed_by = Column(GUID(), ForeignKey("users.id"), nullable=True)
+    rejection_reason = Column(Text, nullable=True)
+    notes = Column(Text, nullable=True)
+
+    # Relationships
+    workshop = relationship("Workshop", backref="facilitator_access_requests")
+    reviewer = relationship("User", foreign_keys=[reviewed_by])
+
+
 # Default permissions to be seeded
 DEFAULT_PERMISSIONS = [
     # Workshop permissions

@@ -222,3 +222,101 @@ class PermissionCheckResponse(BaseModel):
     role: str
     resource: str
     action: str
+
+
+# ============== US32: Rate Limiting ==============
+
+class RateLimitStatus(BaseModel):
+    """Rate limit status for a single time window"""
+    count: int
+    limit: int
+    reset_at: datetime
+
+
+class RegistrationRateLimitResponse(BaseModel):
+    """Response for registration rate limit status"""
+    daily: RateLimitStatus
+    weekly: RateLimitStatus
+    monthly: RateLimitStatus
+
+
+class RateLimitResetRequest(BaseModel):
+    """Request to reset rate limits"""
+    period: str = Field(..., pattern="^(daily|weekly|monthly|all)$")
+
+
+class RateLimitExceededResponse(BaseModel):
+    """Response when rate limit is exceeded"""
+    error: str = "REGISTRATION_RATE_LIMIT_EXCEEDED"
+    message: str = "Maximum facilitator registrations reached for this period."
+    limit_type: str
+    limit: int
+    current_count: int
+    reset_at: datetime
+    next_available_in_seconds: int
+
+
+# ============== US32: Facilitator Access Requests ==============
+
+class FacilitatorAccessRequestCreate(BaseModel):
+    """Request to create facilitator access request via PIN"""
+    name: str = Field(..., min_length=2, max_length=100)
+    email: Optional[EmailStr] = None
+    session_id: Optional[str] = None
+
+
+class FacilitatorAccessRequestResponse(BaseModel):
+    """Response for facilitator access request"""
+    id: str
+    request_id: str
+    workshop_id: str
+    workshop_title: str
+    workshop_pin: Optional[str]
+    requester_name: str
+    requester_email: Optional[str]
+    status: str
+    created_at: datetime
+    reviewed_at: Optional[datetime] = None
+    reviewed_by_name: Optional[str] = None
+    rejection_reason: Optional[str] = None
+    current_facilitator_count: int = 0
+    max_facilitators: int = 10
+
+    class Config:
+        from_attributes = True
+
+
+class FacilitatorAccessRequestListResponse(BaseModel):
+    """List of facilitator access requests"""
+    requests: List[FacilitatorAccessRequestResponse]
+    total: int
+    pending_count: int
+
+
+class FacilitatorAccessApproveRequest(BaseModel):
+    """Request to approve facilitator access"""
+    notes: Optional[str] = None
+
+
+class FacilitatorAccessRejectRequest(BaseModel):
+    """Request to reject facilitator access"""
+    reason: Optional[str] = None
+
+
+class FacilitatorAccessSubmitResponse(BaseModel):
+    """Response after submitting facilitator access request"""
+    request_id: str
+    status: str
+    message: str
+
+
+# ============== US32: Workshop Facilitator Management ==============
+
+class WorkshopFacilitatorsResponse(BaseModel):
+    """Response for workshop facilitators with count"""
+    workshop_id: str
+    workshop_title: str
+    facilitators: List[WorkshopAssignmentResponse]
+    count: int
+    max_count: int = 10
+    can_add_more: bool

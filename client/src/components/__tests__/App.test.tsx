@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '../../test/test-utils';
+import { render } from '../../test/test-utils';
 import App from '../../App';
 
 // Mock react-router-dom navigation

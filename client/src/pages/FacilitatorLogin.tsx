@@ -20,7 +20,7 @@ export function FacilitatorLogin() {
             if (user?.is_admin) {
                 navigate('/admin', { replace: true });
             } else {
-                navigate('/dashboard', { replace: true });
+                navigate('/facilitator/dashboard', { replace: true });
             }
         }
     }, [isAuthenticated, isLoading, user, navigate]);

@@ -332,7 +332,43 @@ This plan outlines the phased execution of the Hotspot Matrix application, ensur
 
 ---
 
-## Sprint 16: Testing Infrastructure & Production Readiness (Planned)
+## Sprint 16: Facilitator Approval & Access Control (In Progress 🚧)
+**Goal:** Implement facilitator approval workflow with rate limiting and proper access control.
+**Focus:** US32 (Facilitator Approval), Security, Access Control.
+
+### Tasks
+- [x] **Pending Facilitator Dashboard (Phase 1):**
+    - [x] Pending facilitators can login and see restricted dashboard
+    - [x] Show "Account Pending Approval" banner with status
+    - [x] Empty workshops list with explanation message
+    - [x] Contact Administrator button
+- [x] **Registration & Auth Fixes:**
+    - [x] Fix `/api/auth/signup` to explicitly set `status=PENDING`
+    - [x] Fix login redirect to `/facilitator/dashboard` for non-admins
+    - [x] Add role-based dashboard routing in Header component
+    - [x] Defense-in-depth: Return empty workshops for pending users
+- [x] **Registration Rate Limiting (Phase 2):**
+    - [x] Implement rate limit tracking table
+    - [x] Enforce 10/day, 20/week, 50/month limits
+    - [x] Admin rate limit status endpoint
+    - [x] Admin rate limit reset functionality
+- [x] **Workshop Facilitator Limit (Phase 3):**
+    - [x] Enforce max 10 facilitators per workshop
+    - [x] Validate on assignment endpoint
+    - [x] Show count in admin UI
+- [ ] **Join as Facilitator via PIN (Phase 4 - Planned):**
+    - [ ] Add "Request Facilitator Access" option on PIN entry
+    - [ ] Create facilitator access request table
+    - [ ] Admin approval queue for PIN-based requests
+    - [ ] Email notifications on approval/rejection
+
+**Status:** 🚧 IN PROGRESS - Phases 1-3 Complete, Phase 4 Planned  
+**Implementation Date:** January 25, 2026  
+**User Story:** [US32_Facilitator_Approval_Rate_Limiting.md](../userstories/US32_Facilitator_Approval_Rate_Limiting.md)
+
+---
+
+## Sprint 17: Testing Infrastructure & Production Readiness (Planned)
 **Goal:** Implement comprehensive testing suite and prepare for production deployment.
 **Focus:** Quality assurance, performance optimization, deployment preparation.
 
@@ -367,7 +403,7 @@ This plan outlines the phased execution of the Hotspot Matrix application, ensur
 **Estimated Effort:** 40-50 hours  
 **Dependencies:** Completion of all previous sprints
 
-## Sprint 15: Production Deployment & Monitoring (Future)
+## Sprint 18: Production Deployment & Monitoring (Future)
 **Goal:** Deploy to production environment and implement monitoring.
 **Focus:** DevOps, scalability, user feedback collection.
 
@@ -388,15 +424,61 @@ This plan outlines the phased execution of the Hotspot Matrix application, ensur
     - [ ] Documentation and help system
     - [ ] Customer support workflow
 
+## Sprint 19: Database-Driven Configuration (Planned)
+**Goal:** Migrate hardcoded configurations and static JSON data to PostgreSQL for dynamic management.
+**Focus:** US33 (Database-Driven Configuration), System Settings, Feature Flags, Knowledge Base CRUD.
+
+### Tasks
+- [ ] **System Settings Infrastructure:**
+    - [ ] Create `system_settings` table with key-value store
+    - [ ] Create `settings_audit_log` for change tracking
+    - [ ] Implement settings service with caching
+    - [ ] Seed default settings (rate limits, password rules, limits)
+- [ ] **Settings API & Admin UI:**
+    - [ ] CRUD endpoints for system settings
+    - [ ] Admin Settings page with category grouping
+    - [ ] Validation and audit logging
+    - [ ] Reset to defaults functionality
+- [ ] **Subscription Tiers:**
+    - [ ] Create `subscription_tiers` table
+    - [ ] Define FREE, STARTER, PROFESSIONAL, ENTERPRISE tiers
+    - [ ] Tier management admin UI
+    - [ ] Enforce tier limits in organization workflows
+- [ ] **Feature Flags:**
+    - [ ] Create `feature_flags` and `feature_flag_overrides` tables
+    - [ ] Global and per-organization flag support
+    - [ ] Feature flag admin UI
+    - [ ] Integration with existing features
+- [ ] **Knowledge Base Migration:**
+    - [ ] Create `kb_industries` and `kb_use_cases` tables
+    - [ ] Migrate `knowledge_base.json` to database
+    - [ ] Knowledge Base CRUD admin interface
+    - [ ] Import/export JSON functionality
+- [ ] **Service Updates:**
+    - [ ] Update `rate_limiting.py` to read from DB
+    - [ ] Update `security.py` password rules from DB
+    - [ ] Update `knowledge_base.py` to query DB
+
+**Priority:** MEDIUM - Platform Operations Enhancement  
+**Estimated Effort:** 96 hours  
+**Dependencies:** US30, US32 completed  
+**User Story:** [US33_Database_Driven_Configuration.md](../userstories/US33_Database_Driven_Configuration.md)
+
+---
+
 ## Future Roadmap & Improvements
 - [x] **Authentication:** JWT-based authentication for facilitators (Completed in Sprint 11).
 - [x] **Admin Features (US11):** 
   - [x] Admin role with workshop approval system.
   - [x] Multi-facilitator assignment per workshop.
   - [x] Admin dashboard to view all workshops, participants, votes, and insights.
-- [ ] **Knowledge Base (US11):**
-  - [ ] Build ontology for use cases.
-  - [ ] Create AI-powered insights based on knowledge base.
+- [x] **Knowledge Base (US11):**
+  - [x] Build ontology for use cases (Completed Sprint 14).
+  - [x] Create AI-powered insights based on knowledge base (Completed Sprint 14).
+- [ ] **Database-Driven Config (US33):**
+  - [ ] System settings management via admin UI.
+  - [ ] Feature flags with organization overrides.
+  - [ ] Knowledge Base CRUD (migrate from JSON).
 - [ ] **Participant Options (US11):**
   - [ ] Anonymous vs registered participant modes.
 - [x] **Persistence:** Migrate from SQLite/In-Memory to PostgreSQL and Redis for production (US00_Infrastructure) - Ready for Sprint 15.

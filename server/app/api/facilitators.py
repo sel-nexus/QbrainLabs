@@ -31,7 +31,17 @@ from app.schemas.rbac import (
     WorkshopAssignmentRequest,
     WorkshopAssignmentResponse,
     FacilitatorWorkshopListItem,
-    AccountStatusEnum
+    AccountStatusEnum,
+    RegistrationRateLimitResponse,
+    RateLimitStatus,
+    RateLimitResetRequest,
+    FacilitatorAccessRequestCreate,
+    FacilitatorAccessRequestResponse,
+    FacilitatorAccessRequestListResponse,
+    FacilitatorAccessApproveRequest,
+    FacilitatorAccessRejectRequest,
+    FacilitatorAccessSubmitResponse,
+    WorkshopFacilitatorsResponse
 )
 
 router = APIRouter(prefix="/api", tags=["facilitators"])
@@ -349,6 +359,7 @@ async def assign_facilitator_to_workshop(
 ):
     """
     Assign a facilitator to a workshop.
+    US32: Enforces maximum of 10 facilitators per workshop.
     Admin only endpoint.
     """
     # Verify workshop exists
@@ -357,6 +368,20 @@ async def assign_facilitator_to_workshop(
     
     if not workshop:
         raise HTTPException(status_code=404, detail="Workshop not found")
+    
+    # US32: Check facilitator limit (max 10 including owner)
+    facilitator_count_result = await db.execute(
+        select(func.count(WorkshopFacilitator.id)).where(
+            WorkshopFacilitator.workshop_id == workshop_id
+        )
+    )
+    current_count = (facilitator_count_result.scalar() or 0) + 1  # +1 for owner
+    
+    if current_count >= 10:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Maximum facilitators reached (10/10). Remove a facilitator before adding a new one."
+        )
     
     # Verify facilitator exists and is active
     facilitator_result = await db.execute(select(User).where(User.id == assignment.facilitator_id))
@@ -533,7 +558,12 @@ async def get_facilitator_workshops(
     """
     Get all workshops the current facilitator can access.
     Includes owned workshops and assigned workshops.
+    Pending facilitators see no workshops (defense-in-depth).
     """
+    # US32: Pending facilitators should not see any workshops
+    if current_user.status == AccountStatus.PENDING.value and not current_user.is_admin_user:
+        return []
+    
     workshops = []
     
     # Get owned workshops
@@ -697,3 +727,422 @@ async def get_facilitator_workshop_detail(
         can_edit=can_edit,
         can_delete=can_delete
     )
+
+
+# ============== US32: Admin Rate Limiting ==============
+
+MAX_FACILITATORS_PER_WORKSHOP = 10
+
+@router.get("/admin/registration-limits", response_model=RegistrationRateLimitResponse)
+async def get_registration_limits(
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Get current registration rate limit status.
+    US32: Shows daily/weekly/monthly registration counts and limits.
+    Admin only endpoint.
+    """
+    from app.services.rate_limiting import get_rate_limit_status
+    
+    status_data = await get_rate_limit_status(db)
+    
+    return RegistrationRateLimitResponse(
+        daily=RateLimitStatus(
+            count=status_data["daily"]["count"],
+            limit=status_data["daily"]["limit"],
+            reset_at=status_data["daily"]["reset_at"]
+        ),
+        weekly=RateLimitStatus(
+            count=status_data["weekly"]["count"],
+            limit=status_data["weekly"]["limit"],
+            reset_at=status_data["weekly"]["reset_at"]
+        ),
+        monthly=RateLimitStatus(
+            count=status_data["monthly"]["count"],
+            limit=status_data["monthly"]["limit"],
+            reset_at=status_data["monthly"]["reset_at"]
+        )
+    )
+
+
+@router.post("/admin/registration-limits/reset")
+async def reset_registration_limits(
+    reset_request: RateLimitResetRequest,
+    request: Request,
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Reset rate limits (emergency use).
+    US32: Allows admin to reset registration rate limits.
+    Admin only endpoint.
+    """
+    from app.services.rate_limiting import reset_rate_limits
+    
+    await reset_rate_limits(db, reset_request.period)
+    
+    # Log the action
+    await log_role_action(
+        db=db,
+        action="rate_limits_reset",
+        performed_by=str(admin.id),
+        new_value={"period": reset_request.period},
+        request=request,
+        details=f"Rate limits reset by {admin.email} for period: {reset_request.period}"
+    )
+    
+    return {"success": True, "message": f"Rate limits reset successfully for period: {reset_request.period}"}
+
+
+# ============== US32: Facilitator Access Requests ==============
+
+from app.models.rbac import FacilitatorAccessRequest, FacilitatorAccessRequestStatus
+
+def generate_request_id() -> str:
+    """Generate a unique request ID in format FAR-YYYY-MMDD-NNN"""
+    from datetime import datetime
+    import random
+    now = datetime.utcnow()
+    date_part = now.strftime("%Y-%m%d")
+    random_part = str(random.randint(1, 999)).zfill(3)
+    return f"FAR-{date_part}-{random_part}"
+
+
+@router.post("/workshops/{pin}/facilitator-request", response_model=FacilitatorAccessSubmitResponse)
+async def submit_facilitator_request(
+    pin: str,
+    request_data: FacilitatorAccessRequestCreate,
+    request: Request,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Submit a facilitator access request via PIN entry.
+    US32: Join as Facilitator via PIN feature.
+    Public endpoint (no auth required).
+    """
+    # Validate workshop exists and is active
+    workshop_result = await db.execute(
+        select(Workshop).where(Workshop.pin == pin.upper())
+    )
+    workshop = workshop_result.scalars().first()
+    
+    if not workshop:
+        raise HTTPException(status_code=404, detail="Workshop not found")
+    
+    if workshop.status not in ["OPEN", "IN_PROGRESS"]:
+        raise HTTPException(status_code=400, detail="Workshop is not accepting participants")
+    
+    # Check if workshop has reached facilitator limit
+    facilitator_count_result = await db.execute(
+        select(func.count(WorkshopFacilitator.id)).where(
+            WorkshopFacilitator.workshop_id == workshop.id
+        )
+    )
+    facilitator_count = facilitator_count_result.scalar() or 0
+    # Add 1 for the workshop owner
+    total_facilitators = facilitator_count + 1
+    
+    if total_facilitators >= MAX_FACILITATORS_PER_WORKSHOP:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Workshop has reached maximum facilitator capacity ({MAX_FACILITATORS_PER_WORKSHOP})"
+        )
+    
+    # Generate unique request ID
+    request_id = generate_request_id()
+    
+    # Create facilitator access request
+    access_request = FacilitatorAccessRequest(
+        request_id=request_id,
+        workshop_id=workshop.id,
+        requester_name=request_data.name,
+        requester_email=request_data.email,
+        requester_session_id=request_data.session_id,
+        status=FacilitatorAccessRequestStatus.PENDING.value
+    )
+    
+    db.add(access_request)
+    await db.commit()
+    await db.refresh(access_request)
+    
+    # Log the request
+    await log_role_action(
+        db=db,
+        action="facilitator_access_requested",
+        new_value={
+            "request_id": request_id,
+            "workshop_id": str(workshop.id),
+            "requester_name": request_data.name,
+            "requester_email": request_data.email
+        },
+        request=request,
+        details=f"Facilitator access request for workshop '{workshop.title}' by {request_data.name}"
+    )
+    
+    return FacilitatorAccessSubmitResponse(
+        request_id=request_id,
+        status="pending",
+        message="Your request has been submitted for admin review"
+    )
+
+
+@router.get("/admin/facilitator-requests", response_model=FacilitatorAccessRequestListResponse)
+async def list_facilitator_requests(
+    status_filter: Optional[str] = None,
+    workshop_id: Optional[str] = None,
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    List facilitator access requests.
+    US32: Admin approval queue for facilitator access requests.
+    Admin only endpoint.
+    """
+    query = select(FacilitatorAccessRequest, Workshop).join(
+        Workshop, FacilitatorAccessRequest.workshop_id == Workshop.id
+    )
+    
+    if status_filter:
+        query = query.where(FacilitatorAccessRequest.status == status_filter)
+    
+    if workshop_id:
+        query = query.where(FacilitatorAccessRequest.workshop_id == workshop_id)
+    
+    query = query.order_by(FacilitatorAccessRequest.created_at.desc())
+    
+    result = await db.execute(query)
+    requests_data = result.all()
+    
+    # Get pending count
+    pending_result = await db.execute(
+        select(func.count(FacilitatorAccessRequest.id)).where(
+            FacilitatorAccessRequest.status == FacilitatorAccessRequestStatus.PENDING.value
+        )
+    )
+    pending_count = pending_result.scalar() or 0
+    
+    # Build response
+    requests_list = []
+    for access_request, workshop in requests_data:
+        # Get facilitator count for this workshop
+        fac_count_result = await db.execute(
+            select(func.count(WorkshopFacilitator.id)).where(
+                WorkshopFacilitator.workshop_id == workshop.id
+            )
+        )
+        fac_count = (fac_count_result.scalar() or 0) + 1  # +1 for owner
+        
+        # Get reviewer name if reviewed
+        reviewer_name = None
+        if access_request.reviewed_by:
+            reviewer_result = await db.execute(
+                select(User).where(User.id == access_request.reviewed_by)
+            )
+            reviewer = reviewer_result.scalars().first()
+            if reviewer:
+                reviewer_name = reviewer.full_name or reviewer.email
+        
+        requests_list.append(FacilitatorAccessRequestResponse(
+            id=str(access_request.id),
+            request_id=access_request.request_id,
+            workshop_id=str(workshop.id),
+            workshop_title=workshop.title,
+            workshop_pin=workshop.pin,
+            requester_name=access_request.requester_name,
+            requester_email=access_request.requester_email,
+            status=access_request.status,
+            created_at=access_request.created_at,
+            reviewed_at=access_request.reviewed_at,
+            reviewed_by_name=reviewer_name,
+            rejection_reason=access_request.rejection_reason,
+            current_facilitator_count=fac_count,
+            max_facilitators=MAX_FACILITATORS_PER_WORKSHOP
+        ))
+    
+    return FacilitatorAccessRequestListResponse(
+        requests=requests_list,
+        total=len(requests_list),
+        pending_count=pending_count
+    )
+
+
+@router.post("/admin/facilitator-requests/{request_id}/approve")
+async def approve_facilitator_request(
+    request_id: str,
+    approval: FacilitatorAccessApproveRequest,
+    request: Request,
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Approve a facilitator access request.
+    US32: Admin approves PIN facilitator request.
+    Admin only endpoint.
+    """
+    # Find the request
+    result = await db.execute(
+        select(FacilitatorAccessRequest).where(
+            FacilitatorAccessRequest.request_id == request_id
+        )
+    )
+    access_request = result.scalars().first()
+    
+    if not access_request:
+        raise HTTPException(status_code=404, detail="Request not found")
+    
+    if access_request.status != FacilitatorAccessRequestStatus.PENDING.value:
+        raise HTTPException(status_code=400, detail=f"Request is not pending. Status: {access_request.status}")
+    
+    # Get workshop
+    workshop_result = await db.execute(
+        select(Workshop).where(Workshop.id == access_request.workshop_id)
+    )
+    workshop = workshop_result.scalars().first()
+    
+    if not workshop:
+        raise HTTPException(status_code=404, detail="Workshop not found")
+    
+    # Check facilitator limit
+    fac_count_result = await db.execute(
+        select(func.count(WorkshopFacilitator.id)).where(
+            WorkshopFacilitator.workshop_id == workshop.id
+        )
+    )
+    fac_count = (fac_count_result.scalar() or 0) + 1  # +1 for owner
+    
+    if fac_count >= MAX_FACILITATORS_PER_WORKSHOP:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Workshop at maximum facilitator capacity ({MAX_FACILITATORS_PER_WORKSHOP}). Remove a facilitator first or reject the request."
+        )
+    
+    # If requester has email, check for existing user account or create one
+    facilitator_id = None
+    if access_request.requester_email:
+        user_result = await db.execute(
+            select(User).where(User.email == access_request.requester_email)
+        )
+        existing_user = user_result.scalars().first()
+        
+        if existing_user:
+            facilitator_id = existing_user.id
+            # Ensure user is active or pending
+            if existing_user.status == AccountStatus.DISABLED.value:
+                raise HTTPException(status_code=400, detail="User account is disabled")
+        else:
+            # Create a new facilitator account (pending status for full access, but active for this workshop)
+            from app.api.auth import hash_password
+            import secrets
+            temp_password = secrets.token_urlsafe(16)
+            new_user = User(
+                email=access_request.requester_email,
+                password_hash=hash_password(temp_password),
+                full_name=access_request.requester_name,
+                role=UserRole.FACILITATOR.value,
+                status=AccountStatus.PENDING.value,
+                is_admin=False
+            )
+            db.add(new_user)
+            await db.commit()
+            await db.refresh(new_user)
+            facilitator_id = new_user.id
+    
+    # If we have a facilitator_id, create the assignment
+    if facilitator_id:
+        # Check if already assigned
+        existing_assignment = await db.execute(
+            select(WorkshopFacilitator).where(
+                WorkshopFacilitator.workshop_id == workshop.id,
+                WorkshopFacilitator.facilitator_id == facilitator_id
+            )
+        )
+        if not existing_assignment.scalars().first():
+            new_assignment = WorkshopFacilitator(
+                workshop_id=workshop.id,
+                facilitator_id=facilitator_id,
+                assigned_by=admin.id,
+                can_edit=True,
+                can_delete=False
+            )
+            db.add(new_assignment)
+    
+    # Update request status
+    access_request.status = FacilitatorAccessRequestStatus.APPROVED.value
+    access_request.reviewed_at = datetime.utcnow()
+    access_request.reviewed_by = admin.id
+    access_request.notes = approval.notes
+    
+    await db.commit()
+    
+    # Log the action
+    await log_role_action(
+        db=db,
+        action="facilitator_access_approved",
+        performed_by=str(admin.id),
+        new_value={
+            "request_id": request_id,
+            "workshop_id": str(workshop.id),
+            "facilitator_id": str(facilitator_id) if facilitator_id else None
+        },
+        request=request,
+        details=f"Facilitator access approved for {access_request.requester_name} on workshop '{workshop.title}'"
+    )
+    
+    return {
+        "success": True,
+        "message": "Facilitator access approved",
+        "facilitator_id": str(facilitator_id) if facilitator_id else None,
+        "workshop_id": str(workshop.id)
+    }
+
+
+@router.post("/admin/facilitator-requests/{request_id}/reject")
+async def reject_facilitator_request(
+    request_id: str,
+    rejection: FacilitatorAccessRejectRequest,
+    request: Request,
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Reject a facilitator access request.
+    US32: Admin rejects PIN facilitator request.
+    Admin only endpoint.
+    """
+    # Find the request
+    result = await db.execute(
+        select(FacilitatorAccessRequest).where(
+            FacilitatorAccessRequest.request_id == request_id
+        )
+    )
+    access_request = result.scalars().first()
+    
+    if not access_request:
+        raise HTTPException(status_code=404, detail="Request not found")
+    
+    if access_request.status != FacilitatorAccessRequestStatus.PENDING.value:
+        raise HTTPException(status_code=400, detail=f"Request is not pending. Status: {access_request.status}")
+    
+    # Update request status
+    access_request.status = FacilitatorAccessRequestStatus.REJECTED.value
+    access_request.reviewed_at = datetime.utcnow()
+    access_request.reviewed_by = admin.id
+    access_request.rejection_reason = rejection.reason
+    
+    await db.commit()
+    
+    # Log the action
+    await log_role_action(
+        db=db,
+        action="facilitator_access_rejected",
+        performed_by=str(admin.id),
+        new_value={
+            "request_id": request_id,
+            "rejection_reason": rejection.reason
+        },
+        request=request,
+        details=f"Facilitator access rejected for {access_request.requester_name}"
+    )
+    
+    return {"success": True, "message": "Facilitator access request rejected"}

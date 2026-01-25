@@ -12,7 +12,9 @@ import {
   CheckCircle2,
   Play,
   PauseCircle,
-  ArrowRight
+  ArrowRight,
+  AlertCircle,
+  Mail
 } from 'lucide-react';
 
 const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
@@ -92,6 +94,75 @@ export function FacilitatorDashboard() {
 
   const getTotalUseCases = () => 
     workshops.reduce((sum, w) => sum + w.use_case_count, 0);
+
+  // US32: Check if user is pending approval
+  const isPending = user?.status === 'pending';
+
+  // US32: Pending facilitator dashboard
+  if (isPending) {
+    return (
+      <div className="min-h-screen theme-bg-secondary">
+        {/* Header */}
+        <div className="bg-white border-b border-gray-100">
+          <div className="max-w-7xl mx-auto px-6 py-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h1 className="text-2xl font-bold theme-text-primary flex items-center gap-3">
+                  <LayoutDashboard className="w-7 h-7 text-brand-violet" />
+                  Facilitator Dashboard
+                </h1>
+                <p className="text-gray-600 mt-1">
+                  Welcome, {user?.full_name || user?.email}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="max-w-7xl mx-auto px-6 py-8">
+          {/* Pending Approval Banner */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-8">
+            <div className="flex items-start gap-4">
+              <div className="p-3 bg-amber-100 rounded-full">
+                <AlertCircle className="w-8 h-8 text-amber-600" />
+              </div>
+              <div className="flex-1">
+                <h2 className="text-xl font-bold text-amber-800 mb-2">
+                  ⏳ Account Pending Approval
+                </h2>
+                <p className="text-amber-700 mb-4">
+                  Your facilitator account is pending admin approval. You will be notified via email once your account has been activated.
+                </p>
+                <div className="bg-white/50 rounded-lg p-3 inline-block">
+                  <span className="text-amber-600 font-medium">Status:</span>
+                  <span className="ml-2 text-amber-800">Pending Review</span>
+                </div>
+                <button
+                  className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-amber-100 text-amber-800 rounded-lg hover:bg-amber-200 transition-colors"
+                  onClick={() => window.location.href = 'mailto:admin@hotspotmatrix.com?subject=Facilitator%20Approval%20Request'}
+                >
+                  <Mail className="w-4 h-4" />
+                  Contact Administrator
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Empty Workshops Section */}
+          <div>
+            <h2 className="text-xl font-semibold theme-text-primary mb-4">My Workshops (0)</h2>
+            <div className="bg-white rounded-xl p-8 text-center shadow-sm border border-gray-100">
+              <LayoutDashboard className="w-12 h-12 text-gray-300 mx-auto mb-3" />
+              <p className="text-gray-600 font-medium">No workshops available</p>
+              <p className="text-gray-500 text-sm mt-1">
+                Workshops will appear here once your account is approved and you are assigned to workshops.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen theme-bg-secondary">

@@ -16,6 +16,9 @@ from .rbac import (
     MemberSession,
     Permission,
     RoleAuditLog,
+    FacilitatorRegistrationLog,
+    FacilitatorAccessRequest,
+    FacilitatorAccessRequestStatus,
     DEFAULT_PERMISSIONS
 )
 
@@ -53,4 +56,10 @@ from .marketplace import (
 from .participant_user import (
     RegisteredParticipant,
     ParticipantWorkshopLink
+)
+
+from .settings import (
+    SystemSetting,
+    SettingsAuditLog,
+    DEFAULT_SYSTEM_SETTINGS
 )

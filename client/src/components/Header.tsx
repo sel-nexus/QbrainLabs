@@ -23,8 +23,14 @@ export function Header({ showBackButton = true, showHomeButton = true, title }: 
   const menuRef = useRef<HTMLDivElement>(null);
   
   const isLandingPage = location.pathname === '/';
-  const isDashboard = location.pathname === '/dashboard';
+  const isDashboard = location.pathname === '/dashboard' || location.pathname === '/facilitator/dashboard' || location.pathname === '/admin';
   const isLoggedIn = isAuthenticated || !!session;
+
+  // Get the appropriate dashboard path based on user role
+  const getDashboardPath = () => {
+    if (currentUser?.is_admin) return '/admin';
+    return '/facilitator/dashboard';
+  };
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -127,7 +133,7 @@ export function Header({ showBackButton = true, showHomeButton = true, title }: 
           {/* Quick Nav for logged-in facilitators */}
           {authToken && !isDashboard && (
             <button
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate(getDashboardPath())}
               className={`hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
                 theme === 'light'
                   ? 'hover:bg-gray-100 text-gray-700'
@@ -195,7 +201,7 @@ export function Header({ showBackButton = true, showHomeButton = true, title }: 
                     {authToken && (
                       <>
                         <button
-                          onClick={() => { navigate('/dashboard'); setShowUserMenu(false); }}
+                          onClick={() => { navigate(getDashboardPath()); setShowUserMenu(false); }}
                           className={`w-full flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${
                             theme === 'light'
                               ? 'hover:bg-gray-100 text-gray-700'

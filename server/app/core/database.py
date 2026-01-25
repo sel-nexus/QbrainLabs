@@ -1,9 +1,27 @@
+"""
+Database Configuration - PostgreSQL Only
+US33: Migrated from SQLite to PostgreSQL for production use.
+
+This module configures SQLAlchemy for PostgreSQL with support for:
+- Direct PostgreSQL connections (asyncpg)
+- Supabase/pgbouncer connections (psycopg with disabled prepared statements)
+"""
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base, Session
 from sqlalchemy.pool import NullPool
 from app.core.config import settings
-import ssl
+
+
+def validate_postgresql_url() -> None:
+    """Validate that DATABASE_URL is PostgreSQL."""
+    url = settings.DATABASE_URL.lower()
+    if "postgresql" not in url and "postgres" not in url:
+        raise ValueError(
+            "DATABASE_URL must be a PostgreSQL connection string. "
+            "SQLite is no longer supported. "
+            f"Current URL starts with: {settings.DATABASE_URL[:20]}..."
+        )
 
 
 def is_supabase_or_pgbouncer() -> bool:
@@ -14,43 +32,36 @@ def is_supabase_or_pgbouncer() -> bool:
 
 def get_database_url(for_async: bool = True) -> str:
     """
-    Convert DATABASE_URL to appropriate format.
-    For Supabase/pgbouncer, use psycopg2 (sync) to avoid prepared statement issues.
+    Convert DATABASE_URL to appropriate async driver format.
+    
+    For Supabase/pgbouncer: Uses psycopg with prepare_threshold=None
+    For direct PostgreSQL: Uses asyncpg for best async performance
     """
+    validate_postgresql_url()
     url = settings.DATABASE_URL
     
-    if "sqlite" in url:
-        if for_async:
-            if "sqlite+aiosqlite" not in url:
-                return url.replace("sqlite://", "sqlite+aiosqlite://")
-        return url
-    elif "postgresql" in url or "postgres://" in url:
-        if is_supabase_or_pgbouncer():
-            # Use psycopg2 (sync) for pgbouncer - no prepared statement issues
-            url = url.replace("postgres://", "postgresql+psycopg2://")
-            url = url.replace("postgresql://", "postgresql+psycopg2://")
-            url = url.replace("postgresql+psycopg2+psycopg2://", "postgresql+psycopg2://")
-        elif for_async:
-            # Use asyncpg for direct PostgreSQL connections
-            if "postgresql+asyncpg" not in url:
-                url = url.replace("postgres://", "postgresql+asyncpg://")
-                url = url.replace("postgresql://", "postgresql+asyncpg://")
-        return url
+    if is_supabase_or_pgbouncer():
+        # Use psycopg2 (sync) for pgbouncer - no prepared statement issues
+        url = url.replace("postgres://", "postgresql+psycopg2://")
+        url = url.replace("postgresql://", "postgresql+psycopg2://")
+        url = url.replace("postgresql+psycopg2+psycopg2://", "postgresql+psycopg2://")
+    elif for_async:
+        # Use asyncpg for direct PostgreSQL connections
+        if "postgresql+asyncpg" not in url:
+            url = url.replace("postgres://", "postgresql+asyncpg://")
+            url = url.replace("postgresql://", "postgresql+asyncpg://")
+    
     return url
 
 
 def get_engine_kwargs() -> dict:
-    """Get engine configuration based on database type."""
-    url = settings.DATABASE_URL
+    """
+    Get PostgreSQL engine configuration.
     
-    if "sqlite" in url:
-        return {
-            "echo": settings.DB_ECHO,
-            "connect_args": {"check_same_thread": False},
-            "poolclass": NullPool,
-        }
-    elif is_supabase_or_pgbouncer():
-        # Supabase/pgbouncer: use NullPool (pgbouncer handles pooling)
+    - Supabase/pgbouncer: NullPool (external pooler handles connections)
+    - Direct PostgreSQL: Connection pool with health checks
+    """
+    if is_supabase_or_pgbouncer():
         return {
             "echo": settings.DB_ECHO,
             "poolclass": NullPool,

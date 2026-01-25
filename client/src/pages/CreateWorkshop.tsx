@@ -82,9 +82,8 @@ export function CreateWorkshop() {
                     template_id: template === 'CUSTOM' ? null : template
                 }
             });
-            // Navigate to dashboard or workshop lobby using the created ID
-            // For now, let's just go back to dashboard
-            navigate('/dashboard');
+            // Navigate to admin panel after creating workshop
+            navigate('/admin/my-workshops');
         } catch (error) {
             console.error("Failed to create workshop", error);
             alert("Failed to create workshop. Check console.");
