@@ -1,5 +1,17 @@
 from pydantic_settings import BaseSettings
 from typing import Optional
+from pathlib import Path
+
+# Find .env file - check current dir, then parent dir (project root)
+def find_env_file() -> str:
+    current = Path(__file__).parent.parent.parent  # server/
+    env_file = current / ".env"
+    if env_file.exists():
+        return str(env_file)
+    parent_env = current.parent / ".env"  # project root
+    if parent_env.exists():
+        return str(parent_env)
+    return ".env"  # fallback
 
 
 class Settings(BaseSettings):
@@ -28,7 +40,7 @@ class Settings(BaseSettings):
     DEBUG: bool = True
 
     class Config:
-        env_file = ".env"
+        env_file = find_env_file()
         extra = "ignore"  # Ignore extra fields from .env
 
 settings = Settings()

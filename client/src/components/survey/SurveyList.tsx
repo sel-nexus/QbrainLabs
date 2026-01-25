@@ -50,7 +50,7 @@ export function SurveyList({ workshopId, onCreateSurvey, onEditSurvey, onViewRes
 
     const fetchSurveys = async () => {
         try {
-            const authToken = localStorage.getItem('authToken');
+            const authToken = localStorage.getItem('hm_auth_token');
             const response = await fetch(`http://localhost:8000/api/surveys/workshop/${workshopId}`, {
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });
@@ -67,7 +67,7 @@ export function SurveyList({ workshopId, onCreateSurvey, onEditSurvey, onViewRes
 
     const handleStatusChange = async (surveyId: string, action: 'activate' | 'pause' | 'resume' | 'close') => {
         try {
-            const authToken = localStorage.getItem('authToken');
+            const authToken = localStorage.getItem('hm_auth_token');
             const response = await fetch(`http://localhost:8000/api/surveys/${surveyId}/${action}`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${authToken}` }
@@ -89,7 +89,7 @@ export function SurveyList({ workshopId, onCreateSurvey, onEditSurvey, onViewRes
         if (!confirm('Are you sure you want to delete this survey?')) return;
         
         try {
-            const authToken = localStorage.getItem('authToken');
+            const authToken = localStorage.getItem('hm_auth_token');
             const response = await fetch(`http://localhost:8000/api/surveys/${surveyId}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${authToken}` }

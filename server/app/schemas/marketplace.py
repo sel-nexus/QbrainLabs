@@ -221,3 +221,7 @@ class UserTemplatesResponse(BaseModel):
     drafts: List[TemplateResponse]
     favorites: List[TemplateResponse]
     downloads: List[TemplateResponse]
+
+
+# Rebuild models to resolve forward references
+TemplateDetailResponse.model_rebuild()

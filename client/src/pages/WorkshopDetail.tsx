@@ -3,7 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../lib/api';
 import { socket } from '../lib/socket';
 import { Button } from '../components/ui/Button';
-import { Play, TrendingUp, Download, ArrowLeft, FileText, BarChart3 } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { Play, TrendingUp, Download, FileText, BarChart3, Plus, X, Loader2 } from 'lucide-react';
 import { ResultsChart } from '../components/ResultsChart';
 import { WorkshopInsights } from '../components/WorkshopInsights';
 import { AnalyticsDashboard } from '../components/AnalyticsDashboard';
@@ -12,10 +13,12 @@ import { toast } from 'sonner';
 import { QRCodeSVG } from 'qrcode.react';
 import { Modal } from '../components/ui/Modal';
 import { QrCode, Copy } from 'lucide-react';
+import { Input } from '../components/ui/Input';
 
 export function WorkshopDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { theme } = useTheme();
     const [workshop, setWorkshop] = useState<any>(null);
     const [useCases, setUseCases] = useState<any[]>([]);
     const [currentPhase, setCurrentPhase] = useState<string>('');
@@ -26,6 +29,16 @@ export function WorkshopDetail() {
     const [surveyView, setSurveyView] = useState<'list' | 'create' | 'edit' | 'results' | null>(null);
     const [selectedSurveyId, setSelectedSurveyId] = useState<string | null>(null);
     const [showAnalytics, setShowAnalytics] = useState(false);
+    const [showAddUseCase, setShowAddUseCase] = useState(false);
+    const [useCaseSubmitting, setUseCaseSubmitting] = useState(false);
+    const [useCaseForm, setUseCaseForm] = useState({
+        title: '',
+        description: '',
+        proposed_solution: '',
+        kpi: '',
+        target_user: '',
+        category: 'Generative AI'
+    });
 
     useEffect(() => {
         fetchWorkshop();
@@ -130,6 +143,44 @@ export function WorkshopDetail() {
         }
     };
 
+    const handleUseCaseFormChange = (field: string, value: string) => {
+        setUseCaseForm(prev => ({ ...prev, [field]: value }));
+    };
+
+    const handleSubmitUseCase = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!useCaseForm.title || !useCaseForm.description) {
+            toast.error("Please fill in title and description");
+            return;
+        }
+        
+        setUseCaseSubmitting(true);
+        try {
+            await api.post('/usecases/', {
+                ...useCaseForm,
+                workshop_id: id,
+                added_by_facilitator: true
+            });
+            
+            toast.success("Use case added successfully!");
+            setUseCaseForm({
+                title: '',
+                description: '',
+                proposed_solution: '',
+                kpi: '',
+                target_user: '',
+                category: 'Generative AI'
+            });
+            setShowAddUseCase(false);
+            fetchWorkshop(); // Refresh use cases
+        } catch (err) {
+            console.error(err);
+            toast.error("Failed to add use case");
+        } finally {
+            setUseCaseSubmitting(false);
+        }
+    };
+
     const downloadCSV = () => {
         if (!results.length) return;
 
@@ -157,21 +208,26 @@ export function WorkshopDetail() {
         toast.success("Export started");
     };
 
-    if (!workshop) return <div>Loading...</div>;
+    if (!workshop) return <div className={`min-h-screen flex items-center justify-center ${theme === 'light' ? 'bg-gray-50 text-gray-600' : 'bg-surface-900 text-gray-400'}`}>Loading...</div>;
 
     return (
-        <div className="min-h-screen bg-surface-900 p-6">
-            <header className="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
+        <div className={`min-h-screen p-6 ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-900'}`}>
+            <header className={`flex justify-between items-center mb-8 border-b pb-4 ${
+                theme === 'light' ? 'border-gray-200' : 'border-white/10'
+            }`}>
                 <div className="flex items-start gap-4">
-                    <Button variant="ghost" className="mt-1 p-2 h-auto" onClick={() => navigate('/dashboard')}>
-                        <ArrowLeft className="w-6 h-6" />
-                    </Button>
                     <div>
-                        <h1 className="text-3xl font-bold text-white">{workshop.title}</h1>
+                        <h1 className={`text-3xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                            {workshop.title}
+                        </h1>
                         <div className="flex items-center gap-2 mt-2">
                             <span className="text-brand-magenta font-mono text-xl font-bold">{workshop.pin}</span>
-                            <span className="text-gray-400 text-sm">Join PIN</span>
-                            <span className="ml-4 px-2 py-0.5 bg-white/10 text-xs rounded uppercase tracking-wider text-gray-400 font-mono">
+                            <span className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>Join PIN</span>
+                            <span className={`ml-4 px-2 py-0.5 text-xs rounded uppercase tracking-wider font-mono ${
+                                theme === 'light' 
+                                    ? 'bg-gray-100 text-gray-600' 
+                                    : 'bg-white/10 text-gray-400'
+                            }`}>
                                 {currentPhase}
                             </span>
                         </div>
@@ -230,17 +286,17 @@ export function WorkshopDetail() {
                         <AnalyticsDashboard workshopId={id!} workshopTitle={workshop?.title} />
                     ) : (
                         <>
-                            <h2 className="text-2xl font-bold">Strategic Matrix</h2>
+                            <h2 className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Strategic Matrix</h2>
                             <ResultsChart data={results} />
 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
                                 {results.map((r: any) => (
-                                    <div key={r.id} className="bg-surface-800 p-4 rounded-xl border border-white/5">
+                                    <div key={r.id} className={`p-4 rounded-xl border ${theme === 'light' ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/5'}`}>
                                         <div className="flex justify-between items-start mb-2">
-                                            <h3 className="font-bold">{r.title}</h3>
+                                            <h3 className={`font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>{r.title}</h3>
                                             <span className="text-brand-violet font-mono font-bold text-xl">{r.total_score}</span>
                                         </div>
-                                        <div className="text-sm text-gray-400 space-y-1">
+                                        <div className={`text-sm space-y-1 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
                                             <div className="flex justify-between"><span>Feasibility</span> <span>{r.scores['Feasibility']}</span></div>
                                             <div className="flex justify-between"><span>Value</span> <span>{r.scores['Business Value']}</span></div>
                                         </div>
@@ -253,14 +309,23 @@ export function WorkshopDetail() {
             ) : (
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     <div className="lg:col-span-2">
-                        <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                            {currentPhase === 'SCORING' ? 'Scoring Queue' : 'Incoming Submissions'}
-                            <span className="text-sm font-normal text-gray-500 bg-surface-800 px-2 py-0.5 rounded-full">{useCases.length}</span>
-                        </h2>
+                        <div className="flex items-center justify-between mb-4">
+                            <h2 className={`text-xl font-bold flex items-center gap-2 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                                {currentPhase === 'SCORING' ? 'Scoring Queue' : 'Use Cases'}
+                                <span className={`text-sm font-normal px-2 py-0.5 rounded-full ${theme === 'light' ? 'text-gray-500 bg-gray-100' : 'text-gray-500 bg-surface-800'}`}>{useCases.length}</span>
+                            </h2>
+                            <Button 
+                                variant="secondary" 
+                                className="h-9"
+                                onClick={() => setShowAddUseCase(true)}
+                            >
+                                <Plus className="w-4 h-4 mr-2" /> Add Use Case
+                            </Button>
+                        </div>
 
                         <div className="grid gap-4">
                             {useCases.length === 0 ? (
-                                <div className="text-center py-12 border border-dashed border-white/10 rounded-xl text-gray-500">
+                                <div className={`text-center py-12 border border-dashed rounded-xl ${theme === 'light' ? 'border-gray-300 text-gray-500 bg-gray-50' : 'border-white/10 text-gray-500'}`}>
                                     Waiting for submissions...
                                 </div>
                             ) : (
@@ -269,11 +334,11 @@ export function WorkshopDetail() {
                                         key={uc.id}
                                         className={`
                                             p-4 rounded-xl border transition-all animate-in fade-in slide-in-from-bottom-2
-                                            ${activeCardId === uc.id ? 'bg-brand-violet/10 border-brand-violet ring-1 ring-brand-violet' : 'bg-surface-800/50 border-white/5 hover:border-brand-violet/30'}
+                                            ${activeCardId === uc.id ? 'bg-brand-violet/10 border-brand-violet ring-1 ring-brand-violet' : theme === 'light' ? 'bg-white border-gray-200 hover:border-brand-violet/30' : 'bg-surface-800/50 border-white/5 hover:border-brand-violet/30'}
                                         `}
                                     >
                                         <div className="flex justify-between mb-2">
-                                            <h3 className="font-bold text-lg">{uc.title}</h3>
+                                            <h3 className={`font-bold text-lg ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>{uc.title}</h3>
                                             <div>
                                                 {currentPhase === 'SCORING' && (
                                                     activeCardId === uc.id ? (
@@ -290,9 +355,9 @@ export function WorkshopDetail() {
                                                 )}
                                             </div>
                                         </div>
-                                        <p className="text-gray-300 text-sm mb-3">{uc.description}</p>
+                                        <p className={`text-sm mb-3 ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>{uc.description}</p>
                                         {uc.proposed_solution && (
-                                            <div className="bg-black/20 p-2 rounded text-xs text-gray-400">
+                                            <div className={`p-2 rounded text-xs ${theme === 'light' ? 'bg-gray-100 text-gray-600' : 'bg-black/20 text-gray-400'}`}>
                                                 <strong className="text-brand-violet">Solution:</strong> {uc.proposed_solution}
                                             </div>
                                         )}
@@ -303,7 +368,7 @@ export function WorkshopDetail() {
                     </div>
 
                     <div>
-                        <div className="bg-surface-800 rounded-xl p-6 border border-white/10 sticky top-6 space-y-6">
+                        <div className={`rounded-xl p-6 border sticky top-6 space-y-6 ${theme === 'light' ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/10'}`}>
                             {pendingFacilitators.length > 0 && (
                                 <div className="bg-brand-violet/10 border border-brand-violet/30 rounded-lg p-4 animate-in fade-in slide-in-from-right-4">
                                     <h3 className="text-sm font-bold text-brand-violet mb-3 flex items-center justify-between">
@@ -447,6 +512,134 @@ export function WorkshopDetail() {
                                 surveyId={selectedSurveyId}
                                 onClose={() => setSurveyView(null)}
                             />
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Add Use Case Modal */}
+            {showAddUseCase && (
+                <div className="fixed inset-0 bg-black/50 z-50 overflow-y-auto">
+                    <div className="min-h-screen py-8 px-4 flex items-center justify-center">
+                        <div className={`relative w-full max-w-2xl rounded-xl border p-6 ${
+                            theme === 'light' 
+                                ? 'bg-white border-gray-200' 
+                                : 'bg-surface-900 border-white/10'
+                        }`}>
+                            <button
+                                onClick={() => setShowAddUseCase(false)}
+                                className={`absolute top-4 right-4 p-2 rounded-lg transition ${
+                                    theme === 'light' 
+                                        ? 'hover:bg-gray-100 text-gray-500' 
+                                        : 'hover:bg-surface-700 text-gray-400'
+                                }`}
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                            
+                            <h2 className={`text-xl font-bold mb-6 ${
+                                theme === 'light' ? 'text-gray-900' : 'text-white'
+                            }`}>
+                                Add Use Case
+                            </h2>
+                            
+                            <form onSubmit={handleSubmitUseCase} className="space-y-4">
+                                <Input
+                                    label="Title"
+                                    placeholder="e.g. Automated Customer Support"
+                                    value={useCaseForm.title}
+                                    onChange={e => handleUseCaseFormChange('title', e.target.value)}
+                                    required
+                                />
+                                
+                                <div className="grid grid-cols-2 gap-4">
+                                    <Input
+                                        label="Target User"
+                                        placeholder="e.g. Support Agents"
+                                        value={useCaseForm.target_user}
+                                        onChange={e => handleUseCaseFormChange('target_user', e.target.value)}
+                                    />
+                                    <div className="flex flex-col gap-1.5">
+                                        <label className={`text-sm pl-1 ${
+                                            theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                                        }`}>AI Technique</label>
+                                        <select
+                                            className={`w-full border-b-2 px-4 py-3 rounded-t-md focus:outline-none focus:border-brand-violet transition-colors ${
+                                                theme === 'light' 
+                                                    ? 'bg-gray-50 border-gray-200 text-gray-900' 
+                                                    : 'bg-black/20 border-white/10 text-white'
+                                            }`}
+                                            value={useCaseForm.category}
+                                            onChange={e => handleUseCaseFormChange('category', e.target.value)}
+                                        >
+                                            <option>Generative AI</option>
+                                            <option>Predictive ML</option>
+                                            <option>Computer Vision</option>
+                                            <option>Robotics</option>
+                                            <option>Other</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label className={`block text-sm pl-1 mb-1 ${
+                                        theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                                    }`}>Problem Statement</label>
+                                    <textarea
+                                        className={`w-full border-b-2 px-4 py-3 rounded-t-md placeholder:text-gray-500 focus:outline-none focus:border-brand-violet transition-colors min-h-[100px] ${
+                                            theme === 'light' 
+                                                ? 'bg-gray-50 border-gray-200 text-gray-900' 
+                                                : 'bg-black/20 border-white/10 text-white'
+                                        }`}
+                                        placeholder="Describe the pain point..."
+                                        value={useCaseForm.description}
+                                        onChange={e => handleUseCaseFormChange('description', e.target.value)}
+                                        required
+                                    />
+                                </div>
+                                
+                                <div>
+                                    <label className={`block text-sm pl-1 mb-1 ${
+                                        theme === 'light' ? 'text-gray-600' : 'text-gray-400'
+                                    }`}>Proposed Solution</label>
+                                    <textarea
+                                        className={`w-full border-b-2 px-4 py-3 rounded-t-md placeholder:text-gray-500 focus:outline-none focus:border-brand-violet transition-colors min-h-[100px] ${
+                                            theme === 'light' 
+                                                ? 'bg-gray-50 border-gray-200 text-gray-900' 
+                                                : 'bg-black/20 border-white/10 text-white'
+                                        }`}
+                                        placeholder="How does AI solve it?"
+                                        value={useCaseForm.proposed_solution}
+                                        onChange={e => handleUseCaseFormChange('proposed_solution', e.target.value)}
+                                    />
+                                </div>
+                                
+                                <Input
+                                    label="Expected Benefit (KPI)"
+                                    placeholder="e.g. Reduce handle time by 20%"
+                                    value={useCaseForm.kpi}
+                                    onChange={e => handleUseCaseFormChange('kpi', e.target.value)}
+                                />
+                                
+                                <div className="flex gap-3 pt-4">
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        className="flex-1"
+                                        onClick={() => setShowAddUseCase(false)}
+                                    >
+                                        Cancel
+                                    </Button>
+                                    <Button
+                                        type="submit"
+                                        className="flex-1"
+                                        disabled={useCaseSubmitting || !useCaseForm.title || !useCaseForm.description}
+                                    >
+                                        {useCaseSubmitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                                        {useCaseSubmitting ? 'Adding...' : 'Add Use Case'}
+                                    </Button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>

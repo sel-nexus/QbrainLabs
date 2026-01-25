@@ -10,6 +10,7 @@ import {
     Loader2
 } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { useTheme } from '../../context/ThemeContext';
 
 interface QuestionConfig {
     scale?: number;
@@ -44,12 +45,14 @@ interface SurveyParticipantProps {
 }
 
 export function SurveyParticipant({ surveyId, participantId, onComplete }: SurveyParticipantProps) {
+    const { theme } = useTheme();
     const [survey, setSurvey] = useState<SurveyData | null>(null);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [answers, setAnswers] = useState<Record<string, any>>({});
     const [completed, setCompleted] = useState(false);
+    const isLight = theme === 'light';
 
     useEffect(() => {
         fetchSurvey();
@@ -201,17 +204,17 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
         return (
             <div className="max-w-lg mx-auto text-center py-12">
                 <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Check className="w-8 h-8 text-green-400" />
+                    <Check className="w-8 h-8 text-green-500" />
                 </div>
-                <h2 className="text-2xl font-bold text-white mb-2">Thank You!</h2>
-                <p className="text-gray-400">Your responses have been recorded.</p>
+                <h2 className={`text-2xl font-bold mb-2 ${isLight ? 'text-gray-900' : 'text-white'}`}>Thank You!</h2>
+                <p className={isLight ? 'text-gray-500' : 'text-gray-400'}>Your responses have been recorded.</p>
             </div>
         );
     }
 
     if (!survey || !currentQuestion) {
         return (
-            <div className="text-center py-12 text-gray-400">
+            <div className={`text-center py-12 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
                 Survey not available
             </div>
         );
@@ -224,19 +227,19 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
         <div className="max-w-2xl mx-auto">
             {/* Header */}
             <div className="mb-8">
-                <h1 className="text-2xl font-bold text-white mb-2">{survey.title}</h1>
+                <h1 className={`text-2xl font-bold mb-2 ${isLight ? 'text-gray-900' : 'text-white'}`}>{survey.title}</h1>
                 {survey.description && (
-                    <p className="text-gray-400">{survey.description}</p>
+                    <p className={isLight ? 'text-gray-500' : 'text-gray-400'}>{survey.description}</p>
                 )}
             </div>
 
             {/* Progress Bar */}
             <div className="mb-8">
-                <div className="flex items-center justify-between text-sm text-gray-400 mb-2">
+                <div className={`flex items-center justify-between text-sm mb-2 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
                     <span>Question {currentIndex + 1} of {survey.questions.length}</span>
                     <span>{Math.round(progress)}% complete</span>
                 </div>
-                <div className="h-2 bg-surface-700 rounded-full overflow-hidden">
+                <div className={`h-2 rounded-full overflow-hidden ${isLight ? 'bg-gray-200' : 'bg-surface-700'}`}>
                     <div
                         className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300"
                         style={{ width: `${progress}%` }}
@@ -245,15 +248,15 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
             </div>
 
             {/* Question */}
-            <div className="bg-surface-800 rounded-xl p-6 border border-white/10 mb-6">
+            <div className={`rounded-xl p-6 border mb-6 ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
                 <div className="flex items-start gap-3 mb-6">
-                    <span className="text-sm font-mono text-purple-400 bg-purple-500/10 px-2 py-1 rounded">
+                    <span className="text-sm font-mono text-purple-500 bg-purple-500/10 px-2 py-1 rounded">
                         Q{currentIndex + 1}
                     </span>
                     <div>
-                        <h2 className="text-lg text-white">
+                        <h2 className={`text-lg ${isLight ? 'text-gray-900' : 'text-white'}`}>
                             {currentQuestion.text}
-                            {currentQuestion.required && <span className="text-red-400 ml-1">*</span>}
+                            {currentQuestion.required && <span className="text-red-500 ml-1">*</span>}
                         </h2>
                     </div>
                 </div>
@@ -269,8 +272,10 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
                                     onClick={() => setAnswer(currentQuestion.id, option)}
                                     className={`w-full flex items-center gap-3 p-4 rounded-lg border transition text-left ${
                                         answers[currentQuestion.id] === option
-                                            ? 'bg-purple-500/20 border-purple-500 text-white'
-                                            : 'bg-surface-700 border-white/10 text-gray-300 hover:border-purple-500/50'
+                                            ? 'bg-purple-500/20 border-purple-500 text-purple-700'
+                                            : isLight 
+                                                ? 'bg-gray-50 border-gray-200 text-gray-700 hover:border-purple-400'
+                                                : 'bg-surface-700 border-white/10 text-gray-300 hover:border-purple-500/50'
                                     }`}
                                 >
                                     <Circle className={`w-5 h-5 ${
@@ -299,8 +304,10 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
                                         }}
                                         className={`w-full flex items-center gap-3 p-4 rounded-lg border transition text-left ${
                                             selected
-                                                ? 'bg-purple-500/20 border-purple-500 text-white'
-                                                : 'bg-surface-700 border-white/10 text-gray-300 hover:border-purple-500/50'
+                                                ? 'bg-purple-500/20 border-purple-500 text-purple-700'
+                                                : isLight 
+                                                    ? 'bg-gray-50 border-gray-200 text-gray-700 hover:border-purple-400'
+                                                    : 'bg-surface-700 border-white/10 text-gray-300 hover:border-purple-500/50'
                                         }`}
                                     >
                                         <Square className={`w-5 h-5 ${selected ? 'fill-purple-500 text-purple-500' : ''}`} />
@@ -338,7 +345,7 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
                             onChange={(e) => setAnswer(currentQuestion.id, e.target.value)}
                             placeholder="Type your answer..."
                             maxLength={currentQuestion.config?.max_length || 200}
-                            className="w-full px-4 py-3 bg-surface-700 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500 ${isLight ? 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-surface-700 border-white/10 text-white placeholder-gray-500'}`}
                         />
                     )}
 
@@ -350,7 +357,7 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
                             placeholder="Type your answer..."
                             maxLength={currentQuestion.config?.max_length || 1000}
                             rows={4}
-                            className="w-full px-4 py-3 bg-surface-700 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
+                            className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none ${isLight ? 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-surface-700 border-white/10 text-white placeholder-gray-500'}`}
                         />
                     )}
 
@@ -358,8 +365,8 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
                     {currentQuestion.type === 'likert' && currentQuestion.config?.statements && (
                         <div className="space-y-4">
                             {currentQuestion.config.statements.map((statement, stmtIdx) => (
-                                <div key={stmtIdx} className="bg-surface-700 rounded-lg p-4">
-                                    <p className="text-white mb-3">{statement}</p>
+                                <div key={stmtIdx} className={`rounded-lg p-4 ${isLight ? 'bg-gray-50' : 'bg-surface-700'}`}>
+                                    <p className={`mb-3 ${isLight ? 'text-gray-900' : 'text-white'}`}>{statement}</p>
                                     <div className="flex items-center justify-between gap-2">
                                         {Array.from({ length: currentQuestion.config?.scale || 5 }, (_, i) => i + 1).map((value) => {
                                             const currentAnswers = answers[currentQuestion.id] || {};
@@ -374,7 +381,9 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
                                                     className={`flex-1 py-2 rounded-lg border transition ${
                                                         selected
                                                             ? 'bg-purple-500 border-purple-500 text-white'
-                                                            : 'bg-surface-600 border-white/10 text-gray-400 hover:border-purple-500/50'
+                                                            : isLight 
+                                                                ? 'bg-white border-gray-200 text-gray-600 hover:border-purple-400'
+                                                                : 'bg-surface-600 border-white/10 text-gray-400 hover:border-purple-500/50'
                                                     }`}
                                                 >
                                                     {value}

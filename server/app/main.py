@@ -66,7 +66,7 @@ app.include_router(usecases.router, prefix="/api/usecases", tags=["usecases"])
 app.include_router(votes.router, prefix="/api/votes", tags=["votes"])
 app.include_router(results.router, prefix="/api/results", tags=["results"])
 
-from app.api import ai, auth, admin, knowledge_base, surveys, participant_auth, analytics, export, organizations, marketplace, errors
+from app.api import ai, auth, admin, knowledge_base, surveys, participant_auth, analytics, export, organizations, marketplace, errors, facilitators, members
 app.include_router(ai.router, prefix="/api/ai", tags=["ai"])
 app.include_router(errors.router, tags=["errors"])
 app.include_router(auth.router, tags=["authentication"])
@@ -78,6 +78,8 @@ app.include_router(analytics.router, tags=["analytics"])
 app.include_router(export.router, tags=["export"])
 app.include_router(organizations.router, tags=["organizations"])
 app.include_router(marketplace.router, tags=["marketplace"])
+app.include_router(facilitators.router, tags=["facilitators"])
+app.include_router(members.router, tags=["members"])
 
 
 @app.get("/")

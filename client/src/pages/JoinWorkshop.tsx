@@ -4,12 +4,14 @@ import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { api } from '../lib/api';
 import { useSession } from '../context/SessionContext';
+import { useTheme } from '../context/ThemeContext';
 import { motion } from 'framer-motion';
-import { ArrowRight, Loader2, ArrowLeft, UserCircle } from 'lucide-react';
+import { ArrowRight, Loader2, UserCircle } from 'lucide-react';
 import { ParticipantAuth } from '../components/ParticipantAuth';
 
 export function JoinWorkshop() {
     const navigate = useNavigate();
+    const { theme } = useTheme();
     const [searchParams] = useSearchParams();
     const [pin, setPin] = useState(searchParams.get('pin') || '');
     const [name, setName] = useState('');
@@ -70,21 +72,19 @@ export function JoinWorkshop() {
     };
 
     return (
-        <div className="min-h-screen flex flex-col items-center justify-center p-6 relative">
-            <Button
-                variant="ghost"
-                className="absolute top-6 left-6 text-gray-400 hover:text-white"
-                onClick={() => navigate('/')}
-            >
-                <ArrowLeft className="w-4 h-4 mr-2" /> Back
-            </Button>
-
+        <div className={`min-h-screen flex flex-col items-center justify-center p-6 ${
+            theme === 'light' ? 'bg-gray-50' : 'bg-surface-900'
+        }`}>
             <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 className="w-full max-w-md"
             >
-                <h1 className="text-3xl font-heading font-bold text-center mb-8">Join Session</h1>
+                <h1 className={`text-3xl font-heading font-bold text-center mb-8 ${
+                    theme === 'light' ? 'text-gray-900' : 'text-white'
+                }`}>
+                    Join Session
+                </h1>
 
                 <form onSubmit={handleJoin} className="space-y-6">
                     <Input
@@ -104,7 +104,7 @@ export function JoinWorkshop() {
                     />
 
                     {error && (
-                        <div className="text-center text-semantic-danger text-sm bg-semantic-danger/10 p-2 rounded">
+                        <div className="text-center text-semantic-danger text-sm bg-semantic-danger/10 p-3 rounded-lg font-medium">
                             {error}
                         </div>
                     )}
@@ -115,9 +115,15 @@ export function JoinWorkshop() {
                             id="facilitator"
                             checked={isFacilitator}
                             onChange={(e) => setIsFacilitator(e.target.checked)}
-                            className="w-4 h-4 rounded border-gray-600 bg-surface-900"
+                            className={`w-4 h-4 rounded ${
+                                theme === 'light' ? 'border-gray-300' : 'border-gray-600 bg-surface-800'
+                            }`}
                         />
-                        <label htmlFor="facilitator" className="text-sm text-gray-400">Join as Facilitator</label>
+                        <label htmlFor="facilitator" className={`text-sm ${
+                            theme === 'light' ? 'text-gray-600' : 'text-gray-300'
+                        }`}>
+                            Join as Facilitator
+                        </label>
                     </div>
 
                     <Button
@@ -132,7 +138,11 @@ export function JoinWorkshop() {
                     <button
                         type="button"
                         onClick={() => setShowAdvancedAuth(true)}
-                        className="w-full text-sm text-gray-400 hover:text-brand-violet transition-colors flex items-center justify-center gap-2"
+                        className={`w-full text-sm transition-colors flex items-center justify-center gap-2 ${
+                            theme === 'light' 
+                                ? 'text-gray-500 hover:text-brand-violet' 
+                                : 'text-gray-400 hover:text-brand-violet'
+                        }`}
                     >
                         <UserCircle className="w-4 h-4" />
                         Sign in to track contributions
@@ -146,14 +156,26 @@ export function JoinWorkshop() {
                     <motion.div
                         initial={{ scale: 0.95, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
-                        className="bg-surface-900 rounded-xl border border-white/10 p-6 w-full max-w-md"
+                        className={`rounded-xl border p-6 w-full max-w-md ${
+                            theme === 'light' 
+                                ? 'bg-white border-gray-200 shadow-xl' 
+                                : 'bg-surface-900 border-white/10'
+                        }`}
                     >
-                        <h2 className="text-xl font-bold mb-4 text-center">Join Workshop</h2>
+                        <h2 className={`text-xl font-bold mb-4 text-center ${
+                            theme === 'light' ? 'text-gray-900' : 'text-white'
+                        }`}>
+                            Join Workshop
+                        </h2>
                         
                         {/* PIN display if provided */}
                         {pin && (
-                            <div className="text-center mb-4 p-2 bg-surface-800 rounded-lg">
-                                <span className="text-gray-400 text-sm">Workshop PIN: </span>
+                            <div className={`text-center mb-4 p-2 rounded-lg ${
+                                theme === 'light' ? 'bg-gray-100' : 'bg-surface-800'
+                            }`}>
+                                <span className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
+                                    Workshop PIN:{' '}
+                                </span>
                                 <span className="font-mono font-bold text-brand-violet">{pin.toUpperCase()}</span>
                             </div>
                         )}

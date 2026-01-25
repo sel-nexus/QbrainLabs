@@ -1,15 +1,21 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Form
+from fastapi import APIRouter, Depends, HTTPException, status, Form, Request
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from datetime import datetime, timedelta
-from typing import Optional
+from typing import Optional, List
 import bcrypt
 import jwt
 
 from app.core.database import get_db
-from app.models.models import User
+from app.models.models import User, UserRole, AccountStatus, Workshop
+from app.models.rbac import WorkshopFacilitator
 from app.schemas.auth import UserCreate, UserLogin, UserResponse, Token
+from app.schemas.rbac import (
+    FacilitatorRegisterRequest,
+    UserWithRoleResponse,
+    TokenWithRoleResponse
+)
 from app.core.config import settings
 
 router = APIRouter(prefix="/api/auth", tags=["authentication"])
@@ -32,15 +38,39 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
-    """Create a JWT access token"""
+    """Create a JWT access token with role and status"""
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
     else:
         expire = datetime.utcnow() + timedelta(minutes=15)
-    to_encode.update({"exp": expire})
+    to_encode.update({
+        "exp": expire,
+        "iat": datetime.utcnow()
+    })
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+
+async def get_user_workshop_ids(user_id: str, db: AsyncSession) -> List[str]:
+    """Get list of workshop IDs the user can access"""
+    workshop_ids = []
+    
+    # Get owned workshops
+    result = await db.execute(
+        select(Workshop.id).where(Workshop.facilitator_id == user_id)
+    )
+    workshop_ids.extend([str(row[0]) for row in result.all()])
+    
+    # Get assigned workshops
+    result = await db.execute(
+        select(WorkshopFacilitator.workshop_id).where(
+            WorkshopFacilitator.facilitator_id == user_id
+        )
+    )
+    workshop_ids.extend([str(row[0]) for row in result.all()])
+    
+    return list(set(workshop_ids))
 
 async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_db)):
     """Get current authenticated user from JWT token"""
@@ -96,8 +126,9 @@ async def signup(user_data: UserCreate, db: AsyncSession = Depends(get_db)):
         full_name=new_user.full_name
     )
 
-@router.post("/login", response_model=Token)
+@router.post("/login", response_model=TokenWithRoleResponse)
 async def login(
+    request: Request,
     username: str = Form(...),  # OAuth2 spec uses 'username' field
     password: str = Form(...),
     db: AsyncSession = Depends(get_db)
@@ -105,6 +136,7 @@ async def login(
     """
     Login with email and password to get access token
     OAuth2 compatible endpoint - use 'username' field for email
+    Includes role and status validation.
     """
     # Find user by email (username field in OAuth2 form)
     result = await db.execute(select(User).where(User.email == username))
@@ -117,32 +149,79 @@ async def login(
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    # Create access token
+    # Check account status (admins bypass status check)
+    if not user.is_admin_user:
+        if user.status == AccountStatus.PENDING.value:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Your account is pending approval. Please wait for administrator approval."
+            )
+        elif user.status == AccountStatus.DISABLED.value:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Your account has been disabled. Please contact your administrator."
+            )
+        elif user.status == AccountStatus.SUSPENDED.value:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="Your account has been suspended. Please contact your administrator."
+            )
+    
+    # Update last login
+    user.last_login = datetime.utcnow()
+    await db.commit()
+    
+    # Get workshop IDs for token
+    workshop_ids = await get_user_workshop_ids(str(user.id), db)
+    
+    # Create access token with role info
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
-        data={"sub": user.email}, expires_delta=access_token_expires
+        data={
+            "sub": user.email,
+            "role": user.role,
+            "status": user.status,
+            "user_id": str(user.id),
+            "is_admin": user.is_admin_user
+        },
+        expires_delta=access_token_expires
     )
     
-    return Token(
+    return TokenWithRoleResponse(
         access_token=access_token,
         token_type="bearer",
-        user=UserResponse(
+        user=UserWithRoleResponse(
             id=str(user.id),
             email=user.email,
-            full_name=user.full_name
-        )
+            full_name=user.full_name,
+            role=user.role,
+            status=user.status,
+            is_admin=user.is_admin_user,
+            organization=user.organization,
+            mfa_enabled=user.mfa_enabled,
+            last_login=user.last_login
+        ),
+        assigned_workshops=workshop_ids
     )
 
-@router.get("/me", response_model=UserResponse)
-async def get_me(current_user: User = Depends(get_current_user)):
+@router.get("/me", response_model=UserWithRoleResponse)
+async def get_me(
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
     """
-    Get current logged-in user information
+    Get current logged-in user information with role details
     """
-    return UserResponse(
+    return UserWithRoleResponse(
         id=str(current_user.id),
         email=current_user.email,
         full_name=current_user.full_name,
-        is_admin=current_user.is_admin
+        role=current_user.role,
+        status=current_user.status,
+        is_admin=current_user.is_admin_user,
+        organization=current_user.organization,
+        mfa_enabled=current_user.mfa_enabled,
+        last_login=current_user.last_login
     )
 
 @router.post("/change-password", status_code=status.HTTP_200_OK)
@@ -174,4 +253,92 @@ async def change_password(
     await db.commit()
     
     return {"message": "Password changed successfully"}
+
+
+@router.post("/register", response_model=UserWithRoleResponse, status_code=status.HTTP_201_CREATED)
+async def register_facilitator(
+    registration: FacilitatorRegisterRequest,
+    request: Request,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Register a new facilitator account.
+    Account will be in 'pending' status until approved by an admin.
+    """
+    # Check if user already exists
+    result = await db.execute(select(User).where(User.email == registration.email))
+    existing_user = result.scalars().first()
+    
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Email already registered"
+        )
+    
+    # Create new facilitator (pending approval)
+    hashed_password = hash_password(registration.password)
+    new_user = User(
+        email=registration.email,
+        password_hash=hashed_password,
+        full_name=registration.full_name,
+        organization=registration.organization,
+        role=UserRole.FACILITATOR.value,
+        status=AccountStatus.PENDING.value,
+        is_admin=False
+    )
+    
+    db.add(new_user)
+    await db.commit()
+    await db.refresh(new_user)
+    
+    # Log the registration
+    from app.middleware.rbac import log_role_action
+    await log_role_action(
+        db=db,
+        action="facilitator_registered",
+        user_id=str(new_user.id),
+        new_value={
+            "email": new_user.email,
+            "full_name": new_user.full_name,
+            "organization": new_user.organization,
+            "status": new_user.status
+        },
+        request=request,
+        details=f"New facilitator registration: {new_user.email}"
+    )
+    
+    return UserWithRoleResponse(
+        id=str(new_user.id),
+        email=new_user.email,
+        full_name=new_user.full_name,
+        role=new_user.role,
+        status=new_user.status,
+        is_admin=False,
+        organization=new_user.organization,
+        mfa_enabled=False,
+        last_login=None
+    )
+
+
+@router.post("/logout")
+async def logout(
+    request: Request,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Logout current session.
+    Note: JWT tokens are stateless, so this primarily logs the action.
+    Client should discard the token.
+    """
+    from app.middleware.rbac import log_role_action
+    await log_role_action(
+        db=db,
+        action="user_logout",
+        user_id=str(current_user.id),
+        request=request,
+        details=f"User {current_user.email} logged out"
+    )
+    
+    return {"message": "Logged out successfully"}
 

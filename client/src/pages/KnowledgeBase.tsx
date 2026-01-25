@@ -75,8 +75,8 @@ export function KnowledgeBase() {
     const [currentUser, setCurrentUser] = useState<any>(null);
 
     useEffect(() => {
-        const authToken = localStorage.getItem('authToken');
-        const userStr = localStorage.getItem('currentUser');
+        const authToken = localStorage.getItem('hm_auth_token');
+        const userStr = localStorage.getItem('hm_user');
 
         if (!authToken || !userStr) {
             toast.error('Please log in to access the Knowledge Base');
@@ -90,7 +90,7 @@ export function KnowledgeBase() {
 
     const fetchOverview = async () => {
         try {
-            const authToken = localStorage.getItem('authToken');
+            const authToken = localStorage.getItem('hm_auth_token');
             const response = await fetch('http://localhost:8000/api/knowledge-base/overview', {
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });
@@ -111,7 +111,7 @@ export function KnowledgeBase() {
         
         setSearching(true);
         try {
-            const authToken = localStorage.getItem('authToken');
+            const authToken = localStorage.getItem('hm_auth_token');
             const response = await fetch(
                 `http://localhost:8000/api/knowledge-base/search?query=${encodeURIComponent(searchQuery)}`,
                 { headers: { 'Authorization': `Bearer ${authToken}` } }
@@ -130,7 +130,7 @@ export function KnowledgeBase() {
 
     const fetchIndustry = async (industryId: string) => {
         try {
-            const authToken = localStorage.getItem('authToken');
+            const authToken = localStorage.getItem('hm_auth_token');
             const response = await fetch(
                 `http://localhost:8000/api/knowledge-base/industries/${industryId}`,
                 { headers: { 'Authorization': `Bearer ${authToken}` } }

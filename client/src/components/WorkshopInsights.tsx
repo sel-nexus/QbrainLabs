@@ -45,7 +45,7 @@ export function WorkshopInsights({ workshopId }: WorkshopInsightsProps) {
 
     const fetchInsights = async () => {
         try {
-            const authToken = localStorage.getItem('authToken');
+            const authToken = localStorage.getItem('hm_auth_token');
             if (!authToken) {
                 setError('Authentication required');
                 setLoading(false);

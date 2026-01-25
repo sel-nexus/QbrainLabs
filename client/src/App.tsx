@@ -5,7 +5,7 @@ import { AdminDashboard } from './pages/AdminDashboard';
 import { AdminPanel } from './pages/AdminPanel';
 import { CreateWorkshop } from './pages/CreateWorkshop';
 import { JoinWorkshop } from './pages/JoinWorkshop';
-import { WaitingRoom } from './pages/WaitingRoom';
+import { ParticipantDashboard } from './pages/ParticipantDashboard';
 import { IntakePhase } from './pages/IntakePhase';
 import { ScoringPhase } from './pages/ScoringPhase';
 import { WorkshopDetail } from './pages/WorkshopDetail';
@@ -13,6 +13,13 @@ import { FacilitatorLogin } from './pages/FacilitatorLogin';
 import { KnowledgeBase } from './pages/KnowledgeBase';
 import { Organizations } from './pages/Organizations';
 import { Marketplace } from './pages/Marketplace';
+import { FacilitatorDashboard } from './pages/FacilitatorDashboard';
+import { FacilitatorManagement } from './pages/FacilitatorManagement';
+import { AdminWorkshops } from './pages/AdminWorkshops';
+import { AdminUsers } from './pages/AdminUsers';
+import { AdminKnowledgeBase } from './pages/AdminKnowledgeBase';
+import { AdminMyWorkshops } from './pages/AdminMyWorkshops';
+import { FacilitatorRegister } from './pages/FacilitatorRegister';
 
 import { Toaster } from 'sonner';
 
@@ -21,10 +28,16 @@ import { socket } from './lib/socket';
 import { toast } from 'sonner';
 
 import { SessionProvider } from './context/SessionContext';
+import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import { Header } from './components/Header';
+import { AdminGuard, FacilitatorGuard } from './components/guards/RoleGuard';
+import { ChangePasswordDialog } from './components/ChangePasswordDialog';
+import { useAuth } from './context/AuthContext';
 
 function AppContent() {
+  const { showChangePasswordDialog, closeChangePasswordDialog } = useAuth();
+
   useEffect(() => {
     socket.on('connect', () => toast.success('Connected to server'));
     socket.on('disconnect', () => toast.error('Disconnected from server. Trying to reconnect...'));
@@ -41,21 +54,90 @@ function AppContent() {
     <div className="theme-text-primary font-body selection:bg-brand-violet selection:text-white">
       <Header />
       <Toaster position="top-center" richColors />
+      {showChangePasswordDialog && (
+        <ChangePasswordDialog onClose={closeChangePasswordDialog} />
+      )}
       <main className="pt-14">
         <Routes>
+          {/* Public Routes */}
           <Route path="/" element={<Landing />} />
           <Route path="/facilitator-login" element={<FacilitatorLogin />} />
-          <Route path="/dashboard" element={<AdminDashboard />} />
-          <Route path="/admin" element={<AdminPanel />} />
-          <Route path="/create" element={<CreateWorkshop />} />
+          <Route path="/register" element={<FacilitatorRegister />} />
           <Route path="/join" element={<JoinWorkshop />} />
-          <Route path="/lobby" element={<WaitingRoom />} />
+          
+          {/* Admin Routes */}
+          <Route path="/admin" element={
+            <AdminGuard>
+              <AdminPanel />
+            </AdminGuard>
+          } />
+          <Route path="/admin/facilitators" element={
+            <AdminGuard>
+              <FacilitatorManagement />
+            </AdminGuard>
+          } />
+          <Route path="/admin/workshops" element={
+            <AdminGuard>
+              <AdminWorkshops />
+            </AdminGuard>
+          } />
+          <Route path="/admin/users" element={
+            <AdminGuard>
+              <AdminUsers />
+            </AdminGuard>
+          } />
+          <Route path="/admin/knowledge-base" element={
+            <AdminGuard>
+              <AdminKnowledgeBase />
+            </AdminGuard>
+          } />
+          <Route path="/admin/my-workshops" element={
+            <AdminGuard>
+              <AdminMyWorkshops />
+            </AdminGuard>
+          } />
+          <Route path="/create" element={
+            <AdminGuard>
+              <CreateWorkshop />
+            </AdminGuard>
+          } />
+          
+          {/* Facilitator Routes */}
+          <Route path="/facilitator/dashboard" element={
+            <FacilitatorGuard>
+              <FacilitatorDashboard />
+            </FacilitatorGuard>
+          } />
+          <Route path="/dashboard" element={
+            <FacilitatorGuard>
+              <AdminDashboard />
+            </FacilitatorGuard>
+          } />
+          <Route path="/workshop/:id" element={
+            <FacilitatorGuard>
+              <WorkshopDetail />
+            </FacilitatorGuard>
+          } />
+          <Route path="/knowledge-base" element={
+            <FacilitatorGuard>
+              <KnowledgeBase />
+            </FacilitatorGuard>
+          } />
+          <Route path="/organizations" element={
+            <FacilitatorGuard>
+              <Organizations />
+            </FacilitatorGuard>
+          } />
+          <Route path="/marketplace" element={
+            <FacilitatorGuard>
+              <Marketplace />
+            </FacilitatorGuard>
+          } />
+          
+          {/* Member/Participant Routes */}
+          <Route path="/lobby" element={<ParticipantDashboard />} />
           <Route path="/intake" element={<IntakePhase />} />
           <Route path="/scoring" element={<ScoringPhase />} />
-          <Route path="/workshop/:id" element={<WorkshopDetail />} />
-          <Route path="/knowledge-base" element={<KnowledgeBase />} />
-          <Route path="/organizations" element={<Organizations />} />
-          <Route path="/marketplace" element={<Marketplace />} />
         </Routes>
       </main>
     </div>
@@ -67,9 +149,11 @@ function App() {
     <ErrorBoundary>
       <BrowserRouter>
         <ThemeProvider>
-          <SessionProvider>
-            <AppContent />
-          </SessionProvider>
+          <AuthProvider>
+            <SessionProvider>
+              <AppContent />
+            </SessionProvider>
+          </AuthProvider>
         </ThemeProvider>
       </BrowserRouter>
     </ErrorBoundary>

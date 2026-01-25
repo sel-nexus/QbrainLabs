@@ -83,7 +83,7 @@ export function SurveyBuilder({ workshopId, surveyId, onSave, onCancel }: Survey
     const fetchSurvey = async () => {
         try {
             setLoading(true);
-            const authToken = localStorage.getItem('authToken');
+            const authToken = localStorage.getItem('hm_auth_token');
             const response = await fetch(`http://localhost:8000/api/surveys/${surveyId}`, {
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });
@@ -106,7 +106,7 @@ export function SurveyBuilder({ workshopId, surveyId, onSave, onCancel }: Survey
 
     const fetchTemplates = async () => {
         try {
-            const authToken = localStorage.getItem('authToken');
+            const authToken = localStorage.getItem('hm_auth_token');
             const response = await fetch('http://localhost:8000/api/surveys/templates/list', {
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });
@@ -196,7 +196,7 @@ export function SurveyBuilder({ workshopId, surveyId, onSave, onCancel }: Survey
 
         try {
             setSaving(true);
-            const authToken = localStorage.getItem('authToken');
+            const authToken = localStorage.getItem('hm_auth_token');
             
             const payload = {
                 title,
@@ -262,7 +262,7 @@ export function SurveyBuilder({ workshopId, surveyId, onSave, onCancel }: Survey
 
     const applyTemplate = async (templateId: string) => {
         try {
-            const authToken = localStorage.getItem('authToken');
+            const authToken = localStorage.getItem('hm_auth_token');
             const response = await fetch(`http://localhost:8000/api/surveys/templates/${templateId}`, {
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });

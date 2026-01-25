@@ -66,7 +66,7 @@ export function SurveyResults({ surveyId, onClose }: SurveyResultsProps) {
 
     const fetchData = async () => {
         try {
-            const authToken = localStorage.getItem('authToken');
+            const authToken = localStorage.getItem('hm_auth_token');
             
             const [resultsRes, progressRes] = await Promise.all([
                 fetch(`http://localhost:8000/api/surveys/${surveyId}/results`, {

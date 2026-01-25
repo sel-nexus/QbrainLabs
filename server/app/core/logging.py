@@ -5,7 +5,7 @@ import logging
 import sys
 import json
 from datetime import datetime
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 from functools import lru_cache
 
 import structlog
@@ -53,7 +53,7 @@ def get_logger(name: str = "hotspotmatrix") -> structlog.BoundLogger:
 def setup_logging(
     level: str = "INFO",
     json_format: bool = True,
-    log_file: str | None = None
+    log_file: Optional[str] = None
 ) -> None:
     """
     Set up application logging
@@ -115,9 +115,9 @@ class RequestLogger:
         path: str,
         status_code: int,
         duration_ms: float,
-        client_ip: str | None = None,
-        user_id: str | None = None,
-        extra: Dict[str, Any] | None = None
+        client_ip: Optional[str] = None,
+        user_id: Optional[str] = None,
+        extra: Optional[Dict[str, Any]] = None
     ) -> None:
         """Log an HTTP request"""
         log_data = {
@@ -152,10 +152,10 @@ class AuditLogger:
     def log_auth_event(
         self,
         event_type: str,
-        user_id: str | None,
+        user_id: Optional[str],
         success: bool,
-        ip_address: str | None = None,
-        details: Dict[str, Any] | None = None
+        ip_address: Optional[str] = None,
+        details: Optional[Dict[str, Any]] = None
     ) -> None:
         """Log authentication events"""
         log_data = {
@@ -178,7 +178,7 @@ class AuditLogger:
         resource_type: str,
         resource_id: str,
         action: str,
-        ip_address: str | None = None
+        ip_address: Optional[str] = None
     ) -> None:
         """Log data access events"""
         self.logger.info(

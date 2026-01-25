@@ -9,8 +9,9 @@ class UseCaseCreate(BaseModel):
     kpi: str
     target_user: str
     category: Optional[str] = None
-    participant_id: UUID
+    participant_id: Optional[UUID] = None  # Optional for facilitator-added use cases
     workshop_id: UUID
+    added_by_facilitator: Optional[bool] = False  # Flag to indicate facilitator submission
 
 class UseCaseResponse(BaseModel):
     id: UUID

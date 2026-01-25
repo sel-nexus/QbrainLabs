@@ -6,7 +6,17 @@ from .models import (
     Participant, 
     ParticipantRole, 
     UseCase, 
-    Vote
+    Vote,
+    UserRole,
+    AccountStatus
+)
+
+from .rbac import (
+    WorkshopFacilitator,
+    MemberSession,
+    Permission,
+    RoleAuditLog,
+    DEFAULT_PERMISSIONS
 )
 
 from .survey import (

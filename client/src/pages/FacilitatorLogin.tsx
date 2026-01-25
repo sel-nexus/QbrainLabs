@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'sonner';
+import { useAuth } from '../context/AuthContext';
 
 export function FacilitatorLogin() {
     const navigate = useNavigate();
+    const { login, isAuthenticated, isLoading, user } = useAuth();
     const [isLogin, setIsLogin] = useState(true);
     const [formData, setFormData] = useState({
         email: '',
@@ -12,51 +14,44 @@ export function FacilitatorLogin() {
     });
     const [loading, setLoading] = useState(false);
 
+    // Redirect if already authenticated
+    useEffect(() => {
+        if (!isLoading && isAuthenticated) {
+            if (user?.is_admin) {
+                navigate('/admin', { replace: true });
+            } else {
+                navigate('/dashboard', { replace: true });
+            }
+        }
+    }, [isAuthenticated, isLoading, user, navigate]);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
 
         try {
-            const endpoint = isLogin ? '/api/auth/login' : '/api/auth/signup';
-
-            let body;
             if (isLogin) {
-                // OAuth2 form format for login
-                body = new URLSearchParams({
-                    username: formData.email,
-                    password: formData.password,
-                });
+                // Use AuthContext login for proper state management
+                await login(formData.email, formData.password);
+                toast.success('Welcome back!');
+                // Navigation will be handled by the useEffect above when isAuthenticated changes
             } else {
-                // JSON format for signup
-                body = JSON.stringify({
-                    email: formData.email,
-                    password: formData.password,
-                    full_name: formData.full_name,
+                // Handle signup separately
+                const response = await fetch(`http://localhost:8000/api/auth/signup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        email: formData.email,
+                        password: formData.password,
+                        full_name: formData.full_name,
+                    }),
                 });
-            }
 
-            const response = await fetch(`http://localhost:8000${endpoint}`, {
-                method: 'POST',
-                headers: isLogin
-                    ? { 'Content-Type': 'application/x-www-form-urlencoded' }
-                    : { 'Content-Type': 'application/json' },
-                body,
-            });
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.detail || 'Signup failed');
+                }
 
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.detail || 'Authentication failed');
-            }
-
-            const data = await response.json();
-
-            if (isLogin) {
-                // Store auth token and user info
-                localStorage.setItem('authToken', data.access_token);
-                localStorage.setItem('currentUser', JSON.stringify(data.user));
-                toast.success(`Welcome back, ${data.user.full_name || data.user.email}!`);
-                navigate('/dashboard');
-            } else {
                 // After signup, switch to login
                 toast.success('Account created! Please log in.');
                 setIsLogin(true);

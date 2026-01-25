@@ -1,19 +1,20 @@
-from sqlalchemy import Column, String, Boolean, ForeignKey, Enum, Text, DateTime
+from sqlalchemy import Column, String, Boolean, ForeignKey, Enum, Text, DateTime, Index
 from sqlalchemy.types import TypeDecorator, CHAR, String as SAString
 from sqlalchemy.dialects.postgresql import UUID as PGUUID, JSONB as PGJSONB
 from datetime import datetime
 import json
+import uuid
 
-# Compatibility helpers for SQLite
+# Compatibility helpers - use CHAR(36) for UUID storage
+# This ensures compatibility with databases that store UUIDs as VARCHAR
 class GUID(TypeDecorator):
-    impl = CHAR
+    impl = CHAR(36)
     cache_ok = True
 
     def load_dialect_impl(self, dialect):
-        if dialect.name == 'postgresql':
-            return dialect.type_descriptor(PGUUID())
-        else:
-            return dialect.type_descriptor(CHAR(36))
+        # Always use CHAR(36) for compatibility with existing VARCHAR columns
+        # This avoids type mismatch errors with Supabase/PostgreSQL
+        return dialect.type_descriptor(CHAR(36))
 
     def process_bind_param(self, value, dialect):
         if value is None:
@@ -24,7 +25,7 @@ class GUID(TypeDecorator):
         if value is None:
             return value
         if not isinstance(value, uuid.UUID):
-            return uuid.UUID(value)
+            return uuid.UUID(str(value))
         return value
 
 class JSONType(TypeDecorator):
@@ -38,23 +39,38 @@ class JSONType(TypeDecorator):
             return dialect.type_descriptor(SAString())
 
     def process_bind_param(self, value, dialect):
-        if dialect.name == 'postgresql':
+        if value is None:
             return value
-        if value is not None:
-            return json.dumps(value)
+        # Always convert to dict/list if it's a string
+        if isinstance(value, str):
+            return json.loads(value)
         return value
 
     def process_result_value(self, value, dialect):
-        if dialect.name == 'postgresql':
+        if value is None:
             return value
-        if value is not None:
+        # Ensure we return a dict/list, not a string
+        if isinstance(value, str):
             return json.loads(value)
         return value
 
 from sqlalchemy.orm import relationship
-import uuid
 from app.core.database import Base
 import enum
+
+class UserRole(str, enum.Enum):
+    """User role types for RBAC"""
+    ADMIN = "admin"
+    FACILITATOR = "facilitator"
+
+
+class AccountStatus(str, enum.Enum):
+    """Account status for registered users"""
+    PENDING = "pending"       # Awaiting admin approval
+    ACTIVE = "active"         # Can login and use the system
+    DISABLED = "disabled"     # Account disabled by admin
+    SUSPENDED = "suspended"   # Temporarily suspended
+
 
 class User(Base):
     __tablename__ = "users"
@@ -63,13 +79,44 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     password_hash = Column(String, nullable=False)
     full_name = Column(String)
-    is_admin = Column(Boolean, default=False)  # Admin users have elevated permissions
+    
+    # RBAC fields
+    role = Column(String(20), default=UserRole.FACILITATOR.value, nullable=False)
+    status = Column(String(20), default=AccountStatus.PENDING.value, nullable=False)
+    is_admin = Column(Boolean, default=False)  # Legacy field, kept for backwards compatibility
+    
+    # Organization (optional)
+    organization = Column(String(255), nullable=True)
     
     # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    last_login = Column(DateTime, nullable=True)
     
-    workshops = relationship("Workshop", back_populates="facilitator")
+    # Account management
+    disabled_at = Column(DateTime, nullable=True)
+    disabled_by = Column(GUID(), ForeignKey("users.id"), nullable=True)
+    
+    # MFA (optional)
+    mfa_enabled = Column(Boolean, default=False)
+    mfa_secret = Column(String(255), nullable=True)
+    
+    # Relationships
+    workshops = relationship("Workshop", back_populates="facilitator", foreign_keys="[Workshop.facilitator_id]")
+    
+    __table_args__ = (
+        Index('ix_users_role_status', 'role', 'status'),
+    )
+    
+    @property
+    def is_active_account(self) -> bool:
+        """Check if account is active and can login"""
+        return self.status == AccountStatus.ACTIVE.value
+    
+    @property
+    def is_admin_user(self) -> bool:
+        """Check if user has admin role"""
+        return self.role == UserRole.ADMIN.value or self.is_admin
 
 class WorkshopStatus(str, enum.Enum):
     DRAFT = "DRAFT"
@@ -142,7 +189,8 @@ class UseCase(Base):
 
     id = Column(GUID(), primary_key=True, default=uuid.uuid4)
     workshop_id = Column(GUID(), ForeignKey("workshops.id"), nullable=False)
-    participant_id = Column(GUID(), ForeignKey("participants.id"), nullable=False)
+    participant_id = Column(GUID(), ForeignKey("participants.id"), nullable=True)  # Nullable for facilitator-added use cases
+    added_by_facilitator = Column(Boolean, default=False)  # Flag for facilitator submissions
     
     title = Column(Text, nullable=False)
     description = Column(Text, nullable=False) # Problem Statement (per US03)

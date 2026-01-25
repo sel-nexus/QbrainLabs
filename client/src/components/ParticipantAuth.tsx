@@ -3,6 +3,7 @@ import { api } from '../lib/api';
 import { toast } from 'sonner';
 import { Button } from './ui/Button';
 import { User, Mail, Lock, Building, UserPlus, LogIn } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 interface ParticipantAuthProps {
     workshopPin?: string;
@@ -15,8 +16,10 @@ interface ParticipantAuthProps {
 }
 
 export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: ParticipantAuthProps) {
+    const { theme } = useTheme();
     const [mode, setMode] = useState<'login' | 'register' | 'anonymous'>('anonymous');
     const [loading, setLoading] = useState(false);
+    const isLight = theme === 'light';
     
     // Form state
     const [email, setEmail] = useState('');
@@ -151,13 +154,13 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
     return (
         <div className="w-full max-w-md mx-auto">
             {/* Mode Tabs */}
-            <div className="flex mb-6 bg-surface-800 rounded-lg p-1">
+            <div className={`flex mb-6 rounded-lg p-1 ${isLight ? 'bg-gray-100' : 'bg-surface-800'}`}>
                 <button
                     onClick={() => setMode('anonymous')}
                     className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
                         mode === 'anonymous'
                             ? 'bg-brand-violet text-white'
-                            : 'text-gray-400 hover:text-white'
+                            : isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'
                     }`}
                 >
                     Quick Join
@@ -167,7 +170,7 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                     className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
                         mode === 'login'
                             ? 'bg-brand-violet text-white'
-                            : 'text-gray-400 hover:text-white'
+                            : isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'
                     }`}
                 >
                     Sign In
@@ -177,7 +180,7 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                     className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
                         mode === 'register'
                             ? 'bg-brand-violet text-white'
-                            : 'text-gray-400 hover:text-white'
+                            : isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'
                     }`}
                 >
                     Register
@@ -187,12 +190,12 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
             {/* Anonymous Join Form */}
             {mode === 'anonymous' && (
                 <div className="space-y-4">
-                    <p className="text-sm text-gray-400 mb-4">
+                    <p className={`text-sm mb-4 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
                         Join quickly without creating an account. Your contributions won't be tracked across workshops.
                     </p>
                     
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
+                        <label className={`block text-sm font-medium mb-1 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
                             Display Name *
                         </label>
                         <div className="relative">
@@ -202,7 +205,7 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                                 value={displayName}
                                 onChange={(e) => setDisplayName(e.target.value)}
                                 placeholder="How should we call you?"
-                                className="w-full pl-10 pr-4 py-2 bg-surface-800 border border-white/10 rounded-lg focus:border-brand-violet focus:outline-none"
+                                className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none ${isLight ? 'bg-white border-gray-200 text-gray-900' : 'bg-surface-800 border-white/10 text-white'}`}
                             />
                         </div>
                     </div>
@@ -220,12 +223,12 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
             {/* Login Form */}
             {mode === 'login' && (
                 <div className="space-y-4">
-                    <p className="text-sm text-gray-400 mb-4">
+                    <p className={`text-sm mb-4 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
                         Sign in to track your contributions across workshops.
                     </p>
                     
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
+                        <label className={`block text-sm font-medium mb-1 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
                             Email *
                         </label>
                         <div className="relative">
@@ -235,13 +238,13 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="your@email.com"
-                                className="w-full pl-10 pr-4 py-2 bg-surface-800 border border-white/10 rounded-lg focus:border-brand-violet focus:outline-none"
+                                className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none ${isLight ? 'bg-white border-gray-200 text-gray-900' : 'bg-surface-800 border-white/10 text-white'}`}
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
+                        <label className={`block text-sm font-medium mb-1 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
                             Password *
                         </label>
                         <div className="relative">
@@ -251,7 +254,7 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="••••••••"
-                                className="w-full pl-10 pr-4 py-2 bg-surface-800 border border-white/10 rounded-lg focus:border-brand-violet focus:outline-none"
+                                className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none ${isLight ? 'bg-white border-gray-200 text-gray-900' : 'bg-surface-800 border-white/10 text-white'}`}
                             />
                         </div>
                     </div>
@@ -270,12 +273,12 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
             {/* Register Form */}
             {mode === 'register' && (
                 <div className="space-y-4">
-                    <p className="text-sm text-gray-400 mb-4">
+                    <p className={`text-sm mb-4 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
                         Create an account to track contributions and build your innovation portfolio.
                     </p>
                     
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
+                        <label className={`block text-sm font-medium mb-1 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
                             Display Name *
                         </label>
                         <div className="relative">
@@ -285,13 +288,13 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                                 value={displayName}
                                 onChange={(e) => setDisplayName(e.target.value)}
                                 placeholder="Your name"
-                                className="w-full pl-10 pr-4 py-2 bg-surface-800 border border-white/10 rounded-lg focus:border-brand-violet focus:outline-none"
+                                className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none ${isLight ? 'bg-white border-gray-200 text-gray-900' : 'bg-surface-800 border-white/10 text-white'}`}
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
+                        <label className={`block text-sm font-medium mb-1 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
                             Email *
                         </label>
                         <div className="relative">
@@ -301,13 +304,13 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="your@email.com"
-                                className="w-full pl-10 pr-4 py-2 bg-surface-800 border border-white/10 rounded-lg focus:border-brand-violet focus:outline-none"
+                                className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none ${isLight ? 'bg-white border-gray-200 text-gray-900' : 'bg-surface-800 border-white/10 text-white'}`}
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
+                        <label className={`block text-sm font-medium mb-1 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
                             Password *
                         </label>
                         <div className="relative">
@@ -317,13 +320,13 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="Min. 6 characters"
-                                className="w-full pl-10 pr-4 py-2 bg-surface-800 border border-white/10 rounded-lg focus:border-brand-violet focus:outline-none"
+                                className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none ${isLight ? 'bg-white border-gray-200 text-gray-900' : 'bg-surface-800 border-white/10 text-white'}`}
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
+                        <label className={`block text-sm font-medium mb-1 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
                             Organization (optional)
                         </label>
                         <div className="relative">
@@ -333,7 +336,7 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                                 value={organization}
                                 onChange={(e) => setOrganization(e.target.value)}
                                 placeholder="Company or team name"
-                                className="w-full pl-10 pr-4 py-2 bg-surface-800 border border-white/10 rounded-lg focus:border-brand-violet focus:outline-none"
+                                className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none ${isLight ? 'bg-white border-gray-200 text-gray-900' : 'bg-surface-800 border-white/10 text-white'}`}
                             />
                         </div>
                     </div>
@@ -352,7 +355,7 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
             {onCancel && (
                 <button
                     onClick={onCancel}
-                    className="w-full mt-4 text-sm text-gray-400 hover:text-white transition-colors"
+                    className={`w-full mt-4 text-sm transition-colors ${isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'}`}
                 >
                     Cancel
                 </button>

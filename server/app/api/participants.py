@@ -1,9 +1,11 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy import and_
 from app.core.database import get_db
-from app.models.models import Workshop, Participant, WorkshopStatus, ParticipantRole, User
-from app.schemas.participant import JoinRequest, JoinResponse
+from app.models.models import Workshop, Participant, WorkshopStatus, ParticipantRole, User, UseCase
+from app.models import Survey, SurveyResponse
+from app.schemas.participant import JoinRequest, JoinResponse, ParticipantSessionInfo, UseCaseSummary, SurveySummary
 from app.core.socket_manager import sio
 from app.api.auth import get_current_user
 
@@ -99,4 +101,72 @@ async def update_role(
         workshop_title=workshop.title,
         workshop_status=workshop.status,
         role=participant.role
+    )
+
+
+@router.get("/session/{participant_id}", response_model=ParticipantSessionInfo)
+async def get_participant_session_info(
+    participant_id: str,
+    db: AsyncSession = Depends(get_db)
+):
+    """Get session info for a participant including workshop details, use cases, and surveys."""
+    # Get participant
+    result = await db.execute(select(Participant).where(Participant.id == participant_id))
+    participant = result.scalars().first()
+    
+    if not participant:
+        raise HTTPException(status_code=404, detail="Participant not found")
+    
+    # Get workshop
+    ws_result = await db.execute(select(Workshop).where(Workshop.id == participant.workshop_id))
+    workshop = ws_result.scalars().first()
+    
+    if not workshop:
+        raise HTTPException(status_code=404, detail="Workshop not found")
+    
+    # Get use cases for this workshop
+    uc_result = await db.execute(
+        select(UseCase)
+        .where(UseCase.workshop_id == workshop.id)
+        .order_by(UseCase.title)
+    )
+    use_cases = uc_result.scalars().all()
+    
+    # Get surveys for this workshop (only active or closed ones visible to participants)
+    survey_result = await db.execute(
+        select(Survey)
+        .where(Survey.workshop_id == workshop.id)
+        .where(Survey.status.in_(["ACTIVE", "CLOSED", "PAUSED"]))
+    )
+    surveys = survey_result.scalars().all()
+    
+    # Check which surveys this participant has completed
+    survey_summaries = []
+    for survey in surveys:
+        # Check if participant completed this survey
+        response_result = await db.execute(
+            select(SurveyResponse).where(
+                and_(
+                    SurveyResponse.survey_id == survey.id,
+                    SurveyResponse.participant_id == participant_id,
+                    SurveyResponse.status == "completed"
+                )
+            )
+        )
+        completed = response_result.scalars().first() is not None
+        
+        survey_summaries.append(SurveySummary(
+            id=survey.id,
+            title=survey.title,
+            status=survey.status,
+            completed=completed
+        ))
+    
+    return ParticipantSessionInfo(
+        workshop_id=workshop.id,
+        workshop_title=workshop.title,
+        workshop_status=workshop.status,
+        current_phase=workshop.current_phase or "LOBBY",
+        use_cases=[UseCaseSummary(id=uc.id, title=uc.title, description=uc.description) for uc in use_cases],
+        surveys=survey_summaries
     )

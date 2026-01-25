@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { api } from '../lib/api';
-import { Plus, Trash2, ArrowLeft, Loader2 } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
+import { Plus, Trash2, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface Criterion {
@@ -14,6 +15,7 @@ interface Criterion {
 
 export function CreateWorkshop() {
     const navigate = useNavigate();
+    const { theme } = useTheme();
     const [loading, setLoading] = useState(false);
     const [title, setTitle] = useState('');
     const [template, setTemplate] = useState<string>('CUSTOM');
@@ -92,18 +94,24 @@ export function CreateWorkshop() {
     };
 
     return (
-        <div className="min-h-screen p-6 max-w-2xl mx-auto">
-            <Button variant="ghost" className="mb-6 pl-0" onClick={() => navigate('/dashboard')}>
-                <ArrowLeft className="w-4 h-4 mr-2" /> Back
-            </Button>
-
+        <div className={`min-h-screen p-6 max-w-2xl mx-auto ${theme === 'light' ? 'bg-gray-50' : ''}`}>
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-surface-800/60 backdrop-blur-md border border-white/10 p-8 rounded-2xl shadow-xl"
+                className={`backdrop-blur-md p-8 rounded-2xl shadow-xl ${
+                    theme === 'light' 
+                        ? 'bg-white border-2 border-gray-200' 
+                        : 'bg-surface-800/60 border border-white/10'
+                }`}
             >
-                <h1 className="text-3xl font-heading font-bold text-white mb-2">Create New Workshop</h1>
-                <p className="text-gray-400 mb-8">Configure your AI strategy session.</p>
+                <h1 className={`text-3xl font-heading font-bold mb-2 ${
+                    theme === 'light' ? 'text-gray-900' : 'text-white'
+                }`}>
+                    Create New Workshop
+                </h1>
+                <p className={`mb-8 ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>
+                    Configure your AI strategy session.
+                </p>
 
                 <form onSubmit={handleSubmit} className="space-y-8">
                     <Input
@@ -114,17 +122,24 @@ export function CreateWorkshop() {
                     />
 
                     <div className="space-y-2">
-                        <label className="text-sm text-gray-400 font-medium">Evaluation Template</label>
+                        <label className={`text-sm font-medium ${
+                            theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+                        }`}>
+                            Evaluation Template
+                        </label>
                         <div className="grid grid-cols-2 gap-4">
                             {Object.entries(TEMPLATES).map(([key, btn]) => (
                                 <button
                                     key={key}
                                     type="button"
                                     onClick={() => handleTemplateChange(key)}
-                                    className={`p-4 rounded-xl border text-sm font-medium transition-all ${template === key
-                                        ? 'bg-brand-500/20 border-brand-500 text-brand-200'
-                                        : 'bg-surface-800 border-white/5 text-gray-400 hover:bg-surface-700'
-                                        }`}
+                                    className={`p-4 rounded-xl border text-sm font-medium transition-all ${
+                                        template === key
+                                            ? 'bg-brand-violet/20 border-brand-violet text-brand-violet'
+                                            : theme === 'light'
+                                                ? 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100 hover:border-gray-300'
+                                                : 'bg-surface-800 border-white/10 text-gray-300 hover:bg-surface-700'
+                                    }`}
                                 >
                                     {btn.label}
                                 </button>
@@ -134,8 +149,12 @@ export function CreateWorkshop() {
 
                     <div className="space-y-4">
                         <div className="flex justify-between items-center">
-                            <label className="text-sm text-gray-400 font-medium">Scoring Criteria</label>
-                            <span className={`text-sm font-mono ${totalWeight === 100 ? 'text-semantic-success' : 'text-semantic-warning'}`}>
+                            <label className={`text-sm font-medium ${
+                                theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+                            }`}>
+                                Scoring Criteria
+                            </label>
+                            <span className={`text-sm font-mono font-semibold ${totalWeight === 100 ? 'text-semantic-success' : 'text-semantic-warning'}`}>
                                 Total: {totalWeight}%
                             </span>
                         </div>
@@ -179,7 +198,7 @@ export function CreateWorkshop() {
                             {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Create Workshop'}
                         </Button>
                         {totalWeight !== 100 && (
-                            <p className="text-center text-sm text-semantic-warning mt-3">
+                            <p className="text-center text-sm text-semantic-warning mt-3 font-medium">
                                 Total weight must equal 100% (Currently {totalWeight}%)
                             </p>
                         )}

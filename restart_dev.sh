@@ -40,6 +40,14 @@ else
     source .venv/bin/activate
 fi
 
+# Ensure critical dependencies are installed (for Supabase/PostgreSQL support)
+echo "📦 Checking dependencies..."
+python -m pip install --quiet structlog python-json-logger prometheus-client "psycopg[binary]" python-dotenv 2>/dev/null
+
+# Initialize database tables if needed
+echo "🗄️  Initializing database..."
+python init_db.py 2>/dev/null || echo "⚠️  Database init skipped (may already exist)"
+
 # Start Uvicorn in the background
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000 &
 BACKEND_PID=$!

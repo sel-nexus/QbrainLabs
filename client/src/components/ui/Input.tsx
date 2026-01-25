@@ -1,4 +1,5 @@
 import { type InputHTMLAttributes, forwardRef } from 'react';
+import { useTheme } from '../../context/ThemeContext';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     label?: string;
@@ -6,17 +7,28 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
     ({ label, className, ...props }, ref) => {
+        const { theme } = useTheme();
+        
         return (
             <div className="flex flex-col gap-1.5 w-full">
-                {label && <label className="text-sm text-gray-400 pl-1">{label}</label>}
+                {label && (
+                    <label className={`text-sm pl-1 font-medium ${
+                        theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+                    }`}>
+                        {label}
+                    </label>
+                )}
                 <input
                     ref={ref}
                     className={`
-            w-full bg-black/20 border-b-2 border-white/10 px-4 py-3 rounded-t-md
-            text-white placeholder:text-gray-600 focus:outline-none focus:border-brand-violet
-            transition-colors duration-200
-            ${className}
-          `}
+                        w-full px-4 py-3 rounded-lg border-2 transition-all duration-200
+                        focus:outline-none focus:ring-2 focus:ring-brand-violet/30
+                        ${theme === 'light' 
+                            ? 'bg-white border-gray-200 text-gray-900 placeholder:text-gray-400 focus:border-brand-violet' 
+                            : 'bg-surface-800/80 border-white/10 text-white placeholder:text-gray-500 focus:border-brand-violet'
+                        }
+                        ${className}
+                    `}
                     {...props}
                 />
             </div>

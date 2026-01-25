@@ -29,7 +29,7 @@ export function ChangePasswordDialog({ onClose }: ChangePasswordDialogProps) {
         setLoading(true);
 
         try {
-            const authToken = localStorage.getItem('authToken');
+            const authToken = localStorage.getItem('hm_auth_token');
             const formData = new URLSearchParams({
                 current_password: currentPassword,
                 new_password: newPassword,

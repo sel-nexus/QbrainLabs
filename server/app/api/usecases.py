@@ -14,7 +14,12 @@ async def submit_use_case(
     uc_in: UseCaseCreate,
     db: AsyncSession = Depends(get_db)
 ):
-    # Verify participant/workshop existence (skipped for brevity/speed)
+    # Verify workshop existence
+    workshop_result = await db.execute(select(Workshop).where(Workshop.id == uc_in.workshop_id))
+    workshop = workshop_result.scalars().first()
+    if not workshop:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="Workshop not found")
     
     use_case = UseCase(
         title=uc_in.title,
@@ -23,8 +28,9 @@ async def submit_use_case(
         kpi=uc_in.kpi,
         target_user=uc_in.target_user,
         category=uc_in.category,
-        participant_id=uc_in.participant_id,
-        workshop_id=uc_in.workshop_id
+        participant_id=uc_in.participant_id,  # Can be None for facilitator-added use cases
+        workshop_id=uc_in.workshop_id,
+        added_by_facilitator=uc_in.added_by_facilitator or (uc_in.participant_id is None)
     )
     
     db.add(use_case)

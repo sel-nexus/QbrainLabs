@@ -138,7 +138,8 @@ async def list_all_workshops(
             current_phase=workshop.current_phase,
             pin=workshop.pin,
             participant_count=participant_count,
-            use_case_count=use_case_count
+            use_case_count=use_case_count,
+            created_at=workshop.created_at
         ))
     
     return workshop_list
