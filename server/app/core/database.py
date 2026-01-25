@@ -25,13 +25,13 @@ def get_database_url() -> str:
             return url.replace("sqlite://", "sqlite+aiosqlite://")
         return url
     elif "postgresql" in url or "postgres://" in url:
-        # For Supabase/pgbouncer, use psycopg which handles prepared statements better
+        # For Supabase/pgbouncer, use psycopg2 which doesn't have prepared statement issues
         if is_supabase_or_pgbouncer():
-            # Use psycopg async driver for pgbouncer compatibility
-            url = url.replace("postgres://", "postgresql+psycopg://")
-            url = url.replace("postgresql://", "postgresql+psycopg://")
+            # Use psycopg2 (synchronous) for pgbouncer compatibility - no prepared statements
+            url = url.replace("postgres://", "postgresql+psycopg2://")
+            url = url.replace("postgresql://", "postgresql+psycopg2://")
             # Ensure we don't double-replace
-            url = url.replace("postgresql+psycopg+psycopg://", "postgresql+psycopg://")
+            url = url.replace("postgresql+psycopg2+psycopg2://", "postgresql+psycopg2://")
         else:
             # Use asyncpg for direct PostgreSQL connections
             if "postgresql+asyncpg" not in url:
