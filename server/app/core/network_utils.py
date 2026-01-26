@@ -57,6 +57,17 @@ def get_local_ip_addresses() -> List[str]:
                 ip_addresses.add(local_ip)
         except Exception as e:
             logger.debug(f"Error determining local IP via socket: {e}")
+
+        # Get Public IP
+        try:
+            import urllib.request
+            # Set a short timeout to avoid hanging if internet is slow/unavailable
+            with urllib.request.urlopen('https://checkip.amazonaws.com', timeout=3) as response:
+                public_ip = response.read().decode('utf-8').strip()
+                if public_ip:
+                    ip_addresses.add(public_ip)
+        except Exception as e:
+            logger.debug(f"Error getting public IP: {e}")
     
     except Exception as e:
         logger.warning(f"Error detecting IP addresses: {e}")

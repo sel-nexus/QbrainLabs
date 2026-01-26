@@ -51,7 +51,7 @@ class Settings(BaseSettings):
     
     # CORS Configuration
     CORS_ORIGINS: str = Field(
-        default="http://localhost:5173,http://127.0.0.1:5173",
+        default="http://localhost:5173,http://127.0.0.1:5173,http://192.168.4.247:5173",
         description="Comma-separated list of allowed CORS origins (used as fallback or additional origins)"
     )
     ENABLE_DYNAMIC_CORS: bool = Field(
