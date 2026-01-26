@@ -56,7 +56,7 @@ type ActiveModal = 'usecase' | 'survey' | 'qa' | 'leaderboard' | 'badges' | null
 
 export function ParticipantDashboard() {
     const navigate = useNavigate();
-    const { theme } = useTheme();
+    const { } = useTheme();
     const { session, updateRole, logout } = useSession();
     const [sessionInfo, setSessionInfo] = useState<SessionInfo | null>(null);
     const [loading, setLoading] = useState(true);
@@ -99,7 +99,7 @@ export function ParticipantDashboard() {
             navigate('/');
             return;
         }
-        
+
         // If session exists but no workshopId, redirect to join page
         // This can happen if a participant logged in but hasn't joined a workshop yet
         if (session && !session.workshopId) {
@@ -188,7 +188,7 @@ export function ParticipantDashboard() {
     };
 
     const currentPhase = sessionInfo?.current_phase || 'LOBBY';
-    const canSubmitUseCases = true; // Always enabled for participants
+
     const hasUseCases = (sessionInfo?.use_cases.length || 0) > 0;
     const canPrioritize = hasUseCases; // Enabled whenever use cases exist, regardless of phase
 
@@ -199,9 +199,8 @@ export function ParticipantDashboard() {
 
     if (loading) {
         return (
-            <div className={`min-h-screen flex items-center justify-center ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-900'
-                }`}>
-                <div className="flex items-center gap-3 text-gray-400">
+            <div className="min-h-screen flex items-center justify-center theme-bg-primary">
+                <div className="flex items-center gap-3 theme-text-secondary">
                     <Loader2 className="w-6 h-6 animate-spin" />
                     <span>Loading workshop...</span>
                 </div>
@@ -210,26 +209,21 @@ export function ParticipantDashboard() {
     }
 
     return (
-        <div className={`min-h-screen ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-900'}`}>
+        <div className="min-h-screen theme-bg-primary">
             <Header showBackButton={false} showHomeButton={false} />
             {session?.participantId && <AchievementToast participantId={session.participantId} />}
             <ReactionOverlay />
             <PollResponder />
             <ReactionBar />
             {/* Header */}
-            <header className={`sticky top-14 z-40 border-b backdrop-blur ${theme === 'light'
-                    ? 'bg-white/80 border-gray-200'
-                    : 'bg-surface-800/80 border-white/5'
-                }`}>
+            <header className="sticky top-14 z-40 border-b backdrop-blur theme-bg-secondary/80 theme-border">
                 <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
                     <div>
-                        <h1 className={`text-xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'
-                            }`}>
+                        <h1 className="text-xl font-bold theme-text-primary">
                             {sessionInfo?.workshop_title || 'Workshop'}
                         </h1>
                         <div className="flex items-center gap-3 mt-1">
-                            <span className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-                                }`}>
+                            <span className="text-sm theme-text-secondary">
                                 Welcome, {session?.name}
                             </span>
                             <span className="text-xs px-2 py-0.5 rounded-full bg-brand-violet/20 text-brand-violet font-medium">
@@ -241,19 +235,19 @@ export function ParticipantDashboard() {
                         {session?.participantId && (
                             <PointsDisplay participantId={session.participantId} />
                         )}
-                        <Button variant="ghost" onClick={() => setActiveModal('leaderboard')} className="text-gray-400 hover:text-white">
+                        <Button variant="ghost" onClick={() => setActiveModal('leaderboard')} className="theme-text-secondary hover:theme-text-primary">
                             <Trophy className="w-4 h-4 mr-2" />
                             Leaderboard
                         </Button>
-                        <Button variant="ghost" onClick={() => setActiveModal('badges')} className="text-gray-400 hover:text-white">
+                        <Button variant="ghost" onClick={() => setActiveModal('badges')} className="theme-text-secondary hover:theme-text-primary">
                             <Award className="w-4 h-4 mr-2" />
                             Badges
                         </Button>
-                        <Button variant="ghost" onClick={() => setActiveModal('qa')} className="text-gray-400 hover:text-white">
+                        <Button variant="ghost" onClick={() => setActiveModal('qa')} className="theme-text-secondary hover:theme-text-primary">
                             <MessageSquare className="w-4 h-4 mr-2" />
                             Q&A
                         </Button>
-                        <Button variant="ghost" onClick={handleLeave} className="text-gray-400 hover:text-white">
+                        <Button variant="ghost" onClick={handleLeave} className="theme-text-secondary hover:theme-text-primary">
                             <LogOut className="w-4 h-4 mr-2" />
                             Leave
                         </Button>
@@ -389,20 +383,16 @@ export function ParticipantDashboard() {
                 )}
 
                 {/* Info Section */}
-                <div 
+                <div
                     id="use-cases-section"
-                    className={`mt-8 p-6 rounded-xl border ${theme === 'light'
-                            ? 'bg-white border-gray-200'
-                            : 'bg-surface-800 border-white/10'
-                        }`}
+                    className="mt-8 p-6 rounded-xl border theme-card theme-border"
                 >
-                    <h2 className={`text-lg font-semibold mb-4 ${theme === 'light' ? 'text-gray-900' : 'text-white'
-                        }`}>
+                    <h2 className="text-lg font-semibold mb-4 theme-text-primary">
                         Workshop Use Cases ({sessionInfo?.use_cases.length || 0})
                     </h2>
 
                     {(sessionInfo?.use_cases.length || 0) === 0 ? (
-                        <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
+                        <p className="text-sm theme-text-secondary">
                             No use cases submitted yet. Be the first to add one!
                         </p>
                     ) : (
@@ -410,16 +400,13 @@ export function ParticipantDashboard() {
                             {sessionInfo?.use_cases.map((uc) => (
                                 <div
                                     key={uc.id}
-                                    className={`p-3 rounded-lg ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-700'
-                                        }`}
+                                    className="p-3 rounded-lg theme-bg-tertiary"
                                 >
-                                    <div className={`font-medium text-sm ${theme === 'light' ? 'text-gray-800' : 'text-white'
-                                        }`}>
+                                    <div className="font-medium text-sm theme-text-primary">
                                         {uc.title}
                                     </div>
                                     {uc.description && (
-                                        <div className={`text-xs mt-1 line-clamp-1 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-                                            }`}>
+                                        <div className="text-xs mt-1 line-clamp-1 theme-text-secondary">
                                             {uc.description}
                                         </div>
                                     )}
@@ -448,14 +435,10 @@ export function ParticipantDashboard() {
             {/* Use Case Modal */}
             {activeModal === 'usecase' && session && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-                    <div className={`relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-900'
-                        }`}>
+                    <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl theme-bg-primary">
                         <button
                             onClick={handleModalClose}
-                            className={`absolute top-4 right-4 z-10 p-2 rounded-lg transition ${theme === 'light'
-                                    ? 'hover:bg-gray-200 text-gray-500'
-                                    : 'hover:bg-surface-700 text-gray-400'
-                                }`}
+                            className="absolute top-4 right-4 z-10 p-2 rounded-lg transition theme-text-secondary hover:theme-bg-tertiary hover:theme-text-primary"
                         >
                             <X className="w-5 h-5" />
                         </button>
@@ -467,14 +450,10 @@ export function ParticipantDashboard() {
             {/* Survey Modal */}
             {activeModal === 'survey' && activeSurveyId && session?.participantId && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-                    <div className={`relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 ${theme === 'light' ? 'bg-white' : 'bg-surface-800'
-                        }`}>
+                    <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 theme-card">
                         <button
                             onClick={handleModalClose}
-                            className={`absolute top-4 right-4 p-2 rounded-lg transition ${theme === 'light'
-                                    ? 'hover:bg-gray-100 text-gray-500'
-                                    : 'hover:bg-surface-700 text-gray-400'
-                                }`}
+                            className="absolute top-4 right-4 p-2 rounded-lg transition theme-text-secondary hover:theme-bg-tertiary hover:theme-text-primary"
                         >
                             <X className="w-5 h-5" />
                         </button>
@@ -490,14 +469,10 @@ export function ParticipantDashboard() {
             {/* Leaderboard Modal */}
             {activeModal === 'leaderboard' && session?.workshopId && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-                    <div className={`relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 ${theme === 'light' ? 'bg-white' : 'bg-surface-800'
-                        }`}>
+                    <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 theme-card">
                         <button
                             onClick={handleModalClose}
-                            className={`absolute top-4 right-4 p-2 rounded-lg transition ${theme === 'light'
-                                    ? 'hover:bg-gray-100 text-gray-500'
-                                    : 'hover:bg-surface-700 text-gray-400'
-                                }`}
+                            className="absolute top-4 right-4 p-2 rounded-lg transition theme-text-secondary hover:theme-bg-tertiary hover:theme-text-primary"
                         >
                             <X className="w-5 h-5" />
                         </button>
@@ -512,18 +487,14 @@ export function ParticipantDashboard() {
             {/* Badges Modal */}
             {activeModal === 'badges' && session?.participantId && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-                    <div className={`relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 ${theme === 'light' ? 'bg-white' : 'bg-surface-800'
-                        }`}>
+                    <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 theme-card">
                         <div className="flex justify-between items-center mb-4">
-                            <h2 className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                            <h2 className="text-2xl font-bold theme-text-primary">
                                 Your Badges
                             </h2>
                             <button
                                 onClick={handleModalClose}
-                                className={`p-2 rounded-lg transition ${theme === 'light'
-                                        ? 'hover:bg-gray-100 text-gray-500'
-                                        : 'hover:bg-surface-700 text-gray-400'
-                                    }`}
+                                className="p-2 rounded-lg transition theme-text-secondary hover:theme-bg-tertiary hover:theme-text-primary"
                             >
                                 <X className="w-5 h-5" />
                             </button>

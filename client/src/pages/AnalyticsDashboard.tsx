@@ -63,15 +63,15 @@ export const AnalyticsDashboard = () => {
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
-                    <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Analytics Dashboard</h1>
-                    <p className="text-gray-500 dark:text-gray-400">Insights across all your workshops</p>
+                    <h1 className="text-2xl font-bold theme-text-primary">Analytics Dashboard</h1>
+                    <p className="theme-text-secondary">Insights across all your workshops</p>
                 </div>
 
                 <div className="flex items-center gap-3">
                     <select
                         value={period}
                         onChange={(e) => setPeriod(e.target.value)}
-                        className="rounded-lg border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-sm p-2.5"
+                        className="rounded-lg theme-border theme-bg-secondary theme-text-primary text-sm p-2.5"
                     >
                         <option value="7d">Last 7 days</option>
                         <option value="30d">Last 30 days</option>
@@ -124,8 +124,8 @@ export const AnalyticsDashboard = () => {
             {/* Main Charts Row */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {/* Trend Chart */}
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-                    <h3 className="text-lg font-semibold mb-6 text-gray-900 dark:text-white flex items-center gap-2">
+                <div className="theme-bg-secondary p-6 rounded-xl shadow-sm border theme-border">
+                    <h3 className="text-lg font-semibold mb-6 theme-text-primary flex items-center gap-2">
                         <TrendingUp size={20} className="text-blue-500" />
                         Activity Trends
                     </h3>
@@ -151,8 +151,8 @@ export const AnalyticsDashboard = () => {
                 </div>
 
                 {/* Category Distribution */}
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-                    <h3 className="text-lg font-semibold mb-6 text-gray-900 dark:text-white flex items-center gap-2">
+                <div className="theme-bg-secondary p-6 rounded-xl shadow-sm border theme-border">
+                    <h3 className="text-lg font-semibold mb-6 theme-text-primary flex items-center gap-2">
                         <Award size={20} className="text-purple-500" />
                         Top Categories
                     </h3>
@@ -182,14 +182,14 @@ export const AnalyticsDashboard = () => {
 
             {/* Benchmarks Section */}
             {benchmarks && (
-                <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-                    <h3 className="text-lg font-semibold mb-6 text-gray-900 dark:text-white flex items-center gap-2">
+                <div className="theme-bg-secondary p-6 rounded-xl shadow-sm border theme-border">
+                    <h3 className="text-lg font-semibold mb-6 theme-text-primary flex items-center gap-2">
                         <Target size={20} className="text-green-500" />
                         Industry Benchmarks ({benchmarks.industry})
                     </h3>
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm text-left">
-                            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <thead className="text-xs theme-text-secondary uppercase theme-bg-tertiary">
                                 <tr>
                                     <th className="px-6 py-3 rounded-l-lg">Metric</th>
                                     <th className="px-6 py-3">Your Score</th>
@@ -199,8 +199,8 @@ export const AnalyticsDashboard = () => {
                             </thead>
                             <tbody>
                                 {benchmarks.metrics.map((metric) => (
-                                    <tr key={metric.metric_name} className="bg-white dark:bg-gray-800 border-b dark:border-gray-700">
-                                        <td className="px-6 py-4 font-medium text-gray-900 dark:text-white">
+                                    <tr key={metric.metric_name} className="theme-bg-secondary border-b theme-border">
+                                        <td className="px-6 py-4 font-medium theme-text-primary">
                                             {metric.metric_name}
                                         </td>
                                         <td className="px-6 py-4 text-blue-600 font-semibold">
@@ -211,13 +211,13 @@ export const AnalyticsDashboard = () => {
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-2">
-                                                <div className="w-24 bg-gray-200 rounded-full h-2.5 dark:bg-gray-700">
+                                                <div className="w-24 bg-gray-200 rounded-full h-2.5 theme-bg-tertiary">
                                                     <div
                                                         className="bg-blue-600 h-2.5 rounded-full"
                                                         style={{ width: `${metric.percentile}%` }}
                                                     ></div>
                                                 </div>
-                                                <span className="text-xs font-medium text-gray-500">{metric.percentile}%</span>
+                                                <span className="text-xs font-medium theme-text-secondary">{metric.percentile}%</span>
                                             </div>
                                         </td>
                                     </tr>
@@ -233,18 +233,18 @@ export const AnalyticsDashboard = () => {
 
 const StatsCard = ({ title, value, icon: Icon, trend, color }: any) => {
     const colorClasses = {
-        blue: 'bg-blue-50 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400',
-        green: 'bg-green-50 text-green-600 dark:bg-green-900/30 dark:text-green-400',
-        purple: 'bg-purple-50 text-purple-600 dark:bg-purple-900/30 dark:text-purple-400',
-        orange: 'bg-orange-50 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400',
+        blue: 'theme-badge-info',
+        green: 'theme-badge-success',
+        purple: 'theme-badge-warning', // Using warning for purple/users as fallback or custom
+        orange: 'theme-badge-danger',
     };
 
     return (
-        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+        <div className="theme-bg-secondary p-6 rounded-xl shadow-sm border theme-border">
             <div className="flex justify-between items-start">
                 <div>
-                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">{title}</p>
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{value}</h3>
+                    <p className="text-sm font-medium theme-text-secondary mb-1">{title}</p>
+                    <h3 className="text-2xl font-bold theme-text-primary">{value}</h3>
                 </div>
                 <div className={`p-2 rounded-lg ${(colorClasses as any)[color]}`}>
                     <Icon size={20} />
@@ -255,7 +255,7 @@ const StatsCard = ({ title, value, icon: Icon, trend, color }: any) => {
                     <ArrowUpRight size={16} className="mr-1" />
                     {trend}
                 </span>
-                <span className="text-gray-400 ml-2">vs last month</span>
+                <span className="theme-text-muted ml-2">vs last month</span>
             </div>
         </div>
     );

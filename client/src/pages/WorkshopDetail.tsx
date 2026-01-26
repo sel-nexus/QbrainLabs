@@ -51,11 +51,11 @@ export function WorkshopDetail() {
     const [roiSelectedUseCase, setRoiSelectedUseCase] = useState<{ id: string; title: string } | null>(null);
     const [showBreakoutRooms, setShowBreakoutRooms] = useState(false);
     const [showRoadmap, setShowRoadmap] = useState(false);
-    
+
     // Tab navigation state
     type TabId = 'usecases' | 'polls' | 'challenges' | 'rooms' | 'insights';
     const [activeTab, setActiveTab] = useState<TabId>('usecases');
-    
+
     const tabs: { id: TabId; label: string; icon: React.ReactNode }[] = [
         { id: 'usecases', label: 'Use Cases', icon: <LayoutGrid className="w-4 h-4" /> },
         { id: 'polls', label: 'Polls', icon: <Vote className="w-4 h-4" /> },
@@ -63,7 +63,7 @@ export function WorkshopDetail() {
         { id: 'rooms', label: 'Rooms & Surveys', icon: <Users className="w-4 h-4" /> },
         { id: 'insights', label: 'Insights', icon: <Sparkles className="w-4 h-4" /> },
     ];
-    
+
     const [useCaseForm, setUseCaseForm] = useState({
         title: '',
         description: '',
@@ -373,7 +373,7 @@ export function WorkshopDetail() {
                                 {showAllParticipantPositions && (
                                     <Button
                                         variant="secondary"
-                                        size="sm"
+                                        className="py-1 px-3 text-sm"
                                         onClick={async () => {
                                             // Reset to aggregated view
                                             const resultsData = await api.get(`/results/${id}`);
@@ -385,20 +385,21 @@ export function WorkshopDetail() {
                                     </Button>
                                 )}
                             </div>
-                            
+
                             {/* Matrix View with Activity Dashboard */}
                             <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6 mt-4">
                                 <div>
-                                    <ResultsChart 
-                                        data={results} 
+                                    <ResultsChart
+                                        data={results}
                                         showLabels={!showAllParticipantPositions}
+                                        readOnly={true}
                                     />
                                 </div>
-                                
+
                                 {/* Matrix Activity Dashboard - Only visible to admins/facilitators */}
                                 {hasRole(['admin', 'facilitator']) && (
-                                    <MatrixActivityDashboard 
-                                        workshopId={id!} 
+                                    <MatrixActivityDashboard
+                                        workshopId={id!}
                                         isVisible={showAnalytics === 'matrix'}
                                         onRefreshMatrix={(positions) => {
                                             setResults(positions);
@@ -441,20 +442,18 @@ export function WorkshopDetail() {
                 <div className="space-y-6">
                     {/* Facilitator Requests Banner - Always visible when there are pending requests */}
                     {pendingFacilitators.length > 0 && (
-                        <div className={`rounded-lg p-4 animate-in fade-in slide-in-from-top-4 ${
-                            theme === 'light' 
-                                ? 'bg-brand-violet/10 border border-brand-violet/30' 
-                                : 'bg-brand-violet/10 border border-brand-violet/30'
-                        }`}>
+                        <div className={`rounded-lg p-4 animate-in fade-in slide-in-from-top-4 ${theme === 'light'
+                            ? 'bg-brand-violet/10 border border-brand-violet/30'
+                            : 'bg-brand-violet/10 border border-brand-violet/30'
+                            }`}>
                             <h3 className="text-sm font-bold text-brand-violet mb-3 flex items-center justify-between">
                                 Facilitator Requests
                                 <span className="bg-brand-violet text-white text-[10px] px-1.5 py-0.5 rounded-full">{pendingFacilitators.length}</span>
                             </h3>
                             <div className="flex flex-wrap gap-3">
                                 {pendingFacilitators.map((pf) => (
-                                    <div key={pf.participant_id} className={`p-3 rounded border flex items-center gap-3 ${
-                                        theme === 'light' ? 'bg-white border-gray-200' : 'bg-surface-900/50 border-white/5'
-                                    }`}>
+                                    <div key={pf.participant_id} className={`p-3 rounded border flex items-center gap-3 ${theme === 'light' ? 'bg-white border-gray-200' : 'bg-surface-900/50 border-white/5'
+                                        }`}>
                                         <span className="text-sm font-medium theme-text-primary">{pf.display_name}</span>
                                         <div className="flex gap-2">
                                             <Button
@@ -478,20 +477,18 @@ export function WorkshopDetail() {
                     )}
 
                     {/* Tab Navigation */}
-                    <div className={`flex gap-1 p-1 rounded-lg ${
-                        theme === 'light' ? 'bg-gray-100' : 'theme-bg-secondary'
-                    }`}>
+                    <div className={`flex gap-1 p-1 rounded-lg ${theme === 'light' ? 'bg-gray-100' : 'theme-bg-secondary'
+                        }`}>
                         {tabs.map(tab => (
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
-                                className={`flex items-center gap-2 px-4 py-2.5 rounded-md text-sm font-medium transition-all ${
-                                    activeTab === tab.id 
-                                        ? 'bg-brand-violet text-white shadow-sm' 
-                                        : theme === 'light'
-                                            ? 'text-gray-600 hover:bg-gray-200 hover:text-gray-900'
-                                            : 'text-gray-400 hover:bg-white/10 hover:text-white'
-                                }`}
+                                className={`flex items-center gap-2 px-4 py-2.5 rounded-md text-sm font-medium transition-all ${activeTab === tab.id
+                                    ? 'bg-brand-violet text-white shadow-sm'
+                                    : theme === 'light'
+                                        ? 'text-gray-600 hover:bg-gray-200 hover:text-gray-900'
+                                        : 'text-gray-400 hover:bg-white/10 hover:text-white'
+                                    }`}
                             >
                                 {tab.icon}
                                 <span className="hidden sm:inline">{tab.label}</span>
@@ -572,9 +569,9 @@ export function WorkshopDetail() {
 
                         {/* Challenges Tab */}
                         {activeTab === 'challenges' && id && (
-                            <ChallengeManager 
-                                workshopId={id} 
-                                isFacilitator={hasRole(['admin', 'facilitator'])} 
+                            <ChallengeManager
+                                workshopId={id}
+                                isFacilitator={hasRole(['admin', 'facilitator'])}
                             />
                         )}
 
@@ -582,16 +579,14 @@ export function WorkshopDetail() {
                         {activeTab === 'rooms' && id && (
                             <div className="grid gap-8 lg:grid-cols-2">
                                 {/* Breakout Rooms */}
-                                <div className={`p-6 rounded-xl border ${
-                                    theme === 'light' ? 'bg-white border-gray-200' : 'theme-bg-secondary theme-border'
-                                }`}>
+                                <div className={`p-6 rounded-xl border ${theme === 'light' ? 'bg-white border-gray-200' : 'theme-bg-secondary theme-border'
+                                    }`}>
                                     <BreakoutManager workshopId={id} />
                                 </div>
 
                                 {/* Surveys */}
-                                <div className={`p-6 rounded-xl border ${
-                                    theme === 'light' ? 'bg-white border-gray-200' : 'theme-bg-secondary theme-border'
-                                }`}>
+                                <div className={`p-6 rounded-xl border ${theme === 'light' ? 'bg-white border-gray-200' : 'theme-bg-secondary theme-border'
+                                    }`}>
                                     <div className="flex items-center justify-between mb-4">
                                         <h3 className="text-lg font-bold theme-text-primary">Surveys</h3>
                                         <Button
@@ -631,9 +626,8 @@ export function WorkshopDetail() {
                         {activeTab === 'insights' && id && (
                             <div className="grid gap-6 lg:grid-cols-2">
                                 {/* Workshop Stats */}
-                                <div className={`p-6 rounded-xl border ${
-                                    theme === 'light' ? 'bg-white border-gray-200' : 'theme-bg-secondary theme-border'
-                                }`}>
+                                <div className={`p-6 rounded-xl border ${theme === 'light' ? 'bg-white border-gray-200' : 'theme-bg-secondary theme-border'
+                                    }`}>
                                     <h3 className="text-lg font-bold mb-4 theme-text-primary">Workshop Stats</h3>
                                     <div className="space-y-4">
                                         <div className="flex justify-between items-center">
@@ -681,9 +675,8 @@ export function WorkshopDetail() {
 
                     <div className="text-center space-y-2">
                         <p className="contrast-muted text-sm">Scan to join</p>
-                        <div className={`flex items-center gap-2 p-3 rounded-lg border ${
-                            theme === 'light' ? 'bg-gray-100 border-gray-200' : 'bg-surface-900 border-white/10'
-                        }`}>
+                        <div className={`flex items-center gap-2 p-3 rounded-lg border ${theme === 'light' ? 'bg-gray-100 border-gray-200' : 'bg-surface-900 border-white/10'
+                            }`}>
                             <span className="font-mono font-bold text-2xl tracking-widest theme-text-primary">{workshop.pin}</span>
                         </div>
                     </div>
@@ -706,9 +699,8 @@ export function WorkshopDetail() {
             {(surveyView === 'create' || surveyView === 'edit') && id && (
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 overflow-y-auto">
                     <div className="min-h-screen py-8 px-4">
-                        <div className={`max-w-4xl mx-auto rounded-xl border p-6 ${
-                            theme === 'light' ? 'bg-white border-gray-200' : 'bg-surface-900 border-white/10'
-                        }`}>
+                        <div className={`max-w-4xl mx-auto rounded-xl border p-6 ${theme === 'light' ? 'bg-white border-gray-200' : 'bg-surface-900 border-white/10'
+                            }`}>
                             <SurveyBuilder
                                 workshopId={id}
                                 surveyId={surveyView === 'edit' ? selectedSurveyId || undefined : undefined}
@@ -722,9 +714,8 @@ export function WorkshopDetail() {
             {surveyView === 'results' && selectedSurveyId && (
                 <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 overflow-y-auto">
                     <div className="min-h-screen py-8 px-4">
-                        <div className={`max-w-4xl mx-auto rounded-xl border p-6 ${
-                            theme === 'light' ? 'bg-white border-gray-200' : 'bg-surface-900 border-white/10'
-                        }`}>
+                        <div className={`max-w-4xl mx-auto rounded-xl border p-6 ${theme === 'light' ? 'bg-white border-gray-200' : 'bg-surface-900 border-white/10'
+                            }`}>
                             <SurveyResults
                                 surveyId={selectedSurveyId}
                                 onClose={() => setSurveyView(null)}

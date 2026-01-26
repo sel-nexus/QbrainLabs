@@ -29,11 +29,11 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
     const { theme } = useTheme();
     const [recentActions, setRecentActions] = useState<ParticipantAction[]>([]);
     const [activeParticipants, setActiveParticipants] = useState<Set<string>>(new Set());
+    const [submittedParticipants, setSubmittedParticipants] = useState<Set<string>>(new Set());
     const [isConnected, setIsConnected] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [stats, setStats] = useState({
         totalActions: 0,
-        uniqueParticipants: 0,
         recentActivityCount: 0
     });
 
@@ -85,7 +85,7 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
             previous_position?: { x: number; y: number };
         }) => {
             console.log('Matrix position update received:', data);
-            
+
             const action: ParticipantAction = {
                 id: `${Date.now()}-${Math.random()}`,
                 participantId: data.participant_id,
@@ -99,17 +99,19 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
             };
 
             setRecentActions(prev => [action, ...prev].slice(0, 20)); // Keep last 20 actions
-            
+
+            setSubmittedParticipants(prev => new Set([...prev, data.participant_id]));
+
             setActiveParticipants(prev => {
                 const updated = new Set([...prev, data.participant_id]);
-                
-                // Update stats with the new participant set
+
+                // Update stats
                 setStats(currentStats => ({
+                    ...currentStats,
                     totalActions: currentStats.totalActions + 1,
-                    uniqueParticipants: updated.size,
                     recentActivityCount: currentStats.recentActivityCount + 1
                 }));
-                
+
                 return updated;
             });
         };
@@ -142,7 +144,7 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
     // Reset recent activity count periodically
     useEffect(() => {
         if (!isVisible) return;
-        
+
         const interval = setInterval(() => {
             setStats(prev => ({ ...prev, recentActivityCount: 0 }));
         }, 60000); // Reset every minute
@@ -152,12 +154,17 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
 
     const handleRefresh = async () => {
         if (!workshopId || !onRefreshMatrix) return;
-        
+
         setIsRefreshing(true);
         try {
             const response = await api.get(`/votes/workshop/${workshopId}/all-matrix-positions`);
             const allPositions = response.data || [];
-            
+
+            // Update submitted participants from historical data
+            const historicalParticipants = new Set<string>(allPositions.map((p: any) => p.participant_id));
+            setSubmittedParticipants(prev => new Set<string>([...prev, ...historicalParticipants]));
+            setActiveParticipants(prev => new Set<string>([...prev, ...historicalParticipants])); // Assume simple aggregation for active
+
             // Group positions by participant and assign unique colors
             const participantColors = new Map<string, string>();
             const colorPalette = [
@@ -174,7 +181,7 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
                 '#14b8a6', // teal
                 '#a855f7', // purple
             ];
-            
+
             let colorIndex = 0;
             const positionsWithColors = allPositions.map((pos: any) => {
                 if (!participantColors.has(pos.participant_id)) {
@@ -193,7 +200,7 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
                     participant_id: pos.participant_id
                 };
             });
-            
+
             onRefreshMatrix(positionsWithColors);
             toast.success(`Loaded ${positionsWithColors.length} positions from ${participantColors.size} participants`);
         } catch (err: any) {
@@ -232,19 +239,15 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
     };
 
     return (
-        <div className={`rounded-xl border p-4 ${theme === 'light'
-            ? 'bg-white border-gray-200'
-            : 'bg-surface-800 border-white/10'
-        }`}>
+        <div className="rounded-xl border p-4 theme-bg-secondary theme-border">
             <div className="flex items-center justify-between mb-4">
-                <h3 className={`text-lg font-semibold flex items-center gap-2 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                <h3 className="text-lg font-semibold flex items-center gap-2 theme-text-primary">
                     <Activity className="w-5 h-5 text-brand-violet" />
                     Live Matrix Activity
                 </h3>
                 <div className="flex items-center gap-2">
                     <Button
                         variant="secondary"
-                        size="sm"
                         onClick={handleRefresh}
                         disabled={isRefreshing || !onRefreshMatrix}
                         className="h-7 px-3 text-xs"
@@ -252,36 +255,41 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
                         <RefreshCw className={`w-3 h-3 mr-1 ${isRefreshing ? 'animate-spin' : ''}`} />
                         Refresh
                     </Button>
-                    <div className={`text-xs px-2 py-1 rounded-full flex items-center gap-1 ${
-                        isConnected 
-                            ? (theme === 'light' ? 'bg-green-100 text-green-700' : 'bg-green-500/20 text-green-400')
-                            : (theme === 'light' ? 'bg-red-100 text-red-700' : 'bg-red-500/20 text-red-400')
-                    }`}>
-                        <div className={`w-1.5 h-1.5 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`} />
+                    <div className={`text-xs px-2 py-1 rounded-full flex items-center gap-1 ${isConnected
+                        ? 'theme-badge-success'
+                        : 'theme-badge-danger'
+                        }`}>
+                        <div className={`w-1.5 h-1.5 rounded-full ${isConnected ? 'bg-semantic-success' : 'bg-semantic-danger'}`} />
                         {isConnected ? 'Live' : 'Connecting...'}
                     </div>
                 </div>
             </div>
 
             {/* Stats Row */}
-            <div className="grid grid-cols-3 gap-3 mb-4">
-                <div className={`p-3 rounded-lg ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-900/50'}`}>
-                    <div className={`text-xs ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>Total Actions</div>
-                    <div className={`text-xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                        {stats.totalActions}
-                    </div>
-                </div>
-                <div className={`p-3 rounded-lg ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-900/50'}`}>
-                    <div className={`text-xs ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>Active Now</div>
-                    <div className={`text-xl font-bold flex items-center gap-1 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+                <div className="p-3 rounded-lg theme-bg-tertiary">
+                    <div className="text-xs theme-text-secondary">Active Users</div>
+                    <div className="text-xl font-bold flex items-center gap-1 theme-text-primary">
                         <Users className="w-4 h-4 text-brand-violet" />
                         {activeParticipants.size}
                     </div>
                 </div>
-                <div className={`p-3 rounded-lg ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-900/50'}`}>
-                    <div className={`text-xs ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>Last Minute</div>
-                    <div className={`text-xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                        {stats.recentActivityCount}
+                <div className="p-3 rounded-lg theme-bg-tertiary">
+                    <div className="text-xs theme-text-secondary">Submitted</div>
+                    <div className="text-xl font-bold theme-text-primary text-green-500">
+                        {submittedParticipants.size}
+                    </div>
+                </div>
+                <div className="p-3 rounded-lg theme-bg-tertiary">
+                    <div className="text-xs theme-text-secondary">Pending</div>
+                    <div className="text-xl font-bold theme-text-primary text-amber-500">
+                        {Math.max(0, activeParticipants.size - submittedParticipants.size)}
+                    </div>
+                </div>
+                <div className="p-3 rounded-lg theme-bg-tertiary">
+                    <div className="text-xs theme-text-secondary">Total Actions</div>
+                    <div className="text-xl font-bold theme-text-primary">
+                        {stats.totalActions}
                     </div>
                 </div>
             </div>
@@ -290,7 +298,7 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
             <div className="space-y-2 max-h-[400px] overflow-y-auto">
                 <AnimatePresence>
                     {recentActions.length === 0 ? (
-                        <div className={`text-center py-8 text-sm ${theme === 'light' ? 'text-gray-400' : 'text-gray-500'}`}>
+                        <div className="text-center py-8 text-sm theme-text-secondary">
                             <MapPin className="w-8 h-8 mx-auto mb-2 opacity-50" />
                             <p>Waiting for participant actions...</p>
                             <p className="text-xs mt-1">Actions will appear here as participants position items on the matrix</p>
@@ -302,23 +310,19 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
                                 initial={{ opacity: 0, y: -10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, x: -20 }}
-                                className={`p-3 rounded-lg border transition-all ${
-                                    theme === 'light'
-                                        ? 'bg-gray-50 border-gray-200 hover:border-brand-violet/30'
-                                        : 'bg-surface-900/50 border-white/5 hover:border-brand-violet/30'
-                                }`}
+                                className="p-3 rounded-lg border transition-all theme-bg-tertiary theme-border hover:border-brand-violet/30"
                             >
                                 <div className="flex items-start justify-between gap-2">
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-2 mb-1">
-                                            <span className={`text-sm font-semibold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                                            <span className="text-sm font-semibold theme-text-primary">
                                                 {action.participantName}
                                             </span>
-                                            <span className={`text-xs ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
+                                            <span className="text-xs theme-text-secondary">
                                                 positioned
                                             </span>
                                         </div>
-                                        <div className={`text-sm font-medium mb-1 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                                        <div className="text-sm font-medium mb-1 theme-text-primary">
                                             {action.useCaseTitle}
                                         </div>
                                         <div className="flex items-center gap-3 text-xs">
@@ -328,7 +332,7 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
                                                     {getQuadrantLabel(action.position.x, action.position.y)}
                                                 </span>
                                             </div>
-                                            <div className={`${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
+                                            <div className="theme-text-secondary">
                                                 F: {Math.round(action.position.x)} | V: {Math.round(action.position.y)}
                                             </div>
                                             {action.previousPosition && (
@@ -338,7 +342,7 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
                                             )}
                                         </div>
                                     </div>
-                                    <div className={`text-xs flex items-center gap-1 ${theme === 'light' ? 'text-gray-400' : 'text-gray-500'}`}>
+                                    <div className="text-xs flex items-center gap-1 theme-text-secondary">
                                         <Clock className="w-3 h-3" />
                                         {formatTimeAgo(action.timestamp)}
                                     </div>

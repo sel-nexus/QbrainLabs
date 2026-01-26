@@ -141,6 +141,7 @@ async def get_participant_matrix_positions(
     votes = result.scalars().all()
     
     positions = []
+    print(f"Fetching matrix positions for participant {participant_id}, workshop {workshop_id}")
     for vote in votes:
         # Only include votes that have Feasibility and Business Value scores (matrix positions)
         if (vote.scores and 
@@ -163,6 +164,7 @@ async def get_participant_matrix_positions(
                 variance=0
             ))
     
+    print(f"Found {len(positions)} matrix positions for participant {participant_id}")
     return positions
 
 
@@ -227,3 +229,69 @@ async def get_all_participant_matrix_positions(
             ))
     
     return positions
+
+
+@router.delete("/", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_vote(
+    use_case_id: str,
+    participant_id: str,
+    db: AsyncSession = Depends(get_db)
+):
+    try:
+        use_case_uuid = UUID(use_case_id)
+        participant_uuid = UUID(participant_id)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid ID format")
+
+    # Use execute/scalars for delete to ensure we can get the necessary info for socket event if needed
+    # Or just select then delete
+    
+    # Check if exists
+    result = await db.execute(
+        select(Vote).where(
+            Vote.use_case_id == use_case_uuid,
+            Vote.participant_id == participant_uuid
+        )
+    )
+    vote = result.scalars().first()
+    
+    if not vote:
+        raise HTTPException(status_code=404, detail="Vote not found")
+
+    # Get use case info for socket event
+    use_case_res = await db.execute(select(UseCase).where(UseCase.id == use_case_uuid))
+    use_case = use_case_res.scalars().first()
+    
+    # Get participant info for socket event
+    participant_res = await db.execute(select(Participant).where(Participant.id == participant_uuid))
+    participant = participant_res.scalars().first()
+
+    # Delete
+    await db.delete(vote)
+    await db.commit()
+    
+    # Emit socket event so clients update
+    if use_case:
+        # Update vote count
+        votes_res = await db.execute(select(Vote).where(Vote.use_case_id == use_case_uuid))
+        count = len(votes_res.scalars().all())
+        
+        await sio.emit(
+            'vote_update', 
+            {'use_case_id': str(use_case.id), 'count': count}, 
+            room=str(use_case.workshop_id)
+        )
+        
+        # Emit matrix removal
+        if participant:
+            await sio.emit(
+                'matrix:position_removed',
+                {
+                    'participant_id': str(participant.id),
+                    'use_case_id': str(use_case.id),
+                    'workshop_id': str(use_case.workshop_id)
+                },
+                room=str(use_case.workshop_id)
+            )
+
+    return None

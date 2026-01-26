@@ -31,7 +31,7 @@ interface SessionInfo {
 
 export function WaitingRoom() {
     const navigate = useNavigate();
-    const { theme } = useTheme();
+    const { } = useTheme();
     const { session, updateRole } = useSession();
     const [status, setStatus] = useState('Waiting for host...');
     const [sessionInfo, setSessionInfo] = useState<SessionInfo | null>(null);
@@ -41,7 +41,7 @@ export function WaitingRoom() {
     // Fetch session info
     const fetchSessionInfo = async () => {
         if (!session?.participantId) return;
-        
+
         try {
             const { data } = await api.get(`/session/${session.participantId}`);
             setSessionInfo(data);
@@ -125,18 +125,14 @@ export function WaitingRoom() {
     const totalSurveys = sessionInfo?.surveys.length || 0;
 
     return (
-        <div className={`min-h-screen flex flex-col items-center p-6 ${
-            theme === 'light' ? 'bg-gray-50' : 'bg-surface-900'
-        }`}>
+        <div className="min-h-screen flex flex-col items-center p-6 theme-bg-primary">
             {/* Workshop Title Header */}
             {sessionInfo && (
-                <div className={`w-full max-w-2xl mb-8 text-center pt-4`}>
-                    <h1 className={`text-3xl font-heading font-bold mb-2 ${
-                        theme === 'light' ? 'text-gray-900' : 'text-white'
-                    }`}>
+                <div className="w-full max-w-2xl mb-8 text-center pt-4">
+                    <h1 className="text-3xl font-heading font-bold mb-2 theme-text-primary">
                         {sessionInfo.workshop_title}
                     </h1>
-                    <div className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
+                    <div className="text-sm theme-text-secondary">
                         Phase: <span className="font-medium text-brand-violet">{sessionInfo.current_phase}</span>
                     </div>
                 </div>
@@ -146,23 +142,17 @@ export function WaitingRoom() {
             <div className="text-center mb-8">
                 <div className="relative mb-4 inline-block">
                     <div className="absolute inset-0 bg-brand-violet rounded-full blur-xl opacity-20 animate-pulse" />
-                    <div className={`w-20 h-20 rounded-full border flex items-center justify-center z-10 relative ${
-                        theme === 'light' 
-                            ? 'bg-white border-gray-200 shadow-lg' 
-                            : 'bg-surface-800 border-white/10'
-                    }`}>
+                    <div className="w-20 h-20 rounded-full border flex items-center justify-center z-10 relative theme-card theme-border shadow-lg">
                         <span className="text-3xl">
                             {session?.role === 'PENDING_FACILITATOR' ? '🔒' : '⏳'}
                         </span>
                     </div>
                 </div>
 
-                <h2 className={`text-xl font-bold mb-1 ${
-                    theme === 'light' ? 'text-gray-900' : 'text-white'
-                }`}>
+                <h2 className="text-xl font-bold mb-1 theme-text-primary">
                     Welcome, {session?.name}
                 </h2>
-                <p className={`animate-pulse text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>
+                <p className="animate-pulse text-sm theme-text-secondary">
                     {status}
                 </p>
             </div>
@@ -176,39 +166,27 @@ export function WaitingRoom() {
             ) : sessionInfo && (
                 <div className="w-full max-w-2xl space-y-6">
                     {/* Use Cases Section */}
-                    <div className={`rounded-xl border p-5 ${
-                        theme === 'light' 
-                            ? 'bg-white border-gray-200 shadow-sm' 
-                            : 'bg-surface-800 border-white/10'
-                    }`}>
+                    <div className="rounded-xl border p-5 theme-card theme-border shadow-sm">
                         <div className="flex items-center gap-2 mb-4">
                             <Lightbulb className="w-5 h-5 text-brand-violet" />
-                            <h3 className={`font-semibold ${
-                                theme === 'light' ? 'text-gray-900' : 'text-white'
-                            }`}>
+                            <h3 className="font-semibold theme-text-primary">
                                 Use Cases ({sessionInfo.use_cases.length})
                             </h3>
                         </div>
-                        
+
                         {sessionInfo.use_cases.length === 0 ? (
-                            <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
+                            <p className="text-sm theme-text-secondary">
                                 No use cases submitted yet.
                             </p>
                         ) : (
                             <ul className="space-y-2">
                                 {sessionInfo.use_cases.map((uc) => (
-                                    <li key={uc.id} className={`text-sm p-3 rounded-lg ${
-                                        theme === 'light' ? 'bg-gray-50' : 'bg-surface-700'
-                                    }`}>
-                                        <div className={`font-medium ${
-                                            theme === 'light' ? 'text-gray-800' : 'text-white'
-                                        }`}>
+                                    <li key={uc.id} className="text-sm p-3 rounded-lg theme-bg-tertiary">
+                                        <div className="font-medium theme-text-primary">
                                             {uc.title}
                                         </div>
                                         {uc.description && (
-                                            <div className={`text-xs mt-1 line-clamp-2 ${
-                                                theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-                                            }`}>
+                                            <div className="text-xs mt-1 line-clamp-2 theme-text-secondary">
                                                 {uc.description}
                                             </div>
                                         )}
@@ -219,35 +197,26 @@ export function WaitingRoom() {
                     </div>
 
                     {/* Surveys Section */}
-                    <div className={`rounded-xl border p-5 ${
-                        theme === 'light' 
-                            ? 'bg-white border-gray-200 shadow-sm' 
-                            : 'bg-surface-800 border-white/10'
-                    }`}>
+                    <div className="rounded-xl border p-5 theme-card theme-border shadow-sm">
                         <div className="flex items-center justify-between mb-4">
                             <div className="flex items-center gap-2">
                                 <ClipboardCheck className="w-5 h-5 text-brand-violet" />
-                                <h3 className={`font-semibold ${
-                                    theme === 'light' ? 'text-gray-900' : 'text-white'
-                                }`}>
+                                <h3 className="font-semibold theme-text-primary">
                                     Surveys
                                 </h3>
                             </div>
                             {totalSurveys > 0 && (
-                                <span className={`text-xs px-2 py-1 rounded-full ${
-                                    completedSurveys === totalSurveys
-                                        ? 'bg-semantic-success/20 text-semantic-success'
-                                        : theme === 'light' 
-                                            ? 'bg-gray-100 text-gray-600' 
-                                            : 'bg-surface-700 text-gray-300'
-                                }`}>
+                                <span className={`text-xs px-2 py-1 rounded-full ${completedSurveys === totalSurveys
+                                    ? 'theme-badge-success'
+                                    : 'theme-badge-neutral'
+                                    }`}>
                                     {completedSurveys}/{totalSurveys} completed
                                 </span>
                             )}
                         </div>
-                        
+
                         {sessionInfo.surveys.length === 0 ? (
-                            <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
+                            <p className="text-sm theme-text-secondary">
                                 No surveys available yet.
                             </p>
                         ) : (
@@ -255,41 +224,31 @@ export function WaitingRoom() {
                                 {sessionInfo.surveys.map((survey) => {
                                     const isClickable = survey.status === 'ACTIVE' && !survey.completed;
                                     return (
-                                        <li 
-                                            key={survey.id} 
+                                        <li
+                                            key={survey.id}
                                             onClick={() => handleSurveyClick(survey)}
-                                            className={`flex items-center justify-between p-3 rounded-lg transition-all ${
-                                                theme === 'light' ? 'bg-gray-50' : 'bg-surface-700'
-                                            } ${
-                                                isClickable 
-                                                    ? 'cursor-pointer hover:ring-2 hover:ring-brand-violet/50' 
-                                                    : ''
-                                            }`}
+                                            className={`flex items-center justify-between p-3 rounded-lg transition-all theme-bg-tertiary ${isClickable
+                                                ? 'cursor-pointer hover:ring-2 hover:ring-brand-violet/50'
+                                                : ''
+                                                }`}
                                         >
                                             <div className="flex items-center gap-3">
                                                 {survey.completed ? (
                                                     <CheckCircle2 className="w-5 h-5 text-semantic-success" />
                                                 ) : (
-                                                    <Circle className={`w-5 h-5 ${
-                                                        theme === 'light' ? 'text-gray-300' : 'text-gray-500'
-                                                    }`} />
+                                                    <Circle className="w-5 h-5 theme-text-secondary" />
                                                 )}
-                                                <span className={`text-sm font-medium ${
-                                                    theme === 'light' ? 'text-gray-800' : 'text-white'
-                                                }`}>
+                                                <span className="text-sm font-medium theme-text-primary">
                                                     {survey.title}
                                                 </span>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <span className={`text-xs px-2 py-1 rounded ${
-                                                    survey.completed 
-                                                        ? 'bg-semantic-success/20 text-semantic-success'
-                                                        : survey.status === 'ACTIVE'
-                                                            ? 'bg-brand-violet/20 text-brand-violet'
-                                                            : theme === 'light'
-                                                                ? 'bg-gray-200 text-gray-600'
-                                                                : 'bg-surface-600 text-gray-400'
-                                                }`}>
+                                                <span className={`text-xs px-2 py-1 rounded ${survey.completed
+                                                    ? 'bg-semantic-success/20 text-semantic-success'
+                                                    : survey.status === 'ACTIVE'
+                                                        ? 'bg-brand-violet/20 text-brand-violet'
+                                                        : 'theme-badge-neutral'
+                                                    }`}>
                                                     {survey.completed ? 'Completed' : survey.status}
                                                 </span>
                                                 {isClickable && (
@@ -305,25 +264,17 @@ export function WaitingRoom() {
                 </div>
             )}
 
-            <p className={`fixed bottom-8 text-xs font-mono ${
-                theme === 'light' ? 'text-gray-400' : 'text-gray-500'
-            }`}>
+            <p className="fixed bottom-8 text-xs font-mono theme-text-secondary">
                 ID: {session?.participantId?.slice(0, 8)}
             </p>
 
             {/* Survey Modal */}
             {activeSurveyId && session?.participantId && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-                    <div className={`relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 ${
-                        theme === 'light' ? 'bg-white' : 'bg-surface-800'
-                    }`}>
+                    <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 theme-bg-primary">
                         <button
                             onClick={() => setActiveSurveyId(null)}
-                            className={`absolute top-4 right-4 p-2 rounded-lg transition ${
-                                theme === 'light' 
-                                    ? 'hover:bg-gray-100 text-gray-500' 
-                                    : 'hover:bg-surface-700 text-gray-400'
-                            }`}
+                            className="absolute top-4 right-4 p-2 rounded-lg transition theme-text-secondary hover:theme-bg-tertiary hover:theme-text-primary"
                         >
                             <X className="w-5 h-5" />
                         </button>

@@ -29,7 +29,7 @@ class ParticipantPoint(Base):
     workshop_id = Column(GUID(), ForeignKey("workshops.id"), nullable=False)
     points = Column(Integer, default=0)
     action = Column(String(50)) # e.g., 'submit_use_case', 'vote'
-    action_metadata = Column(JSONType, nullable=True) # Extra info about the action
+    # action_metadata = Column(JSONType, nullable=True) # Extra info about the action
     created_at = Column(DateTime, default=datetime.utcnow)
 
     participant = relationship("Participant", backref="points_history")

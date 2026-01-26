@@ -3,7 +3,7 @@ import { api } from '../lib/api';
 import { toast } from 'sonner';
 import { Button } from './ui/Button';
 import { User, Mail, Lock, Building, UserPlus, LogIn } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
+
 
 interface ParticipantAuthProps {
     workshopPin?: string;
@@ -16,11 +16,9 @@ interface ParticipantAuthProps {
 }
 
 export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: ParticipantAuthProps) {
-    const { theme } = useTheme();
     const [mode, setMode] = useState<'login' | 'register' | 'anonymous'>('anonymous');
     const [loading, setLoading] = useState(false);
-    const isLight = theme === 'light';
-    
+
     // Form state
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -43,17 +41,17 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                 workshop_pin: workshopPin,
                 display_name: displayName.trim()
             });
-            
+
             onAuthSuccess({
                 token: response.data.access_token,
                 participant: response.data.participant,
                 mode: 'anonymous'
             });
-            
+
             toast.success('Joined workshop successfully!');
         } catch (error: any) {
             let message = 'Failed to join workshop';
-            
+
             // Check for network errors first
             if (error.networkError) {
                 message = error.networkError.message;
@@ -64,7 +62,7 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
             } else if (error.message) {
                 message = error.message;
             }
-            
+
             console.error('Join workshop error:', error);
             toast.error(message);
         } finally {
@@ -85,25 +83,25 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                 email,
                 password
             });
-            
+
             console.log('Login successful, token received');
             // Store token immediately for use in subsequent requests
             localStorage.setItem('participant_token', response.data.access_token);
-            
+
             // If workshop PIN is provided, also join the workshop
             if (workshopPin) {
                 console.log('Joining workshop with PIN:', workshopPin);
                 const token = response.data.access_token;
                 console.log('Using token for join-registered:', token ? `${token.substring(0, 20)}...` : 'NO TOKEN');
-                
+
                 const joinResponse = await api.post('/participant-auth/join-registered', {
                     workshop_pin: workshopPin
                 }, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
-                
+
                 console.log('Join-registered successful');
-                
+
                 onAuthSuccess({
                     token: joinResponse.data.access_token,
                     participant: joinResponse.data.participant,
@@ -116,11 +114,11 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                     mode: 'registered'
                 });
             }
-            
+
             toast.success('Logged in successfully!');
         } catch (error: any) {
             let message = 'Login failed';
-            
+
             // Detailed error logging
             console.error('Login error details:', {
                 message: error.message,
@@ -133,7 +131,7 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                     headers: error.config?.headers
                 }
             });
-            
+
             // Check for network errors first
             if (error.networkError) {
                 message = error.networkError.message;
@@ -146,7 +144,7 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
             } else if (error.message) {
                 message = error.message;
             }
-            
+
             toast.error(message);
         } finally {
             setLoading(false);
@@ -171,10 +169,10 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                 display_name: displayName.trim(),
                 organization: organization.trim() || null
             });
-            
+
             // Store token immediately for use in subsequent requests
             localStorage.setItem('participant_token', response.data.access_token);
-            
+
             // If workshop PIN is provided, also join the workshop
             if (workshopPin) {
                 const joinResponse = await api.post('/participant-auth/join-registered', {
@@ -182,7 +180,7 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                 }, {
                     headers: { 'Authorization': `Bearer ${response.data.access_token}` }
                 });
-                
+
                 onAuthSuccess({
                     token: joinResponse.data.access_token,
                     participant: joinResponse.data.participant,
@@ -195,11 +193,11 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                     mode: 'registered'
                 });
             }
-            
+
             toast.success('Account created successfully!');
         } catch (error: any) {
             let message = 'Registration failed';
-            
+
             // Check for network errors first
             if (error.networkError) {
                 message = error.networkError.message;
@@ -210,7 +208,7 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
             } else if (error.message) {
                 message = error.message;
             }
-            
+
             console.error('Registration error:', error);
             toast.error(message);
         } finally {
@@ -221,34 +219,31 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
     return (
         <div className="w-full max-w-md mx-auto">
             {/* Mode Tabs */}
-            <div className={`flex mb-6 rounded-lg p-1 ${isLight ? 'bg-gray-100' : 'bg-surface-800'}`}>
+            <div className="flex mb-6 rounded-lg p-1 theme-bg-tertiary">
                 <button
                     onClick={() => setMode('anonymous')}
-                    className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                        mode === 'anonymous'
-                            ? 'bg-brand-violet text-white'
-                            : isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'
-                    }`}
+                    className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${mode === 'anonymous'
+                        ? 'bg-brand-violet text-white'
+                        : 'theme-text-secondary hover:theme-text-primary'
+                        }`}
                 >
                     Quick Join
                 </button>
                 <button
                     onClick={() => setMode('login')}
-                    className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                        mode === 'login'
-                            ? 'bg-brand-violet text-white'
-                            : isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'
-                    }`}
+                    className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${mode === 'login'
+                        ? 'bg-brand-violet text-white'
+                        : 'theme-text-secondary hover:theme-text-primary'
+                        }`}
                 >
                     Sign In
                 </button>
                 <button
                     onClick={() => setMode('register')}
-                    className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-                        mode === 'register'
-                            ? 'bg-brand-violet text-white'
-                            : isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'
-                    }`}
+                    className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${mode === 'register'
+                        ? 'bg-brand-violet text-white'
+                        : 'theme-text-secondary hover:theme-text-primary'
+                        }`}
                 >
                     Register
                 </button>
@@ -257,12 +252,12 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
             {/* Anonymous Join Form */}
             {mode === 'anonymous' && (
                 <div className="space-y-4">
-                    <p className={`text-sm mb-4 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                    <p className="text-sm mb-4 theme-text-secondary">
                         Join quickly without creating an account. Your contributions won't be tracked across workshops.
                     </p>
-                    
+
                     <div>
-                        <label className={`block text-sm font-medium mb-1 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
+                        <label className="block text-sm font-medium mb-1 theme-text-primary">
                             Display Name *
                         </label>
                         <div className="relative">
@@ -272,13 +267,13 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                                 value={displayName}
                                 onChange={(e) => setDisplayName(e.target.value)}
                                 placeholder="How should we call you?"
-                                className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none ${isLight ? 'bg-white border-gray-200 text-gray-900' : 'bg-surface-800 border-white/10 text-white'}`}
+                                className="w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none theme-input"
                             />
                         </div>
                     </div>
 
-                    <Button 
-                        onClick={handleAnonymousJoin} 
+                    <Button
+                        onClick={handleAnonymousJoin}
                         disabled={loading}
                         className="w-full"
                     >
@@ -290,12 +285,12 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
             {/* Login Form */}
             {mode === 'login' && (
                 <div className="space-y-4">
-                    <p className={`text-sm mb-4 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                    <p className="text-sm mb-4 theme-text-secondary">
                         Sign in to track your contributions across workshops.
                     </p>
-                    
+
                     <div>
-                        <label className={`block text-sm font-medium mb-1 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
+                        <label className="block text-sm font-medium mb-1 theme-text-primary">
                             Email *
                         </label>
                         <div className="relative">
@@ -305,13 +300,13 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="your@email.com"
-                                className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none ${isLight ? 'bg-white border-gray-200 text-gray-900' : 'bg-surface-800 border-white/10 text-white'}`}
+                                className="w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none theme-input"
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className={`block text-sm font-medium mb-1 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
+                        <label className="block text-sm font-medium mb-1 theme-text-primary">
                             Password *
                         </label>
                         <div className="relative">
@@ -321,13 +316,13 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="••••••••"
-                                className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none ${isLight ? 'bg-white border-gray-200 text-gray-900' : 'bg-surface-800 border-white/10 text-white'}`}
+                                className="w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none theme-input"
                             />
                         </div>
                     </div>
 
-                    <Button 
-                        onClick={handleLogin} 
+                    <Button
+                        onClick={handleLogin}
                         disabled={loading}
                         className="w-full"
                     >
@@ -340,12 +335,12 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
             {/* Register Form */}
             {mode === 'register' && (
                 <div className="space-y-4">
-                    <p className={`text-sm mb-4 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                    <p className="text-sm mb-4 theme-text-secondary">
                         Create an account to track contributions and build your innovation portfolio.
                     </p>
-                    
+
                     <div>
-                        <label className={`block text-sm font-medium mb-1 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
+                        <label className="block text-sm font-medium mb-1 theme-text-primary">
                             Display Name *
                         </label>
                         <div className="relative">
@@ -355,13 +350,13 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                                 value={displayName}
                                 onChange={(e) => setDisplayName(e.target.value)}
                                 placeholder="Your name"
-                                className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none ${isLight ? 'bg-white border-gray-200 text-gray-900' : 'bg-surface-800 border-white/10 text-white'}`}
+                                className="w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none theme-input"
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className={`block text-sm font-medium mb-1 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
+                        <label className="block text-sm font-medium mb-1 theme-text-primary">
                             Email *
                         </label>
                         <div className="relative">
@@ -371,13 +366,13 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="your@email.com"
-                                className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none ${isLight ? 'bg-white border-gray-200 text-gray-900' : 'bg-surface-800 border-white/10 text-white'}`}
+                                className="w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none theme-input"
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className={`block text-sm font-medium mb-1 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
+                        <label className="block text-sm font-medium mb-1 theme-text-primary">
                             Password *
                         </label>
                         <div className="relative">
@@ -387,13 +382,13 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 placeholder="Min. 6 characters"
-                                className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none ${isLight ? 'bg-white border-gray-200 text-gray-900' : 'bg-surface-800 border-white/10 text-white'}`}
+                                className="w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none theme-input"
                             />
                         </div>
                     </div>
 
                     <div>
-                        <label className={`block text-sm font-medium mb-1 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
+                        <label className="block text-sm font-medium mb-1 theme-text-primary">
                             Organization (optional)
                         </label>
                         <div className="relative">
@@ -403,13 +398,13 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                                 value={organization}
                                 onChange={(e) => setOrganization(e.target.value)}
                                 placeholder="Company or team name"
-                                className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none ${isLight ? 'bg-white border-gray-200 text-gray-900' : 'bg-surface-800 border-white/10 text-white'}`}
+                                className="w-full pl-10 pr-4 py-2 rounded-lg border focus:border-brand-violet focus:outline-none theme-input"
                             />
                         </div>
                     </div>
 
-                    <Button 
-                        onClick={handleRegister} 
+                    <Button
+                        onClick={handleRegister}
                         disabled={loading}
                         className="w-full"
                     >
@@ -422,7 +417,7 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
             {onCancel && (
                 <button
                     onClick={onCancel}
-                    className={`w-full mt-4 text-sm transition-colors ${isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'}`}
+                    className="w-full mt-4 text-sm transition-colors theme-text-secondary hover:theme-text-primary"
                 >
                     Cancel
                 </button>

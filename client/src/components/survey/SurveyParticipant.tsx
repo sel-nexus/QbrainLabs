@@ -10,7 +10,7 @@ import {
     Loader2
 } from 'lucide-react';
 import { Button } from '../ui/Button';
-import { useTheme } from '../../context/ThemeContext';
+
 import { api } from '../../lib/api';
 
 interface QuestionConfig {
@@ -46,14 +46,12 @@ interface SurveyParticipantProps {
 }
 
 export function SurveyParticipant({ surveyId, participantId, onComplete }: SurveyParticipantProps) {
-    const { theme } = useTheme();
     const [survey, setSurvey] = useState<SurveyData | null>(null);
     const [loading, setLoading] = useState(true);
     const [submitting, setSubmitting] = useState(false);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [answers, setAnswers] = useState<Record<string, any>>({});
     const [completed, setCompleted] = useState(false);
-    const isLight = theme === 'light';
 
     useEffect(() => {
         if (surveyId && participantId) {
@@ -76,16 +74,16 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
             const { data } = await api.get(`/surveys/${surveyId}/participant`, {
                 params: { participant_id: participantId }
             });
-            
+
             setSurvey(data);
-            
+
             if (data.existing_status === 'completed') {
                 setCompleted(true);
             }
         } catch (error: any) {
             console.error('Failed to load survey:', error);
             const errorMessage = error.response?.data?.detail || error.message || 'Failed to load survey';
-            
+
             if (errorMessage === 'You have already completed this survey') {
                 setCompleted(true);
             } else {
@@ -100,19 +98,19 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
 
     const setAnswer = (questionId: string, value: any) => {
         setAnswers(prev => ({ ...prev, [questionId]: value }));
-        
+
         // Auto-save progress
         saveProgress(questionId, value);
     };
 
     const saveProgress = async (questionId: string, value: any) => {
         try {
-            await api.post(`/surveys/${surveyId}/save-progress`, 
+            await api.post(`/surveys/${surveyId}/save-progress`,
                 { question_id: questionId, value },
                 {
-                    params: { 
+                    params: {
                         participant_id: participantId,
-                        current_question: currentIndex 
+                        current_question: currentIndex
                     }
                 }
             );
@@ -124,11 +122,11 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
     const canProceed = () => {
         if (!currentQuestion) return false;
         if (!currentQuestion.required) return true;
-        
+
         const answer = answers[currentQuestion.id];
         if (answer === undefined || answer === null || answer === '') return false;
         if (Array.isArray(answer) && answer.length === 0) return false;
-        
+
         return true;
     };
 
@@ -137,7 +135,7 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
             toast.error('Please answer this question');
             return;
         }
-        
+
         if (currentIndex < (survey?.questions.length || 0) - 1) {
             setCurrentIndex(currentIndex + 1);
         }
@@ -159,8 +157,8 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
         const unanswered = survey?.questions.filter(q => {
             if (!q.required) return false;
             const answer = answers[q.id];
-            return answer === undefined || answer === null || answer === '' || 
-                   (Array.isArray(answer) && answer.length === 0);
+            return answer === undefined || answer === null || answer === '' ||
+                (Array.isArray(answer) && answer.length === 0);
         });
 
         if (unanswered && unanswered.length > 0) {
@@ -170,8 +168,8 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
 
         try {
             setSubmitting(true);
-            
-            await api.post(`/surveys/${surveyId}/submit`, 
+
+            await api.post(`/surveys/${surveyId}/submit`,
                 {
                     answers: Object.entries(answers).map(([question_id, value]) => ({
                         question_id,
@@ -185,7 +183,7 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
 
             setCompleted(true);
             toast.success('Survey submitted successfully!');
-            
+
             if (onComplete) {
                 onComplete();
             }
@@ -209,18 +207,18 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
     if (completed) {
         return (
             <div className="max-w-lg mx-auto text-center py-12">
-                <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Check className="w-8 h-8 text-green-500" />
+                <div className="w-16 h-16 theme-success-bg rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Check className="w-8 h-8 theme-success-text" />
                 </div>
-                <h2 className={`text-2xl font-bold mb-2 ${isLight ? 'text-gray-900' : 'text-white'}`}>Thank You!</h2>
-                <p className={isLight ? 'text-gray-500' : 'text-gray-400'}>Your responses have been recorded.</p>
+                <h2 className="text-2xl font-bold mb-2 theme-text-primary">Thank You!</h2>
+                <p className="theme-text-secondary">Your responses have been recorded.</p>
             </div>
         );
     }
 
     if (!survey || !currentQuestion) {
         return (
-            <div className={`text-center py-12 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+            <div className="text-center py-12 theme-text-secondary">
                 Survey not available
             </div>
         );
@@ -233,36 +231,36 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
         <div className="max-w-2xl mx-auto">
             {/* Header */}
             <div className="mb-8">
-                <h1 className={`text-2xl font-bold mb-2 ${isLight ? 'text-gray-900' : 'text-white'}`}>{survey.title}</h1>
+                <h1 className="text-2xl font-bold mb-2 theme-text-primary">{survey.title}</h1>
                 {survey.description && (
-                    <p className={isLight ? 'text-gray-500' : 'text-gray-400'}>{survey.description}</p>
+                    <p className="theme-text-secondary">{survey.description}</p>
                 )}
             </div>
 
             {/* Progress Bar */}
             <div className="mb-8">
-                <div className={`flex items-center justify-between text-sm mb-2 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                <div className="flex items-center justify-between text-sm mb-2 theme-text-secondary">
                     <span>Question {currentIndex + 1} of {survey.questions.length}</span>
                     <span>{Math.round(progress)}% complete</span>
                 </div>
-                <div className={`h-2 rounded-full overflow-hidden ${isLight ? 'bg-gray-200' : 'bg-surface-700'}`}>
+                <div className="h-2 rounded-full overflow-hidden theme-bg-tertiary">
                     <div
-                        className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300"
+                        className="h-full bg-gradient-to-r from-brand-violet to-brand-magenta transition-all duration-300"
                         style={{ width: `${progress}%` }}
                     />
                 </div>
             </div>
 
             {/* Question */}
-            <div className={`rounded-xl p-6 border mb-6 ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
+            <div className="rounded-xl p-6 border mb-6 theme-card theme-border shadow-sm">
                 <div className="flex items-start gap-3 mb-6">
-                    <span className="text-sm font-mono text-purple-500 bg-purple-500/10 px-2 py-1 rounded">
+                    <span className="text-sm font-mono text-brand-violet bg-brand-violet/10 px-2 py-1 rounded">
                         Q{currentIndex + 1}
                     </span>
                     <div>
-                        <h2 className={`text-lg ${isLight ? 'text-gray-900' : 'text-white'}`}>
+                        <h2 className="text-lg theme-text-primary">
                             {currentQuestion.text}
-                            {currentQuestion.required && <span className="text-red-500 ml-1">*</span>}
+                            {currentQuestion.required && <span className="theme-danger-text ml-1">*</span>}
                         </h2>
                     </div>
                 </div>
@@ -276,17 +274,13 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
                                 <button
                                     key={idx}
                                     onClick={() => setAnswer(currentQuestion.id, option)}
-                                    className={`w-full flex items-center gap-3 p-4 rounded-lg border transition text-left ${
-                                        answers[currentQuestion.id] === option
-                                            ? 'bg-purple-500/20 border-purple-500 text-purple-700'
-                                            : isLight 
-                                                ? 'bg-gray-50 border-gray-200 text-gray-700 hover:border-purple-400'
-                                                : 'bg-surface-700 border-white/10 text-gray-300 hover:border-purple-500/50'
-                                    }`}
+                                    className={`w-full flex items-center gap-3 p-4 rounded-lg border transition text-left ${answers[currentQuestion.id] === option
+                                        ? 'bg-brand-violet/20 border-brand-violet text-brand-violet'
+                                        : 'theme-bg-tertiary theme-border theme-text-secondary hover:border-brand-violet/50'
+                                        }`}
                                 >
-                                    <Circle className={`w-5 h-5 ${
-                                        answers[currentQuestion.id] === option ? 'fill-purple-500 text-purple-500' : ''
-                                    }`} />
+                                    <Circle className={`w-5 h-5 ${answers[currentQuestion.id] === option ? 'fill-brand-violet text-brand-violet' : ''
+                                        }`} />
                                     {option}
                                 </button>
                             ))}
@@ -308,15 +302,12 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
                                                 : [...current, option];
                                             setAnswer(currentQuestion.id, newValue);
                                         }}
-                                        className={`w-full flex items-center gap-3 p-4 rounded-lg border transition text-left ${
-                                            selected
-                                                ? 'bg-purple-500/20 border-purple-500 text-purple-700'
-                                                : isLight 
-                                                    ? 'bg-gray-50 border-gray-200 text-gray-700 hover:border-purple-400'
-                                                    : 'bg-surface-700 border-white/10 text-gray-300 hover:border-purple-500/50'
-                                        }`}
+                                        className={`w-full flex items-center gap-3 p-4 rounded-lg border transition text-left ${selected
+                                            ? 'bg-brand-violet/20 border-brand-violet text-brand-violet'
+                                            : 'theme-bg-tertiary theme-border theme-text-secondary hover:border-brand-violet/50'
+                                            }`}
                                     >
-                                        <Square className={`w-5 h-5 ${selected ? 'fill-purple-500 text-purple-500' : ''}`} />
+                                        <Square className={`w-5 h-5 ${selected ? 'fill-brand-violet text-brand-violet' : ''}`} />
                                         {option}
                                     </button>
                                 );
@@ -331,13 +322,12 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
                                 <button
                                     key={value}
                                     onClick={() => setAnswer(currentQuestion.id, value)}
-                                    className={`p-2 transition ${
-                                        answers[currentQuestion.id] >= value
-                                            ? 'text-yellow-400'
-                                            : 'text-gray-600 hover:text-yellow-400/50'
-                                    }`}
+                                    className={`p-2 transition ${answers[currentQuestion.id] >= value
+                                        ? 'theme-warning-text'
+                                        : 'theme-text-secondary hover:theme-warning-text/50'
+                                        }`}
                                 >
-                                    <Star className={`w-8 h-8 ${answers[currentQuestion.id] >= value ? 'fill-yellow-400' : ''}`} />
+                                    <Star className={`w-8 h-8 ${answers[currentQuestion.id] >= value ? 'fill-current' : ''}`} />
                                 </button>
                             ))}
                         </div>
@@ -351,7 +341,7 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
                             onChange={(e) => setAnswer(currentQuestion.id, e.target.value)}
                             placeholder="Type your answer..."
                             maxLength={currentQuestion.config?.max_length || 200}
-                            className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500 ${isLight ? 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-surface-700 border-white/10 text-white placeholder-gray-500'}`}
+                            className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-violet theme-input"
                         />
                     )}
 
@@ -363,7 +353,7 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
                             placeholder="Type your answer..."
                             maxLength={currentQuestion.config?.max_length || 1000}
                             rows={4}
-                            className={`w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none ${isLight ? 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-surface-700 border-white/10 text-white placeholder-gray-500'}`}
+                            className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-brand-violet resize-none theme-input"
                         />
                     )}
 
@@ -371,8 +361,8 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
                     {currentQuestion.type === 'likert' && currentQuestion.config?.statements && (
                         <div className="space-y-4">
                             {currentQuestion.config.statements.map((statement, stmtIdx) => (
-                                <div key={stmtIdx} className={`rounded-lg p-4 ${isLight ? 'bg-gray-50' : 'bg-surface-700'}`}>
-                                    <p className={`mb-3 ${isLight ? 'text-gray-900' : 'text-white'}`}>{statement}</p>
+                                <div key={stmtIdx} className="rounded-lg p-4 theme-bg-tertiary">
+                                    <p className="mb-3 theme-text-primary">{statement}</p>
                                     <div className="flex items-center justify-between gap-2">
                                         {Array.from({ length: currentQuestion.config?.scale || 5 }, (_, i) => i + 1).map((value) => {
                                             const currentAnswers = answers[currentQuestion.id] || {};
@@ -384,13 +374,10 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
                                                         const newAnswers = { ...currentAnswers, [statement]: value };
                                                         setAnswer(currentQuestion.id, newAnswers);
                                                     }}
-                                                    className={`flex-1 py-2 rounded-lg border transition ${
-                                                        selected
-                                                            ? 'bg-purple-500 border-purple-500 text-white'
-                                                            : isLight 
-                                                                ? 'bg-white border-gray-200 text-gray-600 hover:border-purple-400'
-                                                                : 'bg-surface-600 border-white/10 text-gray-400 hover:border-purple-500/50'
-                                                    }`}
+                                                    className={`flex-1 py-2 rounded-lg border transition ${selected
+                                                        ? 'bg-brand-violet border-brand-violet text-white'
+                                                        : 'theme-bg-secondary theme-border theme-text-secondary hover:border-brand-violet/50'
+                                                        }`}
                                                 >
                                                     {value}
                                                 </button>

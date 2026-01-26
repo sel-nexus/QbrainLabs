@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { api } from '../lib/api';
 import { toast } from 'sonner';
 import { VotingHeatmap } from './VotingHeatmap';
-import { 
-    BarChart3, 
-    PieChart, 
-    TrendingUp, 
-    Users, 
-    CheckCircle2, 
+import {
+    BarChart3,
+    PieChart,
+    TrendingUp,
+    Users,
+    CheckCircle2,
     Download,
     FileText
 } from 'lucide-react';
@@ -76,7 +76,7 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
                 api.get(`/analytics/workshop/${workshopId}/quadrant-analysis`),
                 api.get(`/analytics/workshop/${workshopId}/distribution`)
             ]);
-            
+
             setAgreementData(agreementRes.data);
             setQuadrantData(quadrantRes.data);
             setDistributionData(distributionRes.data);
@@ -93,7 +93,7 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
             const response = await api.get(`/export/workshop/${workshopId}/pdf`, {
                 responseType: 'blob'
             });
-            
+
             // Create blob and download
             const blob = new Blob([response.data], { type: 'text/html' });
             const url = window.URL.createObjectURL(blob);
@@ -102,7 +102,7 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
             link.download = `workshop_report_${workshopId}.html`;
             link.click();
             window.URL.revokeObjectURL(url);
-            
+
             toast.success('Report downloaded! Open in browser and print to PDF.');
         } catch (error) {
             console.error('Failed to export PDF:', error);
@@ -115,7 +115,7 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
             const response = await api.get(`/export/workshop/${workshopId}/csv`, {
                 responseType: 'blob'
             });
-            
+
             const blob = new Blob([response.data], { type: 'text/csv' });
             const url = window.URL.createObjectURL(blob);
             const link = document.createElement('a');
@@ -123,7 +123,7 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
             link.download = `workshop_results_${workshopId}.csv`;
             link.click();
             window.URL.revokeObjectURL(url);
-            
+
             toast.success('CSV exported successfully');
         } catch (error) {
             console.error('Failed to export CSV:', error);
@@ -133,18 +133,18 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
 
     const getConsensusColor = (level: string) => {
         switch (level) {
-            case 'High': return 'text-green-400 bg-green-400/10';
-            case 'Medium': return 'text-yellow-400 bg-yellow-400/10';
-            case 'Low': return 'text-red-400 bg-red-400/10';
-            default: return 'text-gray-400 bg-gray-400/10';
+            case 'High': return 'theme-badge-success';
+            case 'Medium': return 'theme-badge-warning';
+            case 'Low': return 'theme-badge-danger';
+            default: return 'theme-badge-neutral';
         }
     };
 
     if (loading) {
         return (
             <div className="space-y-6 animate-pulse">
-                <div className="h-32 bg-surface-800 rounded-xl"></div>
-                <div className="h-64 bg-surface-800 rounded-xl"></div>
+                <div className="h-32 theme-bg-secondary rounded-xl"></div>
+                <div className="h-64 theme-bg-secondary rounded-xl"></div>
             </div>
         );
     }
@@ -154,9 +154,9 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
             {/* Header */}
             <div className="flex items-center justify-between">
                 <div>
-                    <h2 className="text-2xl font-bold">Analytics Dashboard</h2>
+                    <h2 className="text-2xl font-bold theme-text-primary">Analytics Dashboard</h2>
                     {workshopTitle && (
-                        <p className="text-gray-400 text-sm">{workshopTitle}</p>
+                        <p className="theme-text-secondary text-sm">{workshopTitle}</p>
                     )}
                 </div>
                 <div className="flex gap-2">
@@ -172,7 +172,7 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
             </div>
 
             {/* Tab Navigation */}
-            <div className="flex gap-2 border-b border-white/10 pb-2">
+            <div className="flex gap-2 border-b theme-border pb-2">
                 {[
                     { id: 'overview', label: 'Overview', icon: PieChart },
                     { id: 'heatmap', label: 'Heatmap', icon: BarChart3 },
@@ -182,11 +182,10 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
                     <button
                         key={id}
                         onClick={() => setActiveTab(id as any)}
-                        className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-colors ${
-                            activeTab === id
+                        className={`px-4 py-2 rounded-lg flex items-center gap-2 transition-colors ${activeTab === id
                                 ? 'bg-brand-violet text-white'
-                                : 'text-gray-400 hover:text-white hover:bg-white/5'
-                        }`}
+                                : 'theme-text-secondary hover:theme-text-primary hover:theme-hover-bg'
+                            }`}
                     >
                         <Icon className="w-4 h-4" />
                         {label}
@@ -199,80 +198,80 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
                 <div className="space-y-6">
                     {/* Summary Cards */}
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        <div className="bg-surface-800 p-4 rounded-xl border border-white/10">
-                            <div className="text-3xl font-bold text-green-400">
+                        <div className="theme-bg-secondary p-4 rounded-xl border theme-border">
+                            <div className="text-3xl font-bold text-semantic-success">
                                 {quadrantData.summary.quick_wins_count}
                             </div>
-                            <div className="text-sm text-gray-400">Quick Wins</div>
+                            <div className="text-sm theme-text-secondary">Quick Wins</div>
                         </div>
-                        <div className="bg-surface-800 p-4 rounded-xl border border-white/10">
+                        <div className="theme-bg-secondary p-4 rounded-xl border theme-border">
                             <div className="text-3xl font-bold text-brand-violet">
                                 {quadrantData.summary.strategic_bets_count}
                             </div>
-                            <div className="text-sm text-gray-400">Strategic Bets</div>
+                            <div className="text-sm theme-text-secondary">Strategic Bets</div>
                         </div>
-                        <div className="bg-surface-800 p-4 rounded-xl border border-white/10">
-                            <div className="text-3xl font-bold text-blue-400">
+                        <div className="theme-bg-secondary p-4 rounded-xl border theme-border">
+                            <div className="text-3xl font-bold text-semantic-info">
                                 {quadrantData.summary.nice_to_have_count}
                             </div>
-                            <div className="text-sm text-gray-400">Nice to Have</div>
+                            <div className="text-sm theme-text-secondary">Nice to Have</div>
                         </div>
-                        <div className="bg-surface-800 p-4 rounded-xl border border-white/10">
-                            <div className="text-3xl font-bold text-gray-400">
+                        <div className="theme-bg-secondary p-4 rounded-xl border theme-border">
+                            <div className="text-3xl font-bold theme-text-muted">
                                 {quadrantData.summary.dont_do_count}
                             </div>
-                            <div className="text-sm text-gray-400">Deprioritize</div>
+                            <div className="text-sm theme-text-secondary">Deprioritize</div>
                         </div>
                     </div>
 
                     {/* Consensus Summary */}
-                    <div className="bg-surface-800 p-6 rounded-xl border border-white/10">
-                        <h3 className="text-lg font-bold mb-4">Consensus Summary</h3>
+                    <div className="theme-bg-secondary p-6 rounded-xl border theme-border">
+                        <h3 className="text-lg font-bold mb-4 theme-text-primary">Consensus Summary</h3>
                         <div className="grid grid-cols-3 gap-4 mb-4">
-                            <div className="text-center p-4 bg-green-400/10 rounded-lg">
-                                <div className="text-2xl font-bold text-green-400">
+                            <div className="text-center p-4 theme-badge-success rounded-lg">
+                                <div className="text-2xl font-bold">
                                     {agreementData.summary.high_consensus_count}
                                 </div>
-                                <div className="text-xs text-gray-400">High Agreement</div>
+                                <div className="text-xs opacity-80">High Agreement</div>
                             </div>
-                            <div className="text-center p-4 bg-yellow-400/10 rounded-lg">
-                                <div className="text-2xl font-bold text-yellow-400">
+                            <div className="text-center p-4 theme-badge-warning rounded-lg">
+                                <div className="text-2xl font-bold">
                                     {agreementData.summary.medium_consensus_count}
                                 </div>
-                                <div className="text-xs text-gray-400">Moderate</div>
+                                <div className="text-xs opacity-80">Moderate</div>
                             </div>
-                            <div className="text-center p-4 bg-red-400/10 rounded-lg">
-                                <div className="text-2xl font-bold text-red-400">
+                            <div className="text-center p-4 theme-badge-danger rounded-lg">
+                                <div className="text-2xl font-bold">
                                     {agreementData.summary.low_consensus_count}
                                 </div>
-                                <div className="text-xs text-gray-400">Needs Discussion</div>
+                                <div className="text-xs opacity-80">Needs Discussion</div>
                             </div>
                         </div>
-                        <div className="text-center text-sm text-gray-400">
-                            Average Agreement: <span className="text-white font-bold">{agreementData.summary.avg_agreement}%</span>
+                        <div className="text-center text-sm theme-text-secondary">
+                            Average Agreement: <span className="theme-text-primary font-bold">{agreementData.summary.avg_agreement}%</span>
                         </div>
                     </div>
 
                     {/* Top Recommendations */}
-                    <div className="bg-surface-800 p-6 rounded-xl border border-white/10">
-                        <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-                            <CheckCircle2 className="w-5 h-5 text-green-400" />
+                    <div className="theme-bg-secondary p-6 rounded-xl border theme-border">
+                        <h3 className="text-lg font-bold mb-4 flex items-center gap-2 theme-text-primary">
+                            <CheckCircle2 className="w-5 h-5 theme-success-text" />
                             Top Quick Wins
                         </h3>
                         <div className="space-y-3">
                             {quadrantData.quadrants.quick_wins.slice(0, 5).map((uc, idx) => (
-                                <div key={uc.id} className="flex items-center justify-between p-3 bg-surface-700/50 rounded-lg">
+                                <div key={uc.id} className="flex items-center justify-between p-3 theme-bg-tertiary rounded-lg">
                                     <div className="flex items-center gap-3">
-                                        <span className="text-green-400 font-bold">#{idx + 1}</span>
-                                        <span className="font-medium">{uc.title}</span>
+                                        <span className="theme-success-text font-bold">#{idx + 1}</span>
+                                        <span className="font-medium theme-text-primary">{uc.title}</span>
                                     </div>
-                                    <div className="text-sm text-gray-400">
+                                    <div className="text-sm theme-text-secondary">
                                         V: {uc.y} | F: {uc.x}
                                     </div>
                                 </div>
                             ))}
                             {quadrantData.quadrants.quick_wins.length === 0 && (
-                                <p className="text-gray-400 text-center py-4">No quick wins identified yet</p>
+                                <p className="theme-text-secondary text-center py-4">No quick wins identified yet</p>
                             )}
                         </div>
                     </div>
@@ -286,12 +285,12 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
 
             {/* Agreement Tab */}
             {activeTab === 'agreement' && agreementData && (
-                <div className="bg-surface-800 p-6 rounded-xl border border-white/10">
-                    <h3 className="text-lg font-bold mb-4">Consensus Analysis</h3>
+                <div className="theme-bg-secondary p-6 rounded-xl border theme-border">
+                    <h3 className="text-lg font-bold mb-4 theme-text-primary">Consensus Analysis</h3>
                     <div className="overflow-x-auto">
                         <table className="w-full">
                             <thead>
-                                <tr className="text-left text-gray-400 text-sm">
+                                <tr className="text-left theme-text-secondary text-sm">
                                     <th className="p-3">Use Case</th>
                                     <th className="p-3">Votes</th>
                                     <th className="p-3">Agreement</th>
@@ -300,21 +299,20 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
                             </thead>
                             <tbody>
                                 {agreementData.use_cases.map((item) => (
-                                    <tr key={item.use_case_id} className="border-t border-white/5">
-                                        <td className="p-3 font-medium">{item.title}</td>
-                                        <td className="p-3 text-gray-400">{item.vote_count}</td>
+                                    <tr key={item.use_case_id} className="border-t theme-border">
+                                        <td className="p-3 font-medium theme-text-primary">{item.title}</td>
+                                        <td className="p-3 theme-text-secondary">{item.vote_count}</td>
                                         <td className="p-3">
                                             <div className="flex items-center gap-2">
-                                                <div className="w-24 h-2 bg-surface-700 rounded-full overflow-hidden">
-                                                    <div 
-                                                        className={`h-full ${
-                                                            item.overall_agreement >= 70 ? 'bg-green-400' :
-                                                            item.overall_agreement >= 40 ? 'bg-yellow-400' : 'bg-red-400'
-                                                        }`}
+                                                <div className="w-24 h-2 theme-bg-tertiary rounded-full overflow-hidden">
+                                                    <div
+                                                        className={`h-full ${item.overall_agreement >= 70 ? 'bg-semantic-success' :
+                                                                item.overall_agreement >= 40 ? 'bg-semantic-warning' : 'bg-semantic-danger'
+                                                            }`}
                                                         style={{ width: `${item.overall_agreement}%` }}
                                                     />
                                                 </div>
-                                                <span className="text-sm">{item.overall_agreement}%</span>
+                                                <span className="text-sm theme-text-primary">{item.overall_agreement}%</span>
                                             </div>
                                         </td>
                                         <td className="p-3">
@@ -334,9 +332,9 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
             {activeTab === 'distribution' && distributionData && (
                 <div className="space-y-6">
                     {Object.entries(distributionData.distributions).map(([criterion, data]) => (
-                        <div key={criterion} className="bg-surface-800 p-6 rounded-xl border border-white/10">
-                            <h4 className="font-bold mb-4">{criterion}</h4>
-                            
+                        <div key={criterion} className="theme-bg-secondary p-6 rounded-xl border theme-border">
+                            <h4 className="font-bold mb-4 theme-text-primary">{criterion}</h4>
+
                             {/* Histogram visualization */}
                             <div className="flex items-end gap-1 h-32 mb-4">
                                 {data.histogram.map((count, idx) => {
@@ -344,34 +342,34 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
                                     const height = (count / maxCount) * 100;
                                     return (
                                         <div key={idx} className="flex-1 flex flex-col items-center">
-                                            <div 
+                                            <div
                                                 className="w-full bg-brand-violet rounded-t transition-all"
                                                 style={{ height: `${height}%`, minHeight: count > 0 ? '4px' : '0' }}
-                                                title={`${idx}-${idx+1}: ${count} votes`}
+                                                title={`${idx}-${idx + 1}: ${count} votes`}
                                             />
-                                            <span className="text-xs text-gray-500 mt-1">{idx}</span>
+                                            <span className="text-xs theme-text-muted mt-1">{idx}</span>
                                         </div>
                                     );
                                 })}
                             </div>
-                            
+
                             {/* Stats */}
                             <div className="grid grid-cols-4 gap-4 text-sm">
                                 <div>
-                                    <span className="text-gray-400">Mean:</span>
-                                    <span className="ml-2 font-bold">{data.mean}</span>
+                                    <span className="theme-text-secondary">Mean:</span>
+                                    <span className="ml-2 font-bold theme-text-primary">{data.mean}</span>
                                 </div>
                                 <div>
-                                    <span className="text-gray-400">Median:</span>
-                                    <span className="ml-2 font-bold">{data.median}</span>
+                                    <span className="theme-text-secondary">Median:</span>
+                                    <span className="ml-2 font-bold theme-text-primary">{data.median}</span>
                                 </div>
                                 <div>
-                                    <span className="text-gray-400">Std Dev:</span>
-                                    <span className="ml-2 font-bold">{data.std_dev}</span>
+                                    <span className="theme-text-secondary">Std Dev:</span>
+                                    <span className="ml-2 font-bold theme-text-primary">{data.std_dev}</span>
                                 </div>
                                 <div>
-                                    <span className="text-gray-400">Total:</span>
-                                    <span className="ml-2 font-bold">{data.histogram.reduce((a, b) => a + b, 0)}</span>
+                                    <span className="theme-text-secondary">Total:</span>
+                                    <span className="ml-2 font-bold theme-text-primary">{data.histogram.reduce((a, b) => a + b, 0)}</span>
                                 </div>
                             </div>
                         </div>

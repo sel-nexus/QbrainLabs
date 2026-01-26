@@ -3,21 +3,152 @@
 > vite
 
 
-  VITE v7.3.1  ready in 86 ms
+  VITE v7.3.1  ready in 90 ms
 
   ➜  Local:   http://localhost:5173/
   ➜  Network: http://192.168.4.247:5173/
 
-[2m[45.33ms][22m [@tailwindcss/postcss] src/index.css
-[2m[ 0.03ms][22m  [2m ↳ [22mQuick bail check
-[2m[ 6.95ms][22m  [2m ↳ [22mSetup compiler
-[2m[ 0.40ms][22m    [2m ↳ [22mPostCSS AST -> Tailwind CSS AST
-[2m[ 6.54ms][22m    [2m ↳ [22mCreate compiler
-[2m[ 0.04ms][22m  [2m ↳ [22mRegister full rebuild paths
-[2m[ 0.52ms][22m  [2m ↳ [22mSetup scanner
-[2m[10.18ms][22m  [2m ↳ [22mScan for candidates
-[2m[ 6.08ms][22m  [2m ↳ [22mRegister dependency messages
-[2m[18.36ms][22m  [2m ↳ [22mBuild utilities
-[2m[ 2.10ms][22m  [2m ↳ [22mTransform Tailwind CSS AST into PostCSS AST
-[2m[ 0.91ms][22m  [2m ↳ [22mUpdate PostCSS AST
+[2m[43.82ms][22m [@tailwindcss/postcss] src/index.css
+[2m[ 0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 6.46ms][22m  [2m ↳ [22mSetup compiler
+[2m[ 0.31ms][22m    [2m ↳ [22mPostCSS AST -> Tailwind CSS AST
+[2m[ 6.14ms][22m    [2m ↳ [22mCreate compiler
+[2m[ 0.05ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 0.54ms][22m  [2m ↳ [22mSetup scanner
+[2m[10.06ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 4.93ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[18.27ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.15ms][22m  [2m ↳ [22mTransform Tailwind CSS AST into PostCSS AST
+[2m[ 1.16ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+12:26:53 PM [vite] (client) hmr update /src/pages/ParticipantMatrix.tsx, /src/index.css
+
+[2m[6.45ms][22m [@tailwindcss/postcss] src/index.css
+[2m[0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[0.06ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[3.04ms][22m  [2m ↳ [22mScan for candidates
+[2m[1.76ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[0.39ms][22m  [2m ↳ [22mBuild utilities
+[2m[1.11ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+12:30:27 PM [vite] (client) hmr update /src/pages/ParticipantMatrix.tsx, /src/index.css
+
+[2m[5.75ms][22m [@tailwindcss/postcss] src/index.css
+[2m[0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[0.03ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[2.92ms][22m  [2m ↳ [22mScan for candidates
+[2m[1.70ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[0.38ms][22m  [2m ↳ [22mBuild utilities
+[2m[0.69ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+12:34:10 PM [vite] (client) hmr update /src/pages/ParticipantMatrix.tsx, /src/index.css
+
+[2m[8.20ms][22m [@tailwindcss/postcss] src/index.css
+[2m[0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[0.02ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[3.13ms][22m  [2m ↳ [22mScan for candidates
+[2m[1.75ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[2.11ms][22m  [2m ↳ [22mBuild utilities
+[2m[1.15ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+12:35:11 PM [vite] (client) hmr update /src/index.css, /src/components/ResultsChart.tsx
+
+[2m[8.96ms][22m [@tailwindcss/postcss] src/index.css
+[2m[0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[0.03ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[3.54ms][22m  [2m ↳ [22mScan for candidates
+[2m[2.13ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[2.63ms][22m  [2m ↳ [22mBuild utilities
+[2m[0.59ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+12:35:47 PM [vite] (client) hmr update /src/index.css, /src/components/ResultsChart.tsx
+
+[2m[6.68ms][22m [@tailwindcss/postcss] src/index.css
+[2m[0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[0.05ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[3.50ms][22m  [2m ↳ [22mScan for candidates
+[2m[1.98ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[0.45ms][22m  [2m ↳ [22mBuild utilities
+[2m[0.67ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+12:35:57 PM [vite] (client) hmr update /src/pages/ParticipantMatrix.tsx, /src/index.css
+
+[2m[6.44ms][22m [@tailwindcss/postcss] src/index.css
+[2m[0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[0.02ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[3.07ms][22m  [2m ↳ [22mScan for candidates
+[2m[1.72ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[0.97ms][22m  [2m ↳ [22mBuild utilities
+[2m[0.61ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+12:36:43 PM [vite] (client) hmr update /src/index.css, /src/components/ResultsChart.tsx
+
+[2m[8.11ms][22m [@tailwindcss/postcss] src/index.css
+[2m[0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[0.03ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[3.38ms][22m  [2m ↳ [22mScan for candidates
+[2m[1.99ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[1.76ms][22m  [2m ↳ [22mBuild utilities
+[2m[0.92ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+12:36:56 PM [vite] (client) hmr update /src/index.css, /src/components/ResultsChart.tsx
+
+[2m[6.60ms][22m [@tailwindcss/postcss] src/index.css
+[2m[0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[0.05ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[3.39ms][22m  [2m ↳ [22mScan for candidates
+[2m[2.09ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[0.35ms][22m  [2m ↳ [22mBuild utilities
+[2m[0.70ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+12:36:57 PM [vite] (client) hmr update /src/index.css, /src/components/ResultsChart.tsx
+
+[2m[5.75ms][22m [@tailwindcss/postcss] src/index.css
+[2m[0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[0.04ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[2.78ms][22m  [2m ↳ [22mScan for candidates
+[2m[2.04ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[0.29ms][22m  [2m ↳ [22mBuild utilities
+[2m[0.58ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+12:37:05 PM [vite] (client) hmr update /src/pages/ParticipantMatrix.tsx, /src/index.css
+
+[2m[16.01ms][22m [@tailwindcss/postcss] src/index.css
+[2m[ 0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.05ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 3.35ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 1.79ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 6.49ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 3.76ms][22m  [2m ↳ [22mTransform Tailwind CSS AST into PostCSS AST
+[2m[ 0.52ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+12:37:07 PM [vite] (client) hmr update /src/index.css, /src/components/ResultsChart.tsx
+
+[2m[7.01ms][22m [@tailwindcss/postcss] src/index.css
+[2m[0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[0.01ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[3.19ms][22m  [2m ↳ [22mScan for candidates
+[2m[1.82ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[1.33ms][22m  [2m ↳ [22mBuild utilities
+[2m[0.64ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+12:37:15 PM [vite] (client) hmr update /src/pages/WorkshopDetail.tsx, /src/index.css
+
+[2m[5.89ms][22m [@tailwindcss/postcss] src/index.css
+[2m[0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[0.01ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[3.05ms][22m  [2m ↳ [22mScan for candidates
+[2m[1.81ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[0.30ms][22m  [2m ↳ [22mBuild utilities
+[2m[0.69ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+12:37:39 PM [vite] (client) hmr update /src/pages/WorkshopDetail.tsx, /src/index.css
+
+[2m[7.04ms][22m [@tailwindcss/postcss] src/index.css
+[2m[0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[0.02ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[3.30ms][22m  [2m ↳ [22mScan for candidates
+[2m[2.66ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[0.31ms][22m  [2m ↳ [22mBuild utilities
+[2m[0.72ms][22m  [2m ↳ [22mUpdate PostCSS AST
 

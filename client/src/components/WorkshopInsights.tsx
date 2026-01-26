@@ -80,10 +80,10 @@ export function WorkshopInsights({ workshopId }: WorkshopInsightsProps) {
 
     const getComplexityColor = (complexity: string) => {
         switch (complexity.toLowerCase()) {
-            case 'low': return 'text-green-400 bg-green-500/10';
-            case 'medium': return 'text-yellow-400 bg-yellow-500/10';
-            case 'high': return 'text-red-400 bg-red-500/10';
-            default: return 'text-gray-400 bg-gray-500/10';
+            case 'low': return 'theme-badge-success';
+            case 'medium': return 'theme-badge-warning';
+            case 'high': return 'theme-badge-danger';
+            default: return 'theme-badge-neutral';
         }
     };
 
@@ -114,22 +114,19 @@ export function WorkshopInsights({ workshopId }: WorkshopInsightsProps) {
     }
 
     return (
-        <div className={`rounded-xl border overflow-hidden ${
-            theme === 'light' 
-                ? 'bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200' 
+        <div className={`rounded-xl border overflow-hidden ${theme === 'light'
+                ? 'bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200'
                 : 'bg-gradient-to-r from-purple-900/20 to-pink-900/20 border-purple-500/20'
-        }`}>
+            }`}>
             {/* Header - Always visible */}
             <button
                 onClick={() => setExpanded(!expanded)}
-                className={`w-full p-4 flex items-center justify-between transition ${
-                    theme === 'light' ? 'hover:bg-purple-100/50' : 'hover:bg-white/5'
-                }`}
+                className={`w-full p-4 flex items-center justify-between transition ${theme === 'light' ? 'hover:bg-purple-100/50' : 'hover:bg-white/5'
+                    }`}
             >
                 <div className="flex items-center gap-3">
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                        theme === 'light' ? 'bg-purple-100' : 'bg-purple-500/20'
-                    }`}>
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${theme === 'light' ? 'bg-purple-100' : 'bg-purple-500/20'
+                        }`}>
                         <Brain className="w-5 h-5 text-purple-500" />
                     </div>
                     <div className="text-left">
@@ -140,9 +137,9 @@ export function WorkshopInsights({ workshopId }: WorkshopInsightsProps) {
                     </div>
                 </div>
                 {expanded ? (
-                    <ChevronUp className="w-5 h-5 contrast-muted" />
+                    <ChevronUp className="w-5 h-5 theme-text-secondary" />
                 ) : (
-                    <ChevronDown className="w-5 h-5 contrast-muted" />
+                    <ChevronDown className="w-5 h-5 theme-text-secondary" />
                 )}
             </button>
 
@@ -151,9 +148,8 @@ export function WorkshopInsights({ workshopId }: WorkshopInsightsProps) {
                 <div className="px-4 pb-4 space-y-4">
                     {/* AI Summary */}
                     {insights.ai_summary && (
-                        <div className={`rounded-lg p-4 ${
-                            theme === 'light' ? 'bg-white/70' : 'bg-surface-800/50'
-                        }`}>
+                        <div className={`rounded-lg p-4 ${theme === 'light' ? 'bg-white/70' : 'theme-bg-secondary'
+                            }`}>
                             <div className="flex items-start gap-3">
                                 <Lightbulb className="w-5 h-5 text-amber-500 mt-0.5" />
                                 <p className="theme-text-secondary text-sm">{insights.ai_summary}</p>
@@ -162,18 +158,16 @@ export function WorkshopInsights({ workshopId }: WorkshopInsightsProps) {
                     )}
 
                     {/* Category Distribution */}
-                    <div className={`rounded-lg p-4 ${
-                        theme === 'light' ? 'bg-white/70' : 'bg-surface-800/50'
-                    }`}>
+                    <div className={`rounded-lg p-4 ${theme === 'light' ? 'bg-white/70' : 'theme-bg-secondary'
+                        }`}>
                         <h4 className="text-sm font-medium contrast-muted mb-3">Category Distribution</h4>
                         <div className="space-y-2">
                             {Object.entries(insights.categories_distribution).map(([category, count]) => (
                                 <div key={category} className="flex items-center justify-between">
                                     <span className="text-sm theme-text-primary">{category}</span>
                                     <div className="flex items-center gap-2">
-                                        <div className={`w-24 h-2 rounded-full overflow-hidden ${
-                                            theme === 'light' ? 'bg-gray-200' : 'bg-surface-700'
-                                        }`}>
+                                        <div className={`w-24 h-2 rounded-full overflow-hidden ${theme === 'light' ? 'bg-gray-200' : 'theme-bg-tertiary'
+                                            }`}>
                                             <div
                                                 className="h-full bg-purple-500 rounded-full"
                                                 style={{ width: `${(count / insights.total_use_cases) * 100}%` }}
@@ -187,9 +181,8 @@ export function WorkshopInsights({ workshopId }: WorkshopInsightsProps) {
                     </div>
 
                     {/* Complexity Distribution */}
-                    <div className={`rounded-lg p-4 ${
-                        theme === 'light' ? 'bg-white/70' : 'bg-surface-800/50'
-                    }`}>
+                    <div className={`rounded-lg p-4 ${theme === 'light' ? 'bg-white/70' : 'theme-bg-secondary'
+                        }`}>
                         <h4 className="text-sm font-medium contrast-muted mb-3">Estimated Complexity</h4>
                         <div className="flex gap-4">
                             {Object.entries(insights.complexity_distribution).map(([level, count]) => (
@@ -205,19 +198,17 @@ export function WorkshopInsights({ workshopId }: WorkshopInsightsProps) {
 
                     {/* Recommended Templates */}
                     {insights.recommended_templates.length > 0 && (
-                        <div className={`rounded-lg p-4 ${
-                            theme === 'light' ? 'bg-white/70' : 'bg-surface-800/50'
-                        }`}>
+                        <div className={`rounded-lg p-4 ${theme === 'light' ? 'bg-white/70' : 'theme-bg-secondary'
+                            }`}>
                             <h4 className="text-sm font-medium contrast-muted mb-3">Recommended Templates</h4>
                             <div className="space-y-3">
                                 {insights.recommended_templates.slice(0, 3).map((template) => (
                                     <div
                                         key={template.id}
-                                        className={`rounded-lg p-3 border ${
-                                            theme === 'light' 
-                                                ? 'bg-gray-50 border-gray-200' 
-                                                : 'bg-surface-700/50 border-white/5'
-                                        }`}
+                                        className={`rounded-lg p-3 border ${theme === 'light'
+                                                ? 'bg-gray-50 border-gray-200'
+                                                : 'theme-bg-tertiary theme-border'
+                                            }`}
                                     >
                                         <div className="flex items-start justify-between mb-2">
                                             <h5 className="theme-text-primary font-medium text-sm">{template.title}</h5>

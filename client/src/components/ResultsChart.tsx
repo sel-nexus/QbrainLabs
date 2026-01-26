@@ -5,9 +5,15 @@ import { toast } from 'sonner';
 interface ResultsChartProps {
     data: any[];
     showLabels?: boolean;
+    activeQuadrant?: string | null;
+    highlightQuadrant?: string | null;
+    readOnly?: boolean;
 }
 
-export function ResultsChart({ data, showLabels = false }: ResultsChartProps) {
+import { useTheme } from '../context/ThemeContext';
+
+export function ResultsChart({ data, showLabels = false, activeQuadrant, highlightQuadrant, readOnly = false }: ResultsChartProps) {
+    const { theme } = useTheme();
     const svgRef = useRef<SVGSVGElement>(null);
     // Local state to track overrides without mutating props immediately
     const [localData, setLocalData] = useState<any[]>(data);
@@ -33,7 +39,6 @@ export function ResultsChart({ data, showLabels = false }: ResultsChartProps) {
             .attr("transform", `translate(${margin.left},${margin.top})`);
 
         // Scales
-        // Determine scale based on data range, default to 100 if no data
         const xValues = localData.length > 0 ? localData.map(d => d.x ?? d.scores?.['Feasibility'] ?? 0) : [];
         const yValues = localData.length > 0 ? localData.map(d => d.y ?? d.scores?.['Business Value'] ?? 0) : [];
         const maxVal = localData.length > 0 ? Math.max(
@@ -53,34 +58,96 @@ export function ResultsChart({ data, showLabels = false }: ResultsChartProps) {
             .range([height, 0]);
 
         // Quadrant Backgrounds
-        // Top Right (Quick Wins) - x>mid, y>mid
-        svg.append("rect")
-            .attr("x", x(axisMid))
-            .attr("y", 0)
-            .attr("width", x(domainMax) - x(axisMid))
-            .attr("height", y(axisMid))
-            .attr("fill", "#10b981")
-            .attr("opacity", 0.05);
+        const quadrants = [
+            {
+                id: 'top-right',
+                x: x(axisMid), y: 0,
+                width: x(domainMax) - x(axisMid), height: y(axisMid),
+                color: "#10b981", // Green
+                label: "Quick Wins",
+                labelX: width - 20, labelY: 20, anchor: "end", labelColor: "#10b981"
+            },
+            {
+                id: 'top-left',
+                x: 0, y: 0,
+                width: x(axisMid), height: y(axisMid),
+                color: "#a78bfa", // Purple
+                label: "Strategic Bets",
+                labelX: 20, labelY: 20, anchor: "start", labelColor: "#a78bfa"
+            },
+            {
+                id: 'bottom-left',
+                x: 0, y: y(axisMid),
+                width: x(axisMid), height: height - y(axisMid),
+                color: "#ef4444", // Red
+                label: "Don't Do",
+                labelX: 20, labelY: height - 20, anchor: "start", labelColor: "#ef4444"
+            },
+            {
+                id: 'bottom-right',
+                x: x(axisMid), y: y(axisMid),
+                width: x(domainMax) - x(axisMid), height: height - y(axisMid),
+                color: "#3b82f6", // Blue
+                label: "Nice to Have",
+                labelX: width - 20, labelY: height - 20, anchor: "end", labelColor: "#3b82f6"
+            }
+        ];
 
-        // Top Left (Strategic) - x<mid, y>mid
-        svg.append("rect")
-            .attr("x", 0)
-            .attr("y", 0)
-            .attr("width", x(axisMid))
-            .attr("height", y(axisMid))
-            .attr("fill", "#a78bfa") // brand-violet
-            .attr("opacity", 0.05);
+        quadrants.forEach(q => {
+            const isActive = activeQuadrant === q.id;
+            const isHighlighted = highlightQuadrant === q.id;
+            const isGlowing = isActive || isHighlighted;
+
+            // Background rect
+            svg.append("rect")
+                .attr("x", q.x)
+                .attr("y", q.y)
+                .attr("width", q.width)
+                .attr("height", q.height)
+                .attr("fill", q.color)
+                .attr("opacity", isGlowing ? 0.2 : 0.05)
+                .attr("class", isGlowing ? "quadrant-glow" : "")
+                .style("transition", "opacity 0.3s ease");
+
+            // Add a glowing border/stroke if active
+            if (isGlowing) {
+                svg.append("rect")
+                    .attr("x", q.x + 2)
+                    .attr("y", q.y + 2)
+                    .attr("width", q.width - 4)
+                    .attr("height", q.height - 4)
+                    .attr("fill", "none")
+                    .attr("stroke", q.color)
+                    .attr("stroke-width", 2)
+                    .attr("opacity", 0.5)
+                    .style("filter", "drop-shadow(0 0 4px " + q.color + ")");
+            }
+
+            // Label
+            svg.append("text")
+                .attr("x", q.labelX)
+                .attr("y", q.labelY)
+                .attr("text-anchor", q.anchor)
+                .style("fill", q.labelColor)
+                .style("opacity", isGlowing ? 1 : 0.5)
+                .style("font-weight", "bold")
+                .style("text-shadow", isGlowing ? `0 0 10px ${q.color}` : "none")
+                .text(q.label);
+        });
 
         // Axes
+        const axisColor = theme === 'light' ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.1)';
+        const textColor = theme === 'light' ? '#64748b' : '#94a3b8';
+
         svg.append("g")
             .attr("transform", `translate(0,${height})`)
             .call(d3.axisBottom(x).tickSize(-height).tickFormat(() => ""))
-            .attr("color", "#ffffff20")
+            .attr("color", axisColor)
             .select(".domain").remove();
 
         svg.append("g")
             .call(d3.axisLeft(y).tickSize(-width).tickFormat(() => ""))
-            .attr("color", "#ffffff20")
+            .attr("color", axisColor)
             .select(".domain").remove();
 
         // Axis Labels
@@ -88,43 +155,37 @@ export function ResultsChart({ data, showLabels = false }: ResultsChartProps) {
             .attr("x", width / 2)
             .attr("y", height + 40)
             .style("text-anchor", "middle")
-            .style("fill", "#9ca3af")
+            .style("fill", textColor)
             .style("font-size", "12px")
-            .text("Feasibility (Easy -> Hard)"); // Note: Typically Right is Easy in these matrices?
-        // If 0 is Hard and 100 is Easy.
+            .text("Feasibility (Easy -> Hard)");
 
         svg.append("text")
             .attr("transform", "rotate(-90)")
             .attr("y", -40)
             .attr("x", -height / 2)
             .style("text-anchor", "middle")
-            .style("fill", "#9ca3af")
+            .style("fill", textColor)
             .style("font-size", "12px")
             .text("Business Value (Low -> High)");
-
-        // Quadrant Labels
-        svg.append("text").attr("x", width - 20).attr("y", 20).attr("text-anchor", "end").style("fill", "#10b981").style("opacity", 0.5).style("font-weight", "bold").text("Quick Wins");
-        svg.append("text").attr("x", 20).attr("y", 20).attr("text-anchor", "start").style("fill", "#a78bfa").style("opacity", 0.5).style("font-weight", "bold").text("Strategic Bets");
-        svg.append("text").attr("x", 20).attr("y", height - 20).attr("text-anchor", "start").style("fill", "#ef4444").style("opacity", 0.5).style("font-weight", "bold").text("Don't Do");
-        svg.append("text").attr("x", width - 20).attr("y", height - 20).attr("text-anchor", "end").style("fill", "#3b82f6").style("opacity", 0.5).style("font-weight", "bold").text("Nice to Have");
 
         // Tooltip container
         const tooltip = d3.select("body").append("div")
             .attr("class", "d3-tooltip")
             .style("position", "absolute")
             .style("visibility", "hidden")
-            .style("background", "#1e1b4b")
-            .style("border", "1px solid rgba(255,255,255,0.2)")
+            .style("background", theme === 'light' ? 'rgba(255,255,255,0.95)' : '#1e1b4b')
+            .style("border", theme === 'light' ? '1px solid #e2e8f0' : '1px solid rgba(255,255,255,0.2)')
             .style("padding", "10px")
             .style("border-radius", "8px")
             .style("pointer-events", "none")
             .style("z-index", "50")
-            .style("color", "white");
+            .style("color", theme === 'light' ? '#0f172a' : 'white')
+            .style("box-shadow", "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)");
 
         // Drag Handler
         const drag = d3.drag<SVGCircleElement, any>()
-            .on("start", function (event, d) {
-                d3.select(this).raise().attr("stroke", "white");
+            .on("start", function () {
+                d3.select(this).raise().attr("stroke", theme === 'light' ? '#000' : 'white');
                 // Store initial position for smooth dragging
                 (this as any).__initialX = d3.select(this).attr("cx");
                 (this as any).__initialY = d3.select(this).attr("cy");
@@ -132,7 +193,7 @@ export function ResultsChart({ data, showLabels = false }: ResultsChartProps) {
             .on("drag", function (event, d) {
                 // Get coordinates relative to the SVG group (accounting for transform)
                 const [xPos, yPos] = d3.pointer(event, svg.node() as any);
-                
+
                 // Constrain to bounds within the plot area
                 const constrainedX = Math.max(0, Math.min(width, xPos));
                 const constrainedY = Math.max(0, Math.min(height, yPos));
@@ -154,10 +215,34 @@ export function ResultsChart({ data, showLabels = false }: ResultsChartProps) {
                     .style("left", (event.sourceEvent.pageX + 10) + "px");
             })
             .on("end", function (event, d) {
-                d3.select(this).attr("stroke", d.variance > 15 ? "#ffffff" : "none"); // Restore border style
-                
+                d3.select(this).attr("stroke", d.variance > 15 ? (theme === 'light' ? '#000' : '#ffffff') : "none"); // Restore border style
+
                 // Get final coordinates relative to the SVG group
                 const [xPos, yPos] = d3.pointer(event, svg.node() as any);
+
+                // Check if dropped outside bounds (Drag to Remove)
+                // If dragged significantly outside the box (> 50px), consider it a removal
+                if (xPos < -50 || xPos > width + 50 || yPos < -50 || yPos > height + 50) {
+                    const removeEvent = new CustomEvent('matrix:position_removed', {
+                        detail: {
+                            id: d.id,
+                            title: d.title
+                        },
+                        bubbles: true
+                    });
+                    svgRef.current?.dispatchEvent(removeEvent);
+
+                    // Animate disappearance
+                    d3.select(this)
+                        .transition()
+                        .duration(300)
+                        .attr("r", 0)
+                        .style("opacity", 0)
+                        .remove();
+
+                    return;
+                }
+
                 const finalX = Math.max(0, Math.min(width, xPos));
                 const finalY = Math.max(0, Math.min(height, yPos));
 
@@ -175,7 +260,8 @@ export function ResultsChart({ data, showLabels = false }: ResultsChartProps) {
                             'Feasibility': domainX,
                             'Business Value': domainY
                         }
-                    }
+                    },
+                    bubbles: true
                 });
                 svgRef.current?.dispatchEvent(customEvent);
 
@@ -188,56 +274,64 @@ export function ResultsChart({ data, showLabels = false }: ResultsChartProps) {
                 .data(localData)
                 .enter()
                 .append("circle")
-            .attr("cx", d => x(d.x ?? d.scores['Feasibility'] ?? axisMid))
-            .attr("cy", d => y(d.y ?? d.scores['Business Value'] ?? axisMid))
-            .attr("r", d => 8 + (d.vote_count || 1) * 1.5) // Size by votes
-            .attr("fill", d => {
-                const valX = d.x ?? d.scores['Feasibility'] ?? 0;
-                const valY = d.y ?? d.scores['Business Value'] ?? 0;
-                // Color by quadrant
-                if (valX > axisMid && valY > axisMid) {
-                    return '#10b981'; // Quick Wins - Green (Top Right)
-                } else if (valX <= axisMid && valY > axisMid) {
-                    return '#a78bfa'; // Strategic Bets - Purple (Top Left)
-                } else if (valX <= axisMid && valY <= axisMid) {
-                    return '#ef4444'; // Don't Do - Red (Bottom Left)
-                } else {
-                    return '#3b82f6'; // Nice to Have - Blue (Bottom Right)
-                }
-            })
-            .attr("stroke", "#ffffff")
-            .attr("stroke-width", 2)
-            .attr("stroke-dasharray", d => d.variance > 10 ? "3,3" : "0") // Dotted if high variance (threshold 10 is arbitrary)
-            .style("cursor", "grab")
-            .on("mouseover", function (_, d) {
-                const feasValue = d.x ?? d.scores?.['Feasibility'] ?? 0;
-                const valueScore = d.y ?? d.scores?.['Business Value'] ?? 0;
-                tooltip.style("visibility", "visible")
-                    .html(`
+                .attr("cx", d => x(d.x ?? d.scores['Feasibility'] ?? axisMid))
+                .attr("cy", d => y(d.y ?? d.scores['Business Value'] ?? axisMid))
+                .attr("r", d => 8 + (d.vote_count || 1) * 1.5) // Size by votes
+                .attr("fill", d => {
+                    // Use participant color if available (for individual view)
+                    if (d.participantColor) return d.participantColor;
+
+                    const valX = d.x ?? d.scores['Feasibility'] ?? 0;
+                    const valY = d.y ?? d.scores['Business Value'] ?? 0;
+                    // Color by quadrant
+                    if (valX > axisMid && valY > axisMid) {
+                        return '#10b981'; // Quick Wins - Green (Top Right)
+                    } else if (valX <= axisMid && valY > axisMid) {
+                        return '#a78bfa'; // Strategic Bets - Purple (Top Left)
+                    } else if (valX <= axisMid && valY <= axisMid) {
+                        return '#ef4444'; // Don't Do - Red (Bottom Left)
+                    } else {
+                        return '#3b82f6'; // Nice to Have - Blue (Bottom Right)
+                    }
+                })
+                .attr("stroke", "#ffffff")
+                .attr("stroke-width", 2)
+                .attr("stroke-dasharray", (d: any) => d.variance > 10 ? "3,3" : "0")
+                .style("cursor", readOnly ? "default" : "grab")
+                .on("mouseover", function (_, d) {
+                    const feasValue = d.x ?? d.scores?.['Feasibility'] ?? 0;
+                    const valueScore = d.y ?? d.scores?.['Business Value'] ?? 0;
+                    tooltip.style("visibility", "visible")
+                        .html(`
                         <div class="font-bold mb-1">${d.title}</div>
-                        <div class="text-xs text-gray-300 space-y-0.5">
+                        ${d.participant_name ? `<div class="text-xs font-semibold mb-1" style="color:${d.participantColor}">${d.participant_name}</div>` : ''}
+                        <div class="text-xs ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'} space-y-0.5">
                             <div><strong>Position:</strong> Feasibility: ${Math.round(feasValue)}, Business Value: ${Math.round(valueScore)}</div>
                             ${d.variance !== undefined ? `<div>Variance: ${d.variance}</div>` : ''}
                             ${d.vote_count ? `<div>Votes: ${d.vote_count}</div>` : ''}
                         </div>
-                        ${d.scores && Object.keys(d.scores).length > 0 ? `<div class="text-[10px] text-gray-400 mt-2 pt-2 border-t border-white/10">
+                        ${d.scores && Object.keys(d.scores).length > 0 ? `<div class="text-[10px] ${theme === 'light' ? 'text-gray-500 border-gray-200' : 'text-gray-400 border-white/10'} mt-2 pt-2 border-t">
                             <div class="font-semibold mb-1">Scores:</div>
                             ${Object.entries(d.scores).map(([k, v]) => `<div>${k}: ${Math.round(Number(v))}</div>`).join('')}
                         </div>` : ''}
                     `);
-            })
-            .on("mousemove", function (event) {
-                tooltip.style("top", (event.pageY - 10) + "px")
-                    .style("left", (event.pageX + 10) + "px");
-            })
-            .on("mouseout", function () {
-                tooltip.style("visibility", "hidden");
-            })
-            .call(drag);
+                })
+                .on("mousemove", function (event) {
+                    tooltip.style("top", (event.pageY - 10) + "px")
+                        .style("left", (event.pageX + 10) + "px");
+                })
+                .on("mouseout", function () {
+                    tooltip.style("visibility", "hidden");
+                });
+
+            if (!readOnly) {
+                svg.selectAll<SVGCircleElement, any>("circle").call(drag);
+            }
         }
 
-        // Add labels if enabled
-        if (showLabels && localData.length > 0) {
+        // Add labels if enabled (or if individual participant data is present)
+        const hasParticipantData = localData.some(d => d.participant_name);
+        if ((showLabels || hasParticipantData) && localData.length > 0) {
             const labels = svg.selectAll("text.label")
                 .data(localData, (d: any) => d.id || d.title); // Use key function for proper updates
 
@@ -254,15 +348,21 @@ export function ResultsChart({ data, showLabels = false }: ResultsChartProps) {
                 .attr("x", d => x(d.x ?? d.scores['Feasibility'] ?? axisMid))
                 .attr("y", d => y(d.y ?? d.scores['Business Value'] ?? axisMid) - 15) // Position above the circle
                 .attr("text-anchor", "middle")
-                .attr("font-size", "10px")
+                .attr("font-size", d => d.participant_name ? "9px" : "10px") // Smaller font for names
                 .attr("font-weight", "500")
-                .attr("fill", "#ffffff")
-                .attr("stroke", "#1e1b4b")
-                .attr("stroke-width", "0.3px")
+                .attr("fill", theme === 'light' ? '#0f172a' : "#ffffff")
+                .attr("stroke", theme === 'light' ? 'white' : "#1e1b4b")
+                .attr("stroke-width", "3px")
                 .attr("paint-order", "stroke")
                 .style("pointer-events", "none")
                 .text(d => {
-                    // Truncate long titles
+                    // If showing individual participant positions, show their name
+                    if (d.participant_name) {
+                        return d.participant_name.length > 10
+                            ? d.participant_name.substring(0, 8) + '...'
+                            : d.participant_name;
+                    }
+                    // Otherwise show use case title
                     const title = d.title || 'Untitled';
                     return title.length > 15 ? title.substring(0, 12) + '...' : title;
                 });
@@ -272,10 +372,10 @@ export function ResultsChart({ data, showLabels = false }: ResultsChartProps) {
             tooltip.remove();
         };
 
-    }, [localData, showLabels]);
+    }, [localData, showLabels, theme]);
 
     return (
-        <div className="w-full flex justify-center bg-surface-800/30 rounded-2xl border border-white/5 p-4 overflow-hidden">
+        <div className="w-full flex justify-center theme-bg-secondary rounded-2xl border theme-border p-4 overflow-hidden">
             <svg ref={svgRef} className="overflow-visible"></svg>
         </div>
     );
