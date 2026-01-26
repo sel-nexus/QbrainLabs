@@ -22,6 +22,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.core.database import engine, Base, AsyncSessionLocal
 from app.models.models import User
+from app.models.rbac import Permission, DEFAULT_PERMISSIONS
+from app.models.subscription import SubscriptionTier, DEFAULT_SUBSCRIPTION_TIERS, FeatureFlag, DEFAULT_FEATURE_FLAGS
+from app.models.settings import SystemSetting, DEFAULT_SYSTEM_SETTINGS
 import bcrypt
 
 DEFAULT_ADMIN_EMAIL = "admin@qbrainlabs.com"
@@ -244,6 +247,79 @@ async def get_database_info():
         return None
 
 
+
+async def create_default_permissions():
+    """Seed default permissions."""
+    async with AsyncSessionLocal() as db:
+        # Check if permissions exist
+        result = await db.execute(select(Permission))
+        if result.first():
+            print("ℹ️  Permissions already seeded")
+            return
+
+        print("🛡️  Seeding default permissions...")
+        for perm_data in DEFAULT_PERMISSIONS:
+            perm = Permission(**perm_data)
+            db.add(perm)
+        
+        await db.commit()
+        print(f"✅ Added {len(DEFAULT_PERMISSIONS)} permissions")
+
+
+async def create_default_subscription_tiers():
+    """Seed default subscription tiers."""
+    async with AsyncSessionLocal() as db:
+        # Check if tiers exist
+        result = await db.execute(select(SubscriptionTier))
+        if result.first():
+            print("ℹ️  Subscription tiers already seeded")
+            return
+
+        print("💳 Seeding default subscription tiers...")
+        for tier_data in DEFAULT_SUBSCRIPTION_TIERS:
+            tier = SubscriptionTier(**tier_data)
+            db.add(tier)
+        
+        await db.commit()
+        print(f"✅ Added {len(DEFAULT_SUBSCRIPTION_TIERS)} subscription tiers")
+
+
+async def create_default_feature_flags():
+    """Seed default feature flags."""
+    async with AsyncSessionLocal() as db:
+        # Check if flags exist
+        result = await db.execute(select(FeatureFlag))
+        if result.first():
+            print("ℹ️  Feature flags already seeded")
+            return
+
+        print("🚩 Seeding default feature flags...")
+        for flag_data in DEFAULT_FEATURE_FLAGS:
+            flag = FeatureFlag(**flag_data)
+            db.add(flag)
+        
+        await db.commit()
+        print(f"✅ Added {len(DEFAULT_FEATURE_FLAGS)} feature flags")
+
+
+async def create_default_system_settings():
+    """Seed default system settings."""
+    async with AsyncSessionLocal() as db:
+        # Check if settings exist
+        result = await db.execute(select(SystemSetting))
+        if result.first():
+            print("ℹ️  System settings already seeded")
+            return
+
+        print("⚙️  Seeding default system settings...")
+        for setting_data in DEFAULT_SYSTEM_SETTINGS:
+            setting = SystemSetting(**setting_data)
+            db.add(setting)
+        
+        await db.commit()
+        print(f"✅ Added {len(DEFAULT_SYSTEM_SETTINGS)} system settings")
+
+
 async def init_db():
     """Full database initialization workflow."""
     # Step 1: Check connection
@@ -262,11 +338,18 @@ async def init_db():
     print("\n📦 Checking for pending migrations...")
     migrations_run = await run_migrations()
     
-    # Step 5: Create default admin
+    # Step 5: Seeding default data
+    print("\n🌱 Seeding default data...")
+    await create_default_permissions()
+    await create_default_subscription_tiers()
+    await create_default_feature_flags()
+    await create_default_system_settings()
+
+    # Step 6: Create default admin
     print("\n👤 Checking admin user...")
     await create_default_admin()
     
-    # Step 6: Show status
+    # Step 7: Show status
     print("\n📊 Database Status:")
     info = await get_database_info()
     if info:

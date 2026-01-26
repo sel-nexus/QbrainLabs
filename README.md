@@ -93,7 +93,7 @@ cp .env.example .env
 # Start all services
 docker-compose up -d
 
-# Initialize database
+# Initialize database (creates tables, runs migrations, and seeds default data)
 docker-compose exec backend python init_db.py
 ```
 
@@ -188,7 +188,7 @@ copy ..\.env.example .env
 # Edit .env with your settings using notepad or VS Code
 notepad .env
 
-# Initialize database
+# Initialize database (creates tables, runs migrations, and seeds default data)
 python init_db.py
 
 # Run development server
@@ -286,7 +286,7 @@ nano .env  # or vim .env
 # Update DATABASE_URL in .env:
 # DATABASE_URL=postgresql://qbrainlabs_user:your_secure_password@localhost:5432/qbrainlabs
 
-# Initialize database
+# Initialize database (creates tables, runs migrations, and seeds default data)
 python init_db.py
 
 # Run development server
@@ -383,7 +383,7 @@ pip install -r requirements.txt
 cp ../.env.example .env
 nano .env  # or vim, or code .env
 
-# Initialize database
+# Initialize database (creates tables, runs migrations, and seeds default data)
 python init_db.py
 
 # Run development server
@@ -501,7 +501,7 @@ cd server
 # Linux/macOS:
 source .venv/bin/activate
 
-# Run database initialization
+# Run database initialization (creates tables, runs migrations, and seeds default data)
 python init_db.py
 ```
 
