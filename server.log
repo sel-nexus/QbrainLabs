@@ -1,14 +1,159 @@
-INFO:     Will watch for changes in these directories: ['/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server']
+INFO:     Will watch for changes in these directories: ['/Users/rvarikuti/Cursor-Workspace/QbrainLabs/server']
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [40341] using WatchFiles
+INFO:     Started reloader process [53253] using WatchFiles
 /Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-2026-01-25 21:33:18,260 - qbrainlabs - INFO - Exception handlers registered
-INFO:     Started server process [40346]
+2026-01-26 11:02:32,903 - qbrainlabs - INFO - Exception handlers registered
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-01-26T17:02:32.904539Z"}
+INFO:     Started server process [53264]
 INFO:     Waiting for application startup.
 RAGService running in MOCK MODE (No API Key found)
 RoadmapService running in MOCK MODE (No API Key found)
 CopilotService running in MOCK MODE (No API Key found)
-{"event": "Starting application...", "level": "info", "timestamp": "2026-01-26T03:33:18.872788Z"}
-{"event": "Database tables created", "level": "info", "timestamp": "2026-01-26T03:33:24.383175Z"}
+2026-01-26 11:02:33,634 - app.middleware.cors_dynamic - INFO - Detected server IP addresses: ['192.168.4.247']
+2026-01-26 11:02:33,634 - app.middleware.cors_dynamic - INFO - Allowed CORS origins: ['http://127.0.0.1:3000', 'http://127.0.0.1:5173', 'http://172.31.33.5:5173', 'http://172.31.33.5:80', 'http://18.191.118.132:5173', 'http://18.191.118.132:80', 'http://192.168.4.247:3000', 'http://192.168.4.247:5173', 'http://192.168.4.247:80', 'http://localhost:3000', 'http://localhost:5173', 'http://qbrainlabs.com', 'https://192.168.4.247:443', 'https://192.168.4.247:5173']
+{"event": "Starting application...", "level": "info", "timestamp": "2026-01-26T17:02:33.635446Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-01-26T17:02:38.999728Z"}
 INFO:     Application startup complete.
+{"event": "Redis client connected successfully", "level": "info", "timestamp": "2026-01-26T17:04:09.145265Z"}
+{"method": "POST", "path": "/api/join", "status_code": 200, "duration_ms": 1084.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:04:10.230505Z"}
+INFO:     ('127.0.0.1', 61492) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+/Users/rvarikuti/Cursor-Workspace/QbrainLabs/server/app/core/socket_manager.py:107: RuntimeWarning: coroutine 'AsyncServer.enter_room' was never awaited
+  sio.enter_room(sid, workshop_id)
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+Client connected: kFtqoYOEbe3ItI1cAAAB (unauthenticated - participant access)
+SID kFtqoYOEbe3ItI1cAAAB joined room c745443c-21bc-445d-8353-3b81f8e67faa
+{"method": "GET", "path": "/api/session/cd92887c-2757-4a30-b8f1-1a02223769c8", "status_code": 200, "duration_ms": 770.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:04:11.049822Z"}
+2026-01-26 11:04:11,700 - qbrainlabs - ERROR - Database error: (psycopg.errors.UndefinedColumn) column participant_points.action_metadata does not exist
+LINE 1: ...icipant_points.points, participant_points.action, participan...
+                                                             ^
+[SQL: SELECT participant_points.id, participant_points.participant_id, participant_points.workshop_id, participant_points.points, participant_points.action, participant_points.action_metadata, participant_points.created_at 
+FROM participant_points 
+WHERE participant_points.participant_id = %(participant_id_1)s::VARCHAR ORDER BY participant_points.created_at DESC]
+[parameters: {'participant_id_1': 'cd92887c-2757-4a30-b8f1-1a02223769c8'}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+{"method": "GET", "path": "/api/gamification/points/cd92887c-2757-4a30-b8f1-1a02223769c8", "status_code": 500, "duration_ms": 614.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "error", "timestamp": "2026-01-26T17:04:11.702150Z"}
+{"method": "GET", "path": "/api/polls/workshop/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 617.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:04:11.702737Z"}
+{"method": "GET", "path": "/api/session/cd92887c-2757-4a30-b8f1-1a02223769c8", "status_code": 200, "duration_ms": 612.53, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:04:11.709538Z"}
+{"method": "GET", "path": "/api/polls/workshop/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 524.41, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:04:12.232604Z"}
+2026-01-26 11:04:12,278 - qbrainlabs - ERROR - Database error: (psycopg.errors.UndefinedColumn) column participant_points.action_metadata does not exist
+LINE 1: ...icipant_points.points, participant_points.action, participan...
+                                                             ^
+[SQL: SELECT participant_points.id, participant_points.participant_id, participant_points.workshop_id, participant_points.points, participant_points.action, participant_points.action_metadata, participant_points.created_at 
+FROM participant_points 
+WHERE participant_points.participant_id = %(participant_id_1)s::VARCHAR ORDER BY participant_points.created_at DESC]
+[parameters: {'participant_id_1': 'cd92887c-2757-4a30-b8f1-1a02223769c8'}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+{"method": "GET", "path": "/api/gamification/points/cd92887c-2757-4a30-b8f1-1a02223769c8", "status_code": 500, "duration_ms": 531.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "error", "timestamp": "2026-01-26T17:04:12.279869Z"}
+{"method": "GET", "path": "/api/session/cd92887c-2757-4a30-b8f1-1a02223769c8", "status_code": 200, "duration_ms": 615.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:04:12.371417Z"}
+2026-01-26 11:04:16,610 - qbrainlabs - ERROR - Database error: (psycopg.errors.UndefinedColumn) column participant_points.action_metadata does not exist
+LINE 1: ...icipant_points.points, participant_points.action, participan...
+                                                             ^
+[SQL: SELECT participant_points.id, participant_points.participant_id, participant_points.workshop_id, participant_points.points, participant_points.action, participant_points.action_metadata, participant_points.created_at 
+FROM participant_points 
+WHERE participant_points.participant_id = %(participant_id_1)s::VARCHAR ORDER BY participant_points.created_at DESC]
+[parameters: {'participant_id_1': 'cd92887c-2757-4a30-b8f1-1a02223769c8'}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+{"method": "GET", "path": "/api/gamification/points/cd92887c-2757-4a30-b8f1-1a02223769c8", "status_code": 500, "duration_ms": 520.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "error", "timestamp": "2026-01-26T17:04:16.611648Z"}
+{"method": "GET", "path": "/api/session/cd92887c-2757-4a30-b8f1-1a02223769c8", "status_code": 200, "duration_ms": 644.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:04:20.897090Z"}
+2026-01-26 11:04:21,625 - qbrainlabs - ERROR - Database error: (psycopg.errors.UndefinedColumn) column participant_points.action_metadata does not exist
+LINE 1: ...icipant_points.points, participant_points.action, participan...
+                                                             ^
+[SQL: SELECT participant_points.id, participant_points.participant_id, participant_points.workshop_id, participant_points.points, participant_points.action, participant_points.action_metadata, participant_points.created_at 
+FROM participant_points 
+WHERE participant_points.participant_id = %(participant_id_1)s::VARCHAR ORDER BY participant_points.created_at DESC]
+[parameters: {'participant_id_1': 'cd92887c-2757-4a30-b8f1-1a02223769c8'}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+{"method": "GET", "path": "/api/gamification/points/cd92887c-2757-4a30-b8f1-1a02223769c8", "status_code": 500, "duration_ms": 537.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "error", "timestamp": "2026-01-26T17:04:21.627472Z"}
+SID kFtqoYOEbe3ItI1cAAAB joined room c745443c-21bc-445d-8353-3b81f8e67faa
+SID kFtqoYOEbe3ItI1cAAAB joined room c745443c-21bc-445d-8353-3b81f8e67faa
+{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 1012.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:04:24.999626Z"}
+{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 451.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:04:25.460154Z"}
+{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 511.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:04:25.563521Z"}
+{"method": "GET", "path": "/api/votes/participant/cd92887c-2757-4a30-b8f1-1a02223769c8/matrix-positions", "status_code": 200, "duration_ms": 476.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:04:25.992837Z"}
+{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 470.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:04:26.084483Z"}
+{"method": "GET", "path": "/api/votes/participant/cd92887c-2757-4a30-b8f1-1a02223769c8/matrix-positions", "status_code": 200, "duration_ms": 468.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:04:26.603643Z"}
+Emitting matrix:position_update to workshop c745443c-21bc-445d-8353-3b81f8e67faa: {'participant_id': 'cd92887c-2757-4a30-b8f1-1a02223769c8', 'participant_name': 'nhyd', 'use_case_id': '8207d779-1afc-4ced-a92a-e42d4f4d8a25', 'use_case_title': 'Procurement Contract Review', 'position': {'x': 68, 'y': 17}, 'previous_position': None}
+{"method": "POST", "path": "/api/votes/", "status_code": 201, "duration_ms": 1273.76, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:08:04.146884Z"}
+Emitting matrix:position_update to workshop c745443c-21bc-445d-8353-3b81f8e67faa: {'participant_id': 'cd92887c-2757-4a30-b8f1-1a02223769c8', 'participant_name': 'nhyd', 'use_case_id': 'cca4c22e-0116-45e5-8ca7-80476d8ceabd', 'use_case_title': 'Policy ID and other Data verification between different systems', 'position': {'x': 37, 'y': 27}, 'previous_position': None}
+{"method": "POST", "path": "/api/votes/", "status_code": 201, "duration_ms": 1178.88, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:08:15.487669Z"}
+{"method": "GET", "path": "/api/session/cd92887c-2757-4a30-b8f1-1a02223769c8", "status_code": 200, "duration_ms": 786.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:09:39.184258Z"}
+2026-01-26 11:09:39,818 - qbrainlabs - ERROR - Database error: (psycopg.errors.UndefinedColumn) column participant_points.action_metadata does not exist
+LINE 1: ...icipant_points.points, participant_points.action, participan...
+                                                             ^
+[SQL: SELECT participant_points.id, participant_points.participant_id, participant_points.workshop_id, participant_points.points, participant_points.action, participant_points.action_metadata, participant_points.created_at 
+FROM participant_points 
+WHERE participant_points.participant_id = %(participant_id_1)s::VARCHAR ORDER BY participant_points.created_at DESC]
+[parameters: {'participant_id_1': 'cd92887c-2757-4a30-b8f1-1a02223769c8'}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+{"method": "GET", "path": "/api/gamification/points/cd92887c-2757-4a30-b8f1-1a02223769c8", "status_code": 500, "duration_ms": 606.41, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "error", "timestamp": "2026-01-26T17:09:39.820888Z"}
+{"method": "GET", "path": "/api/polls/workshop/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 607.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:09:39.821193Z"}
+{"method": "GET", "path": "/api/session/cd92887c-2757-4a30-b8f1-1a02223769c8", "status_code": 200, "duration_ms": 620.7, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:09:39.911090Z"}
+{"method": "GET", "path": "/api/polls/workshop/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 550.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:09:40.378717Z"}
+2026-01-26 11:09:40,421 - qbrainlabs - ERROR - Database error: (psycopg.errors.UndefinedColumn) column participant_points.action_metadata does not exist
+LINE 1: ...icipant_points.points, participant_points.action, participan...
+                                                             ^
+[SQL: SELECT participant_points.id, participant_points.participant_id, participant_points.workshop_id, participant_points.points, participant_points.action, participant_points.action_metadata, participant_points.created_at 
+FROM participant_points 
+WHERE participant_points.participant_id = %(participant_id_1)s::VARCHAR ORDER BY participant_points.created_at DESC]
+[parameters: {'participant_id_1': 'cd92887c-2757-4a30-b8f1-1a02223769c8'}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+{"method": "GET", "path": "/api/gamification/points/cd92887c-2757-4a30-b8f1-1a02223769c8", "status_code": 500, "duration_ms": 555.27, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "error", "timestamp": "2026-01-26T17:09:40.423276Z"}
+SID kFtqoYOEbe3ItI1cAAAB joined room c745443c-21bc-445d-8353-3b81f8e67faa
+SID kFtqoYOEbe3ItI1cAAAB joined room c745443c-21bc-445d-8353-3b81f8e67faa
+{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 537.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:09:42.802870Z"}
+{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 477.77, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:09:43.291234Z"}
+{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 485.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:09:43.338583Z"}
+{"method": "GET", "path": "/api/votes/participant/cd92887c-2757-4a30-b8f1-1a02223769c8/matrix-positions", "status_code": 200, "duration_ms": 511.8, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:09:43.854391Z"}
+{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 466.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:09:43.859073Z"}
+{"method": "GET", "path": "/api/votes/participant/cd92887c-2757-4a30-b8f1-1a02223769c8/matrix-positions", "status_code": 200, "duration_ms": 506.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:09:44.416072Z"}
+INFO:     connection closed
+Client disconnected: kFtqoYOEbe3ItI1cAAAB
+2026-01-26 11:11:48,005 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+AttributeError: module 'bcrypt' has no attribute '__about__'
+{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 1290.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:11:48.786348Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 742.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:11:49.572573Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 825.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:11:50.447728Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1421.5, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:03.995194Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1246.79, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:05.293226Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1483.16, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:06.792888Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1481.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:08.236514Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1488.58, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:08.332077Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1300.23, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:09.586129Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1378.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:09.760862Z"}
+{"method": "GET", "path": "/api/admin/facilitators/48e54d46-a245-4044-bd1b-c9b1eb244049/workshops", "status_code": 200, "duration_ms": 534.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:10.336895Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 527.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:10.338355Z"}
+{"method": "GET", "path": "/api/admin/facilitators/d917c54d-2c3b-4a08-8d69-27f142c525d7/workshops", "status_code": 200, "duration_ms": 576.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:10.381218Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 571.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:10.381715Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 571.42, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:10.382077Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 604.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:10.995573Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 553.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:11.001324Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 544.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:11.003486Z"}
+{"method": "GET", "path": "/api/admin/facilitators/d917c54d-2c3b-4a08-8d69-27f142c525d7/workshops", "status_code": 200, "duration_ms": 545.35, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:11.003952Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 549.89, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:11.008493Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1352.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:11.171796Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 530.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:11.573953Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 561.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:11.617763Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 562.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:11.618730Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 564.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:11.618980Z"}
+{"method": "GET", "path": "/api/admin/facilitators/d917c54d-2c3b-4a08-8d69-27f142c525d7/workshops", "status_code": 200, "duration_ms": 559.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:11.619482Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 540.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:12.169310Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 563.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:12.231081Z"}
+{"method": "GET", "path": "/api/admin/facilitators/d917c54d-2c3b-4a08-8d69-27f142c525d7/workshops", "status_code": 200, "duration_ms": 570.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:12.237572Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 577.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:12.245067Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 530.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:12.745418Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 510.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:12.788654Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 566.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:12.953711Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 522.76, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:13.317694Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 520.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:13.431930Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 521.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:13.523816Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 517.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:14.002669Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 552.44, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:14.125760Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 516.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:14.563750Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 388.74, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:50.511923Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 447.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:51.009159Z"}
+{"method": "GET", "path": "/api/knowledge-base/industries/hr", "status_code": 200, "duration_ms": 452.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T17:12:53.560647Z"}

@@ -1,6 +1,6 @@
 # Root Directory Structure
 
-/hotspotmatrix
+/qbrainlabs
 ├── /client                # React.js Frontend
 ├── /server                # FastAPI/Python Backend
 ├── /ai_engine             # AI/RAG logic & Vector DB scripts

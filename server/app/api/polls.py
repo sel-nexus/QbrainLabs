@@ -29,7 +29,7 @@ async def verify_facilitator_access(workshop_id: str, user: User, db: AsyncSessi
     workshop = result.scalar_one_or_none()
     if not workshop:
         raise HTTPException(status_code=404, detail="Workshop not found")
-    if str(workshop.facilitator_id) != str(user.id) and not user.is_admin:
+    if str(workshop.facilitator_id) != str(user.id) and not user.is_admin_user:
         raise HTTPException(status_code=403, detail="Not authorized")
     return workshop
 

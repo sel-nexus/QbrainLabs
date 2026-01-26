@@ -573,7 +573,7 @@
 - **Frontend:** React app running on localhost:5173
 - **Database:** SQLite (dev) / PostgreSQL (prod)
 - **Test Accounts:**
-  - Admin: `admin@hotspotmatrix.com` / `admin123`
+  - Admin: `admin@qbrainlabs.com` / `admin123`
   - Facilitator: (create via signup)
   - Participant: (create via join flow)
 

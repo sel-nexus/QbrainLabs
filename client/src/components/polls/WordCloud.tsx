@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { PollService, Poll } from '../../lib/api/polls';
+import { PollService, type Poll } from '../../lib/api/polls';
 import { useSession } from '../../context/SessionContext';
 import { socket } from '../../lib/socket';
 import { RefreshCw } from 'lucide-react';

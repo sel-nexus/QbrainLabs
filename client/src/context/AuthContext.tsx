@@ -1,6 +1,19 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+// Auto-detect API URL based on current hostname for network access
+const getApiBaseUrl = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  // If accessing via IP, use the same IP for API
+  const hostname = window.location.hostname;
+  if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+    return `http://${hostname}:8000`;
+  }
+  return 'http://localhost:8000';
+};
+
+const API_BASE = getApiBaseUrl();
 
 export type UserRole = 'admin' | 'facilitator' | 'member';
 export type AccountStatus = 'pending' | 'active' | 'disabled' | 'suspended';

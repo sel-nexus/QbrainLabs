@@ -4,7 +4,9 @@
 **Module:** The Hotspot Visualization  
 **Story Type:** Feature  
 **Priority:** High  
-**Story Points:** 13
+**Story Points:** 13  
+**Status:** ✅ IMPLEMENTED (Participant View)  
+**Implementation Date:** January 26, 2026
 
 ---
 
@@ -58,16 +60,72 @@ The Interactive Qbrain AI Labs transforms scored submissions into an actionable 
    - **Search:** Find specific use cases
 
 6. **Participant Scoring Mode**
-   - When a participant logs into the app, they can score use cases directly on the matrix:
-     - **Drag-and-Drop Scoring:** Drag existing use case bubbles to position them on the 2x2 plot based on their assessment of Ease (X-axis) and Impact (Y-axis)
-     - **Manual Score Entry:** Click on a use case to open a scoring modal where participants can manually enter numerical scores (1-10) for each criterion
-   - Real-time position updates visible to facilitator
-   - Participant scores contribute to the aggregate weighted average
-   - Visual indicator showing where participant has positioned each use case
-   - Score locking after submission (configurable by facilitator)
-   - Anonymous mode: Individual participant placements not visible to other participants
-   - Facilitator can enable/disable participant drag mode
+   - When a participant clicks the "Hotspot Prioritization" tile, they navigate to `/participant-matrix` route
+   - Strategic Matrix page displays:
+     - **Left Side (70%):** Interactive 2x2 matrix visualization with drag-and-drop support
+     - **Right Side (30%):** Scrollable panel with draggable use case tiles
+   - **Drag-and-Drop from Tiles:** Participants drag use case tiles from the right panel onto the matrix to position them
+   - **Drag-and-Drop on Matrix:** Participants can drag existing dots/bubbles on the matrix to reposition them
+   - **Use Cases Only Appear When Dragged:** Use cases only appear on the graph when explicitly dragged onto it from the tiles panel
+     - Results are filtered to only show use cases that have been positioned (have votes with Feasibility and Business Value scores)
+     - Use cases without positions are only shown in the tiles panel, not on the matrix
+     - Filtering criteria: Must have `vote_count > 0` AND (`scores['Feasibility']` AND `scores['Business Value']`) OR (`x` AND `y` coordinates)
+   - **Labels on Dots:** Each positioned use case displays a label above the dot showing the use case title
+   - **Hover Tooltips:** Hovering over a dot shows:
+     - Use case title
+     - Position coordinates (Feasibility and Business Value)
+     - Variance (if available)
+     - Vote count
+     - All score details
+   - **Add New Use Case:** Participants can add new use cases directly from the matrix window via "Add New" button
+     - Opens modal with `UseCaseCanvas` component
+     - On successful submission, emits `new_submission` socket event
+     - Modal closes automatically on success
+     - Use cases list refreshes to show new submission in tiles panel
+     - New use case does NOT automatically appear on matrix (must be dragged)
+   - **Socket Event Handling:**
+     - Participants join workshop room on component mount: `socket.emit('join_workshop', { workshop_id })`
+     - Listen for `new_submission` events to refresh use cases list (not results)
+     - Listen for `matrix:position_changed` custom events from ResultsChart drag interactions
+   - **Position Saving:**
+     - When use case is dropped on matrix, saves position via `POST /api/votes/` endpoint
+     - Payload: `{ use_case_id, participant_id, scores: { 'Feasibility': x, 'Business Value': y } }`
+     - Emits `matrix:position_update` socket event for real-time facilitator updates
+     - Updates local results state to show positioned use case on graph
+   - Real-time position updates via WebSocket
+   - Participant scores saved via `/votes/` API endpoint
+   - Positions saved with Feasibility (X-axis) and Business Value (Y-axis) scores
    - Touch-friendly drag interaction for mobile devices
+
+7. **Facilitator Real-Time Activity Dashboard**
+   - When admin/facilitator enters workshop in ANALYSIS phase, matrix view displays dynamic activity dashboard
+   - **MatrixActivityDashboard Component:**
+     - Located on right side of matrix view (400px width)
+     - Only visible to admins/facilitators
+     - Shows real-time participant actions as they drag and drop items on matrix
+   - **Live Activity Feed:**
+     - Displays recent actions (last 20) with participant name, use case title, and position
+     - Shows quadrant label (Quick Wins, Strategic Bets, Nice to Have, Don't Do)
+     - Displays position coordinates (Feasibility and Business Value)
+     - Shows previous position when item is moved
+     - Timestamp with "time ago" formatting
+   - **Statistics Display:**
+     - Total Actions: Count of all matrix position updates
+     - Active Now: Number of unique participants currently active
+     - Last Minute: Activity count in the last 60 seconds (resets every minute)
+   - **Connection Status:**
+     - Visual indicator showing "Live" (green) or "Connecting..." (red)
+     - Automatically connects to socket and joins workshop room
+     - Handles connection/disconnection events
+   - **Real-Time Updates:**
+     - Listens for `matrix:position_update` socket events
+     - Listens for `matrix:drag_start` socket events
+     - Events broadcast from backend when participants save positions via `/votes/` endpoint
+     - Dashboard automatically refreshes matrix results when positions change
+   - **Backend Integration:**
+     - `/api/votes/` endpoint emits `matrix:position_update` events to workshop room
+     - Includes participant info, use case details, position coordinates, and previous position
+     - Events received by all facilitators in the workshop room
 
 4. **D3.js Powered Visualization**
    - Smooth animations
@@ -144,12 +202,28 @@ The Interactive Qbrain AI Labs transforms scored submissions into an actionable 
 
 ### Scenario 7: Participant Drag-and-Drop Scoring
 **Given** a participant is logged into the workshop  
-**When** they view the hotspot matrix  
-**Then** they can drag use case bubbles to new positions on the 2x2 plot  
-**And** the X-coordinate represents their Ease/Feasibility assessment  
-**And** the Y-coordinate represents their Business Impact assessment  
-**And** their score is saved and contributes to the aggregate  
-**And** a visual indicator shows their placement vs. the aggregate position
+**When** they click the "Hotspot Prioritization" tile on the dashboard  
+**Then** they navigate to `/participant-matrix` route  
+**And** they see the Strategic Matrix on the left and use case tiles on the right  
+**When** they drag a use case tile from the right panel onto the matrix  
+**Then** a dot appears at the drop position with a label showing the use case title  
+**And** the X-coordinate represents their Feasibility assessment  
+**And** the Y-coordinate represents their Business Value assessment  
+**And** their position is saved via API and contributes to the aggregate  
+**And** hovering over the dot shows position coordinates and details  
+**When** they drag an existing dot on the matrix  
+**Then** the dot follows the cursor accurately  
+**And** the label moves with the dot  
+**And** the position is updated and saved
+
+### Scenario 7b: Use Cases Only Appear When Dragged
+**Given** a participant is viewing the Strategic Matrix  
+**When** a new use case is created (by facilitator, admin, or participant)  
+**Then** it appears in the tiles panel on the right  
+**And** it does NOT automatically appear on the graph  
+**When** the participant drags the use case tile onto the matrix  
+**Then** it appears as a dot on the graph at the drop position  
+**And** it remains visible on the graph for future sessions
 
 ### Scenario 8: Participant Manual Score Entry
 **Given** a participant is viewing the hotspot matrix  
@@ -164,7 +238,7 @@ The Interactive Qbrain AI Labs transforms scored submissions into an actionable 
 ## Technical Implementation
 
 ### Frontend Components
-- `HotspotMatrix.tsx` - Main container
+- `QbrainMatrix.tsx` - Main container (or `HotspotMatrix.tsx` if keeping legacy name)
 - `MatrixChart.tsx` - D3.js visualization wrapper
 - `Bubble.tsx` - Individual data point
 - `MatrixTooltip.tsx` - Hover tooltip
@@ -174,11 +248,43 @@ The Interactive Qbrain AI Labs transforms scored submissions into an actionable 
 - `DetailModal.tsx` - Detailed submission view
 
 #### Participant View
-- `ParticipantMatrixView.tsx` - Participant-specific matrix with drag enabled
-- `DraggableBubble.tsx` - Bubble component with drag-and-drop capability
-- `ParticipantScoreModal.tsx` - Manual score entry form
-- `ScorePositionIndicator.tsx` - Shows participant's position vs aggregate
-- `TouchDragHandler.tsx` - Mobile touch drag interaction handler
+- `ParticipantMatrix.tsx` - Participant-specific matrix page with:
+  - Strategic Matrix visualization on left (70% width)
+  - Draggable use case tiles panel on right (30% width)
+  - "Add New" button to create use cases from matrix window
+  - Drag-and-drop from tiles to matrix
+  - Drag-and-drop repositioning on matrix
+  - Filters results to only show positioned use cases (has votes with Feasibility/Business Value)
+  - Joins workshop room on mount: `socket.emit('join_workshop', { workshop_id })`
+  - Listens for `new_submission` events to refresh use cases list
+  - Listens for `matrix:position_changed` custom events from ResultsChart
+  - Saves positions via `POST /api/votes/` endpoint
+  - Emits `matrix:position_update` and `matrix:drag_start` socket events
+- `ResultsChart.tsx` - D3.js matrix visualization component with:
+  - Optional label display (`showLabels` prop)
+  - Drag handler with correct coordinate transformation using `d3.pointer()`
+  - Enhanced tooltips showing position coordinates
+  - Label updates during drag operations
+  - Dispatches `matrix:position_changed` custom events on drag end
+- `UseCaseCanvas.tsx` - Use case creation form (reused from dashboard)
+  - Accepts `onSuccess` callback prop
+  - Closes modal and refreshes data on successful submission
+
+#### Facilitator View
+- `MatrixActivityDashboard.tsx` - Real-time activity monitoring dashboard:
+  - Displays on right side of matrix view (400px width) in ANALYSIS phase
+  - Only visible to admins/facilitators
+  - Shows live participant actions feed (last 20 actions)
+  - Displays statistics: Total Actions, Active Participants, Recent Activity (last minute)
+  - Connection status indicator (Live/Connecting)
+  - Automatically connects to socket and joins workshop room
+  - Listens for `matrix:position_update` and `matrix:drag_start` events
+  - Animated updates using Framer Motion
+  - Shows participant name, use case title, position coordinates, quadrant label, previous position
+- `WorkshopDetail.tsx` - Facilitator workshop management page:
+  - Integrates MatrixActivityDashboard in ANALYSIS phase matrix view
+  - Listens for `matrix:position_update` and `vote_update` events
+  - Automatically refreshes results when positions change
 
 ### D3.js Implementation
 ```javascript
@@ -245,35 +351,73 @@ Request Body:
 
 Response: File download
 
-POST /api/workshops/:workshop_pin/participant-score
+POST /api/votes/
 Request Body:
 {
-  "session_id": "UUID",
-  "submission_id": "UUID",
-  "score_type": "drag|manual",
-  "x_coordinate": number (1-10),  // For drag scoring
-  "y_coordinate": number (1-10),  // For drag scoring
-  "criteria_scores": [             // For manual scoring
-    {
-      "criterion": "string",
-      "value": number (1-10)
-    }
-  ]
+  "use_case_id": "UUID",
+  "participant_id": "UUID",
+  "scores": {
+    "Feasibility": number (0-100),      // X-axis position
+    "Business Value": number (0-100)     // Y-axis position
+  }
 }
 
 Response:
 {
-  "score_id": "UUID",
-  "locked": true,
-  "aggregate_position": {
-    "x": number,
-    "y": number
-  },
-  "participant_position": {
-    "x": number,
-    "y": number
-  }
+  "id": "UUID",
+  "use_case_id": "UUID",
+  "participant_id": "UUID"
 }
+
+**Socket Event Emission:**
+When a vote is saved with Feasibility and Business Value scores, the endpoint automatically emits:
+- Event: `matrix:position_update`
+- Room: Workshop room (`workshop_id`)
+- Payload:
+  {
+    "participant_id": "UUID",
+    "participant_name": "string",
+    "use_case_id": "UUID",
+    "use_case_title": "string",
+    "position": {
+      "x": number (0-100),
+      "y": number (0-100)
+    },
+    "previous_position": {
+      "x": number,
+      "y": number
+    } | null  // Only present if updating existing position
+  }
+
+Also emits `vote_update` event with vote count for the use case.
+
+GET /api/results/{workshop_id}
+Response: List of aggregated use case results
+[
+  {
+    "id": "UUID",
+    "title": "string",
+    "description": "string",
+    "category": "string",
+    "scores": {
+      "Feasibility": number,
+      "Business Value": number,
+      ...
+    },
+    "x": number,  // Calculated X coordinate (0-100)
+    "y": number,  // Calculated Y coordinate (0-100)
+    "total_score": number,
+    "vote_count": number,
+    "variance": number
+  },
+  ...
+]
+
+**Client-Side Filtering:**
+The ParticipantMatrix component filters results to only show positioned use cases:
+- Must have `vote_count > 0` AND
+- Must have (`scores['Feasibility']` AND `scores['Business Value']`) OR (`x` AND `y` coordinates)
+- Use cases without positions are only shown in the tiles panel, not on the matrix graph
 
 GET /api/workshops/:workshop_pin/participant/:session_id/scores
 Response:
@@ -509,15 +653,150 @@ radius = √(data_readiness) × scale_factor
 - US01: Workshop Initialization (provides weights)
 - US04: Live Scoring Interface (provides scores)
 - US06: MongoDB Atlas SaaS Integration
+- US31: Participant Landing Dashboard (navigation to matrix)
 
 ---
 
+## WebSocket Events
+
+### Matrix-Specific Events
+
+| Event Name | Direction | Payload | Description |
+| :--- | :--- | :--- | :--- |
+| `join_workshop` | Client -> Server | `{ workshop_id }` | Join workshop room for real-time updates |
+| `new_submission` | Server -> Client | `{ id, title, description }` | New use case submitted (refreshes tiles panel only) |
+| `matrix:position_update` | Server -> Client | `{ participant_id, participant_name, use_case_id, use_case_title, position: {x, y}, previous_position }` | Participant positioned use case on matrix |
+| `matrix:drag_start` | Client -> Server | `{ participant_id, participant_name, use_case_id, use_case_title, workshop_id }` | Participant started dragging use case |
+| `vote_update` | Server -> Client | `{ use_case_id, count }` | Vote count updated for use case |
+
+### Event Flow
+
+1. **Participant Positions Use Case:**
+   - Participant drags tile onto matrix or repositions existing dot
+   - Client saves position via `POST /api/votes/`
+   - Backend emits `matrix:position_update` to workshop room
+   - Facilitator dashboard receives event and updates activity feed
+   - Facilitator matrix view refreshes results automatically
+
+2. **New Use Case Created:**
+   - Participant clicks "Add New" button
+   - Creates use case via `POST /api/usecases/`
+   - Backend emits `new_submission` event to workshop room
+   - All participants receive event and refresh tiles panel
+   - Use case appears in tiles but NOT on matrix (must be dragged)
+
+3. **Workshop Room Management:**
+   - Participants and facilitators join workshop room on component mount
+   - Room ID: `workshop_id` (string)
+   - All matrix-related events broadcast to workshop room
+   - Facilitators receive all participant actions in real-time
+
+---
+
+## Implementation Summary
+
+### ✅ Completed Features (Participant View - January 26, 2026)
+
+- ✅ Strategic Matrix page (`/participant-matrix`) accessible from Participant Dashboard
+- ✅ Two-column layout: Matrix visualization (left 70%) and Use Case Tiles panel (right 30%)
+- ✅ Drag-and-drop from tiles panel onto matrix to position use cases
+- ✅ Drag existing dots on matrix to reposition them
+- ✅ **Use cases only appear on matrix when explicitly dragged** (filtered results)
+- ✅ Labels displayed above each dot showing use case title (truncated if long)
+- ✅ Enhanced tooltips on hover showing:
+  - Use case title
+  - Position coordinates (Feasibility and Business Value)
+  - Variance (if available)
+  - Vote count
+  - All score details
+- ✅ Use cases only appear on graph when explicitly dragged (not automatically)
+- ✅ "Add New" button in tiles panel to create use cases from matrix window
+- ✅ New use cases appear in tiles panel but not on graph until dragged
+- ✅ Real-time updates via WebSocket (`new_submission`, `matrix:position_update`)
+- ✅ Position saving via `/votes/` API endpoint with Feasibility and Business Value scores
+- ✅ Correct drag coordinate calculation using `d3.pointer()` for accurate positioning
+- ✅ Label movement synchronized with dot dragging
+- ✅ Filtering logic: Only shows use cases with votes and positions on graph
+- ✅ Navigation from Participant Dashboard "Hotspot Prioritization" tile
+- ✅ Socket room joining: Participants join workshop room on component mount
+- ✅ Use case creation modal with success callback to refresh data
+
+### ✅ Completed Features (Facilitator View - January 26, 2026)
+
+- ✅ **MatrixActivityDashboard Component** - Real-time activity monitoring dashboard
+  - Displays on right side of matrix view (400px width) in ANALYSIS phase
+  - Only visible to admins/facilitators (`hasRole(['admin', 'facilitator'])`)
+  - Shows live participant actions feed (last 20 actions)
+  - Displays statistics:
+    - Total Actions: Count of all matrix position updates
+    - Active Now: Number of unique participants currently active
+    - Recent Activity: Activity count in last 60 seconds (auto-resets)
+  - Connection status indicator (green "Live" / red "Connecting...")
+  - Animated activity feed using Framer Motion
+  - Each action shows:
+    - Participant name
+    - Use case title
+    - Position coordinates (Feasibility and Business Value)
+    - Quadrant label (Quick Wins, Strategic Bets, Nice to Have, Don't Do)
+    - Previous position (when item is moved)
+    - Time ago timestamp
+- ✅ **Real-Time Event Handling:**
+  - Automatically connects to socket and joins workshop room
+  - Listens for `matrix:position_update` events from backend
+  - Listens for `matrix:drag_start` events
+  - Handles connection/disconnection events
+  - Updates activity feed in real-time as participants position items
+- ✅ **WorkshopDetail Integration:**
+  - Dashboard integrated into matrix view in ANALYSIS phase
+  - Listens for `matrix:position_update` and `vote_update` events
+  - Automatically refreshes results matrix when positions change
+  - Grid layout: Matrix (left) + Activity Dashboard (right)
+
+### Technical Implementation Details
+- **Component:** `ParticipantMatrix.tsx` - Main matrix page component
+- **Visualization:** `ResultsChart.tsx` - Enhanced with `showLabels` prop and improved drag handling
+- **Drag Handling:** Uses `d3.pointer()` for accurate coordinate transformation
+- **State Management:** Local state for results (positioned use cases) and useCases (all use cases)
+- **API Integration:** 
+  - `GET /usecases/{workshop_id}` - Fetch all use cases for tiles panel
+  - `GET /results/{workshop_id}` - Fetch positioned use cases (filtered client-side)
+  - `POST /votes/` - Save matrix positions
+- **Socket Events:**
+  - `join_workshop` - Join workshop room for real-time updates
+  - `new_submission` - New use case created (refreshes tiles panel only)
+  - `matrix:position_update` - Position updated (emitted by backend, received by facilitators)
+  - `matrix:drag_start` - Participant started dragging (emitted by client)
+  - `vote_update` - Vote count updated
+- **Routes:** 
+  - `/participant-matrix` - Strategic Matrix page (participants)
+  - `/workshop/:id` - Workshop Detail page (facilitators, shows dashboard in ANALYSIS phase)
+- **Backend Socket Emission:**
+  - `/api/votes/` endpoint emits `matrix:position_update` events to workshop room
+  - Includes participant info, use case details, position coordinates, and previous position
+  - Events received by all facilitators in the workshop room
+- **Facilitator Dashboard Components:**
+  - `MatrixActivityDashboard.tsx` - Activity monitoring component
+  - `WorkshopDetail.tsx` - Integrates dashboard into matrix view
+  - Connection status tracking and automatic reconnection
+  - Real-time statistics calculation and display
+
+### 🔄 Pending Features (Facilitator View)
+- ⏳ Facilitator drag override functionality
+- ⏳ Zoom and pan controls
+- ⏳ Filter by category/data readiness
+- ⏳ Search functionality
+- ⏳ Export to PNG/SVG
+- ⏳ Statistical overlays (confidence ellipses, density heatmap)
+- ⏳ Detailed submission view modal
+
 ## Questions/Clarifications
 
-1. Should facilitator be able to manually adjust bubble positions?
-2. Can bubbles be grouped/clustered?
-3. Should there be animation when data updates?
-4. What happens with tie scores on quadrant boundaries?
+1. Should facilitator be able to manually adjust bubble positions? ✅ Yes (pending implementation)
+2. Can bubbles be grouped/clustered? ⏳ Future enhancement
+3. Should there be animation when data updates? ✅ Smooth transitions implemented
+4. What happens with tie scores on quadrant boundaries? ✅ Handled by quadrant logic (midpoint-based)
+5. ✅ Can participants edit their prioritization scores after submission? Yes, by dragging the dot to a new position
+6. ✅ Do use cases appear automatically on the graph? No, only when explicitly dragged onto the matrix
 5. Should matrix support 3D visualization option?
 6. Can facilitator annotate the matrix with notes?
 
@@ -546,11 +825,16 @@ radius = √(data_readiness) × scale_factor
 - [ ] Interactive tooltips functional
 - [ ] Hover, click, zoom, pan working
 - [ ] Export to PNG/SVG/CSV working
-- [ ] **Participant drag-and-drop scoring functional**
+- [x] **Participant drag-and-drop scoring functional**
 - [ ] **Manual score entry modal working**
 - [ ] **Participant vs aggregate position indicator showing**
-- [ ] **Touch-friendly drag for mobile devices**
+- [x] **Touch-friendly drag for mobile devices**
 - [ ] **Score locking mechanism implemented**
+- [x] **Use cases only appear on matrix when explicitly dragged**
+- [x] **Real-time activity dashboard for facilitators**
+- [x] **Socket event handling for position updates**
+- [x] **Results filtering to show only positioned use cases**
+- [x] **Add new use case from matrix view**
 - [ ] All acceptance criteria met
 - [ ] Unit tests passing (>80% coverage)
 - [ ] Integration tests passing

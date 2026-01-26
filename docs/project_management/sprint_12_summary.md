@@ -78,7 +78,7 @@ Implemented default admin user creation with secure password management capabili
 **Migration Command:**
 ```bash
 cd server
-rm -f hotspotmatrix.db  # Remove old database
+rm -f qbrainlabs.db  # Remove old database
 python init_db.py        # Create new database with admin user
 ```
 
@@ -118,7 +118,7 @@ cd server
 source .venv/bin/activate
 
 # Remove old database (WARNING: Data loss)
-rm -f hotspotmatrix.db
+rm -f qbrainlabs.db
 
 # Recreate database with new schema
 python init_db.py
@@ -242,7 +242,7 @@ DEFAULT_ADMIN_NAME = "Administrator"             # Change this
 
 After modifying, run:
 ```bash
-rm -f hotspotmatrix.db && python init_db.py
+rm -f qbrainlabs.db && python init_db.py
 ```
 
 ---

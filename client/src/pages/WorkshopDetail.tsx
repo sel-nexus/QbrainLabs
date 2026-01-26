@@ -25,6 +25,7 @@ import { RoadmapGenerator } from '../components/roadmap';
 import { ChallengeManager } from '../components/challenges';
 import { CopilotPanel } from '../components/ai-copilot';
 import { useAuth } from '../context/AuthContext';
+import { MatrixActivityDashboard } from '../components/MatrixActivityDashboard';
 
 export function WorkshopDetail() {
     const { id } = useParams();
@@ -36,6 +37,7 @@ export function WorkshopDetail() {
     const [currentPhase, setCurrentPhase] = useState<string>('');
     const [activeCardId, setActiveCardId] = useState<string | null>(null);
     const [results, setResults] = useState<any[]>([]);
+    const [showAllParticipantPositions, setShowAllParticipantPositions] = useState(false);
     const [pendingFacilitators, setPendingFacilitators] = useState<any[]>([]);
     const [showQR, setShowQR] = useState(false);
     // const [currentView, setCurrentView] = useState<'matrix' | 'analytics'>('matrix'); // Unused
@@ -103,6 +105,23 @@ export function WorkshopDetail() {
             toast.info(`${data.display_name} requested facilitator access`);
         });
 
+        // Listen for matrix position updates to refresh results
+        const handleMatrixUpdate = async (data: any) => {
+            console.log('Matrix position update received in WorkshopDetail:', data);
+            // Refresh results when participant positions change
+            if (currentPhase === 'ANALYSIS') {
+                try {
+                    const resultsData = await api.get(`/results/${id}`);
+                    setResults(resultsData.data);
+                } catch (e) {
+                    console.error('Failed to refresh results:', e);
+                }
+            }
+        };
+
+        socket.on('matrix:position_update', handleMatrixUpdate);
+        socket.on('vote_update', handleMatrixUpdate); // Also listen for vote updates
+
         return () => {
             socket.off('new_submission');
             socket.off('participant_joined');
@@ -110,8 +129,10 @@ export function WorkshopDetail() {
             socket.off('active_card_update');
             socket.off('workshop_state_change');
             socket.off('facilitator_request');
+            socket.off('matrix:position_update', handleMatrixUpdate);
+            socket.off('vote_update', handleMatrixUpdate);
         };
-    }, [id]);
+    }, [id, currentPhase]);
 
     // ... (keep existing methods)
     const fetchWorkshop = async () => {
@@ -132,6 +153,7 @@ export function WorkshopDetail() {
             if (data.current_phase === 'ANALYSIS') {
                 const resultsData = await api.get(`/results/${id}`);
                 setResults(resultsData.data);
+                setShowAllParticipantPositions(false); // Reset to aggregated view
             }
         } catch (e) {
             console.error(e);
@@ -346,8 +368,45 @@ export function WorkshopDetail() {
                         <ROIComparisonView workshopId={id!} useCases={useCases} />
                     ) : (
                         <>
-                            <h2 className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Strategic Matrix</h2>
-                            <ResultsChart data={results} />
+                            <div className="flex items-center justify-between">
+                                <h2 className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Strategic Matrix</h2>
+                                {showAllParticipantPositions && (
+                                    <Button
+                                        variant="secondary"
+                                        size="sm"
+                                        onClick={async () => {
+                                            // Reset to aggregated view
+                                            const resultsData = await api.get(`/results/${id}`);
+                                            setResults(resultsData.data);
+                                            setShowAllParticipantPositions(false);
+                                        }}
+                                    >
+                                        Show Aggregated View
+                                    </Button>
+                                )}
+                            </div>
+                            
+                            {/* Matrix View with Activity Dashboard */}
+                            <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6 mt-4">
+                                <div>
+                                    <ResultsChart 
+                                        data={results} 
+                                        showLabels={!showAllParticipantPositions}
+                                    />
+                                </div>
+                                
+                                {/* Matrix Activity Dashboard - Only visible to admins/facilitators */}
+                                {hasRole(['admin', 'facilitator']) && (
+                                    <MatrixActivityDashboard 
+                                        workshopId={id!} 
+                                        isVisible={showAnalytics === 'matrix'}
+                                        onRefreshMatrix={(positions) => {
+                                            setResults(positions);
+                                            setShowAllParticipantPositions(true);
+                                        }}
+                                    />
+                                )}
+                            </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
                                 {results.map((r: any) => (
@@ -507,7 +566,7 @@ export function WorkshopDetail() {
                         {/* Polls Tab */}
                         {activeTab === 'polls' && (
                             <div className="max-w-2xl">
-                                <PollManager />
+                                <PollManager workshopId={id} />
                             </div>
                         )}
 

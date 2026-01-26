@@ -12,13 +12,20 @@ import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, PieCha
 
 type PollType = 'MULTIPLE_CHOICE' | 'MULTIPLE_SELECT' | 'RATING_SCALE' | 'YES_NO' | 'OPEN_TEXT' | 'RANKING';
 
-export function PollManager() {
+interface PollManagerProps {
+    workshopId?: string;
+}
+
+export function PollManager({ workshopId: propWorkshopId }: PollManagerProps = {}) {
     const { session } = useSession();
     const { theme } = useTheme();
     const [polls, setPolls] = useState<Poll[]>([]);
     const [isCreateOpen, setIsCreateOpen] = useState(false);
     const [isResultsOpen, setIsResultsOpen] = useState(false);
     const [selectedPoll, setSelectedPoll] = useState<Poll | null>(null);
+    
+    // Use prop workshopId if provided, otherwise fall back to session
+    const workshopId = propWorkshopId || session?.workshopId;
 
     // Create Form State
     const [question, setQuestion] = useState('');
@@ -29,7 +36,7 @@ export function PollManager() {
     const [ratingScale, setRatingScale] = useState<number>(5);
 
     useEffect(() => {
-        if (!session?.workshopId) return;
+        if (!workshopId) return;
         loadPolls();
 
         const onPollCreated = (poll: Poll) => {
@@ -54,12 +61,12 @@ export function PollManager() {
             socket.off('poll:created', onPollCreated);
             socket.off('poll:vote', onPollVote);
         };
-    }, [session?.workshopId, selectedPoll?.id]);
+    }, [workshopId, selectedPoll?.id]);
 
     const loadPolls = async () => {
-        if (!session?.workshopId) return;
+        if (!workshopId) return;
         try {
-            const data = await PollService.getPolls(session.workshopId);
+            const data = await PollService.getPolls(workshopId);
             setPolls(data);
         } catch (err) {
             console.error(err);
@@ -91,7 +98,7 @@ export function PollManager() {
     };
 
     const handleCreate = async () => {
-        if (!session?.workshopId) return;
+        if (!workshopId) return;
         
         let pollOptions: string[] = [];
         if (type === 'YES_NO') {
@@ -109,7 +116,7 @@ export function PollManager() {
         if (!question.trim()) return toast.error("Question is required");
 
         try {
-            await PollService.createPoll(session.workshopId, {
+            await PollService.createPoll(workshopId, {
                 question_text: question,
                 poll_type: type,
                 options: pollOptions,

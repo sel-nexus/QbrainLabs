@@ -23,7 +23,6 @@ async def lifespan(app: FastAPI):
     # Shutdown
     logger.info("Shutting down application...")
 
-from fastapi.middleware.cors import CORSMiddleware
 from app.core.socket_manager import socket_app
 
 app = FastAPI(
@@ -48,20 +47,33 @@ setup_security_middleware(app)
 from app.middleware.request_id import RequestIDMiddleware
 app.add_middleware(RequestIDMiddleware)
 
-# CORS Policy - Use environment-based configuration
-cors_origins = [
-    origin.strip() 
-    for origin in settings.CORS_ORIGINS.split(",") 
-    if origin.strip()
-] if settings.CORS_ORIGINS else []
+# CORS Policy - Dynamic CORS that accepts origins matching server IP addresses
+# This allows the application to work when accessed via either private or public IP addresses
+from app.middleware.cors_dynamic import DynamicCORSMiddleware
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=cors_origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Use dynamic CORS middleware that automatically accepts origins matching server IPs
+# Set ENABLE_DYNAMIC_CORS=false to use standard CORS middleware instead
+if settings.ENABLE_DYNAMIC_CORS:
+    # Dynamic CORS middleware - automatically accepts origins matching server IPs
+    app.add_middleware(DynamicCORSMiddleware, client_port=settings.CLIENT_PORT)
+    logger.info("Using dynamic CORS middleware - accepts origins matching server IP addresses")
+else:
+    # Fallback to standard CORS middleware
+    from fastapi.middleware.cors import CORSMiddleware
+    cors_origins = [
+        origin.strip() 
+        for origin in settings.CORS_ORIGINS.split(",") 
+        if origin.strip()
+    ] if settings.CORS_ORIGINS else []
+    
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=cors_origins,
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+    logger.info(f"Using standard CORS middleware with origins: {cors_origins}")
 
 # Mount Socket.IO
 app.mount("/ws", socket_app)

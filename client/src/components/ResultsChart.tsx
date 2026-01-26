@@ -4,9 +4,10 @@ import { toast } from 'sonner';
 
 interface ResultsChartProps {
     data: any[];
+    showLabels?: boolean;
 }
 
-export function ResultsChart({ data }: ResultsChartProps) {
+export function ResultsChart({ data, showLabels = false }: ResultsChartProps) {
     const svgRef = useRef<SVGSVGElement>(null);
     // Local state to track overrides without mutating props immediately
     const [localData, setLocalData] = useState<any[]>(data);
@@ -16,7 +17,7 @@ export function ResultsChart({ data }: ResultsChartProps) {
     }, [data]);
 
     useEffect(() => {
-        if (!svgRef.current || !localData.length) return;
+        if (!svgRef.current) return;
 
         // Clear previous render
         d3.select(svgRef.current).selectAll("*").remove();
@@ -32,14 +33,14 @@ export function ResultsChart({ data }: ResultsChartProps) {
             .attr("transform", `translate(${margin.left},${margin.top})`);
 
         // Scales
-        // Determine scale based on data range
-        const xValues = localData.map(d => d.x ?? d.scores['Feasibility'] ?? 0);
-        const yValues = localData.map(d => d.y ?? d.scores['Business Value'] ?? 0);
-        const maxVal = Math.max(
+        // Determine scale based on data range, default to 100 if no data
+        const xValues = localData.length > 0 ? localData.map(d => d.x ?? d.scores?.['Feasibility'] ?? 0) : [];
+        const yValues = localData.length > 0 ? localData.map(d => d.y ?? d.scores?.['Business Value'] ?? 0) : [];
+        const maxVal = localData.length > 0 ? Math.max(
             ...xValues,
             ...yValues,
             10 // Ensure at least 10
-        );
+        ) : 100;
         const domainMax = maxVal > 10 ? 100 : 10;
         const axisMid = domainMax / 2;
 
@@ -52,8 +53,6 @@ export function ResultsChart({ data }: ResultsChartProps) {
             .range([height, 0]);
 
         // Quadrant Backgrounds
-        // Top Right (Quick Wins) - x>50, y>50
-        svg.append("rect")
         // Top Right (Quick Wins) - x>mid, y>mid
         svg.append("rect")
             .attr("x", x(axisMid))
@@ -124,17 +123,31 @@ export function ResultsChart({ data }: ResultsChartProps) {
 
         // Drag Handler
         const drag = d3.drag<SVGCircleElement, any>()
-            .on("start", function () {
+            .on("start", function (event, d) {
                 d3.select(this).raise().attr("stroke", "white");
+                // Store initial position for smooth dragging
+                (this as any).__initialX = d3.select(this).attr("cx");
+                (this as any).__initialY = d3.select(this).attr("cy");
             })
-            .on("drag", function (event, _) {
-                // Constrain to bounds
-                let newX = Math.max(0, Math.min(width, event.x));
-                let newY = Math.max(0, Math.min(height, event.y));
+            .on("drag", function (event, d) {
+                // Get coordinates relative to the SVG group (accounting for transform)
+                const [xPos, yPos] = d3.pointer(event, svg.node() as any);
+                
+                // Constrain to bounds within the plot area
+                const constrainedX = Math.max(0, Math.min(width, xPos));
+                const constrainedY = Math.max(0, Math.min(height, yPos));
 
                 d3.select(this)
-                    .attr("cx", newX)
-                    .attr("cy", newY);
+                    .attr("cx", constrainedX)
+                    .attr("cy", constrainedY);
+
+                // Update label position if it exists
+                const label = d3.select(this.parentNode as any).select(`text.label[data-id="${d.id}"]`);
+                if (!label.empty()) {
+                    label
+                        .attr("x", constrainedX)
+                        .attr("y", constrainedY - 15);
+                }
 
                 // Update tooltip position if visible
                 tooltip.style("top", (event.sourceEvent.pageY - 10) + "px")
@@ -142,46 +155,75 @@ export function ResultsChart({ data }: ResultsChartProps) {
             })
             .on("end", function (event, d) {
                 d3.select(this).attr("stroke", d.variance > 15 ? "#ffffff" : "none"); // Restore border style
-                const finalX = Math.max(0, Math.min(width, event.x));
-                const finalY = Math.max(0, Math.min(height, event.y));
+                
+                // Get final coordinates relative to the SVG group
+                const [xPos, yPos] = d3.pointer(event, svg.node() as any);
+                const finalX = Math.max(0, Math.min(width, xPos));
+                const finalY = Math.max(0, Math.min(height, yPos));
 
-                // Convert back to domain
+                // Convert back to domain coordinates
                 const domainX = x.invert(finalX);
                 const domainY = y.invert(finalY);
 
-                toast.success(`Position overridden: F:${Math.round(domainX)}, V:${Math.round(domainY)}`);
-                // Ideally propagate this up
+                // Emit custom event to notify parent component
+                const customEvent = new CustomEvent('matrix:position_changed', {
+                    detail: {
+                        id: d.id,
+                        x: domainX,
+                        y: domainY,
+                        scores: {
+                            'Feasibility': domainX,
+                            'Business Value': domainY
+                        }
+                    }
+                });
+                svgRef.current?.dispatchEvent(customEvent);
+
+                toast.success(`Position updated: F:${Math.round(domainX)}, V:${Math.round(domainY)}`);
             });
 
-        // Nodes
-        svg.selectAll("circle")
-            .data(localData)
-            .enter()
-            .append("circle")
+        // Nodes - only render if there's data
+        if (localData.length > 0) {
+            svg.selectAll("circle")
+                .data(localData)
+                .enter()
+                .append("circle")
             .attr("cx", d => x(d.x ?? d.scores['Feasibility'] ?? axisMid))
             .attr("cy", d => y(d.y ?? d.scores['Business Value'] ?? axisMid))
             .attr("r", d => 8 + (d.vote_count || 1) * 1.5) // Size by votes
             .attr("fill", d => {
                 const valX = d.x ?? d.scores['Feasibility'] ?? 0;
                 const valY = d.y ?? d.scores['Business Value'] ?? 0;
-                return (valX > axisMid && valY > axisMid) ? '#10b981' : '#a78bfa';
+                // Color by quadrant
+                if (valX > axisMid && valY > axisMid) {
+                    return '#10b981'; // Quick Wins - Green (Top Right)
+                } else if (valX <= axisMid && valY > axisMid) {
+                    return '#a78bfa'; // Strategic Bets - Purple (Top Left)
+                } else if (valX <= axisMid && valY <= axisMid) {
+                    return '#ef4444'; // Don't Do - Red (Bottom Left)
+                } else {
+                    return '#3b82f6'; // Nice to Have - Blue (Bottom Right)
+                }
             })
             .attr("stroke", "#ffffff")
             .attr("stroke-width", 2)
             .attr("stroke-dasharray", d => d.variance > 10 ? "3,3" : "0") // Dotted if high variance (threshold 10 is arbitrary)
             .style("cursor", "grab")
             .on("mouseover", function (_, d) {
+                const feasValue = d.x ?? d.scores?.['Feasibility'] ?? 0;
+                const valueScore = d.y ?? d.scores?.['Business Value'] ?? 0;
                 tooltip.style("visibility", "visible")
                     .html(`
-                        <div class="font-bold">${d.title}</div>
-                        <div class="text-xs text-gray-300">
-                            F: ${d.x ?? d.scores['Feasibility'] ?? '?'} | V: ${d.y ?? d.scores['Business Value'] ?? '?'}<br/>
-                            Variance: ${d.variance}
+                        <div class="font-bold mb-1">${d.title}</div>
+                        <div class="text-xs text-gray-300 space-y-0.5">
+                            <div><strong>Position:</strong> Feasibility: ${Math.round(feasValue)}, Business Value: ${Math.round(valueScore)}</div>
+                            ${d.variance !== undefined ? `<div>Variance: ${d.variance}</div>` : ''}
+                            ${d.vote_count ? `<div>Votes: ${d.vote_count}</div>` : ''}
                         </div>
-                        ${d.x ? `<div class="text-[10px] text-gray-400 mt-1 border-t border-white/10 pt-1">
-                            ${Object.entries(d.scores).map(([k, v]) => `${k}: ${v}`).join('<br/>')}
+                        ${d.scores && Object.keys(d.scores).length > 0 ? `<div class="text-[10px] text-gray-400 mt-2 pt-2 border-t border-white/10">
+                            <div class="font-semibold mb-1">Scores:</div>
+                            ${Object.entries(d.scores).map(([k, v]) => `<div>${k}: ${Math.round(Number(v))}</div>`).join('')}
                         </div>` : ''}
-                        </div>
                     `);
             })
             .on("mousemove", function (event) {
@@ -192,12 +234,45 @@ export function ResultsChart({ data }: ResultsChartProps) {
                 tooltip.style("visibility", "hidden");
             })
             .call(drag);
+        }
+
+        // Add labels if enabled
+        if (showLabels && localData.length > 0) {
+            const labels = svg.selectAll("text.label")
+                .data(localData, (d: any) => d.id || d.title); // Use key function for proper updates
+
+            // Remove old labels
+            labels.exit().remove();
+
+            // Add new labels
+            const labelsEnter = labels.enter()
+                .append("text")
+                .attr("class", "label")
+                .attr("data-id", (d: any) => d.id || d.title);
+
+            labelsEnter.merge(labels as any)
+                .attr("x", d => x(d.x ?? d.scores['Feasibility'] ?? axisMid))
+                .attr("y", d => y(d.y ?? d.scores['Business Value'] ?? axisMid) - 15) // Position above the circle
+                .attr("text-anchor", "middle")
+                .attr("font-size", "10px")
+                .attr("font-weight", "500")
+                .attr("fill", "#ffffff")
+                .attr("stroke", "#1e1b4b")
+                .attr("stroke-width", "0.3px")
+                .attr("paint-order", "stroke")
+                .style("pointer-events", "none")
+                .text(d => {
+                    // Truncate long titles
+                    const title = d.title || 'Untitled';
+                    return title.length > 15 ? title.substring(0, 12) + '...' : title;
+                });
+        }
 
         return () => {
             tooltip.remove();
         };
 
-    }, [localData]);
+    }, [localData, showLabels]);
 
     return (
         <div className="w-full flex justify-center bg-surface-800/30 rounded-2xl border border-white/5 p-4 overflow-hidden">

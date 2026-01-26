@@ -190,7 +190,7 @@ When a participant joins a workshop using PIN, they see an additional option: **
 **PIN Entry Screen Enhancement:**
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    HotspotMatrix                         │
+│                    QbrainLabs                         │
 │                                                          │
 │     JOIN WORKSHOP                                        │
 │     ┌─────────────────────────────────────────────────┐ │

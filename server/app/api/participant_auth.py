@@ -3,7 +3,7 @@ Participant Authentication API Endpoints
 Supports both anonymous and registered participation modes
 """
 
-from fastapi import APIRouter, Depends, HTTPException, status, Form
+from fastapi import APIRouter, Depends, HTTPException, status, Form, Request, Header
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -27,6 +27,9 @@ from app.middleware.error_handler import (
 )
 
 router = APIRouter(prefix="/api/participant-auth", tags=["participant-authentication"])
+
+# OAuth2 scheme for participant token authentication
+participant_oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/participant-auth/login", auto_error=False)
 
 # JWT Configuration
 SECRET_KEY = settings.SECRET_KEY if hasattr(settings, 'SECRET_KEY') else "your-secret-key-change-in-production"
@@ -56,11 +59,24 @@ def create_participant_token(data: dict, expires_delta: Optional[timedelta] = No
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
+async def get_participant_token_from_header(
+    authorization: Optional[str] = Header(None)
+) -> Optional[str]:
+    """Extract Bearer token from Authorization header"""
+    if not authorization:
+        return None
+    if authorization.startswith("Bearer "):
+        return authorization[7:]
+    return None
+
+
 async def get_current_participant(
-    token: str,
-    db: AsyncSession
+    token: Optional[str] = Depends(get_participant_token_from_header),
+    db: AsyncSession = Depends(get_db)
 ) -> Optional[RegisteredParticipant]:
     """Get current authenticated participant from JWT token"""
+    if not token:
+        return None
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         if payload.get("type") != "participant":
@@ -73,7 +89,10 @@ async def get_current_participant(
             select(RegisteredParticipant).where(RegisteredParticipant.id == participant_id)
         )
         return result.scalars().first()
-    except jwt.PyJWTError:
+    except jwt.PyJWTError as e:
+        import logging
+        logger = logging.getLogger(__name__)
+        logger.warning(f"JWT decode error: {e}")
         return None
 
 
@@ -219,19 +238,15 @@ async def join_workshop_anonymous(
 @router.post("/join-registered", response_model=ParticipantToken)
 async def join_workshop_registered(
     data: ParticipantRegisteredJoin,
-    token: str = None,
+    registered_participant: Optional[RegisteredParticipant] = Depends(get_current_participant),
     db: AsyncSession = Depends(get_db)
 ):
     """
     Join a workshop as a registered participant.
     Links the workshop participation to the registered account.
     """
-    if not token:
-        raise AuthenticationException("Authentication required")
-    
-    registered_participant = await get_current_participant(token, db)
     if not registered_participant:
-        raise AuthenticationException("Invalid or expired token")
+        raise AuthenticationException("Authentication required. Please provide a valid participant token.")
     
     # Find workshop by PIN
     result = await db.execute(
@@ -303,13 +318,12 @@ async def join_workshop_registered(
 
 @router.get("/me", response_model=ParticipantResponse)
 async def get_participant_profile(
-    token: str,
+    registered_participant: RegisteredParticipant = Depends(get_current_participant),
     db: AsyncSession = Depends(get_db)
 ):
     """
     Get current participant profile.
     """
-    registered_participant = await get_current_participant(token, db)
     if not registered_participant:
         raise AuthenticationException("Invalid or expired token")
     
@@ -328,13 +342,12 @@ async def get_participant_profile(
 @router.put("/profile", response_model=ParticipantResponse)
 async def update_participant_profile(
     profile: ParticipantProfile,
-    token: str,
+    registered_participant: RegisteredParticipant = Depends(get_current_participant),
     db: AsyncSession = Depends(get_db)
 ):
     """
     Update participant profile.
     """
-    registered_participant = await get_current_participant(token, db)
     if not registered_participant:
         raise AuthenticationException("Invalid or expired token")
     
@@ -360,13 +373,12 @@ async def update_participant_profile(
 
 @router.get("/stats", response_model=ParticipantStats)
 async def get_participant_stats(
-    token: str,
+    registered_participant: RegisteredParticipant = Depends(get_current_participant),
     db: AsyncSession = Depends(get_db)
 ):
     """
     Get participant contribution statistics and history.
     """
-    registered_participant = await get_current_participant(token, db)
     if not registered_participant:
         raise AuthenticationException("Invalid or expired token")
     

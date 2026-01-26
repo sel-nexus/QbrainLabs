@@ -58,8 +58,8 @@ class JSONType(TypeDecorator):
             # For SQLite, serialize to JSON string
             return json.dumps(value)
         # For PostgreSQL, let JSONB handle it
-        if isinstance(value, str):
-            return json.loads(value)
+        # JSONB can handle Python native types (dict, list, str, int, float, bool, None)
+        # directly without conversion
         return value
 
     def process_result_value(self, value, dialect):

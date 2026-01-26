@@ -52,7 +52,20 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
             
             toast.success('Joined workshop successfully!');
         } catch (error: any) {
-            const message = error.response?.data?.error?.message || 'Failed to join workshop';
+            let message = 'Failed to join workshop';
+            
+            // Check for network errors first
+            if (error.networkError) {
+                message = error.networkError.message;
+            } else if (error.response?.data?.error?.message) {
+                message = error.response.data.error.message;
+            } else if (error.response?.data?.detail) {
+                message = error.response.data.detail;
+            } else if (error.message) {
+                message = error.message;
+            }
+            
+            console.error('Join workshop error:', error);
             toast.error(message);
         } finally {
             setLoading(false);
@@ -67,18 +80,29 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
 
         setLoading(true);
         try {
+            console.log('Attempting participant login...');
             const response = await api.post('/participant-auth/login', {
                 email,
                 password
             });
             
+            console.log('Login successful, token received');
+            // Store token immediately for use in subsequent requests
+            localStorage.setItem('participant_token', response.data.access_token);
+            
             // If workshop PIN is provided, also join the workshop
             if (workshopPin) {
+                console.log('Joining workshop with PIN:', workshopPin);
+                const token = response.data.access_token;
+                console.log('Using token for join-registered:', token ? `${token.substring(0, 20)}...` : 'NO TOKEN');
+                
                 const joinResponse = await api.post('/participant-auth/join-registered', {
                     workshop_pin: workshopPin
                 }, {
-                    headers: { 'Authorization': `Bearer ${response.data.access_token}` }
+                    headers: { 'Authorization': `Bearer ${token}` }
                 });
+                
+                console.log('Join-registered successful');
                 
                 onAuthSuccess({
                     token: joinResponse.data.access_token,
@@ -95,7 +119,34 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
             
             toast.success('Logged in successfully!');
         } catch (error: any) {
-            const message = error.response?.data?.error?.message || 'Login failed';
+            let message = 'Login failed';
+            
+            // Detailed error logging
+            console.error('Login error details:', {
+                message: error.message,
+                code: error.code,
+                response: error.response?.data,
+                networkError: error.networkError,
+                config: {
+                    url: error.config?.url,
+                    method: error.config?.method,
+                    headers: error.config?.headers
+                }
+            });
+            
+            // Check for network errors first
+            if (error.networkError) {
+                message = error.networkError.message;
+                console.error('Network error detected:', error.networkError);
+                console.error('💡 TIP: Make sure the backend server is running. Start it with: ./restart_dev.sh or cd server && uvicorn app.main:app --reload');
+            } else if (error.response?.data?.error?.message) {
+                message = error.response.data.error.message;
+            } else if (error.response?.data?.detail) {
+                message = error.response.data.detail;
+            } else if (error.message) {
+                message = error.message;
+            }
+            
             toast.error(message);
         } finally {
             setLoading(false);
@@ -121,6 +172,9 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                 organization: organization.trim() || null
             });
             
+            // Store token immediately for use in subsequent requests
+            localStorage.setItem('participant_token', response.data.access_token);
+            
             // If workshop PIN is provided, also join the workshop
             if (workshopPin) {
                 const joinResponse = await api.post('/participant-auth/join-registered', {
@@ -144,7 +198,20 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
             
             toast.success('Account created successfully!');
         } catch (error: any) {
-            const message = error.response?.data?.error?.message || 'Registration failed';
+            let message = 'Registration failed';
+            
+            // Check for network errors first
+            if (error.networkError) {
+                message = error.networkError.message;
+            } else if (error.response?.data?.error?.message) {
+                message = error.response.data.error.message;
+            } else if (error.response?.data?.detail) {
+                message = error.response.data.detail;
+            } else if (error.message) {
+                message = error.message;
+            }
+            
+            console.error('Registration error:', error);
             toast.error(message);
         } finally {
             setLoading(false);

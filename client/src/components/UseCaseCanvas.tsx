@@ -3,6 +3,7 @@ import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { api } from '../lib/api';
 import { awardPoints } from '../lib/api/gamification';
+import { socket } from '../lib/socket';
 import { Loader2, Check, Sparkles, AlertTriangle, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
@@ -11,9 +12,10 @@ import { PointsAnimation } from './gamification/PointsAnimation';
 
 interface UseCaseCanvasProps {
     session: any;
+    onSuccess?: () => void;
 }
 
-export function UseCaseCanvas({ session }: UseCaseCanvasProps) {
+export function UseCaseCanvas({ session, onSuccess }: UseCaseCanvasProps) {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [enhancing, setEnhancing] = useState(false);
@@ -103,6 +105,14 @@ export function UseCaseCanvas({ session }: UseCaseCanvasProps) {
                 category: prev.category
             }));
             setShowDuplicateModal(false);
+
+            // Call onSuccess callback if provided (e.g., to close modal)
+            if (onSuccess) {
+                // Small delay to show success message
+                setTimeout(() => {
+                    onSuccess();
+                }, 1500);
+            }
 
         } catch (err) {
             console.error(err);

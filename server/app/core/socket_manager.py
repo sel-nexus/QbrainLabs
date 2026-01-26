@@ -5,9 +5,33 @@ from app.core.config import settings
 # In production, we would use a RedisManager:
 # client_manager = socketio.AsyncRedisManager(settings.REDIS_URL)
 
+# Parse CORS origins - use dynamic CORS if enabled, otherwise use configured origins
+if settings.ENABLE_DYNAMIC_CORS:
+    # Use dynamic CORS origins that match server IP addresses
+    from app.core.network_utils import get_local_ip_addresses, get_cors_origins_for_ips
+    
+    server_ips = get_local_ip_addresses()
+    dynamic_origins = get_cors_origins_for_ips(server_ips, settings.CLIENT_PORT)
+    
+    # Combine configured and dynamic origins
+    configured_origins = [
+        origin.strip() 
+        for origin in settings.CORS_ORIGINS.split(",") 
+        if origin.strip()
+    ] if settings.CORS_ORIGINS else []
+    
+    cors_origins = list(set(configured_origins) | set(dynamic_origins))
+else:
+    # Use only configured origins
+    cors_origins = [
+        origin.strip() 
+        for origin in settings.CORS_ORIGINS.split(",") 
+        if origin.strip()
+    ] if settings.CORS_ORIGINS else []
+
 sio = socketio.AsyncServer(
     async_mode='asgi',
-    cors_allowed_origins=['http://localhost:5173', 'http://127.0.0.1:5173']
+    cors_allowed_origins=cors_origins if cors_origins else "*"  # Allow all if empty (for development)
 )
 
 socket_app = socketio.ASGIApp(sio, socketio_path='socket.io')
@@ -347,3 +371,25 @@ async def emit_copilot_mode_changed(workshop_id: str, new_mode: str):
         'workshop_id': workshop_id,
         'mode': new_mode
     }, room=f"copilot_{workshop_id}")
+
+
+# ==================== Matrix Activity WebSocket Events ====================
+
+@sio.event
+async def matrix_position_update(sid, data):
+    """Handle matrix position update from participant and broadcast to facilitators"""
+    workshop_id = data.get('workshop_id')
+    if workshop_id:
+        # Broadcast to workshop room (facilitators will receive this)
+        await sio.emit('matrix:position_update', data, room=str(workshop_id))
+        print(f"Matrix position update broadcast for workshop {workshop_id}")
+
+
+@sio.event
+async def matrix_drag_start(sid, data):
+    """Handle matrix drag start from participant and broadcast to facilitators"""
+    workshop_id = data.get('workshop_id')
+    if workshop_id:
+        # Broadcast to workshop room (facilitators will receive this)
+        await sio.emit('matrix:drag_start', data, room=str(workshop_id))
+        print(f"Matrix drag start broadcast for workshop {workshop_id}")

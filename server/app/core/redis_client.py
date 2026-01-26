@@ -11,31 +11,45 @@ logger = get_logger("redis")
 
 # Global Redis client instance
 _redis_client: Optional[redis.Redis] = None
+# Track if Redis is unavailable to avoid repeated connection attempts and warnings
+_redis_unavailable: bool = False
 
 
 async def get_redis_client() -> Optional[redis.Redis]:
     """
     Get Redis client instance.
     Returns None if Redis is not available (graceful degradation).
+    Caches the unavailable state to avoid repeated connection attempts.
     """
-    global _redis_client
+    global _redis_client, _redis_unavailable
     
+    # If Redis was already determined to be unavailable, return None immediately
+    if _redis_unavailable:
+        return None
+    
+    # If client already exists, return it
     if _redis_client is not None:
         return _redis_client
     
     try:
         # Parse Redis URL
         redis_url = settings.REDIS_URL
-        if not redis_url or redis_url == "redis://localhost:6379/0":
-            # Check if Redis is actually available
-            try:
-                test_client = redis.from_url(redis_url, decode_responses=True)
-                await test_client.ping()
-                await test_client.aclose()
-            except Exception:
-                logger.warning("Redis not available, using in-memory rate limiting")
-                return None
+        if not redis_url:
+            _redis_unavailable = True
+            logger.info("Redis URL not configured, using in-memory rate limiting")
+            return None
         
+        # Try to create and test connection
+        test_client = redis.from_url(
+            redis_url,
+            decode_responses=True,
+            socket_connect_timeout=2,
+            socket_timeout=2
+        )
+        await test_client.ping()
+        await test_client.aclose()
+        
+        # Connection successful, create persistent client
         _redis_client = redis.from_url(
             redis_url,
             decode_responses=True,
@@ -45,14 +59,24 @@ async def get_redis_client() -> Optional[redis.Redis]:
             health_check_interval=30
         )
         
-        # Test connection
+        # Test connection again
         await _redis_client.ping()
         logger.info("Redis client connected successfully")
         return _redis_client
         
     except Exception as e:
-        logger.warning(f"Redis connection failed: {e}. Using in-memory rate limiting.")
+        # Mark Redis as unavailable to avoid repeated attempts
+        _redis_unavailable = True
+        logger.info(f"Redis not available ({str(e)[:50]}...), using in-memory rate limiting. "
+                   f"To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.")
         return None
+
+
+def reset_redis_availability():
+    """Reset Redis availability flag (useful for testing or reconnection attempts)"""
+    global _redis_unavailable, _redis_client
+    _redis_unavailable = False
+    _redis_client = None
 
 
 async def close_redis_client():

@@ -1,11 +1,22 @@
 import { io } from 'socket.io-client';
 
-// For local dev, socket.io is mounted at /ws on port 8000
-// But standard socket.io client defaults to connecting to host:port
-// We need to tell it to look at localhost:8000 with path /ws/socket.io
-// In production, use VITE_API_URL or VITE_SOCKET_URL environment variable
+// Auto-detect socket URL based on current hostname for network access
+const getSocketUrl = () => {
+  if (import.meta.env.VITE_SOCKET_URL) {
+    return import.meta.env.VITE_SOCKET_URL;
+  }
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  // If accessing via IP, use the same IP for socket
+  const hostname = window.location.hostname;
+  if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+    return `http://${hostname}:8000`;
+  }
+  return 'http://localhost:8000';
+};
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const SOCKET_URL = getSocketUrl();
 
 export const socket = io(SOCKET_URL, {
     path: '/ws/socket.io',

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Poll, PollService } from '../../lib/api/polls';
+import { type Poll, PollService } from '../../lib/api/polls';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { useSession } from '../../context/SessionContext';

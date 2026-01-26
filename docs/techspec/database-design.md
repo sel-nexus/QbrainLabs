@@ -2,7 +2,7 @@
 
 ## Overview
 
-The HotspotMatrix application uses **PostgreSQL** as its primary database, leveraging native PostgreSQL features including JSONB for flexible data storage, UUID types for identifiers, and advanced indexing capabilities.
+The QbrainLabs application uses **PostgreSQL** as its primary database, leveraging native PostgreSQL features including JSONB for flexible data storage, UUID types for identifiers, and advanced indexing capabilities.
 
 ## Database Technology Stack
 

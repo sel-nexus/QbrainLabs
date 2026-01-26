@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
@@ -25,25 +25,80 @@ export function JoinWorkshop() {
     const [facilitatorRequestId, setFacilitatorRequestId] = useState('');
     const [email, setEmail] = useState('');
 
-    const { login } = useSession();
+    const { login, session } = useSession();
+    
+    // If user already has a valid session with workshop, redirect to dashboard
+    useEffect(() => {
+        if (session && session.workshopId && session.participantId) {
+            navigate('/participant-dashboard', { replace: true });
+        }
+    }, [session, navigate]);
 
-    const handleAdvancedAuthSuccess = (data: { token: string; participant: any; mode: 'anonymous' | 'registered' }) => {
+    const handleAdvancedAuthSuccess = async (data: { token: string; participant: any; mode: 'anonymous' | 'registered' }) => {
         // Store token for future requests
         localStorage.setItem('participant_token', data.token);
         
-        // Login via session context
-        login({
-            participantId: data.participant.id,
-            workshopId: '', // Will be set when joining
-            name: data.participant.display_name,
-            role: 'PARTICIPANT'
-        });
-        
-        navigate('/lobby');
+        try {
+            let workshopId = '';
+            let participantId = data.participant.id;
+            
+            // For anonymous participants, they always have a Participant record created during join
+            // For registered participants:
+            //   - If they logged in WITH a workshop PIN: participant.id is the Participant ID (from join-registered)
+            //   - If they logged in WITHOUT a workshop PIN: participant.id is the RegisteredParticipant ID
+            // 
+            // We can distinguish by checking if the participant has is_registered flag and trying to fetch session
+            // If it's a RegisteredParticipant ID, the session fetch will fail (404) because there's no Participant record yet
+            
+            if (data.participant.id) {
+                try {
+                    const response = await api.get(`/session/${data.participant.id}`);
+                    workshopId = response.data?.workshop_id || '';
+                    // Success means this is a valid Participant ID and they've joined a workshop
+                } catch (err: any) {
+                    // 404 means participant hasn't joined a workshop yet
+                    // This is expected for registered participants logging in without a PIN
+                    if (err.response?.status === 404) {
+                        // Registered participant hasn't joined a workshop yet
+                        // They need to enter a PIN to join
+                        console.log('Participant has not joined a workshop yet');
+                    } else {
+                        console.warn('Could not fetch session info:', err);
+                    }
+                }
+            }
+            
+            // Only create session and navigate if participant has joined a workshop
+            if (workshopId && participantId) {
+                // Login via session context
+                login({
+                    participantId: participantId,
+                    workshopId: workshopId,
+                    name: data.participant.display_name,
+                    role: 'PARTICIPANT'
+                });
+                
+                // Navigate to participant dashboard
+                navigate('/participant-dashboard');
+            } else {
+                // If no workshop joined, keep them on join page so they can enter PIN
+                // Don't create a session yet - they need to join a workshop first
+                toast.info('Please enter a workshop PIN to join a workshop');
+                // Close the auth modal so they can see the join form
+                setShowAdvancedAuth(false);
+            }
+        } catch (error) {
+            console.error('Error setting up participant session:', error);
+            toast.error('Failed to set up session');
+        }
     };
 
     const handleJoin = async (e: React.FormEvent) => {
         e.preventDefault();
+        e.stopPropagation();
+        
+        // Prevent multiple submissions
+        if (loading) return;
         if (!pin || !name) return;
 
         setLoading(true);
@@ -71,22 +126,27 @@ export function JoinWorkshop() {
                 role: isFacilitator ? "FACILITATOR" : "PARTICIPANT"
             });
 
+            // Validate response data before proceeding
+            if (!data || !data.participant_id || !data.workshop_id) {
+                throw new Error('Invalid response from server');
+            }
+
             // Save session info via Context
             login({
                 participantId: data.participant_id,
                 workshopId: data.workshop_id,
                 name: name,
-                role: data.role
+                role: data.role || "PARTICIPANT"
             });
 
-            // Navigation is handled by the component or finding we are in a valid session
-            // But waiting for "state" to direct us is better?
-            // For now, default to lobby, and let lobby redirect if state is different.
-            navigate('/lobby');
+            // Navigate to participant dashboard to show tiles
+            // Dashboard will handle phase-based redirects (e.g., to /scoring if in SCORING phase)
+            navigate('/participant-dashboard', { replace: true });
         } catch (err: any) {
-            console.error(err);
-            setError(err.response?.data?.detail || "Failed to join. check PIN.");
-        } finally {
+            console.error('Join error:', err);
+            const errorMessage = err.response?.data?.detail || err.message || "Failed to join. Please check PIN and try again.";
+            setError(errorMessage);
+            toast.error(errorMessage);
             setLoading(false);
         }
     };
@@ -106,7 +166,7 @@ export function JoinWorkshop() {
                     Join Session
                 </h1>
 
-                <form onSubmit={handleJoin} className="space-y-6">
+                <form onSubmit={handleJoin} className="space-y-6" noValidate>
                     <Input
                         inputMode="text"
                         className="text-4xl text-center tracking-widest uppercase py-6 font-mono font-bold placeholder:tracking-normal placeholder:normal-case placeholder:text-2xl placeholder:font-sans"
@@ -114,6 +174,12 @@ export function JoinWorkshop() {
                         maxLength={6}
                         value={pin}
                         onChange={(e) => setPin(e.target.value)}
+                        disabled={loading}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && loading) {
+                                e.preventDefault();
+                            }
+                        }}
                     />
 
                     <Input
@@ -121,6 +187,12 @@ export function JoinWorkshop() {
                         className="text-center text-lg"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
+                        disabled={loading}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter' && loading) {
+                                e.preventDefault();
+                            }
+                        }}
                     />
 
                     {error && (

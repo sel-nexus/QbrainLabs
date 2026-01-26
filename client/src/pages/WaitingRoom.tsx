@@ -65,6 +65,12 @@ export function WaitingRoom() {
         // Only allow opening active surveys that aren't completed
         if (survey.status === 'ACTIVE' && !survey.completed) {
             setActiveSurveyId(survey.id);
+        } else if (survey.completed) {
+            // Survey already completed - could show a toast message
+            console.log('Survey already completed');
+        } else if (survey.status !== 'ACTIVE') {
+            // Survey not active - could show a toast message
+            console.log(`Survey is ${survey.status.toLowerCase()}`);
         }
     };
 

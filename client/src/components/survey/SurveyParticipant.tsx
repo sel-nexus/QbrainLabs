@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useTheme } from '../../context/ThemeContext';
+import { api } from '../../lib/api';
 
 interface QuestionConfig {
     scale?: number;
@@ -55,33 +56,41 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
     const isLight = theme === 'light';
 
     useEffect(() => {
-        fetchSurvey();
+        if (surveyId && participantId) {
+            fetchSurvey();
+        } else {
+            setLoading(false);
+            toast.error('Missing survey or participant information');
+        }
     }, [surveyId, participantId]);
 
     const fetchSurvey = async () => {
-        try {
-            const response = await fetch(
-                `http://localhost:8000/api/surveys/${surveyId}/participant?participant_id=${participantId}`
-            );
-            
-            if (!response.ok) {
-                const error = await response.json();
-                if (error.detail === 'You have already completed this survey') {
-                    setCompleted(true);
-                } else {
-                    toast.error(error.detail || 'Failed to load survey');
-                }
-                return;
-            }
+        if (!surveyId || !participantId) {
+            toast.error('Missing survey or participant information');
+            setLoading(false);
+            return;
+        }
 
-            const data = await response.json();
+        try {
+            setLoading(true);
+            const { data } = await api.get(`/surveys/${surveyId}/participant`, {
+                params: { participant_id: participantId }
+            });
+            
             setSurvey(data);
             
             if (data.existing_status === 'completed') {
                 setCompleted(true);
             }
-        } catch (error) {
-            toast.error('Failed to load survey');
+        } catch (error: any) {
+            console.error('Failed to load survey:', error);
+            const errorMessage = error.response?.data?.detail || error.message || 'Failed to load survey';
+            
+            if (errorMessage === 'You have already completed this survey') {
+                setCompleted(true);
+            } else {
+                toast.error(errorMessage);
+            }
         } finally {
             setLoading(false);
         }
@@ -98,16 +107,17 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
 
     const saveProgress = async (questionId: string, value: any) => {
         try {
-            await fetch(
-                `http://localhost:8000/api/surveys/${surveyId}/save-progress?participant_id=${participantId}&current_question=${currentIndex}`,
+            await api.post(`/surveys/${surveyId}/save-progress`, 
+                { question_id: questionId, value },
                 {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ question_id: questionId, value })
+                    params: { 
+                        participant_id: participantId,
+                        current_question: currentIndex 
+                    }
                 }
             );
         } catch (error) {
-            console.error('Failed to save progress');
+            console.error('Failed to save progress:', error);
         }
     };
 
@@ -161,23 +171,17 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
         try {
             setSubmitting(true);
             
-            const response = await fetch(
-                `http://localhost:8000/api/surveys/${surveyId}/submit?participant_id=${participantId}`,
+            await api.post(`/surveys/${surveyId}/submit`, 
                 {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        answers: Object.entries(answers).map(([question_id, value]) => ({
-                            question_id,
-                            value
-                        }))
-                    })
+                    answers: Object.entries(answers).map(([question_id, value]) => ({
+                        question_id,
+                        value
+                    }))
+                },
+                {
+                    params: { participant_id: participantId }
                 }
             );
-
-            if (!response.ok) {
-                throw new Error('Failed to submit survey');
-            }
 
             setCompleted(true);
             toast.success('Survey submitted successfully!');
@@ -185,8 +189,10 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
             if (onComplete) {
                 onComplete();
             }
-        } catch (error) {
-            toast.error('Failed to submit survey');
+        } catch (error: any) {
+            console.error('Failed to submit survey:', error);
+            const errorMessage = error.response?.data?.detail || error.message || 'Failed to submit survey';
+            toast.error(errorMessage);
         } finally {
             setSubmitting(false);
         }

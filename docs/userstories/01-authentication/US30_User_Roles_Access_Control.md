@@ -20,7 +20,7 @@
 
 ## Description
 
-The HotspotMatrix application requires a clear three-tier user hierarchy to support different levels of access and functionality:
+The QbrainLabs application requires a clear three-tier user hierarchy to support different levels of access and functionality:
 
 | Role | Authentication | Workshop Access | Key Capabilities |
 |------|---------------|-----------------|------------------|
@@ -614,7 +614,7 @@ function requireRole(role: UserRole) {
 ### Landing Page Role Selection
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                    HotspotMatrix                        │
+│                    QbrainLabs                        │
 │                                                         │
 │     ┌─────────────────┐  ┌─────────────────┐           │
 │     │   JOIN WORKSHOP │  │  FACILITATOR    │           │

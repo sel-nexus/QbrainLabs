@@ -23,6 +23,11 @@ import { AdminLayout } from './components/AdminLayout';
 import { AuthenticatedLayout, PublicWithHeaderLayout } from './components/AuthenticatedLayout';
 import { FeedbackWidget } from './components/feedback/FeedbackWidget';
 import { AnalyticsDashboard } from './pages/AnalyticsDashboard';
+import { WaitingRoom } from './pages/WaitingRoom';
+import { ParticipantDashboard } from './pages/ParticipantDashboard';
+import { ParticipantMatrix } from './pages/ParticipantMatrix';
+import { IntakePhase } from './pages/IntakePhase';
+import { ScoringPhase } from './pages/ScoringPhase';
 
 // Route Guards
 const PrivateRoute = ({ children, requireAdmin = false }: { children: ReactElement, requireAdmin?: boolean }) => {
@@ -92,6 +97,13 @@ function App() {
 
           {/* Workshop Routes (Mixed Access) - Shows header for any user */}
           <Route path="/workshop/:id" element={<PublicWithHeaderLayout><WorkshopDetail /></PublicWithHeaderLayout>} />
+
+          {/* Participant Routes - Accessible to participants with session */}
+          <Route path="/lobby" element={<WaitingRoom />} />
+          <Route path="/participant-dashboard" element={<ParticipantDashboard />} />
+          <Route path="/participant-matrix" element={<ParticipantMatrix />} />
+          <Route path="/intake" element={<IntakePhase />} />
+          <Route path="/scoring" element={<ScoringPhase />} />
 
           {/* Facilitator Routes (Protected) - All wrapped with AuthenticatedLayout for consistent header */}
           <Route path="/facilitator" element={<AuthenticatedRoute showBackButton={false}><AdminDashboard /></AuthenticatedRoute>} />

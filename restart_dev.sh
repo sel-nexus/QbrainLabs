@@ -1,8 +1,18 @@
 #!/bin/bash
 
-# Configuration
-BACKEND_PORT=8000
-FRONTEND_PORT=5173
+# Load configuration from .env file
+if [ -f ".env" ]; then
+    # Source .env file and export variables
+    set -a
+    source .env
+    set +a
+fi
+
+# Configuration with defaults (if not set in .env)
+BACKEND_PORT=${SERVER_PORT:-8000}
+FRONTEND_PORT=${CLIENT_PORT:-5173}
+BACKEND_HOST=${SERVER_HOST:-0.0.0.0}
+FRONTEND_HOST=${CLIENT_HOST:-0.0.0.0}
 REDIS_PORT=6379
 
 # Colors for output
@@ -56,10 +66,12 @@ echo -e "${BLUE}🧹 Cleaning up occupied ports...${NC}"
 
 kill_port() {
     local port=$1
-    local pid=$(lsof -ti :$port)
-    if [ -n "$pid" ]; then
-        echo -e "   Stopping process on port $port (PID: $pid)..."
-        kill -9 $pid 2>/dev/null
+    local pids=$(lsof -ti :$port 2>/dev/null)
+    if [ -n "$pids" ]; then
+        for pid in $pids; do
+            echo -e "   Stopping process on port $port (PID: $pid)..."
+            kill -9 $pid 2>/dev/null || true
+        done
     fi
 }
 
@@ -137,8 +149,8 @@ else
 fi
 
 # Start Backend
-echo -e "${GREEN}✅ Backend starting on port $BACKEND_PORT...${NC}"
-uvicorn app.main:app --reload --host 0.0.0.0 --port $BACKEND_PORT > ../server.log 2>&1 &
+echo -e "${GREEN}✅ Backend starting on $BACKEND_HOST:$BACKEND_PORT...${NC}"
+uvicorn app.main:app --reload --host $BACKEND_HOST --port $BACKEND_PORT > ../server.log 2>&1 &
 BACKEND_PID=$!
 
 cd ..
@@ -153,8 +165,9 @@ if [ ! -d "node_modules" ]; then
 fi
 
 # Start Frontend
-echo -e "${GREEN}✅ Frontend starting on port $FRONTEND_PORT...${NC}"
-npm run dev > ../client.log 2>&1 &
+echo -e "${GREEN}✅ Frontend starting on $FRONTEND_HOST:$FRONTEND_PORT...${NC}"
+# Pass host configuration via environment variable
+CLIENT_HOST=$FRONTEND_HOST CLIENT_PORT=$FRONTEND_PORT npm run dev > ../client.log 2>&1 &
 FRONTEND_PID=$!
 
 cd ..
@@ -162,8 +175,41 @@ cd ..
 # 6. Final Status
 echo -e "\n${BLUE}${BOLD}================================================${NC}"
 echo -e "${GREEN}${BOLD}✨ Environment is ready!${NC}"
-echo -e "${BLUE}Backend:  ${BOLD}http://localhost:$BACKEND_PORT/docs${NC}"
-echo -e "${BLUE}Frontend: ${BOLD}http://localhost:$FRONTEND_PORT${NC}"
+
+# Get local IP addresses for network access display
+get_local_ip() {
+    # Try to get local IP (works on macOS and Linux)
+    if command -v ip >/dev/null 2>&1; then
+        # Linux
+        ip route get 8.8.8.8 2>/dev/null | awk '{print $7; exit}' 2>/dev/null
+    elif command -v ifconfig >/dev/null 2>&1; then
+        # macOS/BSD
+        ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1' | head -1
+    fi
+}
+
+LOCAL_IP=$(get_local_ip)
+
+# Display backend URLs
+if [ "$BACKEND_HOST" = "0.0.0.0" ]; then
+    echo -e "${BLUE}Backend:  ${BOLD}http://localhost:$BACKEND_PORT/docs${NC}"
+    if [ -n "$LOCAL_IP" ]; then
+        echo -e "${BLUE}          ${BOLD}http://$LOCAL_IP:$BACKEND_PORT/docs${NC} (network)"
+    fi
+else
+    echo -e "${BLUE}Backend:  ${BOLD}http://$BACKEND_HOST:$BACKEND_PORT/docs${NC}"
+fi
+
+# Display frontend URLs
+if [ "$FRONTEND_HOST" = "0.0.0.0" ]; then
+    echo -e "${BLUE}Frontend: ${BOLD}http://localhost:$FRONTEND_PORT${NC}"
+    if [ -n "$LOCAL_IP" ]; then
+        echo -e "${BLUE}          ${BOLD}http://$LOCAL_IP:$FRONTEND_PORT${NC} (network)"
+    fi
+else
+    echo -e "${BLUE}Frontend: ${BOLD}http://$FRONTEND_HOST:$FRONTEND_PORT${NC}"
+fi
+
 echo -e "${BLUE}${BOLD}================================================${NC}"
 echo -e "${YELLOW}📝 Streaming logs from both services below...${NC}"
 echo -e "${YELLOW}   Press Ctrl+C to stop all services.${NC}"

@@ -20,7 +20,7 @@
 
 Integrate Supabase PostgreSQL as the primary cloud database using the Model Context Protocol (MCP) client. MCP provides a standardized way for AI assistants to interact with external data sources securely. This integration enables AI-powered features to access workshop data, submissions, and analytics while maintaining security boundaries and connection management best practices.
 
-Supabase offers a fully managed PostgreSQL database with additional features like real-time subscriptions, Row Level Security (RLS), and built-in authentication that align well with the HotspotMatrix application requirements.
+Supabase offers a fully managed PostgreSQL database with additional features like real-time subscriptions, Row Level Security (RLS), and built-in authentication that align well with the QbrainLabs application requirements.
 
 ---
 
@@ -30,7 +30,7 @@ Supabase offers a fully managed PostgreSQL database with additional features lik
 
 1. **Supabase Project Setup**
    - Create Supabase project with PostgreSQL database
-   - Configure database schema for HotspotMatrix collections
+   - Configure database schema for QbrainLabs collections
    - Enable Row Level Security (RLS) policies
    - Set up connection pooling via Supavisor
 
@@ -333,8 +333,8 @@ interface MCPPostgresTools {
 
 #### Custom MCP Resource Definitions
 ```typescript
-// Custom resources for HotspotMatrix
-interface HotspotMatrixResources {
+// Custom resources for QbrainLabs
+interface QbrainLabsResources {
   // Workshop summary resource
   "workshop://{pin}": {
     uri: string;

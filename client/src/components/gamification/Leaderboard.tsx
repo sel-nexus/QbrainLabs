@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getWorkshopLeaderboard, LeaderboardEntry } from '../../lib/api/gamification';
+import { getWorkshopLeaderboard, type LeaderboardEntry } from '../../lib/api/gamification';
 import { useTheme } from '../../context/ThemeContext';
 import { Trophy, Medal, Award, Loader2 } from 'lucide-react';
 

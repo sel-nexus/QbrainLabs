@@ -20,6 +20,12 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = "Qbrain AI Labs"
     API_V1_STR: str = "/api/v1"
     
+    # Server Configuration
+    HOST: str = Field(default="127.0.0.1", description="Server host/IP address")
+    PORT: int = Field(default=8000, ge=1, le=65535, description="Server port number")
+    SERVER_HOST: str = Field(default="0.0.0.0", description="Server bind host (for uvicorn)")
+    SERVER_PORT: int = Field(default=8000, ge=1, le=65535, description="Server bind port (for uvicorn)")
+    
     # Database - PostgreSQL (default for production-ready setup)
     DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/hotspotmatrix"
     
@@ -46,7 +52,17 @@ class Settings(BaseSettings):
     # CORS Configuration
     CORS_ORIGINS: str = Field(
         default="http://localhost:5173,http://127.0.0.1:5173",
-        description="Comma-separated list of allowed CORS origins"
+        description="Comma-separated list of allowed CORS origins (used as fallback or additional origins)"
+    )
+    ENABLE_DYNAMIC_CORS: bool = Field(
+        default=True,
+        description="Enable dynamic CORS that automatically accepts origins matching server IP addresses (private/public)"
+    )
+    CLIENT_PORT: int = Field(
+        default=5173,
+        ge=1,
+        le=65535,
+        description="Client/frontend port for generating dynamic CORS origins"
     )
     
     # Environment

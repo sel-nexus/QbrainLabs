@@ -10,7 +10,10 @@ import {
     ClipboardCheck,
     Loader2,
     X,
-    LogOut
+    LogOut,
+    FileText,
+    Target,
+    Plus
 } from 'lucide-react';
 import { ActionTile } from '../components/ui/ActionTile';
 import { UseCaseCanvas } from '../components/UseCaseCanvas';
@@ -25,6 +28,7 @@ import { PointsDisplay } from '../components/gamification/PointsDisplay';
 import { AchievementToast } from '../components/gamification/AchievementToast';
 import { Leaderboard } from '../components/gamification/Leaderboard';
 import { BadgeGrid } from '../components/gamification/BadgeGrid';
+import { Header } from '../components/Header';
 
 interface UseCase {
     id: string;
@@ -60,27 +64,46 @@ export function ParticipantDashboard() {
     const [activeSurveyId, setActiveSurveyId] = useState<string | null>(null);
 
     const fetchSessionInfo = async () => {
-        if (!session?.participantId) return;
+        if (!session?.participantId || !session?.workshopId) {
+            setLoading(false);
+            return;
+        }
 
         try {
             const { data } = await api.get(`/session/${session.participantId}`);
             setSessionInfo(data);
         } catch (err) {
             console.error('Failed to fetch session info:', err);
+            // If session fetch fails, redirect to join page
+            // This handles cases where participant record was deleted or workshop ended
+            if ((err as any)?.response?.status === 404) {
+                navigate('/join');
+            }
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
-        fetchSessionInfo();
-        const interval = setInterval(fetchSessionInfo, 10000);
-        return () => clearInterval(interval);
-    }, [session?.participantId]);
+        if (session?.participantId && session?.workshopId) {
+            fetchSessionInfo();
+            const interval = setInterval(fetchSessionInfo, 10000);
+            return () => clearInterval(interval);
+        } else {
+            setLoading(false);
+        }
+    }, [session?.participantId, session?.workshopId]);
 
     useEffect(() => {
         if (!session) {
             navigate('/');
+            return;
+        }
+        
+        // If session exists but no workshopId, redirect to join page
+        // This can happen if a participant logged in but hasn't joined a workshop yet
+        if (session && !session.workshopId) {
+            navigate('/join');
             return;
         }
 
@@ -132,6 +155,18 @@ export function ParticipantDashboard() {
         navigate('/scoring');
     };
 
+    const handleUseCasesViewClick = () => {
+        // Scroll to the use cases section
+        const useCasesSection = document.getElementById('use-cases-section');
+        if (useCasesSection) {
+            useCasesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    };
+
+    const handleHotspotPrioritizationClick = () => {
+        navigate('/participant-matrix');
+    };
+
     const handleSurveyClick = () => {
         const activeSurvey = sessionInfo?.surveys.find(s => s.status === 'ACTIVE' && !s.completed);
         if (activeSurvey) {
@@ -153,8 +188,9 @@ export function ParticipantDashboard() {
     };
 
     const currentPhase = sessionInfo?.current_phase || 'LOBBY';
-    const canSubmitUseCases = ['LOBBY', 'OPEN', 'IN_PROGRESS', 'INTAKE'].includes(currentPhase);
-    const canPrioritize = currentPhase === 'SCORING' && (sessionInfo?.use_cases.length || 0) > 0;
+    const canSubmitUseCases = true; // Always enabled for participants
+    const hasUseCases = (sessionInfo?.use_cases.length || 0) > 0;
+    const canPrioritize = hasUseCases; // Enabled whenever use cases exist, regardless of phase
 
     const activeSurvey = sessionInfo?.surveys.find(s => s.status === 'ACTIVE' && !s.completed);
     const completedSurveys = sessionInfo?.surveys.filter(s => s.completed).length || 0;
@@ -175,6 +211,7 @@ export function ParticipantDashboard() {
 
     return (
         <div className={`min-h-screen ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-900'}`}>
+            <Header showBackButton={false} showHomeButton={false} />
             {session?.participantId && <AchievementToast participantId={session.participantId} />}
             <ReactionOverlay />
             <PollResponder />
@@ -226,74 +263,139 @@ export function ParticipantDashboard() {
 
             {/* Main Content */}
             <main className="max-w-5xl mx-auto px-4 py-8">
-                {/* Action Tiles Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {/* Tile 1: Submit Use Case */}
-                    <ActionTile
-                        icon={<Lightbulb className="w-7 h-7" />}
-                        title="Submit Use Case"
-                        description="Share your AI use case ideas for the workshop"
-                        badge={`${sessionInfo?.use_cases.length || 0} submitted`}
-                        badgeVariant="info"
-                        disabled={!canSubmitUseCases}
-                        disabledReason={!canSubmitUseCases ? "Submissions closed during scoring phase" : undefined}
-                        onClick={handleUseCaseClick}
-                    />
+                {/* Action Tiles Grid - Show 4 tiles when use cases exist */}
+                {(sessionInfo?.use_cases.length || 0) > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {/* Tile 1: Use Cases */}
+                        <ActionTile
+                            icon={<FileText className="w-7 h-7" />}
+                            title="Use Cases"
+                            description="View all workshop use cases"
+                            badge={`${sessionInfo?.use_cases.length || 0} total`}
+                            badgeVariant="info"
+                            onClick={handleUseCasesViewClick}
+                        />
 
-                    {/* Tile 2: Prioritize Use Cases */}
-                    <ActionTile
-                        icon={<BarChart3 className="w-7 h-7" />}
-                        title="Prioritize Use Cases"
-                        description="Vote and score existing use cases"
-                        badge={`${sessionInfo?.use_cases.length || 0} to review`}
-                        badgeVariant={canPrioritize ? "warning" : "default"}
-                        disabled={!canPrioritize}
-                        disabledReason={
-                            currentPhase !== 'SCORING'
-                                ? "Available during scoring phase"
-                                : (sessionInfo?.use_cases.length || 0) === 0
-                                    ? "No use cases to prioritize"
+                        {/* Tile 2: Add a New Use Case */}
+                        <ActionTile
+                            icon={<Plus className="w-7 h-7" />}
+                            title="Add a New Use Case"
+                            description="Share your AI use case ideas for the workshop"
+                            badge="Available"
+                            badgeVariant="success"
+                            onClick={handleUseCaseClick}
+                        />
+
+                        {/* Tile 3: Survey */}
+                        <ActionTile
+                            icon={<ClipboardCheck className="w-7 h-7" />}
+                            title="Survey"
+                            description={activeSurvey ? activeSurvey.title : "Provide your feedback"}
+                            badge={
+                                pendingSurveys > 0
+                                    ? `${pendingSurveys} pending`
+                                    : totalSurveys > 0
+                                        ? `${completedSurveys}/${totalSurveys} done`
+                                        : "No surveys"
+                            }
+                            badgeVariant={
+                                pendingSurveys > 0
+                                    ? "warning"
+                                    : completedSurveys === totalSurveys && totalSurveys > 0
+                                        ? "success"
+                                        : "default"
+                            }
+                            disabled={!activeSurvey}
+                            disabledReason={
+                                !activeSurvey
+                                    ? totalSurveys === 0
+                                        ? "No surveys available"
+                                        : "All surveys completed"
                                     : undefined
-                        }
-                        onClick={handlePrioritizeClick}
-                    />
+                            }
+                            onClick={handleSurveyClick}
+                        />
 
-                    {/* Tile 3: Complete Survey */}
-                    <ActionTile
-                        icon={<ClipboardCheck className="w-7 h-7" />}
-                        title="Complete Survey"
-                        description={activeSurvey ? activeSurvey.title : "Provide your feedback"}
-                        badge={
-                            pendingSurveys > 0
-                                ? `${pendingSurveys} pending`
-                                : totalSurveys > 0
-                                    ? `${completedSurveys}/${totalSurveys} done`
-                                    : "No surveys"
-                        }
-                        badgeVariant={
-                            pendingSurveys > 0
-                                ? "warning"
-                                : completedSurveys === totalSurveys && totalSurveys > 0
-                                    ? "success"
-                                    : "default"
-                        }
-                        disabled={!activeSurvey}
-                        disabledReason={
-                            !activeSurvey
-                                ? totalSurveys === 0
-                                    ? "No surveys available"
-                                    : "All surveys completed"
-                                : undefined
-                        }
-                        onClick={handleSurveyClick}
-                    />
-                </div>
+                        {/* Tile 4: Hotspot Prioritization */}
+                        <ActionTile
+                            icon={<Target className="w-7 h-7" />}
+                            title="Hotspot Prioritization"
+                            description="Prioritize use cases on the hotspot matrix"
+                            badge={canPrioritize ? `${sessionInfo?.use_cases.length || 0} available` : "Not available"}
+                            badgeVariant={canPrioritize ? "warning" : "default"}
+                            disabled={!canPrioritize}
+                            disabledReason={
+                                !hasUseCases
+                                    ? "No use cases available to prioritize"
+                                    : undefined
+                            }
+                            onClick={handleHotspotPrioritizationClick}
+                        />
+                    </div>
+                ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {/* Tile 1: Submit Use Case */}
+                        <ActionTile
+                            icon={<Lightbulb className="w-7 h-7" />}
+                            title="Submit Use Case"
+                            description="Share your AI use case ideas for the workshop"
+                            badge="0 submitted"
+                            badgeVariant="info"
+                            onClick={handleUseCaseClick}
+                        />
+
+                        {/* Tile 2: Prioritize Use Cases */}
+                        <ActionTile
+                            icon={<BarChart3 className="w-7 h-7" />}
+                            title="Prioritize Use Cases"
+                            description="Vote and score existing use cases"
+                            badge="0 to review"
+                            badgeVariant="default"
+                            disabled={true}
+                            disabledReason="No use cases to prioritize"
+                            onClick={handlePrioritizeClick}
+                        />
+
+                        {/* Tile 3: Complete Survey */}
+                        <ActionTile
+                            icon={<ClipboardCheck className="w-7 h-7" />}
+                            title="Complete Survey"
+                            description={activeSurvey ? activeSurvey.title : "Provide your feedback"}
+                            badge={
+                                pendingSurveys > 0
+                                    ? `${pendingSurveys} pending`
+                                    : totalSurveys > 0
+                                        ? `${completedSurveys}/${totalSurveys} done`
+                                        : "No surveys"
+                            }
+                            badgeVariant={
+                                pendingSurveys > 0
+                                    ? "warning"
+                                    : completedSurveys === totalSurveys && totalSurveys > 0
+                                        ? "success"
+                                        : "default"
+                            }
+                            disabled={!activeSurvey}
+                            disabledReason={
+                                !activeSurvey
+                                    ? totalSurveys === 0
+                                        ? "No surveys available"
+                                        : "All surveys completed"
+                                    : undefined
+                            }
+                            onClick={handleSurveyClick}
+                        />
+                    </div>
+                )}
 
                 {/* Info Section */}
-                <div className={`mt-8 p-6 rounded-xl border ${theme === 'light'
-                        ? 'bg-white border-gray-200'
-                        : 'bg-surface-800 border-white/10'
-                    }`}>
+                <div 
+                    id="use-cases-section"
+                    className={`mt-8 p-6 rounded-xl border ${theme === 'light'
+                            ? 'bg-white border-gray-200'
+                            : 'bg-surface-800 border-white/10'
+                        }`}
+                >
                     <h2 className={`text-lg font-semibold mb-4 ${theme === 'light' ? 'text-gray-900' : 'text-white'
                         }`}>
                         Workshop Use Cases ({sessionInfo?.use_cases.length || 0})

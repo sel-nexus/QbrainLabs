@@ -3,7 +3,21 @@
 > vite
 
 
-  VITE v7.3.1  ready in 116 ms
+  VITE v7.3.1  ready in 86 ms
 
   ➜  Local:   http://localhost:5173/
-  ➜  Network: use --host to expose
+  ➜  Network: http://192.168.4.247:5173/
+
+[2m[45.33ms][22m [@tailwindcss/postcss] src/index.css
+[2m[ 0.03ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 6.95ms][22m  [2m ↳ [22mSetup compiler
+[2m[ 0.40ms][22m    [2m ↳ [22mPostCSS AST -> Tailwind CSS AST
+[2m[ 6.54ms][22m    [2m ↳ [22mCreate compiler
+[2m[ 0.04ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 0.52ms][22m  [2m ↳ [22mSetup scanner
+[2m[10.18ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 6.08ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[18.36ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.10ms][22m  [2m ↳ [22mTransform Tailwind CSS AST into PostCSS AST
+[2m[ 0.91ms][22m  [2m ↳ [22mUpdate PostCSS AST
+

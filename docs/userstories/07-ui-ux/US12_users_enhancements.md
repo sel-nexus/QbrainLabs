@@ -15,6 +15,11 @@
 - ✅ Real-time survey response submission
 - ✅ Partial survey completion support with auto-save
 - ✅ Survey review and completion flow
+- ✅ Enhanced dashboard with 4-tile layout when use cases exist (January 26, 2026)
+  - Use Cases tile (with count)
+  - Add a New Use Case tile
+  - Survey tile (enable/disable)
+  - Hotspot Prioritization tile
 
 ---
 
@@ -43,6 +48,17 @@ This dashboard serves as the participant's command center, enabling them to cont
 ### Functional Requirements
 
 #### 1. Participant Landing Page/Dashboard
+
+**Dashboard Tile Layout:**
+- When use cases exist: Display four action tiles in a 2x2 grid:
+  1. **Use Cases** - Shows total count, scrolls to use cases section
+  2. **Add a New Use Case** - Opens submission modal
+  3. **Survey** - Shows survey status (enable/disable)
+  4. **Hotspot Prioritization** - Navigates to scoring interface
+- When no use cases exist: Display three action tiles:
+  1. **Submit Use Case** - Opens submission modal
+  2. **Prioritize Use Cases** - Disabled (no use cases)
+  3. **Complete Survey** - Shows survey status
 
 **Use Case Submission Section:**
 - Display all use cases submitted by the participant in the current workshop

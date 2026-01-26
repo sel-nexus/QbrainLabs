@@ -582,8 +582,8 @@ async def get_survey_for_participant(
 @router.post("/{survey_id}/submit")
 async def submit_survey_response(
     survey_id: str,
+    submission: SurveySubmissionCreate,
     participant_id: str = Query(...),
-    submission: SurveySubmissionCreate = None,
     db: AsyncSession = Depends(get_db)
 ):
     """Submit survey responses"""
@@ -614,6 +614,10 @@ async def submit_survey_response(
     if not participant:
         raise HTTPException(status_code=403, detail="Participant not found in this workshop")
     
+    # Validate submission
+    if not submission or not submission.answers:
+        raise HTTPException(status_code=400, detail="Submission must include answers")
+    
     # Get or create response
     result = await db.execute(
         select(SurveyResponse).where(
@@ -637,7 +641,7 @@ async def submit_survey_response(
         await db.flush()
     
     # Save answers
-    if submission and submission.answers:
+    if submission.answers:
         for answer_data in submission.answers:
             # Check if answer already exists
             result = await db.execute(

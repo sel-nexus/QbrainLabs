@@ -12,6 +12,7 @@ Qbrain AI Labs allows real-time facilitation of "Hotspot" prioritization worksho
   - [Windows](#windows)
   - [Linux](#linux-ubuntudebian)
   - [macOS (Unix)](#macos-unix)
+- [Using Supabase PostgreSQL](#-using-supabase-postgresql-cloud-database)
 - [Docker Deployment](#-docker-deployment)
 - [Production Deployment](#-production-deployment)
   - [Linux (systemd)](#linux-systemd-production)
@@ -83,8 +84,8 @@ Qbrain AI Labs allows real-time facilitation of "Hotspot" prioritization worksho
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-org/hotspotmatrix.git
-cd hotspotmatrix
+git clone https://github.com/your-org/qbrainlabs.git
+cd qbrainlabs
 
 # Copy environment file
 cp .env.example .env
@@ -116,9 +117,11 @@ Access the application:
 |-----------|---------|-------|
 | Python | 3.11+ | Required for backend |
 | Node.js | 18+ | Required for frontend |
-| PostgreSQL | 15+ | Database (or use Docker) |
+| PostgreSQL | 15+ | Database (local install, Docker, or [Supabase](#-using-supabase-postgresql-cloud-database)) |
 | Redis | 7+ | Optional, for caching |
 | Git | 2.30+ | Version control |
+
+**Note:** You can use **Supabase PostgreSQL** (cloud-hosted) instead of installing PostgreSQL locally. See the [Supabase Setup Guide](#-using-supabase-postgresql-cloud-database) for details.
 
 ---
 
@@ -159,7 +162,7 @@ choco install python311 nodejs-lts postgresql15 git redis-64 -y
 net start postgresql-x64-15
 
 # Create database (using psql or pgAdmin)
-psql -U postgres -c "CREATE DATABASE hotspotmatrix;"
+psql -U postgres -c "CREATE DATABASE qbrainlabs;"
 ```
 
 #### 3. Setup Backend (Windows)
@@ -251,12 +254,12 @@ sudo systemctl enable postgresql
 
 # Create database and user
 sudo -u postgres psql << EOF
-CREATE DATABASE hotspotmatrix;
-CREATE USER hotspotmatrix_user WITH ENCRYPTED PASSWORD 'your_secure_password';
-GRANT ALL PRIVILEGES ON DATABASE hotspotmatrix TO hotspotmatrix_user;
-ALTER DATABASE hotspotmatrix OWNER TO hotspotmatrix_user;
-\c hotspotmatrix
-GRANT ALL ON SCHEMA public TO hotspotmatrix_user;
+CREATE DATABASE qbrainlabs;
+CREATE USER qbrainlabs_user WITH ENCRYPTED PASSWORD 'your_secure_password';
+GRANT ALL PRIVILEGES ON DATABASE qbrainlabs TO qbrainlabs_user;
+ALTER DATABASE qbrainlabs OWNER TO qbrainlabs_user;
+\c qbrainlabs
+GRANT ALL ON SCHEMA public TO qbrainlabs_user;
 EOF
 ```
 
@@ -281,7 +284,7 @@ cp ../.env.example .env
 nano .env  # or vim .env
 
 # Update DATABASE_URL in .env:
-# DATABASE_URL=postgresql://hotspotmatrix_user:your_secure_password@localhost:5432/hotspotmatrix
+# DATABASE_URL=postgresql://qbrainlabs_user:your_secure_password@localhost:5432/qbrainlabs
 
 # Initialize database
 python init_db.py
@@ -350,13 +353,13 @@ brew services start redis
 
 ```bash
 # Create database
-createdb hotspotmatrix
+createdb qbrainlabs
 
 # Or with user
 psql postgres << EOF
-CREATE DATABASE hotspotmatrix;
-CREATE USER hotspotmatrix_user WITH ENCRYPTED PASSWORD 'your_secure_password';
-GRANT ALL PRIVILEGES ON DATABASE hotspotmatrix TO hotspotmatrix_user;
+CREATE DATABASE qbrainlabs;
+CREATE USER qbrainlabs_user WITH ENCRYPTED PASSWORD 'your_secure_password';
+GRANT ALL PRIVILEGES ON DATABASE qbrainlabs TO qbrainlabs_user;
 EOF
 ```
 
@@ -402,6 +405,181 @@ npm run dev
 
 ---
 
+## ☁️ Using Supabase PostgreSQL (Cloud Database)
+
+Instead of installing PostgreSQL locally, you can use Supabase's managed PostgreSQL database. This is especially useful for:
+- **Development**: Quick setup without local database installation
+- **Production**: Fully managed, scalable PostgreSQL with built-in features
+- **Collaboration**: Shared database for team development
+- **Backups**: Automatic backups and point-in-time recovery
+
+### 1. Create Supabase Project
+
+1. **Sign up/Login**: Go to [https://supabase.com](https://supabase.com) and create an account
+2. **Create New Project**:
+   - Click "New Project"
+   - Choose your organization
+   - Enter project name (e.g., `qbrainlabs-dev`)
+   - Set a strong database password (save this securely!)
+   - Select a region closest to your location
+   - Click "Create new project"
+
+### 2. Get Database Connection String
+
+Once your project is created:
+
+1. **Navigate to Project Settings**:
+   - Go to your project dashboard
+   - Click on the gear icon (⚙️) → **Settings**
+   - Select **Database** from the left sidebar
+
+2. **Find Connection String**:
+   - Scroll to **Connection string** section
+   - You'll see two connection options:
+     - **Direct connection** (port 5432): For migrations and admin tasks
+     - **Connection pooling** (port 6543): For application connections (recommended)
+
+3. **Copy Connection String**:
+   - For **application use** (recommended), use the **Connection pooling** string:
+     ```
+     postgresql://postgres.[project-ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres
+     ```
+   - Replace `[password]` with your database password
+   - The connection string will look like:
+     ```
+     postgresql://postgres.abcdefghijklmnop:[YOUR-PASSWORD]@aws-0-us-east-1.pooler.supabase.com:6543/postgres
+     ```
+
+### 3. Configure Environment Variables
+
+Update your `.env` file with the Supabase connection string:
+
+```bash
+# Copy .env.example to .env if you haven't already
+cp .env.example .env
+
+# Edit .env file
+```
+
+**For Application Use (Recommended - Connection Pooling):**
+```env
+# Use connection pooling (port 6543) for better performance
+DATABASE_URL=postgresql://postgres.[project-ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres?pgbouncer=true
+```
+
+**For Migrations/Admin Tasks (Direct Connection):**
+```env
+# Use direct connection (port 5432) for migrations
+DATABASE_URL=postgresql://postgres.[project-ref]:[password]@aws-0-[region].pooler.supabase.com:5432/postgres
+```
+
+**Important Notes:**
+- Replace `[project-ref]` with your actual project reference (found in your Supabase project URL)
+- Replace `[password]` with your database password
+- Replace `[region]` with your actual region (e.g., `us-east-1`, `eu-west-1`)
+- The `?pgbouncer=true` parameter is important for connection pooling mode
+
+### 4. SSL Connection (Required)
+
+Supabase requires SSL connections. The connection string automatically includes SSL, but if you need to explicitly configure it:
+
+```env
+DATABASE_URL=postgresql://postgres.[project-ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres?sslmode=require&pgbouncer=true
+```
+
+### 5. Initialize Database Schema
+
+After configuring your `.env` file, initialize the database:
+
+```bash
+# Navigate to server directory
+cd server
+
+# Activate virtual environment (if not already active)
+# Windows:
+.\.venv\Scripts\Activate.ps1
+# Linux/macOS:
+source .venv/bin/activate
+
+# Run database initialization
+python init_db.py
+```
+
+This will create all necessary tables and run migrations.
+
+### 6. Verify Connection
+
+You can verify the connection by:
+
+1. **Check Supabase Dashboard**:
+   - Go to **Table Editor** in your Supabase dashboard
+   - You should see tables created by `init_db.py`
+
+2. **Test from Application**:
+   - Start your backend server: `uvicorn app.main:app --reload`
+   - Check the API docs: http://localhost:8000/docs
+   - Try creating a user or workshop to verify database writes
+
+### 7. Supabase-Specific Features
+
+Supabase provides additional features you can leverage:
+
+#### Connection Pooling (Supavisor)
+- **Transaction Mode** (port 6543): Recommended for most applications
+- **Session Mode** (port 5432): For migrations and admin tasks
+- Automatically handles connection limits and improves performance
+
+#### Row Level Security (RLS)
+- Enable RLS policies in Supabase dashboard for additional security
+- Configure policies via SQL or Supabase dashboard
+
+#### Real-time Subscriptions
+- Supabase provides real-time database subscriptions
+- Can be used alongside Socket.io for enhanced real-time features
+
+### 8. Environment-Specific Configuration
+
+**Development:**
+```env
+DATABASE_URL=postgresql://postgres.[project-ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres?pgbouncer=true
+ENVIRONMENT=development
+```
+
+**Production:**
+```env
+DATABASE_URL=postgresql://postgres.[project-ref]:[password]@aws-0-[region].pooler.supabase.com:6543/postgres?pgbouncer=true&sslmode=require
+ENVIRONMENT=production
+```
+
+### Troubleshooting
+
+**Connection Timeout:**
+- Ensure your IP is not blocked (check Supabase dashboard → Settings → Database → Connection Pooling)
+- Verify the connection string format is correct
+- Check that SSL is enabled (`sslmode=require`)
+
+**"Too many connections" Error:**
+- Use connection pooling (port 6543) instead of direct connection
+- Reduce `DB_POOL_SIZE` in `.env` if needed
+- Check Supabase dashboard for connection limits
+
+**Migration Issues:**
+- Use direct connection (port 5432) for migrations
+- Ensure you're using the correct database password
+- Check Supabase logs in the dashboard
+
+**SSL Certificate Errors:**
+- Add `?sslmode=require` to connection string
+- For production, use `sslmode=verify-full` for stricter validation
+
+### Additional Resources
+
+- [Supabase Documentation](https://supabase.com/docs)
+- [Supabase Connection Pooling Guide](https://supabase.com/docs/guides/database/connecting-to-postgres#connection-pooler)
+- [PostgreSQL Connection Strings](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING)
+
+---
+
 ## 🐳 Docker Deployment
 
 ### Docker Compose (Development/Staging)
@@ -418,7 +596,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${DB_PASSWORD:-postgres}
-      POSTGRES_DB: hotspotmatrix
+      POSTGRES_DB: qbrainlabs
     ports:
       - "5432:5432"
     healthcheck:
@@ -447,7 +625,7 @@ services:
       redis:
         condition: service_started
     environment:
-      - DATABASE_URL=postgresql://postgres:${DB_PASSWORD:-postgres}@db:5432/hotspotmatrix
+      - DATABASE_URL=postgresql://postgres:${DB_PASSWORD:-postgres}@db:5432/qbrainlabs
       - REDIS_URL=redis://redis:6379/0
       - SECRET_KEY=${SECRET_KEY:-change-me-in-production}
       - CORS_ORIGINS=http://localhost:5173,http://localhost:3000
@@ -507,7 +685,7 @@ services:
       - db
       - redis
     environment:
-      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/${DB_NAME}
+      - DATABASE_URL=postgresql://${DB_USER}:${DB_PASSWORD}@db:5432/qbrainlabs
       - REDIS_URL=redis://:${REDIS_PASSWORD}@redis:6379/0
       - SECRET_KEY=${SECRET_KEY}
       - JWT_SECRET_KEY=${JWT_SECRET_KEY}
@@ -575,51 +753,51 @@ docker-compose -f docker-compose.prod.yml up -d --scale backend=3
 
 ```bash
 # Create dedicated user
-sudo useradd --system --create-home --shell /bin/bash hotspotmatrix
-sudo mkdir -p /opt/hotspotmatrix
-sudo chown -R hotspotmatrix:hotspotmatrix /opt/hotspotmatrix
+sudo useradd --system --create-home --shell /bin/bash qbrainlabs
+sudo mkdir -p /opt/qbrainlabs
+sudo chown -R qbrainlabs:qbrainlabs /opt/qbrainlabs
 ```
 
 #### 2. Deploy Application
 
 ```bash
 # Clone repository
-sudo -u hotspotmatrix git clone https://github.com/your-org/hotspotmatrix.git /opt/hotspotmatrix/app
+sudo -u qbrainlabs git clone https://github.com/your-org/qbrainlabs.git /opt/qbrainlabs/app
 
 # Setup backend
-cd /opt/hotspotmatrix/app/server
-sudo -u hotspotmatrix python3.11 -m venv .venv
-sudo -u hotspotmatrix .venv/bin/pip install -r requirements.txt
-sudo -u hotspotmatrix .venv/bin/pip install gunicorn
+cd /opt/qbrainlabs/app/server
+sudo -u qbrainlabs python3.11 -m venv .venv
+sudo -u qbrainlabs .venv/bin/pip install -r requirements.txt
+sudo -u qbrainlabs .venv/bin/pip install gunicorn
 
 # Setup frontend
-cd /opt/hotspotmatrix/app/client
-sudo -u hotspotmatrix npm ci
-sudo -u hotspotmatrix npm run build
+cd /opt/qbrainlabs/app/client
+sudo -u qbrainlabs npm ci
+sudo -u qbrainlabs npm run build
 ```
 
 #### 3. Create Backend systemd Service
 
 ```bash
-sudo tee /etc/systemd/system/hotspotmatrix-backend.service << 'EOF'
+sudo tee /etc/systemd/system/qbrainlabs-backend.service << 'EOF'
 [Unit]
-Description=Hotspot Matrix Backend API
+Description=QbrainLabs Backend API
 After=network.target postgresql.service redis.service
 Requires=postgresql.service
 
 [Service]
 Type=exec
-User=hotspotmatrix
-Group=hotspotmatrix
-WorkingDirectory=/opt/hotspotmatrix/app/server
-Environment="PATH=/opt/hotspotmatrix/app/server/.venv/bin"
-EnvironmentFile=/opt/hotspotmatrix/.env
-ExecStart=/opt/hotspotmatrix/app/server/.venv/bin/gunicorn \
+User=qbrainlabs
+Group=qbrainlabs
+WorkingDirectory=/opt/qbrainlabs/app/server
+Environment="PATH=/opt/qbrainlabs/app/server/.venv/bin"
+EnvironmentFile=/opt/qbrainlabs/.env
+ExecStart=/opt/qbrainlabs/app/server/.venv/bin/gunicorn \
     -k uvicorn.workers.UvicornWorker \
     -w 4 \
     -b 0.0.0.0:8000 \
-    --access-logfile /var/log/hotspotmatrix/access.log \
-    --error-logfile /var/log/hotspotmatrix/error.log \
+    --access-logfile /var/log/qbrainlabs/access.log \
+    --error-logfile /var/log/qbrainlabs/error.log \
     app.main:app
 Restart=always
 RestartSec=5
@@ -634,8 +812,8 @@ EOF
 #### 4. Create Environment File
 
 ```bash
-sudo tee /opt/hotspotmatrix/.env << 'EOF'
-DATABASE_URL=postgresql://hotspotmatrix_user:your_password@localhost:5432/hotspotmatrix
+sudo tee /opt/qbrainlabs/.env << 'EOF'
+DATABASE_URL=postgresql://qbrainlabs_user:your_password@localhost:5432/qbrainlabs
 REDIS_URL=redis://localhost:6379/0
 SECRET_KEY=your-secret-key-min-32-chars-long
 JWT_SECRET_KEY=your-jwt-secret-key-here
@@ -643,14 +821,451 @@ CORS_ORIGINS=https://qbrainlabs.com
 OPENAI_API_KEY=your-openai-key
 EOF
 
-sudo chown hotspotmatrix:hotspotmatrix /opt/hotspotmatrix/.env
-sudo chmod 600 /opt/hotspotmatrix/.env
+sudo chown qbrainlabs:qbrainlabs /opt/qbrainlabs/.env
+sudo chmod 600 /opt/qbrainlabs/.env
 ```
 
-#### 5. Setup Nginx Reverse Proxy
+#### 5. Production Configuration for IP Addresses and Domain Names
+
+When deploying to production, you need to configure the application to work with specific IP addresses or domain names. This section covers all necessary configuration steps.
+
+##### 5.1 Environment Variables Configuration
+
+Create or update your `.env` file with production settings:
 
 ```bash
-sudo tee /etc/nginx/sites-available/hotspotmatrix << 'EOF'
+# ===========================================
+# PRODUCTION CONFIGURATION
+# ===========================================
+
+# Environment
+ENVIRONMENT=production
+DEBUG=false
+NODE_ENV=production
+
+# Server Configuration
+# Bind to all interfaces (0.0.0.0) to accept connections from any IP
+SERVER_HOST=0.0.0.0
+SERVER_PORT=8000
+
+# Frontend Configuration
+# For production, frontend is typically served via nginx on port 80/443
+# If running Vite dev server, use 0.0.0.0 to allow network access
+CLIENT_HOST=0.0.0.0
+CLIENT_PORT=5173
+
+# CORS Configuration
+# IMPORTANT: Add all domains and IP addresses that will access your application
+# Format: comma-separated list of origins (protocol://domain:port)
+# Examples:
+#   - Single domain: https://qbrainlabs.com
+#   - Multiple domains: https://qbrainlabs.com,https://www.qbrainlabs.com
+#   - IP address: http://192.168.1.100:5173
+#   - Multiple IPs: http://192.168.1.100:5173,http://10.0.0.50:5173
+#   - Mixed: https://qbrainlabs.com,http://192.168.1.100:5173
+CORS_ORIGINS=https://qbrainlabs.com,https://www.qbrainlabs.com,http://192.168.1.100:5173
+
+# Frontend API URL (for build-time configuration)
+# This is used when building the frontend with Vite
+# Leave empty to use auto-detection based on hostname
+# Examples:
+#   - Domain: https://api.qbrainlabs.com
+#   - IP: http://192.168.1.100:8000
+#   - Auto-detect: (leave empty)
+VITE_API_URL=
+
+# Database
+DATABASE_URL=postgresql://user:password@host:5432/qbrainlabs
+
+# Security (CRITICAL: Generate new keys for production!)
+SECRET_KEY=your-production-secret-key-min-32-chars
+JWT_SECRET_KEY=your-production-jwt-secret-key
+```
+
+##### 5.2 CORS Configuration for Multiple Domains/IPs
+
+The application uses CORS (Cross-Origin Resource Sharing) to control which domains can access the API. Configure this properly for production:
+
+**Option A: Specific Domains/IPs (Recommended for Production)**
+
+```bash
+# In your .env file
+CORS_ORIGINS=https://qbrainlabs.com,https://www.qbrainlabs.com,https://app.qbrainlabs.com
+```
+
+**Option B: Allow All Origins (NOT Recommended - Use Only for Development)**
+
+```bash
+# In server/app/main.py, modify CORS middleware:
+# WARNING: This allows any origin - security risk!
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # NOT recommended for production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+```
+
+**Option C: Dynamic CORS Based on Environment**
+
+For flexibility, you can configure CORS based on environment:
+
+```python
+# In server/app/main.py
+import os
+
+cors_origins = os.getenv("CORS_ORIGINS", "").split(",")
+cors_origins = [origin.strip() for origin in cors_origins if origin.strip()]
+
+# Allow localhost in development
+if os.getenv("ENVIRONMENT") == "development":
+    cors_origins.extend([
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ])
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+```
+
+##### 5.3 Frontend API URL Configuration
+
+The frontend automatically detects the API URL based on the hostname when accessed. However, for production builds, you may want to set it explicitly.
+
+**For Development (Vite Dev Server):**
+
+The frontend auto-detects the API URL:
+- If accessing via `localhost` → API uses `http://localhost:8000`
+- If accessing via IP `192.168.1.100` → API uses `http://192.168.1.100:8000`
+- If accessing via domain `qbrainlabs.com` → API uses `http://qbrainlabs.com:8000`
+
+**For Production Build:**
+
+Option 1: Set at build time (recommended for single-domain deployments):
+
+```bash
+# Build with specific API URL
+cd client
+VITE_API_URL=https://api.qbrainlabs.com npm run build
+```
+
+Option 2: Use environment variable substitution in nginx (recommended for multi-domain):
+
+```nginx
+# In nginx.conf, proxy API requests
+location /api {
+    proxy_pass http://backend:8000/api;
+    # ... other proxy settings
+}
+```
+
+Then configure frontend to use relative URLs (already configured in the code).
+
+##### 5.4 Network Binding Configuration
+
+**Backend (FastAPI):**
+
+Ensure the backend binds to `0.0.0.0` to accept connections from any IP:
+
+```bash
+# In .env
+SERVER_HOST=0.0.0.0
+SERVER_PORT=8000
+
+# Or when running directly
+uvicorn app.main:app --host 0.0.0.0 --port 8000
+```
+
+**Frontend (Vite Dev Server):**
+
+For development, bind to `0.0.0.0`:
+
+```bash
+# In .env
+CLIENT_HOST=0.0.0.0
+CLIENT_PORT=5173
+
+# Or when running directly
+npm run dev -- --host 0.0.0.0
+```
+
+**Production Frontend (Nginx):**
+
+Nginx should listen on all interfaces:
+
+```nginx
+server {
+    listen 80;
+    listen [::]:80;  # IPv6
+    server_name qbrainlabs.com www.qbrainlabs.com;
+    # ... rest of config
+}
+```
+
+##### 5.5 Reverse Proxy Configuration (Nginx)
+
+For production, use nginx as a reverse proxy. This allows:
+- Single domain/port for both frontend and backend
+- SSL/TLS termination
+- Load balancing
+- Better security
+
+**Complete Nginx Configuration:**
+
+```nginx
+# /etc/nginx/sites-available/qbrainlabs
+
+# Upstream backend
+upstream backend {
+    server 127.0.0.1:8000;
+    keepalive 32;
+}
+
+# HTTP server (redirects to HTTPS)
+server {
+    listen 80;
+    listen [::]:80;
+    server_name qbrainlabs.com www.qbrainlabs.com;
+
+    # Redirect to HTTPS
+    return 301 https://$server_name$request_uri;
+}
+
+# HTTPS server
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name qbrainlabs.com www.qbrainlabs.com;
+
+    # SSL certificates (use Let's Encrypt)
+    ssl_certificate /etc/letsencrypt/live/qbrainlabs.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/qbrainlabs.com/privkey.pem;
+    
+    # SSL configuration
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers HIGH:!aNULL:!MD5;
+    ssl_prefer_server_ciphers on;
+
+    # Root directory (frontend build)
+    root /opt/qbrainlabs/app/client/dist;
+    index index.html;
+
+    # Gzip compression
+    gzip on;
+    gzip_vary on;
+    gzip_types text/plain text/css text/xml text/javascript 
+               application/javascript application/json application/xml+rss;
+
+    # Security headers
+    add_header X-Frame-Options "SAMEORIGIN" always;
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-XSS-Protection "1; mode=block" always;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
+    # Frontend (SPA routing)
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Cache static assets
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+        expires 1y;
+        add_header Cache-Control "public, immutable";
+    }
+
+    # Backend API
+    location /api {
+        proxy_pass http://backend;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+        proxy_read_timeout 300s;
+        proxy_connect_timeout 75s;
+    }
+
+    # WebSocket connections
+    location /ws {
+        proxy_pass http://backend;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 86400;
+    }
+}
+```
+
+**Enable the site:**
+
+```bash
+sudo ln -s /etc/nginx/sites-available/qbrainlabs /etc/nginx/sites-enabled/
+sudo nginx -t  # Test configuration
+sudo systemctl reload nginx
+```
+
+##### 5.6 Domain Name Configuration
+
+**Step 1: DNS Configuration**
+
+Point your domain to your server's IP address:
+
+```
+Type: A
+Name: @ (or qbrainlabs.com)
+Value: YOUR_SERVER_IP_ADDRESS
+TTL: 3600
+
+Type: A
+Name: www
+Value: YOUR_SERVER_IP_ADDRESS
+TTL: 3600
+```
+
+**Step 2: Update CORS Origins**
+
+After DNS is configured, update your `.env`:
+
+```bash
+CORS_ORIGINS=https://qbrainlabs.com,https://www.qbrainlabs.com
+```
+
+**Step 3: SSL Certificate (Let's Encrypt)**
+
+```bash
+# Install certbot
+sudo apt-get update
+sudo apt-get install certbot python3-certbot-nginx
+
+# Obtain certificate
+sudo certbot --nginx -d qbrainlabs.com -d www.qbrainlabs.com
+
+# Auto-renewal (already configured by certbot)
+sudo certbot renew --dry-run
+```
+
+##### 5.7 IP Address Access Configuration
+
+If you need to access the application via IP address (without domain):
+
+**Step 1: Update CORS**
+
+```bash
+# Add IP address to CORS origins
+CORS_ORIGINS=http://YOUR_IP_ADDRESS:5173,https://qbrainlabs.com
+```
+
+**Step 2: Configure Nginx for IP Access**
+
+```nginx
+# Add server block for IP access
+server {
+    listen 80;
+    server_name YOUR_IP_ADDRESS;
+
+    # Same configuration as domain server block
+    # ... (copy from above)
+}
+```
+
+**Step 3: Firewall Configuration**
+
+Ensure ports are open:
+
+```bash
+# UFW (Ubuntu)
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw allow 8000/tcp  # If accessing backend directly
+sudo ufw allow 5173/tcp  # If using Vite dev server
+
+# firewalld (CentOS/RHEL)
+sudo firewall-cmd --permanent --add-service=http
+sudo firewall-cmd --permanent --add-service=https
+sudo firewall-cmd --reload
+```
+
+##### 5.8 Docker Production Configuration
+
+For Docker deployments, update `docker-compose.prod.yml`:
+
+```yaml
+services:
+  backend:
+    environment:
+      - SERVER_HOST=0.0.0.0
+      - SERVER_PORT=8000
+      - CORS_ORIGINS=https://qbrainlabs.com,https://www.qbrainlabs.com
+      - DATABASE_URL=${DATABASE_URL}
+      - SECRET_KEY=${SECRET_KEY}
+    # ... other config
+
+  frontend:
+    environment:
+      - VITE_API_URL=  # Empty for auto-detection or set to backend URL
+    # ... other config
+```
+
+##### 5.9 Verification Checklist
+
+After configuration, verify:
+
+- [ ] Backend is accessible: `curl http://YOUR_DOMAIN_OR_IP:8000/`
+- [ ] Frontend is accessible: `curl http://YOUR_DOMAIN_OR_IP/`
+- [ ] API endpoints work: `curl http://YOUR_DOMAIN_OR_IP/api/workshops`
+- [ ] CORS headers are correct: Check browser Network tab
+- [ ] WebSocket connections work: Check browser console for socket.io connection
+- [ ] SSL certificate is valid (if using HTTPS)
+- [ ] Firewall allows necessary ports
+- [ ] DNS resolves correctly: `nslookup qbrainlabs.com`
+
+##### 5.10 Troubleshooting
+
+**Issue: CORS errors in browser**
+
+- Check `CORS_ORIGINS` includes your domain/IP
+- Verify protocol matches (http vs https)
+- Check port numbers match
+- Restart backend after changing CORS settings
+
+**Issue: API calls fail**
+
+- Verify `VITE_API_URL` is set correctly or auto-detection works
+- Check backend is accessible from frontend server
+- Verify nginx proxy configuration
+- Check browser console for errors
+
+**Issue: WebSocket connections fail**
+
+- Verify `/ws` location in nginx config
+- Check `proxy_set_header Upgrade` and `Connection` headers
+- Verify backend WebSocket endpoint is accessible
+- Check firewall allows WebSocket connections
+
+**Issue: Application not accessible from network**
+
+- Verify `SERVER_HOST=0.0.0.0` (not `127.0.0.1`)
+- Check firewall rules
+- Verify network routing
+- Check if server is behind NAT/router (may need port forwarding)
+
+#### 6. Setup Nginx Reverse Proxy
+
+```bash
+sudo tee /etc/nginx/sites-available/qbrainlabs << 'EOF'
 upstream backend {
     server 127.0.0.1:8000;
     keepalive 32;
@@ -672,7 +1287,7 @@ server {
     ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256;
 
     # Frontend static files
-    root /opt/hotspotmatrix/app/client/dist;
+    root /opt/qbrainlabs/app/client/dist;
     index index.html;
 
     # Gzip compression
@@ -710,7 +1325,7 @@ server {
 EOF
 
 # Enable site
-sudo ln -s /etc/nginx/sites-available/hotspotmatrix /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/qbrainlabs /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl reload nginx
 ```
 
@@ -731,17 +1346,17 @@ sudo systemctl enable certbot.timer
 
 ```bash
 # Create log directory
-sudo mkdir -p /var/log/hotspotmatrix
-sudo chown hotspotmatrix:hotspotmatrix /var/log/hotspotmatrix
+sudo mkdir -p /var/log/qbrainlabs
+sudo chown qbrainlabs:qbrainlabs /var/log/qbrainlabs
 
 # Enable and start service
 sudo systemctl daemon-reload
-sudo systemctl enable hotspotmatrix-backend
-sudo systemctl start hotspotmatrix-backend
+sudo systemctl enable qbrainlabs-backend
+sudo systemctl start qbrainlabs-backend
 
 # Check status
-sudo systemctl status hotspotmatrix-backend
-journalctl -u hotspotmatrix-backend -f
+sudo systemctl status qbrainlabs-backend
+journalctl -u qbrainlabs-backend -f
 ```
 
 ---
@@ -785,14 +1400,14 @@ $env:Path += ";C:\nssm\nssm-2.24\win64"
 
 ```powershell
 # Create application directory
-New-Item -ItemType Directory -Path "C:\hotspotmatrix" -Force
+New-Item -ItemType Directory -Path "C:\qbrainlabs" -Force
 
 # Clone repository
-cd C:\hotspotmatrix
-git clone https://github.com/your-org/hotspotmatrix.git app
+cd C:\qbrainlabs
+git clone https://github.com/your-org/qbrainlabs.git app
 
 # Setup backend
-cd C:\hotspotmatrix\app\server
+cd C:\qbrainlabs\app\server
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
@@ -806,7 +1421,7 @@ notepad .env  # Edit with your settings
 python init_db.py
 
 # Build frontend
-cd C:\hotspotmatrix\app\client
+cd C:\qbrainlabs\app\client
 npm ci
 npm run build
 ```
@@ -817,25 +1432,25 @@ npm run build
 # Create startup script
 @"
 @echo off
-cd /d C:\hotspotmatrix\app\server
+cd /d C:\qbrainlabs\app\server
 call .venv\Scripts\activate
 waitress-serve --host=127.0.0.1 --port=8000 app.main:app
-"@ | Out-File -FilePath "C:\hotspotmatrix\start-backend.bat" -Encoding ASCII
+"@ | Out-File -FilePath "C:\qbrainlabs\start-backend.bat" -Encoding ASCII
 
 # Install as Windows service using NSSM
-nssm install HotspotMatrix-Backend "C:\hotspotmatrix\start-backend.bat"
-nssm set HotspotMatrix-Backend DisplayName "Hotspot Matrix Backend"
-nssm set HotspotMatrix-Backend Description "Hotspot Matrix FastAPI Backend Service"
-nssm set HotspotMatrix-Backend AppDirectory "C:\hotspotmatrix\app\server"
-nssm set HotspotMatrix-Backend AppStdout "C:\hotspotmatrix\logs\backend-stdout.log"
-nssm set HotspotMatrix-Backend AppStderr "C:\hotspotmatrix\logs\backend-stderr.log"
-nssm set HotspotMatrix-Backend Start SERVICE_AUTO_START
+nssm install QbrainLabs-Backend "C:\qbrainlabs\start-backend.bat"
+nssm set QbrainLabs-Backend DisplayName "QbrainLabs Backend"
+nssm set QbrainLabs-Backend Description "QbrainLabs FastAPI Backend Service"
+nssm set QbrainLabs-Backend AppDirectory "C:\qbrainlabs\app\server"
+nssm set QbrainLabs-Backend AppStdout "C:\qbrainlabs\logs\backend-stdout.log"
+nssm set QbrainLabs-Backend AppStderr "C:\qbrainlabs\logs\backend-stderr.log"
+nssm set QbrainLabs-Backend Start SERVICE_AUTO_START
 
 # Create logs directory
-New-Item -ItemType Directory -Path "C:\hotspotmatrix\logs" -Force
+New-Item -ItemType Directory -Path "C:\qbrainlabs\logs" -Force
 
 # Start service
-nssm start HotspotMatrix-Backend
+nssm start QbrainLabs-Backend
 ```
 
 #### 5. Configure IIS as Reverse Proxy
@@ -845,13 +1460,13 @@ nssm start HotspotMatrix-Backend
 # Download from: https://www.iis.net/downloads/microsoft/application-request-routing
 
 # Create IIS site for frontend
-New-WebSite -Name "QbrainAILabs" -Port 443 -HostHeader "qbrainlabs.com" -PhysicalPath "C:\hotspotmatrix\app\client\dist" -Ssl
+New-WebSite -Name "QbrainAILabs" -Port 443 -HostHeader "qbrainlabs.com" -PhysicalPath "C:\qbrainlabs\app\client\dist" -Ssl
 
 # Import SSL certificate
 Import-PfxCertificate -FilePath "C:\certs\yourdomain.pfx" -CertStoreLocation "Cert:\LocalMachine\My" -Password (ConvertTo-SecureString -String "password" -AsPlainText -Force)
 ```
 
-Create `web.config` in `C:\hotspotmatrix\app\client\dist`:
+Create `web.config` in `C:\qbrainlabs\app\client\dist`:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -911,13 +1526,13 @@ pm2-startup install
 module.exports = {
   apps: [
     {
-      name: 'hotspotmatrix-backend',
+      name: 'qbrainlabs-backend',
       cwd: './server',
       script: '.venv/bin/uvicorn',
       args: 'app.main:app --host 0.0.0.0 --port 8000',
       interpreter: 'none',
       env: {
-        DATABASE_URL: 'postgresql://user:pass@localhost:5432/hotspotmatrix',
+        DATABASE_URL: 'postgresql://user:pass@localhost:5432/qbrainlabs',
         REDIS_URL: 'redis://localhost:6379/0',
         SECRET_KEY: 'your-secret-key',
       },
@@ -928,7 +1543,7 @@ module.exports = {
       max_memory_restart: '2G',
     },
     {
-      name: 'hotspotmatrix-frontend',
+      name: 'qbrainlabs-frontend',
       cwd: './client',
       script: 'npx',
       args: 'serve -s dist -l 3000',
@@ -987,13 +1602,13 @@ pm2 logs
 
 2. **Docker Images**: Build and push Docker images:
    ```bash
-   # Build backend image
-   cd server
-   docker build -t hotspotmatrix-backend:latest .
-   
-   # Build frontend image
-   cd client
-   docker build -t hotspotmatrix-frontend:latest .
+# Build backend image
+cd server
+docker build -t qbrainlabs-backend:latest .
+
+# Build frontend image
+cd client
+docker build -t qbrainlabs-frontend:latest .
    ```
 
 ---
@@ -1011,10 +1626,10 @@ Azure Container Apps provides serverless container hosting with built-in scaling
 az login
 
 # Set variables
-RESOURCE_GROUP="hotspotmatrix-rg"
+RESOURCE_GROUP="qbrainlabs-rg"
 LOCATION="eastus"
-ACR_NAME="hotspotmatrixacr"
-CONTAINER_APP_ENV="hotspotmatrix-env"
+ACR_NAME="qbrainlabsacr"
+CONTAINER_APP_ENV="qbrainlabs-env"
 
 # Create resource group
 az group create --name $RESOURCE_GROUP --location $LOCATION
@@ -1025,12 +1640,12 @@ az acr login --name $ACR_NAME
 
 # Build and push images
 cd server
-docker build -t $ACR_NAME.azurecr.io/hotspotmatrix-backend:latest .
-docker push $ACR_NAME.azurecr.io/hotspotmatrix-backend:latest
+docker build -t $ACR_NAME.azurecr.io/qbrainlabs-backend:latest .
+docker push $ACR_NAME.azurecr.io/qbrainlabs-backend:latest
 
 cd ../client
-docker build -t $ACR_NAME.azurecr.io/hotspotmatrix-frontend:latest .
-docker push $ACR_NAME.azurecr.io/hotspotmatrix-frontend:latest
+docker build -t $ACR_NAME.azurecr.io/qbrainlabs-frontend:latest .
+docker push $ACR_NAME.azurecr.io/qbrainlabs-frontend:latest
 ```
 
 #### 2. Create Azure Database for PostgreSQL
@@ -1038,7 +1653,7 @@ docker push $ACR_NAME.azurecr.io/hotspotmatrix-frontend:latest
 ```bash
 az postgres flexible-server create \
   --resource-group $RESOURCE_GROUP \
-  --name hotspotmatrix-db \
+  --name qbrainlabs-db \
   --location $LOCATION \
   --admin-user postgres \
   --admin-password "YourSecurePassword123!" \
@@ -1049,8 +1664,8 @@ az postgres flexible-server create \
 
 az postgres flexible-server db create \
   --resource-group $RESOURCE_GROUP \
-  --server-name hotspotmatrix-db \
-  --database-name hotspotmatrix
+  --server-name qbrainlabs-db \
+  --database-name qbrainlabs
 ```
 
 #### 3. Create Azure Cache for Redis
@@ -1058,7 +1673,7 @@ az postgres flexible-server db create \
 ```bash
 az redis create \
   --resource-group $RESOURCE_GROUP \
-  --name hotspotmatrix-redis \
+  --name qbrainlabs-redis \
   --location $LOCATION \
   --sku Basic \
   --vm-size c0
@@ -1075,28 +1690,28 @@ az containerapp env create \
 
 # Deploy backend
 az containerapp create \
-  --name hotspotmatrix-backend \
+  --name qbrainlabs-backend \
   --resource-group $RESOURCE_GROUP \
   --environment $CONTAINER_APP_ENV \
-  --image $ACR_NAME.azurecr.io/hotspotmatrix-backend:latest \
+  --image $ACR_NAME.azurecr.io/qbrainlabs-backend:latest \
   --target-port 8000 \
   --ingress external \
   --registry-server $ACR_NAME.azurecr.io \
   --env-vars \
-    DATABASE_URL="postgresql://postgres:YourSecurePassword123!@hotspotmatrix-db.postgres.database.azure.com:5432/hotspotmatrix" \
-    REDIS_URL="redis://hotspotmatrix-redis.redis.cache.windows.net:6380?ssl=true" \
+    DATABASE_URL="postgresql://postgres:YourSecurePassword123!@qbrainlabs-db.postgres.database.azure.com:5432/qbrainlabs" \
+    REDIS_URL="redis://qbrainlabs-redis.redis.cache.windows.net:6380?ssl=true" \
     SECRET_KEY="your-secret-key-here" \
   --cpu 1.0 --memory 2.0Gi \
   --min-replicas 1 --max-replicas 10
 
 # Deploy frontend
-BACKEND_URL=$(az containerapp show --name hotspotmatrix-backend --resource-group $RESOURCE_GROUP --query properties.configuration.ingress.fqdn -o tsv)
+BACKEND_URL=$(az containerapp show --name qbrainlabs-backend --resource-group $RESOURCE_GROUP --query properties.configuration.ingress.fqdn -o tsv)
 
 az containerapp create \
-  --name hotspotmatrix-frontend \
+  --name qbrainlabs-frontend \
   --resource-group $RESOURCE_GROUP \
   --environment $CONTAINER_APP_ENV \
-  --image $ACR_NAME.azurecr.io/hotspotmatrix-frontend:latest \
+  --image $ACR_NAME.azurecr.io/qbrainlabs-frontend:latest \
   --target-port 80 \
   --ingress external \
   --registry-server $ACR_NAME.azurecr.io \
@@ -1109,21 +1724,21 @@ az containerapp create \
 ```bash
 # Create App Service Plan
 az appservice plan create \
-  --name hotspotmatrix-plan \
+  --name qbrainlabs-plan \
   --resource-group $RESOURCE_GROUP \
   --sku B1 --is-linux
 
 # Create Web App
 az webapp create \
   --resource-group $RESOURCE_GROUP \
-  --plan hotspotmatrix-plan \
-  --name hotspotmatrix-backend \
-  --deployment-container-image-name $ACR_NAME.azurecr.io/hotspotmatrix-backend:latest
+  --plan qbrainlabs-plan \
+  --name qbrainlabs-backend \
+  --deployment-container-image-name $ACR_NAME.azurecr.io/qbrainlabs-backend:latest
 
 # Enable WebSockets
 az webapp config set \
   --resource-group $RESOURCE_GROUP \
-  --name hotspotmatrix-backend \
+  --name qbrainlabs-backend \
   --web-sockets-enabled true
 ```
 
@@ -1140,21 +1755,21 @@ AWS_REGION="us-east-1"
 AWS_ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
 
 # Create repositories
-aws ecr create-repository --repository-name hotspotmatrix-backend --region $AWS_REGION
-aws ecr create-repository --repository-name hotspotmatrix-frontend --region $AWS_REGION
+aws ecr create-repository --repository-name qbrainlabs-backend --region $AWS_REGION
+aws ecr create-repository --repository-name qbrainlabs-frontend --region $AWS_REGION
 
 # Login and push
 aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
 
-docker tag hotspotmatrix-backend:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/hotspotmatrix-backend:latest
-docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/hotspotmatrix-backend:latest
+docker tag qbrainlabs-backend:latest $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/qbrainlabs-backend:latest
+docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/qbrainlabs-backend:latest
 ```
 
 #### 2. Create RDS PostgreSQL
 
 ```bash
 aws rds create-db-instance \
-  --db-instance-identifier hotspotmatrix-db \
+  --db-instance-identifier qbrainlabs-db \
   --db-instance-class db.t3.micro \
   --engine postgres \
   --engine-version 15.4 \
@@ -1168,16 +1783,16 @@ aws rds create-db-instance \
 
 ```bash
 # Create cluster
-aws ecs create-cluster --cluster-name hotspotmatrix-cluster
+aws ecs create-cluster --cluster-name qbrainlabs-cluster
 
 # Create task definition (see full JSON in docs)
 aws ecs register-task-definition --cli-input-json file://task-definition.json
 
 # Create service with Fargate
 aws ecs create-service \
-  --cluster hotspotmatrix-cluster \
-  --service-name hotspotmatrix-backend \
-  --task-definition hotspotmatrix-backend \
+  --cluster qbrainlabs-cluster \
+  --service-name qbrainlabs-backend \
+  --task-definition qbrainlabs-backend \
   --desired-count 2 \
   --launch-type FARGATE \
   --network-configuration "awsvpcConfiguration={subnets=[subnet-xxx],securityGroups=[sg-xxx],assignPublicIp=ENABLED}"
@@ -1189,8 +1804,8 @@ aws ecs create-service \
 pip install awsebcli
 
 cd server
-eb init -p python-3.11 hotspotmatrix-backend --region us-east-1
-eb create hotspotmatrix-backend-env
+eb init -p python-3.11 qbrainlabs-backend --region us-east-1
+eb create qbrainlabs-backend-env
 eb setenv DATABASE_URL="postgresql://..." REDIS_URL="redis://..."
 eb deploy
 ```
@@ -1199,10 +1814,10 @@ eb deploy
 
 ```bash
 aws apprunner create-service \
-  --service-name hotspotmatrix-backend \
+  --service-name qbrainlabs-backend \
   --source-configuration '{
     "ImageRepository": {
-      "ImageIdentifier": "'$AWS_ACCOUNT_ID'.dkr.ecr.'$AWS_REGION'.amazonaws.com/hotspotmatrix-backend:latest",
+      "ImageIdentifier": "'$AWS_ACCOUNT_ID'.dkr.ecr.'$AWS_REGION'.amazonaws.com/qbrainlabs-backend:latest",
       "ImageRepositoryType": "ECR"
     }
   }' \
@@ -1237,19 +1852,19 @@ gcloud services enable \
 #### 2. Create Cloud SQL PostgreSQL
 
 ```bash
-gcloud sql instances create hotspotmatrix-db \
+gcloud sql instances create qbrainlabs-db \
   --database-version=POSTGRES_15 \
   --tier=db-f1-micro \
   --region=$REGION \
   --root-password=YourSecurePassword123!
 
-gcloud sql databases create hotspotmatrix --instance=hotspotmatrix-db
+gcloud sql databases create qbrainlabs --instance=qbrainlabs-db
 ```
 
 #### 3. Create Memorystore Redis
 
 ```bash
-gcloud redis instances create hotspotmatrix-redis \
+gcloud redis instances create qbrainlabs-redis \
   --size=1 \
   --region=$REGION \
   --redis-version=redis_7_0
@@ -1263,11 +1878,11 @@ gcloud auth configure-docker
 
 # Build and push
 cd server
-gcloud builds submit --tag gcr.io/$PROJECT_ID/hotspotmatrix-backend:latest
+gcloud builds submit --tag gcr.io/$PROJECT_ID/qbrainlabs-backend:latest
 
 # Deploy to Cloud Run
-gcloud run deploy hotspotmatrix-backend \
-  --image gcr.io/$PROJECT_ID/hotspotmatrix-backend:latest \
+gcloud run deploy qbrainlabs-backend \
+  --image gcr.io/$PROJECT_ID/qbrainlabs-backend:latest \
   --platform managed \
   --region=$REGION \
   --allow-unauthenticated \
@@ -1282,7 +1897,7 @@ gcloud run deploy hotspotmatrix-backend \
 
 ```bash
 # Create cluster
-gcloud container clusters create hotspotmatrix-cluster \
+gcloud container clusters create qbrainlabs-cluster \
   --num-nodes=3 \
   --machine-type=e2-medium \
   --region=$REGION \
@@ -1315,12 +1930,12 @@ doctl apps create --spec .do/app.yaml
 Create `.do/app.yaml`:
 
 ```yaml
-name: hotspotmatrix
+name: qbrainlabs
 region: nyc
 services:
   - name: backend
     github:
-      repo: your-org/hotspotmatrix
+      repo: your-org/qbrainlabs
       branch: main
       deploy_on_push: true
     source_dir: server
@@ -1355,7 +1970,7 @@ databases:
 
 ```bash
 # Create droplet with Docker
-doctl compute droplet create hotspotmatrix \
+doctl compute droplet create qbrainlabs \
   --image docker-20-04 \
   --size s-2vcpu-4gb \
   --region nyc1 \
@@ -1363,8 +1978,8 @@ doctl compute droplet create hotspotmatrix \
 
 # SSH and deploy
 ssh root@your-droplet-ip
-git clone https://github.com/your-org/hotspotmatrix.git
-cd hotspotmatrix
+git clone https://github.com/your-org/qbrainlabs.git
+cd qbrainlabs
 docker-compose -f docker-compose.prod.yml up -d
 ```
 
@@ -1377,7 +1992,7 @@ docker-compose -f docker-compose.prod.yml up -d
 | Platform | Service | Configuration |
 |----------|---------|---------------|
 | Azure | Key Vault | `az keyvault secret set --vault-name mykeyvault --name SECRET_KEY --value "..."` |
-| AWS | Secrets Manager | `aws secretsmanager create-secret --name hotspotmatrix/secrets --secret-string '{"SECRET_KEY":"..."}'` |
+| AWS | Secrets Manager | `aws secretsmanager create-secret --name qbrainlabs/secrets --secret-string '{"SECRET_KEY":"..."}'` |
 | GCP | Secret Manager | `echo -n "..." | gcloud secrets create SECRET_KEY --data-file=-` |
 
 ### SSL/TLS Configuration
@@ -1467,13 +2082,13 @@ jobs:
       
       - name: Build and push Docker images
         run: |
-          docker build -t ${{ secrets.REGISTRY }}/hotspotmatrix-backend:${{ github.sha }} ./server
-          docker push ${{ secrets.REGISTRY }}/hotspotmatrix-backend:${{ github.sha }}
+          docker build -t ${{ secrets.REGISTRY }}/qbrainlabs-backend:${{ github.sha }} ./server
+          docker push ${{ secrets.REGISTRY }}/qbrainlabs-backend:${{ github.sha }}
           
       - name: Deploy to Cloud Run
         run: |
-          gcloud run deploy hotspotmatrix-backend \
-            --image ${{ secrets.REGISTRY }}/hotspotmatrix-backend:${{ github.sha }} \
+          gcloud run deploy qbrainlabs-backend \
+            --image ${{ secrets.REGISTRY }}/qbrainlabs-backend:${{ github.sha }} \
             --region us-central1
 ```
 

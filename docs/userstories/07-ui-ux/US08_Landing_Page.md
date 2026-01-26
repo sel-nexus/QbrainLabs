@@ -50,16 +50,16 @@
 
 ### 5. Technical & Engagement
 *   **Responsiveness:** Fully responsive design that works perfectly on mobile (for participants joining via phone) and desktop.
-*   **SEO Optimization:** Proper meta title ("AI Hotspot - Collaborative AI Strategy Workshops"), description, and semantic HTML tags.
+*   **SEO Optimization:** Proper meta title ("Qbrain AI Labs - Collaborative AI Strategy Workshops"), description, and semantic HTML tags.
 *   **Performance:** Fast loading time (Lighthouse Score > 90) to ensure low bounce rate.
 
 ### 6. Footer
-*   **Content:** Must display exactly: "2026 hotspotmatrix.ai, All Rights Reserved."
+*   **Content:** Must display exactly: "2026 qbrainlabs.com, All Rights Reserved."
 
 ## Scenarios
 
 ### Scenario A: New Facilitator Arrives
-1.  User lands on `https://hotspotmatrix.ai`.
+1.  User lands on `https://qbrainlabs.com`.
 2.  Reads the "Map AI Use Cases" headline.
 3.  Scrolls to see "Powerful Workshop Features".
 4.  Clicks "Facilitator Login" on the specific card.
