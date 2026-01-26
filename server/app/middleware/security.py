@@ -66,7 +66,8 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         
         client_ip = get_client_ip(request)
         
-        if not rate_limiter.is_allowed(client_ip):
+        # Use async rate limiter (supports Redis)
+        if not await rate_limiter.is_allowed(client_ip):
             return Response(
                 content='{"error": "Rate limit exceeded"}',
                 status_code=429,
@@ -81,7 +82,7 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         response = await call_next(request)
         
         # Add rate limit headers
-        remaining = rate_limiter.get_remaining(client_ip)
+        remaining = await rate_limiter.get_remaining(client_ip)
         response.headers["X-RateLimit-Limit"] = str(self.max_requests)
         response.headers["X-RateLimit-Remaining"] = str(remaining)
         

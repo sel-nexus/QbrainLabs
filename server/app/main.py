@@ -44,10 +44,20 @@ setup_health_endpoints(app)
 # Setup security middleware
 setup_security_middleware(app)
 
-# CORS Policy
+# Add request ID tracking middleware (should be early in the stack)
+from app.middleware.request_id import RequestIDMiddleware
+app.add_middleware(RequestIDMiddleware)
+
+# CORS Policy - Use environment-based configuration
+cors_origins = [
+    origin.strip() 
+    for origin in settings.CORS_ORIGINS.split(",") 
+    if origin.strip()
+] if settings.CORS_ORIGINS else []
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

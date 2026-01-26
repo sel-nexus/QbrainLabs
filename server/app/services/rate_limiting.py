@@ -20,6 +20,11 @@ DEFAULT_DAILY_LIMIT = 10
 DEFAULT_WEEKLY_LIMIT = 20
 DEFAULT_MONTHLY_LIMIT = 50
 
+# Export for backward compatibility with tests
+DAILY_LIMIT = DEFAULT_DAILY_LIMIT
+WEEKLY_LIMIT = DEFAULT_WEEKLY_LIMIT
+MONTHLY_LIMIT = DEFAULT_MONTHLY_LIMIT
+
 
 class RateLimitExceeded(Exception):
     """Exception raised when rate limit is exceeded"""

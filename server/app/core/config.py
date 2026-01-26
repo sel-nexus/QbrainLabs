@@ -1,6 +1,8 @@
 from pydantic_settings import BaseSettings
+from pydantic import Field, field_validator
 from typing import Optional
 from pathlib import Path
+import secrets
 
 # Find .env file - check current dir, then parent dir (project root)
 def find_env_file() -> str:
@@ -22,8 +24,8 @@ class Settings(BaseSettings):
     DATABASE_URL: str = "postgresql://postgres:postgres@localhost:5432/hotspotmatrix"
     
     # PostgreSQL Connection Pool Settings
-    DB_POOL_SIZE: int = 10
-    DB_MAX_OVERFLOW: int = 20
+    DB_POOL_SIZE: int = Field(default=10, ge=5, le=50)
+    DB_MAX_OVERFLOW: int = Field(default=20, ge=10, le=100)
     DB_POOL_TIMEOUT: int = 30
     DB_POOL_RECYCLE: int = 1800  # Recycle connections after 30 minutes
     DB_ECHO: bool = False  # Set to True for SQL query logging
@@ -31,13 +33,38 @@ class Settings(BaseSettings):
     REDIS_URL: str = "redis://localhost:6379/0"
     
     # Security - JWT Authentication
-    SECRET_KEY: str = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7"  # Change in production
+    # CRITICAL: Must be set via environment variable in production
+    # Generate with: python -c "import secrets; print(secrets.token_urlsafe(32))"
+    SECRET_KEY: str = Field(
+        default="CHANGE_ME_TO_A_SECURE_RANDOM_STRING_AT_LEAST_32_CHARS",
+        min_length=32,
+        description="Secret key for JWT tokens. MUST be set via SECRET_KEY environment variable in production."
+    )
     ALGORITHM: str = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES: int = 43200  # 30 days
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = Field(default=43200, ge=15, le=43200)  # 30 days max
+    
+    # CORS Configuration
+    CORS_ORIGINS: str = Field(
+        default="http://localhost:5173,http://127.0.0.1:5173",
+        description="Comma-separated list of allowed CORS origins"
+    )
     
     # Environment
     ENVIRONMENT: str = "development"
     DEBUG: bool = True
+
+    @field_validator('SECRET_KEY')
+    @classmethod
+    def validate_secret_key(cls, v: str) -> str:
+        """Ensure secret key is not the default hardcoded value in production"""
+        if v == "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7":
+            import warnings
+            warnings.warn(
+                "SECRET_KEY is using the default hardcoded value. "
+                "This is a security risk! Set SECRET_KEY environment variable.",
+                UserWarning
+            )
+        return v
 
     class Config:
         env_file = find_env_file()

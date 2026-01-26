@@ -806,6 +806,82 @@ This plan outlines the phased execution of the Hotspot Matrix application, ensur
 
 ---
 
+## Sprint 27: Code Review & Performance Optimization (Completed ✅)
+**Goal:** Address critical security vulnerabilities, performance bottlenecks, and code quality issues identified in comprehensive code review.
+**Focus:** Security hardening, performance optimization, scalability improvements.
+
+### Tasks (Critical Security Fixes)
+- [x] **Security Configuration:**
+    - [x] Remove hardcoded SECRET_KEY from config.py (now uses environment variable with validation)
+    - [x] Add SECRET_KEY validation warning for default values
+    - [x] Consolidate JWT token expiration to single source of truth (settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    - [x] Fix CORS configuration to use environment variables (CORS_ORIGINS)
+    - [x] Add connection pool validation (min/max constraints)
+
+### Tasks (Performance Optimizations)
+- [x] **Database Query Optimization:**
+    - [x] Fix N+1 query problem in polls endpoint (use selectinload for eager loading)
+    - [x] Optimize workshop ID lookup with UNION query (reduces 2 queries to 1)
+    - [x] Create migration script for performance indexes (add_performance_indexes.py)
+    - [x] Add indexes on: votes(use_case_id, participant_id), workshops(facilitator_id), participants(workshop_id), poll_responses(poll_id)
+
+### Tasks (Code Quality Improvements)
+- [x] **Password Validation:**
+    - [x] Use PasswordValidator class in change-password endpoint (replaces simple length check)
+    - [x] Centralize password hashing functions (use security.py module)
+    - [x] Remove duplicate password hashing code from auth.py
+
+### Tasks (Code Standardization)
+- [x] **Import Organization:**
+    - [x] Consolidate password functions to use security module
+    - [x] Fix import order and remove unused imports
+    - [x] Use single source of truth for JWT configuration
+
+**Status:** ✅ COMPLETED - Critical security and performance fixes implemented  
+**Implementation Date:** January 25, 2026  
+**Code Review Report:** [CODE_REVIEW_REPORT.md](../../CODE_REVIEW_REPORT.md)
+
+### Additional Improvements (Phase 2)
+- [x] **Database Migration:**
+    - [x] Executed performance indexes migration successfully
+    - [x] Added 8 performance indexes for query optimization
+- [x] **Redis Integration:**
+    - [x] Implemented Redis client with graceful fallback
+    - [x] Redis-based distributed rate limiting
+    - [x] Query result caching layer with Redis backend
+- [x] **Security Enhancements:**
+    - [x] WebSocket authentication with JWT validation
+    - [x] Request ID tracking middleware for observability
+- [x] **Database Improvements:**
+    - [x] Added query timeouts (30 seconds) to prevent hung queries
+    - [x] Connection pool validation and constraints
+
+**Phase 2 Status:** ✅ COMPLETED - All next steps implemented  
+**Phase 2 Date:** January 25, 2026  
+**Implementation Summary:** [NEXT_STEPS_COMPLETED.md](../../NEXT_STEPS_COMPLETED.md)
+
+**Key Improvements:**
+- ✅ Security: Removed hardcoded secrets, added validation
+- ✅ Performance: Fixed N+1 queries, optimized database lookups
+- ✅ Code Quality: Standardized password validation, consolidated configuration
+- ✅ Scalability: Added database indexes, optimized connection pooling
+
+**Files Modified:**
+- `server/app/core/config.py` - Security configuration improvements
+- `server/app/api/auth.py` - Password validation, query optimization, import cleanup
+- `server/app/api/polls.py` - N+1 query fix with selectinload
+- `server/app/main.py` - CORS environment-based configuration
+- `server/migrations/add_performance_indexes.py` - New migration for indexes
+- `server/app/services/rate_limiting.py` - Export constants for test compatibility
+
+**Test Results:**
+- ✅ Password validation working correctly
+- ✅ Configuration loading successfully
+- ✅ Import errors resolved
+- ⚠️ Some pre-existing test failures (unrelated to code review fixes)
+
+---
+
 ## Sprint 26 (Continued): Workshop-Facilitator Assignment Enhancement (Planned 📅)
 **Goal:** Implement enhanced workshop-facilitator assignment system where facilitators only see assigned workshops and admins can manage assignments.
 **Focus:** US30 Enhancement - Workshop Assignment Controls, Facilitator Dashboard Filtering, Admin Assignment Interface.

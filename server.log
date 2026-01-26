@@ -1,862 +1,115 @@
 INFO:     Will watch for changes in these directories: ['/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server']
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [89962] using WatchFiles
+INFO:     Started reloader process [68965] using WatchFiles
 /Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-2026-01-25 11:21:19,454 - hotspotmatrix - INFO - Exception handlers registered
-INFO:     Started server process [89970]
+2026-01-25 15:01:14,821 - hotspotmatrix - INFO - Exception handlers registered
+INFO:     Started server process [68971]
 INFO:     Waiting for application startup.
 RAGService running in MOCK MODE (No API Key found)
 RoadmapService running in MOCK MODE (No API Key found)
 CopilotService running in MOCK MODE (No API Key found)
-{"event": "Starting application...", "level": "info", "timestamp": "2026-01-25T17:21:20.028941Z"}
-{"event": "Database tables created", "level": "info", "timestamp": "2026-01-25T17:21:25.137382Z"}
+{"event": "Starting application...", "level": "info", "timestamp": "2026-01-25T21:01:15.610363Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-01-25T21:01:20.794805Z"}
 INFO:     Application startup complete.
-INFO:     ('127.0.0.1', 62175) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/core/socket_manager.py:43: RuntimeWarning: coroutine 'AsyncServer.enter_room' was never awaited
-  sio.enter_room(sid, workshop_id)
-RuntimeWarning: Enable tracemalloc to get the object allocation traceback
-Client connected: Oxa_AzEEUIOewGkVAAAB
-SID Oxa_AzEEUIOewGkVAAAB joined room 6534a595-5fc0-4ce4-9171-e238009a924e
-SID Oxa_AzEEUIOewGkVAAAB joined room 6534a595-5fc0-4ce4-9171-e238009a924e
-SID Oxa_AzEEUIOewGkVAAAB joined room 6534a595-5fc0-4ce4-9171-e238009a924e
-SID Oxa_AzEEUIOewGkVAAAB joined room 6534a595-5fc0-4ce4-9171-e238009a924e
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 595.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:21:26.311779Z"}
-{"method": "GET", "path": "/api/workshops/6534a595-5fc0-4ce4-9171-e238009a924e", "status_code": 200, "duration_ms": 642.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:21:26.358751Z"}
-/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/core/socket_manager.py:236: RuntimeWarning: coroutine 'AsyncServer.enter_room' was never awaited
-  sio.enter_room(sid, f"copilot_{workshop_id}")
-RuntimeWarning: Enable tracemalloc to get the object allocation traceback
-/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/core/socket_manager.py:245: RuntimeWarning: coroutine 'AsyncServer.leave_room' was never awaited
-  sio.leave_room(sid, f"copilot_{workshop_id}")
-RuntimeWarning: Enable tracemalloc to get the object allocation traceback
-SID Oxa_AzEEUIOewGkVAAAB joined copilot room for workshop 6534a595-5fc0-4ce4-9171-e238009a924e
-SID Oxa_AzEEUIOewGkVAAAB left copilot room for workshop 6534a595-5fc0-4ce4-9171-e238009a924e
-SID Oxa_AzEEUIOewGkVAAAB joined copilot room for workshop 6534a595-5fc0-4ce4-9171-e238009a924e
-{"method": "GET", "path": "/api/challenges/workshops/6534a595-5fc0-4ce4-9171-e238009a924e/challenges", "status_code": 200, "duration_ms": 437.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:21:26.821547Z"}
-{"method": "GET", "path": "/api/usecases/6534a595-5fc0-4ce4-9171-e238009a924e", "status_code": 200, "duration_ms": 462.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:21:26.824461Z"}
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 463.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:21:26.824584Z"}
-{"method": "GET", "path": "/api/workshops/6534a595-5fc0-4ce4-9171-e238009a924e", "status_code": 200, "duration_ms": 500.35, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:21:26.907216Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/6534a595-5fc0-4ce4-9171-e238009a924e/insights", "status_code": 200, "duration_ms": 531.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:21:26.912866Z"}
-{"method": "GET", "path": "/api/surveys/workshop/6534a595-5fc0-4ce4-9171-e238009a924e", "status_code": 200, "duration_ms": 531.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:21:26.913253Z"}
-{"method": "GET", "path": "/api/challenges/workshops/6534a595-5fc0-4ce4-9171-e238009a924e/challenges", "status_code": 200, "duration_ms": 422.55, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:21:27.293622Z"}
-{"method": "GET", "path": "/api/polls/workshop/6534a595-5fc0-4ce4-9171-e238009a924e", "status_code": 200, "duration_ms": 460.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:21:27.332045Z"}
-{"method": "GET", "path": "/api/usecases/6534a595-5fc0-4ce4-9171-e238009a924e", "status_code": 200, "duration_ms": 439.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:21:27.389519Z"}
-{"method": "GET", "path": "/api/surveys/workshop/6534a595-5fc0-4ce4-9171-e238009a924e", "status_code": 200, "duration_ms": 515.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:21:27.470046Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/6534a595-5fc0-4ce4-9171-e238009a924e/insights", "status_code": 200, "duration_ms": 512.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:21:27.470158Z"}
-{"method": "GET", "path": "/api/polls/workshop/6534a595-5fc0-4ce4-9171-e238009a924e", "status_code": 200, "duration_ms": 438.27, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:21:27.819175Z"}
-{"method": "POST", "path": "/api/workshops/6534a595-5fc0-4ce4-9171-e238009a924e/phase", "status_code": 200, "duration_ms": 1027.42, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:22:17.098178Z"}
-{"method": "POST", "path": "/api/workshops/6534a595-5fc0-4ce4-9171-e238009a924e/phase", "status_code": 200, "duration_ms": 1126.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:22:25.180021Z"}
-{"method": "GET", "path": "/api/results/6534a595-5fc0-4ce4-9171-e238009a924e", "status_code": 200, "duration_ms": 412.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:22:25.723527Z"}
-INFO:     connection closed
-Client disconnected: Oxa_AzEEUIOewGkVAAAB
-{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 1429.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:23:32.698914Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 821.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:23:33.558435Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 778.9, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:23:34.385549Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1199.6, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:23:37.795319Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1181.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:23:39.022177Z"}
-INFO:     ('127.0.0.1', 62261) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-Client connected: T2kWC43l_ZvKGeCJAAAD
-SID T2kWC43l_ZvKGeCJAAAD joined room c745443c-21bc-445d-8353-3b81f8e67faa
-SID T2kWC43l_ZvKGeCJAAAD joined room c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 497.38, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:23:40.012151Z"}
-SID T2kWC43l_ZvKGeCJAAAD joined copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-SID T2kWC43l_ZvKGeCJAAAD left copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-SID T2kWC43l_ZvKGeCJAAAD joined copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 462.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:23:40.485528Z"}
-{"method": "GET", "path": "/api/challenges/workshops/c745443c-21bc-445d-8353-3b81f8e67faa/challenges", "status_code": 200, "duration_ms": 476.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:23:40.531015Z"}
-{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 497.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:23:40.555265Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/c745443c-21bc-445d-8353-3b81f8e67faa/insights", "status_code": 200, "duration_ms": 658.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:23:40.712377Z"}
-{"method": "GET", "path": "/api/surveys/workshop/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 805.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:23:40.859695Z"}
-{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 484.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:23:41.083374Z"}
-{"method": "GET", "path": "/api/challenges/workshops/c745443c-21bc-445d-8353-3b81f8e67faa/challenges", "status_code": 200, "duration_ms": 509.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:23:41.086705Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/c745443c-21bc-445d-8353-3b81f8e67faa/insights", "status_code": 200, "duration_ms": 620.23, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:23:41.432059Z"}
-{"method": "GET", "path": "/api/surveys/workshop/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 652.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:23:41.558030Z"}
-SID T2kWC43l_ZvKGeCJAAAD left copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1280.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:23:52.867696Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1171.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:23:54.086498Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 927.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:28:58.708682Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 827.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:28:59.580180Z"}
-INFO:     connection closed
-Client disconnected: T2kWC43l_ZvKGeCJAAAD
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 433.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:02.336768Z"}
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 428.21, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:02.812879Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 844.98, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:04.382217Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 740.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:05.165930Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1190.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:08.237056Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1300.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:09.582663Z"}
-INFO:     ('127.0.0.1', 62437) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-Client connected: LJw-RW1C_R-8siszAAAF
-SID LJw-RW1C_R-8siszAAAF joined room c745443c-21bc-445d-8353-3b81f8e67faa
-SID LJw-RW1C_R-8siszAAAF joined room c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 487.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:11.201888Z"}
-SID LJw-RW1C_R-8siszAAAF joined copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-SID LJw-RW1C_R-8siszAAAF left copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-SID LJw-RW1C_R-8siszAAAF joined copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 476.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:11.684601Z"}
-{"method": "GET", "path": "/api/challenges/workshops/c745443c-21bc-445d-8353-3b81f8e67faa/challenges", "status_code": 200, "duration_ms": 444.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:11.684871Z"}
-{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 485.23, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:11.732382Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/c745443c-21bc-445d-8353-3b81f8e67faa/insights", "status_code": 200, "duration_ms": 615.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:11.852211Z"}
-{"method": "GET", "path": "/api/surveys/workshop/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 708.76, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:11.946256Z"}
-{"method": "GET", "path": "/api/challenges/workshops/c745443c-21bc-445d-8353-3b81f8e67faa/challenges", "status_code": 200, "duration_ms": 523.63, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:12.259226Z"}
-{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 448.5, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:12.302156Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/c745443c-21bc-445d-8353-3b81f8e67faa/insights", "status_code": 200, "duration_ms": 631.22, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:12.526669Z"}
-{"method": "GET", "path": "/api/surveys/workshop/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 784.7, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:12.778497Z"}
-SID LJw-RW1C_R-8siszAAAF left copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1200.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:18.736983Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1246.22, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:20.027792Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 747.49, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:20.818694Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 825.93, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:21.690470Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1219.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:34.414751Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1169.46, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:35.628118Z"}
-SID LJw-RW1C_R-8siszAAAF joined room c745443c-21bc-445d-8353-3b81f8e67faa
-SID LJw-RW1C_R-8siszAAAF joined room c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 484.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:36.500273Z"}
-SID LJw-RW1C_R-8siszAAAF joined copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-SID LJw-RW1C_R-8siszAAAF left copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-SID LJw-RW1C_R-8siszAAAF joined copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 443.77, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:36.950409Z"}
-{"method": "GET", "path": "/api/challenges/workshops/c745443c-21bc-445d-8353-3b81f8e67faa/challenges", "status_code": 200, "duration_ms": 466.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:36.990485Z"}
-{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 492.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:37.036668Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/c745443c-21bc-445d-8353-3b81f8e67faa/insights", "status_code": 200, "duration_ms": 631.53, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:37.154789Z"}
-{"method": "GET", "path": "/api/surveys/workshop/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 679.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:37.203211Z"}
-{"method": "GET", "path": "/api/challenges/workshops/c745443c-21bc-445d-8353-3b81f8e67faa/challenges", "status_code": 200, "duration_ms": 540.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:37.574599Z"}
-{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 465.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:37.621287Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/c745443c-21bc-445d-8353-3b81f8e67faa/insights", "status_code": 200, "duration_ms": 641.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:37.846451Z"}
-{"method": "GET", "path": "/api/surveys/workshop/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 647.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:37.976014Z"}
-SID LJw-RW1C_R-8siszAAAF left copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1288.33, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:41.001143Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1265.49, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:42.314995Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 484.79, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:42.768092Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 469.42, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:43.283733Z"}
-INFO:     connection closed
-Client disconnected: LJw-RW1C_R-8siszAAAF
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 441.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:47.562080Z"}
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 423.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:29:48.034148Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 964.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:36:18.506793Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 788.27, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:36:19.341845Z"}
-{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 1289.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:04.058137Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 770.37, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:04.861226Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 824.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:05.690387Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1183.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:14.319990Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1269.27, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:15.594760Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1107.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:16.651933Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1117.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:17.781867Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1149.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:18.935124Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1274.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:20.221778Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 435.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:20.458239Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 426.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:20.886819Z"}
-{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 651.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:22.844106Z"}
-{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 567.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:23.415292Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 564.23, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:24.901050Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 401.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:25.306573Z"}
-INFO:     ('127.0.0.1', 63040) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-Client connected: gxd_M0HJM8f08CMwAAAH
-SID gxd_M0HJM8f08CMwAAAH joined room 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-SID gxd_M0HJM8f08CMwAAAH joined room 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 524.93, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:28.878136Z"}
-SID gxd_M0HJM8f08CMwAAAH joined copilot room for workshop 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-SID gxd_M0HJM8f08CMwAAAH left copilot room for workshop 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-SID gxd_M0HJM8f08CMwAAAH joined copilot room for workshop 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-{"method": "GET", "path": "/api/challenges/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/challenges", "status_code": 200, "duration_ms": 457.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:29.350778Z"}
-{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 522.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:29.403668Z"}
-{"method": "GET", "path": "/api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 483.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:29.406714Z"}
-{"method": "GET", "path": "/api/surveys/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 525.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:29.419336Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/insights", "status_code": 200, "duration_ms": 621.8, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:29.513086Z"}
-{"method": "GET", "path": "/api/challenges/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/challenges", "status_code": 200, "duration_ms": 507.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:29.862281Z"}
-{"method": "GET", "path": "/api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 522.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:29.970027Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/insights", "status_code": 200, "duration_ms": 590.79, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:30.106110Z"}
-{"method": "GET", "path": "/api/surveys/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 628.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:30.143925Z"}
-SID gxd_M0HJM8f08CMwAAAH left copilot room for workshop 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 460.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:34.388551Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 470.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:34.864506Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1216.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:37.285198Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1329.04, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:38.618234Z"}
-SID gxd_M0HJM8f08CMwAAAH joined room c745443c-21bc-445d-8353-3b81f8e67faa
-SID gxd_M0HJM8f08CMwAAAH joined room c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 530.93, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:42.863602Z"}
-SID gxd_M0HJM8f08CMwAAAH joined copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-SID gxd_M0HJM8f08CMwAAAH left copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-SID gxd_M0HJM8f08CMwAAAH joined copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 477.37, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:43.344324Z"}
-{"method": "GET", "path": "/api/challenges/workshops/c745443c-21bc-445d-8353-3b81f8e67faa/challenges", "status_code": 200, "duration_ms": 459.35, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:43.349628Z"}
-{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 476.21, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:43.385131Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/c745443c-21bc-445d-8353-3b81f8e67faa/insights", "status_code": 200, "duration_ms": 641.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:43.529005Z"}
-{"method": "GET", "path": "/api/surveys/workshop/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 730.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:43.619586Z"}
-{"method": "GET", "path": "/api/challenges/workshops/c745443c-21bc-445d-8353-3b81f8e67faa/challenges", "status_code": 200, "duration_ms": 518.37, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:43.915882Z"}
-{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 539.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:43.936605Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/c745443c-21bc-445d-8353-3b81f8e67faa/insights", "status_code": 200, "duration_ms": 671.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:44.201765Z"}
-{"method": "GET", "path": "/api/surveys/workshop/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 765.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:42:44.387954Z"}
-2026-01-25 11:44:07,981 - hotspotmatrix - WARNING - HTTPException: 500 - greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
-{"method": "POST", "path": "/api/copilot/suggestions", "status_code": 500, "duration_ms": 1492.8, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "error", "timestamp": "2026-01-25T17:44:07.982306Z"}
-{"method": "GET", "path": "/api/copilot/engagement/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 714.6, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:44:10.436173Z"}
-{"method": "GET", "path": "/api/copilot/engagement/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 696.44, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:44:11.135461Z"}
-{"method": "GET", "path": "/api/copilot/settings/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 564.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:44:17.335155Z"}
-{"method": "GET", "path": "/api/copilot/settings/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 560.79, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:44:17.900009Z"}
-SID gxd_M0HJM8f08CMwAAAH left copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1325.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:44:53.272341Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1185.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:44:54.503075Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1094.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:44:56.252184Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 503.16, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:44:57.272605Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1112.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:44:57.367524Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 428.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:44:57.746373Z"}
-{"method": "GET", "path": "/api/knowledge-base/industries/it", "status_code": 200, "duration_ms": 455.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:44:59.605875Z"}
-{"method": "GET", "path": "/api/knowledge-base/industries/supply-chain", "status_code": 200, "duration_ms": 427.26, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:45:06.611289Z"}
-{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 570.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:45:13.958210Z"}
-{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 574.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:45:14.576309Z"}
-INFO:     connection closed
-Client disconnected: gxd_M0HJM8f08CMwAAAH
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 507.79, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:48:35.161625Z"}
-{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 609.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:48:35.275322Z"}
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 490.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:48:35.716182Z"}
-{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 588.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:48:35.865290Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 378.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:48:37.512978Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 466.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:48:37.983064Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 844.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:48:54.731542Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 819.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:48:55.597857Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 462.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:48:56.919631Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 492.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:48:57.416608Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 884.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:49:05.071239Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 748.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:49:05.865208Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 548.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:56:26.090511Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 465.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:56:26.559200Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 464.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:56:32.710252Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 471.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:56:33.230785Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1240.53, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:56:39.410487Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1183.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:56:40.407357Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1295.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:56:40.709876Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1207.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:56:41.618187Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1150.85, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:56:45.859257Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1146.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:56:47.048164Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1215.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:56:55.966927Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1214.37, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:56:57.225506Z"}
-INFO:     ('127.0.0.1', 63485) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-Client connected: cY9AtlepliHYnGp5AAAJ
-SID cY9AtlepliHYnGp5AAAJ joined room c745443c-21bc-445d-8353-3b81f8e67faa
-SID cY9AtlepliHYnGp5AAAJ joined room c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 520.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:56:59.057353Z"}
-SID cY9AtlepliHYnGp5AAAJ joined copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-SID cY9AtlepliHYnGp5AAAJ left copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-SID cY9AtlepliHYnGp5AAAJ joined copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 487.71, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:56:59.548545Z"}
-{"method": "GET", "path": "/api/challenges/workshops/c745443c-21bc-445d-8353-3b81f8e67faa/challenges", "status_code": 200, "duration_ms": 471.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:56:59.549616Z"}
-{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 446.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:56:59.550000Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/c745443c-21bc-445d-8353-3b81f8e67faa/insights", "status_code": 200, "duration_ms": 660.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:56:59.735705Z"}
-{"method": "GET", "path": "/api/surveys/workshop/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 745.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:56:59.823592Z"}
-{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 580.22, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:57:00.180019Z"}
-{"method": "GET", "path": "/api/challenges/workshops/c745443c-21bc-445d-8353-3b81f8e67faa/challenges", "status_code": 200, "duration_ms": 580.89, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:57:00.180564Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/c745443c-21bc-445d-8353-3b81f8e67faa/insights", "status_code": 200, "duration_ms": 679.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:57:00.416863Z"}
-{"method": "GET", "path": "/api/surveys/workshop/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 796.33, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T17:57:00.622945Z"}
-2026-01-25 11:58:18,248 - hotspotmatrix - WARNING - HTTPException: 500 - greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
-{"method": "POST", "path": "/api/copilot/suggestions", "status_code": 500, "duration_ms": 967.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "error", "timestamp": "2026-01-25T17:58:18.250008Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/c745443c-21bc-445d-8353-3b81f8e67faa/insights", "status_code": 200, "duration_ms": 783.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:08:50.055881Z"}
-{"method": "GET", "path": "/api/challenges/workshops/c745443c-21bc-445d-8353-3b81f8e67faa/challenges", "status_code": 200, "duration_ms": 362.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:09:42.678777Z"}
-SID cY9AtlepliHYnGp5AAAJ left copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-SID cY9AtlepliHYnGp5AAAJ joined room c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 544.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:12:25.689848Z"}
-SID cY9AtlepliHYnGp5AAAJ joined copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-SID cY9AtlepliHYnGp5AAAJ left copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-SID cY9AtlepliHYnGp5AAAJ joined copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 435.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:12:26.169863Z"}
-{"method": "GET", "path": "/api/challenges/workshops/c745443c-21bc-445d-8353-3b81f8e67faa/challenges", "status_code": 200, "duration_ms": 493.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:12:26.199159Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/c745443c-21bc-445d-8353-3b81f8e67faa/insights", "status_code": 200, "duration_ms": 584.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:12:26.288870Z"}
-{"method": "GET", "path": "/api/surveys/workshop/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 810.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:12:26.517100Z"}
-{"method": "GET", "path": "/api/challenges/workshops/c745443c-21bc-445d-8353-3b81f8e67faa/challenges", "status_code": 200, "duration_ms": 494.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:12:26.707764Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/c745443c-21bc-445d-8353-3b81f8e67faa/insights", "status_code": 200, "duration_ms": 608.7, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:12:26.898958Z"}
-{"method": "GET", "path": "/api/surveys/workshop/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 641.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:12:27.160030Z"}
-INFO:     ('127.0.0.1', 64055) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-Client connected: mMJ12wFaVsIo-KRLAAAL
-SID mMJ12wFaVsIo-KRLAAAL joined room 6534a595-5fc0-4ce4-9171-e238009a924e
-SID mMJ12wFaVsIo-KRLAAAL joined room 6534a595-5fc0-4ce4-9171-e238009a924e
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 550.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:14:40.456541Z"}
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 422.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:14:40.922097Z"}
-INFO:     connection closed
-INFO:     ('127.0.0.1', 64082) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-Client disconnected: mMJ12wFaVsIo-KRLAAAL
-Client connected: Kqm3Kb1Eg2CSCGzfAAAN
-SID Kqm3Kb1Eg2CSCGzfAAAN joined room 6534a595-5fc0-4ce4-9171-e238009a924e
-SID Kqm3Kb1Eg2CSCGzfAAAN joined room 6534a595-5fc0-4ce4-9171-e238009a924e
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 374.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:14:59.356948Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 379.49, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:14:59.371955Z"}
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 440.9, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:14:59.841987Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 442.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:14:59.857734Z"}
-INFO:     connection closed
-INFO:     ('127.0.0.1', 64112) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-Client disconnected: Kqm3Kb1Eg2CSCGzfAAAN
-Client connected: nRHBcz7NpWe_HJoUAAAP
-SID nRHBcz7NpWe_HJoUAAAP joined room c745443c-21bc-445d-8353-3b81f8e67faa
-SID nRHBcz7NpWe_HJoUAAAP joined room 6534a595-5fc0-4ce4-9171-e238009a924e
-SID nRHBcz7NpWe_HJoUAAAP joined room c745443c-21bc-445d-8353-3b81f8e67faa
-SID nRHBcz7NpWe_HJoUAAAP joined room 6534a595-5fc0-4ce4-9171-e238009a924e
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 443.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:15:39.671730Z"}
-{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 504.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:15:39.734073Z"}
-SID nRHBcz7NpWe_HJoUAAAP joined copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-SID nRHBcz7NpWe_HJoUAAAP left copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-SID nRHBcz7NpWe_HJoUAAAP joined copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 470.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:15:40.185118Z"}
-{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 452.23, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:15:40.189446Z"}
-{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 484.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:15:40.263529Z"}
-{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 450.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:15:40.758268Z"}
-INFO:     connection closed
-Client disconnected: nRHBcz7NpWe_HJoUAAAP
-SID cY9AtlepliHYnGp5AAAJ left copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1214.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:22:21.251495Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1178.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:22:22.434204Z"}
-{"method": "POST", "path": "/api/auth/logout", "status_code": 200, "duration_ms": 576.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:22:39.733200Z"}
-INFO:     connection closed
-Client disconnected: cY9AtlepliHYnGp5AAAJ
-{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 1190.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:07.398653Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 841.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:08.268750Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 733.21, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:09.005421Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1186.27, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:15.684371Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1182.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:16.868207Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1074.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:18.800091Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1118.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:19.922982Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 986.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:22.741161Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1064.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:23.806631Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 422.79, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:24.560152Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 683.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:25.245632Z"}
-{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 509.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:29.332274Z"}
-{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 510.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:29.844726Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 376.33, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:31.110106Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 442.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:31.555029Z"}
-INFO:     ('127.0.0.1', 64437) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-Client connected: 8SBwyeWY297SADGzAAAR
-SID 8SBwyeWY297SADGzAAAR joined room 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-SID 8SBwyeWY297SADGzAAAR joined room 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 604.16, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:42.533728Z"}
-SID 8SBwyeWY297SADGzAAAR joined copilot room for workshop 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-SID 8SBwyeWY297SADGzAAAR left copilot room for workshop 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-SID 8SBwyeWY297SADGzAAAR joined copilot room for workshop 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-{"method": "GET", "path": "/api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 418.03, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:42.995627Z"}
-{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 507.89, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:43.043614Z"}
-{"method": "GET", "path": "/api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 428.27, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:43.515104Z"}
-{"method": "GET", "path": "/api/challenges/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/challenges", "status_code": 200, "duration_ms": 468.35, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:49.734520Z"}
-{"method": "GET", "path": "/api/challenges/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/challenges", "status_code": 200, "duration_ms": 432.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:50.169096Z"}
-{"method": "GET", "path": "/api/surveys/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 594.51, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:54.835768Z"}
-{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 592.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:54.836090Z"}
-{"method": "GET", "path": "/api/surveys/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 522.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:55.360022Z"}
-{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 524.63, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:55.401860Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/insights", "status_code": 200, "duration_ms": 555.04, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:59.243510Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/insights", "status_code": 200, "duration_ms": 581.85, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:23:59.827064Z"}
-{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 540.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:24:27.382053Z"}
-{"method": "GET", "path": "/api/surveys/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 546.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:24:27.387997Z"}
-{"method": "GET", "path": "/api/surveys/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 521.53, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:24:27.910842Z"}
-{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 529.33, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:24:27.953057Z"}
-{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 527.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:24:32.371634Z"}
-{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 548.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:24:37.391241Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/insights", "status_code": 200, "duration_ms": 596.53, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:24:38.711699Z"}
-{"method": "GET", "path": "/api/knowledge-base/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/insights", "status_code": 200, "duration_ms": 582.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:24:39.344655Z"}
-SID 8SBwyeWY297SADGzAAAR left copilot room for workshop 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 362.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:24:46.086609Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 367.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:24:46.581753Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1082.38, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:24:50.678410Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1090.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:24:51.770342Z"}
-{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 665.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:03.564122Z"}
-{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 526.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:04.133492Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 356.85, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:08.120845Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 416.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:08.539094Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1098.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:09.715489Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1182.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:10.901543Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1104.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:21.686579Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1182.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:22.917374Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 444.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:25.343984Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 405.49, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:25.750989Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1359.53, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:31.608898Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1227.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:32.878427Z"}
-SID 8SBwyeWY297SADGzAAAR joined room c745443c-21bc-445d-8353-3b81f8e67faa
-SID 8SBwyeWY297SADGzAAAR joined room c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 466.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:33.720668Z"}
-SID 8SBwyeWY297SADGzAAAR joined copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-SID 8SBwyeWY297SADGzAAAR left copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-SID 8SBwyeWY297SADGzAAAR joined copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/workshops/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 477.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:34.200258Z"}
-{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 436.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:34.200565Z"}
-{"method": "GET", "path": "/api/usecases/c745443c-21bc-445d-8353-3b81f8e67faa", "status_code": 200, "duration_ms": 427.82, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:34.670935Z"}
-SID 8SBwyeWY297SADGzAAAR left copilot room for workshop c745443c-21bc-445d-8353-3b81f8e67faa
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1174.03, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:40.357857Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1161.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:41.565369Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 440.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:50.274044Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 437.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:50.754901Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1054.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:54.378054Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1087.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:25:55.467385Z"}
-WARNING:  WatchFiles detected changes in 'app/schemas/rbac.py'. Reloading...
-INFO:     Shutting down
-INFO:     connection closed
-INFO:     Waiting for application shutdown.
-Client disconnected: 8SBwyeWY297SADGzAAAR
-{"event": "Shutting down application...", "level": "info", "timestamp": "2026-01-25T18:27:52.937724Z"}
-INFO:     Application shutdown complete.
-INFO:     Finished server process [89970]
-/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
-  warnings.warn(
-2026-01-25 12:27:53,959 - hotspotmatrix - INFO - Exception handlers registered
-INFO:     Started server process [91386]
-INFO:     Waiting for application startup.
-RAGService running in MOCK MODE (No API Key found)
-RoadmapService running in MOCK MODE (No API Key found)
-CopilotService running in MOCK MODE (No API Key found)
-{"event": "Starting application...", "level": "info", "timestamp": "2026-01-25T18:27:54.565285Z"}
-{"event": "Database tables created", "level": "info", "timestamp": "2026-01-25T18:27:59.912656Z"}
-INFO:     Application startup complete.
-INFO:     ('127.0.0.1', 64605) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-WARNING:  WatchFiles detected changes in 'app/api/facilitators.py'. Reloading...
-INFO:     Shutting down
-INFO:     connection closed
-INFO:     Waiting for application shutdown.
-Client connected: Z5Vwh2jduplt295DAAAB
-Client disconnected: Z5Vwh2jduplt295DAAAB
-{"event": "Shutting down application...", "level": "info", "timestamp": "2026-01-25T18:28:00.221333Z"}
-INFO:     Application shutdown complete.
-INFO:     Finished server process [91386]
-/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
-  warnings.warn(
-2026-01-25 12:28:00,956 - hotspotmatrix - INFO - Exception handlers registered
-INFO:     Started server process [91584]
-INFO:     Waiting for application startup.
-RAGService running in MOCK MODE (No API Key found)
-RoadmapService running in MOCK MODE (No API Key found)
-CopilotService running in MOCK MODE (No API Key found)
-{"event": "Starting application...", "level": "info", "timestamp": "2026-01-25T18:28:01.505445Z"}
-{"event": "Database tables created", "level": "info", "timestamp": "2026-01-25T18:28:06.850683Z"}
-INFO:     Application startup complete.
-INFO:     ('127.0.0.1', 64612) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-WARNING:  WatchFiles detected changes in 'app/api/facilitators.py'. Reloading...
-INFO:     Shutting down
-INFO:     connection closed
-INFO:     Waiting for application shutdown.
-Client connected: tiHVstvGMnzoNYvrAAAB
-Client disconnected: tiHVstvGMnzoNYvrAAAB
-{"event": "Shutting down application...", "level": "info", "timestamp": "2026-01-25T18:28:19.690014Z"}
-INFO:     Application shutdown complete.
-INFO:     Finished server process [91584]
-/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
-  warnings.warn(
-2026-01-25 12:28:20,427 - hotspotmatrix - INFO - Exception handlers registered
-INFO:     Started server process [92075]
-INFO:     Waiting for application startup.
-RAGService running in MOCK MODE (No API Key found)
-RoadmapService running in MOCK MODE (No API Key found)
-CopilotService running in MOCK MODE (No API Key found)
-{"event": "Starting application...", "level": "info", "timestamp": "2026-01-25T18:28:20.988685Z"}
-{"event": "Database tables created", "level": "info", "timestamp": "2026-01-25T18:28:26.207757Z"}
-INFO:     Application startup complete.
-INFO:     ('127.0.0.1', 64620) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-Client connected: NDIWw9KPbc80by00AAAB
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1183.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:28:31.798572Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1041.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:28:49.788568Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1085.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:28:54.631665Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1234.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:28:54.782101Z"}
-{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 622.41, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:28:55.266341Z"}
-{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 622.3, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:28:55.266502Z"}
-{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 525.84, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:28:55.266872Z"}
-{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 666.79, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:28:55.310996Z"}
-{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 668.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:28:55.312456Z"}
-{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 518.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:28:55.833851Z"}
-{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 564.71, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:28:55.924475Z"}
-{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 518.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:28:56.444536Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1075.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:29:10.317051Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1224.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:29:10.466071Z"}
-{"method": "PUT", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 1754.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:32:18.257251Z"}
-{"method": "PUT", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 1704.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:32:28.346412Z"}
-{"method": "PUT", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 1731.98, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:33:12.740428Z"}
-{"method": "PUT", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 1638.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:33:23.510123Z"}
-{"method": "PUT", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 1930.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:33:31.141201Z"}
-{"method": "PUT", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 1615.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:33:38.718016Z"}
-{"method": "POST", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/approve", "status_code": 200, "duration_ms": 1131.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:33:52.388369Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1063.63, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:33:53.457282Z"}
-{"method": "POST", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/approve", "status_code": 200, "duration_ms": 1112.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:33:58.225021Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1179.49, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:33:59.409533Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 457.55, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:34:15.786198Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 434.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:34:16.222592Z"}
-{"method": "POST", "path": "/api/auth/logout", "status_code": 200, "duration_ms": 530.03, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:34:29.328851Z"}
-INFO:     connection closed
-Client disconnected: NDIWw9KPbc80by00AAAB
-{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 1159.88, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:34:44.540204Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 458.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:34:45.022128Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 370.76, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:34:45.394433Z"}
-WARNING:  WatchFiles detected changes in 'app/api/workshops.py'. Reloading...
+WARNING:  WatchFiles detected changes in 'app/core/config.py'. Reloading...
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
-{"event": "Shutting down application...", "level": "info", "timestamp": "2026-01-25T18:36:27.011126Z"}
+{"event": "Shutting down application...", "level": "info", "timestamp": "2026-01-26T02:02:08.788687Z"}
 INFO:     Application shutdown complete.
-INFO:     Finished server process [92075]
-Process SpawnProcess-5:
-Traceback (most recent call last):
-  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/multiprocessing/process.py", line 315, in _bootstrap
-    self.run()
-  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/multiprocessing/process.py", line 108, in run
-    self._target(*self._args, **self._kwargs)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/uvicorn/_subprocess.py", line 76, in subprocess_started
-    target(sockets=sockets)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/uvicorn/server.py", line 61, in run
-    return asyncio.run(self.serve(sockets=sockets))
-  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/runners.py", line 44, in run
-    return loop.run_until_complete(main)
-  File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/uvicorn/server.py", line 68, in serve
-    config.load()
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/uvicorn/config.py", line 467, in load
-    self.loaded_app = import_from_string(self.app)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/uvicorn/importer.py", line 21, in import_from_string
-    module = importlib.import_module(module_str)
-  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/importlib/__init__.py", line 127, in import_module
-    return _bootstrap._gcd_import(name[level:], package, level)
-  File "<frozen importlib._bootstrap>", line 1030, in _gcd_import
-  File "<frozen importlib._bootstrap>", line 1007, in _find_and_load
-  File "<frozen importlib._bootstrap>", line 986, in _find_and_load_unlocked
-  File "<frozen importlib._bootstrap>", line 680, in _load_unlocked
-  File "<frozen importlib._bootstrap_external>", line 850, in exec_module
-  File "<frozen importlib._bootstrap>", line 228, in _call_with_frames_removed
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/main.py", line 4, in <module>
-    from app.api import workshops
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/api/workshops.py", line 9, in <module>
-    from app.api.auth import get_current_user, oauth2_scheme, get_current_user_optional
-ImportError: cannot import name 'get_current_user_optional' from 'app.api.auth' (/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/api/auth.py)
+INFO:     Finished server process [68971]
+WARNING:  WatchFiles detected changes in 'app/api/auth.py'. Reloading...
+WARNING:  WatchFiles detected changes in 'app/api/auth.py'. Reloading...
 WARNING:  WatchFiles detected changes in 'app/api/auth.py'. Reloading...
 /Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-2026-01-25 12:36:44,264 - hotspotmatrix - INFO - Exception handlers registered
-INFO:     Started server process [4782]
+2026-01-25 20:02:10,936 - hotspotmatrix - INFO - Exception handlers registered
+INFO:     Started server process [44844]
 INFO:     Waiting for application startup.
 RAGService running in MOCK MODE (No API Key found)
 RoadmapService running in MOCK MODE (No API Key found)
 CopilotService running in MOCK MODE (No API Key found)
-{"event": "Starting application...", "level": "info", "timestamp": "2026-01-25T18:36:44.939563Z"}
-{"event": "Database tables created", "level": "info", "timestamp": "2026-01-25T18:36:50.510086Z"}
+{"event": "Starting application...", "level": "info", "timestamp": "2026-01-26T02:02:11.592476Z"}
+WARNING:  WatchFiles detected changes in 'app/api/auth.py'. Reloading...
+{"event": "Database tables created", "level": "info", "timestamp": "2026-01-26T02:02:17.583558Z"}
 INFO:     Application startup complete.
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 610.21, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:36:51.123774Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 522.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:36:51.694864Z"}
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 517.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:39:35.193655Z"}
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 410.77, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:39:35.606135Z"}
-{"method": "POST", "path": "/api/auth/logout", "status_code": 200, "duration_ms": 608.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:39:40.682822Z"}
-{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 1206.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:40:01.701944Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 524.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:40:02.272187Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 555.37, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:40:02.876387Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 374.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:40:09.879021Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 442.82, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:40:10.365178Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 550.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:41:15.226116Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 529.22, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:41:15.801238Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 465.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:41:20.142071Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 425.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:41:20.568792Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 505.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:41:41.920990Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 524.3, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:41:42.489093Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 561.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:42:50.303445Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 450.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:42:50.803633Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 552.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:42:51.752331Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 500.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:42:52.255113Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 436.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:43:11.975986Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 381.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:43:12.401079Z"}
-{"method": "GET", "path": "/api/knowledge-base/industries/hr", "status_code": 200, "duration_ms": 379.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:43:26.491100Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 583.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:43:36.617102Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 524.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:43:37.187763Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 511.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:45:45.309296Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 407.6, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:45:45.718914Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 514.5, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:46:11.991982Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 525.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T18:46:12.519618Z"}
-{"method": "POST", "path": "/api/auth/logout", "status_code": 200, "duration_ms": 837.88, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:02:20.475146Z"}
-{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 1257.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:02:38.418123Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 909.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:02:39.346176Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 841.77, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:02:40.189729Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1219.16, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:02:43.940659Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1201.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:02:45.145475Z"}
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 1182.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:02:51.455134Z"}
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 1349.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:02:52.807779Z"}
-{"method": "POST", "path": "/api/workshops/", "status_code": 201, "duration_ms": 987.41, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:20.074735Z"}
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 1267.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:21.387679Z"}
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 1391.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:22.786066Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1365.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:26.282583Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1459.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:26.375288Z"}
-{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 556.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:26.856303Z"}
-{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 557.53, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:26.856702Z"}
-{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 556.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:26.857174Z"}
-{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 571.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:26.905432Z"}
-{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 597.44, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:27.015680Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1146.23, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:27.430451Z"}
-{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 520.21, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:27.472908Z"}
-{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 563.55, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:27.477835Z"}
-{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 564.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:27.478426Z"}
-{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 545.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:27.608623Z"}
-{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 534.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:28.029972Z"}
-{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 562.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:28.172117Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1297.14, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:28.211384Z"}
-{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 522.22, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:28.696027Z"}
-{"method": "PUT", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 2023.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:37.958882Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 440.27, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:50.086238Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 450.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:03:50.538048Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1097.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:04:01.111711Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1128.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:04:02.285074Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 826.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:04:03.757416Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 834.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:04:04.594032Z"}
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 1275.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:04:07.571150Z"}
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 1383.46, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:04:08.962243Z"}
-{"method": "POST", "path": "/api/auth/logout", "status_code": 200, "duration_ms": 567.82, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:04:12.023985Z"}
-{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 1245.74, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:04:43.925258Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 551.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:04:44.527136Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 534.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:04:45.104061Z"}
-{"method": "POST", "path": "/api/auth/logout", "status_code": 200, "duration_ms": 606.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:04:55.314985Z"}
-{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 1242.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:05:05.786224Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 527.8, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:05:06.423604Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 580.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:05:07.082161Z"}
-INFO:     ('127.0.0.1', 49628) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/core/socket_manager.py:43: RuntimeWarning: coroutine 'AsyncServer.enter_room' was never awaited
-  sio.enter_room(sid, workshop_id)
-RuntimeWarning: Enable tracemalloc to get the object allocation traceback
-Client connected: xVh7rDPMcJ_dr5JGAAAB
-SID xVh7rDPMcJ_dr5JGAAAB joined room 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-SID xVh7rDPMcJ_dr5JGAAAB joined room 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-{"method": "GET", "path": "/api/workshops/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 200, "duration_ms": 516.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:05:09.659655Z"}
-/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/core/socket_manager.py:236: RuntimeWarning: coroutine 'AsyncServer.enter_room' was never awaited
-  sio.enter_room(sid, f"copilot_{workshop_id}")
-RuntimeWarning: Enable tracemalloc to get the object allocation traceback
-/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/core/socket_manager.py:245: RuntimeWarning: coroutine 'AsyncServer.leave_room' was never awaited
-  sio.leave_room(sid, f"copilot_{workshop_id}")
-RuntimeWarning: Enable tracemalloc to get the object allocation traceback
-SID xVh7rDPMcJ_dr5JGAAAB joined copilot room for workshop 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-SID xVh7rDPMcJ_dr5JGAAAB left copilot room for workshop 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-SID xVh7rDPMcJ_dr5JGAAAB joined copilot room for workshop 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-{"method": "GET", "path": "/api/workshops/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 200, "duration_ms": 467.8, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:05:10.130999Z"}
-{"method": "GET", "path": "/api/usecases/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 200, "duration_ms": 465.22, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:05:10.170848Z"}
-{"method": "GET", "path": "/api/usecases/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 200, "duration_ms": 440.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:05:10.614474Z"}
-{"method": "POST", "path": "/api/usecases/", "status_code": 201, "duration_ms": 1156.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:05:49.107873Z"}
-{"method": "GET", "path": "/api/workshops/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 200, "duration_ms": 486.88, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:05:49.639504Z"}
-{"method": "GET", "path": "/api/usecases/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 200, "duration_ms": 439.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:05:50.123643Z"}
-WARNING:  WatchFiles detected changes in 'app/api/workshops.py', 'app/api/auth.py'. Reloading...
+ERROR:    Traceback (most recent call last):
+  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/routing.py", line 686, in lifespan
+    await receive()
+  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/uvicorn/lifespan/on.py", line 137, in receive
+    return await self.receive_queue.get()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/queues.py", line 166, in get
+    await getter
+asyncio.exceptions.CancelledError
+
+WARNING:  WatchFiles detected changes in 'app/api/polls.py', 'app/main.py'. Reloading...
+/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-01-25 20:02:18,687 - hotspotmatrix - INFO - Exception handlers registered
+INFO:     Started server process [45041]
+INFO:     Waiting for application startup.
+RAGService running in MOCK MODE (No API Key found)
+RoadmapService running in MOCK MODE (No API Key found)
+CopilotService running in MOCK MODE (No API Key found)
+{"event": "Starting application...", "level": "info", "timestamp": "2026-01-26T02:02:19.267143Z"}
+WARNING:  WatchFiles detected changes in 'migrations/add_performance_indexes.py'. Reloading...
+{"event": "Database tables created", "level": "info", "timestamp": "2026-01-26T02:02:24.569735Z"}
+INFO:     Application startup complete.
+ERROR:    Traceback (most recent call last):
+  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/routing.py", line 686, in lifespan
+    await receive()
+  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/uvicorn/lifespan/on.py", line 137, in receive
+    return await self.receive_queue.get()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/queues.py", line 166, in get
+    await getter
+asyncio.exceptions.CancelledError
+
+WARNING:  WatchFiles detected changes in 'app/api/auth.py'. Reloading...
+/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-01-25 20:02:25,694 - hotspotmatrix - INFO - Exception handlers registered
+INFO:     Started server process [45124]
+INFO:     Waiting for application startup.
+RAGService running in MOCK MODE (No API Key found)
+RoadmapService running in MOCK MODE (No API Key found)
+CopilotService running in MOCK MODE (No API Key found)
+{"event": "Starting application...", "level": "info", "timestamp": "2026-01-26T02:02:26.296556Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-01-26T02:02:32.788236Z"}
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/services/rate_limiting.py'. Reloading...
 INFO:     Shutting down
-INFO:     connection closed
 INFO:     Waiting for application shutdown.
-Client disconnected: xVh7rDPMcJ_dr5JGAAAB
-{"event": "Shutting down application...", "level": "info", "timestamp": "2026-01-25T19:06:45.798991Z"}
+{"event": "Shutting down application...", "level": "info", "timestamp": "2026-01-26T02:02:35.622756Z"}
 INFO:     Application shutdown complete.
-INFO:     Finished server process [4782]
+INFO:     Finished server process [45124]
 /Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-2026-01-25 13:06:46,834 - hotspotmatrix - INFO - Exception handlers registered
-INFO:     Started server process [50548]
+2026-01-25 20:02:36,365 - hotspotmatrix - INFO - Exception handlers registered
+INFO:     Started server process [45322]
 INFO:     Waiting for application startup.
 RAGService running in MOCK MODE (No API Key found)
 RoadmapService running in MOCK MODE (No API Key found)
 CopilotService running in MOCK MODE (No API Key found)
-{"event": "Starting application...", "level": "info", "timestamp": "2026-01-25T19:06:47.452763Z"}
-{"event": "Database tables created", "level": "info", "timestamp": "2026-01-25T19:06:52.985472Z"}
+{"event": "Starting application...", "level": "info", "timestamp": "2026-01-26T02:02:36.997590Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-01-26T02:02:42.478775Z"}
 INFO:     Application startup complete.
-INFO:     ('127.0.0.1', 49673) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-Client connected: kzYG8udiwvLt76eiAAAB
-{"method": "GET", "path": "/api/challenges/workshops/1e99a8fa-10f6-4058-9188-43ba4c3581d7/challenges", "status_code": 200, "duration_ms": 529.23, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:06:59.663326Z"}
-{"method": "GET", "path": "/api/challenges/workshops/1e99a8fa-10f6-4058-9188-43ba4c3581d7/challenges", "status_code": 200, "duration_ms": 380.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:00.044800Z"}
-2026-01-25 13:07:00,523 - hotspotmatrix - WARNING - HTTPException: 403 - Not authorized to manage this workshop's surveys
-{"method": "GET", "path": "/api/surveys/workshop/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 403, "duration_ms": 542.61, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-25T19:07:00.524521Z"}
-{"method": "GET", "path": "/api/workshops/1e99a8fa-10f6-4058-9188-43ba4c3581d7/breakout-rooms", "status_code": 200, "duration_ms": 551.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:00.534139Z"}
-{"method": "GET", "path": "/api/workshops/1e99a8fa-10f6-4058-9188-43ba4c3581d7/breakout-rooms", "status_code": 200, "duration_ms": 550.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:01.086153Z"}
-2026-01-25 13:07:01,110 - hotspotmatrix - WARNING - HTTPException: 403 - Not authorized to manage this workshop's surveys
-{"method": "GET", "path": "/api/surveys/workshop/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 403, "duration_ms": 585.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-25T19:07:01.111413Z"}
-{"method": "GET", "path": "/api/challenges/workshops/1e99a8fa-10f6-4058-9188-43ba4c3581d7/challenges", "status_code": 200, "duration_ms": 435.76, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:01.282698Z"}
-{"method": "GET", "path": "/api/challenges/workshops/1e99a8fa-10f6-4058-9188-43ba4c3581d7/challenges", "status_code": 200, "duration_ms": 378.21, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:01.662261Z"}
-2026-01-25 13:07:03,373 - hotspotmatrix - WARNING - HTTPException: 403 - Not authorized to manage this workshop's surveys
-{"method": "GET", "path": "/api/workshops/1e99a8fa-10f6-4058-9188-43ba4c3581d7/breakout-rooms", "status_code": 200, "duration_ms": 596.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:03.374109Z"}
-{"method": "GET", "path": "/api/surveys/workshop/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 403, "duration_ms": 597.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-25T19:07:03.374415Z"}
-{"method": "GET", "path": "/api/workshops/1e99a8fa-10f6-4058-9188-43ba4c3581d7/breakout-rooms", "status_code": 200, "duration_ms": 575.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:03.952029Z"}
-2026-01-25 13:07:04,000 - hotspotmatrix - WARNING - HTTPException: 403 - Not authorized to manage this workshop's surveys
-{"method": "GET", "path": "/api/surveys/workshop/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 403, "duration_ms": 571.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-25T19:07:04.001292Z"}
-2026-01-25 13:07:04,045 - hotspotmatrix - WARNING - HTTPException: 403 - Access denied
-{"method": "GET", "path": "/api/knowledge-base/workshop/1e99a8fa-10f6-4058-9188-43ba4c3581d7/insights", "status_code": 403, "duration_ms": 527.37, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-25T19:07:04.046099Z"}
-2026-01-25 13:07:04,606 - hotspotmatrix - WARNING - HTTPException: 403 - Access denied
-{"method": "GET", "path": "/api/knowledge-base/workshop/1e99a8fa-10f6-4058-9188-43ba4c3581d7/insights", "status_code": 403, "duration_ms": 554.26, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-25T19:07:04.607373Z"}
-{"method": "POST", "path": "/api/auth/logout", "status_code": 200, "duration_ms": 526.8, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:11.862969Z"}
-INFO:     connection closed
-Client disconnected: kzYG8udiwvLt76eiAAAB
-2026-01-25 13:07:30,942 - hotspotmatrix - WARNING - HTTPException: 401 - Incorrect email or password
-{"method": "POST", "path": "/api/auth/login", "status_code": 401, "duration_ms": 674.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-25T19:07:30.943546Z"}
-2026-01-25 13:07:38,729 - hotspotmatrix - WARNING - HTTPException: 401 - Incorrect email or password
-{"method": "POST", "path": "/api/auth/login", "status_code": 401, "duration_ms": 497.35, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-25T19:07:38.730428Z"}
-INFO:     ('127.0.0.1', 49734) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/core/socket_manager.py:43: RuntimeWarning: coroutine 'AsyncServer.enter_room' was never awaited
-  sio.enter_room(sid, workshop_id)
-RuntimeWarning: Enable tracemalloc to get the object allocation traceback
-Client connected: cF6ya3N-Q6xd5DIoAAAD
-SID cF6ya3N-Q6xd5DIoAAAD joined room 6534a595-5fc0-4ce4-9171-e238009a924e
-SID cF6ya3N-Q6xd5DIoAAAD joined room 6534a595-5fc0-4ce4-9171-e238009a924e
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 470.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:40.268206Z"}
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 420.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:40.732772Z"}
-{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 1213.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:48.273344Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 624.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:48.957707Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 529.71, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:49.531808Z"}
-INFO:     ('127.0.0.1', 49756) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/core/socket_manager.py:245: RuntimeWarning: coroutine 'AsyncServer.leave_room' was never awaited
-  sio.leave_room(sid, f"copilot_{workshop_id}")
-RuntimeWarning: Enable tracemalloc to get the object allocation traceback
-Client connected: L4mwGlNpxyeCUYyEAAAF
-SID L4mwGlNpxyeCUYyEAAAF left copilot room for workshop 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-SID L4mwGlNpxyeCUYyEAAAF joined room 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-SID L4mwGlNpxyeCUYyEAAAF joined room 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-{"method": "GET", "path": "/api/workshops/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 200, "duration_ms": 499.46, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:54.816138Z"}
-/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/core/socket_manager.py:236: RuntimeWarning: coroutine 'AsyncServer.enter_room' was never awaited
-  sio.enter_room(sid, f"copilot_{workshop_id}")
-RuntimeWarning: Enable tracemalloc to get the object allocation traceback
-SID L4mwGlNpxyeCUYyEAAAF joined copilot room for workshop 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-SID L4mwGlNpxyeCUYyEAAAF left copilot room for workshop 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-SID L4mwGlNpxyeCUYyEAAAF joined copilot room for workshop 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-{"method": "GET", "path": "/api/workshops/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 200, "duration_ms": 473.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:55.290823Z"}
-{"method": "GET", "path": "/api/usecases/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 200, "duration_ms": 428.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:55.291155Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 830.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:55.417140Z"}
-{"method": "GET", "path": "/api/usecases/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 200, "duration_ms": 435.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:55.768797Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 736.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:56.197583Z"}
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 1313.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:07:59.654726Z"}
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 1315.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:08:01.014648Z"}
-SID L4mwGlNpxyeCUYyEAAAF left copilot room for workshop 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 571.14, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:08:26.051670Z"}
-{"method": "GET", "path": "/api/workshops/", "status_code": 200, "duration_ms": 524.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:08:26.704996Z"}
-SID cF6ya3N-Q6xd5DIoAAAD joined room 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-SID cF6ya3N-Q6xd5DIoAAAD joined room 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-{"method": "GET", "path": "/api/workshops/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 200, "duration_ms": 500.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:08:35.878487Z"}
-SID cF6ya3N-Q6xd5DIoAAAD joined copilot room for workshop 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-SID cF6ya3N-Q6xd5DIoAAAD left copilot room for workshop 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-SID cF6ya3N-Q6xd5DIoAAAD joined copilot room for workshop 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-{"method": "GET", "path": "/api/usecases/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 200, "duration_ms": 437.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:08:36.318940Z"}
-{"method": "GET", "path": "/api/workshops/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 200, "duration_ms": 483.85, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:08:36.404557Z"}
-{"method": "GET", "path": "/api/usecases/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 200, "duration_ms": 428.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:08:36.877064Z"}
-{"method": "GET", "path": "/api/polls/workshop/6534a595-5fc0-4ce4-9171-e238009a924e", "status_code": 200, "duration_ms": 454.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:09:12.597232Z"}
-{"method": "GET", "path": "/api/polls/workshop/6534a595-5fc0-4ce4-9171-e238009a924e", "status_code": 200, "duration_ms": 428.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:09:13.070911Z"}
-2026-01-25 13:09:37,754 - hotspotmatrix - ERROR - Unhandled exception: 2 validation errors for PollSchema
-id
-  Input should be a valid string [type=string_type, input_value=UUID('f2f22027-746b-440e-aa54-017951e49de2'), input_type=UUID]
-    For further information visit https://errors.pydantic.dev/2.5/v/string_type
-workshop_id
-  Input should be a valid string [type=string_type, input_value=UUID('6534a595-5fc0-4ce4-9171-e238009a924e'), input_type=UUID]
-    For further information visit https://errors.pydantic.dev/2.5/v/string_type
-ERROR:    Exception in ASGI application
-Traceback (most recent call last):
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/anyio/streams/memory.py", line 98, in receive
-    return self.receive_nowait()
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/anyio/streams/memory.py", line 93, in receive_nowait
-    raise WouldBlock
-anyio.WouldBlock
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/base.py", line 78, in call_next
-    message = await recv_stream.receive()
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/anyio/streams/memory.py", line 118, in receive
-    raise EndOfStream
-anyio.EndOfStream
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/uvicorn/protocols/http/httptools_impl.py", line 426, in run_asgi
-    result = await app(  # type: ignore[func-returns-value]
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 84, in __call__
-    return await self.app(scope, receive, send)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/fastapi/applications.py", line 1106, in __call__
-    await super().__call__(scope, receive, send)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/applications.py", line 122, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/errors.py", line 184, in __call__
-    raise exc
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/errors.py", line 162, in __call__
-    await self.app(scope, receive, _send)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/cors.py", line 91, in __call__
-    await self.simple_response(scope, receive, send, request_headers=headers)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/cors.py", line 146, in simple_response
-    await self.app(scope, receive, send)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/base.py", line 108, in __call__
-    response = await self.dispatch_func(request, call_next)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/middleware/security.py", line 121, in dispatch
-    return await call_next(request)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/base.py", line 84, in call_next
-    raise app_exc
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/base.py", line 70, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/base.py", line 108, in __call__
-    response = await self.dispatch_func(request, call_next)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/middleware/security.py", line 81, in dispatch
-    response = await call_next(request)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/base.py", line 84, in call_next
-    raise app_exc
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/base.py", line 70, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/base.py", line 108, in __call__
-    response = await self.dispatch_func(request, call_next)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/middleware/security.py", line 37, in dispatch
-    response = await call_next(request)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/base.py", line 84, in call_next
-    raise app_exc
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/base.py", line 70, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/base.py", line 108, in __call__
-    response = await self.dispatch_func(request, call_next)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/middleware/security.py", line 18, in dispatch
-    response = await call_next(request)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/base.py", line 84, in call_next
-    raise app_exc
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/base.py", line 70, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/exceptions.py", line 79, in __call__
-    raise exc
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/middleware/exceptions.py", line 68, in __call__
-    await self.app(scope, receive, sender)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/fastapi/middleware/asyncexitstack.py", line 20, in __call__
-    raise e
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/fastapi/middleware/asyncexitstack.py", line 17, in __call__
-    await self.app(scope, receive, send)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/routing.py", line 718, in __call__
-    await route.handle(scope, receive, send)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/routing.py", line 276, in handle
-    await self.app(scope, receive, send)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/routing.py", line 66, in app
-    response = await func(request)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/fastapi/routing.py", line 274, in app
-    raw_response = await run_endpoint_function(
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/fastapi/routing.py", line 191, in run_endpoint_function
-    return await dependant.call(**values)
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/api/polls.py", line 75, in create_poll
-    await manager.broadcast_to_workshop(workshop_id, "poll:created", PollSchema.model_validate(poll).model_dump(mode='json'))
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/pydantic/main.py", line 503, in model_validate
-    return cls.__pydantic_validator__.validate_python(
-pydantic_core._pydantic_core.ValidationError: 2 validation errors for PollSchema
-id
-  Input should be a valid string [type=string_type, input_value=UUID('f2f22027-746b-440e-aa54-017951e49de2'), input_type=UUID]
-    For further information visit https://errors.pydantic.dev/2.5/v/string_type
-workshop_id
-  Input should be a valid string [type=string_type, input_value=UUID('6534a595-5fc0-4ce4-9171-e238009a924e'), input_type=UUID]
-    For further information visit https://errors.pydantic.dev/2.5/v/string_type
-WARNING:  WatchFiles detected changes in 'app/schemas/poll.py'. Reloading...
+WARNING:  WatchFiles detected changes in 'app/core/config.py'. Reloading...
 INFO:     Shutting down
-INFO:     connection closed
-INFO:     connection closed
 INFO:     Waiting for application shutdown.
-Client disconnected: cF6ya3N-Q6xd5DIoAAAD
-Client disconnected: L4mwGlNpxyeCUYyEAAAF
-{"event": "Shutting down application...", "level": "info", "timestamp": "2026-01-25T19:09:58.010408Z"}
+{"event": "Shutting down application...", "level": "info", "timestamp": "2026-01-26T02:02:42.885032Z"}
 INFO:     Application shutdown complete.
-INFO:     Finished server process [50548]
+INFO:     Finished server process [45322]
 /Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-2026-01-25 13:09:59,065 - hotspotmatrix - INFO - Exception handlers registered
-INFO:     Started server process [55292]
+2026-01-25 20:02:43,651 - hotspotmatrix - INFO - Exception handlers registered
+INFO:     Started server process [45526]
 INFO:     Waiting for application startup.
 RAGService running in MOCK MODE (No API Key found)
 RoadmapService running in MOCK MODE (No API Key found)
 CopilotService running in MOCK MODE (No API Key found)
-{"event": "Starting application...", "level": "info", "timestamp": "2026-01-25T19:09:59.712189Z"}
-WARNING:  WatchFiles detected changes in 'app/schemas/poll.py'. Reloading...
-{"event": "Database tables created", "level": "info", "timestamp": "2026-01-25T19:10:05.285854Z"}
+{"event": "Starting application...", "level": "info", "timestamp": "2026-01-26T02:02:44.221775Z"}
+WARNING:  WatchFiles detected changes in 'migrations/add_performance_indexes.py'. Reloading...
+{"event": "Database tables created", "level": "info", "timestamp": "2026-01-26T02:02:49.727323Z"}
 INFO:     Application startup complete.
 ERROR:    Traceback (most recent call last):
   File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/routing.py", line 686, in lifespan
@@ -867,18 +120,34 @@ ERROR:    Traceback (most recent call last):
     await getter
 asyncio.exceptions.CancelledError
 
-INFO:     connection closed
 /Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-2026-01-25 13:10:06,137 - hotspotmatrix - INFO - Exception handlers registered
-INFO:     Started server process [55493]
+2026-01-25 20:02:50,474 - hotspotmatrix - INFO - Exception handlers registered
+INFO:     Started server process [45743]
 INFO:     Waiting for application startup.
 RAGService running in MOCK MODE (No API Key found)
 RoadmapService running in MOCK MODE (No API Key found)
 CopilotService running in MOCK MODE (No API Key found)
-{"event": "Starting application...", "level": "info", "timestamp": "2026-01-25T19:10:06.735931Z"}
-WARNING:  WatchFiles detected changes in 'app/schemas/poll.py'. Reloading...
-{"event": "Database tables created", "level": "info", "timestamp": "2026-01-25T19:10:12.278846Z"}
+{"event": "Starting application...", "level": "info", "timestamp": "2026-01-26T02:02:51.172364Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-01-26T02:02:56.630029Z"}
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app/core/redis_client.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+{"event": "Shutting down application...", "level": "info", "timestamp": "2026-01-26T02:07:46.489320Z"}
+INFO:     Application shutdown complete.
+INFO:     Finished server process [45743]
+/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-01-25 20:07:47,686 - hotspotmatrix - INFO - Exception handlers registered
+INFO:     Started server process [50699]
+INFO:     Waiting for application startup.
+RAGService running in MOCK MODE (No API Key found)
+RoadmapService running in MOCK MODE (No API Key found)
+CopilotService running in MOCK MODE (No API Key found)
+{"event": "Starting application...", "level": "info", "timestamp": "2026-01-26T02:07:48.322899Z"}
+WARNING:  WatchFiles detected changes in 'app/core/security.py'. Reloading...
+{"event": "Database tables created", "level": "info", "timestamp": "2026-01-26T02:07:53.760967Z"}
 INFO:     Application startup complete.
 ERROR:    Traceback (most recent call last):
   File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/routing.py", line 686, in lifespan
@@ -889,18 +158,18 @@ ERROR:    Traceback (most recent call last):
     await getter
 asyncio.exceptions.CancelledError
 
-INFO:     connection closed
+WARNING:  WatchFiles detected changes in 'app/middleware/security.py'. Reloading...
 /Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-2026-01-25 13:10:13,139 - hotspotmatrix - INFO - Exception handlers registered
-INFO:     Started server process [55652]
+2026-01-25 20:07:54,917 - hotspotmatrix - INFO - Exception handlers registered
+INFO:     Started server process [50894]
 INFO:     Waiting for application startup.
 RAGService running in MOCK MODE (No API Key found)
 RoadmapService running in MOCK MODE (No API Key found)
 CopilotService running in MOCK MODE (No API Key found)
-{"event": "Starting application...", "level": "info", "timestamp": "2026-01-25T19:10:13.713669Z"}
-WARNING:  WatchFiles detected changes in 'app/schemas/poll.py'. Reloading...
-{"event": "Database tables created", "level": "info", "timestamp": "2026-01-25T19:10:18.918373Z"}
+{"event": "Starting application...", "level": "info", "timestamp": "2026-01-26T02:07:55.522305Z"}
+WARNING:  WatchFiles detected changes in 'app/core/caching.py'. Reloading...
+{"event": "Database tables created", "level": "info", "timestamp": "2026-01-26T02:08:00.879510Z"}
 INFO:     Application startup complete.
 ERROR:    Traceback (most recent call last):
   File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/routing.py", line 686, in lifespan
@@ -911,52 +180,166 @@ ERROR:    Traceback (most recent call last):
     await getter
 asyncio.exceptions.CancelledError
 
-INFO:     connection closed
+WARNING:  WatchFiles detected changes in 'app/core/socket_manager.py', 'app/middleware/request_id.py'. Reloading...
 /Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
   warnings.warn(
-2026-01-25 13:10:19,697 - hotspotmatrix - INFO - Exception handlers registered
-INFO:     Started server process [55805]
+2026-01-25 20:08:02,249 - hotspotmatrix - INFO - Exception handlers registered
+WARNING:  WatchFiles detected changes in 'app/core/database.py'. Reloading...
+/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-01-25 20:08:03,023 - hotspotmatrix - INFO - Exception handlers registered
+INFO:     Started server process [51065]
 INFO:     Waiting for application startup.
 RAGService running in MOCK MODE (No API Key found)
 RoadmapService running in MOCK MODE (No API Key found)
 CopilotService running in MOCK MODE (No API Key found)
-{"event": "Starting application...", "level": "info", "timestamp": "2026-01-25T19:10:20.340409Z"}
-{"event": "Database tables created", "level": "info", "timestamp": "2026-01-25T19:10:25.830921Z"}
+{"event": "Starting application...", "level": "info", "timestamp": "2026-01-26T02:08:03.606776Z"}
+WARNING:  WatchFiles detected changes in 'app/main.py'. Reloading...
+{"event": "Database tables created", "level": "info", "timestamp": "2026-01-26T02:08:08.779396Z"}
 INFO:     Application startup complete.
-INFO:     ('127.0.0.1', 49899) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-INFO:     ('127.0.0.1', 49900) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-INFO:     connection closed
-INFO:     ('127.0.0.1', 49921) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-INFO:     connection open
-/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/core/socket_manager.py:43: RuntimeWarning: coroutine 'AsyncServer.enter_room' was never awaited
-  sio.enter_room(sid, workshop_id)
-RuntimeWarning: Enable tracemalloc to get the object allocation traceback
-Client connected: UM185H16Lwhu5NUDAAAC
-Client connected: R8dbx843qvD2hh1PAAAD
-Client disconnected: R8dbx843qvD2hh1PAAAD
-Client connected: pyOph__IlITug2y9AAAF
-SID pyOph__IlITug2y9AAAF joined room 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-SID pyOph__IlITug2y9AAAF joined room 6534a595-5fc0-4ce4-9171-e238009a924e
-SID pyOph__IlITug2y9AAAF joined room 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-SID pyOph__IlITug2y9AAAF joined room 6534a595-5fc0-4ce4-9171-e238009a924e
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 585.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:10:59.525755Z"}
-{"method": "GET", "path": "/api/workshops/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 200, "duration_ms": 642.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:10:59.583671Z"}
-/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/core/socket_manager.py:236: RuntimeWarning: coroutine 'AsyncServer.enter_room' was never awaited
-  sio.enter_room(sid, f"copilot_{workshop_id}")
-RuntimeWarning: Enable tracemalloc to get the object allocation traceback
-/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/app/core/socket_manager.py:245: RuntimeWarning: coroutine 'AsyncServer.leave_room' was never awaited
-  sio.leave_room(sid, f"copilot_{workshop_id}")
-RuntimeWarning: Enable tracemalloc to get the object allocation traceback
-SID pyOph__IlITug2y9AAAF joined copilot room for workshop 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-SID pyOph__IlITug2y9AAAF left copilot room for workshop 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-SID pyOph__IlITug2y9AAAF joined copilot room for workshop 1e99a8fa-10f6-4058-9188-43ba4c3581d7
-{"method": "GET", "path": "/api/usecases/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 200, "duration_ms": 464.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:11:00.050443Z"}
-{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 486.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:11:00.057429Z"}
-{"method": "GET", "path": "/api/workshops/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 200, "duration_ms": 523.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:11:00.152022Z"}
-{"method": "GET", "path": "/api/usecases/1e99a8fa-10f6-4058-9188-43ba4c3581d7", "status_code": 200, "duration_ms": 455.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:11:00.655667Z"}
-{"method": "GET", "path": "/api/polls/workshop/6534a595-5fc0-4ce4-9171-e238009a924e", "status_code": 200, "duration_ms": 557.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:11:38.286017Z"}
-{"method": "GET", "path": "/api/polls/workshop/6534a595-5fc0-4ce4-9171-e238009a924e", "status_code": 200, "duration_ms": 495.55, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-25T19:11:38.827421Z"}
-INFO:     connection closed
-INFO:     connection closed
+ERROR:    Traceback (most recent call last):
+  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/starlette/routing.py", line 686, in lifespan
+    await receive()
+  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/uvicorn/lifespan/on.py", line 137, in receive
+    return await self.receive_queue.get()
+  File "/Applications/Xcode.app/Contents/Developer/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/asyncio/queues.py", line 166, in get
+    await getter
+asyncio.exceptions.CancelledError
+
+/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+2026-01-25 20:08:09,549 - hotspotmatrix - INFO - Exception handlers registered
+INFO:     Started server process [51180]
+INFO:     Waiting for application startup.
+RAGService running in MOCK MODE (No API Key found)
+RoadmapService running in MOCK MODE (No API Key found)
+CopilotService running in MOCK MODE (No API Key found)
+{"event": "Starting application...", "level": "info", "timestamp": "2026-01-26T02:08:10.149823Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-01-26T02:08:15.100501Z"}
+INFO:     Application startup complete.
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:38:23.257441Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 632.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:38:23.890122Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:38:23.891389Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:38:24.007662Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 353.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:38:24.361000Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:38:24.362089Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:38:27.964243Z"}
+{"method": "POST", "path": "/api/auth/logout", "status_code": 200, "duration_ms": 578.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:38:28.543334Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:38:28.545095Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:44:55.284819Z"}
+2026-01-25 20:44:55,851 - hotspotmatrix - WARNING - HTTPException: 401 - Incorrect email or password
+{"method": "POST", "path": "/api/auth/login", "status_code": 401, "duration_ms": 565.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-26T02:44:55.852971Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:44:55.855662Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:02.350078Z"}
+2026-01-25 20:45:02,802 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+Traceback (most recent call last):
+  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
+    version = _bcrypt.__about__.__version__
+AttributeError: module 'bcrypt' has no attribute '__about__'
+{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 1220.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:03.571576Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:03.574228Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:03.605331Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 800.89, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:04.406529Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:04.409625Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:04.458764Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 850.14, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:05.309421Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:05.311955Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:11.638832Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1404.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:13.043558Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:13.046792Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:13.089761Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1426.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:14.516774Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:14.520171Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:15.325889Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1372.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:16.699255Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:16.702661Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:16.750510Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1231.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:17.981936Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:17.984966Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:19.075280Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:19.075697Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1342.03, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:20.417680Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:20.419575Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:20.451854Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:20.451988Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:20.452212Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:20.452363Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:20.464770Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1438.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:20.513950Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:20.515332Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:20.568602Z"}
+{"method": "GET", "path": "/api/admin/facilitators/d917c54d-2c3b-4a08-8d69-27f142c525d7/workshops", "status_code": 200, "duration_ms": 603.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:21.055292Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 608.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:21.061193Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:21.061980Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 613.27, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:21.065419Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 613.03, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:21.065693Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:21.066825Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:21.070452Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:21.071616Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:21.103918Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:21.112357Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:21.116670Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:21.118729Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 594.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:21.162979Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:21.164355Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:21.210916Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 555.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:21.659285Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:21.666741Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 550.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:21.667788Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 551.14, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:21.670088Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:21.672233Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:21.673327Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:21.703586Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 536.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:21.748001Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:21.749657Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:21.751730Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1288.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:21.753558Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:21.755816Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:21.864091Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 444.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:22.196691Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:22.201680Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:22.249680Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 550.77, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:22.254624Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:22.256017Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:22.388838Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 567.06, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:22.431440Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:22.432768Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1365.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:22.478113Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:22.480542Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 484.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:22.734334Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:22.737441Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 566.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:22.955582Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:22.958041Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:23.001795Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:23.511507Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 576.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:23.578371Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:23.580015Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 749.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:24.260980Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:24.263914Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:24.316117Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 836.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:25.153072Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:25.155662Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:25.428938Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 1457.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:26.886468Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:26.889519Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:26.932239Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 1448.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:28.381109Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:28.383844Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:35.789903Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 841.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:36.632551Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:36.636313Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:36.682038Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 795.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T02:45:37.477453Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T02:45:37.480153Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T03:21:04.423779Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 1494.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T03:21:05.919385Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T03:21:05.922479Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T03:21:05.966392Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 1336.82, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T03:21:07.303635Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T03:21:07.305599Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T03:21:09.632555Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 1398.93, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T03:21:11.031965Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T03:21:11.036467Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T03:21:11.083108Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 1426.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-26T03:21:12.510045Z"}
+{"event": "Redis not available, using in-memory rate limiting", "level": "warning", "timestamp": "2026-01-26T03:21:12.511611Z"}

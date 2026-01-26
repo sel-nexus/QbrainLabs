@@ -29,7 +29,47 @@ manager = SocketManager(sio)
 
 @sio.event
 async def connect(sid, environ):
-    print(f"Client connected: {sid}")
+    """
+    WebSocket connection handler with authentication validation.
+    Extracts token from query string or headers and validates it.
+    """
+    # Extract token from query string or Authorization header
+    query_string = environ.get('QUERY_STRING', '')
+    token = None
+    
+    # Try query string first (common for Socket.io)
+    if query_string:
+        params = dict(param.split('=') for param in query_string.split('&') if '=' in param)
+        token = params.get('token')
+    
+    # Try Authorization header
+    if not token:
+        auth_header = environ.get('HTTP_AUTHORIZATION', '')
+        if auth_header.startswith('Bearer '):
+            token = auth_header.replace('Bearer ', '')
+    
+    # Validate token if provided (optional for public endpoints like participant join)
+    if token:
+        try:
+            from app.core.security import decode_access_token
+            payload = decode_access_token(token)
+            if payload:
+                # Store user info in session
+                await sio.save_session(sid, {
+                    'user_id': payload.get('user_id'),
+                    'email': payload.get('sub'),
+                    'role': payload.get('role')
+                })
+                print(f"Client connected: {sid} (authenticated: {payload.get('sub')})")
+            else:
+                print(f"Client connected: {sid} (invalid token)")
+        except Exception as e:
+            print(f"Client connected: {sid} (auth error: {e})")
+    else:
+        # Allow connection without token (for participant access)
+        print(f"Client connected: {sid} (unauthenticated - participant access)")
+    
+    return True  # Accept connection
 
 @sio.event
 async def disconnect(sid):

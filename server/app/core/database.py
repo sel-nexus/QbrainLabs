@@ -100,9 +100,14 @@ if is_supabase_or_pgbouncer():
         connect_args={"prepare_threshold": None},  # Disable prepared statements
     )
 else:
+    # Add query timeout for production safety
+    engine_kwargs = get_engine_kwargs()
+    engine_kwargs.setdefault("connect_args", {})
+    engine_kwargs["connect_args"]["command_timeout"] = 30  # 30 second query timeout
+    
     engine = create_async_engine(
         SQLALCHEMY_DATABASE_URL,
-        **get_engine_kwargs()
+        **engine_kwargs
     )
 
 AsyncSessionLocal = sessionmaker(

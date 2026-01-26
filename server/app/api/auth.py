@@ -2,9 +2,9 @@ from fastapi import APIRouter, Depends, HTTPException, status, Form, Request
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy import union
 from datetime import datetime, timedelta
 from typing import Optional, List
-import bcrypt
 import jwt
 
 from app.core.database import get_db
@@ -17,25 +17,21 @@ from app.schemas.rbac import (
     TokenWithRoleResponse
 )
 from app.core.config import settings
+# Use centralized password functions from security module
+from app.core.security import hash_password, verify_password, PasswordValidator
 
 router = APIRouter(prefix="/api/auth", tags=["authentication"])
 
 # OAuth2 scheme for token authentication
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 
-# JWT Configuration
-SECRET_KEY = settings.SECRET_KEY if hasattr(settings, 'SECRET_KEY') else "your-secret-key-change-in-production"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30 * 24 * 60  # 30 days
+# JWT Configuration - Use single source of truth from settings
+SECRET_KEY = settings.SECRET_KEY
+ALGORITHM = settings.ALGORITHM
+ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
 
-def hash_password(password: str) -> str:
-    """Hash a password using bcrypt"""
-    salt = bcrypt.gensalt()
-    return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
-
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    """Verify a password against its hash"""
-    return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
+# Use centralized password functions from security module
+from app.core.security import hash_password, verify_password, PasswordValidator
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     """Create a JWT access token with role and status"""
@@ -53,24 +49,18 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
 
 
 async def get_user_workshop_ids(user_id: str, db: AsyncSession) -> List[str]:
-    """Get list of workshop IDs the user can access"""
-    workshop_ids = []
-    
-    # Get owned workshops
-    result = await db.execute(
-        select(Workshop.id).where(Workshop.facilitator_id == user_id)
+    """Get list of workshop IDs the user can access - optimized with UNION query"""
+    # Use UNION to combine both queries in a single database round trip
+    owned_query = select(Workshop.id).where(Workshop.facilitator_id == user_id)
+    assigned_query = select(WorkshopFacilitator.workshop_id).where(
+        WorkshopFacilitator.facilitator_id == user_id
     )
-    workshop_ids.extend([str(row[0]) for row in result.all()])
     
-    # Get assigned workshops
-    result = await db.execute(
-        select(WorkshopFacilitator.workshop_id).where(
-            WorkshopFacilitator.facilitator_id == user_id
-        )
-    )
-    workshop_ids.extend([str(row[0]) for row in result.all()])
+    # Execute union query
+    result = await db.execute(union(owned_query, assigned_query))
+    workshop_ids = [str(row[0]) for row in result.all()]
     
-    return list(set(workshop_ids))
+    return list(set(workshop_ids))  # Remove duplicates
 
 async def get_current_user(token: str = Depends(oauth2_scheme), db: AsyncSession = Depends(get_db)):
     """Get current authenticated user from JWT token"""
@@ -269,11 +259,16 @@ async def change_password(
             detail="Current password is incorrect"
         )
     
-    # Validate new password
-    if len(new_password) < 8:
+    # Validate new password using PasswordValidator
+    validation_result = PasswordValidator.validate(new_password)
+    if not validation_result["valid"]:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="New password must be at least 8 characters long"
+            detail={
+                "error": "Password validation failed",
+                "errors": validation_result["errors"],
+                "strength": validation_result["strength"]
+            }
         )
     
     # Update password

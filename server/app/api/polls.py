@@ -85,7 +85,15 @@ async def list_polls(
     # Logic: Facilitator gets all, Participant gets Active only (usually) 
     # But for history, maybe all. Let's return all but decorate with user response.
     
-    query = select(Poll).where(Poll.workshop_id == workshop_id).order_by(Poll.created_at.desc())
+    # Use selectinload to eager load responses - fixes N+1 query problem
+    from sqlalchemy.orm import selectinload
+    
+    query = (
+        select(Poll)
+        .where(Poll.workshop_id == workshop_id)
+        .options(selectinload(Poll.responses))  # Eager load responses
+        .order_by(Poll.created_at.desc())
+    )
     if participant_id:
         # Verify participation
         await verify_participant(workshop_id, participant_id, db)
@@ -97,9 +105,8 @@ async def list_polls(
     # Calculate stats for each poll
     poll_details = []
     for poll in polls:
-        # Fetch responses
-        resp_result = await db.execute(select(PollResponse).where(PollResponse.poll_id == poll.id))
-        responses = resp_result.scalars().all()
+        # Responses are already loaded - no additional query needed
+        responses = poll.responses
         
         # Aggregation logic based on poll type
         stats_data = {}

@@ -109,15 +109,52 @@ class PasswordValidator:
 
 
 class RateLimiter:
-    """Simple in-memory rate limiter"""
+    """
+    Distributed rate limiter with Redis backend.
+    Falls back to in-memory rate limiting if Redis is not available.
+    """
     
     def __init__(self, max_requests: int = 100, window_seconds: int = 60):
         self.max_requests = max_requests
         self.window_seconds = window_seconds
-        self.requests: Dict[str, list] = {}
+        self.requests: Dict[str, list] = {}  # Fallback in-memory storage
+        self._use_redis: Optional[bool] = None
     
-    def is_allowed(self, identifier: str) -> bool:
-        """Check if request is allowed for the given identifier"""
+    async def _get_redis_client(self):
+        """Get Redis client if available"""
+        try:
+            from app.core.redis_client import get_redis_client
+            return await get_redis_client()
+        except Exception:
+            return None
+    
+    async def is_allowed(self, identifier: str) -> bool:
+        """
+        Check if request is allowed for the given identifier.
+        Uses Redis if available, otherwise falls back to in-memory.
+        """
+        redis_client = await self._get_redis_client()
+        
+        if redis_client:
+            # Use Redis for distributed rate limiting
+            try:
+                key = f"rate_limit:{identifier}"
+                current = await redis_client.incr(key)
+                
+                if current == 1:
+                    # Set expiration on first request
+                    await redis_client.expire(key, self.window_seconds)
+                
+                return current <= self.max_requests
+            except Exception:
+                # Fallback to in-memory if Redis fails
+                pass
+        
+        # Fallback: In-memory rate limiting
+        return self._is_allowed_memory(identifier)
+    
+    def _is_allowed_memory(self, identifier: str) -> bool:
+        """In-memory rate limiting (fallback)"""
         now = datetime.utcnow()
         window_start = now - timedelta(seconds=self.window_seconds)
         
@@ -139,8 +176,21 @@ class RateLimiter:
         self.requests[identifier].append(now)
         return True
     
-    def get_remaining(self, identifier: str) -> int:
+    async def get_remaining(self, identifier: str) -> int:
         """Get remaining requests for the identifier"""
+        redis_client = await self._get_redis_client()
+        
+        if redis_client:
+            try:
+                key = f"rate_limit:{identifier}"
+                current = await redis_client.get(key)
+                if current is None:
+                    return self.max_requests
+                return max(0, self.max_requests - int(current))
+            except Exception:
+                pass
+        
+        # Fallback: In-memory calculation
         if identifier not in self.requests:
             return self.max_requests
         
