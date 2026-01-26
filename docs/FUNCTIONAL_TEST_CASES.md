@@ -1,4 +1,4 @@
-# AI Hotspot Matrix - Functional Test Cases
+# Qbrain AI Labs - Functional Test Cases
 
 **Document Version:** 1.0  
 **Last Updated:** January 25, 2026  

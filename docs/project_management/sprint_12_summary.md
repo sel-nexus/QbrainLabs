@@ -20,7 +20,7 @@ Implemented default admin user creation with secure password management capabili
   - Automated database schema creation
   - Creates default admin user if doesn't exist
   - Configurable admin credentials via constants:
-    - Email: `admin@hotspotmatrix.ai`
+    - Email: `admin@qbrainlabs.com`
     - Password: `admin123` (changeable)
     - Name: `Administrator`
   - Security warning displayed after creation
@@ -132,7 +132,7 @@ uvicorn app.main:app --reload
 **⚠️ SECURITY WARNING**
 
 The default admin credentials are:
-- **Email:** `admin@hotspotmatrix.ai`
+- **Email:** `admin@qbrainlabs.com`
 - **Password:** `admin123`
 
 **Action Required:**
@@ -147,7 +147,7 @@ The default admin credentials are:
 1. Navigate to `http://localhost:5173`
 2. Click **"Facilitator Login"**
 3. Enter:
-   - Email: `admin@hotspotmatrix.ai`
+   - Email: `admin@qbrainlabs.com`
    - Password: `admin123`
 4. Click **"Sign In"**
 
@@ -235,7 +235,7 @@ current_password=admin123&new_password=newSecurePass123
 The admin user credentials can be customized by editing `server/init_db.py`:
 
 ```python
-DEFAULT_ADMIN_EMAIL = "admin@hotspotmatrix.ai"  # Change this
+DEFAULT_ADMIN_EMAIL = "admin@qbrainlabs.com"  # Change this
 DEFAULT_ADMIN_PASSWORD = "admin123"              # Change this
 DEFAULT_ADMIN_NAME = "Administrator"             # Change this
 ```

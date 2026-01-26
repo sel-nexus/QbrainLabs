@@ -13,7 +13,7 @@ class ProductionSettings(BaseSettings):
     """Production settings with validation and defaults"""
     
     # Application
-    PROJECT_NAME: str = "AI Hotspot Matrix"
+    PROJECT_NAME: str = "Qbrain AI Labs"
     API_V1_STR: str = "/api/v1"
     DEBUG: bool = False
     ENVIRONMENT: str = "production"

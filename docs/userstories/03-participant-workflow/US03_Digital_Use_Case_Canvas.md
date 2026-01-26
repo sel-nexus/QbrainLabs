@@ -370,7 +370,7 @@ Response:
 
 - US02: PIN-Based Participant Entry (prerequisite)
 - US04: Live Scoring Interface (uses submissions)
-- US05: Interactive Hotspot Matrix (displays submissions)
+- US05: Interactive Qbrain AI Labs (displays submissions)
 
 ---
 

@@ -1,4 +1,4 @@
-# AI Hotspot Matrix - Current Status Report
+# Qbrain AI Labs - Current Status Report
 
 **Date:** January 25, 2026  
 **Time:** Updated  
@@ -139,7 +139,7 @@
 open http://localhost:5173/facilitator-login
 
 # Login with:
-Email: admin@hotspotmatrix.ai
+Email: admin@qbrainlabs.com
 Password: admin123
 
 # You should see "Administrator" badge
@@ -161,7 +161,7 @@ Password: admin123
 # Get token
 curl -X POST http://localhost:8000/api/auth/login \
   -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "username=admin@hotspotmatrix.ai&password=admin123"
+  -d "username=admin@qbrainlabs.com&password=admin123"
 
 # Test stats endpoint
 curl http://localhost:8000/api/admin/stats \
@@ -330,7 +330,7 @@ npm run dev
 open http://localhost:5173
 
 # Login as admin
-# Email: admin@hotspotmatrix.ai
+# Email: admin@qbrainlabs.com
 # Password: admin123
 
 # Access admin panel

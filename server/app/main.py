@@ -110,4 +110,4 @@ app.include_router(copilot.router, tags=["ai-copilot"])
 
 @app.get("/")
 def read_root():
-    return {"message": "Hotspot Matrix API is running"}
+    return {"message": "Qbrain AI Labs API is running"}

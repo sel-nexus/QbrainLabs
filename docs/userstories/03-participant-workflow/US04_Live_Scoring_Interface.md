@@ -404,7 +404,7 @@ data: {
 
 - US01: Workshop Initialization (defines criteria)
 - US03: Digital Use Case Canvas (provides submissions)
-- US05: Interactive Hotspot Matrix (uses scores)
+- US05: Interactive Qbrain AI Labs (uses scores)
 
 ---
 

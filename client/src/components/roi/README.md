@@ -1,6 +1,6 @@
 # ROI Calculator Components
 
-This directory contains the comprehensive ROI Calculator feature (US17) for the Hotspot Matrix application.
+This directory contains the comprehensive ROI Calculator feature (US17) for the Qbrain AI Labs application.
 
 ## Components Overview
 

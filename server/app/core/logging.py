@@ -20,7 +20,7 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
         log_record['timestamp'] = datetime.utcnow().isoformat()
         log_record['level'] = record.levelname
         log_record['logger'] = record.name
-        log_record['service'] = 'hotspotmatrix'
+        log_record['service'] = 'qbrainlabs'
         
         if record.exc_info:
             log_record['exception'] = self.formatException(record.exc_info)
@@ -45,7 +45,7 @@ def configure_structlog() -> None:
 
 
 @lru_cache()
-def get_logger(name: str = "hotspotmatrix") -> structlog.BoundLogger:
+def get_logger(name: str = "qbrainlabs") -> structlog.BoundLogger:
     """Get a configured logger instance"""
     return structlog.get_logger(name)
 

@@ -1,4 +1,4 @@
-# AI Hotspot Matrix - Product Roadmap
+# Qbrain AI Labs - Product Roadmap
 
 **Last Updated:** January 24, 2026  
 **Version:** 2.0  
@@ -82,7 +82,7 @@ Phase 5: Global & Polish (📅 Q1 2027)
 | US02 | PIN-Based Entry | 2 | ✅ Complete |
 | US03 | Digital Use Case Canvas | 3 | ✅ Complete |
 | US04 | Live Scoring Interface | 4 | ✅ Complete |
-| US05 | Interactive Hotspot Matrix | 5-6 | ✅ Complete |
+| US05 | Interactive Qbrain AI Labs | 5-6 | ✅ Complete |
 | US06 | Workshop Access Control | 11-12 | ✅ Complete |
 | US07 | AI Intelligence (RAG) | 7-8 | ✅ Complete |
 | US08 | Landing Page | 1 | ✅ Complete |

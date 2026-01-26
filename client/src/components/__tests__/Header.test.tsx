@@ -14,7 +14,7 @@ const renderWithTheme = (ui: React.ReactElement) => {
 describe('Header', () => {
   it('should render the app brand', () => {
     renderWithTheme(<Header />);
-    expect(screen.getByText('AI Hotspot Matrix')).toBeInTheDocument();
+    expect(screen.getByText('Qbrain AI Labs')).toBeInTheDocument();
   });
 
   it('should render home button when showHomeButton is true', () => {

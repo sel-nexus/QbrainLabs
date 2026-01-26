@@ -11,7 +11,7 @@
 
 ## User Story
 
-**As a** global user of the AI Hotspot Matrix platform,  
+**As a** global user of the Qbrain AI Labs platform,  
 **I want** to use the application in my preferred language,  
 **So that** I can fully understand and engage with all features without language barriers.
 

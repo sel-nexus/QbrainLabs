@@ -97,7 +97,7 @@ export function Header({ showBackButton = true, showHomeButton = true, title }: 
             </div>
             <span className={`font-heading font-bold text-sm hidden sm:block ${theme === 'light' ? 'text-gray-900' : 'text-white'
               }`}>
-              AI Hotspot Matrix
+              Qbrain AI Labs
             </span>
           </button>
 

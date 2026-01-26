@@ -19,7 +19,7 @@
 
 ## Description
 
-The application needs a distinctive icon displayed in the header that represents the AI Hotspot Matrix brand. This icon should be visible on all screens and serve as a visual identity for the application while also functioning as a home navigation button.
+The application needs a distinctive icon displayed in the header that represents the Qbrain AI Labs brand. This icon should be visible on all screens and serve as a visual identity for the application while also functioning as a home navigation button.
 
 ---
 
@@ -34,7 +34,7 @@ The application needs a distinctive icon displayed in the header that represents
    - Clickable to navigate to home page
 
 2. **Brand Name Display**
-   - "AI Hotspot Matrix" text next to the icon
+   - "Qbrain AI Labs" text next to the icon
    - Visible on desktop screens (hidden on mobile for space)
    - Uses heading font family for consistency
 
@@ -58,7 +58,7 @@ The application needs a distinctive icon displayed in the header that represents
 **Given** the user is on any screen in the application  
 **When** they view the header  
 **Then** they see the application icon with the brand gradient  
-**And** the brand name "AI Hotspot Matrix" is visible on desktop
+**And** the brand name "Qbrain AI Labs" is visible on desktop
 
 ### Scenario 2: Home Navigation
 **Given** the user is on any page  

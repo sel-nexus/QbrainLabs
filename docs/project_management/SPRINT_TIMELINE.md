@@ -1,4 +1,4 @@
-# Hotspot Matrix - Sprint Timeline & Status
+# Qbrain AI Labs - Sprint Timeline & Status
 
 **Last Updated:** January 25, 2026
 
@@ -14,7 +14,7 @@ PHASE 1: CORE PLATFORM (Sprints 1-6) ✅ COMPLETE
 ├── Sprint 2: Participant Access & Real-Time Infrastructure ✅
 ├── Sprint 3: The Intake Phase ✅
 ├── Sprint 4: The Scoring Engine ✅
-├── Sprint 5: Visualization & Hotspot Matrix ✅
+├── Sprint 5: Visualization & Qbrain AI Labs ✅
 └── Sprint 6: Polish, Mobile Tuning & Export ✅
 
 PHASE 2: MOBILE & AI (Sprints 7-8) ✅ COMPLETE
@@ -200,7 +200,7 @@ PHASE 7: PRODUCTION & ENHANCEMENT (Sprints 20-21) ✅ COMPLETE
 | US02 | PIN-Based Entry | ✅ Complete | 2 |
 | US03 | Digital Use Case Canvas | ✅ Complete | 3 |
 | US04 | Live Scoring Interface | ✅ Complete | 4 |
-| US05 | Interactive Hotspot Matrix | ✅ Complete | 5-6 |
+| US05 | Interactive Qbrain AI Labs | ✅ Complete | 5-6 |
 | US06 | Workshop Access Control | ✅ Complete | 11-12 |
 | US07 | AI Intelligence (RAG) | ✅ Complete | 7-8 |
 | US08 | Landing Page | ✅ Complete | 1 |

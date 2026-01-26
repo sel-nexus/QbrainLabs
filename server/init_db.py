@@ -24,7 +24,7 @@ from app.core.database import engine, Base, AsyncSessionLocal
 from app.models.models import User
 import bcrypt
 
-DEFAULT_ADMIN_EMAIL = "admin@hotspotmatrix.ai"
+DEFAULT_ADMIN_EMAIL = "admin@qbrainlabs.com"
 DEFAULT_ADMIN_PASSWORD = "admin123"  # Should be changed on first login
 DEFAULT_ADMIN_NAME = "Administrator"
 
@@ -280,7 +280,7 @@ async def init_db():
 def main():
     """Main entry point."""
     print("=" * 60)
-    print("AI Hotspot Matrix - Database Initialization")
+    print("Qbrain AI Labs - Database Initialization")
     print("=" * 60)
     
     success = asyncio.run(init_db())

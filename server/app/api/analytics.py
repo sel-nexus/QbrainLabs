@@ -212,7 +212,7 @@ async def generate_report(
         created_by=current_user.id,
         organization_id=current_user.organization_id if hasattr(current_user, "organization_id") else uuid.uuid4(), # Fallback for local
         status="completed", # Creating async if expensive
-        file_url=f"https://storage.hotspotmatrix.ai/reports/{uuid.uuid4()}.pdf", # Mock URL
+        file_url=f"https://storage.qbrainlabs.com/reports/{uuid.uuid4()}.pdf", # Mock URL
         file_size_bytes=1024 * 1024 * 2 # 2MB
     )
     

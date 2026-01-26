@@ -21,7 +21,7 @@ This user story represents an initial collection of foundational enhancements th
 The following foundational features were implemented as part of the initial platform setup:
 
 - ✅ Facilitator login page with signup option
-- ✅ Application icon and branding (AI Hotspot Matrix)
+- ✅ Application icon and branding (Qbrain AI Labs)
 - ✅ Title, footnote, and footer updates
 - ✅ Use case ontology and knowledge base
 - ✅ AI-powered insights generation
@@ -38,10 +38,10 @@ When clicked on Facilitator login, the user should be taken to the Login page.
 This login page for facilitator should have a provision to signup if the user is not registered.
 
 # UI Enhancements
-Add an icon for this application to AI Hotspot Matrix
-Change the title of this application to AI Hotspot Matrix. 
-Change the footnote to AI Hotspot Matrix. 
-Change the footer to AI Hotspot Matrix. 
+Add an icon for this application to Qbrain AI Labs
+Change the title of this application to Qbrain AI Labs. 
+Change the footnote to Qbrain AI Labs. 
+Change the footer to Qbrain AI Labs. 
 
  # Build ontology for use cases
  Build a knowledge base for use cases. This knowledge base should be used to generate insights for use cases. 

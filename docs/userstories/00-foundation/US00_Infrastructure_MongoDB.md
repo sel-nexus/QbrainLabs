@@ -528,7 +528,7 @@ All other user stories depend on this infrastructure:
 - US02: PIN-Based Participant Entry
 - US03: Digital Use Case Canvas
 - US04: Live Scoring Interface
-- US05: Interactive Hotspot Matrix
+- US05: Interactive Qbrain AI Labs
 
 ---
 

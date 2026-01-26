@@ -96,7 +96,7 @@ User stories are organized into 11 logical groups based on feature domains. Each
 |----|-------|--------|--------|------|
 | US03 | Digital Use Case Canvas | ✅ Implemented | 8 | [US03_Digital_Use_Case_Canvas.md](./03-participant-workflow/US03_Digital_Use_Case_Canvas.md) |
 | US04 | Live Scoring Interface | ✅ Implemented | 8 | [US04_Live_Scoring_Interface.md](./03-participant-workflow/US04_Live_Scoring_Interface.md) |
-| US05 | Interactive Hotspot Matrix | ✅ Implemented | 13 | [US05_Interactive_Hotspot_Matrix.md](./03-participant-workflow/US05_Interactive_Hotspot_Matrix.md) |
+| US05 | Interactive Qbrain AI Labs | ✅ Implemented | 13 | [US05_Interactive_Hotspot_Matrix.md](./03-participant-workflow/US05_Interactive_Hotspot_Matrix.md) |
 | US31 | Participant Landing Dashboard | ✅ Implemented | 13 | [US31_Participant_Landing_Dashboard.md](./03-participant-workflow/US31_Participant_Landing_Dashboard.md) |
 
 **Notes:**

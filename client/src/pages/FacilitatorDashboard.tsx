@@ -139,7 +139,7 @@ export function FacilitatorDashboard() {
                 </div>
                 <button
                   className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-lg transition-colors theme-badge-warning hover:opacity-80"
-                  onClick={() => window.location.href = 'mailto:admin@hotspotmatrix.com?subject=Facilitator%20Approval%20Request'}
+                  onClick={() => window.location.href = 'mailto:admin@qbrainlabs.com?subject=Facilitator%20Approval%20Request'}
                 >
                   <Mail className="w-4 h-4" />
                   Contact Administrator

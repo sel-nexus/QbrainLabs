@@ -542,7 +542,7 @@ Response: {
 - US03: Digital Use Case Canvas
 - US10: Prioritization Matrix Criteria
 - US13: Facilitator Survey Management
-- US05: Interactive Hotspot Matrix (displays prioritized use cases)
+- US05: Interactive Qbrain AI Labs (displays prioritized use cases)
 
 ---
 

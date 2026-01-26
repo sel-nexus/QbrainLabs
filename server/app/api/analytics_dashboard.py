@@ -186,7 +186,7 @@ async def generate_report(
         period_start=report_in.period_start,
         period_end=report_in.period_end,
         parameters=report_in.parameters,
-        file_url="https://storage.hotspotmatrix.ai/reports/sample.pdf", # Placeholder
+        file_url="https://storage.qbrainlabs.com/reports/sample.pdf", # Placeholder
         file_size_bytes=1024 * 500 # 500kb
     )
     

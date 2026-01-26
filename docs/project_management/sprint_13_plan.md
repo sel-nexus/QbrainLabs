@@ -319,7 +319,7 @@ Features:
 ### Admin Panel Dashboard
 ```
 ┌─────────────────────────────────────────────────────┐
-│ 🔷 AI Hotspot Matrix - Admin Panel    [👤 Admin] │
+│ 🔷 Qbrain AI Labs - Admin Panel    [👤 Admin] │
 ├──────────────┬──────────────────────────────────────┤
 │              │  📊 Statistics                       │
 │ • Dashboard  │  ┌────────┬────────┬────────┬──────┐│

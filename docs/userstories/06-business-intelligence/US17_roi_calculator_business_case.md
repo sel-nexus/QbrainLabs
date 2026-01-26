@@ -439,7 +439,7 @@ CREATE TABLE presentations (
 
 ## Dependencies
 
-- US05: Interactive Hotspot Matrix (prioritized use cases)
+- US05: Interactive Qbrain AI Labs (prioritized use cases)
 - US03: Digital Use Case Canvas (use case data)
 - US07: AI Intelligence & RAG (business case generation)
 - Document generation library (docxtpl, python-pptx)

@@ -1,7 +1,7 @@
-# AI Hotspot Matrix
+# Qbrain AI Labs
 
 An AI-driven Collaborative Workshop Platform for use case prioritization.
-Hotspot Matrix allows real-time facilitation of "Hotspot" prioritization workshops. Participants join via mobile/web, submit use cases, and vote on criteria (e.g., Feasibility vs. Business Value) in real-time. The results are instantly visualized in an interactive Matrix (Bubble Chart) to identify "Strategic Bets," "Quick Wins," etc.
+Qbrain AI Labs allows real-time facilitation of "Hotspot" prioritization workshops. Participants join via mobile/web, submit use cases, and vote on criteria (e.g., Feasibility vs. Business Value) in real-time. The results are instantly visualized in an interactive Matrix (Bubble Chart) to identify "Strategic Bets," "Quick Wins," etc.
 
 ## Table of Contents
 
@@ -102,7 +102,7 @@ Access the application:
 - **API Docs**: http://localhost:8000/docs
 
 **Default Admin Credentials:**
-- Email: `admin@hotspotmatrix.ai`
+- Email: `admin@qbrainlabs.com`
 - Password: `admin123`
 - ⚠️ **Change the default password after first login!**
 
@@ -639,7 +639,7 @@ DATABASE_URL=postgresql://hotspotmatrix_user:your_password@localhost:5432/hotspo
 REDIS_URL=redis://localhost:6379/0
 SECRET_KEY=your-secret-key-min-32-chars-long
 JWT_SECRET_KEY=your-jwt-secret-key-here
-CORS_ORIGINS=https://yourdomain.com
+CORS_ORIGINS=https://qbrainlabs.com
 OPENAI_API_KEY=your-openai-key
 EOF
 
@@ -658,16 +658,16 @@ upstream backend {
 
 server {
     listen 80;
-    server_name yourdomain.com;
+    server_name qbrainlabs.com;
     return 301 https://$server_name$request_uri;
 }
 
 server {
     listen 443 ssl http2;
-    server_name yourdomain.com;
+    server_name qbrainlabs.com;
 
-    ssl_certificate /etc/letsencrypt/live/yourdomain.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/yourdomain.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/qbrainlabs.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/qbrainlabs.com/privkey.pem;
     ssl_protocols TLSv1.2 TLSv1.3;
     ssl_ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256;
 
@@ -721,7 +721,7 @@ sudo nginx -t && sudo systemctl reload nginx
 sudo apt install -y certbot python3-certbot-nginx
 
 # Obtain certificate
-sudo certbot --nginx -d yourdomain.com
+sudo certbot --nginx -d qbrainlabs.com
 
 # Auto-renewal is configured automatically
 sudo systemctl enable certbot.timer
@@ -845,7 +845,7 @@ nssm start HotspotMatrix-Backend
 # Download from: https://www.iis.net/downloads/microsoft/application-request-routing
 
 # Create IIS site for frontend
-New-WebSite -Name "HotspotMatrix" -Port 443 -HostHeader "yourdomain.com" -PhysicalPath "C:\hotspotmatrix\app\client\dist" -Ssl
+New-WebSite -Name "QbrainAILabs" -Port 443 -HostHeader "qbrainlabs.com" -PhysicalPath "C:\hotspotmatrix\app\client\dist" -Ssl
 
 # Import SSL certificate
 Import-PfxCertificate -FilePath "C:\certs\yourdomain.pfx" -CertStoreLocation "Cert:\LocalMachine\My" -Password (ConvertTo-SecureString -String "password" -AsPlainText -Force)
@@ -979,7 +979,7 @@ pm2 logs
    JWT_SECRET_KEY=your-jwt-secret-key
    
    # CORS (comma-separated)
-   CORS_ORIGINS=https://your-frontend-domain.com
+   CORS_ORIGINS=https://qbrainlabs.com
    
    # OpenAI (optional)
    OPENAI_API_KEY=your-openai-api-key
@@ -1384,14 +1384,14 @@ docker-compose -f docker-compose.prod.yml up -d
 
 ```bash
 # Let's Encrypt (Linux)
-sudo certbot certonly --standalone -d yourdomain.com
+sudo certbot certonly --standalone -d qbrainlabs.com
 
 # AWS Certificate Manager
-aws acm request-certificate --domain-name yourdomain.com --validation-method DNS
+aws acm request-certificate --domain-name qbrainlabs.com --validation-method DNS
 
 # GCP Managed SSL
-gcloud compute ssl-certificates create hotspotmatrix-cert \
-  --domains=yourdomain.com
+gcloud compute ssl-certificates create qbrainlabs-cert \
+  --domains=qbrainlabs.com
 ```
 
 ### Database Security

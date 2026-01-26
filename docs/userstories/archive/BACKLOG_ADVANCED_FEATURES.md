@@ -1,4 +1,4 @@
-# AI Hotspot Matrix - Advanced Features Backlog
+# Qbrain AI Labs - Advanced Features Backlog
 
 **Last Updated:** January 24, 2026  
 **Status:** Research Complete - Ready for Prioritization  
@@ -8,7 +8,7 @@
 
 ## 📋 Executive Summary
 
-This document outlines **12 advanced features** researched for the AI Hotspot Matrix platform to enhance AI immersion days and customer workshops. These features are designed to increase engagement, provide deeper insights, and accelerate time-to-value for workshop participants.
+This document outlines **12 advanced features** researched for the Qbrain AI Labs platform to enhance AI immersion days and customer workshops. These features are designed to increase engagement, provide deeper insights, and accelerate time-to-value for workshop participants.
 
 ---
 

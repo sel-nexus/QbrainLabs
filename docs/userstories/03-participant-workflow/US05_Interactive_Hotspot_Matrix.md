@@ -1,4 +1,4 @@
-# US05: Interactive Hotspot Matrix
+# US05: Interactive Qbrain AI Labs
 
 **Epic:** AI Hotspot Flow - Enterprise Backlog  
 **Module:** The Hotspot Visualization  
@@ -18,7 +18,7 @@
 
 ## Description
 
-The Interactive Hotspot Matrix transforms scored submissions into an actionable visual representation. Using a 2x2 matrix (Ease vs. Impact), facilitators can quickly identify which use cases should be prioritized. The visualization helps communicate complex data to leadership through an intuitive, interactive interface.
+The Interactive Qbrain AI Labs transforms scored submissions into an actionable visual representation. Using a 2x2 matrix (Ease vs. Impact), facilitators can quickly identify which use cases should be prioritized. The visualization helps communicate complex data to leadership through an intuitive, interactive interface.
 
 ---
 

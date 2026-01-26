@@ -17,7 +17,7 @@ def find_env_file() -> str:
 
 
 class Settings(BaseSettings):
-    PROJECT_NAME: str = "AI Hotspot Matrix"
+    PROJECT_NAME: str = "Qbrain AI Labs"
     API_V1_STR: str = "/api/v1"
     
     # Database - PostgreSQL (default for production-ready setup)

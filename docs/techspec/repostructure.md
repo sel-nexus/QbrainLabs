@@ -32,7 +32,7 @@
 │   ├── /features         # Feature-based modules
 │   │   ├── /workshop     # Intake Canvas & Participant UI
 │   │   ├── /admin        # Facilitator Dashboard & PIN setup
-│   │   └── /visualizer   # D3.js Hotspot Matrix implementation
+│   │   └── /visualizer   # D3.js Qbrain AI Labs implementation
 │   ├── /hooks            # Custom hooks (e.g., useSocket, useAuth)
 │   ├── /services         # API Client (Axios/Fetch wrappers)
 │   ├── /store            # State Management (Redux/Zustand)
@@ -43,7 +43,7 @@
 
 Scalability: By placing the AI Engine in its own folder, you can later spin it off into a microservice if the RAG processing becomes too heavy for the main API.
 
-D3.js Isolation: Keeping the visualization logic in a dedicated visualizer feature folder prevents the complex math and SVG rendering of the Hotspot Matrix from cluttering the standard UI components.
+D3.js Isolation: Keeping the visualization logic in a dedicated visualizer feature folder prevents the complex math and SVG rendering of the Qbrain AI Labs from cluttering the standard UI components.
 
 Clean Scoring Logic: All the "weighted math" we discussed is contained in services/aggregator.py, making it easy to unit test without needing a database or frontend connection.
 

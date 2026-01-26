@@ -113,7 +113,7 @@ def setup_health_endpoints(app: FastAPI) -> None:
         return {
             "status": "healthy",
             "timestamp": time.time(),
-            "service": "hotspotmatrix"
+            "service": "qbrainlabs"
         }
     
     @app.get("/health/ready", tags=["health"])

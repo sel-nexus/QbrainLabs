@@ -1,7 +1,7 @@
 # Testing Documentation
 
 ## Overview
-This document describes the comprehensive testing strategy for the Hotspot Matrix application, covering unit tests, integration tests, and end-to-end (E2E) tests.
+This document describes the comprehensive testing strategy for the Qbrain AI Labs application, covering unit tests, integration tests, and end-to-end (E2E) tests.
 
 ## Test Coverage Goals
 - **Unit Tests**: >80% code coverage

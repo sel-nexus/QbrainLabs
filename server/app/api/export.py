@@ -32,7 +32,7 @@ def generate_html_report(
     """Generate HTML report for PDF conversion"""
     
     # Default branding
-    brand_name = branding.get("company_name", "AI Hotspot Matrix") if branding else "AI Hotspot Matrix"
+    brand_name = branding.get("company_name", "Qbrain AI Labs") if branding else "Qbrain AI Labs"
     brand_color = branding.get("primary_color", "#8b5cf6") if branding else "#8b5cf6"
     logo_url = branding.get("logo_url", "") if branding else ""
     

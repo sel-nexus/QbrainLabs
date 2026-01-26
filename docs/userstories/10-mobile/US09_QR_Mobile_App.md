@@ -66,7 +66,7 @@
 ### Scenario C: Frequent Mobile User
 1.  User attends multiple workshops.
 2.  User taps "Share -> Add to Home Screen" on their phone.
-3.  Later, user taps the "Hotspot Matrix" icon on their home screen.
+3.  Later, user taps the "Qbrain AI Labs" icon on their home screen.
 4.  App opens without browser chrome (full screen).
 5.  User feels like they are using a native app.
 

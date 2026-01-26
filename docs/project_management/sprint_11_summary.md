@@ -54,7 +54,7 @@ Implemented facilitator authentication system and UI branding enhancements based
 ### 2. UI Branding Updates ✅
 
 #### Application Name Change
-- Updated from "Hotspot Matrix" to **"AI Hotspot Matrix"**
+- Updated from "Qbrain AI Labs" to **"Qbrain AI Labs"**
 - Locations updated:
   - `client/index.html` - Page title
   - `client/public/manifest.json` - PWA app name and short name

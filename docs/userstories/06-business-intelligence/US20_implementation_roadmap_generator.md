@@ -513,7 +513,7 @@ CREATE TABLE roadmap_scenarios (
 
 ## Dependencies
 
-- US05: Interactive Hotspot Matrix (prioritized use cases)
+- US05: Interactive Qbrain AI Labs (prioritized use cases)
 - US17: ROI Calculator (financial context)
 - Gantt chart library (e.g., frappe-gantt, dhtmlx-gantt)
 - PM tool APIs (Jira, Asana, Monday.com)

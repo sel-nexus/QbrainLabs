@@ -17,14 +17,14 @@
 - **US01** creates workshops and may include basic criteria setup
 - **Boundary:** US10 = "What criteria to use for scoring"; US01 = "Create the workshop container"
 - **Relationship:** US10's criteria templates are selected/configured during US01's workshop creation
-- **Dependency:** US10 criteria are used in US04 (Live Scoring) and US05 (Hotspot Matrix visualization)
+- **Dependency:** US10 criteria are used in US04 (Live Scoring) and US05 (Qbrain AI Labs visualization)
 
 **US10 vs US04 (Live Scoring Interface):**
 - **US10** defines the criteria and scoring framework
 - **US04** provides the interface for participants to score use cases using US10's criteria
 - **Dependency:** US04 depends on US10 for criteria definitions
 
-**US10 vs US05 (Interactive Hotspot Matrix):**
+**US10 vs US05 (Interactive Qbrain AI Labs):**
 - **US10** defines how criteria map to matrix axes (Value vs Feasibility)
 - **US05** visualizes use cases on the matrix based on US10's scoring framework
 - **Dependency:** US05 uses US10's composite scoring logic to position use cases
@@ -36,7 +36,7 @@
 - ✅ Slider/Likert scale input for all dimensions
 - ✅ Tooltip descriptions for each criterion
 - ✅ Composite scoring for Value vs Feasibility axes
-- ✅ Hotspot Matrix visualization with quadrants
+- ✅ Qbrain AI Labs visualization with quadrants
 - ✅ Configurable criteria templates
 
 ---
@@ -82,7 +82,7 @@ The system must support the evaluation of use cases based on the following seven
 *   **Tooltips/Descriptions:** Each criterion must display its description (as listed above) to ensure consistent understanding among voters.
 
 ### 3. Aggregation & Mapping
-*   **Composite Scoring:** The system should calculate composite scores for the Hotspot Matrix axes.
+*   **Composite Scoring:** The system should calculate composite scores for the Qbrain AI Labs axes.
     *   *Proposed Mapping:*
         *   **Vertical Axis (Value/Impact):** Average of Business Impact, Strategic Alignment, Scalability & Value.
         *   **Horizontal Axis (Feasibility/Readiness):** Average of Ease of Implementation, Data Readiness, Organizational Readiness, and (inverse of) Risk & Compliance.
@@ -99,7 +99,7 @@ The system must support the evaluation of use cases based on the following seven
 4.  The system calculates the weighted score.
 
 ### Scenario B: Matrix Visualization
-1.  After voting, the Facilitator views the Hotspot Matrix.
+1.  After voting, the Facilitator views the Qbrain AI Labs.
 2.  Use cases are plotted based on the aggregated "Value" vs "Readiness" scores derived from the 7 detailed inputs.
 3.  Clicking a node reveals the detailed breakdown (e.g., "High ROI, but Low Data Readiness").
 

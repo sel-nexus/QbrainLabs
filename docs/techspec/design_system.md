@@ -1,4 +1,4 @@
-# Hotspot Matrix - Design System Specification
+# Qbrain AI Labs - Design System Specification
 
 **Version:** 1.0
 **Philosophy:** "Futuristic Strategic Intelligence"

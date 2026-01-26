@@ -1,4 +1,4 @@
-# Hotspot Matrix - Technical Specification
+# Qbrain AI Labs - Technical Specification
 
 **Version:** 2.0
 **Status:** Approved
@@ -7,7 +7,7 @@
 ---
 
 ## 1. System Overview
-Hotspot Matrix is a real-time collaborative workshop platform tailored for AI strategic planning. It allows a facilitator to guide a group of stakeholders through **ideation**, **scoring**, and **visualization** of AI use cases. The core value is the "Hotspot Matrix," a dynamic 2x2 chart that renders live participant feedback into a strategic roadmap (Feasibility vs. Value).
+Qbrain AI Labs is a real-time collaborative workshop platform tailored for AI strategic planning. It allows a facilitator to guide a group of stakeholders through **ideation**, **scoring**, and **visualization** of AI use cases. The core value is the "Qbrain AI Labs," a dynamic 2x2 chart that renders live participant feedback into a strategic roadmap (Feasibility vs. Value).
 
 ---
 

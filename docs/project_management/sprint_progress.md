@@ -1,7 +1,7 @@
-# Hotspot Matrix - Development Sprint Plan
+# Qbrain AI Labs - Development Sprint Plan
 > **Status:** MVP + Advanced Features Completed (Sprints 1-25) | Active: Production Deployment Planning, Sprint 26 Planned
 
-This plan outlines the phased execution of the Hotspot Matrix application, ensuring a logical progression from backend foundation to complex real-time visualization.
+This plan outlines the phased execution of the Qbrain AI Labs application, ensuring a logical progression from backend foundation to complex real-time visualization.
 
 ## Sprint 1: Foundation & Workshop Configuration
 **Goal:** Establish the technical skeleton and allow facilitators to configure a workshop.
@@ -67,7 +67,7 @@ This plan outlines the phased execution of the Hotspot Matrix application, ensur
     - [x] Service: Real-time math (Calculate Avg/StdDev on the fly - Implemented via live vote counting).
     - [x] Socket: Broadcast `vote_count_update` (e.g., "15/20 voted").
 
-## Sprint 5: Visualization & Hotspot Matrix
+## Sprint 5: Visualization & Qbrain AI Labs
 **Goal:** Render the final insights.
 **Focus:** US05 (Visualization), Recharts, Drill-down.
 
@@ -169,10 +169,10 @@ This plan outlines the phased execution of the Hotspot Matrix application, ensur
     - [x] Protect AdminDashboard with auth check.
     - [x] Add user profile display and logout functionality in dashboard header.
 - [x] **UI Branding Updates:**
-    - [x] Update application title to "AI Hotspot Matrix" across all pages.
+    - [x] Update application title to "Qbrain AI Labs" across all pages.
     - [x] Update page title in index.html.
     - [x] Update PWA manifest with new branding.
-    - [x] Update footer with "AI Hotspot Matrix" branding.
+    - [x] Update footer with "Qbrain AI Labs" branding.
     - [x] Update README with authentication features.
 - [x] **Dependencies:**
     - [x] Add PyJWT and bcrypt to requirements.txt.
@@ -187,7 +187,7 @@ This plan outlines the phased execution of the Hotspot Matrix application, ensur
     - [x] Update UserResponse schema to include admin flag.
 - [x] **Database Initialization:**
     - [x] Create `init_db.py` script for database setup.
-    - [x] Auto-create default admin user (admin@hotspotmatrix.ai / admin123).
+    - [x] Auto-create default admin user (admin@qbrainlabs.com / admin123).
     - [x] Display default credentials with security warning.
 - [x] **Password Management:**
     - [x] Implement change password API endpoint.
@@ -985,7 +985,7 @@ This plan outlines the phased execution of the Hotspot Matrix application, ensur
 | **US02** | PIN-Based Entry | ✅ Completed | Sprint 2 |
 | **US03** | Digital Use Case Canvas | ✅ Completed | Sprint 3 |
 | **US04** | Live Scoring Interface | ✅ Completed | Sprint 4 |
-| **US05** | Interactive Hotspot Matrix | ✅ Completed | Sprint 5 & 9 |
+| **US05** | Interactive Qbrain AI Labs | ✅ Completed | Sprint 5 & 9 |
 | **US06** | Workshop Access Control | ✅ Completed | Sprint 7 |
 | **US07** | AI Intelligence (RAG) | ✅ Completed | Sprint 8 |
 | **US08** | Landing Page | ✅ Completed | Sprint 8 |

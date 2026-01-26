@@ -99,7 +99,7 @@ All endpoints require admin authentication:
 ```
 1. Start servers: ./restart_dev.sh
 2. Navigate to: http://localhost:5173/facilitator-login
-3. Login with: admin@hotspotmatrix.ai / admin123
+3. Login with: admin@qbrainlabs.com / admin123
 4. Click Shield icon in header
 5. View system stats and navigation
 ```
@@ -109,7 +109,7 @@ All endpoints require admin authentication:
 # Get auth token first
 curl -X POST http://localhost:8000/api/auth/login \
   -H "Content-Type: application/x-www-form-urlencoded" \
-  -d "username=admin@hotspotmatrix.ai&password=admin123"
+  -d "username=admin@qbrainlabs.com&password=admin123"
 
 # Use token to access admin endpoints
 TOKEN="your_token_here"
