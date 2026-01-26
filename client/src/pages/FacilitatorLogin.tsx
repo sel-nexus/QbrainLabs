@@ -37,7 +37,16 @@ export function FacilitatorLogin() {
                 // Navigation will be handled by the useEffect above when isAuthenticated changes
             } else {
                 // Handle signup separately
-                const response = await fetch(`http://localhost:8000/api/auth/signup`, {
+                // Auto-detect API URL based on current hostname
+                const getApiBaseUrl = () => {
+                    const hostname = window.location.hostname;
+                    if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
+                        return `http://${hostname}:8000`;
+                    }
+                    return 'http://localhost:8000';
+                };
+
+                const response = await fetch(`${getApiBaseUrl()}/api/auth/signup`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -137,7 +146,7 @@ export function FacilitatorLogin() {
                             type="submit"
                             disabled={loading}
                             className="w-full py-3 px-4 bg-brand-violet text-white font-semibold rounded-lg shadow-lg hover:bg-brand-violet/90 focus:outline-none focus:ring-2 focus:ring-brand-violet focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
-                            style={{ focusRingOffsetColor: 'var(--theme-bg-primary)' }}
+                            style={{ '--tw-ring-offset-color': 'var(--theme-bg-primary)' } as React.CSSProperties}
                         >
                             {loading ? 'Processing...' : isLogin ? 'Sign In' : 'Create Account'}
                         </button>

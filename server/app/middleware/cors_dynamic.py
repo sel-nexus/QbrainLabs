@@ -83,6 +83,7 @@ class DynamicCORSMiddleware(BaseHTTPMiddleware):
                     headers=self._get_cors_headers(origin),
                 )
             else:
+                logger.warning(f"CORS blocked for origin: {origin}. Allowed origins: {sorted(self.allowed_origins)}")
                 return StarletteResponse(
                     content="CORS not allowed",
                     status_code=403,

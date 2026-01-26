@@ -1,23 +1,8 @@
 import axios from 'axios';
+import { API_BASE_URL } from './config';
 
 const TOKEN_KEY = 'hm_auth_token';
 const PARTICIPANT_TOKEN_KEY = 'participant_token';
-
-// Use VITE_API_URL environment variable, fallback to detecting the current host
-// This allows the app to work when accessed via IP address
-const getApiBaseUrl = () => {
-  if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL;
-  }
-  // If accessing via IP, use the same IP for API
-  const hostname = window.location.hostname;
-  if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-    return `http://${hostname}:8000`;
-  }
-  return 'http://localhost:8000';
-};
-
-const API_BASE_URL = getApiBaseUrl();
 
 export const api = axios.create({
     baseURL: `${API_BASE_URL}/api`,
@@ -26,6 +11,7 @@ export const api = axios.create({
     },
     timeout: 30000, // 30 second timeout
 });
+
 
 // Add auth token to all requests (facilitator or participant)
 api.interceptors.request.use((config) => {

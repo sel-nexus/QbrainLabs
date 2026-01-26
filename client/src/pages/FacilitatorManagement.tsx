@@ -2,12 +2,12 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 import { AdminLayout } from '../components/AdminLayout';
-import { 
-  Users, 
-  CheckCircle, 
-  XCircle, 
-  Clock, 
-  Search, 
+import {
+  Users,
+  CheckCircle,
+  XCircle,
+  Clock,
+  Search,
   Filter,
   MoreVertical,
   UserCheck,
@@ -17,7 +17,12 @@ import {
   X
 } from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE = import.meta.env.VITE_API_URL || (() => {
+  const hostname = window.location.hostname;
+  return (hostname !== 'localhost' && hostname !== '127.0.0.1')
+    ? `http://${hostname}:8000`
+    : 'http://localhost:8000';
+})();
 
 interface Facilitator {
   id: string;
@@ -49,25 +54,25 @@ interface FacilitatorWorkshops {
 }
 
 const statusConfig = {
-  pending: { 
-    label: 'Pending', 
-    color: 'theme-badge-warning', 
-    icon: Clock 
+  pending: {
+    label: 'Pending',
+    color: 'theme-badge-warning',
+    icon: Clock
   },
-  active: { 
-    label: 'Active', 
-    color: 'theme-badge-success', 
-    icon: CheckCircle 
+  active: {
+    label: 'Active',
+    color: 'theme-badge-success',
+    icon: CheckCircle
   },
-  disabled: { 
-    label: 'Disabled', 
-    color: 'theme-badge-danger', 
-    icon: XCircle 
+  disabled: {
+    label: 'Disabled',
+    color: 'theme-badge-danger',
+    icon: XCircle
   },
-  suspended: { 
-    label: 'Suspended', 
-    color: 'theme-badge-neutral', 
-    icon: XCircle 
+  suspended: {
+    label: 'Suspended',
+    color: 'theme-badge-neutral',
+    icon: XCircle
   },
 };
 
@@ -80,7 +85,7 @@ export function FacilitatorManagement() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('');
   const [actionMenuOpen, setActionMenuOpen] = useState<string | null>(null);
-  
+
   // Workshop assignment state
   const [allWorkshops, setAllWorkshops] = useState<Workshop[]>([]);
   const [facilitatorWorkshops, setFacilitatorWorkshops] = useState<FacilitatorWorkshops>({});
@@ -180,14 +185,14 @@ export function FacilitatorManagement() {
   const toggleWorkshop = (facilitatorId: string, workshopId: string) => {
     const currentWorkshops = facilitatorWorkshops[facilitatorId] || [];
     const currentIds = currentWorkshops.map(w => w.id);
-    
+
     let newIds: string[];
     if (currentIds.includes(workshopId)) {
       newIds = currentIds.filter(id => id !== workshopId);
     } else {
       newIds = [...currentIds, workshopId];
     }
-    
+
     updateFacilitatorWorkshops(facilitatorId, newIds);
   };
 
@@ -276,7 +281,7 @@ export function FacilitatorManagement() {
 
   const handleReject = async (facilitatorId: string) => {
     const reason = prompt('Reason for rejection (optional):');
-    
+
     try {
       const response = await fetch(
         `${API_BASE}/api/admin/facilitators/${facilitatorId}/approve`,
@@ -496,7 +501,7 @@ export function FacilitatorManagement() {
               <tbody className="divide-y" style={{ borderColor: 'var(--theme-border-color)' }}>
                 {facilitators.map((facilitator) => {
                   const StatusIcon = statusConfig[facilitator.status]?.icon || Clock;
-                  
+
                   return (
                     <tr key={facilitator.id} className="theme-hover">
                       <td className="px-6 py-4">
@@ -544,7 +549,7 @@ export function FacilitatorManagement() {
                             </span>
                             <ChevronDown className="w-4 h-4 contrast-muted" />
                           </button>
-                          
+
                           {workshopDropdownOpen === facilitator.id && (
                             <div className="absolute z-20 mt-1 w-72 rounded-lg shadow-lg border max-h-60 overflow-y-auto theme-card">
                               <div className="p-2 border-b" style={{ borderColor: 'var(--theme-border-color)' }}>
@@ -566,9 +571,8 @@ export function FacilitatorManagement() {
                                         key={workshop.id}
                                         onClick={() => toggleWorkshop(facilitator.id, workshop.id)}
                                         disabled={savingWorkshops === facilitator.id}
-                                        className={`w-full px-3 py-2 text-left text-sm theme-hover flex items-center justify-between transition-colors ${
-                                          isAssigned ? 'bg-brand-violet/5' : ''
-                                        }`}
+                                        className={`w-full px-3 py-2 text-left text-sm theme-hover flex items-center justify-between transition-colors ${isAssigned ? 'bg-brand-violet/5' : ''
+                                          }`}
                                       >
                                         <div className="flex-1 min-w-0">
                                           <p className="font-medium theme-text-primary truncate">
@@ -586,7 +590,7 @@ export function FacilitatorManagement() {
                                   })}
                                 </div>
                               )}
-                              
+
                               {/* Selected workshops tags */}
                               {(facilitatorWorkshops[facilitator.id] || []).length > 0 && (
                                 <div className="p-2 border-t theme-bg-tertiary" style={{ borderColor: 'var(--theme-border-color)' }}>
@@ -632,7 +636,7 @@ export function FacilitatorManagement() {
                         >
                           <MoreVertical className="w-5 h-5 contrast-muted" />
                         </button>
-                        
+
                         {actionMenuOpen === facilitator.id && (
                           <div className="absolute right-6 top-12 w-48 rounded-lg shadow-lg border py-1 z-10 theme-card">
                             {facilitator.status === 'pending' && (

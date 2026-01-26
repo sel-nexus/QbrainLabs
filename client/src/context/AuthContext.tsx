@@ -1,19 +1,6 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import { API_BASE_URL as API_BASE } from '../lib/config';
 
-// Auto-detect API URL based on current hostname for network access
-const getApiBaseUrl = () => {
-  if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL;
-  }
-  // If accessing via IP, use the same IP for API
-  const hostname = window.location.hostname;
-  if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-    return `http://${hostname}:8000`;
-  }
-  return 'http://localhost:8000';
-};
-
-const API_BASE = getApiBaseUrl();
 
 export type UserRole = 'admin' | 'facilitator' | 'member';
 export type AccountStatus = 'pending' | 'active' | 'disabled' | 'suspended';
@@ -107,7 +94,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             isAuthenticated: true,
             isLoading: false,
           }));
-          
+
           // Verify token is still valid
           try {
             const response = await fetch(`${API_BASE}/api/auth/me`, {
@@ -115,7 +102,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 'Authorization': `Bearer ${storedToken}`,
               },
             });
-            
+
             if (response.ok) {
               const freshUser = await response.json();
               localStorage.setItem(USER_KEY, JSON.stringify(freshUser));
@@ -176,15 +163,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     if (!response.ok) {
       const error = await response.json();
+      console.error('[Auth] Login failed:', error);
       throw new Error(error.detail || 'Login failed');
     }
 
     const data = await response.json();
-    
+    console.log('[Auth] Login successful for user:', data.user?.email);
+
     // Store auth data
     localStorage.setItem(TOKEN_KEY, data.access_token);
     localStorage.setItem(USER_KEY, JSON.stringify(data.user));
-    
+
     // Clear any member session
     localStorage.removeItem(MEMBER_SESSION_KEY);
 
@@ -266,10 +255,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
 
     const session: MemberSession = await response.json();
-    
+
     // Store member session
     localStorage.setItem(MEMBER_SESSION_KEY, JSON.stringify(session));
-    
+
     // Clear any facilitator auth
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
@@ -332,25 +321,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const hasRole = useCallback((role: UserRole | UserRole[]): boolean => {
     if (!state.user) return false;
-    
+
     const roles = Array.isArray(role) ? role : [role];
-    
+
     // Admins have all roles
     if (state.user.is_admin) return true;
-    
+
     return roles.includes(state.user.role);
   }, [state.user]);
 
   const canAccessWorkshop = useCallback((workshopId: string): boolean => {
     // Admins can access all workshops
     if (state.user?.is_admin) return true;
-    
+
     // Check if user is assigned to this workshop
     if (state.assignedWorkshops.includes(workshopId)) return true;
-    
+
     // Check member session
     if (state.memberSession?.workshop_id === workshopId) return true;
-    
+
     return false;
   }, [state.user, state.assignedWorkshops, state.memberSession]);
 

@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
-import { 
+import {
   LayoutDashboard,
   Users,
   FileText,
@@ -17,7 +17,12 @@ import {
   Mail
 } from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_BASE = import.meta.env.VITE_API_URL || (() => {
+  const hostname = window.location.hostname;
+  return (hostname !== 'localhost' && hostname !== '127.0.0.1')
+    ? `http://${hostname}:8000`
+    : 'http://localhost:8000';
+})();
 
 interface Workshop {
   id: string;
@@ -81,18 +86,18 @@ export function FacilitatorDashboard() {
     });
   };
 
-  const getActiveWorkshops = () => workshops.filter(w => 
+  const getActiveWorkshops = () => workshops.filter(w =>
     w.status === 'OPEN' || w.status === 'IN_PROGRESS'
   );
 
-  const getCompletedWorkshops = () => workshops.filter(w => 
+  const getCompletedWorkshops = () => workshops.filter(w =>
     w.status === 'COMPLETED'
   );
 
-  const getTotalParticipants = () => 
+  const getTotalParticipants = () =>
     workshops.reduce((sum, w) => sum + w.participant_count, 0);
 
-  const getTotalUseCases = () => 
+  const getTotalUseCases = () =>
     workshops.reduce((sum, w) => sum + w.use_case_count, 0);
 
   // US32: Check if user is pending approval
@@ -243,7 +248,7 @@ export function FacilitatorDashboard() {
         {/* My Workshops */}
         <div className="mb-8">
           <h2 className="text-xl font-semibold theme-text-primary mb-4">My Workshops</h2>
-          
+
           {isLoading ? (
             <div className="rounded-xl p-8 text-center shadow-sm border theme-card">
               <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-violet mx-auto"></div>
@@ -254,7 +259,7 @@ export function FacilitatorDashboard() {
               <LayoutDashboard className="w-12 h-12 contrast-muted mx-auto mb-3" />
               <p className="theme-text-secondary font-medium">No workshops assigned</p>
               <p className="contrast-muted text-sm mt-1">
-                {user?.is_admin 
+                {user?.is_admin
                   ? 'Create a workshop to get started'
                   : 'Contact an administrator to get assigned to workshops'}
               </p>
@@ -288,7 +293,7 @@ export function FacilitatorDashboard() {
                       <h3 className="font-semibold text-lg theme-text-primary mb-2 line-clamp-2">
                         {workshop.title}
                       </h3>
-                      
+
                       <div className="flex items-center gap-4 text-sm contrast-muted mb-4">
                         <span className="flex items-center gap-1">
                           <Users className="w-4 h-4" />

@@ -144,6 +144,11 @@ def origin_matches_server_ip(origin: str, server_ips: List[str], client_port: in
         # Also check if it's localhost/127.0.0.1
         if hostname in ["localhost", "127.0.0.1"]:
             return True
+            
+        # Allow requests if the hostname matches the detected server IPs
+        # This covers cases where the request comes effectively from the server itself (e.g. proxy)
+        if hostname in server_ips: 
+            return True
         
         # Try to resolve hostname to IP and check
         try:
