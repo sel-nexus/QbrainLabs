@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
+import { API_BASE_URL } from '../lib/config';
 
 export function FacilitatorLogin() {
     const navigate = useNavigate();
@@ -30,6 +31,8 @@ export function FacilitatorLogin() {
         setLoading(true);
 
         try {
+
+
             if (isLogin) {
                 // Use AuthContext login for proper state management
                 await login(formData.email, formData.password);
@@ -37,16 +40,7 @@ export function FacilitatorLogin() {
                 // Navigation will be handled by the useEffect above when isAuthenticated changes
             } else {
                 // Handle signup separately
-                // Auto-detect API URL based on current hostname
-                const getApiBaseUrl = () => {
-                    const hostname = window.location.hostname;
-                    if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-                        return `http://${hostname}:8000`;
-                    }
-                    return 'http://localhost:8000';
-                };
-
-                const response = await fetch(`${getApiBaseUrl()}/api/auth/signup`, {
+                const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

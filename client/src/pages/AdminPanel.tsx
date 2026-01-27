@@ -12,7 +12,9 @@ import {
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '../lib/config';
+
+const API_BASE = API_BASE_URL;
 const TOKEN_KEY = 'hm_auth_token';
 
 interface SystemStats {

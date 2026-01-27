@@ -7,12 +7,14 @@ import { Button } from '../components/ui/Button';
 import { useTheme } from '../context/ThemeContext';
 import { useAuth } from '../context/AuthContext';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '../lib/config';
+
+const API_BASE = API_BASE_URL;
 
 export function AdminMyWorkshops() {
     const navigate = useNavigate();
     const { theme } = useTheme();
-    const { token, user, hasRole } = useAuth();
+    const { token, hasRole } = useAuth();
     const [workshops, setWorkshops] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const isLight = theme === 'light';
@@ -73,8 +75,8 @@ export function AdminMyWorkshops() {
                     </div>
                 ) : workshops.length > 0 ? (
                     workshops.map((w: any) => (
-                        <div 
-                            key={w.id} 
+                        <div
+                            key={w.id}
                             className={`rounded-2xl p-6 transition-all cursor-pointer border ${isLight ? 'bg-white border-gray-200 shadow-sm hover:border-brand-violet/50' : 'bg-surface-800/50 border-white/10 hover:border-brand-violet/50'}`}
                             onClick={() => navigate(`/workshop/${w.id}`)}
                         >

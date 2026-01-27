@@ -1,25 +1,11 @@
 import { io } from 'socket.io-client';
 
-// Auto-detect socket URL based on current hostname for network access
-const getSocketUrl = () => {
-  if (import.meta.env.VITE_SOCKET_URL) {
-    return import.meta.env.VITE_SOCKET_URL;
-  }
-  if (import.meta.env.VITE_API_URL) {
-    return import.meta.env.VITE_API_URL;
-  }
-  // If accessing via IP, use the same IP for socket
-  const hostname = window.location.hostname;
-  if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-    return `http://${hostname}:8000`;
-  }
-  return 'http://localhost:8000';
-};
+import { API_BASE_URL } from './config';
 
-const SOCKET_URL = getSocketUrl();
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || API_BASE_URL;
 
 export const socket = io(SOCKET_URL, {
-    path: '/ws/socket.io',
-    autoConnect: false, // We connect manually after join
-    transports: ['websocket']
+  path: '/ws/socket.io',
+  autoConnect: false, // We connect manually after join
+  transports: ['websocket']
 });

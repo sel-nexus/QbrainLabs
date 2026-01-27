@@ -13,7 +13,9 @@ import {
 import { AdminLayout } from '../components/AdminLayout';
 import { useTheme } from '../context/ThemeContext';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '../lib/config';
+
+const API_BASE = API_BASE_URL;
 const TOKEN_KEY = 'hm_auth_token';
 
 interface SystemSetting {
@@ -197,8 +199,8 @@ export function AdminSettings() {
                     min={setting.validation_rules?.min}
                     max={setting.validation_rules?.max}
                     className={`px-3 py-2 border rounded-lg w-32 ${isLight
-                            ? 'bg-white border-gray-200 text-gray-900'
-                            : 'bg-surface-700 border-white/10 text-white'
+                        ? 'bg-white border-gray-200 text-gray-900'
+                        : 'bg-surface-700 border-white/10 text-white'
                         }`}
                 />
             );
@@ -210,8 +212,8 @@ export function AdminSettings() {
                 value={currentValue}
                 onChange={(e) => handleValueChange(setting.key, e.target.value)}
                 className={`px-3 py-2 border rounded-lg flex-1 max-w-md ${isLight
-                        ? 'bg-white border-gray-200 text-gray-900'
-                        : 'bg-surface-700 border-white/10 text-white'
+                    ? 'bg-white border-gray-200 text-gray-900'
+                    : 'bg-surface-700 border-white/10 text-white'
                     }`}
             />
         );
@@ -249,8 +251,8 @@ export function AdminSettings() {
                             key={category}
                             onClick={() => setSelectedCategory(category)}
                             className={`px-4 py-3 flex items-center gap-2 border-b-2 transition ${selectedCategory === category
-                                    ? `border-brand-violet ${isLight ? 'text-brand-violet' : 'text-brand-violet'}`
-                                    : `border-transparent ${isLight ? 'text-gray-600 hover:text-gray-900' : 'text-gray-400 hover:text-white'}`
+                                ? `border-brand-violet ${isLight ? 'text-brand-violet' : 'text-brand-violet'}`
+                                : `border-transparent ${isLight ? 'text-gray-600 hover:text-gray-900' : 'text-gray-400 hover:text-white'}`
                                 }`}
                         >
                             <Icon className={`w-4 h-4 ${selectedCategory === category ? color : ''}`} />
@@ -272,8 +274,8 @@ export function AdminSettings() {
                         <div
                             key={setting.id}
                             className={`p-6 rounded-xl border ${isLight
-                                    ? 'bg-white border-gray-200 shadow-sm'
-                                    : 'bg-surface-800 border-white/10'
+                                ? 'bg-white border-gray-200 shadow-sm'
+                                : 'bg-surface-800 border-white/10'
                                 }`}
                         >
                             <div className="flex items-start justify-between gap-4">
@@ -309,8 +311,8 @@ export function AdminSettings() {
                                         onClick={() => handleSave(setting)}
                                         disabled={!hasChanged || isSaving}
                                         className={`px-4 py-2 rounded-lg flex items-center gap-2 transition ${hasChanged && !isSaving
-                                                ? 'bg-brand-violet text-white hover:bg-brand-violet/90'
-                                                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                                            ? 'bg-brand-violet text-white hover:bg-brand-violet/90'
+                                            : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                                             }`}
                                     >
                                         {isSaving ? (
@@ -324,8 +326,8 @@ export function AdminSettings() {
                                         onClick={() => handleReset(setting)}
                                         disabled={isSaving}
                                         className={`p-2 rounded-lg transition ${isLight
-                                                ? 'hover:bg-gray-100 text-gray-600'
-                                                : 'hover:bg-white/5 text-gray-400'
+                                            ? 'hover:bg-gray-100 text-gray-600'
+                                            : 'hover:bg-white/5 text-gray-400'
                                             }`}
                                     >
                                         <RotateCcw className="w-4 h-4" />

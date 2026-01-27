@@ -3,18 +3,20 @@ import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 import { AdminLayout } from '../components/AdminLayout';
 import { useTheme } from '../context/ThemeContext';
-import { 
-  CheckCircle, 
-  XCircle, 
-  Clock, 
-  Search, 
+import {
+  CheckCircle,
+  XCircle,
+  Clock,
+  Search,
   MoreVertical,
   UserCheck,
   UserX,
   Building2
 } from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '../lib/config';
+
+const API_BASE = API_BASE_URL;
 
 interface Facilitator {
   id: string;
@@ -35,25 +37,25 @@ interface FacilitatorListResponse {
 }
 
 const statusConfig = {
-  pending: { 
-    label: 'Pending', 
-    color: 'bg-yellow-100 text-yellow-800', 
-    icon: Clock 
+  pending: {
+    label: 'Pending',
+    color: 'bg-yellow-100 text-yellow-800',
+    icon: Clock
   },
-  active: { 
-    label: 'Active', 
-    color: 'bg-green-100 text-green-800', 
-    icon: CheckCircle 
+  active: {
+    label: 'Active',
+    color: 'bg-green-100 text-green-800',
+    icon: CheckCircle
   },
-  disabled: { 
-    label: 'Disabled', 
-    color: 'bg-red-100 text-red-800', 
-    icon: XCircle 
+  disabled: {
+    label: 'Disabled',
+    color: 'bg-red-100 text-red-800',
+    icon: XCircle
   },
-  suspended: { 
-    label: 'Suspended', 
-    color: 'bg-gray-100 text-gray-800', 
-    icon: XCircle 
+  suspended: {
+    label: 'Suspended',
+    color: 'bg-gray-100 text-gray-800',
+    icon: XCircle
   },
 };
 
@@ -273,7 +275,7 @@ export function AdminUsers() {
               {facilitators.map((facilitator) => {
                 const status = statusConfig[facilitator.status] || statusConfig.pending;
                 const StatusIcon = status.icon;
-                
+
                 return (
                   <tr key={facilitator.id} className={`border-b transition ${isLight ? 'border-gray-100 hover:bg-gray-50' : 'border-white/5 hover:bg-white/5'}`}>
                     <td className="py-4 px-6">
@@ -300,7 +302,7 @@ export function AdminUsers() {
                         >
                           <MoreVertical className="w-4 h-4" />
                         </button>
-                        
+
                         {actionMenuOpen === facilitator.id && (
                           <div className={`absolute right-0 top-full mt-1 rounded-lg shadow-lg z-10 py-1 min-w-[150px] ${isLight ? 'bg-white border border-gray-200' : 'bg-surface-700 border border-white/10'}`}>
                             {facilitator.status === 'pending' && (

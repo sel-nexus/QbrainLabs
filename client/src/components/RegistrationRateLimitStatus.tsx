@@ -13,7 +13,9 @@ import {
   RotateCcw
 } from 'lucide-react';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '../lib/config';
+
+const API_BASE = API_BASE_URL;
 
 interface RateLimitStatus {
   count: number;
@@ -109,7 +111,7 @@ export function RegistrationRateLimitStatus() {
     const now = new Date();
     const diffMs = date.getTime() - now.getTime();
     const diffHours = Math.round(diffMs / (1000 * 60 * 60));
-    
+
     if (diffHours < 1) {
       const diffMins = Math.round(diffMs / (1000 * 60));
       return `${diffMins} minutes`;
@@ -164,7 +166,7 @@ export function RegistrationRateLimitStatus() {
         {periods.map(({ key, label, data }) => {
           const percentage = getPercentage(data.count, data.limit);
           const isWarning = percentage >= 75;
-          
+
           return (
             <div key={key} className="space-y-2">
               <div className="flex items-center justify-between">
@@ -190,14 +192,14 @@ export function RegistrationRateLimitStatus() {
                   </button>
                 </div>
               </div>
-              
+
               <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                 <div
                   className={`h-full transition-all ${getProgressColor(percentage)}`}
                   style={{ width: `${Math.min(percentage, 100)}%` }}
                 />
               </div>
-              
+
               <div className="flex items-center justify-between text-xs text-gray-400">
                 <span>{percentage}% used</span>
                 <span className="flex items-center gap-1">

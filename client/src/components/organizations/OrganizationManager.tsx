@@ -41,7 +41,9 @@ interface Invitation {
   expires_at: string;
 }
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '../../lib/config';
+
+const API_BASE = API_BASE_URL;
 
 export function OrganizationManager() {
   const [organizations, setOrganizations] = useState<Organization[]>([]);
@@ -259,12 +261,11 @@ export function OrganizationManager() {
                 <button
                   key={org.id}
                   onClick={() => setSelectedOrg(org)}
-                  className={`w-full p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
-                    selectedOrg?.id === org.id ? 'bg-indigo-50 dark:bg-indigo-900/20' : ''
-                  }`}
+                  className={`w-full p-4 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${selectedOrg?.id === org.id ? 'bg-indigo-50 dark:bg-indigo-900/20' : ''
+                    }`}
                 >
                   <div className="flex items-center gap-3">
-                    <div 
+                    <div
                       className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold"
                       style={{ backgroundColor: org.primary_color }}
                     >
@@ -294,7 +295,7 @@ export function OrganizationManager() {
               <div className="p-6 border-b border-gray-200 dark:border-gray-700">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div 
+                    <div
                       className="w-16 h-16 rounded-xl flex items-center justify-center text-white text-2xl font-bold"
                       style={{ backgroundColor: selectedOrg.primary_color }}
                     >
@@ -325,11 +326,10 @@ export function OrganizationManager() {
                     <button
                       key={tab.id}
                       onClick={() => setActiveTab(tab.id as typeof activeTab)}
-                      className={`flex items-center gap-2 px-4 py-3 border-b-2 transition-colors ${
-                        activeTab === tab.id
+                      className={`flex items-center gap-2 px-4 py-3 border-b-2 transition-colors ${activeTab === tab.id
                           ? 'border-indigo-600 text-indigo-600'
                           : 'border-transparent text-gray-500 hover:text-gray-700'
-                      }`}
+                        }`}
                     >
                       <tab.icon className="w-4 h-4" />
                       {tab.label}
@@ -446,7 +446,7 @@ export function OrganizationManager() {
                         Primary Color
                       </label>
                       <div className="flex items-center gap-2">
-                        <div 
+                        <div
                           className="w-8 h-8 rounded-lg border"
                           style={{ backgroundColor: selectedOrg.primary_color }}
                         />

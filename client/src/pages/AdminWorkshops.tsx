@@ -11,7 +11,9 @@ import {
 import { useTheme } from '../context/ThemeContext';
 import { AdminLayout } from '../components/AdminLayout';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '../lib/config';
+
+const API_BASE = API_BASE_URL;
 
 interface Workshop {
     id: string;
@@ -147,13 +149,12 @@ export function AdminWorkshops() {
                                         <span className="font-mono text-amber-500">{workshop.pin || 'N/A'}</span>
                                     </td>
                                     <td className="py-4 px-6">
-                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                                            workshop.status === 'active' || workshop.status === 'OPEN'
+                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${workshop.status === 'active' || workshop.status === 'OPEN'
                                                 ? 'bg-green-500/20 text-green-600'
                                                 : workshop.status === 'completed'
-                                                ? 'bg-blue-500/20 text-blue-600'
-                                                : 'bg-gray-500/20 text-gray-600'
-                                        }`}>
+                                                    ? 'bg-blue-500/20 text-blue-600'
+                                                    : 'bg-gray-500/20 text-gray-600'
+                                            }`}>
                                             {workshop.status || 'OPEN'}
                                         </span>
                                     </td>

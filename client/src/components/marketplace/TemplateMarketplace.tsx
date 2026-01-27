@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { 
+import {
   Search, Star, Download, Heart, TrendingUp, Clock, Award,
   ChevronRight, Grid, List, Tag, Building2, FileText, BarChart3
 } from 'lucide-react';
@@ -44,7 +44,9 @@ interface Industry {
   template_count: number;
 }
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+import { API_BASE_URL } from '../../lib/config';
+
+const API_BASE = API_BASE_URL;
 
 const CATEGORIES = [
   { id: 'WORKSHOP', label: 'Workshop Templates', icon: Building2 },
@@ -58,13 +60,13 @@ export function TemplateMarketplace() {
   const [industries, setIndustries] = useState<Industry[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchMode, setSearchMode] = useState(false);
-  
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedIndustry, setSelectedIndustry] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState('popular');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  
+
   const [selectedTemplate, setSelectedTemplate] = useState<Template | null>(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
 
@@ -128,7 +130,7 @@ export function TemplateMarketplace() {
       if (selectedCategory) params.append('category', selectedCategory);
       if (selectedIndustry) params.append('industry', selectedIndustry);
       params.append('sort_by', sortBy);
-      
+
       const res = await fetch(`${API_BASE}/api/marketplace/search?${params}`, {
         headers: getAuthHeaders()
       });
@@ -186,7 +188,7 @@ export function TemplateMarketplace() {
   };
 
   const TemplateCard = ({ template }: { template: Template }) => (
-    <div 
+    <div
       className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
       onClick={() => {
         setSelectedTemplate(template);
@@ -224,10 +226,10 @@ export function TemplateMarketplace() {
           {getCategoryIcon(template.category)}
           <span className="text-xs text-gray-500 uppercase">{template.category.replace('_', ' ')}</span>
         </div>
-        
+
         <h3 className="font-semibold text-gray-900 dark:text-white mb-1 line-clamp-1">{template.name}</h3>
         <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-3">{template.short_description}</p>
-        
+
         <div className="flex items-center justify-between text-sm">
           <div className="flex items-center gap-1">
             <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
@@ -239,7 +241,7 @@ export function TemplateMarketplace() {
             <span>{template.usage_count}</span>
           </div>
         </div>
-        
+
         <div className="flex items-center gap-2 mt-3 pt-3 border-t border-gray-100 dark:border-gray-700">
           <div className="w-6 h-6 rounded-full bg-indigo-100 flex items-center justify-center">
             <span className="text-xs text-indigo-600 font-medium">{template.author_name.charAt(0)}</span>
@@ -403,7 +405,7 @@ export function TemplateMarketplace() {
               <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-indigo-600"></div>
             </div>
           ) : (
-            <div className={viewMode === 'grid' 
+            <div className={viewMode === 'grid'
               ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'
               : 'space-y-4'
             }>
