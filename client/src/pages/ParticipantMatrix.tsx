@@ -10,6 +10,7 @@ import { Button } from '../components/ui/Button';
 import { LogOut, ArrowLeft, Loader2, GripVertical, Plus, X, Save, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { Header } from '../components/Header';
+import { UseCaseDetailModal } from '../components/usecases/UseCaseDetailModal';
 
 export function ParticipantMatrix() {
     const navigate = useNavigate();
@@ -24,6 +25,7 @@ export function ParticipantMatrix() {
     const [isDraggingOver, setIsDraggingOver] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [unsavedChanges, setUnsavedChanges] = useState<Set<string>>(new Set());
+    const [selectedUseCase, setSelectedUseCase] = useState<any>(null);
     const matrixRef = useRef<HTMLDivElement>(null);
 
     const handleSaveChanges = async () => {
@@ -413,12 +415,6 @@ export function ParticipantMatrix() {
         }
     };
 
-    const handleLeave = () => {
-        if (confirm("Are you sure you want to leave?")) {
-            navigate('/participant-dashboard');
-        }
-    };
-
     if (loading) {
         return (
             <div className="min-h-screen flex items-center justify-center theme-bg-primary">
@@ -458,10 +454,6 @@ export function ParticipantMatrix() {
                             </p>
                         </div>
                     </div>
-                    <Button variant="ghost" onClick={handleLeave} className="theme-text-secondary hover:theme-text-primary">
-                        <LogOut className="w-4 h-4 mr-2" />
-                        Leave
-                    </Button>
                 </div>
             </header>
 
@@ -593,11 +585,12 @@ export function ParticipantMatrix() {
                                                 draggable={!isSaving}
                                                 onDragStart={(e) => handleDragStart(e, uc)}
                                                 onDragEnd={handleDragEnd}
-                                                className={`p-3 rounded-lg border transition-all ${isSaving ? 'cursor-not-allowed opacity-50' : 'cursor-move'
+                                                onClick={() => setSelectedUseCase(uc)}
+                                                className={`p-3 rounded-lg border transition-all ${isSaving ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
                                                     } theme-bg-tertiary theme-border hover:border-brand-violet hover:shadow-lg ${isOnMatrix ? 'ring-2 ring-brand-violet/30' : ''
                                                     } ${isDragging ? 'opacity-50 scale-95' : ''
                                                     }`}
-                                                aria-label={`Drag ${uc.title} onto matrix to position`}
+                                                aria-label={`Click to view details or drag ${uc.title} onto matrix to position`}
                                             >
                                                 <div className="flex items-start gap-2">
                                                     <GripVertical className="w-4 h-4 mt-0.5 flex-shrink-0 theme-text-secondary" />
@@ -668,6 +661,20 @@ export function ParticipantMatrix() {
                         />
                     </div>
                 </div>
+            )}
+
+            {/* Use Case Detail Modal */}
+            {selectedUseCase && session?.participantId && (
+                <UseCaseDetailModal
+                    useCase={selectedUseCase}
+                    participantId={session.participantId}
+                    isOwner={selectedUseCase.participant_id === session.participantId}
+                    onClose={() => {
+                        setSelectedUseCase(null);
+                        fetchMatrixData();
+                    }}
+                    onUpdate={fetchMatrixData}
+                />
             )}
         </div>
     );

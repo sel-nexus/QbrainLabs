@@ -14,7 +14,7 @@ from typing import List, Optional
 from datetime import datetime
 
 from app.core.database import get_db
-from app.models.models import User, Workshop, Participant, UseCase, UserRole, AccountStatus
+from app.models.models import User, Workshop, Participant, UseCase, UserRole, AccountStatus, WorkshopStatus
 from app.models.rbac import WorkshopFacilitator, RoleAuditLog
 from app.middleware.rbac import (
     require_admin,
@@ -722,9 +722,12 @@ async def get_facilitator_workshops(
     
     workshops = []
     
-    # Get owned workshops
+    # Get owned workshops (excluding deleted)
     owned_result = await db.execute(
-        select(Workshop).where(Workshop.facilitator_id == current_user.id)
+        select(Workshop).where(
+            Workshop.facilitator_id == current_user.id,
+            Workshop.status != WorkshopStatus.DELETED
+        )
     )
     owned_workshops = owned_result.scalars().all()
     
@@ -755,7 +758,10 @@ async def get_facilitator_workshops(
         assigned_result = await db.execute(
             select(WorkshopFacilitator, Workshop)
             .join(Workshop, WorkshopFacilitator.workshop_id == Workshop.id)
-            .where(WorkshopFacilitator.facilitator_id == current_user.id)
+            .where(
+                WorkshopFacilitator.facilitator_id == current_user.id,
+                Workshop.status != WorkshopStatus.DELETED
+            )
         )
         assigned = assigned_result.all()
         
@@ -785,9 +791,12 @@ async def get_facilitator_workshops(
                 can_delete=assignment.can_delete
             ))
     else:
-        # Admins can see all workshops
+        # Admins can see all workshops (excluding deleted)
         all_result = await db.execute(
-            select(Workshop).where(Workshop.facilitator_id != current_user.id)
+            select(Workshop).where(
+                Workshop.facilitator_id != current_user.id,
+                Workshop.status != WorkshopStatus.DELETED
+            )
         )
         all_workshops = all_result.scalars().all()
         

@@ -3,6 +3,7 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import union
+from sqlalchemy.exc import SQLAlchemyError, OperationalError
 from datetime import datetime, timedelta
 from typing import Optional, List
 import jwt
@@ -159,9 +160,17 @@ async def login(
     OAuth2 compatible endpoint - use 'username' field for email
     Includes role and status validation.
     """
-    # Find user by email (username field in OAuth2 form)
-    result = await db.execute(select(User).where(User.email == username))
-    user = result.scalars().first()
+    try:
+        # Find user by email (username field in OAuth2 form)
+        result = await db.execute(select(User).where(User.email == username))
+        user = result.scalars().first()
+    except (SQLAlchemyError, OperationalError) as e:
+        # Handle database connection errors gracefully
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Database connection unavailable. Please try again later.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     
     if not user or not verify_password(password, user.password_hash):
         raise HTTPException(
@@ -186,11 +195,21 @@ async def login(
         # Note: PENDING status is now allowed to login per US32
     
     # Update last login
-    user.last_login = datetime.utcnow()
-    await db.commit()
-    
-    # Get workshop IDs for token
-    workshop_ids = await get_user_workshop_ids(str(user.id), db)
+    try:
+        user.last_login = datetime.utcnow()
+        await db.commit()
+        
+        # Get workshop IDs for token
+        workshop_ids = await get_user_workshop_ids(str(user.id), db)
+    except (SQLAlchemyError, OperationalError) as e:
+        # If commit fails, still allow login but log the error
+        # Return empty workshop list as fallback
+        workshop_ids = []
+        # Try to rollback if possible
+        try:
+            await db.rollback()
+        except:
+            pass
     
     # Create access token with role info
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)

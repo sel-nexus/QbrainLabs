@@ -1,5 +1,5 @@
 # Qbrain AI Labs - Development Sprint Plan
-> **Status:** MVP + Advanced Features Completed (Sprints 1-25) | Active: Production Deployment Planning, Sprint 26 Planned
+> **Status:** MVP + Advanced Features Completed (Sprints 1-25) | Active: Production Deployment Planning, Sprint 26-27 Planned | **Last Updated:** January 27, 2026
 
 This plan outlines the phased execution of the Qbrain AI Labs application, ensuring a logical progression from backend foundation to complex real-time visualization.
 
@@ -882,6 +882,90 @@ This plan outlines the phased execution of the Qbrain AI Labs application, ensur
 
 ---
 
+## Sprint 27: Participant Experience Enhancements (Completed ✅)
+**Goal:** Implement critical participant experience improvements including theme consistency, survey persistence, poll fixes, and enhanced collaboration features.
+**Focus:** US35-US40 - Participant workflow improvements, bug fixes, and feature enhancements.
+
+### Tasks (Phase 1 - Critical Bug Fixes)
+- [x] **US36: Survey Answer Persistence**
+  - [x] Backend: Modify survey endpoint to return existing answers
+  - [x] Frontend: Load and populate saved answers on survey open
+  - [x] Test: Verify answers persist across sessions
+- [x] **US37: Poll Popup Theme Fix**
+  - [x] Fix theme support in PollResponder component
+  - [x] Resolve "failed to fetch" API errors
+  - [x] Improve error handling and user feedback
+
+### Tasks (Phase 2 - UI/UX Improvements)
+- [x] **US35: Theme Consistency**
+  - [x] Ensure Use Case Canvas modal respects theme
+  - [x] Apply theme-aware styling throughout
+- [x] **US38: Language Selection**
+  - [x] Verify language switcher works for participants
+  - [x] Ensure complete translation coverage
+  - [x] Test real-time language switching
+- [x] **US39: Remove Leave Button**
+  - [x] Remove Leave button from participant views
+  - [x] Verify Sign Out functionality
+
+### Tasks (Phase 3 - Feature Enhancements)
+- [x] **US40: Use Case Detail Popup**
+  - [x] Create UseCaseDetailModal component
+  - [x] Implement edit mode for own use cases
+  - [x] Implement read-only mode with feedback for others
+  - [x] Backend: Create use case feedback endpoints
+  - [x] Create UseCaseFeedback database model
+  - [x] Add click handlers to ParticipantDashboard and ParticipantMatrix
+
+**Status:** ✅ COMPLETED - US35-US40 implemented and tested  
+**Implementation Date:** January 27, 2026  
+**New Files Created:**
+- `client/src/components/usecases/UseCaseDetailModal.tsx` - Use case detail modal with edit/feedback
+- `server/migrations/us40_usecase_feedback.py` - Database migration for feedback table
+
+**Files Modified:**
+- `client/src/components/UseCaseCanvas.tsx` - Added theme support
+- `client/src/components/survey/SurveyParticipant.tsx` - Added answer persistence
+- `client/src/components/polls/PollResponder.tsx` - Added theme support and improved error handling
+- `client/src/components/common/LanguageSwitcher.tsx` - Enhanced document attribute updates
+- `client/src/pages/ParticipantDashboard.tsx` - Removed Leave button, added use case detail modal
+- `client/src/pages/ParticipantMatrix.tsx` - Removed Leave button, added use case detail modal
+- `server/app/api/surveys.py` - Added existing answers to survey response
+- `server/app/api/polls.py` - Improved error handling
+- `server/app/api/usecases.py` - Added update and feedback endpoints
+- `server/app/models/models.py` - Added UseCaseFeedback model
+
+**Features Delivered:**
+- ✅ Theme consistency in Use Case Canvas modal
+- ✅ Survey answer persistence and auto-population
+- ✅ Poll popup theme support and improved error handling
+- ✅ Participant language selection with persistence
+- ✅ Removed redundant Leave button from participant views
+- ✅ Use case detail popup with edit/feedback capabilities
+
+### Remaining Tasks (Future Sprints)
+- [ ] **US41: Feedback Submission Fix**
+  - [ ] Fix feedback submission endpoint errors
+  - [ ] Verify feedback saves to database
+  - [ ] Test admin feedback management
+- [ ] **US42: Enhanced Q&A Chat**
+  - [ ] Add chat message model and endpoints
+  - [ ] Implement historic conversation display
+  - [ ] Add facilitator-participant real-time chat
+  - [ ] Implement broadcast messaging
+- [ ] **US43: Enhanced Matrix Dashboard**
+  - [ ] Load data immediately on page open
+  - [ ] Add participant dropdown filter
+  - [ ] Implement consolidated scoring view
+  - [ ] Add individual participant scoring view
+
+**Priority:** 🟡 High  
+**Estimated Effort:** 40-60 hours remaining  
+**Dependencies:** US03, US05, US12, US14, US21, US24  
+**Target Date:** Q2 2026
+
+---
+
 ## Sprint 26 (Continued): Workshop-Facilitator Assignment Enhancement (Planned 📅)
 **Goal:** Implement enhanced workshop-facilitator assignment system where facilitators only see assigned workshops and admins can manage assignments.
 **Focus:** US30 Enhancement - Workshop Assignment Controls, Facilitator Dashboard Filtering, Admin Assignment Interface.
@@ -954,6 +1038,7 @@ This plan outlines the phased execution of the Qbrain AI Labs application, ensur
 - [ ] **AI Copilot Assistant (US16):** Real-time AI suggestions, smart recommendations
 - [x] **Live Polling & Reactions (US21):** ✅ COMPLETED - Full implementation with all poll types, reactions, Q&A, pulse checks, and word clouds
 - [ ] **Workshop-Facilitator Assignment Enhancement (US30):** Facilitators see only assigned workshops, Admin can assign multiple facilitators to workshops and vice versa (Sprint 26)
+- [ ] **Participant Experience Improvements (US35-US43):** Theme consistency, survey persistence, poll fixes, language selection, use case feedback, enhanced Q&A chat, matrix dashboard improvements
 
 ### 🟢 Medium Priority (Q2-Q3 2026)
 - [x] **ROI Calculator (US17):** ✅ COMPLETED - Full implementation with scenario modeling, sensitivity analysis, benchmarks, and business case generator
@@ -961,12 +1046,21 @@ This plan outlines the phased execution of the Qbrain AI Labs application, ensur
 - [x] **Breakout Rooms (US18):** ✅ COMPLETED - Sub-group collaboration, parallel sessions, collaborative canvas, room chat
 - [ ] **Challenge Cards (US34):** High-value business/technology problems with success criteria for AI-led transformation
 - [ ] **AI Demo Sandbox (US19):** Try-before-you-buy experience
-- [ ] **Implementation Roadmap Generator (US20):** Auto-generate project plans
+- [x] **Implementation Roadmap Generator (US20):** ✅ COMPLETED - Auto-generate project plans with AI-powered timeline generation, resource planning, Gantt charts, milestones, and dependency management
+- [ ] **Participant Theme Consistency (US35):** Ensure use case creation modal respects participant theme preference
+- [ ] **Survey Answer Persistence (US36):** Load previously selected answers when reopening surveys
+- [ ] **Poll Popup Theme Fix (US37):** Fix theme support and error handling for poll popups
+- [ ] **Participant Language Selection (US38):** Ensure language selection translates entire application for participants
+- [ ] **Use Case Detail Popup (US40):** View use case details with edit/feedback capabilities
+- [ ] **Participant Feedback System (US41):** Complete feedback management with admin tools
+- [ ] **Enhanced Q&A Chat (US42):** Historic conversations and facilitator-participant real-time chat
+- [ ] **Enhanced Matrix Dashboard (US43):** Consolidated scoring view with participant filtering
 
 ### ⚪ Low Priority (Q3-Q4 2026)
 - [ ] **Video Recording & Replay (US23):** Session recording, playback features
 - [ ] **Home Page Enhancements (US28):** Enhanced tile carousel (Basic version implemented)
 - [ ] **OAuth2 Integration:** Google/Microsoft sign-in
+- [ ] **Remove Redundant Leave Button (US39):** UI cleanup - remove Leave button for participants
 
 ### 🔧 Technical Improvements
 - [ ] **Accessibility (WCAG):** Screen reader support, keyboard navigation
@@ -1015,3 +1109,12 @@ This plan outlines the phased execution of the Qbrain AI Labs application, ensur
 | **US32** | Facilitator Approval & Rate Limiting | ✅ Completed | Sprint 16 |
 | **US33** | Database-Driven Config | ✅ Completed | Sprint 19 |
 | **US34** | Challenge Cards for Workshops | 📅 Planned | Future (Medium Priority) |
+| **US35** | Participant Theme Consistency for Use Case Creation | ✅ Completed | Sprint 27 (Jan 2026) |
+| **US36** | Survey Answer Persistence and Population | ✅ Completed | Sprint 27 (Jan 2026) |
+| **US37** | Poll Popup Theme Fix and Error Handling | ✅ Completed | Sprint 27 (Jan 2026) |
+| **US38** | Participant Language Selection and Application Translation | ✅ Completed | Sprint 27 (Jan 2026) |
+| **US39** | Remove Redundant Leave Button for Participants | ✅ Completed | Sprint 27 (Jan 2026) |
+| **US40** | Use Case Detail Popup with Feedback Capability | ✅ Completed | Sprint 27 (Jan 2026) |
+| **US41** | Participant Feedback System with Admin Management | 📅 Planned | Backlog (High Priority) |
+| **US42** | Enhanced Q&A Chat with Historic Conversations | 📅 Planned | Backlog (High Priority) |
+| **US43** | Enhanced Live Matrix Activity Dashboard | 📅 Planned | Backlog (High Priority) |

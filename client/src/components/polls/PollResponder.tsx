@@ -3,6 +3,7 @@ import { type Poll, PollService } from '../../lib/api/polls';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { useSession } from '../../context/SessionContext';
+import { useTheme } from '../../context/ThemeContext';
 import { socket } from '../../lib/socket';
 import { toast } from 'sonner';
 import { CheckCircle, Circle, GripVertical } from 'lucide-react';
@@ -10,6 +11,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 export function PollResponder() {
     const { session } = useSession();
+    const { theme } = useTheme();
     const [activePolls, setActivePolls] = useState<Poll[]>([]);
     const [textResponses, setTextResponses] = useState<Record<string, string>>({});
     const [selectedOptions, setSelectedOptions] = useState<Record<string, string[]>>({});
@@ -81,7 +83,27 @@ export function PollResponder() {
             }));
             toast.success("Vote recorded");
         } catch (err: any) {
-            toast.error(err.response?.data?.detail || "Failed to vote");
+            console.error('Failed to vote on poll:', err);
+            let errorMessage = "Failed to submit your vote. Please try again.";
+            
+            if (err.response) {
+                // Server responded with error
+                const detail = err.response.data?.detail || err.response.data?.message;
+                if (detail) {
+                    errorMessage = detail;
+                } else if (err.response.status === 404) {
+                    errorMessage = "This poll is no longer active.";
+                } else if (err.response.status === 400) {
+                    errorMessage = "Invalid vote. Please check your selection.";
+                } else if (err.response.status === 500) {
+                    errorMessage = "An error occurred. Your vote may not have been recorded.";
+                }
+            } else if (err.request) {
+                // Request made but no response
+                errorMessage = "Unable to connect. Please check your internet connection.";
+            }
+            
+            toast.error(errorMessage);
         }
     };
 
@@ -144,7 +166,7 @@ export function PollResponder() {
                         <button
                             key={idx}
                             onClick={() => handleVote(poll.id, opt)}
-                            className="w-full text-left px-3 py-2 rounded-lg bg-surface-700 hover:bg-surface-600 border border-white/5 transition-colors text-sm flex items-center gap-2"
+                            className="w-full text-left px-3 py-2 rounded-lg theme-bg-tertiary hover:theme-bg-secondary theme-border border transition-colors text-sm flex items-center gap-2 theme-text-primary"
                         >
                             <Circle className="w-4 h-4" />
                             {opt}
@@ -161,15 +183,15 @@ export function PollResponder() {
                     {poll.options.map((opt: string, idx: number) => (
                         <label
                             key={idx}
-                            className="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-700 hover:bg-surface-600 border border-white/5 cursor-pointer"
+                            className="flex items-center gap-2 px-3 py-2 rounded-lg theme-bg-tertiary hover:theme-bg-secondary theme-border border cursor-pointer"
                         >
                             <input
                                 type="checkbox"
                                 checked={selected.includes(opt)}
                                 onChange={() => handleMultipleSelect(poll.id, opt)}
-                                className="rounded border-gray-600 bg-surface-700"
+                                className="rounded theme-border"
                             />
-                            <span className="text-sm">{opt}</span>
+                            <span className="text-sm theme-text-primary">{opt}</span>
                         </label>
                     ))}
                     <Button onClick={() => handleSubmitMultipleSelect(poll.id)} className="w-full mt-2" disabled={selected.length === 0}>
@@ -183,7 +205,7 @@ export function PollResponder() {
             const scale = poll.options.length || 5;
             return (
                 <div className="space-y-3">
-                    <div className="flex justify-between text-xs text-gray-400 mb-2">
+                    <div className="flex justify-between text-xs theme-text-secondary mb-2">
                         <span>1</span>
                         <span>{scale}</span>
                     </div>
@@ -192,7 +214,7 @@ export function PollResponder() {
                             <button
                                 key={rating}
                                 onClick={() => handleVote(poll.id, String(rating))}
-                                className="flex-1 min-w-[50px] px-3 py-2 rounded-lg bg-surface-700 hover:bg-primary-500 hover:text-white border border-white/5 transition-colors text-sm font-bold"
+                                className="flex-1 min-w-[50px] px-3 py-2 rounded-lg theme-bg-tertiary hover:bg-brand-violet hover:text-white theme-border border transition-colors text-sm font-bold theme-text-primary"
                             >
                                 {rating}
                             </button>
@@ -209,7 +231,6 @@ export function PollResponder() {
                         value={textResponses[poll.id] || ''}
                         onChange={e => setTextResponses({ ...textResponses, [poll.id]: e.target.value })}
                         placeholder="Type your response..."
-                        className="bg-surface-700"
                     />
                     <Button onClick={() => handleTextSubmit(poll.id)} className="w-full" disabled={!textResponses[poll.id]?.trim()}>
                         Submit
@@ -224,21 +245,21 @@ export function PollResponder() {
             return (
                 <div className="space-y-2">
                     {currentRanking.map((opt: string, idx: number) => (
-                        <div key={idx} className="flex items-center gap-2 p-2 bg-surface-700 rounded-lg">
-                            <GripVertical className="w-4 h-4 text-gray-500" />
-                            <span className="flex-1 text-sm">{opt}</span>
+                        <div key={idx} className="flex items-center gap-2 p-2 theme-bg-tertiary rounded-lg">
+                            <GripVertical className="w-4 h-4 theme-text-secondary" />
+                            <span className="flex-1 text-sm theme-text-primary">{opt}</span>
                             <div className="flex flex-col gap-1">
                                 <button
                                     onClick={() => handleRankingMove(poll.id, opt, 'up', pollOptions)}
                                     disabled={idx === 0}
-                                    className="text-xs px-2 py-0.5 rounded bg-surface-600 disabled:opacity-30"
+                                    className="text-xs px-2 py-0.5 rounded theme-bg-secondary disabled:opacity-30 theme-text-primary"
                                 >
                                     ↑
                                 </button>
                                 <button
                                     onClick={() => handleRankingMove(poll.id, opt, 'down', pollOptions)}
                                     disabled={idx === currentRanking.length - 1}
-                                    className="text-xs px-2 py-0.5 rounded bg-surface-600 disabled:opacity-30"
+                                    className="text-xs px-2 py-0.5 rounded theme-bg-secondary disabled:opacity-30 theme-text-primary"
                                 >
                                     ↓
                                 </button>
@@ -264,10 +285,10 @@ export function PollResponder() {
                         initial={{ opacity: 0, y: 50, scale: 0.9 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
-                        className="bg-surface-800 border border-primary-500/50 shadow-2xl rounded-xl p-4 overflow-hidden relative"
+                        className="theme-bg-primary theme-border border shadow-2xl rounded-xl p-4 overflow-hidden relative"
                     >
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 to-purple-500" />
-                        <h4 className="font-bold mb-3 mt-1">{poll.question_text}</h4>
+                        <h4 className="font-bold mb-3 mt-1 theme-text-primary">{poll.question_text}</h4>
                         {renderPollContent(poll)}
                     </motion.div>
                 ))}

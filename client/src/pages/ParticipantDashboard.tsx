@@ -29,11 +29,17 @@ import { AchievementToast } from '../components/gamification/AchievementToast';
 import { Leaderboard } from '../components/gamification/Leaderboard';
 import { BadgeGrid } from '../components/gamification/BadgeGrid';
 import { Header } from '../components/Header';
+import { UseCaseDetailModal } from '../components/usecases/UseCaseDetailModal';
 
 interface UseCase {
     id: string;
     title: string;
     description?: string;
+    participant_id?: string;
+    proposed_solution?: string;
+    kpi?: string;
+    target_user?: string;
+    category?: string;
 }
 
 interface Survey {
@@ -62,6 +68,7 @@ export function ParticipantDashboard() {
     const [loading, setLoading] = useState(true);
     const [activeModal, setActiveModal] = useState<ActiveModal>(null);
     const [activeSurveyId, setActiveSurveyId] = useState<string | null>(null);
+    const [selectedUseCase, setSelectedUseCase] = useState<UseCase | null>(null);
 
     const fetchSessionInfo = async () => {
         if (!session?.participantId || !session?.workshopId) {
@@ -139,13 +146,6 @@ export function ParticipantDashboard() {
             socket.off('survey_status_changed', onSurveyUpdate);
         };
     }, [navigate, session, updateRole]);
-
-    const handleLeave = () => {
-        if (confirm("Are you sure you want to leave the workshop?")) {
-            logout();
-            navigate('/');
-        }
-    };
 
     const handleUseCaseClick = () => {
         setActiveModal('usecase');
@@ -246,10 +246,6 @@ export function ParticipantDashboard() {
                         <Button variant="ghost" onClick={() => setActiveModal('qa')} className="theme-text-secondary hover:theme-text-primary">
                             <MessageSquare className="w-4 h-4 mr-2" />
                             Q&A
-                        </Button>
-                        <Button variant="ghost" onClick={handleLeave} className="theme-text-secondary hover:theme-text-primary">
-                            <LogOut className="w-4 h-4 mr-2" />
-                            Leave
                         </Button>
                     </div>
                 </div>
@@ -400,7 +396,8 @@ export function ParticipantDashboard() {
                             {sessionInfo?.use_cases.map((uc) => (
                                 <div
                                     key={uc.id}
-                                    className="p-3 rounded-lg theme-bg-tertiary"
+                                    className="p-3 rounded-lg theme-bg-tertiary cursor-pointer hover:theme-bg-secondary transition-colors"
+                                    onClick={() => setSelectedUseCase(uc)}
                                 >
                                     <div className="font-medium text-sm theme-text-primary">
                                         {uc.title}
@@ -505,6 +502,20 @@ export function ParticipantDashboard() {
                         />
                     </div>
                 </div>
+            )}
+
+            {/* Use Case Detail Modal */}
+            {selectedUseCase && session?.participantId && (
+                <UseCaseDetailModal
+                    useCase={selectedUseCase}
+                    participantId={session.participantId}
+                    isOwner={selectedUseCase.participant_id === session.participantId}
+                    onClose={() => {
+                        setSelectedUseCase(null);
+                        fetchSessionInfo();
+                    }}
+                    onUpdate={fetchSessionInfo}
+                />
             )}
         </div>
     );

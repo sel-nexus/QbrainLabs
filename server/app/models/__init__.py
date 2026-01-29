@@ -6,6 +6,7 @@ from .models import (
     Participant, 
     ParticipantRole, 
     UseCase, 
+    UseCaseFeedback,
     Vote,
     UserRole,
     AccountStatus

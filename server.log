@@ -1,43 +1,314 @@
-INFO:     Will watch for changes in these directories: ['/Users/rvarikuti/Cursor-Workspace/QbrainLabs/server']
+INFO:     Will watch for changes in these directories: ['C:\\Users\\RamVarikuti\\Cusor-Workspace\\QbrainLabs\\server']
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [62354] using WatchFiles
-/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
-  warnings.warn(
-2026-01-26 20:35:05,979 - qbrainlabs - INFO - Exception handlers registered
-{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-01-27T02:35:05.981005Z"}
-INFO:     Started server process [62367]
+INFO:     Started reloader process [15908] using WatchFiles
+2026-01-28 03:11:48,029 - qbrainlabs - INFO - Exception handlers registered
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-01-28T03:11:48.036219Z"}
+INFO:     Started server process [12268]
 INFO:     Waiting for application startup.
 RAGService running in MOCK MODE (No API Key found)
 RoadmapService running in MOCK MODE (No API Key found)
 CopilotService running in MOCK MODE (No API Key found)
-2026-01-26 20:35:06,840 - app.middleware.cors_dynamic - INFO - Detected server IP addresses: ['172.11.133.232', '192.168.4.247']
-2026-01-26 20:35:06,840 - app.middleware.cors_dynamic - INFO - Allowed CORS origins: ['http://127.0.0.1:3000', 'http://127.0.0.1:5173', 'http://172.11.133.232:3000', 'http://172.11.133.232:5173', 'http://172.11.133.232:80', 'http://172.31.33.5:5173', 'http://18.191.118.132:5173', 'http://192.168.4.247:3000', 'http://192.168.4.247:5173', 'http://192.168.4.247:80', 'http://localhost:3000', 'http://localhost:5173', 'http://qbrainlabs.com', 'https://172.11.133.232:443', 'https://172.11.133.232:5173', 'https://192.168.4.247:443', 'https://192.168.4.247:5173']
-{"event": "Starting application...", "level": "info", "timestamp": "2026-01-27T02:35:06.841078Z"}
-{"event": "Database tables created", "level": "info", "timestamp": "2026-01-27T02:35:11.944925Z"}
-INFO:     Application startup complete.
-{"event": "Redis client connected successfully", "level": "info", "timestamp": "2026-01-27T02:35:33.651134Z"}
-2026-01-26 20:35:34,208 - passlib.handlers.bcrypt - WARNING - (trapped) error reading bcrypt version
+2026-01-28 03:11:49,430 - app.middleware.cors_dynamic - INFO - Detected server IP addresses: ['10.73.88.109', '20.244.46.127']
+2026-01-28 03:11:49,430 - app.middleware.cors_dynamic - INFO - Allowed CORS origins: ['http://10.73.88.109:3000', 'http://10.73.88.109:5173', 'http://10.73.88.109:80', 'http://127.0.0.1:3000', 'http://127.0.0.1:5173', 'http://172.31.33.5:5173', 'http://172.31.33.5:80', 'http://18.191.118.132:5173', 'http://18.191.118.132:80', 'http://192.168.4.247:5173', 'http://20.244.46.127:3000', 'http://20.244.46.127:5173', 'http://20.244.46.127:80', 'http://localhost:3000', 'http://localhost:5173', 'http://qbrainlabs.com', 'https://10.73.88.109:443', 'https://10.73.88.109:5173', 'https://20.244.46.127:443', 'https://20.244.46.127:5173']
+{"event": "Starting application...", "level": "info", "timestamp": "2026-01-28T03:11:49.430170Z"}
+WARNING:  WatchFiles detected changes in 'app\main.py'. Reloading...
+ ERROR:    Traceback (most recent call last):
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 143, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 3309, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 447, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 711, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\pool\impl.py", line 306, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 388, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 673, in __init__
+    self.__connect()
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 899, in __connect
+    with util.safe_reraise():
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 895, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\create.py", line 661, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\psycopg.py", line 812, in connect
+    await_only(creator_fn(*arg, **kw))
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\psycopg\connection_async.py", line 145, in connect
+    raise type(last_ex)("\n".join(lines)).with_traceback(None)
+psycopg.errors.ConnectionTimeout: connection timeout expired
+Multiple connection attempts failed. All failures were:
+- host: 'aws-1-us-east-1.pooler.supabase.com', port: 6543, hostaddr: '3.227.209.82': connection timeout expired
+- host: 'aws-1-us-east-1.pooler.supabase.com', port: 6543, hostaddr: '18.213.155.45': connection timeout expired
+- host: 'aws-1-us-east-1.pooler.supabase.com', port: 6543, hostaddr: '18.214.78.123': connection timeout expired
+
+The above exception was the direct cause of the following exception:
+
 Traceback (most recent call last):
-  File "/Users/rvarikuti/Antigravity-Workspace/hotspotmatrix/server/.venv/lib/python3.9/site-packages/passlib/handlers/bcrypt.py", line 620, in _load_backend_mixin
-    version = _bcrypt.__about__.__version__
-AttributeError: module 'bcrypt' has no attribute '__about__'
-{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 1330.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:34.982240Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 762.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:35.781092Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 857.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:36.644290Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1286.3, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:38.513292Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1470.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:38.693914Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1405.37, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:39.923276Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1316.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:40.014901Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1379.37, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:41.312801Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1380.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:41.400864Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1350.5, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:42.672395Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1313.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:42.719443Z"}
-{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 547.84, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:43.229289Z"}
-{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 546.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:43.782267Z"}
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 1305.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:45.813508Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 450.37, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:46.847022Z"}
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 1406.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:47.226962Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 465.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:47.319100Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 815.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:48.213071Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 741.41, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:48.962588Z"}
-{"method": "POST", "path": "/api/auth/logout", "status_code": 200, "duration_ms": 512.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-27T02:35:56.833587Z"}
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\app\main.py", line 19, in lifespan
+    try:
+  File "C:\Users\RamVarikuti\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 204, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\ext\asyncio\engine.py", line 1068, in begin
+    async with conn:
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\ext\asyncio\base.py", line 121, in __aenter__
+    return await self.start(is_ctxmanager=True)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\ext\asyncio\engine.py", line 275, in start
+    await greenlet_spawn(self.sync_engine.connect)
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 201, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 3285, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 145, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2448, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 143, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 3309, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 447, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 1264, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 711, in checkout
+    rec = pool._do_get()
+          ^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\pool\impl.py", line 306, in _do_get
+    return self._create_connection()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 388, in _create_connection
+    return _ConnectionRecord(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 673, in __init__
+    self.__connect()
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 899, in __connect
+    with util.safe_reraise():
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 224, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\pool\base.py", line 895, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\create.py", line 661, in connect
+    return dialect.connect(*cargs, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\psycopg.py", line 812, in connect
+    await_only(creator_fn(*arg, **kw))
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 132, in await_only
+    return current.parent.switch(awaitable)  # type: ignore[no-any-return,attr-defined] # noqa: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 196, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\RamVarikuti\Cusor-Workspace\QbrainLabs\server\.venv\Lib\site-packages\psycopg\connection_async.py", line 145, in connect
+    raise type(last_ex)("\n".join(lines)).with_traceback(None)
+sqlalchemy.exc.OperationalError: (psycopg.errors.ConnectionTimeout) connection timeout expired
+Multiple connection attempts failed. All failures were:
+- host: 'aws-1-us-east-1.pooler.supabase.com', port: 6543, hostaddr: '3.227.209.82': connection timeout expired
+- host: 'aws-1-us-east-1.pooler.supabase.com', port: 6543, hostaddr: '18.213.155.45': connection timeout expired
+- host: 'aws-1-us-east-1.pooler.supabase.com', port: 6543, hostaddr: '18.214.78.123': connection timeout expired
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+
+ERROR:    Application startup failed. Exiting.
+WARNING:  WatchFiles detected changes in 'app\main.py'. Reloading...
+ 2026-01-28 03:18:21,935 - qbrainlabs - INFO - Exception handlers registered
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-01-28T03:18:21.939129Z"}
+INFO:     Started server process [17360]
+INFO:     Waiting for application startup.
+RAGService running in MOCK MODE (No API Key found)
+RoadmapService running in MOCK MODE (No API Key found)
+CopilotService running in MOCK MODE (No API Key found)
+2026-01-28 03:18:23,159 - app.middleware.cors_dynamic - INFO - Detected server IP addresses: ['10.73.88.109', '20.244.46.127']
+2026-01-28 03:18:23,159 - app.middleware.cors_dynamic - INFO - Allowed CORS origins: ['http://10.73.88.109:3000', 'http://10.73.88.109:5173', 'http://10.73.88.109:80', 'http://127.0.0.1:3000', 'http://127.0.0.1:5173', 'http://172.31.33.5:5173', 'http://172.31.33.5:80', 'http://18.191.118.132:5173', 'http://18.191.118.132:80', 'http://192.168.4.247:5173', 'http://20.244.46.127:3000', 'http://20.244.46.127:5173', 'http://20.244.46.127:80', 'http://localhost:3000', 'http://localhost:5173', 'http://qbrainlabs.com', 'https://10.73.88.109:443', 'https://10.73.88.109:5173', 'https://20.244.46.127:443', 'https://20.244.46.127:5173']
+{"event": "Starting application...", "level": "info", "timestamp": "2026-01-28T03:18:23.160253Z"}
+{"event": "Database initialization skipped: . Server will start but database operations may fail until connection is established.", "level": "warning", "timestamp": "2026-01-28T03:18:28.168604Z"}
+INFO:     Application startup complete.

@@ -64,26 +64,48 @@ export function AdminWorkshops() {
     };
 
     const handleDeleteWorkshop = async (workshopId: string) => {
-        if (!confirm('Are you sure you want to delete this workshop?')) return;
+        if (!confirm('Are you sure you want to delete this workshop? This action cannot be undone.')) return;
 
         try {
             const authToken = localStorage.getItem('hm_auth_token');
+            if (!authToken) {
+                toast.error('Authentication required. Please log in again.');
+                return;
+            }
+
             const response = await fetch(`${API_BASE}/api/admin/workshops/${workshopId}`, {
                 method: 'DELETE',
                 headers: {
-                    'Authorization': `Bearer ${authToken}`
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json'
                 }
             });
 
             if (!response.ok) {
-                throw new Error('Failed to delete workshop');
+                // Try to get error message from response
+                let errorMessage = 'Failed to delete workshop';
+                try {
+                    const errorData = await response.json();
+                    errorMessage = errorData.detail || errorMessage;
+                } catch {
+                    // If response is not JSON, use status text
+                    if (response.status === 404) {
+                        errorMessage = 'Workshop not found';
+                    } else if (response.status === 403) {
+                        errorMessage = 'You do not have permission to delete workshops';
+                    } else if (response.status === 400) {
+                        errorMessage = 'Workshop is already deleted';
+                    }
+                }
+                throw new Error(errorMessage);
             }
 
             toast.success('Workshop deleted successfully');
-            fetchWorkshops();
+            // Refresh the workshop list
+            await fetchWorkshops();
         } catch (error) {
             console.error('Error deleting workshop:', error);
-            toast.error('Failed to delete workshop');
+            toast.error(error instanceof Error ? error.message : 'Failed to delete workshop');
         }
     };
 

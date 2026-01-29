@@ -557,7 +557,26 @@ async def get_survey_for_participant(
         if not settings.get("allow_multiple_submissions", False):
             raise HTTPException(status_code=400, detail="You have already completed this survey")
     
+    # Load existing answers if response exists
+    existing_answers = {}
+    current_question_index = 0
+    if existing_response:
+        result = await db.execute(
+            select(SurveyAnswer).where(
+                SurveyAnswer.response_id == existing_response.id
+            )
+        )
+        answers = result.scalars().all()
+        
+        # Map answers by question_id
+        for answer in answers:
+            existing_answers[str(answer.question_id)] = answer.value
+        
+        # Get current question index
+        current_question_index = existing_response.current_question if existing_response.current_question is not None else 0
+    
     # Return survey without sensitive data
+    questions_list = sorted(survey.questions, key=lambda x: x.order)
     return {
         "id": str(survey.id),
         "title": survey.title,
@@ -570,12 +589,15 @@ async def get_survey_for_participant(
                 "type": q.type,
                 "required": q.required,
                 "options": q.options,
-                "config": q.config
+                "config": q.config,
+                "existing_answer": existing_answers.get(str(q.id))
             }
-            for q in sorted(survey.questions, key=lambda x: x.order)
+            for q in questions_list
         ],
         "existing_response_id": str(existing_response.id) if existing_response else None,
-        "existing_status": existing_response.status if existing_response else None
+        "existing_status": existing_response.status if existing_response else None,
+        "existing_answers": existing_answers,
+        "current_question_index": current_question_index
     }
 
 

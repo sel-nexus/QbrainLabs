@@ -1,7 +1,7 @@
 # User Stories Index
 
-**Last Updated:** January 25, 2026  
-**Total User Stories:** 34  
+**Last Updated:** January 29, 2026  
+**Total User Stories:** 44  
 **Status:** Organized by logical feature groups
 
 ---
@@ -22,8 +22,8 @@ User stories are organized into 11 logical groups based on feature domains. Each
 
 ### Story Status Distribution
 
-- ✅ **Implemented:** 12 stories
-- 📋 **Backlog/Planned:** 19 stories
+- ✅ **Implemented:** 13 stories
+- 📋 **Backlog/Planned:** 28 stories
 - ⚠️ **Superseded:** 1 story (US00)
 - 🔄 **In Progress:** 2 stories
 
@@ -78,12 +78,14 @@ User stories are organized into 11 logical groups based on feature domains. Each
 | US22 | Workshop Templates & Industry Packages | 📋 Backlog | 13 | [US22_workshop_templates_industry.md](./02-workshop-management/US22_workshop_templates_industry.md) |
 | US28 | Home Page Tile Carousel | 📋 Backlog | 13 | [US28_home_page_tile_carousel.md](./02-workshop-management/US28_home_page_tile_carousel.md) |
 | US34 | Challenge Cards for Workshops | 📋 Backlog | 13 | [US34_Challenge_Cards.md](./02-workshop-management/US34_Challenge_Cards.md) |
+| US44 | Workshop Deletion Not Working for Admin | ✅ Implemented | 5 | [US44_workshop_deletion_admin_fix.md](./02-workshop-management/US44_workshop_deletion_admin_fix.md) |
 
 **Notes:**
 - US01 and US10 are closely related - US01 creates workshops, US10 configures scoring criteria
 - US22 enables reusable workshop templates
 - US28 enhances workshop discovery on landing page
 - US34 enables facilitators to define high-value business/technology problems with success criteria
+- US44 fixes bug preventing admin from deleting workshops
 
 ---
 
@@ -98,6 +100,8 @@ User stories are organized into 11 logical groups based on feature domains. Each
 | US04 | Live Scoring Interface | ✅ Implemented | 8 | [US04_Live_Scoring_Interface.md](./03-participant-workflow/US04_Live_Scoring_Interface.md) |
 | US05 | Interactive Qbrain AI Labs | ✅ Implemented | 13 | [US05_Interactive_Hotspot_Matrix.md](./03-participant-workflow/US05_Interactive_Hotspot_Matrix.md) |
 | US31 | Participant Landing Dashboard | ✅ Implemented | 13 | [US31_Participant_Landing_Dashboard.md](./03-participant-workflow/US31_Participant_Landing_Dashboard.md) |
+| US36 | Survey Answer Persistence and Population | 📋 Backlog | 5 | [US36_survey_answer_persistence.md](./03-participant-workflow/US36_survey_answer_persistence.md) |
+| US40 | Use Case Detail Popup with Feedback Capability | 📋 Backlog | 13 | [US40_usecase_detail_popup_feedback.md](./03-participant-workflow/US40_usecase_detail_popup_feedback.md) |
 
 **Notes:**
 - These form the core participant workflow: US03 → US04 → US05
@@ -138,6 +142,8 @@ User stories are organized into 11 logical groups based on feature domains. Each
 | US15 | Gamification & Engagement | 📋 Backlog | 21 | [US15_gamification_engagement.md](./05-engagement/US15_gamification_engagement.md) |
 | US18 | Breakout Rooms & Collaboration | 📋 Backlog | 21 | [US18_breakout_rooms_collaboration.md](./05-engagement/US18_breakout_rooms_collaboration.md) |
 | US21 | Live Polling & Reactions | 📋 Backlog | 13 | [US21_live_polling_reactions.md](./05-engagement/US21_live_polling_reactions.md) |
+| US37 | Poll Popup Theme Fix and Error Handling | 📋 Backlog | 5 | [US37_poll_popup_theme_fix.md](./05-engagement/US37_poll_popup_theme_fix.md) |
+| US42 | Enhanced Q&A Chat with Historic Conversations | 📋 Backlog | 21 | [US42_enhanced_qa_chat.md](./05-engagement/US42_enhanced_qa_chat.md) |
 
 **Notes:**
 - All three enhance engagement but serve different purposes
@@ -157,6 +163,8 @@ User stories are organized into 11 logical groups based on feature domains. Each
 | US17 | ROI Calculator & Business Case | 📋 Backlog | 21 | [US17_roi_calculator_business_case.md](./06-business-intelligence/US17_roi_calculator_business_case.md) |
 | US20 | Implementation Roadmap Generator | 📋 Backlog | 21 | [US20_implementation_roadmap_generator.md](./06-business-intelligence/US20_implementation_roadmap_generator.md) |
 | US25 | Advanced Analytics & Insights | ✅ Implemented | 21 | [US25_analytics_insights_dashboard.md](./06-business-intelligence/US25_analytics_insights_dashboard.md) |
+| US41 | Participant Feedback System with Admin Management | 📋 Backlog | 13 | [US41_participant_feedback_system.md](./06-business-intelligence/US41_participant_feedback_system.md) |
+| US43 | Enhanced Live Matrix Activity Dashboard | 📋 Backlog | 13 | [US43_enhanced_matrix_dashboard.md](./06-business-intelligence/US43_enhanced_matrix_dashboard.md) |
 
 **Notes:**
 - US17 and US20 are complementary - financial analysis and planning tools
@@ -178,6 +186,8 @@ User stories are organized into 11 logical groups based on feature domains. Each
 | US13 | Facilitator Survey Management | ✅ Implemented | 21 | [US13_facilitator_enhancements.md](./07-ui-ux/US13_facilitator_enhancements.md) |
 | US14 | Theme Switching | 📋 Backlog | 5 | [US14_theme_switching.md](./07-ui-ux/US14_theme_switching.md) |
 | US27 | Application Icon & Branding | ✅ Implemented | 2 | [US27_application_icon_branding.md](./07-ui-ux/US27_application_icon_branding.md) |
+| US35 | Participant Theme Consistency for Use Case Creation | 📋 Backlog | 3 | [US35_participant_theme_consistency.md](./07-ui-ux/US35_participant_theme_consistency.md) |
+| US39 | Remove Redundant Leave Button for Participants | 📋 Backlog | 2 | [US39_remove_redundant_leave_button.md](./07-ui-ux/US39_remove_redundant_leave_button.md) |
 
 **Notes:**
 - US11 is a catch-all for initial enhancements (now covered by other stories)
@@ -194,6 +204,7 @@ User stories are organized into 11 logical groups based on feature domains. Each
 | ID | Title | Status | Points | File |
 |----|-------|--------|--------|------|
 | US24 | Multi-Language Support (i18n) | ✅ Implemented (Phase 1) | 21 | [US24_multi_language_support.md](./08-globalization/US24_multi_language_support.md) |
+| US38 | Participant Language Selection and Application Translation | 📋 Backlog | 8 | [US38_participant_language_selection.md](./08-globalization/US38_participant_language_selection.md) |
 
 **Notes:**
 - Phase 1 implemented: English, Spanish, French, German
@@ -297,11 +308,11 @@ Business Intelligence (US17, US20, US25)
 
 ### By Status
 
-**Implemented (12):**
-- US02, US06, US07, US08, US11, US12, US13, US25, US26, US27, US29, US30, US31, US32
+**Implemented (13):**
+- US02, US06, US07, US08, US11, US12, US13, US25, US26, US27, US29, US30, US31, US32, US44
 
-**Backlog/Planned (19):**
-- US09, US10, US14, US15, US16, US17, US18, US19, US20, US21, US22, US23, US24 (Phase 2+), US28, US33, US34
+**Backlog/Planned (28):**
+- US09, US10, US14, US15, US16, US17, US18, US19, US20, US21, US22, US23, US24 (Phase 2+), US28, US33, US34, US35, US36, US37, US38, US39, US40, US41, US42, US43
 
 **Superseded (1):**
 - US00
@@ -312,21 +323,21 @@ Business Intelligence (US17, US20, US25)
 - US01, US02, US03, US04, US05, US06, US07, US12, US13, US25, US29, US30, US31, US32
 
 **Medium Priority:**
-- US10, US15, US16, US17, US18, US20, US21, US22, US25, US26, US28, US33, US34
+- US10, US15, US16, US17, US18, US20, US21, US22, US25, US26, US28, US33, US34, US35, US36, US37, US38, US40, US41, US42, US43
 
 **Low Priority:**
-- US09, US14, US19, US23, US24 (Phase 2+)
+- US09, US14, US19, US23, US24 (Phase 2+), US39
 
 ### By Story Points
 
 **Small (≤8 points):**
-- US02 (5), US08 (8), US10 (8), US14 (5), US26 (8), US27 (2), US29 (8), US32 (8), US33 (13)
+- US02 (5), US08 (8), US10 (8), US14 (5), US26 (8), US27 (2), US29 (8), US32 (8), US33 (13), US35 (3), US36 (5), US37 (5), US38 (8), US39 (2), US44 (5) ✅
 
 **Medium (9-20 points):**
-- US01 (8), US03 (8), US04 (8), US06 (8), US07 (13), US11 (8), US12 (13), US15 (21), US17 (21), US18 (21), US20 (21), US21 (13), US22 (13), US23 (21), US24 (21), US25 (21), US28 (13), US30 (13), US31 (13), US34 (13)
+- US01 (8), US03 (8), US04 (8), US06 (8), US07 (13), US11 (8), US12 (13), US15 (21), US17 (21), US18 (21), US20 (21), US21 (13), US22 (13), US23 (21), US24 (21), US25 (21), US28 (13), US30 (13), US31 (13), US34 (13), US40 (13), US41 (13), US43 (13)
 
 **Large (≥21 points):**
-- US05 (13), US13 (21), US16 (34), US19 (34)
+- US05 (13), US13 (21), US16 (34), US19 (34), US42 (21)
 
 ---
 
@@ -341,7 +352,29 @@ Business Intelligence (US17, US20, US25)
 
 ## Maintenance Notes
 
-### Recent Changes (January 25, 2026)
+### Recent Changes (January 29, 2026)
+
+1. **Implemented user story US44** - Workshop Deletion Not Working for Admin (bug fix)
+   - Fixed root cause: Missing DELETED status in WorkshopStatus enum
+   - Added DELETED status to WorkshopStatus enum
+   - Updated all workshop list endpoints to filter out deleted workshops
+   - Improved error handling in both backend and frontend
+   - Enhanced user feedback with specific error messages
+
+### Previous Changes (January 27, 2026)
+
+1. **Added 9 new user stories (US35-US43)** - Refined backlog items into structured user stories
+   - US35: Participant Theme Consistency for Use Case Creation
+   - US36: Survey Answer Persistence and Population
+   - US37: Poll Popup Theme Fix and Error Handling
+   - US38: Participant Language Selection and Application Translation
+   - US39: Remove Redundant Leave Button for Participants
+   - US40: Use Case Detail Popup with Feedback Capability
+   - US41: Participant Feedback System with Admin Management
+   - US42: Enhanced Q&A Chat with Historic Conversations and Facilitator Chat
+   - US43: Enhanced Live Matrix Activity Dashboard
+
+### Previous Changes (January 25, 2026)
 
 1. **Organized into logical groups** - Stories grouped by feature domain
 2. **Resolved US24 duplicate** - Merged comprehensive features into implemented version
@@ -360,5 +393,5 @@ Business Intelligence (US17, US20, US25)
 ---
 
 **Document Owner:** Product Team  
-**Last Review:** January 25, 2026  
-**Next Review:** February 1, 2026
+**Last Review:** January 29, 2026  
+**Next Review:** February 3, 2026

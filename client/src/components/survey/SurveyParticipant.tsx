@@ -77,6 +77,16 @@ export function SurveyParticipant({ surveyId, participantId, onComplete }: Surve
 
             setSurvey(data);
 
+            // Load existing answers if available
+            if (data.existing_answers) {
+                setAnswers(data.existing_answers);
+            }
+
+            // Set current question index if available
+            if (data.current_question_index !== undefined && data.current_question_index !== null) {
+                setCurrentIndex(data.current_question_index);
+            }
+
             if (data.existing_status === 'completed') {
                 setCompleted(true);
             }

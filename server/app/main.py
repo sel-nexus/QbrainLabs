@@ -14,11 +14,20 @@ logger = get_logger("main")
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: Create tables
+    # Startup: Create tables (with timeout to prevent hanging)
     logger.info("Starting application...")
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
-    logger.info("Database tables created")
+    try:
+        import asyncio
+        # Add timeout to database connection (5 seconds)
+        async def create_tables():
+            async with engine.begin() as conn:
+                await conn.run_sync(Base.metadata.create_all)
+        
+        await asyncio.wait_for(create_tables(), timeout=5.0)
+        logger.info("Database tables created")
+    except (asyncio.TimeoutError, Exception) as e:
+        logger.warning(f"Database initialization skipped: {e}. Server will start but database operations may fail until connection is established.")
+        # Continue startup - don't block server from starting
     yield
     # Shutdown
     logger.info("Shutting down application...")

@@ -32,6 +32,8 @@ export const LanguageSwitcher: React.FC = () => {
         setIsOpen(false);
         // Persist language preference
         localStorage.setItem('preferredLanguage', lng);
+        // Update document attributes
+        document.documentElement.lang = lng;
     };
 
     // Close dropdown when clicking outside

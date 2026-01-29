@@ -35,8 +35,28 @@ export const PollService = {
     getPolls: (workshopId: string, participantId?: string) =>
         api.get(`/polls/workshop/${workshopId}`, { params: { participant_id: participantId } }).then(res => res.data),
 
-    vote: (pollId: string, participantId: string, responseData: any) =>
-        api.post(`/polls/${pollId}/vote`, { response_data: responseData }, { params: { participant_id: participantId } }),
+    vote: async (pollId: string, participantId: string, responseData: any) => {
+        try {
+            const response = await api.post(
+                `/polls/${pollId}/vote`,
+                { response_data: responseData },
+                { params: { participant_id: participantId } }
+            );
+            return response.data;
+        } catch (error: any) {
+            if (error.response) {
+                // Server responded with error
+                const message = error.response.data?.detail || error.response.data?.message || 'Failed to submit vote';
+                throw new Error(message);
+            } else if (error.request) {
+                // Request made but no response
+                throw new Error('Network error. Please check your connection.');
+            } else {
+                // Something else happened
+                throw new Error('An unexpected error occurred');
+            }
+        }
+    },
 
     updateStatus: (pollId: string, status: string) =>
         api.put(`/polls/${pollId}/status`, { status }).then(res => res.data),

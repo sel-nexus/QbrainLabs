@@ -13,7 +13,7 @@ import string
 
 from app.core.database import get_db
 from app.middleware.admin_auth import require_admin
-from app.models.models import User, Workshop, Participant, UseCase, Vote
+from app.models.models import User, Workshop, Participant, UseCase, Vote, WorkshopStatus
 from app.schemas.admin import (
     WorkshopListItem,
     SystemStats,
@@ -102,11 +102,13 @@ async def list_all_workshops(
     """
     List all workshops in the system with pagination
     Admin can see ALL workshops regardless of facilitator
+    Excludes deleted workshops
     """
-    # Get workshops with facilitator info
+    # Get workshops with facilitator info, excluding deleted workshops
     result = await db.execute(
         select(Workshop, User.full_name)
         .join(User, Workshop.facilitator_id == User.id)
+        .where(Workshop.status != WorkshopStatus.DELETED)
         .offset(skip)
         .limit(limit)
         .order_by(Workshop.id.desc())
@@ -192,17 +194,28 @@ async def delete_workshop(
     Delete a workshop (soft delete - marks as deleted)
     Admin can delete any workshop
     """
-    result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
-    workshop = result.scalars().first()
-    
-    if not workshop:
-        raise HTTPException(status_code=404, detail="Workshop not found")
-    
-    # Soft delete - change status to indicate deletion
-    workshop.status = "DELETED"
-    await db.commit()
-    
-    return None
+    try:
+        result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
+        workshop = result.scalars().first()
+        
+        if not workshop:
+            raise HTTPException(status_code=404, detail="Workshop not found")
+        
+        # Check if already deleted
+        if workshop.status == WorkshopStatus.DELETED:
+            raise HTTPException(status_code=400, detail="Workshop is already deleted")
+        
+        # Soft delete - change status to indicate deletion
+        workshop.status = WorkshopStatus.DELETED
+        await db.commit()
+        await db.refresh(workshop)
+        
+        return None
+    except HTTPException:
+        raise
+    except Exception as e:
+        await db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to delete workshop: {str(e)}")
 
 
 @router.get("/users", response_model=List[UserListItem])

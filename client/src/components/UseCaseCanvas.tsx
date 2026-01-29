@@ -9,6 +9,7 @@ import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { Modal } from './ui/Modal';
 import { PointsAnimation } from './gamification/PointsAnimation';
+import { useTheme } from '../context/ThemeContext';
 
 interface UseCaseCanvasProps {
     session: any;
@@ -16,6 +17,7 @@ interface UseCaseCanvasProps {
 }
 
 export function UseCaseCanvas({ session, onSuccess }: UseCaseCanvasProps) {
+    const { theme } = useTheme();
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [enhancing, setEnhancing] = useState(false);
@@ -176,10 +178,10 @@ export function UseCaseCanvas({ session, onSuccess }: UseCaseCanvasProps) {
             <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-surface-800/80 backdrop-blur border border-white/10 rounded-2xl p-6 shadow-xl"
+                className="theme-bg-primary theme-border border rounded-2xl p-6 shadow-xl"
             >
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-heading font-bold text-white">New Use Case</h2>
+                    <h2 className="text-2xl font-heading font-bold theme-text-primary">New Use Case</h2>
                     <span className="bg-brand-violet/20 text-brand-violet px-3 py-1 rounded-full text-sm font-mono">
                         Drafting Node
                     </span>
@@ -203,9 +205,9 @@ export function UseCaseCanvas({ session, onSuccess }: UseCaseCanvasProps) {
                             required
                         />
                         <div className="flex flex-col gap-1.5 w-full">
-                            <label className="text-sm text-gray-400 pl-1">AI Technique</label>
+                            <label className="text-sm theme-text-secondary pl-1">AI Technique</label>
                             <select
-                                className="w-full bg-black/20 border-b-2 border-white/10 px-4 py-3 rounded-t-md text-white focus:outline-none focus:border-brand-violet transition-colors"
+                                className="w-full theme-input-bg theme-border border-b-2 px-4 py-3 rounded-t-md theme-text-primary focus:outline-none focus:border-brand-violet transition-colors"
                                 value={formData.category}
                                 onChange={e => handleChange('category', e.target.value)}
                             >
@@ -220,7 +222,7 @@ export function UseCaseCanvas({ session, onSuccess }: UseCaseCanvasProps) {
 
                     <div className="space-y-2">
                         <div className="flex justify-between items-end">
-                            <label className="text-sm text-gray-400 pl-1">Problem Statement</label>
+                            <label className="text-sm theme-text-secondary pl-1">Problem Statement</label>
                             <Button
                                 type="button"
                                 variant="secondary"
@@ -233,7 +235,7 @@ export function UseCaseCanvas({ session, onSuccess }: UseCaseCanvasProps) {
                             </Button>
                         </div>
                         <textarea
-                            className="w-full bg-black/20 border-b-2 border-white/10 px-4 py-3 rounded-t-md text-white placeholder:text-gray-600 focus:outline-none focus:border-brand-violet transition-colors min-h-[100px]"
+                            className="w-full theme-input-bg theme-border border-b-2 px-4 py-3 rounded-t-md theme-text-primary placeholder:theme-text-secondary focus:outline-none focus:border-brand-violet transition-colors min-h-[100px]"
                             placeholder="Describe the pain point..."
                             value={formData.description}
                             onChange={e => handleChange('description', e.target.value)}
@@ -243,11 +245,11 @@ export function UseCaseCanvas({ session, onSuccess }: UseCaseCanvasProps) {
 
                     <div className="space-y-2">
                         <div className="flex justify-between items-end">
-                            <label className="text-sm text-gray-400 pl-1">Proposed Solution</label>
+                            <label className="text-sm theme-text-secondary pl-1">Proposed Solution</label>
                             <Button
                                 type="button"
                                 variant="secondary"
-                                className="h-7 text-xs py-0 px-2 flex items-center gap-1 bg-white/5 border-white/10"
+                                className="h-7 text-xs py-0 px-2 flex items-center gap-1 theme-bg-tertiary theme-border"
                                 onClick={handleFeasibility}
                                 disabled={checkingFeasibility}
                             >
@@ -256,7 +258,7 @@ export function UseCaseCanvas({ session, onSuccess }: UseCaseCanvasProps) {
                             </Button>
                         </div>
                         <textarea
-                            className="w-full bg-black/20 border-b-2 border-white/10 px-4 py-3 rounded-t-md text-white placeholder:text-gray-600 focus:outline-none focus:border-brand-violet transition-colors min-h-[100px]"
+                            className="w-full theme-input-bg theme-border border-b-2 px-4 py-3 rounded-t-md theme-text-primary placeholder:theme-text-secondary focus:outline-none focus:border-brand-violet transition-colors min-h-[100px]"
                             placeholder="How does AI solve it?"
                             value={formData.proposed_solution}
                             onChange={e => handleChange('proposed_solution', e.target.value)}
@@ -315,11 +317,11 @@ export function UseCaseCanvas({ session, onSuccess }: UseCaseCanvasProps) {
                         </div>
                     </div>
 
-                    <div className="bg-surface-900 p-4 rounded border border-white/5">
-                        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Your Title</h4>
-                        <p className="font-bold mb-3">{formData.title}</p>
+                    <div className="theme-bg-tertiary p-4 rounded border theme-border">
+                        <h4 className="text-xs font-bold theme-text-secondary uppercase tracking-wider mb-1">Your Title</h4>
+                        <p className="font-bold mb-3 theme-text-primary">{formData.title}</p>
 
-                        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Existing Title</h4>
+                        <h4 className="text-xs font-bold theme-text-secondary uppercase tracking-wider mb-1">Existing Title</h4>
                         <p className="font-bold text-brand-violet">{duplicateData?.similar_to_title}</p>
                     </div>
 

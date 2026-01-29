@@ -145,6 +145,7 @@ class WorkshopStatus(str, enum.Enum):
     OPEN = "OPEN"
     IN_PROGRESS = "IN_PROGRESS"
     COMPLETED = "COMPLETED"
+    DELETED = "DELETED"
 
 class WorkshopPhase(str, enum.Enum):
     INTAKE = "INTAKE"
@@ -234,6 +235,20 @@ class UseCase(Base):
 # Relationships defined after classes
 UseCase.votes = relationship("Vote", back_populates="use_case")
 Participant.votes = relationship("Vote", back_populates="participant")
+
+
+class UseCaseFeedback(Base):
+    __tablename__ = "usecase_feedback"
+
+    id = Column(GUID(), primary_key=True, default=uuid.uuid4)
+    usecase_id = Column(GUID(), ForeignKey("use_cases.id", ondelete="CASCADE"), nullable=False)
+    participant_id = Column(GUID(), ForeignKey("participants.id", ondelete="CASCADE"), nullable=False)
+    feedback_text = Column(Text, nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    usecase = relationship("UseCase", backref="feedback")
+    participant = relationship("Participant", backref="usecase_feedback")
 
 
 # ============================================================================

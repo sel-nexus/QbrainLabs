@@ -97,7 +97,10 @@ if is_supabase_or_pgbouncer():
         async_url,
         echo=settings.DB_ECHO,
         poolclass=NullPool,
-        connect_args={"prepare_threshold": None},  # Disable prepared statements
+        connect_args={
+            "prepare_threshold": None,  # Disable prepared statements for pgbouncer compatibility
+            "connect_timeout": 5,  # 5 second connection timeout to prevent hanging
+        },
     )
 else:
     # Add query timeout for production safety

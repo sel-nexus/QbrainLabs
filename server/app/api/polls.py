@@ -5,6 +5,9 @@ from sqlalchemy.orm import selectinload
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 import uuid
+import logging
+
+logger = logging.getLogger(__name__)
 
 from app.core.database import get_db
 from app.models.poll import (
@@ -150,54 +153,79 @@ async def vote_poll(
     response_data: Any = Body(..., embed=True),
     db: AsyncSession = Depends(get_db)
 ):
-    result = await db.execute(select(Poll).where(Poll.id == poll_id))
-    poll = result.scalar_one_or_none()
-    if not poll:
-        raise HTTPException(status_code=404, detail="Poll not found")
+    try:
+        result = await db.execute(select(Poll).where(Poll.id == poll_id))
+        poll = result.scalar_one_or_none()
+        if not poll:
+            raise HTTPException(status_code=404, detail="Poll not found")
+            
+        if poll.status != PollStatus.ACTIVE:
+            raise HTTPException(status_code=400, detail="Poll is closed")
+            
+        await verify_participant(str(poll.workshop_id), participant_id, db)
         
-    if poll.status != PollStatus.ACTIVE:
-        raise HTTPException(status_code=400, detail="Poll is not active")
-        
-    await verify_participant(str(poll.workshop_id), participant_id, db)
-    
-    # Check existing vote
-    existing = await db.execute(
-        select(PollResponse).where(and_(PollResponse.poll_id == poll.id, PollResponse.participant_id == participant_id))
-    )
-    if existing.scalar_one_or_none():
-         raise HTTPException(status_code=400, detail="Already voted")
+        # Check existing vote
+        existing = await db.execute(
+            select(PollResponse).where(and_(PollResponse.poll_id == poll.id, PollResponse.participant_id == participant_id))
+        )
+        if existing.scalar_one_or_none():
+             raise HTTPException(status_code=400, detail="You have already voted on this poll")
 
-    vote = PollResponse(
-        id=uuid.uuid4(),
-        poll_id=poll_id,
-        participant_id=participant_id,
-        response_data=response_data
-    )
-    db.add(vote)
-    await db.commit()
-    
-    # Broadcast update (Anonymous to avoid leaking who voted what immediately, just stats)
-    # Re-calculate stats for the specific poll to broadcast
-    resp_result = await db.execute(select(PollResponse).where(PollResponse.poll_id == poll_id))
-    responses = resp_result.scalars().all()
-    
-    # Simple re-calc (could be optimized)
-    stats_data = {}
-    if poll.poll_type in [PollType.MULTIPLE_CHOICE, PollType.YES_NO, PollType.RATING_SCALE]:
-        counts = {}
-        for r in responses:
-            val = str(r.response_data)
-            counts[val] = counts.get(val, 0) + 1
-        stats_data = counts
+        # Validate response_data based on poll type
+        if poll.poll_type == PollType.MULTIPLE_CHOICE or poll.poll_type == PollType.YES_NO:
+            if not isinstance(response_data, (str, int)):
+                raise HTTPException(status_code=400, detail="Invalid response format")
+        elif poll.poll_type == PollType.MULTIPLE_SELECT:
+            if not isinstance(response_data, list):
+                raise HTTPException(status_code=400, detail="Invalid response format for multiple select")
+        elif poll.poll_type == PollType.RATING_SCALE:
+            if not isinstance(response_data, (str, int)):
+                raise HTTPException(status_code=400, detail="Invalid response format for rating scale")
+
+        vote = PollResponse(
+            id=uuid.uuid4(),
+            poll_id=poll_id,
+            participant_id=participant_id,
+            response_data=response_data
+        )
+        db.add(vote)
+        await db.commit()
         
-    broadcast_payload = {
-        "poll_id": poll_id,
-        "total_responses": len(responses),
-        "results": stats_data
-    }
-    await manager.broadcast_to_workshop(str(poll.workshop_id), "poll:vote", broadcast_payload)
-    
-    return {"success": True}
+        # Broadcast update (Anonymous to avoid leaking who voted what immediately, just stats)
+        # Re-calculate stats for the specific poll to broadcast
+        resp_result = await db.execute(select(PollResponse).where(PollResponse.poll_id == poll_id))
+        responses = resp_result.scalars().all()
+        
+        # Simple re-calc (could be optimized)
+        stats_data = {}
+        if poll.poll_type in [PollType.MULTIPLE_CHOICE, PollType.YES_NO, PollType.RATING_SCALE]:
+            counts = {}
+            for r in responses:
+                val = str(r.response_data)
+                counts[val] = counts.get(val, 0) + 1
+            stats_data = counts
+        elif poll.poll_type == PollType.MULTIPLE_SELECT:
+            counts = {}
+            for r in responses:
+                vals = r.response_data if isinstance(r.response_data, list) else [r.response_data]
+                for v in vals:
+                    sv = str(v)
+                    counts[sv] = counts.get(sv, 0) + 1
+            stats_data = counts
+            
+        broadcast_payload = {
+            "poll_id": poll_id,
+            "total_responses": len(responses),
+            "results": stats_data
+        }
+        await manager.broadcast_to_workshop(str(poll.workshop_id), "poll:vote", broadcast_payload)
+        
+        return {"success": True, "message": "Vote recorded"}
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error voting on poll {poll_id}: {str(e)}")
+        raise HTTPException(status_code=500, detail="Failed to record vote")
 
 @router.put("/{poll_id}/status")
 async def update_poll_status(

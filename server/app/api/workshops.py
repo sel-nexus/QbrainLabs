@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import or_
 from app.core.database import get_db
-from app.models import Workshop, User, Participant, ParticipantRole
+from app.models import Workshop, User, Participant, ParticipantRole, WorkshopStatus
 from app.models.rbac import WorkshopFacilitator
 from app.schemas.workshop import WorkshopCreate, WorkshopResponse, PendingFacilitator
 from app.api.auth import get_current_user, oauth2_scheme, get_current_user_optional
@@ -33,23 +33,33 @@ async def list_workshops(
     if not current_user:
         return []
     
-    # Admins can see all workshops
+    # Admins can see all workshops (excluding deleted)
     if current_user.is_admin_user:
-        result = await db.execute(select(Workshop).order_by(Workshop.title))
+        result = await db.execute(
+            select(Workshop)
+            .where(Workshop.status != WorkshopStatus.DELETED)
+            .order_by(Workshop.title)
+        )
         return result.scalars().all()
     
-    # Get workshops owned by the user
+    # Get workshops owned by the user (excluding deleted)
     owned_result = await db.execute(
-        select(Workshop).where(Workshop.facilitator_id == current_user.id)
+        select(Workshop).where(
+            Workshop.facilitator_id == current_user.id,
+            Workshop.status != WorkshopStatus.DELETED
+        )
     )
     owned_workshops = list(owned_result.scalars().all())
     owned_ids = {str(w.id) for w in owned_workshops}
     
-    # Get workshops assigned to the user
+    # Get workshops assigned to the user (excluding deleted)
     assigned_result = await db.execute(
         select(Workshop)
         .join(WorkshopFacilitator, WorkshopFacilitator.workshop_id == Workshop.id)
-        .where(WorkshopFacilitator.facilitator_id == current_user.id)
+        .where(
+            WorkshopFacilitator.facilitator_id == current_user.id,
+            Workshop.status != WorkshopStatus.DELETED
+        )
     )
     assigned_workshops = assigned_result.scalars().all()
     
