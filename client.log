@@ -1,11 +1,25 @@
-npm warn Unknown env config "devdir". This will stop working in the next major version of npm.
 
 > client@0.0.0 dev
 > vite
 
 
-  VITE v7.3.1  ready in 356 ms
+  [32m[1mVITE[22m v7.3.1[39m  [2mready in [0m[1m751[22m[2m[0m ms[22m
 
-  ➜  Local:   http://localhost:5173/
-  ➜  Network: http://10.73.88.109:5173/
-  ➜  press h + enter to show help
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttp://172.16.0.4:[1m5173[22m/[39m
+[2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+
+[2m[358.42ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.14ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 53.78ms][22m  [2m ↳ [22mSetup compiler
+[2m[  2.94ms][22m    [2m ↳ [22mPostCSS AST -> Tailwind CSS AST
+[2m[ 50.78ms][22m    [2m ↳ [22mCreate compiler
+[2m[  3.33ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[  3.50ms][22m  [2m ↳ [22mSetup scanner
+[2m[ 86.62ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 55.28ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[129.87ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 19.78ms][22m  [2m ↳ [22mTransform Tailwind CSS AST into PostCSS AST
+[2m[  5.30ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+^C^C

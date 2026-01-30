@@ -10,7 +10,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     server: {
-      host: env.CLIENT_HOST || process.env.CLIENT_HOST || '0.0.0.0', // Bind to all interfaces for network access
+      host: env.CLIENT_HOST === '0.0.0.0' || process.env.CLIENT_HOST === '0.0.0.0' ? true : (env.CLIENT_HOST || process.env.CLIENT_HOST || true), // Use true for all interfaces (Windows compatible)
       port: parseInt(env.CLIENT_PORT || process.env.CLIENT_PORT || '5173', 10),
       strictPort: false, // Allow fallback if port is in use
     },

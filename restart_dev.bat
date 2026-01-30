@@ -27,23 +27,24 @@ set REDIS_PORT=6379
 REM Detect Python command (py, python, or python3)
 set PYTHON_CMD=
 where py >nul 2>&1
-if %errorlevel% equ 0 (
+if not errorlevel 1 (
     set PYTHON_CMD=py
-) else (
-    where python >nul 2>&1
-    if %errorlevel% equ 0 (
-        set PYTHON_CMD=python
-    ) else (
-        where python3 >nul 2>&1
-        if %errorlevel% equ 0 (
-            set PYTHON_CMD=python3
-        ) else (
-            echo [ERROR] Python not found! Please install Python 3.11+
-            pause
-            exit /b 1
-        )
-    )
+    goto :python_found
 )
+where python >nul 2>&1
+if not errorlevel 1 (
+    set PYTHON_CMD=python
+    goto :python_found
+)
+where python3 >nul 2>&1
+if not errorlevel 1 (
+    set PYTHON_CMD=python3
+    goto :python_found
+)
+echo [ERROR] Python not found! Please install Python 3.11+
+pause
+exit /b 1
+:python_found
 
 REM Detect Node.js
 where node >nul 2>&1
@@ -82,8 +83,8 @@ powershell -Command "$connections = Get-NetTCPConnection -LocalPort %FRONTEND_PO
 REM 3. Redis Check (basic check)
 echo [3/6] Checking for Redis...
 netstat -an | findstr ":%REDIS_PORT%" >nul 2>&1
-if %errorlevel% equ 0 (
-    echo [OK] Redis port is in use (may be connected).
+if not errorlevel 1 (
+    echo [OK] Redis port is in use ^(may be connected^).
 ) else (
     echo [WARNING] Redis is not running on port %REDIS_PORT%. Real-time features may be limited.
 )
@@ -108,26 +109,38 @@ if not exist ".venv" (
 REM Detect virtual environment activation script (Windows Scripts or Linux/WSL bin)
 set VENV_PYTHON=
 set VENV_ACTIVATE=
+set VENV_TYPE=
 
 if exist ".venv\Scripts\activate.bat" (
     REM Windows-native virtual environment
+    set VENV_TYPE=windows
     set VENV_ACTIVATE=.venv\Scripts\activate.bat
     set VENV_PYTHON=.venv\Scripts\python.exe
-) else if exist ".venv\bin\python" (
-    REM Cross-platform/WSL/Linux-style virtual environment detected
-    echo [WARNING] Linux/WSL-style virtual environment detected (.venv\bin\python)
-    echo    This venv was created on Linux/WSL/macOS and may not work directly on Windows CMD.
-    echo    Consider recreating it with: %PYTHON_CMD% -m venv .venv
-    echo    Continuing with attempt to use it...
-    set VENV_ACTIVATE=.venv\bin\activate
-    set VENV_PYTHON=.venv\bin\python
-) else (
-    echo [ERROR] Virtual environment not found or incomplete!
-    echo    Expected .venv\Scripts\activate.bat (Windows) or .venv\bin\python (WSL/Linux)
-    cd ..
-    pause
-    exit /b 1
+    goto :venv_found
 )
+if exist ".venv\bin\python" (
+    REM Cross-platform/WSL/Linux-style virtual environment detected
+    set VENV_TYPE=wsl
+    echo [WARNING] Linux/WSL-style virtual environment detected.
+    echo    Recreating Windows-compatible venv...
+    rmdir /s /q .venv 2>nul
+    %PYTHON_CMD% -m venv .venv
+    if errorlevel 1 (
+        echo [ERROR] Failed to recreate virtual environment!
+        cd ..
+        pause
+        exit /b 1
+    )
+    set VENV_ACTIVATE=.venv\Scripts\activate.bat
+    set VENV_PYTHON=.venv\Scripts\python.exe
+    goto :venv_found
+)
+echo [ERROR] Virtual environment not found or incomplete!
+echo    Expected .venv\Scripts\activate.bat ^(Windows^) or .venv\bin\python ^(WSL/Linux^)
+cd ..
+pause
+exit /b 1
+:venv_found
 
 REM Activate virtual environment (if Windows Scripts)
 if exist ".venv\Scripts\activate.bat" (
@@ -159,7 +172,7 @@ REM Ensure critical monitoring deps are present
 
 REM Database Initialization
 echo.
-echo Database Setup & Migration...
+echo Database Setup and Migration...
 echo    Checking database connection and schema...
 %VENV_PYTHON% init_db.py
 if errorlevel 1 (
@@ -210,7 +223,8 @@ if not exist "node_modules" (
 
 REM Start Frontend
 echo [OK] Frontend starting on %FRONTEND_HOST%:%FRONTEND_PORT%...
-start "Frontend Server" /min cmd /c "cd /d %CD% && set CLIENT_HOST=%FRONTEND_HOST% && set CLIENT_PORT=%FRONTEND_PORT% && npm run dev > ..\client.log 2>&1"
+REM Don't pass CLIENT_HOST=0.0.0.0 as it causes issues on Windows - let Vite use 'true' instead
+start "Frontend Server" /min cmd /c "cd /d %CD% && set CLIENT_PORT=%FRONTEND_PORT% && npm run dev > ..\client.log 2>&1"
 
 cd ..
 
@@ -259,7 +273,7 @@ if not exist "client.log" type nul > client.log
 
 REM Display logs using PowerShell Get-Content -Wait (if available)
 where powershell >nul 2>&1
-if %errorlevel% equ 0 (
+if not errorlevel 1 (
     echo Streaming logs from both services...
     echo.
     powershell -Command "Get-Content server.log, client.log -Wait -Tail 20"

@@ -1,4 +1,4 @@
-# Qbrain AI Labs
+.# Qbrain AI Labs
 
 An AI-driven Collaborative Workshop Platform for use case prioritization.
 Qbrain AI Labs allows real-time facilitation of "Hotspot" prioritization workshops. Participants join via mobile/web, submit use cases, and vote on criteria (e.g., Feasibility vs. Business Value) in real-time. The results are instantly visualized in an interactive Matrix (Bubble Chart) to identify "Strategic Bets," "Quick Wins," etc.

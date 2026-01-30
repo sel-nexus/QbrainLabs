@@ -11,6 +11,10 @@ import sys
 from pathlib import Path
 from datetime import datetime, timezone
 
+# Fix for Windows: psycopg requires WindowsSelectorEventLoopPolicy
+if sys.platform == "win32":
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
 from dotenv import load_dotenv
 
 # Load .env file from project root before importing app modules
