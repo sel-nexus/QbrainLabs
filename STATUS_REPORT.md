@@ -1,6 +1,6 @@
 # Qbrain AI Labs - Current Status Report
 
-**Date:** January 25, 2026  
+**Date:** January 31, 2026  
 **Time:** Updated  
 **Overall Status:** ✅ Sprint 17 Testing Infrastructure In Progress (80% Complete)
 
@@ -40,6 +40,10 @@
 2. ✅ `client/src/pages/AdminPanel.tsx` - NEW: Admin dashboard
 3. ✅ `client/src/pages/AdminDashboard.tsx` - Added admin panel link
 4. ✅ `client/src/App.tsx` - Added /admin route
+
+### Frontend Bugfix (Facilitator Dashboard)
+1. ✅ `client/src/App.tsx` - Fixed facilitator routes to render `FacilitatorDashboard`
+2. ✅ `client/src/pages/FacilitatorDashboard.tsx` - Added actionable tiles; wired "Use Cases" tile click
 
 ### Documentation Files (7 created/modified)
 1. ✅ `README.md` - Added admin features
@@ -143,6 +147,12 @@ Email: admin@qbrainlabs.com
 Password: admin123
 
 # You should see "Administrator" badge
+```
+
+### 1a. Client Unit Tests (Bugfix Verification)
+```bash
+cd client
+npm run test:run
 ```
 
 ### 2. Test Admin Panel
@@ -269,6 +279,9 @@ async def function_name(
 
 ### None Critical
 All implemented features are working as expected.
+
+### Recently Resolved
+- ✅ Facilitator dashboard: "Use Cases" tile click now triggers navigation/toast guidance (previously no response)
 
 ### Future Considerations
 - Date-based stats need PostgreSQL (SQLite limitation)

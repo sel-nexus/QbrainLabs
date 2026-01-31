@@ -88,7 +88,9 @@ export function FacilitatorManagement() {
   const [facilitatorWorkshops, setFacilitatorWorkshops] = useState<FacilitatorWorkshops>({});
   const [workshopDropdownOpen, setWorkshopDropdownOpen] = useState<string | null>(null);
   const [savingWorkshops, setSavingWorkshops] = useState<string | null>(null);
+  const [dropdownPosition, setDropdownPosition] = useState<'bottom' | 'top'>('bottom');
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<{ [key: string]: HTMLButtonElement | null }>({});
 
   // Fetch all workshops for dropdown
   const fetchAllWorkshops = useCallback(async () => {
@@ -531,9 +533,23 @@ export function FacilitatorManagement() {
                       <td className="px-6 py-4 relative">
                         <div ref={workshopDropdownOpen === facilitator.id ? dropdownRef : null}>
                           <button
-                            onClick={() => setWorkshopDropdownOpen(
-                              workshopDropdownOpen === facilitator.id ? null : facilitator.id
-                            )}
+                            ref={(el) => { buttonRef.current[facilitator.id] = el; }}
+                            onClick={(e) => {
+                              const isOpening = workshopDropdownOpen !== facilitator.id;
+                              if (isOpening) {
+                                const button = e.currentTarget;
+                                const rect = button.getBoundingClientRect();
+                                const spaceBelow = window.innerHeight - rect.bottom;
+                                const spaceAbove = rect.top;
+                                const dropdownHeight = 300; // max-h-60 is approximately 240px + padding
+                                
+                                // Position dropdown upward if not enough space below
+                                setDropdownPosition(spaceBelow < dropdownHeight && spaceAbove > spaceBelow ? 'top' : 'bottom');
+                              }
+                              setWorkshopDropdownOpen(
+                                workshopDropdownOpen === facilitator.id ? null : facilitator.id
+                              );
+                            }}
                             disabled={savingWorkshops === facilitator.id}
                             className="flex items-center gap-2 px-3 py-1.5 border rounded-lg theme-hover transition-colors min-w-[140px] justify-between theme-border"
                           >
@@ -548,7 +564,9 @@ export function FacilitatorManagement() {
                           </button>
 
                           {workshopDropdownOpen === facilitator.id && (
-                            <div className="absolute z-20 mt-1 w-72 rounded-lg shadow-lg border max-h-60 overflow-y-auto theme-card">
+                            <div className={`absolute z-20 w-72 rounded-lg shadow-lg border max-h-60 overflow-y-auto theme-card ${
+                              dropdownPosition === 'top' ? 'bottom-full mb-1' : 'mt-1'
+                            }`}>
                               <div className="p-2 border-b" style={{ borderColor: 'var(--theme-border-color)' }}>
                                 <p className="text-xs contrast-muted font-medium">
                                   Assign Workshops to {facilitator.full_name || 'Facilitator'}

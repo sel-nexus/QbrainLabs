@@ -74,4 +74,4 @@ vi.mock('react-i18next', () => ({
 }));
 
 // Mock Element.scrollTo for carousel components
-Element.prototype.scrollTo = vi.fn();
+Element.prototype.scrollTo = vi.fn() as any;
