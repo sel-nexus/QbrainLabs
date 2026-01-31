@@ -3,23 +3,22 @@
 > vite
 
 
-  [32m[1mVITE[22m v7.3.1[39m  [2mready in [0m[1m751[22m[2m[0m ms[22m
+  [32m[1mVITE[22m v7.3.1[39m  [2mready in [0m[1m656[22m[2m[0m ms[22m
 
   [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
   [32m➜[39m  [1mNetwork[22m: [36mhttp://172.16.0.4:[1m5173[22m/[39m
 [2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
 
-[2m[358.42ms][22m [@tailwindcss/postcss] src\index.css
-[2m[  0.14ms][22m  [2m ↳ [22mQuick bail check
-[2m[ 53.78ms][22m  [2m ↳ [22mSetup compiler
-[2m[  2.94ms][22m    [2m ↳ [22mPostCSS AST -> Tailwind CSS AST
-[2m[ 50.78ms][22m    [2m ↳ [22mCreate compiler
-[2m[  3.33ms][22m  [2m ↳ [22mRegister full rebuild paths
-[2m[  3.50ms][22m  [2m ↳ [22mSetup scanner
-[2m[ 86.62ms][22m  [2m ↳ [22mScan for candidates
-[2m[ 55.28ms][22m  [2m ↳ [22mRegister dependency messages
-[2m[129.87ms][22m  [2m ↳ [22mBuild utilities
-[2m[ 19.78ms][22m  [2m ↳ [22mTransform Tailwind CSS AST into PostCSS AST
-[2m[  5.30ms][22m  [2m ↳ [22mUpdate PostCSS AST
+[2m[293.96ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.24ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 37.82ms][22m  [2m ↳ [22mSetup compiler
+[2m[  1.48ms][22m    [2m ↳ [22mPostCSS AST -> Tailwind CSS AST
+[2m[ 36.29ms][22m    [2m ↳ [22mCreate compiler
+[2m[  0.19ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[  2.63ms][22m  [2m ↳ [22mSetup scanner
+[2m[ 79.88ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 48.08ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 99.97ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 18.03ms][22m  [2m ↳ [22mTransform Tailwind CSS AST into PostCSS AST
+[2m[  6.29ms][22m  [2m ↳ [22mUpdate PostCSS AST
 
-^C^C

@@ -30,6 +30,7 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
     };
 
     const handleSubmit = async () => {
+        if (!activeCard) return;
         setLoading(true);
         try {
             await api.post('/votes/', {
@@ -76,6 +77,15 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
                 <div className="text-4xl mb-4">🙌</div>
                 <h3 className="text-xl font-bold mb-2">Vote Recorded</h3>
                 <p className="text-gray-400">Waiting for other participants...</p>
+            </div>
+        );
+    }
+
+    if (!activeCard) {
+        return (
+            <div className="flex flex-col items-center justify-center p-8 bg-surface-800 rounded-xl border border-white/10">
+                <h3 className="text-xl font-bold mb-2 text-white">Waiting</h3>
+                <p className="text-gray-400">Waiting for the facilitator to present a card...</p>
             </div>
         );
     }

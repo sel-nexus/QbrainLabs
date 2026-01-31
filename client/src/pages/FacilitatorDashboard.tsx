@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
+import { ActionTile } from '../components/ui/ActionTile';
 import {
   LayoutDashboard,
   Users,
@@ -47,6 +48,27 @@ export function FacilitatorDashboard() {
   const { token, user } = useAuth();
   const [workshops, setWorkshops] = useState<Workshop[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+
+  const handleUseCasesClick = () => {
+    if (workshops.length === 0) {
+      toast.info('No workshops assigned. Select a workshop once available to view use cases.');
+      return;
+    }
+
+    if (workshops.length === 1) {
+      navigate(`/workshop/${workshops[0].id}`);
+      return;
+    }
+
+    const el = document.getElementById('my-workshops');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      toast.info('Select a workshop to view its use cases.');
+      return;
+    }
+
+    toast.info('Select a workshop to view its use cases.');
+  };
 
   const fetchWorkshops = useCallback(async () => {
     if (!token) return;
@@ -194,6 +216,31 @@ export function FacilitatorDashboard() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <ActionTile
+            icon={<FileText className="w-7 h-7" />}
+            title="Use Cases"
+            description="Browse workshop use cases"
+            badge={getTotalUseCases()}
+            badgeVariant="info"
+            onClick={handleUseCasesClick}
+          />
+          <ActionTile
+            icon={<BarChart3 className="w-7 h-7" />}
+            title="Analytics"
+            description="View analytics across workshops"
+            badgeVariant="default"
+            onClick={() => navigate('/facilitator/analytics')}
+          />
+          <ActionTile
+            icon={<Users className="w-7 h-7" />}
+            title="Knowledge Base"
+            description="Browse AI knowledge base"
+            badgeVariant="default"
+            onClick={() => navigate('/facilitator/knowledge-base')}
+          />
+        </div>
+
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
           <div className="rounded-xl p-5 shadow-sm border theme-card">
@@ -243,7 +290,7 @@ export function FacilitatorDashboard() {
         </div>
 
         {/* My Workshops */}
-        <div className="mb-8">
+        <div className="mb-8" id="my-workshops">
           <h2 className="text-xl font-semibold theme-text-primary mb-4">My Workshops</h2>
 
           {isLoading ? (

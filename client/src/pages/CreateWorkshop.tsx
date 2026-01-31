@@ -4,7 +4,7 @@ import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { api } from '../lib/api';
 import { useTheme } from '../context/ThemeContext';
-import { Plus, Trash2, Loader2 } from 'lucide-react';
+import { Plus, Trash2, Loader2, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { TemplateSelector } from '../components/templates/TemplateSelector';
 
@@ -104,6 +104,21 @@ export function CreateWorkshop() {
                         : 'bg-surface-800/60 border border-white/10'
                 }`}
             >
+                <Button
+                    type="button"
+                    variant="ghost"
+                    onClick={() => {
+                        if (window.history.length > 1) {
+                            navigate(-1);
+                        } else {
+                            navigate('/admin/my-workshops');
+                        }
+                    }}
+                    className="absolute top-6 right-6 px-3 py-2"
+                    aria-label="Close"
+                >
+                    <X className="w-5 h-5" />
+                </Button>
                 {/* Back button now in main Header */}
                 <h1 className={`text-3xl font-heading font-bold mb-2 ${
                     theme === 'light' ? 'text-gray-900' : 'text-white'

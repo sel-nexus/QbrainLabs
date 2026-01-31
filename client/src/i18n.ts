@@ -36,6 +36,15 @@ i18n
         // Supported languages
         supportedLngs: supportedLanguages,
 
+        // Ensure region codes like en-US resolve to en for loading
+        load: 'languageOnly',
+
+        // Accept and match non-explicit language codes
+        nonExplicitSupportedLngs: true,
+
+        // Normalize detected language codes
+        cleanCode: true,
+
         // Debug mode (disable in production)
         debug: import.meta.env.DEV,
 
@@ -81,7 +90,10 @@ export const changeLanguage = (lng: SupportedLanguage): Promise<void> => {
     return i18n.changeLanguage(lng).then(() => {
         localStorage.setItem('preferredLanguage', lng);
         // Update document direction for RTL languages (future support)
-        document.documentElement.dir = languageInfo[lng].dir;
-        document.documentElement.lang = lng;
+        const langInfo = languageInfo[lng];
+        if (langInfo) {
+            document.documentElement.dir = langInfo.dir;
+            document.documentElement.lang = lng;
+        }
     });
 };

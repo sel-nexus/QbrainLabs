@@ -117,7 +117,7 @@ export function ChallengeForm({ challenge, onSubmit, onCancel }: ChallengeFormPr
         <h2 className="text-2xl font-bold theme-text-primary">
           {challenge ? 'Edit Challenge Card' : 'Create Challenge Card'}
         </h2>
-        <Button variant="ghost" size="sm" onClick={onCancel}>
+        <Button variant="ghost" onClick={onCancel} className="px-3 py-2">
           <X className="w-5 h-5" />
         </Button>
       </div>
@@ -187,7 +187,6 @@ export function ChallengeForm({ challenge, onSubmit, onCancel }: ChallengeFormPr
                   <Button
                     type="button"
                     variant="ghost"
-                    size="sm"
                     onClick={() => removeCriterion(index)}
                     className="text-red-400 hover:text-red-500"
                   >
@@ -200,7 +199,6 @@ export function ChallengeForm({ challenge, onSubmit, onCancel }: ChallengeFormPr
               <Button
                 type="button"
                 variant="ghost"
-                size="sm"
                 onClick={addCriterion}
                 className="text-brand-violet hover:text-brand-violet/80"
               >

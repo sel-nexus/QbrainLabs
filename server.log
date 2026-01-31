@@ -44,3 +44,491 @@ WARNING:  Invalid HTTP request received.
 WARNING:  Invalid HTTP request received.
 INFO:     ('127.0.0.1', 64711) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
 INFO:     connection open
+Client connected: GPl3ejQn5AGB9NS7AAAB (unauthenticated - participant access)
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 16.85, "client_ip": "198.235.24.131", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T01:44:25.890424Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.63, "client_ip": "162.142.125.41", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T02:03:27.644383Z"}
+WARNING:  Invalid HTTP request received.
+2026-01-30 02:03:34,232 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 3.33, "client_ip": "162.142.125.41", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T02:03:34.232540Z"}
+WARNING:  Invalid HTTP request received.
+2026-01-30 02:04:00,826 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/security.txt", "status_code": 404, "duration_ms": 2.62, "client_ip": "162.142.125.41", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T02:04:00.826925Z"}
+2026-01-30 02:12:04,274 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/appsettings.json", "status_code": 404, "duration_ms": 2.62, "client_ip": "81.168.83.103", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T02:12:04.274131Z"}
+INFO:     connection closed
+INFO:     ('127.0.0.1', 57086) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+Client disconnected: GPl3ejQn5AGB9NS7AAAB
+Client connected: IhNCcIM7hzM6i0FOAAAD (unauthenticated - participant access)
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.5, "client_ip": "64.62.197.152", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T02:43:34.334797Z"}
+2026-01-30 02:44:35,250 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.64, "client_ip": "64.62.197.166", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T02:44:35.252728Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.08, "client_ip": "64.62.197.160", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T02:44:50.163523Z"}
+WARNING:  Unsupported upgrade request.
+WARNING:  No supported WebSocket library detected. Please use "pip install 'uvicorn[standard]'", or install 'websockets' or 'wsproto' manually.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.09, "client_ip": "147.185.132.195", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T03:05:38.412691Z"}
+INFO:     connection closed
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+Client disconnected: IhNCcIM7hzM6i0FOAAAD
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.35, "client_ip": "143.198.138.74", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T04:00:59.556345Z"}
+2026-01-30 04:00:59,680 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/login", "status_code": 404, "duration_ms": 2.38, "client_ip": "143.198.138.74", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T04:00:59.682114Z"}
+2026-01-30 05:58:01,409 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/dump.sql", "status_code": 404, "duration_ms": 2.96, "client_ip": "64.112.126.83", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T05:58:01.411902Z"}
+2026-01-30 06:28:04,843 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/ip", "status_code": 404, "duration_ms": 2.67, "client_ip": "204.76.203.93", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T06:28:04.845349Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.78, "client_ip": "3.149.59.26", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T07:08:30.446355Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.57, "client_ip": "3.149.59.26", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T07:10:17.176959Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+2026-01-30 09:26:21,283 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/.env", "status_code": 404, "duration_ms": 2.57, "client_ip": "196.115.172.217", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T09:26:21.284942Z"}
+2026-01-30 09:26:21,542 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/.env_ci", "status_code": 404, "duration_ms": 1.98, "client_ip": "196.115.172.217", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T09:26:21.542305Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 9.44, "client_ip": "50.116.26.161", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T13:33:47.472088Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.79, "client_ip": "66.175.213.4", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T13:33:53.666676Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.6, "client_ip": "205.210.31.225", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T13:43:15.712667Z"}
+2026-01-30 14:15:29,163 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "//.git/HEAD", "status_code": 404, "duration_ms": 2.79, "client_ip": "185.93.89.136", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T14:15:29.165795Z"}
+2026-01-30 15:19:06,501 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/.env.development", "status_code": 404, "duration_ms": 2.85, "client_ip": "176.65.149.17", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T15:19:06.503560Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.07, "client_ip": "185.180.140.102", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T15:29:10.300097Z"}
+2026-01-30 15:29:25,932 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/console", "status_code": 404, "duration_ms": 2.4, "client_ip": "185.180.140.102", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T15:29:25.933312Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.87, "client_ip": "185.180.140.110", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T15:39:01.717568Z"}
+2026-01-30 15:39:08,098 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/console", "status_code": 404, "duration_ms": 2.48, "client_ip": "185.180.140.111", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T15:39:08.098051Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.37, "client_ip": "20.245.94.94", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T17:55:09.854035Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.04, "client_ip": "20.245.94.94", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T17:55:09.935021Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 1.87, "client_ip": "20.245.94.94", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T17:55:10.069691Z"}
+WARNING:  Invalid HTTP request received.
+2026-01-30 18:21:57,486 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/mcp", "status_code": 404, "duration_ms": 2.32, "client_ip": "13.91.85.15", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T18:21:57.489243Z"}
+2026-01-30 18:21:57,567 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api/mcp", "status_code": 404, "duration_ms": 2.04, "client_ip": "13.91.85.15", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T18:21:57.569564Z"}
+2026-01-30 18:21:57,698 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/v1/mcp", "status_code": 404, "duration_ms": 1.87, "client_ip": "13.91.85.15", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T18:21:57.700284Z"}
+2026-01-30 18:21:57,822 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/jsonrpc", "status_code": 404, "duration_ms": 2.36, "client_ip": "13.91.85.15", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T18:21:57.822358Z"}
+2026-01-30 18:21:57,950 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/mcp", "status_code": 404, "duration_ms": 2.44, "client_ip": "13.91.85.15", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T18:21:57.952139Z"}
+2026-01-30 18:21:58,075 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api/mcp", "status_code": 404, "duration_ms": 2.27, "client_ip": "13.91.85.15", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T18:21:58.076655Z"}
+2026-01-30 18:21:58,198 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/v1/mcp", "status_code": 404, "duration_ms": 2.38, "client_ip": "13.91.85.15", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T18:21:58.200581Z"}
+2026-01-30 18:21:58,322 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/jsonrpc", "status_code": 404, "duration_ms": 2.3, "client_ip": "13.91.85.15", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T18:21:58.324892Z"}
+2026-01-30 18:21:58,448 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/mcp", "status_code": 404, "duration_ms": 2.3, "client_ip": "13.91.85.15", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T18:21:58.448153Z"}
+2026-01-30 18:21:58,570 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api/mcp", "status_code": 404, "duration_ms": 2.18, "client_ip": "13.91.85.15", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T18:21:58.572190Z"}
+2026-01-30 18:21:58,696 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/v1/mcp", "status_code": 404, "duration_ms": 2.2, "client_ip": "13.91.85.15", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T18:21:58.698453Z"}
+2026-01-30 18:21:58,820 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/jsonrpc", "status_code": 404, "duration_ms": 1.81, "client_ip": "13.91.85.15", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T18:21:58.820712Z"}
+WARNING:  Invalid HTTP request received.
+2026-01-30 19:27:11,204 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/.aider.conf.yml", "status_code": 404, "duration_ms": 2.5, "client_ip": "64.112.126.83", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T19:27:11.206897Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.77, "client_ip": "205.210.31.194", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T19:59:53.086051Z"}
+2026-01-30 20:33:55,650 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/.env", "status_code": 404, "duration_ms": 2.7, "client_ip": "170.64.227.227", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T20:33:55.652388Z"}
+2026-01-30 20:33:56,341 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/.git/config", "status_code": 404, "duration_ms": 2.27, "client_ip": "170.64.227.227", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T20:33:56.343014Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.63, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T20:47:37.866078Z"}
+2026-01-30 20:56:15,892 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/bins/", "status_code": 404, "duration_ms": 2.57, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T20:56:15.894381Z"}
+2026-01-30 21:00:48,536 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/bin/", "status_code": 404, "duration_ms": 2.71, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T21:00:48.538450Z"}
+2026-01-30 21:21:51,689 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/backup/", "status_code": 404, "duration_ms": 2.75, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-30T21:21:51.691599Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.27, "client_ip": "74.179.24.31", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T23:05:10.262402Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.23, "client_ip": "198.235.24.150", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-30T23:20:00.900221Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.08, "client_ip": "159.223.231.150", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T00:28:47.274545Z"}
+2026-01-31 00:28:47,617 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/login", "status_code": 404, "duration_ms": 1.89, "client_ip": "159.223.231.150", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T00:28:47.617718Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.33, "client_ip": "65.49.1.152", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T00:34:33.188497Z"}
+2026-01-31 00:35:53,060 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.72, "client_ip": "65.49.1.157", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T00:35:53.062887Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.57, "client_ip": "65.49.1.155", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T00:36:09.221086Z"}
+WARNING:  Unsupported upgrade request.
+WARNING:  No supported WebSocket library detected. Please use "pip install 'uvicorn[standard]'", or install 'websockets' or 'wsproto' manually.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.0, "client_ip": "147.185.132.159", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T01:57:09.233978Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.95, "client_ip": "66.132.153.141", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T02:58:05.402222Z"}
+WARNING:  Invalid HTTP request received.
+2026-01-31 02:58:05,857 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.39, "client_ip": "66.132.153.141", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T02:58:05.857621Z"}
+WARNING:  Invalid HTTP request received.
+2026-01-31 02:58:09,919 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/robots.txt", "status_code": 404, "duration_ms": 2.41, "client_ip": "66.132.153.141", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T02:58:09.919697Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.97, "client_ip": "158.94.211.37", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T03:18:50.958555Z"}
+2026-01-31 03:56:29,199 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/.env.development", "status_code": 404, "duration_ms": 3.35, "client_ip": "176.65.149.17", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T03:56:29.200472Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.61, "client_ip": "74.235.140.14", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T04:27:01.870726Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.31, "client_ip": "45.156.128.176", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T05:56:45.824284Z"}
+2026-01-31 05:57:05,534 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 1.95, "client_ip": "45.156.128.176", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T05:57:05.535942Z"}
+2026-01-31 05:57:26,965 - qbrainlabs - WARNING - HTTPException: 404 - Participant not found
+{"method": "GET", "path": "/api/session/properties", "status_code": 404, "duration_ms": 932.3, "client_ip": "45.156.128.177", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T05:57:26.966704Z"}
+2026-01-31 05:57:43,259 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/Web/Auth", "status_code": 404, "duration_ms": 2.48, "client_ip": "45.156.128.176", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T05:57:43.260251Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.28, "client_ip": "45.156.128.178", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T05:57:55.280466Z"}
+2026-01-31 05:57:55,681 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/console", "status_code": 404, "duration_ms": 4.71, "client_ip": "45.156.128.179", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T05:57:55.682135Z"}
+2026-01-31 05:58:02,633 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/ext-js/app/common/zld_product_spec.js", "status_code": 404, "duration_ms": 2.27, "client_ip": "45.156.128.176", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T05:58:02.633603Z"}
+2026-01-31 05:58:02,976 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/admin/", "status_code": 404, "duration_ms": 2.2, "client_ip": "45.156.128.179", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T05:58:02.976433Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.01, "client_ip": "45.156.128.178", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T05:58:12.067660Z"}
+2026-01-31 05:58:12,424 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/helpdesk/WebObjects/Helpdesk.woa", "status_code": 404, "duration_ms": 1.93, "client_ip": "45.156.128.178", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T05:58:12.424757Z"}
+2026-01-31 05:58:17,126 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/owncloud/status.php", "status_code": 404, "duration_ms": 2.01, "client_ip": "45.156.128.176", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T05:58:17.127706Z"}
+2026-01-31 05:58:23,516 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/status.php", "status_code": 404, "duration_ms": 2.32, "client_ip": "45.156.128.176", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T05:58:23.517054Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.16, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T08:08:52.861300Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.27, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T08:08:55.786206Z"}
+2026-01-31 08:08:58,419 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/never_could_exists", "status_code": 404, "duration_ms": 2.78, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:08:58.420502Z"}
+2026-01-31 08:08:58,882 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/adminer/", "status_code": 404, "duration_ms": 2.65, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:08:58.883399Z"}
+2026-01-31 08:08:59,355 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/arcgis/", "status_code": 404, "duration_ms": 1.87, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:08:59.355632Z"}
+2026-01-31 08:08:59,842 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/axis2/", "status_code": 404, "duration_ms": 1.82, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:08:59.843495Z"}
+2026-01-31 08:09:00,337 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/axis/", "status_code": 404, "duration_ms": 1.93, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:00.338925Z"}
+2026-01-31 08:09:00,812 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/druid/", "status_code": 404, "duration_ms": 2.11, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:00.813587Z"}
+2026-01-31 08:09:01,266 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/uis/", "status_code": 404, "duration_ms": 2.3, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:01.268023Z"}
+2026-01-31 08:09:01,713 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/imc/", "status_code": 404, "duration_ms": 2.3, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:01.713811Z"}
+2026-01-31 08:09:02,206 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/manager/", "status_code": 404, "duration_ms": 2.14, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:02.207985Z"}
+2026-01-31 08:09:02,695 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/minio/login", "status_code": 404, "duration_ms": 2.22, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:02.696324Z"}
+2026-01-31 08:09:03,178 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/nacos/", "status_code": 404, "duration_ms": 1.78, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:03.179406Z"}
+2026-01-31 08:09:03,661 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/phpmyadmin/", "status_code": 404, "duration_ms": 1.8, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:03.661819Z"}
+2026-01-31 08:09:04,138 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/pma/", "status_code": 404, "duration_ms": 1.98, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:04.139999Z"}
+2026-01-31 08:09:04,652 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/swagger-ui.html", "status_code": 404, "duration_ms": 5.67, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:04.656594Z"}
+2026-01-31 08:09:05,133 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/swagger/", "status_code": 404, "duration_ms": 2.23, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:05.135302Z"}
+2026-01-31 08:09:05,602 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api/docs/", "status_code": 404, "duration_ms": 2.22, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:05.603867Z"}
+2026-01-31 08:09:06,090 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/console/", "status_code": 404, "duration_ms": 2.35, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:06.091886Z"}
+2026-01-31 08:09:06,571 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/webroot/decision/", "status_code": 404, "duration_ms": 2.41, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:06.571571Z"}
+2026-01-31 08:09:07,051 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/harbor/", "status_code": 404, "duration_ms": 2.5, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:07.052693Z"}
+2026-01-31 08:09:07,526 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/xxl-job/", "status_code": 404, "duration_ms": 1.83, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:07.527382Z"}
+2026-01-31 08:09:08,005 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/xxl-job-admin/", "status_code": 404, "duration_ms": 1.88, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:08.006630Z"}
+2026-01-31 08:09:08,479 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/xxl/", "status_code": 404, "duration_ms": 1.87, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:08.480793Z"}
+2026-01-31 08:09:08,937 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/wui/", "status_code": 404, "duration_ms": 2.51, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:08.939689Z"}
+2026-01-31 08:09:09,416 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/smartbi/", "status_code": 404, "duration_ms": 3.28, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:09.418763Z"}
+2026-01-31 08:09:09,877 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/webroot/decision/", "status_code": 404, "duration_ms": 2.93, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:09.877443Z"}
+2026-01-31 08:09:10,366 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/xxl-job/", "status_code": 404, "duration_ms": 2.26, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:10.367678Z"}
+2026-01-31 08:09:10,850 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/xxl-job-admin/", "status_code": 404, "duration_ms": 2.47, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:10.851183Z"}
+2026-01-31 08:09:11,318 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/xxl/", "status_code": 404, "duration_ms": 1.89, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:11.318859Z"}
+2026-01-31 08:09:11,783 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/admin/", "status_code": 404, "duration_ms": 1.83, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:11.784551Z"}
+2026-01-31 08:09:12,267 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/login/", "status_code": 404, "duration_ms": 1.86, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:12.268481Z"}
+2026-01-31 08:09:12,743 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/mail/", "status_code": 404, "duration_ms": 1.84, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:12.744610Z"}
+2026-01-31 08:09:13,202 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/client/", "status_code": 404, "duration_ms": 2.73, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:13.203487Z"}
+2026-01-31 08:09:13,660 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/blog/", "status_code": 404, "duration_ms": 2.22, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:13.662698Z"}
+2026-01-31 08:09:14,151 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/old/", "status_code": 404, "duration_ms": 2.23, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:14.152796Z"}
+2026-01-31 08:09:14,634 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/email/", "status_code": 404, "duration_ms": 3.38, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:14.635370Z"}
+2026-01-31 08:09:15,094 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/office/", "status_code": 404, "duration_ms": 2.26, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:15.095559Z"}
+2026-01-31 08:09:15,582 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/oa/", "status_code": 404, "duration_ms": 1.88, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:15.583256Z"}
+2026-01-31 08:09:16,060 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/crm/", "status_code": 404, "duration_ms": 1.96, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:16.061954Z"}
+2026-01-31 08:09:16,528 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/stack/", "status_code": 404, "duration_ms": 2.08, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:16.529337Z"}
+2026-01-31 08:09:16,984 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/dashboard/", "status_code": 404, "duration_ms": 1.9, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:16.985257Z"}
+2026-01-31 08:09:17,454 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/cms/", "status_code": 404, "duration_ms": 2.68, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:17.457079Z"}
+2026-01-31 08:09:17,918 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/news/", "status_code": 404, "duration_ms": 2.58, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:17.921050Z"}
+2026-01-31 08:09:18,379 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/user/", "status_code": 404, "duration_ms": 2.35, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:18.381503Z"}
+2026-01-31 08:09:18,856 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/member/", "status_code": 404, "duration_ms": 3.26, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:18.858239Z"}
+2026-01-31 08:09:19,349 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/forum/", "status_code": 404, "duration_ms": 2.75, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:19.350361Z"}
+2026-01-31 08:09:19,831 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/mobile/", "status_code": 404, "duration_ms": 1.84, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:19.832102Z"}
+2026-01-31 08:09:20,305 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/app/", "status_code": 404, "duration_ms": 1.88, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:20.306562Z"}
+2026-01-31 08:09:20,763 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/home/", "status_code": 404, "duration_ms": 1.93, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:20.764742Z"}
+2026-01-31 08:09:21,224 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/cas/", "status_code": 404, "duration_ms": 1.86, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:21.224013Z"}
+2026-01-31 08:09:21,687 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/portal/", "status_code": 404, "duration_ms": 2.22, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:21.688327Z"}
+2026-01-31 08:09:22,147 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/sys/", "status_code": 404, "duration_ms": 2.39, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:22.149339Z"}
+2026-01-31 08:09:22,603 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/wiki/", "status_code": 404, "duration_ms": 2.26, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:22.604196Z"}
+2026-01-31 08:09:23,061 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/im/", "status_code": 404, "duration_ms": 2.12, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:23.061952Z"}
+2026-01-31 08:09:23,518 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/spaces/", "status_code": 404, "duration_ms": 2.3, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:23.519298Z"}
+2026-01-31 08:09:23,971 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/homepage/", "status_code": 404, "duration_ms": 2.31, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:23.972086Z"}
+2026-01-31 08:09:24,429 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/default/", "status_code": 404, "duration_ms": 2.08, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:24.430215Z"}
+2026-01-31 08:09:24,910 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/Page/", "status_code": 404, "duration_ms": 1.83, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:24.911560Z"}
+2026-01-31 08:09:25,389 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "POST", "path": "/never_could_exists", "status_code": 404, "duration_ms": 1.92, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:25.390273Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.21, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T08:09:25.846078Z"}
+2026-01-31 08:09:26,305 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/upnpdev.xml", "status_code": 404, "duration_ms": 2.32, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:26.306076Z"}
+2026-01-31 08:09:26,762 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/axis2/never_could_exists.jws", "status_code": 404, "duration_ms": 2.46, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:26.762927Z"}
+2026-01-31 08:09:28,529 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.33, "client_ip": "123.125.21.152", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T08:09:28.530447Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.08, "client_ip": "3.143.33.63", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T08:26:47.449303Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.65, "client_ip": "3.143.33.63", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T08:28:36.796660Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+2026-01-31 09:10:39,700 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/.vscode/launch.json", "status_code": 404, "duration_ms": 3.52, "client_ip": "64.112.126.83", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T09:10:39.703192Z"}
+WARNING:  Invalid HTTP request received.
+2026-01-31 10:04:39,188 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/.env.development", "status_code": 404, "duration_ms": 2.68, "client_ip": "176.65.149.17", "event": "HTTP Request", "level": "warning", "timestamp": "2026-01-31T10:04:39.189194Z"}
+INFO:     ('127.0.0.1', 59444) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+Client connected: 8Cgv6BDnICqhbpb1AAAF (unauthenticated - participant access)
+Client disconnected: 8Cgv6BDnICqhbpb1AAAF
+{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 1030.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:14.873739Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 518.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:15.474377Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 569.14, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:16.063425Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 378.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:18.071582Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 494.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:18.571247Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 1068.44, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:20.266727Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 830.22, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:21.101431Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 497.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:21.708012Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 726.77, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:21.905986Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 408.51, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:22.135400Z"}
+{"method": "GET", "path": "/api/admin/facilitators/6857290f-5364-4a0c-beee-c7fb39a16016/workshops", "status_code": 200, "duration_ms": 321.82, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:22.287003Z"}
+{"method": "GET", "path": "/api/admin/facilitators/d917c54d-2c3b-4a08-8d69-27f142c525d7/workshops", "status_code": 200, "duration_ms": 427.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:22.395587Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 459.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:22.436276Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 339.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:22.615953Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 419.85, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:22.618491Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 313.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:22.676606Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 820.58, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:22.731853Z"}
+{"method": "GET", "path": "/api/admin/facilitators/d917c54d-2c3b-4a08-8d69-27f142c525d7/workshops", "status_code": 200, "duration_ms": 333.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:22.833590Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 400.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:22.846300Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 346.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:23.037715Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 394.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:23.045835Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 437.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:23.157391Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 294.77, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:23.187411Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 419.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:23.195008Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 501.74, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:23.374044Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 245.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:23.463695Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 395.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:23.463695Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 392.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:23.469878Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 328.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:23.564283Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 443.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:23.649381Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 349.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:23.776156Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 400.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:23.898971Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 313.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:23.970475Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 381.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:23.986863Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 366.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:24.146980Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 386.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:24.396542Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 475.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:24.451413Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 461.5, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:24.481642Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 458.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:24.609751Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 312.44, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:24.713328Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 396.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:24.890141Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 314.35, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:24.929963Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 530.7, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:25.792698Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 520.53, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:26.318307Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 484.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:29.635725Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 453.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:14:30.096062Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 473.35, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:08.077794Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 441.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:08.522619Z"}
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 262.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:10.187795Z"}
+INFO:     ('127.0.0.1', 62924) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\core\socket_manager.py:107: RuntimeWarning: coroutine 'AsyncServer.enter_room' was never awaited
+  sio.enter_room(sid, workshop_id)
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\core\socket_manager.py:300: RuntimeWarning: coroutine 'AsyncServer.enter_room' was never awaited
+  sio.enter_room(sid, f"copilot_{workshop_id}")
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\core\socket_manager.py:309: RuntimeWarning: coroutine 'AsyncServer.leave_room' was never awaited
+  sio.leave_room(sid, f"copilot_{workshop_id}")
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+Client connected: RW-oWZiB98q4cxCvAAAH (unauthenticated - participant access)
+SID RW-oWZiB98q4cxCvAAAH joined room 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
+SID RW-oWZiB98q4cxCvAAAH joined room 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
+SID RW-oWZiB98q4cxCvAAAH joined copilot room for workshop 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
+SID RW-oWZiB98q4cxCvAAAH joined room 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
+SID RW-oWZiB98q4cxCvAAAH left copilot room for workshop 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
+SID RW-oWZiB98q4cxCvAAAH joined copilot room for workshop 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 364.9, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:10.560173Z"}
+{"method": "GET", "path": "/api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 367.23, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:10.595885Z"}
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 395.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:10.962270Z"}
+{"method": "GET", "path": "/api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 393.51, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:11.000989Z"}
+{"method": "GET", "path": "/api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 306.26, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:11.315695Z"}
+{"method": "GET", "path": "/api/polls/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 234.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:33.090771Z"}
+{"method": "GET", "path": "/api/polls/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 226.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:33.325829Z"}
+{"method": "GET", "path": "/api/challenges/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/challenges", "status_code": 200, "duration_ms": 302.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:34.522582Z"}
+{"method": "GET", "path": "/api/challenges/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/challenges", "status_code": 200, "duration_ms": 253.49, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:34.781256Z"}
+{"method": "GET", "path": "/api/surveys/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 304.98, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:36.102802Z"}
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 382.6, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:36.188539Z"}
+{"method": "GET", "path": "/api/surveys/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 310.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:36.418169Z"}
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 284.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:36.477405Z"}
+{"method": "GET", "path": "/api/knowledge-base/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/insights", "status_code": 200, "duration_ms": 531.84, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:40.519409Z"}
+{"method": "GET", "path": "/api/knowledge-base/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/insights", "status_code": 200, "duration_ms": 532.16, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:41.056513Z"}
+{"method": "GET", "path": "/api/polls/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 296.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:47.138818Z"}
+{"method": "GET", "path": "/api/polls/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 301.41, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:47.444543Z"}
+{"method": "GET", "path": "/api/challenges/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/challenges", "status_code": 200, "duration_ms": 330.38, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:52.124217Z"}
+{"method": "GET", "path": "/api/challenges/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/challenges", "status_code": 200, "duration_ms": 300.89, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:17:52.430196Z"}
+{"method": "POST", "path": "/api/challenges/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/challenges", "status_code": 201, "duration_ms": 846.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:19:00.594921Z"}
+{"method": "GET", "path": "/api/surveys/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 385.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:19:43.693835Z"}
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 285.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:19:43.895043Z"}
+{"method": "GET", "path": "/api/surveys/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 390.71, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:19:44.092541Z"}
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 388.85, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:19:44.289238Z"}
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 333.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:19:48.639767Z"}
+{"method": "GET", "path": "/api/surveys/templates/list", "status_code": 200, "duration_ms": 309.26, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:19:52.663893Z"}
+{"method": "GET", "path": "/api/surveys/templates/list", "status_code": 200, "duration_ms": 359.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:19:53.028983Z"}
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 311.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:19:53.620129Z"}
+{"method": "GET", "path": "/api/surveys/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 382.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:19:55.723308Z"}
+{"method": "GET", "path": "/api/surveys/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 313.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:19:56.044421Z"}
+{"method": "GET", "path": "/api/surveys/templates/list", "status_code": 200, "duration_ms": 340.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:19:57.069728Z"}
+{"method": "GET", "path": "/api/surveys/templates/list", "status_code": 200, "duration_ms": 299.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:19:57.374918Z"}
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 286.49, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:19:58.602409Z"}
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 343.79, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:04.089091Z"}
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 286.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:09.028706Z"}
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 320.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:13.962426Z"}
+{"method": "GET", "path": "/api/surveys/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 378.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:16.085307Z"}
+{"method": "GET", "path": "/api/surveys/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 403.77, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:16.494320Z"}
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 292.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:18.605562Z"}
+2026-01-31 11:20:18,666 - qbrainlabs - WARNING - HTTPException: 500 - greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+{"method": "POST", "path": "/api/copilot/suggestions", "status_code": 500, "duration_ms": 867.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "error", "timestamp": "2026-01-31T11:20:18.668494Z"}
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 312.61, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:23.622537Z"}
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 424.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:28.729727Z"}
+{"method": "POST", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/phase", "status_code": 200, "duration_ms": 876.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:31.774017Z"}
+SID RW-oWZiB98q4cxCvAAAH joined room 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 282.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:32.092363Z"}
+{"method": "GET", "path": "/api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 322.42, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:32.449660Z"}
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 370.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:33.678508Z"}
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/breakout-rooms", "status_code": 200, "duration_ms": 286.04, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:38.606051Z"}
+{"method": "POST", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/phase", "status_code": 200, "duration_ms": 685.7, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:39.323920Z"}
+SID RW-oWZiB98q4cxCvAAAH joined room 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
+SID RW-oWZiB98q4cxCvAAAH joined room 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
+SID RW-oWZiB98q4cxCvAAAH joined room 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 262.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:39.660892Z"}
+{"method": "GET", "path": "/api/results/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 397.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:39.765087Z"}
+{"method": "GET", "path": "/api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 302.61, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:39.998061Z"}
+{"method": "GET", "path": "/api/results/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 379.58, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:40.418699Z"}
+{"method": "GET", "path": "/api/analytics/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/agreement", "status_code": 200, "duration_ms": 341.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:46.457296Z"}
+{"method": "GET", "path": "/api/analytics/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/distribution", "status_code": 200, "duration_ms": 342.42, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:46.460829Z"}
+{"method": "GET", "path": "/api/analytics/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/quadrant-analysis", "status_code": 200, "duration_ms": 371.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:46.483631Z"}
+{"method": "GET", "path": "/api/analytics/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/agreement", "status_code": 200, "duration_ms": 382.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:46.846807Z"}
+{"method": "GET", "path": "/api/analytics/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/quadrant-analysis", "status_code": 200, "duration_ms": 372.82, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:46.873559Z"}
+{"method": "GET", "path": "/api/analytics/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17/distribution", "status_code": 200, "duration_ms": 409.5, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:46.903575Z"}
+{"method": "GET", "path": "/api/roi/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 339.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:48.425371Z"}
+{"method": "GET", "path": "/api/roi/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 340.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:20:48.771122Z"}
+SID RW-oWZiB98q4cxCvAAAH left copilot room for workshop 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
+{"method": "POST", "path": "/api/auth/logout", "status_code": 200, "duration_ms": 486.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:21:16.904832Z"}
+INFO:     connection closed
+Client disconnected: RW-oWZiB98q4cxCvAAAH
+{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 1005.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:21:30.406317Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 642.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:21:31.098085Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 456.37, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:21:31.560064Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 421.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:21:33.206406Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 427.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:21:33.638725Z"}
+{"method": "GET", "path": "/api/templates/workshop-templates", "status_code": 200, "duration_ms": 380.11, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:23:19.712081Z"}
+{"method": "GET", "path": "/api/templates/criteria-templates", "status_code": 200, "duration_ms": 456.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:23:19.793199Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 462.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:23:35.076805Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 470.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:23:35.552291Z"}
+{"method": "POST", "path": "/api/auth/logout", "status_code": 200, "duration_ms": 289.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:23:37.318327Z"}
+{"method": "POST", "path": "/api/join", "status_code": 200, "duration_ms": 680.46, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:01.402473Z"}
+INFO:     ('127.0.0.1', 59415) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+Client connected: MG3q7j_PSHMda1MtAAAJ (unauthenticated - participant access)
+SID MG3q7j_PSHMda1MtAAAJ joined room 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
+{"method": "GET", "path": "/api/session/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 343.61, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:01.785312Z"}
+{"method": "GET", "path": "/api/session/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 416.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:02.240285Z"}
+{"method": "GET", "path": "/api/gamification/points/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 268.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:02.389983Z"}
+{"method": "GET", "path": "/api/polls/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 374.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:02.484943Z"}
+{"method": "GET", "path": "/api/session/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 418.38, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:02.663633Z"}
+{"method": "GET", "path": "/api/gamification/points/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 352.27, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:02.750970Z"}
+{"method": "GET", "path": "/api/polls/workshop/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 349.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:02.840932Z"}
+{"method": "GET", "path": "/api/gamification/points/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 254.55, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:07.080489Z"}
+{"method": "GET", "path": "/api/session/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 309.8, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:11.745892Z"}
+{"method": "GET", "path": "/api/gamification/points/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 395.98, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:12.219778Z"}
+{"method": "GET", "path": "/api/gamification/points/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 257.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:17.082706Z"}
+{"method": "GET", "path": "/api/session/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 450.03, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:22.195842Z"}
+{"method": "GET", "path": "/api/gamification/points/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 368.38, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:23.110724Z"}
+{"method": "GET", "path": "/api/gamification/points/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 276.46, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:28.008449Z"}
+{"method": "GET", "path": "/api/session/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 415.11, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:32.147485Z"}
+{"method": "GET", "path": "/api/gamification/points/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 365.84, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:34.225450Z"}
+{"method": "GET", "path": "/api/gamification/points/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 250.85, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:37.983400Z"}
+{"method": "GET", "path": "/api/session/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 457.71, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:42.191700Z"}
+{"method": "GET", "path": "/api/gamification/points/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 345.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:43.080639Z"}
+{"method": "GET", "path": "/api/gamification/points/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 338.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:47.157782Z"}
+{"method": "GET", "path": "/api/session/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 409.3, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:51.846606Z"}
+{"method": "GET", "path": "/api/gamification/points/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 279.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:52.167220Z"}
+{"method": "GET", "path": "/api/gamification/points/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 276.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:57.102525Z"}
+{"method": "GET", "path": "/api/session/383ffc05-3c25-4b66-b0f6-150c5c443aa6", "status_code": 200, "duration_ms": 387.14, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:24:59.042228Z"}
+SID MG3q7j_PSHMda1MtAAAJ joined room 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
+SID MG3q7j_PSHMda1MtAAAJ joined room 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 265.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:25:00.701581Z"}
+{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 278.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:25:00.985594Z"}
+{"method": "GET", "path": "/api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 298.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:25:01.032771Z"}
+Fetching matrix positions for participant 383ffc05-3c25-4b66-b0f6-150c5c443aa6, workshop 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
+Found 0 matrix positions for participant 383ffc05-3c25-4b66-b0f6-150c5c443aa6
+{"method": "GET", "path": "/api/votes/participant/383ffc05-3c25-4b66-b0f6-150c5c443aa6/matrix-positions", "status_code": 200, "duration_ms": 231.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:25:01.306403Z"}
+{"method": "GET", "path": "/api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 305.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:25:01.342238Z"}
+Fetching matrix positions for participant 383ffc05-3c25-4b66-b0f6-150c5c443aa6, workshop 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
+Found 0 matrix positions for participant 383ffc05-3c25-4b66-b0f6-150c5c443aa6
+{"method": "GET", "path": "/api/votes/participant/383ffc05-3c25-4b66-b0f6-150c5c443aa6/matrix-positions", "status_code": 200, "duration_ms": 317.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-01-31T11:25:01.698066Z"}
+INFO:     connection closed

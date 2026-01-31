@@ -1,5 +1,6 @@
 """
 Structured logging configuration for production monitoring
+Uses centralized configuration from app.core.config
 """
 import logging
 import sys
@@ -10,6 +11,8 @@ from functools import lru_cache
 
 import structlog
 from pythonjsonlogger import jsonlogger
+
+from app.core.config import settings
 
 
 class CustomJsonFormatter(jsonlogger.JsonFormatter):
@@ -51,18 +54,23 @@ def get_logger(name: str = "qbrainlabs") -> structlog.BoundLogger:
 
 
 def setup_logging(
-    level: str = "INFO",
-    json_format: bool = True,
+    level: str = None,
+    json_format: bool = None,
     log_file: Optional[str] = None
 ) -> None:
     """
-    Set up application logging
+    Set up application logging using centralized configuration
     
     Args:
-        level: Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
-        json_format: Use JSON formatting for production
-        log_file: Optional file path for log output
+        level: Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL) - defaults to settings.LOG_LEVEL
+        json_format: Use JSON formatting for production - defaults to settings.LOG_FORMAT == 'json'
+        log_file: Optional file path for log output - defaults to settings.LOG_FILE
     """
+    # Use centralized config defaults
+    level = level or settings.LOG_LEVEL
+    json_format = json_format if json_format is not None else (settings.LOG_FORMAT == "json")
+    log_file = log_file or settings.LOG_FILE
+    
     log_level = getattr(logging, level.upper(), logging.INFO)
     
     # Root logger configuration

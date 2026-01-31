@@ -242,7 +242,7 @@ export function AdminSettings() {
 
             {/* Category Tabs */}
             <div className={`flex gap-2 mb-6 border-b ${isLight ? 'border-gray-200' : 'border-white/10'}`}>
-                {categories.map((category) => {
+                {categories && categories.map((category) => {
                     const Icon = categoryIcons[category] || Settings;
                     const color = categoryColors[category] || 'text-gray-500';
 
@@ -266,7 +266,7 @@ export function AdminSettings() {
 
             {/* Settings List */}
             <div className="space-y-4">
-                {filteredSettings.map((setting) => {
+                {filteredSettings && filteredSettings.map((setting) => {
                     const hasChanged = editedValues.hasOwnProperty(setting.key);
                     const isSaving = saving === setting.key;
 
@@ -339,7 +339,7 @@ export function AdminSettings() {
                 })}
             </div>
 
-            {filteredSettings.length === 0 && (
+            {filteredSettings && filteredSettings.length === 0 && (
                 <div className={`text-center py-12 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
                     <Settings className="w-12 h-12 mx-auto mb-3 opacity-50" />
                     <p>No settings found in this category</p>

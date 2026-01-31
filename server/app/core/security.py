@@ -16,16 +16,12 @@ import bcrypt
 from app.core.config import settings
 
 
-# Bcrypt rounds for password hashing
-BCRYPT_ROUNDS = 12
-
-
-# Security headers
+# Security headers (configurable via settings.SECURITY_HEADERS_ENABLED)
 SECURITY_HEADERS = {
     "X-Content-Type-Options": "nosniff",
     "X-Frame-Options": "DENY",
     "X-XSS-Protection": "1; mode=block",
-    "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+    "Strict-Transport-Security": f"max-age={settings.HSTS_MAX_AGE}; includeSubDomains",
     "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'",
     "Referrer-Policy": "strict-origin-when-cross-origin",
     "Permissions-Policy": "geolocation=(), microphone=(), camera=()",
@@ -33,10 +29,15 @@ SECURITY_HEADERS = {
 
 
 class PasswordValidator:
-    """Password strength validator"""
+    """Password strength validator - uses centralized config settings"""
     
-    MIN_LENGTH = 8
-    MAX_LENGTH = 128
+    @classmethod
+    def _get_min_length(cls) -> int:
+        return settings.PASSWORD_MIN_LENGTH
+    
+    @classmethod
+    def _get_max_length(cls) -> int:
+        return settings.PASSWORD_MAX_LENGTH
     
     PATTERNS = {
         "uppercase": re.compile(r"[A-Z]"),
@@ -57,21 +58,26 @@ class PasswordValidator:
         Returns dict with 'valid' bool and 'errors' list
         """
         errors = []
+        min_length = cls._get_min_length()
+        max_length = cls._get_max_length()
         
-        if len(password) < cls.MIN_LENGTH:
-            errors.append(f"Password must be at least {cls.MIN_LENGTH} characters")
+        if len(password) < min_length:
+            errors.append(f"Password must be at least {min_length} characters")
         
-        if len(password) > cls.MAX_LENGTH:
-            errors.append(f"Password must be at most {cls.MAX_LENGTH} characters")
+        if len(password) > max_length:
+            errors.append(f"Password must be at most {max_length} characters")
         
-        if not cls.PATTERNS["uppercase"].search(password):
+        if settings.PASSWORD_REQUIRE_UPPERCASE and not cls.PATTERNS["uppercase"].search(password):
             errors.append("Password must contain at least one uppercase letter")
         
-        if not cls.PATTERNS["lowercase"].search(password):
+        if settings.PASSWORD_REQUIRE_LOWERCASE and not cls.PATTERNS["lowercase"].search(password):
             errors.append("Password must contain at least one lowercase letter")
         
-        if not cls.PATTERNS["digit"].search(password):
+        if settings.PASSWORD_REQUIRE_DIGIT and not cls.PATTERNS["digit"].search(password):
             errors.append("Password must contain at least one digit")
+        
+        if settings.PASSWORD_REQUIRE_SPECIAL and not cls.PATTERNS["special"].search(password):
+            errors.append("Password must contain at least one special character")
         
         if password.lower() in cls.COMMON_PASSWORDS:
             errors.append("Password is too common")
@@ -108,11 +114,12 @@ class RateLimiter:
     """
     Distributed rate limiter with Redis backend.
     Falls back to in-memory rate limiting if Redis is not available.
+    Uses centralized configuration for default limits.
     """
     
-    def __init__(self, max_requests: int = 100, window_seconds: int = 60):
-        self.max_requests = max_requests
-        self.window_seconds = window_seconds
+    def __init__(self, max_requests: int = None, window_seconds: int = None):
+        self.max_requests = max_requests or settings.RATE_LIMIT_REQUESTS
+        self.window_seconds = window_seconds or settings.RATE_LIMIT_WINDOW
         self.requests: Dict[str, list] = {}  # Fallback in-memory storage
         self._use_redis: Optional[bool] = None
     
@@ -202,9 +209,9 @@ class RateLimiter:
 
 
 def hash_password(password: str) -> str:
-    """Hash a password using bcrypt"""
+    """Hash a password using bcrypt with configurable rounds"""
     password_bytes = password.encode('utf-8')
-    salt = bcrypt.gensalt(rounds=BCRYPT_ROUNDS)
+    salt = bcrypt.gensalt(rounds=settings.BCRYPT_ROUNDS)
     return bcrypt.hashpw(password_bytes, salt).decode('utf-8')
 
 
@@ -297,9 +304,12 @@ def get_client_ip(request: Request) -> str:
 rate_limiter = RateLimiter()
 
 
-def rate_limit(max_requests: int = 100, window_seconds: int = 60):
-    """Decorator for rate limiting endpoints"""
-    limiter = RateLimiter(max_requests, window_seconds)
+def rate_limit(max_requests: int = None, window_seconds: int = None):
+    """Decorator for rate limiting endpoints - uses config defaults if not specified"""
+    limiter = RateLimiter(
+        max_requests or settings.RATE_LIMIT_REQUESTS,
+        window_seconds or settings.RATE_LIMIT_WINDOW
+    )
     
     def decorator(func):
         @wraps(func)

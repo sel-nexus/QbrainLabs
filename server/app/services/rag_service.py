@@ -2,11 +2,12 @@ import os
 import json
 import random
 from typing import List, Dict, Any
+from app.core.config import settings
 
 class RAGService:
     def __init__(self):
-        self.api_key = os.getenv("OPENAI_API_KEY")
-        self.mock_mode = not self.api_key
+        self.api_key = settings.OPENAI_API_KEY
+        self.mock_mode = settings.AI_MOCK_MODE or not self.api_key
         self.vector_store = None
         
         # Load Reference Data
@@ -28,7 +29,11 @@ class RAGService:
             from langchain.vectorstores import Chroma
             from langchain.schema import Document
             
-            self.llm = ChatOpenAI(temperature=0.7, model="gpt-4", api_key=self.api_key)
+            self.llm = ChatOpenAI(
+                temperature=settings.OPENAI_TEMPERATURE,
+                model=settings.OPENAI_MODEL,
+                api_key=self.api_key
+            )
             self.embeddings = OpenAIEmbeddings(api_key=self.api_key)
             
             # Simple in-memory Chroma for MVP

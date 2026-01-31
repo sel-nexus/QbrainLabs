@@ -44,3 +44,34 @@ const localStorageMock = {
   clear: vi.fn(),
 };
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
+
+// Mock socket.io-client
+vi.mock('../lib/socket', () => ({
+  socket: {
+    on: vi.fn(),
+    off: vi.fn(),
+    emit: vi.fn(),
+    connect: vi.fn(),
+    disconnect: vi.fn(),
+    connected: false,
+  },
+}));
+
+// Mock react-i18next
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+    i18n: {
+      changeLanguage: vi.fn(),
+      language: 'en',
+    },
+  }),
+  Trans: ({ children }: any) => children,
+  initReactI18next: {
+    type: '3rdParty',
+    init: vi.fn(),
+  },
+}));
+
+// Mock Element.scrollTo for carousel components
+Element.prototype.scrollTo = vi.fn();

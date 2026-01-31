@@ -1,7 +1,10 @@
 import React, { type ReactElement } from 'react';
-import { render, RenderOptions, screen, fireEvent } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import type { RenderOptions } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from '../context/AuthContext';
+import { ThemeProvider } from '../context/ThemeContext';
+import { SessionProvider } from '../context/SessionContext';
 
 interface AllProvidersProps {
   children: React.ReactNode;
@@ -10,9 +13,13 @@ interface AllProvidersProps {
 const AllProviders: React.FC<AllProvidersProps> = ({ children }) => {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        {children}
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <SessionProvider>
+            {children}
+          </SessionProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 };

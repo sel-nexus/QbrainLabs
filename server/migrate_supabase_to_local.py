@@ -230,7 +230,15 @@ class DatabaseMigrator:
                 JOIN pg_attribute a ON a.attrelid = i.indrelid AND a.attnum = ANY(i.indkey)
                 WHERE i.indrelid = %s::regclass AND i.indisprimary
             """, (table_name,))
-            pk_cols = [row['attname'] for row in cur.fetchall()]
+            pk_results = cur.fetchall()
+            pk_cols = []
+            for row in pk_results:
+                if isinstance(row, dict) and 'attname' in row:
+                    pk_cols.append(row['attname'])
+                elif hasattr(row, 'attname'):
+                    pk_cols.append(row.attname)
+                elif len(row) > 0:
+                    pk_cols.append(row[0])
             if pk_cols:
                 schema['primary_key'] = pk_cols
             
@@ -260,7 +268,7 @@ class DatabaseMigrator:
                     indexdef
                 FROM pg_indexes
                 WHERE schemaname = 'public' AND tablename = %s
-                AND indexname NOT LIKE '%_pkey'
+                AND indexname NOT LIKE '%%_pkey'
             """, (table_name,))
             schema['indexes'] = cur.fetchall()
             
@@ -318,6 +326,9 @@ class DatabaseMigrator:
                     default = 'gen_random_uuid()'
                 elif 'uuid_generate_v4()' in default:
                     default = 'gen_random_uuid()'
+                elif 'auth.uid()' in default:
+                    # Replace auth.uid() with a fallback - user will need to handle this
+                    default = 'NULL'
                 col_def += f" DEFAULT {default}"
             
             columns.append(col_def)
@@ -499,9 +510,13 @@ REFERENCES "{fk['foreign_table_name']}" ("{fk['foreign_column_name']}");
                     """, (table_name,))
                     columns = [row[0] for row in cur.fetchall()]
                 
-                # Disable triggers temporarily for faster insert
+                # Disable triggers temporarily for faster insert (only user triggers)
                 with self.local_conn.cursor() as cur:
-                    cur.execute(f'ALTER TABLE "{table_name}" DISABLE TRIGGER ALL;')
+                    try:
+                        cur.execute(f'ALTER TABLE "{table_name}" DISABLE TRIGGER USER;')
+                    except Exception:
+                        # If we can't disable triggers, continue anyway
+                        pass
                 
                 # Migrate in batches
                 offset = 0
@@ -549,7 +564,11 @@ REFERENCES "{fk['foreign_table_name']}" ("{fk['foreign_column_name']}");
                 
                 # Re-enable triggers
                 with self.local_conn.cursor() as cur:
-                    cur.execute(f'ALTER TABLE "{table_name}" ENABLE TRIGGER ALL;')
+                    try:
+                        cur.execute(f'ALTER TABLE "{table_name}" ENABLE TRIGGER USER;')
+                    except Exception:
+                        # If we can't enable triggers, continue anyway
+                        pass
                     self.local_conn.commit()
                 
                 print(f"   ✅ Migrated {migrated} rows                    ")

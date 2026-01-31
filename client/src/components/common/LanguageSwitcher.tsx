@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Globe, ChevronDown } from 'lucide-react';
 import { useTheme } from '../../context/ThemeContext';
+import { changeLanguage, type SupportedLanguage } from '../../i18n';
 
 interface Language {
     code: string;
@@ -27,13 +28,9 @@ export const LanguageSwitcher: React.FC = () => {
         i18n.language.startsWith(lang.code)
     ) || languages[0];
 
-    const changeLanguage = (lng: string) => {
-        i18n.changeLanguage(lng);
+    const handleChangeLanguage = async (lng: SupportedLanguage) => {
+        await changeLanguage(lng);
         setIsOpen(false);
-        // Persist language preference
-        localStorage.setItem('preferredLanguage', lng);
-        // Update document attributes
-        document.documentElement.lang = lng;
     };
 
     // Close dropdown when clicking outside
@@ -50,8 +47,9 @@ export const LanguageSwitcher: React.FC = () => {
     // Load saved language preference on mount
     useEffect(() => {
         const savedLang = localStorage.getItem('preferredLanguage');
-        if (savedLang && savedLang !== i18n.language) {
-            i18n.changeLanguage(savedLang);
+        const nextLang = (savedLang?.split('-')[0] || '') as SupportedLanguage;
+        if (nextLang && nextLang !== i18n.language) {
+            changeLanguage(nextLang);
         }
     }, [i18n]);
 
@@ -85,7 +83,7 @@ export const LanguageSwitcher: React.FC = () => {
                     {languages.map((lang) => (
                         <button
                             key={lang.code}
-                            onClick={() => changeLanguage(lang.code)}
+                            onClick={() => handleChangeLanguage(lang.code as SupportedLanguage)}
                             className={`w-full flex items-center gap-3 px-3 py-2.5 text-sm transition-colors ${currentLanguage.code === lang.code
                                     ? theme === 'light'
                                         ? 'bg-brand-violet/10 text-brand-violet'

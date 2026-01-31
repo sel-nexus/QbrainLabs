@@ -10,7 +10,7 @@ import { CreateWorkshop } from './pages/CreateWorkshop';
 import { JoinWorkshop } from './pages/JoinWorkshop';
 import { WorkshopDetail } from './pages/WorkshopDetail';
 import { FacilitatorLogin } from './pages/FacilitatorLogin';
-import { AdminDashboard } from './pages/AdminDashboard';
+import { FacilitatorDashboard } from './pages/FacilitatorDashboard';
 import { AdminPanel } from './pages/AdminPanel';
 import { AdminSettings } from './pages/AdminSettings';
 import { AdminWorkshops } from './pages/AdminWorkshops';
@@ -106,8 +106,8 @@ function App() {
           <Route path="/scoring" element={<ScoringPhase />} />
 
           {/* Facilitator Routes (Protected) - All wrapped with AuthenticatedLayout for consistent header */}
-          <Route path="/facilitator" element={<AuthenticatedRoute showBackButton={false}><AdminDashboard /></AuthenticatedRoute>} />
-          <Route path="/facilitator/dashboard" element={<AuthenticatedRoute showBackButton={false}><AdminDashboard /></AuthenticatedRoute>} />
+          <Route path="/facilitator" element={<AuthenticatedRoute showBackButton={false}><FacilitatorDashboard /></AuthenticatedRoute>} />
+          <Route path="/facilitator/dashboard" element={<AuthenticatedRoute showBackButton={false}><FacilitatorDashboard /></AuthenticatedRoute>} />
           <Route path="/facilitator/create" element={<AuthenticatedRoute requireAdmin title="Create Workshop"><CreateWorkshop /></AuthenticatedRoute>} />
           <Route path="/facilitator/analytics" element={<AuthenticatedRoute title="Analytics"><AnalyticsDashboard /></AuthenticatedRoute>} />
           <Route path="/facilitator/knowledge-base" element={<AuthenticatedRoute title="Knowledge Base"><KnowledgeBase /></AuthenticatedRoute>} />

@@ -62,6 +62,7 @@ describe('ScoringCard', () => {
         criteria={mockCriteria}
       />
     );
-    expect(screen.getByText(/waiting/i)).toBeInTheDocument();
+    expect(screen.getByText('Waiting')).toBeInTheDocument();
+    expect(screen.getByText(/waiting for the facilitator/i)).toBeInTheDocument();
   });
 });

@@ -13,12 +13,13 @@ from app.schemas.roadmap import (
     RoadmapPhaseResponse, RoadmapTaskResponse, RoadmapMilestoneResponse,
     TaskDependencyResponse, ConfidenceResponse
 )
+from app.core.config import settings
 
 
 class RoadmapService:
     def __init__(self):
-        self.api_key = os.getenv("OPENAI_API_KEY")
-        self.mock_mode = not self.api_key
+        self.api_key = settings.OPENAI_API_KEY
+        self.mock_mode = settings.AI_MOCK_MODE or not self.api_key
         
         if not self.mock_mode:
             self._initialize_ai_components()
@@ -28,7 +29,11 @@ class RoadmapService:
     def _initialize_ai_components(self):
         try:
             from langchain_openai import ChatOpenAI
-            self.llm = ChatOpenAI(temperature=0.3, model="gpt-4o", api_key=self.api_key)
+            self.llm = ChatOpenAI(
+                temperature=0.3,
+                model=settings.OPENAI_MODEL,
+                api_key=self.api_key
+            )
         except ImportError:
             print("LangChain dependencies missing. Reverting to Mock Mode.")
             self.mock_mode = True

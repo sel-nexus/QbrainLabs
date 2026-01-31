@@ -6,18 +6,18 @@ discussion prompts, and summary generation for workshop facilitators.
 """
 import os
 import json
-import statistics
 from typing import List, Dict, Any, Optional
-from datetime import datetime, timedelta
-from uuid import UUID
-
-from app.models.models import (
-    Workshop, WorkshopPhase, Participant, UseCase, Vote,
-    CopilotSuggestion, ParticipantEngagement, WorkshopSummary, DetectedAnomaly, CopilotSettings,
-    SuggestionType, SuggestionPriority, SuggestionStatus,
-    AnomalyType, AnomalySeverity, SummaryFormat, CopilotMode
+from datetime import datetime
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
+from app.models.models import Workshop, Participant, HotspotVote
+from app.schemas.copilot import (
+    CopilotSuggestion,
+    EngagementMetrics,
+    WorkshopSummary,
+    CopilotRequest
 )
-
+from app.core.config import settings
 
 class CopilotService:
     """
@@ -26,8 +26,8 @@ class CopilotService:
     """
     
     def __init__(self):
-        self.api_key = os.getenv("OPENAI_API_KEY")
-        self.mock_mode = not self.api_key
+        self.api_key = settings.OPENAI_API_KEY
+        self.mock_mode = settings.AI_MOCK_MODE or not self.api_key
         self.llm = None
         
         if not self.mock_mode:
@@ -40,8 +40,8 @@ class CopilotService:
         try:
             from langchain_openai import ChatOpenAI
             self.llm = ChatOpenAI(
-                temperature=0.7,
-                model="gpt-4o",
+                temperature=settings.OPENAI_TEMPERATURE,
+                model=settings.OPENAI_MODEL,
                 api_key=self.api_key
             )
         except ImportError:

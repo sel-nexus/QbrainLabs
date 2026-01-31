@@ -8,8 +8,8 @@ from app.core.logging import setup_logging, get_logger
 from app.core.monitoring import setup_metrics_endpoint, setup_health_endpoints
 from app.middleware.security import setup_security_middleware
 
-# Initialize logging
-setup_logging(level="INFO", json_format=False)
+# Initialize logging with centralized configuration
+setup_logging()  # Uses settings.LOG_LEVEL and settings.LOG_FORMAT
 logger = get_logger("main")
 
 @asynccontextmanager

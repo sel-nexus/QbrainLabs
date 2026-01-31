@@ -9,11 +9,10 @@ import {
     Edit,
     Trash2,
     Clock,
-    Users,
-    CheckCircle,
-    AlertCircle
+    Users
 } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { useTheme } from '../../context/ThemeContext';
 
 interface Survey {
     id: string;
@@ -41,6 +40,7 @@ const STATUS_CONFIG: Record<string, { color: string; icon: any; label: string }>
 };
 
 export function SurveyList({ workshopId, onCreateSurvey, onEditSurvey, onViewResults }: SurveyListProps) {
+    const { theme } = useTheme();
     const [surveys, setSurveys] = useState<Survey[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -127,7 +127,9 @@ export function SurveyList({ workshopId, onCreateSurvey, onEditSurvey, onViewRes
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-white">Surveys</h3>
+                <h3 className={`text-lg font-semibold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                    Surveys
+                </h3>
                 <Button onClick={onCreateSurvey} className="text-sm">
                     <FileText className="w-4 h-4 mr-2" />
                     Create Survey
@@ -135,9 +137,21 @@ export function SurveyList({ workshopId, onCreateSurvey, onEditSurvey, onViewRes
             </div>
 
             {surveys.length === 0 ? (
-                <div className="text-center py-12 border border-dashed border-white/10 rounded-xl">
-                    <FileText className="w-12 h-12 text-gray-500 mx-auto mb-3" />
-                    <p className="text-gray-400 mb-4">No surveys yet</p>
+                <div
+                    className={`text-center py-12 border border-dashed rounded-xl ${
+                        theme === 'light'
+                            ? 'border-gray-200 bg-gray-50'
+                            : 'border-white/10'
+                    }`}
+                >
+                    <FileText
+                        className={`w-12 h-12 mx-auto mb-3 ${
+                            theme === 'light' ? 'text-gray-400' : 'text-gray-500'
+                        }`}
+                    />
+                    <p className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} mb-4`}>
+                        No surveys yet
+                    </p>
                     <Button variant="secondary" onClick={onCreateSurvey}>
                         Create your first survey
                     </Button>
@@ -151,18 +165,24 @@ export function SurveyList({ workshopId, onCreateSurvey, onEditSurvey, onViewRes
                         return (
                             <div
                                 key={survey.id}
-                                className="bg-surface-800 rounded-xl border border-white/10 p-4 hover:border-purple-500/30 transition"
+                                className={`rounded-xl border p-4 transition ${
+                                    theme === 'light'
+                                        ? 'bg-white border-gray-200 hover:border-purple-500/30'
+                                        : 'bg-surface-800 border-white/10 hover:border-purple-500/30'
+                                }`}
                             >
                                 <div className="flex items-start justify-between">
                                     <div className="flex-1">
                                         <div className="flex items-center gap-3 mb-2">
-                                            <h4 className="text-white font-medium">{survey.title}</h4>
+                                            <h4 className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                                                {survey.title}
+                                            </h4>
                                             <span className={`flex items-center gap-1 text-xs px-2 py-0.5 rounded ${statusConfig.color}`}>
                                                 <StatusIcon className="w-3 h-3" />
                                                 {statusConfig.label}
                                             </span>
                                         </div>
-                                        <div className="flex items-center gap-4 text-sm text-gray-400">
+                                        <div className={`flex items-center gap-4 text-sm ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
                                             <span className="flex items-center gap-1">
                                                 <FileText className="w-4 h-4" />
                                                 {survey.question_count} questions
