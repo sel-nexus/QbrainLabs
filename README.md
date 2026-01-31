@@ -39,6 +39,8 @@ Qbrain AI Labs allows real-time facilitation of "Hotspot" prioritization worksho
   - **Subscription Management**: Tier-based access control (Free, Pro, Enterprise).
   - **Feature Flags**: Toggle features dynamically per organization.
   - **System Settings**: Database-driven configuration and audit logs.
+- **Distributed Caching & Rate Limiting**: Redis-powered protection and performance.
+- **Request ID Tracking**: Full observability for every API request.
 - **Real-Time Collaboration**: Powered by WebSockets (Socket.io), ensure instant updates for all participants.
 - **Interactive Workshops**:
   - **Three-Phase Flow**: Intake, Scoring, and Analysis.
@@ -73,8 +75,10 @@ Qbrain AI Labs allows real-time facilitation of "Hotspot" prioritization worksho
 - **ORM**: SQLAlchemy 2.0 (AsyncIO)
 - **Migrations**: Alembic
 - **Real-time**: Socket.io (AsyncServer)
+- **Caching & Rate Limiting**: Redis (Distributed)
 - **AI Integration**: OpenAI API (for summaries and insights)
 - **Validation**: Pydantic v2
+- **Logging**: Structured logging (structlog)
 
 ---
 
@@ -117,8 +121,8 @@ Access the application:
 |-----------|---------|-------|
 | Python | 3.11+ | Required for backend |
 | Node.js | 18+ | Required for frontend |
-| PostgreSQL | 15+ | Database (local install, Docker, or [Supabase](#-using-supabase-postgresql-cloud-database)) |
-| Redis | 7+ | Optional, for caching |
+| PostgreSQL | 15+ | Database (Supabase or self-hosted) |
+| Redis | 7+ | Required for distributed rate limiting & caching |
 | Git | 2.30+ | Version control |
 
 **Note:** You can use **Supabase PostgreSQL** (cloud-hosted) instead of installing PostgreSQL locally. See the [Supabase Setup Guide](#-using-supabase-postgresql-cloud-database) for details.

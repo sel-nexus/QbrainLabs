@@ -33,6 +33,7 @@ All application settings are managed through the `Settings` class using Pydantic
 12. Monitoring Configuration
 13. Feature Flags
 14. File Upload Configuration
+15. Request Tracking Configuration
 
 ## Environment Variables
 
@@ -121,6 +122,8 @@ BCRYPT_ROUNDS=12  # 10-14 recommended
 RATE_LIMIT_ENABLED=true
 RATE_LIMIT_REQUESTS=100
 RATE_LIMIT_WINDOW=60  # seconds
+# Distributed rate limiting (requires Redis)
+REDIS_URL=redis://localhost:6379/0
 ```
 
 #### Security - Headers
@@ -171,6 +174,12 @@ ENABLE_METRICS=true
 MAX_UPLOAD_SIZE=10485760  # 10MB in bytes
 ```
 
+#### Request Tracking Configuration
+```bash
+# X-Request-ID header tracking
+REQUEST_ID_HEADER=X-Request-ID
+```
+
 ## Usage in Code
 
 ### Importing Settings
@@ -182,6 +191,32 @@ from app.core.config import settings
 api_key = settings.OPENAI_API_KEY
 db_url = settings.DATABASE_URL
 is_prod = settings.is_production  # Computed property
+```
+
+### Advanced Features
+
+#### Caching Decorator
+The application provides a `@cache_result` decorator for easy query result caching with Redis (and in-memory fallback):
+
+```python
+from app.core.caching import cache_result
+
+@router.get("/workshop/{workshop_id}")
+@cache_result(ttl=600)  # Cache for 10 minutes
+async def get_workshop(workshop_id: str, db: AsyncSession):
+    # This result will be cached in Redis if available
+    ...
+```
+
+#### Redis Connection Management
+Redis is used for distributed rate limiting and caching. If Redis is unavailable, the system gracefully falls back to in-memory storage.
+
+```python
+from app.core.redis_client import get_redis_client
+
+redis = await get_redis_client()
+if redis:
+    await redis.set("key", "value")
 ```
 
 ### Computed Properties
@@ -372,5 +407,7 @@ All application configuration is now managed centrally in `server/app/core/confi
 - Type safety and validation
 - Clear documentation
 - Easy deployment
+- **Redis-based distributed caching and rate limiting**
+- **Request ID tracking for observability**
 
 For questions or issues, refer to this documentation or check the inline comments in `config.py`.
