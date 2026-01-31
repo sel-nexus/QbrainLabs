@@ -22,3 +22,345 @@
 [2m[ 18.03ms][22m  [2m ↳ [22mTransform Tailwind CSS AST into PostCSS AST
 [2m[  6.29ms][22m  [2m ↳ [22mUpdate PostCSS AST
 
+[2m11:27:27 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/components/ChangePasswordDialog.tsx, /src/index.css[22m
+
+[2m[70.51ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.17ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[30.40ms][22m  [2m ↳ [22mScan for candidates
+[2m[28.58ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.49ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 9.44ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:29:26 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/challenges/ChallengeCardDetail.tsx[22m
+
+[2m[120.67ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.17ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 64.65ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 44.20ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  1.46ms][22m  [2m ↳ [22mBuild utilities
+[2m[  9.00ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:30:09 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/challenges/ChallengeCardDetail.tsx[22m
+
+[2m[50.18ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.30ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[21.49ms][22m  [2m ↳ [22mScan for candidates
+[2m[25.02ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.83ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.36ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:30:31 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/challenges/ChallengeForm.tsx[22m
+
+[2m[58.17ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.12ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[30.93ms][22m  [2m ↳ [22mScan for candidates
+[2m[22.45ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 2.36ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.15ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:31:07 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/survey/SurveyList.tsx[22m
+
+[2m[64.13ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.16ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[33.63ms][22m  [2m ↳ [22mScan for candidates
+[2m[27.21ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.83ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.14ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:31:26 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/survey/SurveyList.tsx[22m
+
+[2m[50.10ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.16ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[25.17ms][22m  [2m ↳ [22mScan for candidates
+[2m[17.60ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.74ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 6.28ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:32:04 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
+
+[2m[98.94ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.23ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[57.57ms][22m  [2m ↳ [22mScan for candidates
+[2m[28.77ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 9.62ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.47ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:32:25 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/common/LanguageSwitcher.tsx[22m
+
+[2m[68.40ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.20ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[32.25ms][22m  [2m ↳ [22mScan for candidates
+[2m[25.96ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 6.02ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 3.78ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:32:42 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/CreateWorkshop.tsx, /src/index.css[22m
+
+[2m[100.15ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 27.24ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 23.07ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 33.41ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 14.07ms][22m  [2m ↳ [22mTransform Tailwind CSS AST into PostCSS AST
+[2m[  2.06ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:39:13 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/ScoringCard.tsx[22m
+
+[2m[73.93ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.13ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[39.38ms][22m  [2m ↳ [22mScan for candidates
+[2m[24.61ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 3.44ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 6.05ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:39:28 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[203.52ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.21ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 29.66ms][22m  [2m ↳ [22mScan for candidates
+[2m[155.27ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 10.60ms][22m  [2m ↳ [22mBuild utilities
+[2m[  6.81ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:41:36 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[66.76ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.14ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[32.41ms][22m  [2m ↳ [22mScan for candidates
+[2m[25.73ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.23ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 7.05ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:42:02 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[94.50ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.17ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[36.22ms][22m  [2m ↳ [22mScan for candidates
+[2m[41.42ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.61ms][22m  [2m ↳ [22mBuild utilities
+[2m[14.81ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:42:03 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[74.57ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.58ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[42.51ms][22m  [2m ↳ [22mScan for candidates
+[2m[27.97ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.81ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.50ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:42:50 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css[22m
+
+[2m[63.53ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.14ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[28.17ms][22m  [2m ↳ [22mScan for candidates
+[2m[18.38ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.77ms][22m  [2m ↳ [22mBuild utilities
+[2m[15.90ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:42:58 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
+
+[2m[171.15ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.15ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 56.77ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 74.83ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 22.03ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 17.08ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:43:02 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css[22m
+
+[2m[60.24ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.15ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[29.99ms][22m  [2m ↳ [22mScan for candidates
+[2m[17.94ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 3.63ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 8.29ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:43:50 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[66.23ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.08ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[29.80ms][22m  [2m ↳ [22mScan for candidates
+[2m[30.99ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.81ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 4.42ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:43:52 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/FacilitatorDashboard.tsx[22m
+
+[2m[135.18ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.05ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.13ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 52.96ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 30.43ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 29.85ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 21.51ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:44:08 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/AdminSettings.tsx, /src/index.css[22m
+
+[2m[70.30ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.10ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[33.60ms][22m  [2m ↳ [22mScan for candidates
+[2m[31.01ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.25ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 4.16ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:46:45 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[132.54ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 40.36ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 59.82ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 12.70ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 19.36ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:46:50 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[459.57ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.14ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[304.33ms][22m  [2m ↳ [22mScan for candidates
+[2m[116.71ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  0.96ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 37.24ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:47:13 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/AdminSettings.tsx, /src/index.css[22m
+[2m11:47:13 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/AdminSettings.tsx, /src/index.css[22m
+
+[2m[305.24ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.16ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[149.28ms][22m  [2m ↳ [22mScan for candidates
+[2m[139.23ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  3.14ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 13.23ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:49:27 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/AdminSettings.tsx, /src/index.css[22m
+
+[2m[54.14ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.09ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[25.89ms][22m  [2m ↳ [22mScan for candidates
+[2m[24.72ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.68ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.63ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:51:00 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[68.59ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[30.14ms][22m  [2m ↳ [22mScan for candidates
+[2m[24.01ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 8.76ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 5.42ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:52:12 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[60.04ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.09ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[27.89ms][22m  [2m ↳ [22mScan for candidates
+[2m[24.85ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 3.53ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 3.55ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:53:08 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[66.49ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.18ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[31.04ms][22m  [2m ↳ [22mScan for candidates
+[2m[26.63ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 4.33ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 4.16ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:54:10 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[89.79ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.09ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[35.27ms][22m  [2m ↳ [22mScan for candidates
+[2m[41.88ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 6.34ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 3.68ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:55:11 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[89.42ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[32.14ms][22m  [2m ↳ [22mScan for candidates
+[2m[46.76ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 6.51ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 3.74ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m11:56:01 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[57.70ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.31ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[30.21ms][22m  [2m ↳ [22mScan for candidates
+[2m[22.29ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.89ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 3.65ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m12:00:32 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[66.81ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.16ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[29.27ms][22m  [2m ↳ [22mScan for candidates
+[2m[22.27ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 7.62ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 7.31ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m12:02:25 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[80.99ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.15ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[35.00ms][22m  [2m ↳ [22mScan for candidates
+[2m[31.02ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 6.13ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 8.51ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m12:02:32 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[90.77ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[57.54ms][22m  [2m ↳ [22mScan for candidates
+[2m[23.54ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 4.91ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 4.44ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m12:02:38 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[242.27ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.16ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[151.38ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 85.14ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  1.15ms][22m  [2m ↳ [22mBuild utilities
+[2m[  4.26ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
