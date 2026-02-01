@@ -7,7 +7,7 @@ This module provides endpoints for:
 - Feedback analytics
 - Prompt template management
 """
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, File, UploadFile, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List, Optional, Dict, Any
 from pydantic import BaseModel
@@ -253,6 +253,59 @@ async def get_kb_statistics(db: AsyncSession = Depends(get_db)):
         "success": True,
         "statistics": stats
     }
+
+
+@router.post("/documents/upload")
+async def upload_document(
+    file: UploadFile = File(...),
+    category: Optional[str] = Form(None),
+    db: AsyncSession = Depends(get_db),
+    current_user = Depends(get_current_user)
+):
+    """
+    Upload and ingest a document file (PDF, DOCX, PPTX, Images).
+    """
+    try:
+        from app.services.file_service import file_service
+        
+        # Extract text content
+        content = await file_service.extract_text_from_file(file)
+        
+        if not content:
+            raise HTTPException(
+                status_code=400,
+                detail="Could not extract text from file or file is empty"
+            )
+            
+        # Ingest into Knowledge Base
+        doc = await kb_manager.ingest_document(
+            db=db,
+            title=file.filename,
+            content=content,
+            category=category or "Imported",
+            source="upload",
+            metadata={
+                "original_filename": file.filename,
+                "content_type": file.content_type,
+                "file_size": file.size
+            },
+            user_id=current_user.id
+        )
+        
+        return {
+            "success": True,
+            "document_id": doc.id,
+            "message": f"Successfully imported '{file.filename}'"
+        }
+        
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        print(f"Upload error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to process file: {str(e)}"
+        )
 
 
 # ============================================================================

@@ -81,7 +81,7 @@ export function Header({ showBackButton = true, showHomeButton = true, title }: 
         : 'bg-surface-900/95 border-b border-white/10'
         } backdrop-blur-md`}
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+      <div className="w-full flex items-center justify-between">
         <div className="flex items-center gap-3">
           {/* App Icon and Brand */}
           <button

@@ -1060,6 +1060,7 @@ This plan outlines the phased execution of the Qbrain AI Labs application, ensur
 
 ### 🟡 High Priority (Q2 2026)
 - [x] **Workshop-Facilitator Assignment Enhancement (US30):** Facilitators see only assigned workshops, Admin can assign multiple facilitators to workshops and vice versa (Sprint 28)
+- [ ] **Mock Services Implementation (MOCK-001 to MOCK-011):** Replace 11 mock/stub services with real AI implementations. See [MOCK_SERVICES_BACKLOG.md](./MOCK_SERVICES_BACKLOG.md) for details. Includes: RoadmapService, CopilotService, RAGService, Analytics API, ChallengeStepService
 - [ ] **Participant Experience Improvements (US41-US43):** Enhanced feedback management, Q&A chat with historic conversations, matrix dashboard improvements
 - [ ] **Challenge Cards (US34):** High-value business/technology problems with success criteria for AI-led transformation
 - [ ] **AI Demo Sandbox (US19):** Try-before-you-buy experience

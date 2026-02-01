@@ -3,8 +3,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import and_
 from app.core.database import get_db
-from app.models.models import UseCase, Participant, Workshop, UseCaseFeedback
-from app.schemas.usecase import UseCaseCreate, UseCaseResponse
+from app.models.models import UseCase, Participant, Workshop, UseCaseFeedback, User
+from app.api.auth import get_current_user_optional
+from app.schemas.usecase import UseCaseCreate, UseCaseResponse, UseCaseUpdate
 from app.core.socket_manager import sio # Import socket server
 from typing import List, Optional
 from pydantic import BaseModel
@@ -12,6 +13,20 @@ import uuid
 from datetime import datetime
 
 router = APIRouter()
+
+# Helper to verify workshop ownership for facilitators
+async def verify_workshop_access(workshop_id: uuid.UUID, user: User, db: AsyncSession) -> bool:
+    if user.is_admin_user:
+        return True
+    
+    # Check if user is the facilitator of the workshop
+    result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
+    workshop = result.scalars().first()
+    
+    if workshop and str(workshop.facilitator_id) == str(user.id):
+        return True
+        
+    return False
 
 @router.post("/", response_model=UseCaseResponse, status_code=status.HTTP_201_CREATED)
 async def submit_use_case(
@@ -65,40 +80,59 @@ async def get_workshop_use_cases(workshop_id: str, db: AsyncSession = Depends(ge
 @router.put("/{usecase_id}")
 async def update_use_case(
     usecase_id: str,
-    title: str = Body(...),
-    description: str = Body(...),
-    proposed_solution: Optional[str] = Body(None),
-    kpi: Optional[str] = Body(None),
-    target_user: Optional[str] = Body(None),
-    category: Optional[str] = Body(None),
-    participant_id: str = Query(...),
+    update_data: UseCaseUpdate,
+    participant_id: Optional[str] = Query(None),
+    authenticated_user: Optional[User] = Depends(get_current_user_optional),
     db: AsyncSession = Depends(get_db)
 ):
-    """Update a use case (only by owner)"""
+    """Update a use case (by owner or workshop facilitator/admin)"""
     result = await db.execute(select(UseCase).where(UseCase.id == usecase_id))
     use_case = result.scalar_one_or_none()
     
     if not use_case:
         raise HTTPException(status_code=404, detail="Use case not found")
     
-    # Verify ownership
-    if str(use_case.participant_id) != participant_id:
-        raise HTTPException(status_code=403, detail="You can only edit your own use cases")
+    # Authorization Check
+    is_authorized = False
     
-    # Update fields
-    use_case.title = title
-    use_case.description = description
-    if proposed_solution is not None:
-        use_case.proposed_solution = proposed_solution
-    if kpi is not None:
-        use_case.kpi = kpi
-    if target_user is not None:
-        use_case.target_user = target_user
-    if category is not None:
-        use_case.category = category
+    # 1. Check if user is the participant owner
+    if participant_id and str(use_case.participant_id) == participant_id:
+        is_authorized = True
+        
+    # 2. Check if user is Admin or Workshop Facilitator
+    if not is_authorized and authenticated_user:
+        if await verify_workshop_access(use_case.workshop_id, authenticated_user, db):
+            is_authorized = True
+            
+    if not is_authorized:
+        raise HTTPException(status_code=403, detail="Not authorized to edit this use case")
+    
+    # Update fields from schema
+    use_case.title = update_data.title
+    use_case.description = update_data.description
+    if update_data.proposed_solution is not None:
+        use_case.proposed_solution = update_data.proposed_solution
+    if update_data.kpi is not None:
+        use_case.kpi = update_data.kpi
+    if update_data.target_user is not None:
+        use_case.target_user = update_data.target_user
+    if update_data.category is not None:
+        use_case.category = update_data.category
     
     await db.commit()
     await db.refresh(use_case)
+
+    # Broadcast update
+    await sio.emit(
+        'use_case_updated', 
+        {
+            'id': str(use_case.id),
+            'title': use_case.title,
+            'description': use_case.description,
+            'proposed_solution': use_case.proposed_solution
+        },
+        room=str(use_case.workshop_id)
+    )
     
     return {
         "id": str(use_case.id),
@@ -109,6 +143,111 @@ async def update_use_case(
         "target_user": use_case.target_user,
         "category": use_case.category
     }
+
+@router.delete("/{usecase_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_use_case(
+    usecase_id: str,
+    participant_id: Optional[str] = Query(None),
+    authenticated_user: Optional[User] = Depends(get_current_user_optional),
+    db: AsyncSession = Depends(get_db)
+):
+    """Delete a use case"""
+    from app.models.models import Vote
+    
+    result = await db.execute(select(UseCase).where(UseCase.id == usecase_id))
+    use_case = result.scalar_one_or_none()
+    
+    if not use_case:
+        raise HTTPException(status_code=404, detail="Use case not found")
+        
+    # Authorization Check
+    is_authorized = False
+    
+    # 1. Check if user is the participant owner
+    if participant_id and str(use_case.participant_id) == participant_id:
+        is_authorized = True
+        
+    # 2. Check if user is Admin or Workshop Facilitator
+    if not is_authorized and authenticated_user:
+        if await verify_workshop_access(use_case.workshop_id, authenticated_user, db):
+            is_authorized = True
+            
+    if not is_authorized:
+        raise HTTPException(status_code=403, detail="Not authorized to delete this use case")
+    
+    # Store values before deletion for socket broadcast
+    use_case_id_str = str(use_case.id)
+    workshop_id_str = str(use_case.workshop_id)
+    
+    try:
+        # 1. Clear active_use_case_id from workshop if it references this use case
+        workshop_result = await db.execute(
+            select(Workshop).where(Workshop.active_use_case_id == use_case.id)
+        )
+        workshop = workshop_result.scalar_one_or_none()
+        if workshop:
+            workshop.active_use_case_id = None
+            
+        # 2. Delete related votes
+        await db.execute(
+            Vote.__table__.delete().where(Vote.use_case_id == use_case.id)
+        )
+        
+        # 3. Delete related feedback (UseCaseFeedback has ondelete CASCADE but let's be explicit)
+        from app.models.models import UseCaseFeedback
+        await db.execute(
+            UseCaseFeedback.__table__.delete().where(UseCaseFeedback.usecase_id == use_case.id)
+        )
+        
+        # 4. Delete related ROI calculations and business cases
+        try:
+            from app.models.roi import ROICalculation, BusinessCase
+            # First delete business cases (they reference ROI calculations)
+            await db.execute(
+                BusinessCase.__table__.delete().where(BusinessCase.use_case_id == use_case.id)
+            )
+            # Then delete ROI calculations
+            await db.execute(
+                ROICalculation.__table__.delete().where(ROICalculation.use_case_id == use_case.id)
+            )
+        except Exception:
+            pass  # ROI might not be set up
+        
+        # 5. Delete related RAG feedback (nullable FK, so set to NULL or delete)
+        try:
+            from app.models.rag_feedback import RAGFeedback
+            await db.execute(
+                RAGFeedback.__table__.delete().where(RAGFeedback.use_case_id == str(use_case.id))
+            )
+        except Exception:
+            pass  # RAG feedback might not be set up
+        
+        # 6. Clear use_case_id from roadmap items (nullable FK)
+        try:
+            from app.models.roadmap import RoadmapItem
+            from sqlalchemy import update
+            await db.execute(
+                update(RoadmapItem).where(RoadmapItem.use_case_id == use_case.id).values(use_case_id=None)
+            )
+        except Exception:
+            pass  # Roadmap might not be set up
+        
+        # 7. Now delete the use case
+        await db.delete(use_case)
+        await db.commit()
+        
+        # Broadcast deletion AFTER successful deletion
+        await sio.emit(
+            'use_case_deleted', 
+            {'id': use_case_id_str}, 
+            room=workshop_id_str
+        )
+        
+    except Exception as e:
+        await db.rollback()
+        raise HTTPException(status_code=500, detail=f"Failed to delete use case: {str(e)}")
+    
+    return None
 
 
 @router.post("/{usecase_id}/feedback")

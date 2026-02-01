@@ -5,7 +5,7 @@ import { api } from '../lib/api';
 import { socket } from '../lib/socket';
 import { Button } from '../components/ui/Button';
 import { useTheme } from '../context/ThemeContext';
-import { Play, TrendingUp, Download, FileText, BarChart3, Plus, X, Loader2, Map, LayoutGrid, Vote, Target, Sparkles } from 'lucide-react';
+import { Play, TrendingUp, Download, FileText, BarChart3, Plus, X, Map, LayoutGrid, Vote, Target, Sparkles, Edit, Trash2 } from 'lucide-react';
 import { ResultsChart } from '../components/ResultsChart';
 import { WorkshopInsights } from '../components/WorkshopInsights';
 import { AnalyticsDashboard } from '../components/AnalyticsDashboard';
@@ -46,6 +46,7 @@ export function WorkshopDetail() {
     const [showAnalytics, setShowAnalytics] = useState<'matrix' | 'analytics' | 'roi' | 'scale'>('matrix');
     const [activeCriterionIndex, setActiveCriterionIndex] = useState(0);
     const [showAddUseCase, setShowAddUseCase] = useState(false);
+    const [editingUseCase, setEditingUseCase] = useState<any>(null);
     const [showQA, setShowQA] = useState(false);
     const [roiSelectedUseCase, setRoiSelectedUseCase] = useState<{ id: string; title: string } | null>(null);
     const [roiModalOpen, setRoiModalOpen] = useState(false);
@@ -114,6 +115,16 @@ export function WorkshopDetail() {
         socket.on('matrix:position_update', handleMatrixUpdate);
         socket.on('vote_update', handleMatrixUpdate); // Also listen for vote updates
 
+        socket.on('use_case_updated', (updatedUseCase: any) => {
+            setUseCases(prev => prev.map(uc => uc.id === updatedUseCase.id ? { ...uc, ...updatedUseCase } : uc));
+            toast.info("Use case updated");
+        });
+
+        socket.on('use_case_deleted', ({ id }: { id: string }) => {
+            setUseCases(prev => prev.filter(uc => uc.id !== id));
+            toast.info("Use case deleted");
+        });
+
         return () => {
             socket.off('new_submission');
             socket.off('participant_joined');
@@ -122,6 +133,8 @@ export function WorkshopDetail() {
             socket.off('facilitator_request');
             socket.off('matrix:position_update', handleMatrixUpdate);
             socket.off('vote_update', handleMatrixUpdate);
+            socket.off('use_case_updated');
+            socket.off('use_case_deleted');
         };
     }, [id, currentPhase]);
 
@@ -204,6 +217,36 @@ export function WorkshopDetail() {
         } catch (err) {
             console.error(err);
             toast.error("Failed to add use case");
+        }
+    };
+
+    const handleEditSubmission = async (data: UseCaseData) => {
+        if (!editingUseCase) return;
+        try {
+            await api.put(`/usecases/${editingUseCase.id}`, {
+                ...data, // Include all form fields
+                // Ensure we handle fields that might be missing in data but needed or ignored
+            });
+
+            setEditingUseCase(null);
+            toast.success("Use case updated successfully");
+            // Socket will update the list
+        } catch (err) {
+            console.error(err);
+            toast.error("Failed to update use case");
+        }
+    };
+
+    const handleDeleteUseCase = async (ucId: string) => {
+        if (!confirm("Are you sure you want to delete this use case? This cannot be undone.")) return;
+
+        try {
+            await api.delete(`/usecases/${ucId}`);
+            // Socket will update the list
+            toast.success("Use case deleted");
+        } catch (err) {
+            console.error(err);
+            toast.error("Failed to delete use case");
         }
     };
 
@@ -640,19 +683,39 @@ export function WorkshopDetail() {
                                             >
                                                 <div className="flex justify-between mb-2">
                                                     <h3 className={`font-bold text-lg ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>{uc.title}</h3>
-                                                    <div>
-                                                        {currentPhase === 'SCORING' && (
-                                                            activeCardId === uc.id ? (
-                                                                <span className="text-xs text-brand-violet font-bold py-1 px-2 bg-brand-violet/10 rounded">VOTING ACTIVE</span>
-                                                            ) : (
-                                                                <Button
-                                                                    variant="ghost"
-                                                                    className="h-8 text-xs py-0"
-                                                                    onClick={() => activateCard(uc.id)}
-                                                                >
-                                                                    Present for Voting
-                                                                </Button>
+                                                    <div className="flex items-center gap-2">
+                                                        {activeCardId === uc.id ? (
+                                                            <span className="text-xs text-brand-violet font-bold py-1 px-2 bg-brand-violet/10 rounded">VOTING ACTIVE</span>
+                                                        ) : (
+                                                            hasRole(['admin', 'facilitator']) && (
+                                                                <>
+                                                                    <Button
+                                                                        variant="ghost"
+                                                                        className="h-8 text-xs py-0 text-gray-400 hover:text-brand-violet"
+                                                                        onClick={() => setEditingUseCase(uc)}
+                                                                        title="Edit"
+                                                                    >
+                                                                        <Edit className="w-4 h-4" />
+                                                                    </Button>
+                                                                    <Button
+                                                                        variant="ghost"
+                                                                        className="h-8 text-xs py-0 text-gray-400 hover:text-red-500"
+                                                                        onClick={() => handleDeleteUseCase(uc.id)}
+                                                                        title="Delete"
+                                                                    >
+                                                                        <Trash2 className="w-4 h-4" />
+                                                                    </Button>
+                                                                </>
                                                             )
+                                                        )}
+                                                        {currentPhase === 'SCORING' && activeCardId !== uc.id && (
+                                                            <Button
+                                                                variant="ghost"
+                                                                className="h-8 text-xs py-0"
+                                                                onClick={() => activateCard(uc.id)}
+                                                            >
+                                                                Present for Voting
+                                                            </Button>
                                                         )}
                                                     </div>
                                                 </div>
@@ -860,6 +923,41 @@ export function WorkshopDetail() {
                                 onSubmit={handleSubmitUseCase}
                                 submitLabel="Add Use Case"
                                 onSuccess={() => setShowAddUseCase(false)}
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Edit Use Case Modal */}
+            {editingUseCase && (
+                <div className="fixed inset-0 bg-black/50 z-50 overflow-y-auto">
+                    <div className="min-h-screen py-8 px-4 flex items-center justify-center">
+                        <div className={`relative w-full max-w-2xl rounded-xl border p-6 ${theme === 'light'
+                            ? 'bg-white border-gray-200'
+                            : 'bg-surface-900 border-white/10'
+                            }`}>
+                            <button
+                                onClick={() => setEditingUseCase(null)}
+                                className={`absolute top-4 right-4 p-2 rounded-lg transition ${theme === 'light'
+                                    ? 'hover:bg-gray-100 text-gray-500'
+                                    : 'hover:bg-surface-700 text-gray-400'
+                                    }`}
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+
+                            <h2 className={`text-xl font-bold mb-6 ${theme === 'light' ? 'text-gray-900' : 'text-white'
+                                }`}>
+                                Edit Use Case
+                            </h2>
+
+                            <UseCaseForm
+                                workshopId={id!}
+                                initialData={editingUseCase}
+                                onSubmit={handleEditSubmission}
+                                submitLabel="Update Use Case"
+                                onSuccess={() => setEditingUseCase(null)}
                             />
                         </div>
                     </div>

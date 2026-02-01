@@ -12,9 +12,10 @@ import { Header } from './Header';
 interface AdminLayoutProps {
     children: React.ReactNode;
     title: string;
+    actions?: React.ReactNode;
 }
 
-export function AdminLayout({ children, title }: AdminLayoutProps) {
+export function AdminLayout({ children, title, actions }: AdminLayoutProps) {
     const navigate = useNavigate();
     const location = useLocation();
     const { theme } = useTheme();
@@ -52,10 +53,10 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                                     key={item.path}
                                     onClick={() => navigate(item.path)}
                                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition ${active
-                                            ? 'bg-amber-500/10 text-amber-600 hover:bg-amber-500/20'
-                                            : isLight
-                                                ? 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                                                : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                                        ? 'bg-amber-500/10 text-amber-600 hover:bg-amber-500/20'
+                                        : isLight
+                                            ? 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                                            : 'text-gray-400 hover:bg-white/5 hover:text-white'
                                         }`}
                                 >
                                     <Icon className="w-5 h-5" />
@@ -68,7 +69,10 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
 
                 {/* Main Content */}
                 <main className="flex-1 p-8">
-                    <h2 className={`text-3xl font-bold mb-8 ${isLight ? 'text-gray-900' : 'text-white'}`}>{title}</h2>
+                    <div className="flex justify-between items-center mb-8">
+                        {title && <h2 className={`text-3xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{title}</h2>}
+                        {actions && <div>{actions}</div>}
+                    </div>
                     {children}
                 </main>
             </div>

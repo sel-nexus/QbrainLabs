@@ -8,6 +8,7 @@ import { ChallengeForm } from './ChallengeForm';
 import { ChallengeCardDetail } from './ChallengeCardDetail';
 import { useTheme } from '../../context/ThemeContext';
 import { toast } from 'sonner';
+import { Modal } from '../ui/Modal';
 
 interface ChallengeManagerProps {
   workshopId: string;
@@ -117,22 +118,24 @@ export function ChallengeManager({ workshopId, isFacilitator }: ChallengeManager
         )}
       </div>
 
-      {showForm && (
-        <div className="mb-6">
-          <ChallengeForm
-            challenge={editingChallenge}
-            onSubmit={editingChallenge ? handleUpdate : handleCreate}
-            onCancel={handleFormCancel}
-          />
-        </div>
-      )}
+      <Modal
+        isOpen={showForm}
+        onClose={handleFormCancel}
+        title={editingChallenge ? 'Edit Challenge Card' : 'Create Challenge Card'}
+        size="large"
+      >
+        <ChallengeForm
+          challenge={editingChallenge}
+          onSubmit={editingChallenge ? handleUpdate : handleCreate}
+          onCancel={handleFormCancel}
+        />
+      </Modal>
 
       {challenges.length === 0 ? (
-        <div className={`text-center py-12 border rounded-xl ${
-          theme === 'light' 
-            ? 'bg-gray-50 border-gray-200' 
-            : 'bg-surface-800/50 border-white/10'
-        }`}>
+        <div className={`text-center py-12 border rounded-xl ${theme === 'light'
+          ? 'bg-gray-50 border-gray-200'
+          : 'bg-surface-800/50 border-white/10'
+          }`}>
           <p className="contrast-muted mb-4">No challenge cards yet</p>
           {isFacilitator && (
             <Button onClick={() => setShowForm(true)}>

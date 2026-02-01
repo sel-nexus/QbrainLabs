@@ -14,15 +14,28 @@ import string
 from app.core.database import get_db
 from app.middleware.admin_auth import require_admin
 from app.models.models import User, Workshop, Participant, UseCase, Vote, WorkshopStatus
+from app.models.rbac import RoleAuditLog, FacilitatorAccessRequest, WorkshopFacilitator
+from app.models.survey import Survey
+from app.models.templates import WorkshopTemplate
+from app.models.organization import OrganizationInvitation
+from app.models.subscription import FeatureFlagOverride
+from app.models.settings import SystemSetting, SettingsAuditLog
+from app.models.rag_feedback import AIFeedback, RAGDocument, PromptTemplate
+from app.models.marketplace import MarketplaceTemplate, TemplateReview, TemplateDownload, TemplateFavorite, TemplateCollection
+from app.models.feedback import Feedback, OnboardingProgress, HelpArticle, UserTourProgress
+from app.models.challenge import ChallengeCard
+from app.models.analytics import CustomDashboard, GeneratedReport
 from app.schemas.admin import (
     WorkshopListItem,
     SystemStats,
     UserListItem,
     UserCreate,
     WorkshopStatusUpdate,
-    UserUpdateByAdmin
+    UserUpdateByAdmin,
+    UserDeletionImpact
 )
 from app.api.auth import hash_password
+from sqlalchemy import update, delete
 
 router = APIRouter(prefix="/api/admin", tags=["admin"])
 
@@ -298,6 +311,111 @@ async def create_user(
     )
 
 
+@router.get("/users/{user_id}/impact", response_model=UserDeletionImpact)
+async def check_user_deletion_impact(
+    user_id: str,
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Check impact of deleting a user by counting created resources
+    and checking for recent activity.
+    """
+    # Verify user exists
+    result = await db.execute(select(User).where(User.id == user_id))
+    user = result.scalars().first()
+    
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # 1. Count Resources
+    # Workshops
+    res = await db.execute(
+        select(func.count(Workshop.id)).where(Workshop.facilitator_id == user.id)
+    )
+    workshops_owned = res.scalar() or 0
+
+    # Surveys
+    res = await db.execute(
+        select(func.count(Survey.id)).where(Survey.facilitator_id == user.id)
+    )
+    surveys_created = res.scalar() or 0
+
+    # Templates (Workshop)
+    res = await db.execute(
+        select(func.count(WorkshopTemplate.id)).where(WorkshopTemplate.author_id == user.id)
+    )
+    templates_created = res.scalar() or 0
+
+    # Marketplace Templates
+    res = await db.execute(
+        select(func.count(MarketplaceTemplate.id)).where(MarketplaceTemplate.author_id == user.id)
+    )
+    marketplace_templates = res.scalar() or 0
+
+    # Challenges
+    res = await db.execute(
+        select(func.count(ChallengeCard.id)).where(ChallengeCard.created_by == user.id)
+    )
+    challenges_created = res.scalar() or 0
+
+    # 2. Check Recent Activity (Last 30 days)
+    # We check the most recent creation timestamp across resources
+    last_active_at = None
+    has_recent = False
+    now = datetime.utcnow()
+    month_ago = now - timedelta(days=30)
+
+    # Helper to check latest date
+    async def get_latest_date(model, user_field):
+        r = await db.execute(
+            select(func.max(model.created_at)).where(getattr(model, user_field) == user.id)
+        )
+        return r.scalar()
+
+    dates = []
+    dates.append(await get_latest_date(Workshop, 'facilitator_id'))
+    dates.append(await get_latest_date(Survey, 'facilitator_id'))
+    dates.append(await get_latest_date(WorkshopTemplate, 'author_id'))
+    dates.append(await get_latest_date(MarketplaceTemplate, 'author_id'))
+    dates.append(await get_latest_date(ChallengeCard, 'created_by'))
+    
+    # Filter out None and find max
+    valid_dates = [d for d in dates if d is not None]
+    if valid_dates:
+        last_active_at = max(valid_dates)
+        if last_active_at >= month_ago:
+            has_recent = True
+
+    # Construct warning message
+    warnings = []
+    if workshops_owned > 0:
+        warnings.append(f"{workshops_owned} workshops")
+    if surveys_created > 0:
+        warnings.append(f"{surveys_created} surveys")
+    if templates_created > 0 or marketplace_templates > 0:
+        warnings.append(f"{templates_created + marketplace_templates} templates")
+    if challenges_created > 0:
+        warnings.append(f"{challenges_created} challenges")
+    
+    warning_msg = None
+    if warnings:
+        warning_msg = f"This user owns {', '.join(warnings)}. All resources will be reassigned to you or deleted."
+    elif has_recent:
+        warning_msg = "User has been active recently."
+        
+    return UserDeletionImpact(
+        workshops_owned=workshops_owned,
+        surveys_created=surveys_created,
+        templates_created=templates_created,
+        marketplace_templates=marketplace_templates,
+        challenges_created=challenges_created,
+        last_active_at=last_active_at,
+        has_recent_activity=has_recent,
+        warning_message=warning_msg
+    )
+
+
 @router.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def deactivate_user(
     user_id: str,
@@ -305,25 +423,134 @@ async def deactivate_user(
     db: AsyncSession = Depends(get_db)
 ):
     """
-    Deactivate a user account
-    Note: We don't actually delete to preserve data integrity
-    Instead, we could add an is_active field (future enhancement)
+    Delete a user account securely.
+    Handles all FK constraints by identifying all relationships and resolving them
+    via reassignment (to admin), nullification, or deletion of dependent records.
     """
-    result = await db.execute(select(User).where(User.id == user_id))
-    user = result.scalars().first()
-    
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-    
-    # Prevent admin from deleting themselves
-    if str(user.id) == str(admin.id):
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Cannot deactivate your own account"
+    try:
+        result = await db.execute(select(User).where(User.id == user_id))
+        user = result.scalars().first()
+        
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        
+        # Prevent admin from deleting themselves
+        if str(user.id) == str(admin.id):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Cannot deactivate your own account"
+            )
+        
+        # === 1. Reassign ownership (to Admin) ===
+        # Workshops
+        result = await db.execute(select(Workshop).where(Workshop.facilitator_id == user.id))
+        owned_workshops = result.scalars().all()
+        for workshop in owned_workshops:
+            workshop.facilitator_id = admin.id
+            workshop.status = WorkshopStatus.DELETED
+        
+        # Surveys
+        await db.execute(
+            update(Survey)
+            .where(Survey.facilitator_id == user.id)
+            .values(facilitator_id=admin.id)
         )
-    
-    # For now, just remove the user (in production, use soft delete with is_active field)
-    await db.delete(user)
-    await db.commit()
-    
-    return None
+
+        # WorkshopTemplates
+        await db.execute(
+            update(WorkshopTemplate)
+            .where(WorkshopTemplate.author_id == user.id)
+            .values(author_id=admin.id)
+        )
+
+        # MarketplaceTemplates
+        await db.execute(
+            update(MarketplaceTemplate)
+            .where(MarketplaceTemplate.author_id == user.id)
+            .values(author_id=admin.id)
+        )
+
+        # ChallengeCards (Reassign to Admin)
+        await db.execute(
+            update(ChallengeCard)
+            .where(ChallengeCard.created_by == user.id)
+            .values(created_by=admin.id)
+        )
+
+        # OrganizationInvitations
+        await db.execute(
+            update(OrganizationInvitation)
+            .where(OrganizationInvitation.invited_by_id == user.id)
+            .values(invited_by_id=admin.id)
+        )
+
+        # WorkshopFacilitator (assigned_by)
+        await db.execute(
+            update(WorkshopFacilitator)
+            .where(WorkshopFacilitator.assigned_by == user.id)
+            .values(assigned_by=admin.id)
+        )
+
+        # === 2. Nullify references (Set to NULL) ===
+        tables_to_nullify = [
+            (RoleAuditLog, 'user_id'),
+            (RoleAuditLog, 'performed_by'),
+            (FacilitatorAccessRequest, 'reviewed_by'),
+            (User, 'disabled_by'),
+            (FeatureFlagOverride, 'created_by'),
+            (SystemSetting, 'updated_by'),
+            (SettingsAuditLog, 'changed_by'),
+            (AIFeedback, 'user_id'),
+            (RAGDocument, 'created_by'),
+            (PromptTemplate, 'created_by'),
+            (TemplateCollection, 'curator_id'),
+            (Feedback, 'assigned_to'),
+            (HelpArticle, 'author_id'),
+            (GeneratedReport, 'created_by')
+        ]
+
+        for model, field in tables_to_nullify:
+            await db.execute(
+                update(model)
+                .where(getattr(model, field) == user.id)
+                .values({field: None})
+            )
+
+        # === 3. Delete dependent records (Cascade/Cleanup) ===
+        # OnboardingProgress
+        await db.execute(delete(OnboardingProgress).where(OnboardingProgress.user_id == user.id))
+        
+        # UserTourProgress
+        await db.execute(delete(UserTourProgress).where(UserTourProgress.user_id == user.id))
+        
+        # TemplateFavorite
+        await db.execute(delete(TemplateFavorite).where(TemplateFavorite.user_id == user.id))
+        
+        # TemplateDownload
+        await db.execute(delete(TemplateDownload).where(TemplateDownload.user_id == user.id))
+        
+        # TemplateReview
+        await db.execute(delete(TemplateReview).where(TemplateReview.user_id == user.id))
+        
+        # CustomDashboard
+        await db.execute(delete(CustomDashboard).where(CustomDashboard.user_id == user.id))
+        
+        # Feedback (submitted by user)
+        # We delete user feedback to respect "Right to be Forgotten" in this context,
+        # or we could keep it anonymized. Deleting is safer to avoid integrity issues.
+        await db.execute(delete(Feedback).where(Feedback.user_id == user.id))
+
+        # === 4. Delete the User ===
+        await db.delete(user)
+        await db.commit()
+        
+        return None
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        await db.rollback()
+        import traceback
+        print(f"Error deleting user: {str(e)}")
+        print(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=f"Failed to delete user: {str(e)}")

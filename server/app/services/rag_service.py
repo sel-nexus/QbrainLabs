@@ -564,5 +564,97 @@ class RAGService:
                 "error": str(e)
             }
 
+    async def analyze_document_context(self, text: str) -> List[Dict[str, Any]]:
+        """
+        Analyzes document text to extract potential challenge cards.
+        Returns a list of dictionaries with title, description, and success_criteria.
+        """
+        if self.mock_mode:
+            # Mock extracted challenges
+            return [
+                {
+                    "title": "Extracted Challenge 1",
+                    "challenge_description": f"Based on the document: {text[:50]}...",
+                    "success_criteria": ["Criterion 1", "Criterion 2"],
+                    "is_mock": True
+                }
+            ]
+
+        from langchain.prompts import ChatPromptTemplate
+        
+        prompt = ChatPromptTemplate.from_template("""
+        You are an expert Business Analyst. 
+        Analyze the following document text and identify key business or technology challenges.
+        
+        Document Text:
+        "{text}"
+        
+        Task:
+        Extract one or more 'Challenge Cards' from this text.
+        For each challenge, provide:
+        1. A concise Title (max 100 chars).
+        2. A detailed Description (max 2000 chars, describing the problem).
+        3. A list of Success Criteria (measurable outcomes, max 10 items).
+
+        Return valid JSON as a list of objects:
+        [
+            {{
+                "title": "...",
+                "challenge_description": "...",
+                "success_criteria": ["...", "..."]
+            }}
+        ]
+        """)
+        
+        chain = prompt | self.llm
+        response = await chain.ainvoke({"text": text})
+        
+        try:
+            result = json.loads(response.content)
+            # Ensure it's a list
+            if isinstance(result, dict):
+                result = [result]
+            return result
+        except Exception as e:
+            print(f"Failed to parse LLM response for document analysis: {e}")
+            return []
+
+
+    async def extract_info_from_image(self, image_bytes: bytes, mime_type: str) -> str:
+        """
+        Extracts information/text from an image using LLM Vision capabilities.
+        """
+        if self.mock_mode:
+            return "[MOCK] Extracted text from image: This appears to be a diagram showing AI architecture."
+
+        try:
+            import base64
+            from langchain.schema.messages import HumanMessage
+            
+            # Encode image
+            base64_image = base64.b64encode(image_bytes).decode('utf-8')
+            
+            message = HumanMessage(
+                content=[
+                    {
+                        "type": "text", 
+                        "text": "Please analyze this image and provide a detailed description of its content. If it contains text, please transcribe it. If it contains diagrams, describe the structure and components."
+                    },
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:{mime_type};base64,{base64_image}"
+                        }
+                    }
+                ]
+            )
+            
+            response = await self.llm.ainvoke([message])
+            return response.content
+            
+        except Exception as e:
+            print(f"Error extracting info from image: {e}")
+            return f"[ERROR] Failed to analyze image: {str(e)}"
+
 
 rag_service = RAGService()

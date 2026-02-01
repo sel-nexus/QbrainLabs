@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 import { AdminLayout } from '../components/AdminLayout';
+import { ConfirmationModal } from '../components/ConfirmationModal';
 import { useTheme } from '../context/ThemeContext';
 import {
   CheckCircle,
@@ -69,6 +70,13 @@ export function AdminUsers() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('');
   const [actionMenuOpen, setActionMenuOpen] = useState<string | null>(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<string | null>(null);
+
+  // Deletion impact state
+  const [deleteMessage, setDeleteMessage] = useState('');
+  const [isCheckingImpact, setIsCheckingImpact] = useState(false);
+
   const isLight = theme === 'light';
 
   const fetchFacilitators = useCallback(async () => {
@@ -207,6 +215,70 @@ export function AdminUsers() {
     setActionMenuOpen(null);
   };
 
+  const handleDeleteClick = async (facilitatorId: string) => {
+    setUserToDelete(facilitatorId);
+    setActionMenuOpen(null);
+
+    const defaultMsg = "Are you sure you want to delete this user? This action cannot be undone and will remove all associated data, including the user's workshops.";
+    setDeleteMessage(defaultMsg);
+
+    setIsCheckingImpact(true);
+    try {
+      const response = await fetch(
+        `${API_BASE}/api/admin/users/${facilitatorId}/impact`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const impact = await response.json();
+        if (impact.warning_message) {
+          setDeleteMessage(`${impact.warning_message} Are you sure you want to proceed?`);
+        } else if (impact.has_recent_activity) {
+          setDeleteMessage(`This user has been active recently. ${defaultMsg}`);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to check impact", error);
+    } finally {
+      setIsCheckingImpact(false);
+      setDeleteModalOpen(true);
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!userToDelete) return;
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/api/admin/users/${userToDelete}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.detail || 'Failed to delete user');
+      }
+
+      toast.success('User deleted successfully');
+      setFacilitators(prev => prev.filter(f => f.id !== userToDelete));
+      fetchFacilitators(); // Refresh stats
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : 'Failed to delete user');
+      console.error(error);
+    }
+    setDeleteModalOpen(false);
+    setUserToDelete(null);
+  };
+
   return (
     <AdminLayout title="Users">
       {/* Stats Cards */}
@@ -341,6 +413,16 @@ export function AdminUsers() {
                                 Enable
                               </button>
                             )}
+
+                            <div className={`my-1 border-t ${isLight ? 'border-gray-100' : 'border-white/5'}`} />
+
+                            <button
+                              onClick={() => handleDeleteClick(facilitator.id)}
+                              className={`w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 ${isLight ? 'hover:bg-gray-50' : 'hover:bg-white/5'}`}
+                            >
+                              <UserX className="w-4 h-4" />
+                              Delete User
+                            </button>
                           </div>
                         )}
                       </div>
@@ -352,6 +434,17 @@ export function AdminUsers() {
           </table>
         </div>
       )}
+
+      <ConfirmationModal
+        isOpen={deleteModalOpen}
+        onClose={() => setDeleteModalOpen(false)}
+        onConfirm={handleConfirmDelete}
+        title="Delete User"
+        message={isCheckingImpact ? "Checking user data..." : deleteMessage}
+        confirmText="Delete User"
+        cancelText="Cancel"
+        variant="danger"
+      />
     </AdminLayout>
   );
 }

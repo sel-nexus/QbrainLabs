@@ -149,5 +149,19 @@ export const challengesApi = {
       options
     );
     return response.data;
+  },
+
+  /**
+   * Upload and analyze a file to generate challenge cards
+   */
+  analyzeFile: async (file: File): Promise<ChallengeCardCreate[]> => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await api.post('/ai/analyze-file', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+    return response.data;
   }
 };

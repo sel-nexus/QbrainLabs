@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
-import { X } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
 import { Button } from '../ui/Button';
+import { Upload, Loader2, X } from 'lucide-react';
+import { challengesApi } from '../../lib/api/challenges';
+import { toast } from 'sonner';
 import { Input } from '../ui/Input';
 import type { ChallengeCard, ChallengeCardCreate, ChallengeCardUpdate } from '../../lib/api/challenges';
 import { useTheme } from '../../context/ThemeContext';
@@ -17,7 +19,9 @@ export function ChallengeForm({ challenge, onSubmit, onCancel }: ChallengeFormPr
   const [description, setDescription] = useState('');
   const [successCriteria, setSuccessCriteria] = useState<string[]>(['']);
   const [loading, setLoading] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (challenge) {
@@ -107,26 +111,73 @@ export function ChallengeForm({ challenge, onSubmit, onCancel }: ChallengeFormPr
     setSuccessCriteria(updated);
   };
 
+  const handleFileImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      setAnalyzing(true);
+      const candidates = await challengesApi.analyzeFile(file);
+
+      if (candidates && candidates.length > 0) {
+        // Use the first candidate
+        const candidate = candidates[0];
+        setTitle(candidate.title);
+        setDescription(candidate.challenge_description);
+        setSuccessCriteria(candidate.success_criteria || ['']);
+        toast.success(`Imported content from ${file.name}`);
+
+        if (candidates.length > 1) {
+          toast.info(`Found ${candidates.length} challenges. Using the first one.`);
+        }
+      } else {
+        toast.warning('No challenges identified in the file');
+      }
+    } catch (error) {
+      console.error('File analysis error:', error);
+      toast.error('Failed to analyze file');
+    } finally {
+      setAnalyzing(false);
+      // Reset input
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
   return (
-    <div className={`backdrop-blur border rounded-xl p-6 max-w-2xl mx-auto ${
-      theme === 'light' 
-        ? 'bg-white border-gray-200' 
-        : 'bg-surface-800/95 border-white/10'
-    }`}>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold theme-text-primary">
-          {challenge ? 'Edit Challenge Card' : 'Create Challenge Card'}
-        </h2>
-        <Button variant="ghost" onClick={onCancel} className="px-3 py-2">
-          <X className="w-5 h-5" />
-        </Button>
-      </div>
+    <div className={`p-1 ${theme === 'light'
+      ? ''
+      : ''
+      }`}>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label className="block text-sm font-medium theme-text-secondary mb-2">
-            Title <span className="text-red-400">*</span>
-          </label>
+          <div className="flex justify-between items-center mb-2">
+            <label className="block text-sm font-medium theme-text-secondary">
+              Title <span className="text-red-400">*</span>
+            </label>
+            <div>
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                accept=".docx,.pptx,.pdf,.md,.txt,.jpg,.jpeg,.png"
+                onChange={handleFileImport}
+              />
+              <Button
+                type="button"
+                variant="secondary"
+                size="sm"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={analyzing || loading}
+                className="flex items-center gap-2 text-xs"
+              >
+                {analyzing ? <Loader2 className="w-3 h-3 animate-spin" /> : <Upload className="w-3 h-3" />}
+                Import from File
+              </Button>
+            </div>
+          </div>
           <Input
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -150,11 +201,10 @@ export function ChallengeForm({ challenge, onSubmit, onCancel }: ChallengeFormPr
             placeholder="Describe the high-value business or technology problem..."
             rows={6}
             maxLength={2000}
-            className={`w-full px-4 py-2 border rounded-lg theme-text-primary focus:outline-none focus:ring-2 focus:ring-brand-violet ${
-              theme === 'light' 
-                ? 'bg-gray-50 border-gray-200 placeholder-gray-400' 
-                : 'bg-surface-700 border-white/10 placeholder-gray-500'
-            } ${errors.description ? 'border-red-500' : ''}`}
+            className={`w-full px-4 py-2 border rounded-lg theme-text-primary focus:outline-none focus:ring-2 focus:ring-brand-violet ${theme === 'light'
+              ? 'bg-gray-50 border-gray-200 placeholder-gray-400'
+              : 'bg-surface-700 border-white/10 placeholder-gray-500'
+              } ${errors.description ? 'border-red-500' : ''}`}
           />
           <div className="flex justify-between mt-1">
             {errors.description && (
@@ -211,9 +261,8 @@ export function ChallengeForm({ challenge, onSubmit, onCancel }: ChallengeFormPr
           )}
         </div>
 
-        <div className={`flex gap-3 justify-end pt-4 border-t ${
-          theme === 'light' ? 'border-gray-200' : 'border-white/10'
-        }`}>
+        <div className={`flex gap-3 justify-end pt-4 border-t ${theme === 'light' ? 'border-gray-200' : 'border-white/10'
+          }`}>
           <Button type="button" variant="ghost" onClick={onCancel} disabled={loading}>
             Cancel
           </Button>

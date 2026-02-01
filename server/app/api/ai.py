@@ -11,7 +11,11 @@ from fastapi import Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from app.core.database import get_db
+from app.core.database import get_db
 from app.models.models import UseCase
+from fastapi import UploadFile, File
+from app.services.file_service import file_service
+from typing import List, Dict, Any
 
 router = APIRouter()
 
@@ -109,5 +113,27 @@ async def analyze_technical_feasibility(request: TechnicalAnalysisRequest):
             complexity_score=result.get("complexity_score", 5),
             is_mock=result.get("is_mock", False)
         )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/analyze-file", response_model=List[Dict[str, Any]])
+async def analyze_file_content(file: UploadFile = File(...)):
+    """
+    Upload a file (DOCX, PPTX, PDF, MD, TXT) and extract potential challenge cards.
+    """
+    try:
+        # 1. Extract text from file
+        text = await file_service.extract_text_from_file(file)
+        
+        if not text:
+            raise HTTPException(status_code=400, detail="Could not extract text from file")
+            
+        # 2. Analyze using RAG/LLM
+        challenges = await rag_service.analyze_document_context(text)
+        
+        return challenges
+        
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

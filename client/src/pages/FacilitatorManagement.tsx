@@ -16,6 +16,7 @@ import {
   ChevronDown,
   X
 } from 'lucide-react';
+import { ConfirmationModal } from '../components/ConfirmationModal';
 
 import { API_BASE_URL } from '../lib/config';
 
@@ -83,6 +84,10 @@ export function FacilitatorManagement() {
   const [statusFilter, setStatusFilter] = useState<string>('');
   const [actionMenuOpen, setActionMenuOpen] = useState<string | null>(null);
 
+  // Delete modal state
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [facilitatorToDelete, setFacilitatorToDelete] = useState<Facilitator | null>(null);
+
   // Workshop assignment state
   const [allWorkshops, setAllWorkshops] = useState<Workshop[]>([]);
   const [facilitatorWorkshops, setFacilitatorWorkshops] = useState<FacilitatorWorkshops>({});
@@ -91,6 +96,10 @@ export function FacilitatorManagement() {
   const [dropdownPosition, setDropdownPosition] = useState<'bottom' | 'top'>('bottom');
   const dropdownRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<{ [key: string]: HTMLButtonElement | null }>({});
+
+  // Deletion impact state
+  const [deleteMessage, setDeleteMessage] = useState('');
+  const [isCheckingImpact, setIsCheckingImpact] = useState(false);
 
   // Fetch all workshops for dropdown
   const fetchAllWorkshops = useCallback(async () => {
@@ -353,6 +362,66 @@ export function FacilitatorManagement() {
     setActionMenuOpen(null);
   };
 
+  const handleDelete = async (facilitator: Facilitator) => {
+    setFacilitatorToDelete(facilitator);
+    setActionMenuOpen(null);
+
+    const defaultMsg = `Are you sure you want to delete ${facilitator.full_name || 'this facilitator'}? This action cannot be undone and will remove their access to the system.`;
+    setDeleteMessage(defaultMsg);
+
+    setIsCheckingImpact(true);
+    try {
+      const response = await fetch(
+        `${API_BASE}/api/admin/users/${facilitator.id}/impact`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.ok) {
+        const impact = await response.json();
+        if (impact.warning_message) {
+          setDeleteMessage(`${impact.warning_message} Are you sure you want to proceed?`);
+        } else if (impact.has_recent_activity) {
+          setDeleteMessage(`This user has been active recently. ${defaultMsg}`);
+        }
+      }
+    } catch (error) {
+      console.error("Failed to check impact", error);
+    } finally {
+      setIsCheckingImpact(false);
+      setIsDeleteModalOpen(true);
+    }
+  };
+
+  const confirmDelete = async () => {
+    if (!facilitatorToDelete) return;
+
+    try {
+      const response = await fetch(
+        `${API_BASE}/api/admin/users/${facilitatorToDelete.id}`,
+        {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) throw new Error('Failed to delete facilitator');
+
+      toast.success('Facilitator deleted successfully');
+      fetchFacilitators();
+    } catch (error) {
+      toast.error('Failed to delete facilitator');
+      console.error(error);
+    }
+    setIsDeleteModalOpen(false);
+    setFacilitatorToDelete(null);
+  };
+
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'Never';
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -363,8 +432,8 @@ export function FacilitatorManagement() {
   };
 
   return (
-    <AdminLayout title="Facilitator Management">
-      <div className="max-w-7xl mx-auto">
+    <AdminLayout title="">
+      <div className="w-full">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold theme-text-primary flex items-center gap-3">
@@ -542,7 +611,7 @@ export function FacilitatorManagement() {
                                 const spaceBelow = window.innerHeight - rect.bottom;
                                 const spaceAbove = rect.top;
                                 const dropdownHeight = 300; // max-h-60 is approximately 240px + padding
-                                
+
                                 // Position dropdown upward if not enough space below
                                 setDropdownPosition(spaceBelow < dropdownHeight && spaceAbove > spaceBelow ? 'top' : 'bottom');
                               }
@@ -564,9 +633,8 @@ export function FacilitatorManagement() {
                           </button>
 
                           {workshopDropdownOpen === facilitator.id && (
-                            <div className={`absolute z-20 w-72 rounded-lg shadow-lg border max-h-60 overflow-y-auto theme-card ${
-                              dropdownPosition === 'top' ? 'bottom-full mb-1' : 'mt-1'
-                            }`}>
+                            <div className={`absolute z-20 w-72 rounded-lg shadow-lg border max-h-60 overflow-y-auto theme-card ${dropdownPosition === 'top' ? 'bottom-full mb-1' : 'mt-1'
+                              }`}>
                               <div className="p-2 border-b" style={{ borderColor: 'var(--theme-border-color)' }}>
                                 <p className="text-xs contrast-muted font-medium">
                                   Assign Workshops to {facilitator.full_name || 'Facilitator'}
@@ -694,6 +762,15 @@ export function FacilitatorManagement() {
                                 Enable Account
                               </button>
                             )}
+                            <div className="border-t my-1" style={{ borderColor: 'var(--theme-border-color)' }}></div>
+                            <button
+                              onClick={() => handleDelete(facilitator)}
+                              className="w-full px-4 py-2 text-left text-sm flex items-center gap-2 theme-hover"
+                              style={{ color: 'var(--theme-danger-text)' }}
+                            >
+                              <UserX className="w-4 h-4" />
+                              Delete
+                            </button>
                           </div>
                         )}
                       </td>
@@ -704,6 +781,16 @@ export function FacilitatorManagement() {
             </table>
           )}
         </div>
+
+        <ConfirmationModal
+          isOpen={isDeleteModalOpen}
+          onClose={() => setIsDeleteModalOpen(false)}
+          onConfirm={confirmDelete}
+          title="Delete Facilitator"
+          message={isCheckingImpact ? "Checking user data..." : deleteMessage}
+          confirmText="Delete"
+          variant="danger"
+        />
       </div>
     </AdminLayout>
   );

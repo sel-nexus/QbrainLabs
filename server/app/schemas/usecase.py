@@ -22,3 +22,13 @@ class UseCaseResponse(BaseModel):
     
     class Config:
         from_attributes = True
+
+
+class UseCaseUpdate(BaseModel):
+    """Schema for updating a use case"""
+    title: str  # Required
+    description: str  # Required
+    proposed_solution: Optional[str] = ""
+    kpi: Optional[str] = ""
+    target_user: Optional[str] = ""
+    category: Optional[str] = ""

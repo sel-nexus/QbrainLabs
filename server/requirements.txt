@@ -42,6 +42,9 @@ langchain==0.0.339
 langchain-openai==0.0.2
 chromadb==0.4.18
 tiktoken>=0.5.2,<0.6.0
+python-docx>=0.8.11
+python-pptx>=0.6.21
+pypdf>=3.17.0
 
 # Financial Calculations
 numpy-financial>=1.0.0

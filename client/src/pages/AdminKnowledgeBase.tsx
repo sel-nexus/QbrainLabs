@@ -59,6 +59,9 @@ export function AdminKnowledgeBase() {
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedIndustry, setSelectedIndustry] = useState<IndustryDetail | null>(null);
     const [selectedUseCase, setSelectedUseCase] = useState<UseCaseTemplate | null>(null);
+    const [showUploadModal, setShowUploadModal] = useState(false);
+    const [uploading, setUploading] = useState(false);
+    const [uploadFile, setUploadFile] = useState<File | null>(null);
     const isLight = theme === 'light';
 
     useEffect(() => {
@@ -97,6 +100,46 @@ export function AdminKnowledgeBase() {
         } catch (error) {
             console.error('Error:', error);
             toast.error('Failed to load industry details');
+        }
+    };
+
+    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files[0]) {
+            setUploadFile(e.target.files[0]);
+        }
+    };
+
+    const handleUpload = async () => {
+        if (!uploadFile) return;
+
+        setUploading(true);
+        const formData = new FormData();
+        formData.append('file', uploadFile);
+
+        try {
+            const authToken = localStorage.getItem('hm_auth_token');
+            const response = await fetch(`${API_BASE}/api/knowledge-base/documents/upload`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                },
+                body: formData
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.detail || 'Upload failed');
+            }
+
+            toast.success(`Successfully imported ${uploadFile.name}`);
+            setUploadFile(null);
+            setShowUploadModal(false);
+            fetchOverview(); // Refresh stats
+        } catch (error) {
+            console.error('Upload error:', error);
+            toast.error(error instanceof Error ? error.message : 'Failed to uploading document');
+        } finally {
+            setUploading(false);
         }
     };
 
@@ -253,7 +296,15 @@ export function AdminKnowledgeBase() {
 
     // Show overview
     return (
-        <AdminLayout title="AI Knowledge Base">
+        <AdminLayout title="AI Knowledge Base" actions={
+            <button
+                onClick={() => setShowUploadModal(true)}
+                className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg flex items-center gap-2 hover:opacity-90 transition"
+            >
+                <BookOpen className="w-4 h-4" />
+                Import Knowledge
+            </button>
+        }>
             {/* Search */}
             <div className="relative mb-8">
                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -311,6 +362,87 @@ export function AdminKnowledgeBase() {
                     );
                 })}
             </div>
+
+            {/* Upload Modal */}
+            {showUploadModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                    <div className={`relative w-full max-w-lg p-6 rounded-2xl shadow-xl ${isLight ? 'bg-white' : 'bg-surface-800 border border-white/10'}`}>
+                        <button
+                            onClick={() => setShowUploadModal(false)}
+                            className={`absolute top-4 right-4 p-1 rounded-full hover:bg-black/5 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+
+                        <h3 className={`text-xl font-bold mb-4 ${isLight ? 'text-gray-900' : 'text-white'}`}>Import Knowledge</h3>
+                        <p className={`mb-6 text-sm ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
+                            Upload PDF, PPT, Word documents, or Images (JPG, PNG) to enhance the AI knowledge base.
+                        </p>
+
+                        <div className={`border-2 border-dashed rounded-xl p-8 mb-6 flex flex-col items-center justify-center text-center transition-colors ${uploadFile ? 'border-purple-500 bg-purple-50/10' :
+                                isLight ? 'border-gray-300 hover:border-purple-400' : 'border-white/10 hover:border-purple-500/50'
+                            }`}>
+                            <input
+                                type="file"
+                                id="file-upload"
+                                className="hidden"
+                                onChange={handleFileSelect}
+                                accept=".pdf,.docx,.doc,.pptx,.ppt,.txt,.md,.jpg,.jpeg,.png"
+                            />
+
+                            {uploadFile ? (
+                                <div className="flex flex-col items-center">
+                                    <div className="w-12 h-12 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center mb-3">
+                                        <BookOpen className="w-6 h-6" />
+                                    </div>
+                                    <p className={`font-medium mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>{uploadFile.name}</p>
+                                    <p className={`text-xs ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{(uploadFile.size / 1024 / 1024).toFixed(2)} MB</p>
+                                    <button
+                                        onClick={() => setUploadFile(null)}
+                                        className="mt-3 text-xs text-red-500 hover:underline"
+                                    >
+                                        Remove file
+                                    </button>
+                                </div>
+                            ) : (
+                                <label htmlFor="file-upload" className="flex flex-col items-center cursor-pointer w-full h-full">
+                                    <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 ${isLight ? 'bg-gray-100 text-gray-500' : 'bg-white/5 text-gray-400'}`}>
+                                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                                    </div>
+                                    <p className={`font-medium mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>Click to upload or drag and drop</p>
+                                    <p className={`text-xs ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>PDF, PPTX, DOCX, JPG, PNG (max 10MB)</p>
+                                </label>
+                            )}
+                        </div>
+
+                        <div className="flex justify-end gap-3">
+                            <button
+                                onClick={() => setShowUploadModal(false)}
+                                className={`px-4 py-2 rounded-lg text-sm font-medium ${isLight ? 'text-gray-700 hover:bg-gray-100' : 'text-gray-300 hover:bg-white/5'}`}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleUpload}
+                                disabled={!uploadFile || uploading}
+                                className={`px-4 py-2 rounded-lg text-sm font-medium text-white flex items-center gap-2 ${!uploadFile || uploading
+                                        ? 'bg-gray-400 cursor-not-allowed'
+                                        : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90'
+                                    }`}
+                            >
+                                {uploading ? (
+                                    <>
+                                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                        Processing...
+                                    </>
+                                ) : (
+                                    'Import Document'
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </AdminLayout>
     );
 }

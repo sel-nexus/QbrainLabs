@@ -65,3 +65,16 @@ class UserUpdateByAdmin(BaseModel):
     full_name: Optional[str] = None
     is_admin: Optional[bool] = None
     is_active: Optional[bool] = None
+
+
+class UserDeletionImpact(BaseModel):
+    """Impact analysis for deleting a user"""
+    workshops_owned: int
+    surveys_created: int
+    templates_created: int
+    marketplace_templates: int
+    challenges_created: int
+    last_active_at: Optional[datetime] = None
+    has_recent_activity: bool = False  # E.g., in last 30 days
+    warning_message: Optional[str] = None
+
