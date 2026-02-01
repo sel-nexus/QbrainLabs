@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useTheme } from '../../context/ThemeContext';
+import { API_BASE_URL } from '../../lib/config';
 
 interface Survey {
     id: string;
@@ -51,7 +52,7 @@ export function SurveyList({ workshopId, onCreateSurvey, onEditSurvey, onViewRes
     const fetchSurveys = async () => {
         try {
             const authToken = localStorage.getItem('hm_auth_token');
-            const response = await fetch(`http://localhost:8000/api/surveys/workshop/${workshopId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/surveys/workshop/${workshopId}`, {
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });
             if (response.ok) {
@@ -68,11 +69,11 @@ export function SurveyList({ workshopId, onCreateSurvey, onEditSurvey, onViewRes
     const handleStatusChange = async (surveyId: string, action: 'activate' | 'pause' | 'resume' | 'close') => {
         try {
             const authToken = localStorage.getItem('hm_auth_token');
-            const response = await fetch(`http://localhost:8000/api/surveys/${surveyId}/${action}`, {
+            const response = await fetch(`${API_BASE_URL}/api/surveys/${surveyId}/${action}`, {
                 method: 'POST',
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });
-            
+
             if (response.ok) {
                 toast.success(`Survey ${action}d successfully`);
                 fetchSurveys();
@@ -87,14 +88,14 @@ export function SurveyList({ workshopId, onCreateSurvey, onEditSurvey, onViewRes
 
     const handleDelete = async (surveyId: string) => {
         if (!confirm('Are you sure you want to delete this survey?')) return;
-        
+
         try {
             const authToken = localStorage.getItem('hm_auth_token');
-            const response = await fetch(`http://localhost:8000/api/surveys/${surveyId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/surveys/${surveyId}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });
-            
+
             if (response.ok) {
                 toast.success('Survey deleted');
                 fetchSurveys();
@@ -138,16 +139,14 @@ export function SurveyList({ workshopId, onCreateSurvey, onEditSurvey, onViewRes
 
             {surveys.length === 0 ? (
                 <div
-                    className={`text-center py-12 border border-dashed rounded-xl ${
-                        theme === 'light'
+                    className={`text-center py-12 border border-dashed rounded-xl ${theme === 'light'
                             ? 'border-gray-200 bg-gray-50'
                             : 'border-white/10'
-                    }`}
+                        }`}
                 >
                     <FileText
-                        className={`w-12 h-12 mx-auto mb-3 ${
-                            theme === 'light' ? 'text-gray-400' : 'text-gray-500'
-                        }`}
+                        className={`w-12 h-12 mx-auto mb-3 ${theme === 'light' ? 'text-gray-400' : 'text-gray-500'
+                            }`}
                     />
                     <p className={`${theme === 'light' ? 'text-gray-600' : 'text-gray-400'} mb-4`}>
                         No surveys yet
@@ -165,11 +164,10 @@ export function SurveyList({ workshopId, onCreateSurvey, onEditSurvey, onViewRes
                         return (
                             <div
                                 key={survey.id}
-                                className={`rounded-xl border p-4 transition ${
-                                    theme === 'light'
+                                className={`rounded-xl border p-4 transition ${theme === 'light'
                                         ? 'bg-white border-gray-200 hover:border-purple-500/30'
                                         : 'bg-surface-800 border-white/10 hover:border-purple-500/30'
-                                }`}
+                                    }`}
                             >
                                 <div className="flex items-start justify-between">
                                     <div className="flex-1">

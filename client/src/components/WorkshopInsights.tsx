@@ -9,6 +9,7 @@ import {
     Loader2
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { API_BASE_URL } from '../lib/config';
 
 interface WorkshopInsight {
     workshop_id: string;
@@ -55,7 +56,7 @@ export function WorkshopInsights({ workshopId }: WorkshopInsightsProps) {
             }
 
             const response = await fetch(
-                `http://localhost:8000/api/knowledge-base/workshop/${workshopId}/insights`,
+                `${API_BASE_URL}/api/knowledge-base/workshop/${workshopId}/insights`,
                 { headers: { 'Authorization': `Bearer ${authToken}` } }
             );
 
@@ -115,8 +116,8 @@ export function WorkshopInsights({ workshopId }: WorkshopInsightsProps) {
 
     return (
         <div className={`rounded-xl border overflow-hidden ${theme === 'light'
-                ? 'bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200'
-                : 'bg-gradient-to-r from-purple-900/20 to-pink-900/20 border-purple-500/20'
+            ? 'bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200'
+            : 'bg-gradient-to-r from-purple-900/20 to-pink-900/20 border-purple-500/20'
             }`}>
             {/* Header - Always visible */}
             <button
@@ -206,8 +207,8 @@ export function WorkshopInsights({ workshopId }: WorkshopInsightsProps) {
                                     <div
                                         key={template.id}
                                         className={`rounded-lg p-3 border ${theme === 'light'
-                                                ? 'bg-gray-50 border-gray-200'
-                                                : 'theme-bg-tertiary theme-border'
+                                            ? 'bg-gray-50 border-gray-200'
+                                            : 'theme-bg-tertiary theme-border'
                                             }`}
                                     >
                                         <div className="flex items-start justify-between mb-2">

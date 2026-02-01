@@ -4,7 +4,7 @@
 
 | Field | Value |
 |-------|-------|
-| **Email** | `admin@hotspotmatrix.ai` |
+| **Email** | `admin@qbrainlabs.com` |
 | **Password** | `admin123` |
 | **Role** | Administrator |
 
@@ -17,7 +17,7 @@
 ### 1. First Login
 ```
 URL: http://localhost:5173/facilitator-login
-Email: admin@hotspotmatrix.ai
+Email: admin@qbrainlabs.com
 Password: admin123
 ```
 

@@ -2,23 +2,26 @@
 // Auto-detect API URL based on current hostname for network access
 export const getApiBaseUrl = () => {
     // Allow overriding via environment variable
-    if (import.meta.env.VITE_API_URL) {
+    // Note: Disabling this to force Proxy usage for Public IP fix
+    /* if (import.meta.env.VITE_API_URL) {
         console.log('[Config] Using configured API URL:', import.meta.env.VITE_API_URL);
         return import.meta.env.VITE_API_URL;
-    }
+    } */
 
-    // If accessing via IP, use the same IP for API
-    // This supports accessing the app from other devices on the network
+    // If accessing via IP, use relative path to leverage Vite proxy
+    // This supports accessing the app from other devices on the network via the frontend port (5173)
+    // The Vite proxy will forward /api requests to the backend port (8000)
     const hostname = window.location.hostname;
     if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
-        const networkApiUrl = `http://${hostname}:8000`;
-        console.log(`[Config] Network access detected (${hostname}). using API URL:`, networkApiUrl);
-        return networkApiUrl;
+        console.log(`[Config] Network access detected (${hostname}). Using relative API path for proxy.`);
+        return '';
     }
 
     // Default to localhost for development
-    console.log('[Config] Localhost access detected. Using default API URL: http://localhost:8000');
-    return 'http://localhost:8000';
+    // return 'http://localhost:8000';
+    // Use relative path for localhost too to ensure consistent proxy usage
+    console.log('[Config] Localhost access detected. Using relative API path.');
+    return '';
 };
 
 export const API_BASE_URL = getApiBaseUrl();

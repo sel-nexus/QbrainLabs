@@ -12,6 +12,7 @@ import {
     MessageSquare
 } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { API_BASE_URL } from '../../lib/config';
 
 interface QuestionResult {
     question_id: string;
@@ -67,12 +68,12 @@ export function SurveyResults({ surveyId, onClose }: SurveyResultsProps) {
     const fetchData = async () => {
         try {
             const authToken = localStorage.getItem('hm_auth_token');
-            
+
             const [resultsRes, progressRes] = await Promise.all([
-                fetch(`http://localhost:8000/api/surveys/${surveyId}/results`, {
+                fetch(`${API_BASE_URL}/api/surveys/${surveyId}/results`, {
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 }),
-                fetch(`http://localhost:8000/api/surveys/${surveyId}/progress`, {
+                fetch(`${API_BASE_URL}/api/surveys/${surveyId}/progress`, {
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 })
             ]);
@@ -114,7 +115,7 @@ export function SurveyResults({ surveyId, onClose }: SurveyResultsProps) {
 
     const exportResults = () => {
         if (!results) return;
-        
+
         const csvRows = ['Question,Type,Response Count,Results'];
         results.questions.forEach(q => {
             let resultStr = '';

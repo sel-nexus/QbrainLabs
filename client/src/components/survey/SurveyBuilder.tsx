@@ -16,6 +16,7 @@ import {
     X
 } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { API_BASE_URL } from '../../lib/config';
 
 interface QuestionConfig {
     scale?: number;
@@ -84,7 +85,7 @@ export function SurveyBuilder({ workshopId, surveyId, onSave, onCancel }: Survey
         try {
             setLoading(true);
             const authToken = localStorage.getItem('hm_auth_token');
-            const response = await fetch(`http://localhost:8000/api/surveys/${surveyId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/surveys/${surveyId}`, {
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });
             if (response.ok) {
@@ -107,7 +108,7 @@ export function SurveyBuilder({ workshopId, surveyId, onSave, onCancel }: Survey
     const fetchTemplates = async () => {
         try {
             const authToken = localStorage.getItem('hm_auth_token');
-            const response = await fetch('http://localhost:8000/api/surveys/templates/list', {
+            const response = await fetch(`${API_BASE_URL}/api/surveys/templates/list`, {
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });
             if (response.ok) {
@@ -127,7 +128,7 @@ export function SurveyBuilder({ workshopId, surveyId, onSave, onCancel }: Survey
             order: questions.length,
             options: type === 'multiple_choice' || type === 'multiple_select' ? ['Option 1', 'Option 2'] : undefined,
             config: type === 'rating' ? { scale: 5, labels: ['1', '2', '3', '4', '5'] } :
-                    type === 'likert' ? { scale: 5, statements: ['Statement 1'] } :
+                type === 'likert' ? { scale: 5, statements: ['Statement 1'] } :
                     type === 'textarea' ? { max_length: 1000 } : {}
         };
         setQuestions([...questions, newQuestion]);
@@ -197,7 +198,7 @@ export function SurveyBuilder({ workshopId, surveyId, onSave, onCancel }: Survey
         try {
             setSaving(true);
             const authToken = localStorage.getItem('hm_auth_token');
-            
+
             const payload = {
                 title,
                 description,
@@ -214,7 +215,7 @@ export function SurveyBuilder({ workshopId, surveyId, onSave, onCancel }: Survey
 
             let response;
             if (surveyId) {
-                response = await fetch(`http://localhost:8000/api/surveys/${surveyId}`, {
+                response = await fetch(`${API_BASE_URL}/api/surveys/${surveyId}`, {
                     method: 'PUT',
                     headers: {
                         'Authorization': `Bearer ${authToken}`,
@@ -223,7 +224,7 @@ export function SurveyBuilder({ workshopId, surveyId, onSave, onCancel }: Survey
                     body: JSON.stringify({ title, description, settings })
                 });
             } else {
-                response = await fetch(`http://localhost:8000/api/surveys/workshop/${workshopId}`, {
+                response = await fetch(`${API_BASE_URL}/api/surveys/workshop/${workshopId}`, {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${authToken}`,
@@ -241,7 +242,7 @@ export function SurveyBuilder({ workshopId, surveyId, onSave, onCancel }: Survey
             const savedSurveyId = data.id || surveyId;
 
             if (activate) {
-                await fetch(`http://localhost:8000/api/surveys/${savedSurveyId}/activate`, {
+                await fetch(`${API_BASE_URL}/api/surveys/${savedSurveyId}/activate`, {
                     method: 'POST',
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });
@@ -263,7 +264,7 @@ export function SurveyBuilder({ workshopId, surveyId, onSave, onCancel }: Survey
     const applyTemplate = async (templateId: string) => {
         try {
             const authToken = localStorage.getItem('hm_auth_token');
-            const response = await fetch(`http://localhost:8000/api/surveys/templates/${templateId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/surveys/templates/${templateId}`, {
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });
             if (response.ok) {
@@ -343,7 +344,7 @@ export function SurveyBuilder({ workshopId, surveyId, onSave, onCancel }: Survey
             {/* Questions */}
             <div className="space-y-4 mb-6">
                 <h3 className="text-lg font-semibold text-white">Questions</h3>
-                
+
                 {questions.map((question, index) => (
                     <div
                         key={index}

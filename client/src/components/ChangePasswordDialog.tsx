@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { API_BASE_URL } from '../lib/config';
 
 interface ChangePasswordDialogProps {
     onClose: () => void;
@@ -37,7 +38,7 @@ export function ChangePasswordDialog({ onClose }: ChangePasswordDialogProps) {
                 new_password: newPassword,
             });
 
-            const response = await fetch('http://localhost:8000/api/auth/change-password', {
+            const response = await fetch(`${API_BASE_URL}/api/auth/change-password`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -63,11 +64,10 @@ export function ChangePasswordDialog({ onClose }: ChangePasswordDialogProps) {
     return (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
             <div
-                className={`rounded-2xl p-6 max-w-md w-full shadow-2xl border ${
-                    theme === 'light'
-                        ? 'bg-white border-gray-200'
-                        : 'bg-surface-800 border-white/10'
-                }`}
+                className={`rounded-2xl p-6 max-w-md w-full shadow-2xl border ${theme === 'light'
+                    ? 'bg-white border-gray-200'
+                    : 'bg-surface-800 border-white/10'
+                    }`}
             >
                 {/* Header */}
                 <div className="flex items-center justify-between mb-6">
@@ -76,11 +76,10 @@ export function ChangePasswordDialog({ onClose }: ChangePasswordDialogProps) {
                     </h2>
                     <button
                         onClick={onClose}
-                        className={`transition ${
-                            theme === 'light'
-                                ? 'text-gray-500 hover:text-gray-900'
-                                : 'text-gray-400 hover:text-white'
-                        }`}
+                        className={`transition ${theme === 'light'
+                            ? 'text-gray-500 hover:text-gray-900'
+                            : 'text-gray-400 hover:text-white'
+                            }`}
                     >
                         <X className="w-6 h-6" />
                     </button>
@@ -91,9 +90,8 @@ export function ChangePasswordDialog({ onClose }: ChangePasswordDialogProps) {
                     <div>
                         <label
                             htmlFor="current_password"
-                            className={`block text-sm font-medium mb-2 ${
-                                theme === 'light' ? 'text-gray-700' : 'text-gray-300'
-                            }`}
+                            className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+                                }`}
                         >
                             Current Password
                         </label>
@@ -103,11 +101,10 @@ export function ChangePasswordDialog({ onClose }: ChangePasswordDialogProps) {
                             required
                             value={currentPassword}
                             onChange={(e) => setCurrentPassword(e.target.value)}
-                            className={`w-full px-4 py-3 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
-                                theme === 'light'
-                                    ? 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
-                                    : 'bg-white/5 border border-white/10 text-white placeholder-gray-500'
-                            }`}
+                            className={`w-full px-4 py-3 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${theme === 'light'
+                                ? 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
+                                : 'bg-white/5 border border-white/10 text-white placeholder-gray-500'
+                                }`}
                             placeholder="Enter current password"
                         />
                     </div>
@@ -115,9 +112,8 @@ export function ChangePasswordDialog({ onClose }: ChangePasswordDialogProps) {
                     <div>
                         <label
                             htmlFor="new_password"
-                            className={`block text-sm font-medium mb-2 ${
-                                theme === 'light' ? 'text-gray-700' : 'text-gray-300'
-                            }`}
+                            className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+                                }`}
                         >
                             New Password
                         </label>
@@ -127,11 +123,10 @@ export function ChangePasswordDialog({ onClose }: ChangePasswordDialogProps) {
                             required
                             value={newPassword}
                             onChange={(e) => setNewPassword(e.target.value)}
-                            className={`w-full px-4 py-3 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
-                                theme === 'light'
-                                    ? 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
-                                    : 'bg-white/5 border border-white/10 text-white placeholder-gray-500'
-                            }`}
+                            className={`w-full px-4 py-3 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${theme === 'light'
+                                ? 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
+                                : 'bg-white/5 border border-white/10 text-white placeholder-gray-500'
+                                }`}
                             placeholder="Min. 8 characters"
                             minLength={8}
                         />
@@ -140,9 +135,8 @@ export function ChangePasswordDialog({ onClose }: ChangePasswordDialogProps) {
                     <div>
                         <label
                             htmlFor="confirm_password"
-                            className={`block text-sm font-medium mb-2 ${
-                                theme === 'light' ? 'text-gray-700' : 'text-gray-300'
-                            }`}
+                            className={`block text-sm font-medium mb-2 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+                                }`}
                         >
                             Confirm New Password
                         </label>
@@ -152,11 +146,10 @@ export function ChangePasswordDialog({ onClose }: ChangePasswordDialogProps) {
                             required
                             value={confirmPassword}
                             onChange={(e) => setConfirmPassword(e.target.value)}
-                            className={`w-full px-4 py-3 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${
-                                theme === 'light'
-                                    ? 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
-                                    : 'bg-white/5 border border-white/10 text-white placeholder-gray-500'
-                            }`}
+                            className={`w-full px-4 py-3 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent ${theme === 'light'
+                                ? 'bg-gray-50 border border-gray-200 text-gray-900 placeholder-gray-400'
+                                : 'bg-white/5 border border-white/10 text-white placeholder-gray-500'
+                                }`}
                             placeholder="Re-enter new password"
                             minLength={8}
                         />
@@ -166,11 +159,10 @@ export function ChangePasswordDialog({ onClose }: ChangePasswordDialogProps) {
                         <button
                             type="button"
                             onClick={onClose}
-                            className={`flex-1 py-3 px-4 font-semibold rounded-lg transition ${
-                                theme === 'light'
-                                    ? 'bg-gray-100 text-gray-900 hover:bg-gray-200'
-                                    : 'bg-surface-700 text-white hover:bg-surface-600'
-                            }`}
+                            className={`flex-1 py-3 px-4 font-semibold rounded-lg transition ${theme === 'light'
+                                ? 'bg-gray-100 text-gray-900 hover:bg-gray-200'
+                                : 'bg-surface-700 text-white hover:bg-surface-600'
+                                }`}
                         >
                             Cancel
                         </button>

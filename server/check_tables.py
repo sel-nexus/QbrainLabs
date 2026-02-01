@@ -1,58 +1,35 @@
-"""Check database tables and users."""
-import asyncio
-import sys
-from pathlib import Path
 
-# Windows event loop fix for psycopg
-if sys.platform == 'win32':
-    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+import sqlite3
+import os
 
-# Add server to path
-sys.path.insert(0, str(Path(__file__).parent))
+db_path = "hotspotmatrix.db"
 
-async def check_tables():
-    from app.core.database import engine
-    from sqlalchemy import text
-    
+def list_tables():
+    if not os.path.exists(db_path):
+        print(f"Database not found at {db_path}")
+        return
+
     try:
-        async with engine.connect() as conn:
-            # Check tables
-            result = await conn.execute(text("""
-                SELECT table_name FROM information_schema.tables 
-                WHERE table_schema = 'public' 
-                ORDER BY table_name
-            """))
-            tables = [row[0] for row in result.fetchall()]
-            print(f"📋 Found {len(tables)} tables:")
-            for t in tables:
-                print(f"   - {t}")
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
+        tables = cursor.fetchall()
+        print("Tables found:")
+        for table in tables:
+            print(f"- {table[0]}")
             
-            # Check if users table exists and has data
-            if 'users' in tables:
-                # First check columns
-                result = await conn.execute(text("""
-                    SELECT column_name, data_type FROM information_schema.columns 
-                    WHERE table_name = 'users' ORDER BY ordinal_position
-                """))
-                columns = result.fetchall()
-                print(f"\n👥 Users table columns:")
+            # If it looks like a user table, show columns
+            if 'user' in table[0].lower():
+                print(f"  Columns in {table[0]}:")
+                cursor.execute(f"PRAGMA table_info({table[0]})")
+                columns = cursor.fetchall()
                 for col in columns:
-                    print(f"   - {col[0]} ({col[1]})")
-                
-                result = await conn.execute(text("SELECT COUNT(*) FROM users"))
-                count = result.fetchone()[0]
-                print(f"\n   Total records: {count}")
-                
-                if count > 0:
-                    result = await conn.execute(text("SELECT id, email, role FROM users LIMIT 5"))
-                    print("   Sample users:")
-                    for row in result.fetchall():
-                        print(f"   - {row[1]} (role: {row[2]})")
-            else:
-                print("\n❌ 'users' table not found!")
-                
-    finally:
-        pass  # Engine managed by app
+                    print(f"    - {col[1]} ({col[2]})")
+
+        conn.close()
+    except Exception as e:
+        print(f"Error querying DB: {e}")
 
 if __name__ == "__main__":
-    asyncio.run(check_tables())
+    list_tables()

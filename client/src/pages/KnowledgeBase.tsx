@@ -19,6 +19,7 @@ import {
     Plus
 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
+import { API_BASE_URL as API_BASE } from '../lib/config';
 
 interface Industry {
     id: string;
@@ -100,7 +101,7 @@ export function KnowledgeBase() {
     const fetchOverview = async () => {
         try {
             const authToken = localStorage.getItem('hm_auth_token');
-            const response = await fetch('http://localhost:8000/api/knowledge-base/overview', {
+            const response = await fetch(`${API_BASE}/api/knowledge-base/overview`, {
                 headers: { 'Authorization': `Bearer ${authToken}` }
             });
 
@@ -122,7 +123,7 @@ export function KnowledgeBase() {
         try {
             const authToken = localStorage.getItem('hm_auth_token');
             const response = await fetch(
-                `http://localhost:8000/api/knowledge-base/search?query=${encodeURIComponent(searchQuery)}`,
+                `${API_BASE}/api/knowledge-base/search?query=${encodeURIComponent(searchQuery)}`,
                 { headers: { 'Authorization': `Bearer ${authToken}` } }
             );
 
@@ -141,7 +142,7 @@ export function KnowledgeBase() {
         try {
             const authToken = localStorage.getItem('hm_auth_token');
             const response = await fetch(
-                `http://localhost:8000/api/knowledge-base/industries/${industryId}`,
+                `${API_BASE}/api/knowledge-base/industries/${industryId}`,
                 { headers: { 'Authorization': `Bearer ${authToken}` } }
             );
 
@@ -159,7 +160,7 @@ export function KnowledgeBase() {
         setResearchResults([]);
         try {
             const authToken = localStorage.getItem('hm_auth_token');
-            const response = await fetch('http://localhost:8000/api/knowledge-base/refresh', {
+            const response = await fetch(`${API_BASE}/api/knowledge-base/refresh`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${authToken}`,
