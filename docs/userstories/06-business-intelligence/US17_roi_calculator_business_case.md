@@ -7,6 +7,13 @@
 **Status:** 📋 BACKLOG - Future Feature  
 **Target Sprint:** Phase 3 (Q2-Q3 2026)
 
+> [!NOTE]
+> **Current Implementation (Feb 2026):** 
+> An MVP version of this feature has been deployed. The system now supports:
+> - **Business Value Enhancement**: Automated generation of KPIs, specific metrics, and ROI indicators.
+> - **Benchmarking**: Retrieval of industry benchmarks from the knowledge base.
+> - **Implementation**: Available via `/ai/business-value` endpoint and `UseCaseForm`.
+
 ---
 
 ## User Story

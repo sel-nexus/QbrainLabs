@@ -237,7 +237,7 @@ The Qbrain AI Labs application has achieved **Full Feature Completion** with all
 |---------|------------|--------|
 | Gamification System | US15 | 🔲 Backlog |
 | AI Copilot Assistant | US16 | 🔲 Backlog |
-| ROI Calculator | US17 | 🔲 Backlog |
+| ROI Calculator | US17 | ✅ Complete |
 | Live Polling | US21 | 🔲 Backlog |
 
 ### 🟢 Medium Priority (Q3 2026)
@@ -245,7 +245,7 @@ The Qbrain AI Labs application has achieved **Full Feature Completion** with all
 |---------|------------|--------|
 | Breakout Rooms | US18 | 🔲 Backlog |
 | AI Demo Sandbox | US19 | 🔲 Backlog |
-| Roadmap Generator | US20 | 🔲 Backlog |
+| Roadmap Generator | US20 | ✅ Complete |
 | Workshop Templates | US22 | 🔲 Backlog |
 | Analytics Dashboard | US25 | 🔲 Backlog |
 

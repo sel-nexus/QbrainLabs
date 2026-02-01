@@ -9,14 +9,14 @@ server_dir = os.path.dirname(current)
 if server_dir not in sys.path:
     sys.path.insert(0, server_dir)
 
-from app.core.database import async_session
+from app.core.database import AsyncSessionLocal
 from app.models.models import User
 from sqlalchemy.future import select
 from app.core.security import verify_password
 
 async def check_user():
     print("Checking database for users...")
-    async with async_session() as session:
+    async with AsyncSessionLocal() as session:
         # Check admin@qbrainlabs.com
         print(f"\n--- Checking 'admin@qbrainlabs.com' ---")
         result = await session.execute(select(User).where(User.email == "admin@qbrainlabs.com"))
@@ -27,8 +27,9 @@ async def check_user():
             print(f"Status: {user.status}")
             print(f"Is Admin: {user.is_admin_user}")
             # Check password
-            is_valid = verify_password('admin123', user.password_hash)
-            print(f"Password verification for 'admin123': {is_valid}")
+            admin_pwd = os.getenv("DEFAULT_ADMIN_PASSWORD", "admin123")
+            is_valid = verify_password(admin_pwd, user.password_hash)
+            print(f"Password verification: {is_valid}")
         else:
             print("User 'admin@qbrainlabs.com' NOT FOUND")
 
@@ -42,8 +43,9 @@ async def check_user():
             print(f"Status: {user.status}")
             print(f"Is Admin: {user.is_admin_user}")
             # Check password
-            is_valid = verify_password('admin123', user.password_hash)
-            print(f"Password verification for 'admin123': {is_valid}")
+            admin_pwd = os.getenv("DEFAULT_ADMIN_PASSWORD", "admin123")
+            is_valid = verify_password(admin_pwd, user.password_hash)
+            print(f"Password verification: {is_valid}")
         else:
             print("User 'admin@hotspotmatrix.ai' NOT FOUND")
 

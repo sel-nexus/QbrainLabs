@@ -100,7 +100,7 @@ After clicking "Enhance Value", a green panel will appear showing:
 - ✅ `server/app/api/ai.py` - New `/ai/business-value` endpoint
 - ✅ `server/app/services/rag_service.py` - `enhance_business_value()` method
 - ✅ `server/app/schemas/ai.py` - Request/response schemas
-- ✅ `client/src/components/UseCaseCanvas.tsx` - UI integration
+- ✅ `client/src/components/UseCaseForm.tsx` - UI integration
 
 ### API Endpoint
 ```

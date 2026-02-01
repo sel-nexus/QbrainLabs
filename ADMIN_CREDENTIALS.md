@@ -4,28 +4,28 @@
 
 | Field | Value |
 |-------|-------|
-| **Email** | `admin@qbrainlabs.com` |
-| **Password** | `admin123` |
+| **Email** | *Reference `DEFAULT_ADMIN_EMAIL` in `.env`* |
+| **Password** | *Reference `DEFAULT_ADMIN_PASSWORD` in `.env`* |
 | **Role** | Administrator |
 
 ## ⚠️ Security Warning
 
-**IMPORTANT:** The default password is publicly known. You MUST change it immediately after first login.
+**IMPORTANT:** The default password is configured in the server environment.
 
 ## Quick Start
 
 ### 1. First Login
 ```
 URL: http://localhost:5173/facilitator-login
-Email: admin@qbrainlabs.com
-Password: admin123
+Email: (See .env)
+Password: (See .env)
 ```
 
 ### 2. Change Password
 1. After login, go to the Admin Dashboard
 2. Click the **🔑 Key icon** in the top-right header
 3. Enter:
-   - Current Password: `admin123`
+   - Current Password: (references `DEFAULT_ADMIN_PASSWORD` in `.env`)
    - New Password: (your secure password - min 8 chars)
    - Confirm: (repeat your secure password)
 4. Click **"Change Password"**

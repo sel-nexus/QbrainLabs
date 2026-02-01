@@ -12,13 +12,20 @@ def hash_password(password: str) -> str:
     salt = bcrypt.gensalt()
     return bcrypt.hashpw(password.encode('utf-8'), salt).decode('utf-8')
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+DEFAULT_ADMIN_PASSWORD = os.getenv("DEFAULT_ADMIN_PASSWORD", "admin123")
+
 async def reset_admin():
     async with AsyncSessionLocal() as db:
         result = await db.execute(select(User).where(User.email == 'admin@qbrainlabs.com'))
         user = result.scalars().first()
         if user:
-            # Reset password to admin123
-            user.password_hash = hash_password("admin123")
+            # Reset password to env var
+            user.password_hash = hash_password(DEFAULT_ADMIN_PASSWORD)
             user.role = UserRole.ADMIN.value
             user.status = AccountStatus.ACTIVE.value
             user.is_admin = True

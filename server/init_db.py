@@ -31,8 +31,8 @@ from app.models.subscription import SubscriptionTier, DEFAULT_SUBSCRIPTION_TIERS
 from app.models.settings import SystemSetting, DEFAULT_SYSTEM_SETTINGS
 import bcrypt
 
-DEFAULT_ADMIN_EMAIL = "admin@qbrainlabs.com"
-DEFAULT_ADMIN_PASSWORD = "admin123"  # Should be changed on first login
+DEFAULT_ADMIN_EMAIL = os.getenv("DEFAULT_ADMIN_EMAIL", "admin@qbrainlabs.com")
+DEFAULT_ADMIN_PASSWORD = os.getenv("DEFAULT_ADMIN_PASSWORD", "admin123")  # Should be changed on first login
 DEFAULT_ADMIN_NAME = "Administrator"
 
 # Migration tracking table SQL

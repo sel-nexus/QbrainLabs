@@ -7,6 +7,13 @@
 **Status:** 📋 BACKLOG - Future Feature  
 **Target Sprint:** Phase 3 (Q2-Q3 2026)
 
+> [!NOTE]
+> **Current Implementation (Feb 2026):** 
+> An MVP version of this feature has been deployed. The system now supports:
+> - **Technical Deep Dive**: Automated generation of architecture overview, recommended stack, and implementation steps.
+> - **Risk Analysis**: Identification of technical risks and complexity scoring.
+> - **Implementation**: Available via `/ai/technical-analysis` endpoint and `UseCaseForm`.
+
 ---
 
 ## User Story
