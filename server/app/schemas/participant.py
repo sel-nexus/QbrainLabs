@@ -49,3 +49,13 @@ class JoinResponse(BaseModel):
 class RoleUpdate(BaseModel):
     role: str # FACILITATOR, PARTICIPANT
 
+
+class ParticipantResponse(BaseModel):
+    id: UUID
+    display_name: str
+    role: str
+    joined_at: datetime
+
+    class Config:
+        from_attributes = True
+

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from './ui/Button';
 import { api } from '../lib/api';
 import { awardPoints } from '../lib/api/gamification';
@@ -29,6 +29,27 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
         setScores(prev => ({ ...prev, [criterion]: val }));
     };
 
+    // Load existing scores for this card if any
+    useEffect(() => {
+        if (!activeCard || !session?.participantId) return;
+
+        const loadExistingVote = async () => {
+            try {
+                const { data } = await api.get(`/votes/participant/${session.participantId}/matrix-positions?workshop_id=${session.workshopId}`);
+                const existingVote = data.find((v: any) => v.id === activeCard.id);
+                if (existingVote && existingVote.scores) {
+                    setScores(existingVote.scores);
+                } else {
+                    setScores({});
+                }
+            } catch (err) {
+                console.error('Failed to load existing vote:', err);
+            }
+        };
+
+        loadExistingVote();
+    }, [activeCard?.id, session?.participantId, session?.workshopId]);
+
     const handleSubmit = async () => {
         if (!activeCard) return;
         setLoading(true);
@@ -38,7 +59,7 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
                 participant_id: session.participantId,
                 scores: scores
             });
-            
+
             // Award points for voting
             try {
                 const allCriteriaScored = Object.keys(scores).length === criteria.length;
@@ -56,7 +77,7 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
                 console.error('Failed to award points:', pointsError);
                 // Don't fail the vote if points fail
             }
-            
+
             setSubmitted(true);
         } catch (e) {
             console.error(e);
@@ -104,55 +125,55 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
                 animate={{ opacity: 1, scale: 1 }}
                 className="bg-surface-800/80 backdrop-blur border border-white/10 rounded-2xl p-6 shadow-xl max-w-lg mx-auto"
             >
-            <div className="mb-6">
-                <span className="text-xs text-brand-violet font-mono uppercase tracking-wider">Voting Now</span>
-                <h2 className="text-2xl font-bold text-white mt-1 ">{activeCard.title}</h2>
-                <p className="text-gray-300 mt-2 text-sm">{activeCard.description}</p>
-                {activeCard.proposed_solution && (
-                    <p className="text-gray-400 text-xs mt-2 bg-black/20 p-2 rounded">
-                        <span className="font-bold">Solution:</span> {activeCard.proposed_solution}
-                    </p>
-                )}
-            </div>
+                <div className="mb-6">
+                    <span className="text-xs text-brand-violet font-mono uppercase tracking-wider">Voting Now</span>
+                    <h2 className="text-2xl font-bold text-white mt-1 ">{activeCard.title}</h2>
+                    <p className="text-gray-300 mt-2 text-sm">{activeCard.description}</p>
+                    {activeCard.proposed_solution && (
+                        <p className="text-gray-400 text-xs mt-2 bg-black/20 p-2 rounded">
+                            <span className="font-bold">Solution:</span> {activeCard.proposed_solution}
+                        </p>
+                    )}
+                </div>
 
-            <div className="space-y-6 mb-8">
-                {criteria.map((c, idx) => (
-                    <div key={idx}>
-                        <div className="flex justify-between mb-2">
-                            <label className="text-sm font-medium flex items-center gap-2 group relative">
-                                {c.name}
-                                {c.description && (
-                                    <span className="cursor-help text-gray-500 text-xs">(?)</span>
-                                )}
-                                {c.description && (
-                                    <div className="absolute left-0 bottom-full mb-2 w-64 p-2 bg-black/90 text-xs text-white rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-                                        {c.description}
-                                    </div>
-                                )}
-                            </label>
-                            <span className="font-mono text-brand-magenta">{scores[c.name] ?? defaultVal}</span>
+                <div className="space-y-6 mb-8">
+                    {criteria.map((c, idx) => (
+                        <div key={idx}>
+                            <div className="flex justify-between mb-2">
+                                <label className="text-sm font-medium flex items-center gap-2 group relative">
+                                    {c.name}
+                                    {c.description && (
+                                        <span className="cursor-help text-gray-500 text-xs">(?)</span>
+                                    )}
+                                    {c.description && (
+                                        <div className="absolute left-0 bottom-full mb-2 w-64 p-2 bg-black/90 text-xs text-white rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                                            {c.description}
+                                        </div>
+                                    )}
+                                </label>
+                                <span className="font-mono text-brand-magenta">{scores[c.name] ?? defaultVal}</span>
+                            </div>
+                            <input
+                                type="range"
+                                min={minVal}
+                                max={maxVal}
+                                step={stepVal}
+                                className="w-full h-2 bg-surface-900 rounded-lg appearance-none cursor-pointer accent-brand-violet"
+                                value={scores[c.name] ?? defaultVal}
+                                onChange={(e) => handleScoreChange(c.name, Number(e.target.value))}
+                            />
+                            <div className="flex justify-between text-xs text-gray-500 mt-1">
+                                <span>Low</span>
+                                <span>High</span>
+                            </div>
                         </div>
-                        <input
-                            type="range"
-                            min={minVal}
-                            max={maxVal}
-                            step={stepVal}
-                            className="w-full h-2 bg-surface-900 rounded-lg appearance-none cursor-pointer accent-brand-violet"
-                            value={scores[c.name] ?? defaultVal}
-                            onChange={(e) => handleScoreChange(c.name, Number(e.target.value))}
-                        />
-                        <div className="flex justify-between text-xs text-gray-500 mt-1">
-                            <span>Low</span>
-                            <span>High</span>
-                        </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
 
-            <Button className="w-full justify-center" onClick={handleSubmit} disabled={loading}>
-                {loading ? <Loader2 className="animate-spin" /> : 'Submit Vote'}
-            </Button>
-        </motion.div>
+                <Button className="w-full justify-center" onClick={handleSubmit} disabled={loading}>
+                    {loading ? <Loader2 className="animate-spin" /> : 'Submit Vote'}
+                </Button>
+            </motion.div>
         </>
     );
 }

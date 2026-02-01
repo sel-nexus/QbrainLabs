@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
+import { UseCaseForm, type UseCaseData } from '../components/UseCaseForm';
 import { api } from '../lib/api';
 import { socket } from '../lib/socket';
 import { Button } from '../components/ui/Button';
 import { useTheme } from '../context/ThemeContext';
-import { Play, TrendingUp, Download, FileText, BarChart3, Plus, X, Loader2, Map, ArrowLeft, LayoutGrid, Vote, Target, Sparkles } from 'lucide-react';
+import { Play, TrendingUp, Download, FileText, BarChart3, Plus, X, Loader2, Map, LayoutGrid, Vote, Target, Sparkles } from 'lucide-react';
 import { ResultsChart } from '../components/ResultsChart';
 import { WorkshopInsights } from '../components/WorkshopInsights';
 import { AnalyticsDashboard } from '../components/AnalyticsDashboard';
@@ -13,7 +14,6 @@ import { toast } from 'sonner';
 import { QRCodeSVG } from 'qrcode.react';
 import { Modal } from '../components/ui/Modal';
 import { QrCode, Copy } from 'lucide-react';
-import { Input } from '../components/ui/Input';
 
 import { PollManager } from '../components/polls/PollManager';
 import { ReactionOverlay } from '../components/polls/ReactionOverlay';
@@ -26,12 +26,12 @@ import { ChallengeManager } from '../components/challenges';
 import { CopilotPanel } from '../components/ai-copilot';
 import { useAuth } from '../context/AuthContext';
 import { MatrixActivityDashboard } from '../components/MatrixActivityDashboard';
+import { PrioritizationScale } from '../components/prioritization/PrioritizationScale';
 
 export function WorkshopDetail() {
     const { id } = useParams();
-    const navigate = useNavigate();
     const { theme } = useTheme();
-    const { user, hasRole } = useAuth();
+    const { hasRole } = useAuth();
     const [workshop, setWorkshop] = useState<any>(null);
     const [useCases, setUseCases] = useState<any[]>([]);
     const [currentPhase, setCurrentPhase] = useState<string>('');
@@ -43,13 +43,12 @@ export function WorkshopDetail() {
     // const [currentView, setCurrentView] = useState<'matrix' | 'analytics'>('matrix'); // Unused
     const [surveyView, setSurveyView] = useState<'list' | 'create' | 'edit' | 'results' | null>(null);
     const [selectedSurveyId, setSelectedSurveyId] = useState<string | null>(null);
-    const [showAnalytics, setShowAnalytics] = useState<'matrix' | 'analytics' | 'roi'>('matrix');
+    const [showAnalytics, setShowAnalytics] = useState<'matrix' | 'analytics' | 'roi' | 'scale'>('matrix');
+    const [activeCriterionIndex, setActiveCriterionIndex] = useState(0);
     const [showAddUseCase, setShowAddUseCase] = useState(false);
     const [showQA, setShowQA] = useState(false);
-    const [useCaseSubmitting, setUseCaseSubmitting] = useState(false);
-    const [roiModalOpen, setRoiModalOpen] = useState(false);
     const [roiSelectedUseCase, setRoiSelectedUseCase] = useState<{ id: string; title: string } | null>(null);
-    const [showBreakoutRooms, setShowBreakoutRooms] = useState(false);
+    const [roiModalOpen, setRoiModalOpen] = useState(false);
     const [showRoadmap, setShowRoadmap] = useState(false);
 
     // Tab navigation state
@@ -64,14 +63,7 @@ export function WorkshopDetail() {
         { id: 'insights', label: 'Insights', icon: <Sparkles className="w-4 h-4" /> },
     ];
 
-    const [useCaseForm, setUseCaseForm] = useState({
-        title: '',
-        description: '',
-        proposed_solution: '',
-        kpi: '',
-        target_user: '',
-        category: 'Generative AI'
-    });
+
 
     useEffect(() => {
         // ... (existing code, ensure no duplicates if I copy-paste too much)
@@ -125,7 +117,6 @@ export function WorkshopDetail() {
         return () => {
             socket.off('new_submission');
             socket.off('participant_joined');
-            socket.off('active_card_update');
             socket.off('active_card_update');
             socket.off('workshop_state_change');
             socket.off('facilitator_request');
@@ -199,56 +190,35 @@ export function WorkshopDetail() {
         }
     };
 
-    const handleUseCaseFormChange = (field: string, value: string) => {
-        setUseCaseForm(prev => ({ ...prev, [field]: value }));
-    };
-
-    const handleSubmitUseCase = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!useCaseForm.title || !useCaseForm.description) {
-            toast.error("Please fill in title and description");
-            return;
-        }
-
-        setUseCaseSubmitting(true);
+    const handleSubmitUseCase = async (data: UseCaseData) => {
         try {
             await api.post('/usecases/', {
-                ...useCaseForm,
+                ...data,
                 workshop_id: id,
                 added_by_facilitator: true
             });
 
             toast.success("Use case added successfully!");
-            setUseCaseForm({
-                title: '',
-                description: '',
-                proposed_solution: '',
-                kpi: '',
-                target_user: '',
-                category: 'Generative AI'
-            });
             setShowAddUseCase(false);
             fetchWorkshop(); // Refresh use cases
         } catch (err) {
             console.error(err);
             toast.error("Failed to add use case");
-        } finally {
-            setUseCaseSubmitting(false);
         }
     };
 
     const downloadCSV = () => {
-        if (!results.length) return;
+        if (!results.length || !workshop?.config?.criteria) return;
 
-        const headers = ['ID', 'Title', 'Category', 'Feasibility', 'Business Value', 'Total Score', 'Vote Count'];
+        const criteriaNames = workshop.config.criteria.map((c: any) => c.name);
+        const headers = ['ID', 'Title', 'Category', ...criteriaNames, 'Total Score', 'Vote Count'];
         const rows = results.map((r: any) => [
             r.id,
-            `"${r.title.replace(/"/g, '""')}"`, // Escape quotes
+            `"${r.title.replace(/"/g, '""')}"`,
             r.category || '',
-            r.scores['Feasibility'] || 0,
-            r.scores['Business Value'] || 0,
-            r.total_score,
-            r.vote_count
+            ...criteriaNames.map((c: string) => r.scores[c] || 0),
+            r.total_score || 0,
+            r.vote_count || 1
         ]);
 
         const csvContent = [
@@ -369,41 +339,180 @@ export function WorkshopDetail() {
                     ) : (
                         <>
                             <div className="flex items-center justify-between">
-                                <h2 className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Strategic Matrix</h2>
-                                {showAllParticipantPositions && (
+                                <h2 className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Strategic Prioritization</h2>
+                                <div className="flex gap-2">
                                     <Button
-                                        variant="secondary"
+                                        variant={!showAllParticipantPositions ? 'primary' : 'secondary'}
                                         className="py-1 px-3 text-sm"
                                         onClick={async () => {
-                                            // Reset to aggregated view
                                             const resultsData = await api.get(`/results/${id}`);
                                             setResults(resultsData.data);
                                             setShowAllParticipantPositions(false);
                                         }}
                                     >
-                                        Show Aggregated View
+                                        Aggregated View
                                     </Button>
-                                )}
+                                    <Button
+                                        variant={showAllParticipantPositions ? 'primary' : 'secondary'}
+                                        className="py-1 px-3 text-sm"
+                                        onClick={() => {
+                                            // MatrixActivityDashboard handleRefresh will trigger onRefreshMatrix
+                                            // We just need to trigger a manual refresh or wait for socket
+                                            setShowAllParticipantPositions(true);
+                                        }}
+                                    >
+                                        All Participants
+                                    </Button>
+                                    <div className="w-px h-8 bg-gray-200 dark:bg-white/10 mx-2" />
+                                    <Button
+                                        variant={showAnalytics === 'matrix' ? 'primary' : 'secondary'}
+                                        className="py-1 px-3 text-sm"
+                                        onClick={() => setShowAnalytics('matrix')}
+                                    >
+                                        2D Matrix
+                                    </Button>
+                                    <Button
+                                        variant={showAnalytics === 'scale' ? 'primary' : 'secondary'}
+                                        className="py-1 px-3 text-sm"
+                                        onClick={() => setShowAnalytics('scale')}
+                                    >
+                                        1D Scale
+                                    </Button>
+                                </div>
                             </div>
 
                             {/* Matrix View with Activity Dashboard */}
                             <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6 mt-4">
-                                <div>
-                                    <ResultsChart
-                                        data={results}
-                                        showLabels={!showAllParticipantPositions}
-                                        readOnly={true}
-                                    />
+                                <div className="p-6 rounded-2xl border theme-card theme-border bg-white/50 backdrop-blur-sm">
+                                    {(() => {
+                                        const xAxisKeywords = ['Value', 'Impact', 'Urgency', 'Business Value', 'ROI', 'Benefit'];
+                                        const yAxisKeywords = ['Effort', 'Feasibility', 'Complexity', 'Cost', 'Risk', 'Resource'];
+
+                                        const criteriaNames = workshop.config.criteria.map((c: any) => c.name);
+                                        let xLabel = criteriaNames[0] || "Feasibility";
+                                        let yLabel = criteriaNames[1] || "Business Value";
+
+                                        const mappedResults = results.map(item => {
+                                            const itemScores = item.scores || {};
+                                            let xTotal = 0, xCount = 0;
+                                            let yTotal = 0, yCount = 0;
+
+                                            Object.entries(itemScores).forEach(([name, score]: [string, any]) => {
+                                                if (score === -1) return;
+                                                const lowerName = name.toLowerCase();
+                                                if (xAxisKeywords.some(k => lowerName.includes(k.toLowerCase()))) {
+                                                    xTotal += score;
+                                                    xCount++;
+                                                } else if (yAxisKeywords.some(k => lowerName.includes(k.toLowerCase()))) {
+                                                    yTotal += score;
+                                                    yCount++;
+                                                }
+                                            });
+
+                                            if (xCount === 0 && yCount === 0 && criteriaNames.length > 0) {
+                                                const mid = Math.ceil(criteriaNames.length / 2);
+                                                criteriaNames.forEach((name: string, idx: number) => {
+                                                    const score = itemScores[name];
+                                                    if (score === undefined || score === -1) return;
+                                                    if (idx < mid) {
+                                                        xTotal += score;
+                                                        xCount++;
+                                                    } else {
+                                                        yTotal += score;
+                                                        yCount++;
+                                                    }
+                                                });
+                                                if (criteriaNames.length > 2) {
+                                                    xLabel = "Aggregated Value";
+                                                    yLabel = "Aggregated Effort";
+                                                }
+                                            } else {
+                                                if (xCount > 1) xLabel = "Aggregated Benefit";
+                                                if (yCount > 1) yLabel = "Aggregated Cost/Effort";
+                                            }
+
+                                            return {
+                                                ...item,
+                                                x: xCount > 0 ? (xTotal / xCount) * 10 : (item.x || 0),
+                                                y: yCount > 0 ? (yTotal / yCount) * 10 : (item.y || 0)
+                                            };
+                                        });
+
+                                        return (
+                                            <>
+                                                {showAnalytics === 'scale' ? (
+                                                    <div className="space-y-6">
+                                                        <div className="flex items-center justify-center gap-4 mb-4">
+                                                            {workshop.config.criteria.map((c: any, idx: number) => (
+                                                                <button
+                                                                    key={c.name}
+                                                                    onClick={() => setActiveCriterionIndex(idx)}
+                                                                    className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${activeCriterionIndex === idx
+                                                                        ? 'bg-brand-violet text-white shadow-lg scale-105'
+                                                                        : 'bg-gray-100 dark:bg-white/5 text-gray-500 hover:bg-gray-200'
+                                                                        }`}
+                                                                >
+                                                                    {c.name}
+                                                                </button>
+                                                            ))}
+                                                        </div>
+                                                        <PrioritizationScale
+                                                            criterion={workshop.config.criteria[activeCriterionIndex]?.name}
+                                                            useCases={useCases}
+                                                            scores={results.reduce((acc, curr) => {
+                                                                if (showAllParticipantPositions) return acc;
+                                                                return { ...acc, [curr.id]: curr.scores };
+                                                            }, {})}
+                                                            readOnly={true}
+                                                            participants={showAllParticipantPositions ? results.map(r => ({
+                                                                id: r.participant_id,
+                                                                name: r.participant_name,
+                                                                color: r.participantColor,
+                                                                useCaseId: r.use_case_id,
+                                                                useCaseTitle: r.use_case_title,
+                                                                scores: { [workshop.config.criteria[activeCriterionIndex]?.name]: r.scores?.[workshop.config.criteria[activeCriterionIndex]?.name] }
+                                                            })).filter(p => p.scores[workshop.config.criteria[activeCriterionIndex]?.name] !== undefined) : undefined}
+                                                        />
+                                                    </div>
+                                                ) : (
+                                                    <ResultsChart
+                                                        data={mappedResults}
+                                                        showLabels={!showAllParticipantPositions}
+                                                        readOnly={true}
+                                                        xAxisLabel={xLabel}
+                                                        yAxisLabel={yLabel}
+                                                    />
+                                                )}
+                                            </>
+                                        );
+                                    })()}
                                 </div>
 
                                 {/* Matrix Activity Dashboard - Only visible to admins/facilitators */}
                                 {hasRole(['admin', 'facilitator']) && (
                                     <MatrixActivityDashboard
                                         workshopId={id!}
-                                        isVisible={showAnalytics === 'matrix'}
-                                        onRefreshMatrix={(positions) => {
+                                        isVisible={showAnalytics === 'matrix' || showAnalytics === 'scale'}
+                                        onRefreshMatrix={(positions, isAllPositions) => {
                                             setResults(positions);
-                                            setShowAllParticipantPositions(true);
+                                            setShowAllParticipantPositions(isAllPositions);
+                                        }}
+                                        onPositionUpdate={(updatedPos) => {
+                                            if (showAllParticipantPositions) {
+                                                setResults(prev => {
+                                                    const index = prev.findIndex(p => p.id === updatedPos.id);
+                                                    if (index !== -1) {
+                                                        const newResults = [...prev];
+                                                        newResults[index] = { ...newResults[index], ...updatedPos };
+                                                        return newResults;
+                                                    }
+                                                    return [...prev, updatedPos];
+                                                });
+                                            } else {
+                                                // If in aggregated view, we should probably fetch results to get the new average
+                                                // but for now, we can just trigger a fetch if it's been a while
+                                                api.get(`/results/${id}`).then(res => setResults(res.data)).catch(console.error);
+                                            }
                                         }}
                                     />
                                 )}
@@ -746,97 +855,12 @@ export function WorkshopDetail() {
                                 Add Use Case
                             </h2>
 
-                            <form onSubmit={handleSubmitUseCase} className="space-y-4">
-                                <Input
-                                    label="Title"
-                                    placeholder="e.g. Automated Customer Support"
-                                    value={useCaseForm.title}
-                                    onChange={e => handleUseCaseFormChange('title', e.target.value)}
-                                    required
-                                />
-
-                                <div className="grid grid-cols-2 gap-4">
-                                    <Input
-                                        label="Target User"
-                                        placeholder="e.g. Support Agents"
-                                        value={useCaseForm.target_user}
-                                        onChange={e => handleUseCaseFormChange('target_user', e.target.value)}
-                                    />
-                                    <div className="flex flex-col gap-1.5">
-                                        <label className={`text-sm pl-1 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'
-                                            }`}>AI Technique</label>
-                                        <select
-                                            className={`w-full border-b-2 px-4 py-3 rounded-t-md focus:outline-none focus:border-brand-violet transition-colors ${theme === 'light'
-                                                ? 'bg-gray-50 border-gray-200 text-gray-900'
-                                                : 'bg-black/20 border-white/10 text-white'
-                                                }`}
-                                            value={useCaseForm.category}
-                                            onChange={e => handleUseCaseFormChange('category', e.target.value)}
-                                        >
-                                            <option>Generative AI</option>
-                                            <option>Predictive ML</option>
-                                            <option>Computer Vision</option>
-                                            <option>Robotics</option>
-                                            <option>Other</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className={`block text-sm pl-1 mb-1 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'
-                                        }`}>Problem Statement</label>
-                                    <textarea
-                                        className={`w-full border-b-2 px-4 py-3 rounded-t-md placeholder:text-gray-500 focus:outline-none focus:border-brand-violet transition-colors min-h-[100px] ${theme === 'light'
-                                            ? 'bg-gray-50 border-gray-200 text-gray-900'
-                                            : 'bg-black/20 border-white/10 text-white'
-                                            }`}
-                                        placeholder="Describe the pain point..."
-                                        value={useCaseForm.description}
-                                        onChange={e => handleUseCaseFormChange('description', e.target.value)}
-                                        required
-                                    />
-                                </div>
-
-                                <div>
-                                    <label className={`block text-sm pl-1 mb-1 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'
-                                        }`}>Proposed Solution</label>
-                                    <textarea
-                                        className={`w-full border-b-2 px-4 py-3 rounded-t-md placeholder:text-gray-500 focus:outline-none focus:border-brand-violet transition-colors min-h-[100px] ${theme === 'light'
-                                            ? 'bg-gray-50 border-gray-200 text-gray-900'
-                                            : 'bg-black/20 border-white/10 text-white'
-                                            }`}
-                                        placeholder="How does AI solve it?"
-                                        value={useCaseForm.proposed_solution}
-                                        onChange={e => handleUseCaseFormChange('proposed_solution', e.target.value)}
-                                    />
-                                </div>
-
-                                <Input
-                                    label="Expected Benefit (KPI)"
-                                    placeholder="e.g. Reduce handle time by 20%"
-                                    value={useCaseForm.kpi}
-                                    onChange={e => handleUseCaseFormChange('kpi', e.target.value)}
-                                />
-
-                                <div className="flex gap-3 pt-4">
-                                    <Button
-                                        type="button"
-                                        variant="secondary"
-                                        className="flex-1"
-                                        onClick={() => setShowAddUseCase(false)}
-                                    >
-                                        Cancel
-                                    </Button>
-                                    <Button
-                                        type="submit"
-                                        className="flex-1"
-                                        disabled={useCaseSubmitting || !useCaseForm.title || !useCaseForm.description}
-                                    >
-                                        {useCaseSubmitting ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
-                                        {useCaseSubmitting ? 'Adding...' : 'Add Use Case'}
-                                    </Button>
-                                </div>
-                            </form>
+                            <UseCaseForm
+                                workshopId={id!}
+                                onSubmit={handleSubmitUseCase}
+                                submitLabel="Add Use Case"
+                                onSuccess={() => setShowAddUseCase(false)}
+                            />
                         </div>
                     </div>
                 </div>

@@ -5,11 +5,26 @@ from sqlalchemy import and_
 from app.core.database import get_db
 from app.models.models import Workshop, Participant, WorkshopStatus, ParticipantRole, User, UseCase
 from app.models import Survey, SurveyResponse
-from app.schemas.participant import JoinRequest, JoinResponse, ParticipantSessionInfo, UseCaseSummary, SurveySummary
+from app.schemas.participant import JoinRequest, JoinResponse, ParticipantSessionInfo, UseCaseSummary, SurveySummary, ParticipantResponse
 from app.core.socket_manager import sio
 from app.api.auth import get_current_user
+from typing import List
 
 router = APIRouter()
+
+@router.get("/workshop/{workshop_id}", response_model=List[ParticipantResponse])
+async def list_workshop_participants(
+    workshop_id: str,
+    db: AsyncSession = Depends(get_db)
+):
+    """List all participants in a workshop."""
+    result = await db.execute(
+        select(Participant)
+        .where(Participant.workshop_id == workshop_id)
+        .order_by(Participant.display_name)
+    )
+    return result.scalars().all()
+
 
 @router.post("/join", response_model=JoinResponse)
 async def join_workshop(

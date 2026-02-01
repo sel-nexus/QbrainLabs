@@ -10,7 +10,6 @@ import {
     ClipboardCheck,
     Loader2,
     X,
-    LogOut,
     FileText,
     Target,
     Plus
@@ -34,7 +33,7 @@ import { UseCaseDetailModal } from '../components/usecases/UseCaseDetailModal';
 interface UseCase {
     id: string;
     title: string;
-    description?: string;
+    description: string;
     participant_id?: string;
     proposed_solution?: string;
     kpi?: string;
@@ -63,7 +62,7 @@ type ActiveModal = 'usecase' | 'survey' | 'qa' | 'leaderboard' | 'badges' | null
 export function ParticipantDashboard() {
     const navigate = useNavigate();
     const { } = useTheme();
-    const { session, updateRole, logout } = useSession();
+    const { session, updateRole } = useSession();
     const [sessionInfo, setSessionInfo] = useState<SessionInfo | null>(null);
     const [loading, setLoading] = useState(true);
     const [activeModal, setActiveModal] = useState<ActiveModal>(null);
@@ -209,14 +208,14 @@ export function ParticipantDashboard() {
     }
 
     return (
-        <div className="min-h-screen theme-bg-primary">
+        <div className="min-h-screen theme-bg-primary pt-[64px]">
             <Header showBackButton={false} showHomeButton={false} />
             {session?.participantId && <AchievementToast participantId={session.participantId} />}
             <ReactionOverlay />
             <PollResponder />
             <ReactionBar />
             {/* Header */}
-            <header className="sticky top-14 z-40 border-b backdrop-blur theme-bg-secondary/80 theme-border">
+            <header className="sticky top-[64px] z-40 border-b backdrop-blur theme-bg-secondary/80 theme-border">
                 <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
                     <div>
                         <h1 className="text-xl font-bold theme-text-primary">
@@ -255,7 +254,7 @@ export function ParticipantDashboard() {
             <main className="max-w-5xl mx-auto px-4 py-8">
                 {/* Action Tiles Grid - Show 4 tiles when use cases exist */}
                 {(sessionInfo?.use_cases.length || 0) > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
                         {/* Tile 1: Use Cases */}
                         <ActionTile
                             icon={<FileText className="w-7 h-7" />}
@@ -323,7 +322,7 @@ export function ParticipantDashboard() {
                         />
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {/* Tile 1: Submit Use Case */}
                         <ActionTile
                             icon={<Lightbulb className="w-7 h-7" />}

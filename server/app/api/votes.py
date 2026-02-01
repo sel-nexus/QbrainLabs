@@ -17,8 +17,8 @@ class ParticipantMatrixPosition(BaseModel):
     title: str
     description: Optional[str] = None
     category: Optional[str] = None
-    x: float
-    y: float
+    x: Optional[float] = 0
+    y: Optional[float] = 0
     scores: dict
     vote_count: int = 1
     variance: float = 0
@@ -48,7 +48,14 @@ async def submit_vote(
         }
     
     if existing_vote:
-        existing_vote.scores = vote_in.scores
+        # Merge scores instead of overwriting
+        new_scores = existing_vote.scores.copy() if existing_vote.scores else {}
+        print(f"[VOTES] Merging scores for use_case {vote_in.use_case_id}, participant {vote_in.participant_id}")
+        print(f"[VOTES] Existing scores: {existing_vote.scores}")
+        print(f"[VOTES] New scores to merge: {vote_in.scores}")
+        new_scores.update(vote_in.scores)
+        existing_vote.scores = new_scores
+        print(f"[VOTES] Final merged scores: {new_scores}")
         db_vote = existing_vote
     else:
         db_vote = Vote(
@@ -79,29 +86,31 @@ async def submit_vote(
         
         # If this vote contains matrix position data (Feasibility and Business Value),
         # emit matrix position update event for facilitators
-        if vote_in.scores and 'Feasibility' in vote_in.scores and 'Business Value' in vote_in.scores:
-            # Get participant info
-            participant_res = await db.execute(select(Participant).where(Participant.id == vote_in.participant_id))
-            participant = participant_res.scalars().first()
-            
-            # Emit matrix position update
-            event_data = {
-                'participant_id': str(vote_in.participant_id),
-                'participant_name': participant.display_name if participant else 'Participant',
-                'use_case_id': str(use_case.id),
-                'use_case_title': use_case.title,
-                'position': {
-                    'x': vote_in.scores.get('Feasibility', 0),
-                    'y': vote_in.scores.get('Business Value', 0)
-                },
-                'previous_position': previous_position
-            }
-            print(f"Emitting matrix:position_update to workshop {use_case.workshop_id}: {event_data}")
-            await sio.emit(
-                'matrix:position_update',
-                event_data,
-                room=str(use_case.workshop_id)
-            )
+    if db_vote.scores:
+        # Get participant info
+        participant_res = await db.execute(select(Participant).where(Participant.id == vote_in.participant_id))
+        participant = participant_res.scalars().first()
+        
+        # Derive x and y for backward compatibility with 2D matrix (first 2 criteria)
+        score_values = list(db_vote.scores.values())
+        x = score_values[0] if len(score_values) > 0 else 0
+        y = score_values[1] if len(score_values) > 1 else 0
+
+        # Emit matrix position update
+        event_data = {
+            'participant_id': str(vote_in.participant_id),
+            'participant_name': participant.display_name if participant else 'Participant',
+            'use_case_id': str(use_case.id),
+            'use_case_title': use_case.title,
+            'scores': db_vote.scores,
+            'position': {'x': x, 'y': y},
+            'previous_position': previous_position
+        }
+        await sio.emit(
+            'matrix:position_update',
+            event_data,
+            room=str(use_case.workshop_id)
+        )
     
     return db_vote
 
@@ -141,30 +150,50 @@ async def get_participant_matrix_positions(
     votes = result.scalars().all()
     
     positions = []
-    print(f"Fetching matrix positions for participant {participant_id}, workshop {workshop_id}")
+    print(f"[VOTES] Fetching matrix positions for participant {participant_id}, workshop {workshop_id}")
+    print(f"[VOTES] Query: {query}")
+    print(f"[VOTES] Found {len(votes)} votes")
+    
+    if len(votes) > 0:
+        for vote in votes:
+            print(f"[VOTES] Vote ID: {vote.id}, Use Case ID: {vote.use_case_id}, Scores: {vote.scores}")
+    else:
+        print(f"[VOTES] No votes found for participant {participant_id} in workshop {workshop_id}")
+        # Debug: Check if there are ANY votes for this participant
+        all_votes_query = select(Vote).where(Vote.participant_id == participant_uuid)
+        all_votes_result = await db.execute(all_votes_query)
+        all_votes = all_votes_result.scalars().all()
+        print(f"[VOTES] Total votes for this participant (any workshop): {len(all_votes)}")
+        if len(all_votes) > 0:
+            for v in all_votes:
+                print(f"[VOTES]   - Vote use_case_id: {v.use_case_id}, scores: {v.scores}")
+    
+    
     for vote in votes:
-        # Only include votes that have Feasibility and Business Value scores (matrix positions)
-        if (vote.scores and 
-            'Feasibility' in vote.scores and 
-            'Business Value' in vote.scores):
-            
+        if vote.scores:
             use_case = vote.use_case
+            
+            # For backward compatibility with 2D matrix view, try to extract x/y
+            # But don't require it - the scores dict is the source of truth
+            score_values = list(vote.scores.values())
+            x = float(score_values[0]) if len(score_values) > 0 else 0
+            y = float(score_values[1]) if len(score_values) > 1 else 0
+            
+            print(f"[VOTES] Adding position for use case {use_case.id}: scores={vote.scores}, x={x}, y={y}")
+            
             positions.append(ParticipantMatrixPosition(
                 id=str(use_case.id),
                 title=use_case.title,
                 description=use_case.description,
                 category=use_case.category,
-                x=float(vote.scores['Feasibility']),
-                y=float(vote.scores['Business Value']),
-                scores={
-                    'Feasibility': float(vote.scores['Feasibility']),
-                    'Business Value': float(vote.scores['Business Value'])
-                },
-                vote_count=1,  # This is the participant's own vote
+                x=x,
+                y=y,
+                scores=vote.scores,  # This is what the frontend actually uses!
+                vote_count=1,
                 variance=0
             ))
     
-    print(f"Found {len(positions)} matrix positions for participant {participant_id}")
+    print(f"[VOTES] Returning {len(positions)} positions")
     return positions
 
 
@@ -207,25 +236,21 @@ async def get_all_participant_matrix_positions(
     
     positions = []
     for vote in votes:
-        # Only include votes that have Feasibility and Business Value scores (matrix positions)
-        if (vote.scores and 
-            'Feasibility' in vote.scores and 
-            'Business Value' in vote.scores):
-            
+        if vote.scores:
             use_case = vote.use_case
             participant = vote.participant
+            score_values = list(vote.scores.values())
+            x = score_values[0] if len(score_values) > 0 else 0
+            y = score_values[1] if len(score_values) > 1 else 0
             
             positions.append(AllParticipantMatrixPosition(
                 use_case_id=str(use_case.id),
                 use_case_title=use_case.title,
                 participant_id=str(vote.participant_id),
                 participant_name=participant.display_name if participant else 'Unknown',
-                x=float(vote.scores['Feasibility']),
-                y=float(vote.scores['Business Value']),
-                scores={
-                    'Feasibility': float(vote.scores['Feasibility']),
-                    'Business Value': float(vote.scores['Business Value'])
-                }
+                x=float(x),
+                y=float(y),
+                scores=vote.scores
             ))
     
     return positions

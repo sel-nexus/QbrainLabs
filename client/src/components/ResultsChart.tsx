@@ -8,11 +8,21 @@ interface ResultsChartProps {
     activeQuadrant?: string | null;
     highlightQuadrant?: string | null;
     readOnly?: boolean;
+    xAxisLabel?: string;
+    yAxisLabel?: string;
 }
 
 import { useTheme } from '../context/ThemeContext';
 
-export function ResultsChart({ data, showLabels = false, activeQuadrant, highlightQuadrant, readOnly = false }: ResultsChartProps) {
+export function ResultsChart({
+    data,
+    showLabels = false,
+    activeQuadrant,
+    highlightQuadrant,
+    readOnly = false,
+    xAxisLabel = "Feasibility (Easy -> Hard)",
+    yAxisLabel = "Business Value (Low -> High)"
+}: ResultsChartProps) {
     const { theme } = useTheme();
     const svgRef = useRef<SVGSVGElement>(null);
     // Local state to track overrides without mutating props immediately
@@ -39,8 +49,8 @@ export function ResultsChart({ data, showLabels = false, activeQuadrant, highlig
             .attr("transform", `translate(${margin.left},${margin.top})`);
 
         // Scales
-        const xValues = localData.length > 0 ? localData.map(d => d.x ?? d.scores?.['Feasibility'] ?? 0) : [];
-        const yValues = localData.length > 0 ? localData.map(d => d.y ?? d.scores?.['Business Value'] ?? 0) : [];
+        const xValues = localData.length > 0 ? localData.map(d => d.x !== undefined ? d.x : (d.scores?.['Feasibility'] ?? 0)) : [];
+        const yValues = localData.length > 0 ? localData.map(d => d.y !== undefined ? d.y : (d.scores?.['Business Value'] ?? 0)) : [];
         const maxVal = localData.length > 0 ? Math.max(
             ...xValues,
             ...yValues,
@@ -157,7 +167,7 @@ export function ResultsChart({ data, showLabels = false, activeQuadrant, highlig
             .style("text-anchor", "middle")
             .style("fill", textColor)
             .style("font-size", "12px")
-            .text("Feasibility (Easy -> Hard)");
+            .text(xAxisLabel);
 
         svg.append("text")
             .attr("transform", "rotate(-90)")
@@ -166,7 +176,7 @@ export function ResultsChart({ data, showLabels = false, activeQuadrant, highlig
             .style("text-anchor", "middle")
             .style("fill", textColor)
             .style("font-size", "12px")
-            .text("Business Value (Low -> High)");
+            .text(yAxisLabel);
 
         // Tooltip container
         const tooltip = d3.select("body").append("div")

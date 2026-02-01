@@ -1,32 +1,55 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '../context/SessionContext';
 import { useTheme } from '../context/ThemeContext';
 import { api } from '../lib/api';
 import { socket } from '../lib/socket';
-import { ResultsChart } from '../components/ResultsChart';
-import { UseCaseCanvas } from '../components/UseCaseCanvas';
 import { Button } from '../components/ui/Button';
-import { LogOut, ArrowLeft, Loader2, GripVertical, Plus, X, Save, Trash2 } from 'lucide-react';
+import { ArrowLeft, Loader2, X, Save, GripVertical } from 'lucide-react';
 import { toast } from 'sonner';
 import { Header } from '../components/Header';
-import { UseCaseDetailModal } from '../components/usecases/UseCaseDetailModal';
+import { PrioritizationScale } from '../components/prioritization/PrioritizationScale';
 
 export function ParticipantMatrix() {
     const navigate = useNavigate();
     const { } = useTheme();
     const { session } = useSession();
-    const [results, setResults] = useState<any[]>([]);
+
+    // Original use cases from workshop
     const [useCases, setUseCases] = useState<any[]>([]);
+
+    // Scores mapping: useCaseId -> { criterionName -> score }
+    const [scores, setScores] = useState<Record<string, Record<string, number>>>({});
+
     const [loading, setLoading] = useState(true);
     const [workshopTitle, setWorkshopTitle] = useState<string>('');
-    const [draggedItem, setDraggedItem] = useState<any>(null);
-    const [showUseCaseModal, setShowUseCaseModal] = useState(false);
-    const [isDraggingOver, setIsDraggingOver] = useState(false);
+    const [workshopCriteria, setWorkshopCriteria] = useState<any[]>([]);
+    const [activeCriterionIndex, setActiveCriterionIndex] = useState(0);
+
+    // Persist active criterion to sessionStorage
+    useEffect(() => {
+        if (!session?.workshopId) return;
+
+        const saved = sessionStorage.getItem(`active_criterion_${session.workshopId}`);
+        if (saved) {
+            const index = parseInt(saved, 10);
+            if (!isNaN(index) && index < workshopCriteria.length) {
+                setActiveCriterionIndex(index);
+            }
+        }
+    }, [session?.workshopId, workshopCriteria.length]);
+
+    useEffect(() => {
+        if (session?.workshopId) {
+            sessionStorage.setItem(`active_criterion_${session.workshopId}`, activeCriterionIndex.toString());
+        }
+    }, [activeCriterionIndex, session?.workshopId]);
+
     const [isSaving, setIsSaving] = useState(false);
     const [unsavedChanges, setUnsavedChanges] = useState<Set<string>>(new Set());
-    const [selectedUseCase, setSelectedUseCase] = useState<any>(null);
-    const matrixRef = useRef<HTMLDivElement>(null);
+
+
+    const activeCriterion = workshopCriteria[activeCriterionIndex]?.name;
 
     const handleSaveChanges = async () => {
         if (unsavedChanges.size === 0) return;
@@ -34,27 +57,25 @@ export function ParticipantMatrix() {
         setIsSaving(true);
         try {
             const promises = Array.from(unsavedChanges).map(async (id) => {
-                const item = results.find(r => r.id === id);
-                if (!item) return;
+                const itemScores = scores[id];
+                if (!itemScores) return;
 
                 // Save to DB
                 await api.post('/votes/', {
                     use_case_id: id,
                     participant_id: session?.participantId,
-                    scores: {
-                        'Feasibility': Math.round(item.x),
-                        'Business Value': Math.round(item.y)
-                    }
+                    scores: itemScores
                 });
 
-                // Emit socket event
+                // Emit socket event for real-time facilitator view
                 if (session?.participantId && session?.workshopId) {
+                    const useCase = useCases.find(u => u.id === id);
                     socket.emit('matrix:position_update', {
                         participant_id: session.participantId,
                         participant_name: session.name || 'Participant',
                         use_case_id: id,
-                        use_case_title: item.title,
-                        position: { x: item.x, y: item.y },
+                        use_case_title: useCase?.title || 'Unknown',
+                        scores: itemScores,
                         workshop_id: session.workshopId
                     });
                 }
@@ -62,7 +83,7 @@ export function ParticipantMatrix() {
 
             await Promise.all(promises);
             setUnsavedChanges(new Set());
-            toast.success("All changes submitted successfully!");
+            toast.success("All ratings submitted successfully!");
         } catch (err: any) {
             console.error('Failed to save changes:', err);
             toast.error("Failed to submit changes. Please try again.");
@@ -73,22 +94,23 @@ export function ParticipantMatrix() {
 
     useEffect(() => {
         if (!session) {
+            console.log('[ParticipantMatrix] No session, redirecting to home');
             navigate('/');
             return;
         }
 
-        // Join workshop room to receive socket events
+        console.log('[ParticipantMatrix] Component mounted with session:', {
+            participantId: session.participantId,
+            workshopId: session.workshopId
+        });
+
         if (session.workshopId) {
             socket.emit('join_workshop', { workshop_id: session.workshopId });
         }
 
         fetchMatrixData();
 
-        // Listen for new use case additions
         const handleNewSubmission = (data: any) => {
-            console.log('New use case submission received:', data);
-            // Only refresh use cases list, NOT results (so it doesn't appear on graph automatically)
-            // Refresh use cases to show the new one in the tiles panel
             api.get(`/usecases/${session.workshopId}`)
                 .then(response => {
                     setUseCases(response.data || []);
@@ -97,135 +119,79 @@ export function ParticipantMatrix() {
                     console.error('Failed to refresh use cases:', err);
                 });
 
-            setShowUseCaseModal(false); // Close the modal
-            toast.success(`"${data.title}" added! Drag it from the panel onto the matrix to position it.`);
+            toast.success(`"${data.title}" added! Drag it to the scale to rate it.`);
         };
 
         socket.on('new_submission', handleNewSubmission);
 
-        // Listen for position changes from ResultsChart drag events
-        const handlePositionChange = (e: any) => {
-            const { id, x, y, scores } = e.detail;
-
-            // Update local state immediately
-            setResults(prevResults => {
-                const existingIndex = prevResults.findIndex(r => r.id === id);
-                const updatedResult = {
-                    ...(prevResults.find(r => r.id === id) || {}),
-                    id,
-                    x,
-                    y,
-                    scores: scores || {
-                        'Feasibility': x,
-                        'Business Value': y
-                    }
-                };
-
-                if (existingIndex >= 0) {
-                    const updated = [...prevResults];
-                    updated[existingIndex] = { ...updated[existingIndex], ...updatedResult };
-                    return updated;
-                }
-                return prevResults;
-            });
-
-            // Mark as unsaved
-            setUnsavedChanges(prev => new Set(prev).add(id));
-        };
-
-        const matrixContainer = matrixRef.current;
-        if (matrixContainer) {
-            matrixContainer.addEventListener('matrix:position_changed', handlePositionChange as EventListener);
-            matrixContainer.addEventListener('matrix:position_removed', ((e: CustomEvent) => {
-                handleRemovePosition(e.detail.id);
-            }) as EventListener);
-        }
-
         return () => {
-            if (matrixContainer) {
-                matrixContainer.removeEventListener('matrix:position_changed', handlePositionChange as EventListener);
-                matrixContainer.removeEventListener('matrix:position_removed', ((e: CustomEvent) => {
-                    handleRemovePosition(e.detail.id);
-                }) as EventListener);
-            }
             socket.off('new_submission', handleNewSubmission);
         };
     }, [session, navigate]);
 
-    const handleRemovePosition = async (useCaseId: string) => {
-        if (!session?.participantId || !session?.workshopId) return;
+    const fetchMatrixData = async () => {
+        if (!session?.workshopId || !session?.participantId) {
+            console.warn('[ParticipantMatrix] Cannot fetch data - missing session info:', {
+                hasWorkshopId: !!session?.workshopId,
+                hasParticipantId: !!session?.participantId
+            });
+            return;
+        }
 
-        // Optimistically remove from UI
-        setResults(prev => prev.filter(r => r.id !== useCaseId));
-        setUnsavedChanges(prev => {
-            const next = new Set(prev);
-            next.delete(useCaseId);
-            return next;
+        console.log('[ParticipantMatrix] Fetching matrix data for:', {
+            workshopId: session.workshopId,
+            participantId: session.participantId
         });
 
         try {
-            await api.delete('/votes/', {
-                params: {
-                    use_case_id: useCaseId,
-                    participant_id: session.participantId
-                }
-            });
-            toast.success("Removed from matrix");
-        } catch (err) {
-            console.error('Failed to remove position:', err);
-            toast.error("Failed to remove. Please try again.");
-            fetchMatrixData(); // Revert on failure
-        }
-    };
-
-    const fetchMatrixData = async () => {
-        if (!session?.workshopId) return;
-
-        try {
             setLoading(true);
-            // Fetch workshop info
             const workshopResponse = await api.get(`/workshops/${session.workshopId}`);
             setWorkshopTitle(workshopResponse.data?.title || 'Workshop');
+            setWorkshopCriteria(workshopResponse.data?.config?.criteria || []);
 
-            // Fetch use cases
             const useCasesResponse = await api.get(`/usecases/${session.workshopId}`);
             setUseCases(useCasesResponse.data || []);
 
-            // Fetch participant-specific matrix positions (their own positions, not aggregated)
-            // This ensures positions are tracked per participant and don't change when others vote
             try {
+                console.log('[ParticipantMatrix] Fetching participant positions...');
                 const positionsResponse = await api.get(
                     `/votes/participant/${session.participantId}/matrix-positions?workshop_id=${session.workshopId}`
                 );
                 const participantPositions = positionsResponse.data || [];
 
-                // Map to results format
-                const positionedResults = participantPositions.map((pos: any) => ({
-                    id: pos.id,
-                    title: pos.title,
-                    description: pos.description,
-                    category: pos.category,
-                    x: pos.x,
-                    y: pos.y,
-                    scores: pos.scores,
-                    vote_count: pos.vote_count || 1,
-                    variance: pos.variance || 0
-                }));
+                const loadedScores: Record<string, Record<string, number>> = {};
+                participantPositions.forEach((pos: any) => {
+                    loadedScores[pos.id] = pos.scores;
+                });
+                console.log('[ParticipantMatrix] Loaded scores from backend:', loadedScores);
+                console.log('[ParticipantMatrix] Participant positions:', participantPositions);
 
-                setResults(positionedResults);
-            } catch (err: any) {
-                // If endpoint doesn't exist yet (404), fall back to fetching participant's votes directly
-                if (err.response?.status === 404) {
-                    console.warn('Participant matrix positions endpoint not available, using fallback');
-                    // Fallback: We'll rely on local state and API saves
-                    // Positions are saved via POST /votes/ and stored in database
-                    // They will be loaded from local state updates
-                    setResults([]);
-                } else {
-                    console.error('Failed to fetch participant positions:', err);
-                    toast.error(`Error loading matrix: ${err.message || 'Unknown error'}`);
-                    setResults([]);
+                // If we got empty data but expected some, try one more time after a delay
+                if (participantPositions.length === 0 && Object.keys(scores).length > 0) {
+                    console.log('[ParticipantMatrix] Got empty data but had previous scores, retrying in 500ms...');
+                    await new Promise(resolve => setTimeout(resolve, 500));
+
+                    const retryResponse = await api.get(
+                        `/votes/participant/${session.participantId}/matrix-positions?workshop_id=${session.workshopId}`
+                    );
+                    const retryPositions = retryResponse.data || [];
+
+                    if (retryPositions.length > 0) {
+                        console.log('[ParticipantMatrix] Retry successful, got', retryPositions.length, 'positions');
+                        const retryScores: Record<string, Record<string, number>> = {};
+                        retryPositions.forEach((pos: any) => {
+                            retryScores[pos.id] = pos.scores;
+                        });
+                        setScores(retryScores);
+                        return;
+                    }
                 }
+
+                setScores(loadedScores);
+            } catch (err: any) {
+                console.warn('Failed to fetch participant positions:', err);
+                console.warn('Error details:', err.response?.data || err.message);
+                setScores({});
             }
         } catch (err: any) {
             console.error('Failed to fetch matrix data:', err);
@@ -235,184 +201,105 @@ export function ParticipantMatrix() {
         }
     };
 
-    const [activeQuadrant, setActiveQuadrant] = useState<string | null>(null);
-    const [lastDroppedQuadrant, setLastDroppedQuadrant] = useState<string | null>(null);
+    const handleScoreChange = (useCaseId: string, score: number) => {
+        if (!activeCriterion) return;
 
-    // Helper to determine quadrant from domain coordinates
-    const getQuadrant = (x: number, y: number) => {
-        const mid = 50;
-        if (x < mid && y > mid) return 'top-left';
-        if (x >= mid && y > mid) return 'top-right';
-        if (x < mid && y <= mid) return 'bottom-left';
-        if (x >= mid && y <= mid) return 'bottom-right';
-        return null;
+        setScores(prev => {
+            const newScores = {
+                ...prev,
+                [useCaseId]: {
+                    ...(prev[useCaseId] || {}),
+                    [activeCriterion]: score
+                }
+            };
+            return newScores;
+        });
+
+        setUnsavedChanges(prev => new Set(prev).add(useCaseId));
+
+        // Pass the updated scores directly to avoid race conditions with state
+        const updatedScores = {
+            ...(scores[useCaseId] || {}),
+            [activeCriterion]: score
+        };
+        saveSpecificUseCase(useCaseId, updatedScores);
+    };
+
+    const [lastSaved, setLastSaved] = useState<Date | null>(null);
+
+    const saveSpecificUseCase = async (useCaseId: string, itemScores: Record<string, number>) => {
+        if (!session?.participantId) {
+            console.warn('[ParticipantMatrix] Cannot save - no participant ID');
+            return;
+        }
+        if (isSaving) {
+            console.warn('[ParticipantMatrix] Skipping save - already saving');
+            return;
+        }
+
+        const useCase = useCases.find(u => u.id === useCaseId);
+
+        try {
+            console.log('[ParticipantMatrix] Auto-saving scores:', {
+                use_case_id: useCaseId,
+                participant_id: session.participantId,
+                scores: itemScores
+            });
+            await api.post('/votes/', {
+                use_case_id: useCaseId,
+                participant_id: session.participantId,
+                scores: itemScores
+            });
+            console.log('[ParticipantMatrix] Auto-save successful for:', useCaseId);
+
+            setUnsavedChanges(prev => {
+                const next = new Set(prev);
+                next.delete(useCaseId);
+                return next;
+            });
+            setLastSaved(new Date());
+
+            socket.emit('matrix:position_update', {
+                participant_id: session.participantId,
+                participant_name: session.name || 'Participant',
+                use_case_id: useCaseId,
+                use_case_title: useCase?.title || 'Unknown',
+                scores: itemScores,
+                workshop_id: session.workshopId
+            });
+        } catch (err) {
+            console.error('Auto-save failed:', err);
+            toast.error('Follow-up save failed. Please click "Submit" manually.');
+        }
+    };
+
+    const handleRemoveRating = (useCaseId: string) => {
+        if (!activeCriterion) return;
+
+        setScores(prev => {
+            if (!prev[useCaseId]) return prev;
+            const updatedItemScores = { ...prev[useCaseId] };
+            delete updatedItemScores[activeCriterion];
+
+            const newScores = { ...prev };
+            if (Object.keys(updatedItemScores).length === 0) {
+                delete newScores[useCaseId];
+            } else {
+                newScores[useCaseId] = updatedItemScores;
+            }
+            return newScores;
+        });
+
+        setUnsavedChanges(prev => new Set(prev).add(useCaseId));
+
+        const updatedItemScores = { ...(scores[useCaseId] || {}) };
+        delete updatedItemScores[activeCriterion];
+
+        saveSpecificUseCase(useCaseId, updatedItemScores);
     };
 
     const handleDragStart = (e: React.DragEvent, useCase: any) => {
-        if (!session?.participantId) {
-            e.preventDefault();
-            toast.error('Session expired. Please refresh the page.');
-            return;
-        }
-
-        setDraggedItem(useCase);
-        e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('text/plain', useCase.id);
-        if (e.currentTarget instanceof HTMLElement) {
-            e.currentTarget.style.opacity = '0.5';
-        }
-
-        // Emit drag start event for real-time tracking
-        if (session?.participantId && session?.workshopId) {
-            socket.emit('matrix:drag_start', {
-                participant_id: session.participantId,
-                participant_name: session.name || 'Participant',
-                use_case_id: useCase.id,
-                use_case_title: useCase.title,
-                workshop_id: session.workshopId
-            });
-        }
-    };
-
-    const handleDragEnd = (e: React.DragEvent) => {
-        if (e.currentTarget instanceof HTMLElement) {
-            e.currentTarget.style.opacity = '1';
-        }
-        setDraggedItem(null);
-        setIsDraggingOver(false);
-        setActiveQuadrant(null);
-    };
-
-    const getMatrixCoordinates = (e: React.DragEvent) => {
-        if (!matrixRef.current) return null;
-
-        const svg = matrixRef.current.querySelector('svg');
-        if (!svg) return null;
-
-        const svgRect = svg.getBoundingClientRect();
-        const x = e.clientX - svgRect.left;
-        const y = e.clientY - svgRect.top;
-
-        // Matrix dimensions from ResultsChart component
-        const matrixWidth = 800;
-        const matrixHeight = 600;
-        const margin = { left: 60, top: 40, right: 40, bottom: 60 };
-        const plotWidth = matrixWidth - margin.left - margin.right;
-        const plotHeight = matrixHeight - margin.top - margin.bottom;
-
-        const scaleX = svgRect.width / matrixWidth;
-        const scaleY = svgRect.height / matrixHeight;
-
-        const adjustedX = x / scaleX;
-        const adjustedY = y / scaleY;
-
-        if (adjustedX >= margin.left && adjustedX <= margin.left + plotWidth &&
-            adjustedY >= margin.top && adjustedY <= margin.top + plotHeight) {
-
-            const domainX = Math.max(0, Math.min(100, ((adjustedX - margin.left) / plotWidth) * 100));
-            // Y axis is inverted in D3 (0 is bottom of graph, which is top of SVG usually? No wait)
-            // In D3 scale: range([height, 0]). 
-            // pixel y=0 -> domain=100. pixel y=height -> domain=0.
-            // ((adjustedY - margin.top) / plotHeight) gives 0 at top, 1 at bottom.
-            // So domainY = (1 - ratio) * 100.
-            // Let's verify ResultsChart.tsx:
-            // const y = d3.scaleLinear().domain([0, domainMax]).range([height, 0]);
-            // pixel = y(val). 
-            // input pixel -> invert.
-            // y.invert(pixel_y).
-            // Math: pixel_y / height = 0..1 (top to bottom).
-            // domain = domainMax * (1 - pixel_y_ratio).
-
-            const ratioY = (adjustedY - margin.top) / plotHeight;
-            const domainY = Math.max(0, Math.min(100, (1 - ratioY) * 100));
-
-            return { domainX, domainY };
-        }
-        return null;
-    };
-
-    const handleDrop = async (e: React.DragEvent) => {
-        e.preventDefault();
-        setIsDraggingOver(false);
-        setActiveQuadrant(null);
-
-        if (!draggedItem || !matrixRef.current || !session?.participantId) {
-            if (!session?.participantId) {
-                toast.error('Session expired. Please refresh the page.');
-            }
-            return;
-        }
-
-        const coords = getMatrixCoordinates(e);
-
-        if (coords) {
-            const { domainX, domainY } = coords;
-
-            // Determine quadrant
-            const quadrant = getQuadrant(domainX, domainY);
-            setLastDroppedQuadrant(quadrant);
-
-            // Update local state state to reflect the new position
-            const newResult = {
-                ...draggedItem,
-                id: draggedItem.id,
-                title: draggedItem.title,
-                description: draggedItem.description,
-                x: domainX,
-                y: domainY,
-                scores: {
-                    'Feasibility': domainX,
-                    'Business Value': domainY
-                },
-                vote_count: 1,
-                variance: 0
-            };
-
-            setResults(prevResults => {
-                const existingIndex = prevResults.findIndex(r => r.id === draggedItem.id);
-                if (existingIndex >= 0) {
-                    // Update existing position
-                    const updatedResults = [...prevResults];
-                    updatedResults[existingIndex] = newResult;
-                    return updatedResults;
-                } else {
-                    // Add new use case to graph
-                    return [...prevResults, newResult];
-                }
-            });
-
-            // Mark as unsaved
-            setUnsavedChanges(prev => new Set(prev).add(draggedItem.id));
-            toast.info(`Placed "${draggedItem.title}". Click Submit to save.`);
-
-        } else {
-            toast.error('Please drop within the matrix plot area');
-        }
-    };
-
-    const handleDragOver = (e: React.DragEvent) => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-        setIsDraggingOver(true);
-
-        // Calculate active quadrant
-        const coords = getMatrixCoordinates(e);
-        if (coords) {
-            const quadrant = getQuadrant(coords.domainX, coords.domainY);
-            if (activeQuadrant !== quadrant) {
-                setActiveQuadrant(quadrant);
-            }
-        } else {
-            setActiveQuadrant(null);
-        }
-    };
-
-    const handleDragLeave = (e: React.DragEvent) => {
-        // Only set dragging over to false if we're leaving the matrix container
-        const relatedTarget = e.relatedTarget as HTMLElement;
-        if (!matrixRef.current?.contains(relatedTarget)) {
-            setIsDraggingOver(false);
-        }
     };
 
     if (loading) {
@@ -420,21 +307,17 @@ export function ParticipantMatrix() {
             <div className="min-h-screen flex items-center justify-center theme-bg-primary">
                 <div className="flex items-center gap-3 theme-text-secondary">
                     <Loader2 className="w-6 h-6 animate-spin" />
-                    <span>Loading matrix...</span>
+                    <span>Loading prioritization...</span>
                 </div>
             </div>
         );
     }
 
-    if (!session) {
-        return null;
-    }
-
     return (
-        <div className="min-h-screen theme-bg-primary">
+        <div className="min-h-screen theme-bg-primary pt-[64px]">
             <Header showBackButton={false} showHomeButton={false} />
-            {/* Header */}
-            <header className="sticky top-14 z-40 border-b backdrop-blur theme-bg-secondary/80 theme-border">
+
+            <header className="sticky top-[64px] z-40 border-b backdrop-blur theme-bg-secondary/80 theme-border">
                 <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
                     <div className="flex items-center gap-4">
                         <Button
@@ -443,239 +326,191 @@ export function ParticipantMatrix() {
                             className="theme-text-secondary hover:theme-text-primary"
                         >
                             <ArrowLeft className="w-4 h-4 mr-2" />
-                            Back to Dashboard
+                            Back
                         </Button>
                         <div>
                             <h1 className="text-xl font-bold theme-text-primary">
-                                Strategic Matrix
+                                Strategic Prioritization
                             </h1>
                             <p className="text-sm theme-text-secondary">
                                 {workshopTitle}
                             </p>
                         </div>
                     </div>
+
+                    <div className="flex items-center gap-3">
+                        {lastSaved && unsavedChanges.size === 0 && (
+                            <span className="text-[10px] theme-text-muted flex items-center gap-1">
+                                <span className="w-1.5 h-1.5 rounded-full bg-semantic-success" />
+                                All changes saved
+                            </span>
+                        )}
+                        <Button
+                            onClick={handleSaveChanges}
+                            disabled={unsavedChanges.size === 0 || isSaving}
+                            variant={unsavedChanges.size > 0 ? 'primary' : 'secondary'}
+                        >
+                            {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+                            {unsavedChanges.size > 0 ? `Submit (${unsavedChanges.size})` : 'Submitted'}
+                        </Button>
+                    </div>
                 </div>
             </header>
 
-            {/* Main Content */}
-            <main className="max-w-7xl mx-auto px-4 py-8">
-                {useCases.length === 0 ? (
-                    <div className="text-center py-20 theme-text-secondary">
-                        <div className="text-6xl mb-4">📊</div>
-                        <p className="text-lg mb-2 font-semibold">No use cases available yet</p>
-                        <p className="text-sm mb-6">
-                            Use cases need to be added before they can be positioned on the matrix.
-                        </p>
-                        <div className="flex gap-3 justify-center">
-                            <Button
-                                variant="secondary"
-                                onClick={() => setShowUseCaseModal(true)}
-                                className="flex items-center gap-2"
-                            >
-                                <Plus className="w-4 h-4" />
-                                Add First Use Case
-                            </Button>
-                            <Button
-                                variant="ghost"
-                                onClick={() => navigate('/participant-dashboard')}
-                            >
-                                Go to Dashboard
-                            </Button>
-                        </div>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-1 lg:grid-cols-[7fr_3fr] gap-6">
-                        {/* Matrix Section - Left Side (70%) */}
-                        <div className="p-6 rounded-xl border theme-card theme-border">
-                            <div className="flex items-center justify-between mb-2">
-                                <h2 className="text-lg font-semibold theme-text-primary">
-                                    Strategic Prioritization Matrix
-                                </h2>
-                                <Button
-                                    onClick={handleSaveChanges}
-                                    disabled={unsavedChanges.size === 0 || isSaving}
-                                    className={`transition-all ${unsavedChanges.size > 0 ? 'animate-pulse' : ''}`}
-                                    variant={unsavedChanges.size > 0 ? 'primary' : 'secondary'}
-                                >
-                                    {isSaving ? (
-                                        <>
-                                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                            Saving...
-                                        </>
-                                    ) : (
-                                        <>
-                                            <Save className="w-4 h-4 mr-2" />
-                                            Submit Positions ({unsavedChanges.size})
-                                        </>
-                                    )}
-                                </Button>
-                            </div>
-                            <p className="text-xs mb-4 theme-text-secondary">
-                                Drag use cases from the right panel onto the matrix to position them.
-                                Drag a dot outside the matrix box to remove it.
-                            </p>
-                            <div
-                                ref={matrixRef}
-                                onDrop={handleDrop}
-                                onDragOver={handleDragOver}
-                                onDragLeave={handleDragLeave}
-                                className={`relative transition-all ${isDraggingOver && draggedItem
-                                    ? 'ring-2 ring-brand-violet ring-offset-2 ring-offset-surface-800'
-                                    : ''
-                                    }`}
-                                role="application"
-                                aria-label="Strategic Prioritization Matrix - Drop use cases here to position them"
-                            >
-                                {isDraggingOver && draggedItem && (
-                                    <div className="absolute inset-0 z-10 flex items-center justify-center bg-brand-violet/10 border-2 border-dashed border-brand-violet rounded-lg pointer-events-none">
-                                        <div className="bg-surface-800 px-4 py-2 rounded-lg border border-brand-violet">
-                                            <p className="text-sm font-semibold text-brand-violet">
-                                                Drop "{draggedItem.title}" here to position
-                                            </p>
-                                        </div>
-                                    </div>
-                                )}
-                                {isSaving && (
-                                    <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/50 rounded-lg pointer-events-none">
-                                        <div className="bg-surface-800 px-4 py-2 rounded-lg border border-white/20 flex items-center gap-2">
-                                            <Loader2 className="w-4 h-4 animate-spin text-brand-violet" />
-                                            <span className="text-sm text-white">Saving position...</span>
-                                        </div>
-                                    </div>
-                                )}
-                                <ResultsChart
-                                    data={results}
-                                    showLabels={true}
-                                    activeQuadrant={activeQuadrant}
-                                    highlightQuadrant={lastDroppedQuadrant}
-                                />
-                            </div>
+            <main className="max-w-[1600px] mx-auto px-4 py-8">
+                <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr_300px] gap-8 items-start">
+                    {/* Left Sidebar: Category Navigation */}
+                    <aside className="space-y-4 sticky top-[140px] z-30">
+                        <div className="flex items-center justify-between px-1">
+                            <h3 className="font-bold theme-text-secondary text-xs uppercase tracking-wider">
+                                Categories
+                            </h3>
+                            <span className="text-[10px] bg-theme-bg-tertiary px-2 py-0.5 rounded-full theme-text-muted">
+                                {activeCriterionIndex + 1} / {workshopCriteria.length}
+                            </span>
                         </div>
 
-                        {/* Use Cases Tiles - Right Side (30%) */}
-                        <div className="p-4 rounded-xl border theme-card theme-border">
-                            <div className="flex items-center justify-between mb-3">
-                                <h3 className="text-sm font-semibold theme-text-primary">
-                                    Use Cases ({useCases.length})
-                                </h3>
-                                <Button
-                                    variant="secondary"
-                                    onClick={() => setShowUseCaseModal(true)}
-                                    className="h-7 px-3 text-xs"
-                                >
-                                    <Plus className="w-3 h-3 mr-1" />
-                                    Add New
-                                </Button>
-                            </div>
-                            <p className="text-xs mb-4 theme-text-secondary">
-                                Drag tiles onto the matrix to position them
-                            </p>
-                            <div className="space-y-2 max-h-[calc(100vh-300px)] overflow-y-auto">
-                                {useCases.length === 0 ? (
-                                    <div className="text-center py-8 theme-text-secondary">
-                                        <p className="text-sm">No use cases available</p>
-                                    </div>
-                                ) : (
-                                    useCases.map((uc: any) => {
-                                        const isOnMatrix = results.some(r => r.id === uc.id);
-                                        const isDragging = draggedItem?.id === uc.id;
-                                        return (
-                                            <div
-                                                key={uc.id}
-                                                draggable={!isSaving}
-                                                onDragStart={(e) => handleDragStart(e, uc)}
-                                                onDragEnd={handleDragEnd}
-                                                onClick={() => setSelectedUseCase(uc)}
-                                                className={`p-3 rounded-lg border transition-all ${isSaving ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'
-                                                    } theme-bg-tertiary theme-border hover:border-brand-violet hover:shadow-lg ${isOnMatrix ? 'ring-2 ring-brand-violet/30' : ''
-                                                    } ${isDragging ? 'opacity-50 scale-95' : ''
-                                                    }`}
-                                                aria-label={`Click to view details or drag ${uc.title} onto matrix to position`}
-                                            >
-                                                <div className="flex items-start gap-2">
-                                                    <GripVertical className="w-4 h-4 mt-0.5 flex-shrink-0 theme-text-secondary" />
-                                                    <div className="flex-1 min-w-0">
-                                                        <h4 className="font-semibold text-sm mb-1 line-clamp-2 theme-text-primary">
-                                                            {uc.title}
-                                                        </h4>
-                                                        {uc.description && (
-                                                            <p className="text-xs line-clamp-2 theme-text-secondary">
-                                                                {uc.description}
-                                                            </p>
-                                                        )}
-                                                        {isOnMatrix && (
-                                                            <div className="flex items-center justify-between text-xs mt-2 pt-2 border-t theme-border theme-text-secondary">
-                                                                <span className="text-brand-violet flex items-center gap-1">
-                                                                    ✓ On matrix
-                                                                </span>
-                                                                <button
-                                                                    onClick={(e) => {
-                                                                        e.stopPropagation();
-                                                                        if (confirm("Remove this use case from the matrix?")) {
-                                                                            handleRemovePosition(uc.id);
-                                                                        }
-                                                                    }}
-                                                                    className="p-1.5 hover:bg-red-100 hover:text-red-600 dark:hover:bg-red-900/30 dark:hover:text-red-400 rounded transition-colors"
-                                                                    title="Remove from matrix"
-                                                                >
-                                                                    <Trash2 className="w-3.5 h-3.5" />
-                                                                </button>
-                                                            </div>
-                                                        )}
+                        <div className="flex flex-col gap-2 max-h-[calc(100vh-250px)] overflow-y-auto pr-2 scrollbar-hide">
+                            {workshopCriteria.length === 0 ? (
+                                <div className="text-center py-8 rounded-2xl border-2 border-dashed theme-border theme-bg-secondary">
+                                    <p className="text-xs theme-text-secondary italic px-4">
+                                        No prioritization criteria defined.
+                                    </p>
+                                </div>
+                            ) : (
+                                workshopCriteria.map((criterion, idx) => {
+                                    const isSelected = activeCriterionIndex === idx;
+                                    const pendingCount = useCases.filter(uc => !scores[uc.id]?.[criterion.name]).length;
+                                    const isCompleted = pendingCount === 0 && useCases.length > 0;
+
+                                    return (
+                                        <button
+                                            key={criterion.name}
+                                            onClick={() => setActiveCriterionIndex(idx)}
+                                            className={`w-full p-4 rounded-xl border transition-all flex flex-col gap-2 group relative text-left ${isSelected
+                                                ? 'border-brand-violet bg-brand-violet/10 ring-2 ring-brand-violet/20 shadow-lg z-10'
+                                                : isCompleted
+                                                    ? 'border-semantic-success bg-semantic-success/5 opacity-80'
+                                                    : 'theme-border theme-bg-secondary hover:border-brand-violet/40 hover:bg-brand-violet/5'
+                                                }`}
+                                        >
+                                            <div className="flex items-center justify-between gap-2">
+                                                <span className={`text-xs font-bold uppercase tracking-wide truncate ${isSelected ? 'theme-text-primary' : isCompleted ? 'text-semantic-success' : 'theme-text-secondary'
+                                                    }`}>
+                                                    {criterion.name}
+                                                </span>
+                                                {isCompleted ? (
+                                                    <div className="bg-semantic-success text-white p-0.5 rounded-full shrink-0">
+                                                        <svg className="w-2.5 h-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 13l4 4L19 7" />
+                                                        </svg>
                                                     </div>
-                                                </div>
+                                                ) : pendingCount > 0 && (
+                                                    <span className="text-[10px] bg-brand-violet/20 text-brand-violet px-1.5 py-0.5 rounded-md font-bold">
+                                                        {pendingCount}
+                                                    </span>
+                                                )}
                                             </div>
-                                        );
-                                    })
-                                )}
-                            </div>
+
+                                            {isSelected && (
+                                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-brand-violet rounded-r-full shadow-[0_0_8px_rgba(124,58,237,0.8)]" />
+                                            )}
+                                        </button>
+                                    );
+                                })
+                            )}
+                        </div>
+                    </aside>
+
+                    {/* Center Section: Scale & Description */}
+                    <div className="space-y-6">
+                        <div className="text-center bg-brand-violet/5 py-4 px-6 rounded-2xl border border-brand-violet/10 backdrop-blur-sm">
+                            <h2 className="text-lg font-bold theme-text-primary flex items-center justify-center gap-2">
+                                <span className="w-8 h-8 rounded-lg bg-brand-violet text-white flex items-center justify-center text-sm">
+                                    {activeCriterionIndex + 1}
+                                </span>
+                                {workshopCriteria[activeCriterionIndex]?.name}
+                            </h2>
+                            {workshopCriteria[activeCriterionIndex]?.description && (
+                                <p className="text-sm theme-text-secondary mt-2 italic max-w-2xl mx-auto">
+                                    &ldquo;{workshopCriteria[activeCriterionIndex].description}&rdquo;
+                                </p>
+                            )}
+                        </div>
+
+                        <div className="p-6 rounded-2xl border theme-card theme-border bg-white/50 backdrop-blur-sm shadow-xl">
+                            <PrioritizationScale
+                                criterion={activeCriterion}
+                                useCases={useCases}
+                                scores={scores}
+                                onScoreChange={handleScoreChange}
+                            />
                         </div>
                     </div>
-                )}
-            </main>
 
-            {/* Use Case Creation Modal */}
-            {showUseCaseModal && session && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
-                    <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl theme-bg-primary">
-                        <button
-                            onClick={() => setShowUseCaseModal(false)}
-                            className="absolute top-4 right-4 z-10 p-2 rounded-lg transition theme-text-secondary hover:theme-bg-tertiary hover:theme-text-primary"
-                        >
-                            <X className="w-5 h-5" />
-                        </button>
-                        <UseCaseCanvas
-                            session={session}
-                            onSuccess={() => {
-                                setShowUseCaseModal(false);
-                                // Only refresh use cases list, not matrix positions
-                                // Matrix positions remain unchanged until participant drags new items
-                                api.get(`/usecases/${session.workshopId}`)
-                                    .then(response => {
-                                        setUseCases(response.data || []);
-                                    })
-                                    .catch(err => {
-                                        console.error('Failed to refresh use cases:', err);
-                                    });
-                            }}
-                        />
-                    </div>
+                    {/* Right Sidebar: Pending Use Cases */}
+                    <aside className="space-y-4 sticky top-[140px] z-30">
+                        <div className="flex items-center justify-between px-1">
+                            <h3 className="font-bold theme-text-primary text-xs uppercase tracking-wider">
+                                Pending Items
+                            </h3>
+                            <span className="text-[10px] bg-brand-violet/10 text-brand-violet px-2 py-0.5 rounded-full font-bold">
+                                {useCases.filter(uc => !scores[uc.id]?.[activeCriterion]).length}
+                            </span>
+                        </div>
+
+                        <div className="space-y-3 max-h-[calc(100vh-450px)] overflow-y-auto pr-2 scrollbar-hide">
+                            {useCases.map((uc) => {
+                                const isRated = !!scores[uc.id]?.[activeCriterion];
+                                if (isRated) return null;
+
+                                return (
+                                    <div
+                                        key={uc.id}
+                                        draggable
+                                        onDragStart={(e) => handleDragStart(e, uc)}
+                                        className="p-4 rounded-xl border theme-bg-secondary theme-border cursor-grab active:cursor-grabbing hover:border-brand-violet transition-all group shadow-sm hover:shadow-md"
+                                    >
+                                        <div className="flex gap-3">
+                                            <GripVertical className="w-4 h-4 mt-1 opacity-20 group-hover:opacity-100 transition-opacity shrink-0" />
+                                            <div>
+                                                <div className="font-semibold text-xs theme-text-primary line-clamp-1">{uc.title}</div>
+                                                <div className="text-[10px] theme-text-secondary line-clamp-2 mt-1">{uc.description}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        {/* Rated in this category */}
+                        <div className="pt-4 border-t theme-border">
+                            <h4 className="text-[10px] font-bold uppercase tracking-widest theme-text-secondary mb-3 px-1">
+                                Rated Items
+                            </h4>
+                            <div className="space-y-2 max-h-[300px] overflow-y-auto pr-2 scrollbar-hide">
+                                {useCases.filter(uc => scores[uc.id]?.[activeCriterion]).map(uc => (
+                                    <div key={uc.id} className="flex items-center justify-between p-2 rounded-lg bg-brand-violet/5 border border-brand-violet/20 group animate-in fade-in slide-in-from-right-2 duration-300">
+                                        <div className="text-[11px] font-medium theme-text-primary truncate">{uc.title}</div>
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-[10px] font-black text-brand-violet bg-brand-violet/10 px-1.5 py-0.5 rounded">
+                                                {scores[uc.id][activeCriterion]}
+                                            </span>
+                                            <button
+                                                onClick={() => handleRemoveRating(uc.id)}
+                                                className="p-1 hover:bg-red-100 hover:text-red-500 rounded transition-colors"
+                                                title="Remove Rating"
+                                            >
+                                                <X className="w-3 h-3" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </aside>
                 </div>
-            )}
-
-            {/* Use Case Detail Modal */}
-            {selectedUseCase && session?.participantId && (
-                <UseCaseDetailModal
-                    useCase={selectedUseCase}
-                    participantId={session.participantId}
-                    isOwner={selectedUseCase.participant_id === session.participantId}
-                    onClose={() => {
-                        setSelectedUseCase(null);
-                        fetchMatrixData();
-                    }}
-                    onUpdate={fetchMatrixData}
-                />
-            )}
+            </main>
         </div>
     );
 }

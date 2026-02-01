@@ -6,48 +6,142 @@ from app.core.config import settings
 
 class RAGService:
     def __init__(self):
+        print("="*60)
+        print("RAGService Initialization Starting...")
+        print("="*60)
+        
         self.api_key = settings.OPENAI_API_KEY
-        self.mock_mode = settings.AI_MOCK_MODE or not self.api_key
+        self.azure_api_key = settings.AZURE_OPENAI_API_KEY
+        self.azure_endpoint = settings.AZURE_OPENAI_ENDPOINT
+        
+        print(f"OpenAI API Key: {'SET' if self.api_key else 'NOT SET'}")
+        print(f"Azure OpenAI API Key: {'SET' if self.azure_api_key else 'NOT SET'}")
+        print(f"Azure OpenAI Endpoint: {self.azure_endpoint if self.azure_endpoint else 'NOT SET'}")
+        print(f"AI Mock Mode Setting: {settings.AI_MOCK_MODE}")
+        
+        self.mock_mode = settings.AI_MOCK_MODE or (not self.api_key and not self.azure_api_key)
         self.vector_store = None
+        self.llm = None
+        self.embeddings = None
+        
+        print(f"\n[RAG] Service Mode: {'MOCK' if self.mock_mode else 'REAL AI'}")
         
         # Load Reference Data
         try:
             with open("app/data/ai_use_cases.json", "r") as f:
                 self.reference_data = json.load(f)
+            print(f"[OK] Loaded {len(self.reference_data)} reference use cases")
         except Exception as e:
-            print(f"Error loading reference data: {e}")
+            print(f"[WARN] Error loading reference data: {e}")
             self.reference_data = []
 
         if not self.mock_mode:
+            print("\n[RAG] Initializing REAL AI components...")
             self._initialize_real_components()
         else:
-            print("RAGService running in MOCK MODE (No API Key found)")
+            print("\n[WARN] RAGService running in MOCK MODE")
+            print("   Reason: No API keys configured or AI_MOCK_MODE=true")
+        
+        print("="*60)
+        print(f"RAGService Initialization Complete - Mode: {'MOCK' if self.mock_mode else 'REAL'}")
+        print("="*60 + "\n")
 
     def _initialize_real_components(self):
         try:
-            from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+            print("   [INFO] Importing LangChain modules...")
+            from langchain_openai import ChatOpenAI, OpenAIEmbeddings, AzureChatOpenAI, AzureOpenAIEmbeddings
             from langchain.vectorstores import Chroma
             from langchain.schema import Document
+            print("   [OK] LangChain modules imported successfully")
             
-            self.llm = ChatOpenAI(
-                temperature=settings.OPENAI_TEMPERATURE,
-                model=settings.OPENAI_MODEL,
-                api_key=self.api_key
-            )
-            self.embeddings = OpenAIEmbeddings(api_key=self.api_key)
+            # Check for Azure Configuration first
+            if self.azure_api_key and settings.AZURE_OPENAI_ENDPOINT:
+                print("\n   [AZURE] Initializing Azure OpenAI Client...")
+                print(f"      Endpoint: {settings.AZURE_OPENAI_ENDPOINT}")
+                print(f"      Deployment: {settings.AZURE_OPENAI_DEPLOYMENT}")
+                print(f"      Model: {settings.AZURE_OPENAI_MODEL_NAME or settings.AZURE_OPENAI_DEPLOYMENT}")
+                print(f"      API Version: {settings.AZURE_OPENAI_API_VERSION}")
+                
+                try:
+                    self.llm = AzureChatOpenAI(
+                        azure_endpoint=settings.AZURE_OPENAI_ENDPOINT,
+                        azure_deployment=settings.AZURE_OPENAI_DEPLOYMENT,
+                        api_key=self.azure_api_key,
+                        api_version=settings.AZURE_OPENAI_API_VERSION,
+                        temperature=settings.OPENAI_TEMPERATURE,
+                        model=settings.AZURE_OPENAI_MODEL_NAME or settings.AZURE_OPENAI_DEPLOYMENT
+                    )
+                    print("   [OK] Azure OpenAI Chat client initialized")
+                except Exception as e:
+                    print(f"   [ERROR] Failed to initialize Azure OpenAI Chat: {e}")
+                    raise
+                
+                # Use Azure Embeddings if configured
+                if settings.AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME:
+                    print(f"\n   [AZURE] Initializing Azure OpenAI Embeddings...")
+                    print(f"      Deployment: {settings.AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME}")
+                    print(f"      Model: {settings.AZURE_OPENAI_EMBEDDING_MODEL}")
+                    
+                    try:
+                        self.embeddings = AzureOpenAIEmbeddings(
+                            azure_endpoint=settings.AZURE_OPENAI_ENDPOINT,
+                            azure_deployment=settings.AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME,
+                            api_key=self.azure_api_key,
+                            api_version=settings.AZURE_OPENAI_EMBEDDING_API_VERSION,
+                            model=settings.AZURE_OPENAI_EMBEDDING_MODEL,
+                        )
+                        print("   [OK] Azure OpenAI Embeddings initialized")
+                    except Exception as e:
+                        print(f"   [ERROR] Failed to initialize Azure OpenAI Embeddings: {e}")
+                        print("   [WARN] Falling back to standard OpenAI embeddings...")
+                        self.embeddings = OpenAIEmbeddings(api_key=self.api_key) if self.api_key else None
+                else:
+                    print("   [WARN] Azure embedding deployment not configured")
+                    self.embeddings = OpenAIEmbeddings(api_key=self.api_key) if self.api_key else None
             
-            # Simple in-memory Chroma for MVP
-            documents = [
-                Document(page_content=f"{item['title']}: {item['description']}", metadata=item)
-                for item in self.reference_data
-            ]
-            self.vector_store = Chroma.from_documents(documents, self.embeddings)
+            # Fallback to Standard OpenAI
+            elif self.api_key:
+                print("\n   [OPENAI] Initializing Standard OpenAI Client...")
+                print(f"      Model: {settings.OPENAI_MODEL}")
+                
+                self.llm = ChatOpenAI(
+                    temperature=settings.OPENAI_TEMPERATURE,
+                    model=settings.OPENAI_MODEL,
+                    api_key=self.api_key
+                )
+                self.embeddings = OpenAIEmbeddings(api_key=self.api_key)
+                print("   [OK] Standard OpenAI client initialized")
             
-        except ImportError:
-            print("LangChain dependencies missing. Reverting to Mock Mode.")
+            # Initialize Vector Store
+            if self.embeddings and len(self.reference_data) > 0:
+                print(f"\n   [VECTOR] Initializing Vector Store with {len(self.reference_data)} documents...")
+                try:
+                    documents = [
+                        Document(page_content=f"{item['title']}: {item['description']}", metadata=item)
+                        for item in self.reference_data
+                    ]
+                    self.vector_store = Chroma.from_documents(documents, self.embeddings)
+                    print("   [OK] Vector store initialized successfully")
+                except Exception as e:
+                    print(f"   [ERROR] Failed to initialize vector store: {e}")
+                    print("   [WARN] RAG will work without vector search")
+            else:
+                if not self.embeddings:
+                    print("   [WARN] No embeddings configured. RAG features will be limited.")
+                if len(self.reference_data) == 0:
+                    print("   [WARN] No reference data loaded. Vector store not created.")
+            
+            print("\n   [OK] Real AI components initialization complete")
+            
+        except ImportError as e:
+            print(f"   [ERROR] LangChain dependencies missing: {e}")
+            print("   [WARN] Reverting to Mock Mode")
             self.mock_mode = True
         except Exception as e:
-            print(f"Failed to init RAG components: {e}")
+            print(f"   [ERROR] Failed to init RAG components: {e}")
+            print("   [WARN] Reverting to Mock Mode")
+            import traceback
+            traceback.print_exc()
             self.mock_mode = True
 
     async def enhance_use_case(self, text: str) -> Dict[str, Any]:
@@ -293,5 +387,182 @@ class RAGService:
             return res
         except:
             return {"error": "Failed to generate presentation"}
+
+    async def enhance_business_value(self, title: str, description: str, category: str = "Generative AI", current_kpi: str = None) -> Dict[str, Any]:
+        """
+        Enhances the business value proposition with specific metrics, ROI indicators, and benchmarks.
+        """
+        if self.mock_mode:
+            # Mock response with realistic business value data
+            mock_metrics = [
+                "Reduce processing time by 40-60%",
+                "Improve accuracy to 95%+",
+                "Save 20-30 hours per week per employee",
+                "Decrease operational costs by $50K-$150K annually"
+            ]
+            
+            mock_roi = [
+                "Expected ROI: 250-350% within 12 months",
+                "Payback period: 6-9 months",
+                "NPV: $200K-$500K over 3 years"
+            ]
+            
+            mock_benchmarks = [
+                {"source": "Gartner 2025", "metric": "AI Adoption ROI", "value": "300%"},
+                {"source": "McKinsey Report", "metric": "Process Automation Savings", "value": "40-60%"},
+                {"source": "Industry Average", "metric": "Implementation Time", "value": "3-6 months"}
+            ]
+            
+            return {
+                "enhanced_kpi": current_kpi or "Reduce manual processing time by 50% and improve accuracy to 95%+ within 6 months",
+                "specific_metrics": mock_metrics,
+                "roi_indicators": mock_roi,
+                "benchmarks": mock_benchmarks,
+                "business_impact": "This AI solution will significantly reduce operational overhead, improve decision-making speed, and free up valuable employee time for higher-value strategic work. Expected to deliver measurable ROI within the first year.",
+                "confidence_score": 0.85,
+                "is_mock": True
+            }
+        
+        # Real LLM Logic
+        from langchain.prompts import ChatPromptTemplate
+        
+        prompt = ChatPromptTemplate.from_template("""
+        You are an expert Business Value Analyst specializing in AI/ML projects.
+        
+        Use Case Title: "{title}"
+        Description: "{description}"
+        Category: "{category}"
+        Current KPI: "{current_kpi}"
+        
+        Task: Enhance the business value proposition with:
+        1. An enhanced, specific KPI statement (measurable, time-bound)
+        2. 3-5 specific metrics this use case could improve
+        3. 3-4 ROI indicators (expected ROI %, payback period, NPV range)
+        4. 2-3 industry benchmarks with sources
+        5. A compelling business impact statement (2-3 sentences)
+        6. A confidence score (0.0-1.0) for these estimates
+        
+        Return ONLY valid JSON in this exact format:
+        {{
+            "enhanced_kpi": "Specific, measurable KPI statement",
+            "specific_metrics": ["metric 1", "metric 2", "metric 3"],
+            "roi_indicators": ["ROI indicator 1", "ROI indicator 2"],
+            "benchmarks": [
+                {{"source": "Source name", "metric": "Metric name", "value": "Value"}},
+                {{"source": "Source name", "metric": "Metric name", "value": "Value"}}
+            ],
+            "business_impact": "Compelling 2-3 sentence impact statement",
+            "confidence_score": 0.8
+        }}
+        """)
+        
+        chain = prompt | self.llm
+        response = await chain.ainvoke({
+            "title": title,
+            "description": description,
+            "category": category,
+            "current_kpi": current_kpi or "Not specified"
+        })
+        
+        try:
+            result = json.loads(response.content)
+            result["is_mock"] = False
+            return result
+        except Exception as e:
+            print(f"Failed to parse LLM response: {e}")
+            # Fallback to mock on parse error
+            return {
+                "enhanced_kpi": current_kpi or "Improve operational efficiency by 40% within 6 months",
+                "specific_metrics": ["Reduce processing time", "Improve accuracy", "Lower costs"],
+                "roi_indicators": ["Expected ROI: 200-300%", "Payback: 6-12 months"],
+                "benchmarks": [{"source": "Industry Average", "metric": "AI ROI", "value": "250%"}],
+                "business_impact": "This solution will deliver measurable business value through automation and improved decision-making.",
+                "confidence_score": 0.7,
+                "is_mock": False,
+                "error": str(e)
+            }
+
+    async def analyze_technical_feasibility(self, title: str, description: str, proposed_solution: str) -> Dict[str, Any]:
+        """
+        Generates a detailed technical analysis including architecture, stack, and risks.
+        """
+        if self.mock_mode:
+            return {
+                "architecture_overview": "Microservices architecture with an event-driven core. The system utilizes a React frontend communicating via REST/GraphQL with a Python/FastAPI backend. AI processing is handled asynchronously via a task queue.",
+                "recommended_stack": [
+                    {"category": "Frontend", "name": "React + Vite", "justification": "High performance and rich ecosystem for interactive UIs."},
+                    {"category": "Backend", "name": "FastAPI (Python)", "justification": "Native async support and excellent libraries for AI integration."},
+                    {"category": "Database", "name": "PostgreSQL + pgvector", "justification": "Robust relational data storage with vector search capabilities."},
+                    {"category": "AI/ML", "name": "Azure OpenAI / LangChain", "justification": "Enterprise-grade LLM access with orchestration."}
+                ],
+                "implementation_steps": [
+                    "1. Setup cloud infrastructure (Azure Resource Group, OpenAI Service).",
+                    "2. Initialize vector database and ingestion pipeline.",
+                    "3. Develop core API with authentication.",
+                    "4. Build interactive frontend dashboard.",
+                    "5. Implement feedback loop and monitoring."
+                ],
+                "technical_risks": [
+                    "Data Privacy: Ensuring PII masking before sending to LLM.",
+                    "Latency: Potential delays in multi-step AI reasoning.",
+                    "Cost Control: Token usage monitoring required."
+                ],
+                "complexity_score": 6,
+                "is_mock": True
+            }
+
+        # Real LLM Logic
+        from langchain.prompts import ChatPromptTemplate
+        
+        prompt = ChatPromptTemplate.from_template("""
+        You are an expert Chief Software Architect.
+        
+        Analyze this AI Use Case:
+        Title: "{title}"
+        Description: "{description}"
+        Proposed Solution: "{proposed_solution}"
+        
+        Provide a technical deep dive:
+        1. High-level Architecture Overview (1 paragraph)
+        2. Recommended Tech Stack (Specific tools for Frontend, Backend, DB, AI)
+        3. 5 High-level Implementation Steps
+        4. 3-4 Technical Risks to mitigate
+        5. Complexity Score (1-10)
+        
+        Return valid JSON:
+        {{
+            "architecture_overview": "...",
+            "recommended_stack": [
+                {{ "category": "...", "name": "...", "justification": "..." }}
+            ],
+            "implementation_steps": ["1. ...", "2. ..."],
+            "technical_risks": ["..."],
+            "complexity_score": 5
+        }}
+        """)
+        
+        chain = prompt | self.llm
+        response = await chain.ainvoke({
+            "title": title,
+            "description": description,
+            "proposed_solution": proposed_solution
+        })
+        
+        try:
+            result = json.loads(response.content)
+            result["is_mock"] = False
+            return result
+        except Exception as e:
+            print(f"Failed to parse LLM response: {e}")
+            return {
+                "architecture_overview": "Standard Web App with AI Integration (Fallback)",
+                "recommended_stack": [],
+                "implementation_steps": ["Define requirements", "Build MVP"],
+                "technical_risks": ["Integration complexity"],
+                "complexity_score": 5,
+                "is_mock": False,
+                "error": str(e)
+            }
+
 
 rag_service = RAGService()

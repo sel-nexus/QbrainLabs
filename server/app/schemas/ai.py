@@ -33,3 +33,36 @@ class DuplicateCheckResponse(BaseModel):
     similar_to_id: Optional[str] = None
     similar_to_title: Optional[str] = None
     message: Optional[str] = None
+
+class BusinessValueRequest(BaseModel):
+    title: str
+    description: str
+    category: Optional[str] = "Generative AI"
+    current_kpi: Optional[str] = None
+
+class BusinessValueResponse(BaseModel):
+    enhanced_kpi: str
+    specific_metrics: list[str]
+    roi_indicators: list[str]
+    benchmarks: list[Dict[str, str]]
+    business_impact: str
+    confidence_score: float
+    is_mock: bool = False
+
+class TechStackComponent(BaseModel):
+    category: str  # e.g. "Frontend", "Backend", "AI Model"
+    name: str     # e.g. "React", "FastAPI", "GPT-4"
+    justification: str
+
+class TechnicalAnalysisRequest(BaseModel):
+    title: str
+    description: str
+    proposed_solution: str
+
+class TechnicalAnalysisResponse(BaseModel):
+    architecture_overview: str
+    recommended_stack: list[TechStackComponent]
+    implementation_steps: list[str]
+    technical_risks: list[str]
+    complexity_score: int  # 1-10
+    is_mock: bool = False

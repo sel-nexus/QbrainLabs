@@ -104,7 +104,7 @@ async def join_workshop(sid, data):
     # data expects {'workshop_id': '...'}
     workshop_id = data.get('workshop_id')
     if workshop_id:
-        sio.enter_room(sid, workshop_id)
+        await sio.enter_room(sid, workshop_id)
         await sio.emit('participant_joined', {'sid': sid}, room=workshop_id)
         print(f"SID {sid} joined room {workshop_id}")
         
@@ -130,7 +130,7 @@ async def join_survey(sid, data):
     """Join a survey room for real-time updates"""
     survey_id = data.get('survey_id')
     if survey_id:
-        sio.enter_room(sid, f"survey_{survey_id}")
+        await sio.enter_room(sid, f"survey_{survey_id}")
         print(f"SID {sid} joined survey room {survey_id}")
 
 
@@ -139,7 +139,7 @@ async def leave_survey(sid, data):
     """Leave a survey room"""
     survey_id = data.get('survey_id')
     if survey_id:
-        sio.leave_room(sid, f"survey_{survey_id}")
+        await sio.leave_room(sid, f"survey_{survey_id}")
         print(f"SID {sid} left survey room {survey_id}")
 
 
@@ -183,7 +183,7 @@ async def join_breakout_room(sid, data):
     """Join a breakout room for real-time collaboration"""
     room_id = data.get('room_id')
     if room_id:
-        sio.enter_room(sid, f"breakout_{room_id}")
+        await sio.enter_room(sid, f"breakout_{room_id}")
         print(f"SID {sid} joined breakout room {room_id}")
 
 
@@ -192,7 +192,7 @@ async def leave_breakout_room(sid, data):
     """Leave a breakout room"""
     room_id = data.get('room_id')
     if room_id:
-        sio.leave_room(sid, f"breakout_{room_id}")
+        await sio.leave_room(sid, f"breakout_{room_id}")
         print(f"SID {sid} left breakout room {room_id}")
 
 
@@ -297,7 +297,7 @@ async def join_copilot(sid, data):
     """Join copilot room for real-time suggestions (facilitator only)"""
     workshop_id = data.get('workshop_id')
     if workshop_id:
-        sio.enter_room(sid, f"copilot_{workshop_id}")
+        await sio.enter_room(sid, f"copilot_{workshop_id}")
         print(f"SID {sid} joined copilot room for workshop {workshop_id}")
 
 
@@ -306,7 +306,7 @@ async def leave_copilot(sid, data):
     """Leave copilot room"""
     workshop_id = data.get('workshop_id')
     if workshop_id:
-        sio.leave_room(sid, f"copilot_{workshop_id}")
+        await sio.leave_room(sid, f"copilot_{workshop_id}")
         print(f"SID {sid} left copilot room for workshop {workshop_id}")
 
 

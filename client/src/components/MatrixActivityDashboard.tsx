@@ -22,14 +22,18 @@ interface ParticipantAction {
 interface MatrixActivityDashboardProps {
     workshopId: string;
     isVisible: boolean;
-    onRefreshMatrix?: (positions: any[]) => void;
+    onRefreshMatrix?: (positions: any[], isAllPositions: boolean) => void;
+    onPositionUpdate?: (position: any) => void;
 }
 
-export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix }: MatrixActivityDashboardProps) {
+export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix, onPositionUpdate }: MatrixActivityDashboardProps) {
     const { theme } = useTheme();
     const [recentActions, setRecentActions] = useState<ParticipantAction[]>([]);
     const [activeParticipants, setActiveParticipants] = useState<Set<string>>(new Set());
     const [submittedParticipants, setSubmittedParticipants] = useState<Set<string>>(new Set());
+    const [participantsList, setParticipantsList] = useState<any[]>([]);
+    const [viewMode, setViewMode] = useState<'consolidated' | 'all' | 'participant'>('consolidated');
+    const [selectedParticipantId, setSelectedParticipantId] = useState<string | null>(null);
     const [isConnected, setIsConnected] = useState(false);
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [stats, setStats] = useState({
@@ -39,6 +43,10 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
 
     useEffect(() => {
         if (!isVisible || !workshopId) return;
+
+        // Load initial data and participants list
+        loadParticipants();
+        handleRefresh('consolidated');
 
         // Check connection status
         setIsConnected(socket.connected);
@@ -81,7 +89,8 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
             participant_name: string;
             use_case_id: string;
             use_case_title: string;
-            position: { x: number; y: number };
+            position?: { x: number; y: number };
+            scores?: Record<string, number>;
             previous_position?: { x: number; y: number };
         }) => {
             console.log('Matrix position update received:', data);
@@ -93,7 +102,7 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
                 useCaseId: data.use_case_id,
                 useCaseTitle: data.use_case_title,
                 action: 'position_update',
-                position: data.position,
+                position: data.position || { x: 0, y: 0 },
                 timestamp: new Date(),
                 previousPosition: data.previous_position
             };
@@ -114,6 +123,22 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
 
                 return updated;
             });
+
+            // Notify parent for real-time update in matrix visualization
+            if (onPositionUpdate) {
+                // If in consolidated mode, always notify (triggers refresh in parent)
+                // If in 'all' mode, always notify (adds/updates dot)
+                // If in 'participant' mode, only notify if it matches selected participant
+                if (viewMode !== 'participant' || data.participant_id === selectedParticipantId) {
+                    onPositionUpdate({
+                        ...data,
+                        id: `${data.use_case_id}-${data.participant_id}`,
+                        x: data.position?.x,
+                        y: data.position?.y,
+                        scores: data.scores
+                    });
+                }
+            }
         };
 
         // Listen for participant drag start
@@ -141,71 +166,70 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
         };
     }, [isVisible, workshopId]);
 
-    // Reset recent activity count periodically
-    useEffect(() => {
-        if (!isVisible) return;
+    const loadParticipants = async () => {
+        try {
+            const response = await api.get(`/participants/workshop/${workshopId}`);
+            setParticipantsList(response.data || []);
+        } catch (err) {
+            console.error('Failed to load participants:', err);
+        }
+    };
 
-        const interval = setInterval(() => {
-            setStats(prev => ({ ...prev, recentActivityCount: 0 }));
-        }, 60000); // Reset every minute
-
-        return () => clearInterval(interval);
-    }, [isVisible]);
-
-    const handleRefresh = async () => {
+    const handleRefresh = async (mode: 'consolidated' | 'all' | 'participant' = viewMode, participantId: string | null = selectedParticipantId) => {
         if (!workshopId || !onRefreshMatrix) return;
 
         setIsRefreshing(true);
         try {
-            const response = await api.get(`/votes/workshop/${workshopId}/all-matrix-positions`);
-            const allPositions = response.data || [];
+            let data: any[] = [];
+            if (mode === 'consolidated') {
+                const response = await api.get(`/results/${workshopId}`);
+                data = response.data || [];
+            } else if (mode === 'all') {
+                const response = await api.get(`/votes/workshop/${workshopId}/all-matrix-positions`);
+                data = response.data || [];
+            } else if (mode === 'participant' && participantId) {
+                const response = await api.get(`/votes/participant/${participantId}/matrix-positions?workshop_id=${workshopId}`);
+                data = response.data || [];
+            }
 
-            // Update submitted participants from historical data
-            const historicalParticipants = new Set<string>(allPositions.map((p: any) => p.participant_id));
-            setSubmittedParticipants(prev => new Set<string>([...prev, ...historicalParticipants]));
-            setActiveParticipants(prev => new Set<string>([...prev, ...historicalParticipants])); // Assume simple aggregation for active
+            if (mode === 'consolidated') {
+                onRefreshMatrix(data, false);
+            } else {
+                // Prepare dots with colors
+                const participantColors = new Map<string, string>();
+                const colorPalette = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16', '#f97316', '#6366f1', '#14b8a6', '#a855f7'];
+                let colorIndex = 0;
 
-            // Group positions by participant and assign unique colors
-            const participantColors = new Map<string, string>();
-            const colorPalette = [
-                '#3b82f6', // blue
-                '#10b981', // green
-                '#f59e0b', // amber
-                '#ef4444', // red
-                '#8b5cf6', // violet
-                '#ec4899', // pink
-                '#06b6d4', // cyan
-                '#84cc16', // lime
-                '#f97316', // orange
-                '#6366f1', // indigo
-                '#14b8a6', // teal
-                '#a855f7', // purple
-            ];
+                const processedData = data.map((pos: any) => {
+                    const pId = pos.participant_id || participantId;
+                    if (!participantColors.has(pId)) {
+                        participantColors.set(pId, colorPalette[colorIndex % colorPalette.length]);
+                        colorIndex++;
+                    }
+                    return {
+                        ...pos,
+                        participantColor: participantColors.get(pId),
+                        id: pos.id || `${pos.use_case_id}-${pId}`,
+                        title: pos.title || pos.use_case_title,
+                        x: pos.x,
+                        y: pos.y,
+                        scores: pos.scores,
+                        participant_name: pos.participant_name,
+                        participant_id: pId
+                    };
+                });
+                onRefreshMatrix(processedData, true);
+            }
 
-            let colorIndex = 0;
-            const positionsWithColors = allPositions.map((pos: any) => {
-                if (!participantColors.has(pos.participant_id)) {
-                    participantColors.set(pos.participant_id, colorPalette[colorIndex % colorPalette.length]);
-                    colorIndex++;
-                }
-                return {
-                    ...pos,
-                    participantColor: participantColors.get(pos.participant_id),
-                    id: `${pos.use_case_id}-${pos.participant_id}`, // Unique ID for each participant's position
-                    title: pos.use_case_title,
-                    x: pos.x,
-                    y: pos.y,
-                    scores: pos.scores,
-                    participant_name: pos.participant_name,
-                    participant_id: pos.participant_id
-                };
-            });
-
-            onRefreshMatrix(positionsWithColors);
-            toast.success(`Loaded ${positionsWithColors.length} positions from ${participantColors.size} participants`);
+            // Update counts if we have them
+            if (mode === 'all') {
+                const pIds = new Set<string>(data.map((p: any) => p.participant_id));
+                setSubmittedParticipants(prev => new Set([...prev, ...pIds]));
+                setActiveParticipants(prev => new Set([...prev, ...pIds]));
+            }
         } catch (err: any) {
-            console.error('Failed to refresh matrix positions:', err);
-            toast.error('Failed to refresh matrix. Please try again.');
+            console.error('Failed to refresh matrix data:', err);
+            toast.error('Failed to refresh matrix data');
         } finally {
             setIsRefreshing(false);
         }
@@ -240,27 +264,74 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
 
     return (
         <div className="rounded-xl border p-4 theme-bg-secondary theme-border">
-            <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold flex items-center gap-2 theme-text-primary">
-                    <Activity className="w-5 h-5 text-brand-violet" />
-                    Live Matrix Activity
-                </h3>
-                <div className="flex items-center gap-2">
-                    <Button
-                        variant="secondary"
-                        onClick={handleRefresh}
-                        disabled={isRefreshing || !onRefreshMatrix}
-                        className="h-7 px-3 text-xs"
-                    >
-                        <RefreshCw className={`w-3 h-3 mr-1 ${isRefreshing ? 'animate-spin' : ''}`} />
-                        Refresh
-                    </Button>
-                    <div className={`text-xs px-2 py-1 rounded-full flex items-center gap-1 ${isConnected
-                        ? 'theme-badge-success'
-                        : 'theme-badge-danger'
-                        }`}>
-                        <div className={`w-1.5 h-1.5 rounded-full ${isConnected ? 'bg-semantic-success' : 'bg-semantic-danger'}`} />
-                        {isConnected ? 'Live' : 'Connecting...'}
+            <div className="flex flex-col space-y-4 mb-4">
+                <div className="flex items-center justify-between">
+                    <h3 className="text-lg font-semibold flex items-center gap-2 theme-text-primary">
+                        <Activity className="w-5 h-5 text-brand-violet" />
+                        Live Matrix Activity
+                    </h3>
+                    <div className="flex items-center gap-2">
+                        <div className={`text-xs px-2 py-1 rounded-full flex items-center gap-1 ${isConnected
+                            ? 'theme-badge-success'
+                            : 'theme-badge-danger'
+                            }`}>
+                            <div className={`w-1.5 h-1.5 rounded-full ${isConnected ? 'bg-semantic-success' : 'bg-semantic-danger'}`} />
+                            {isConnected ? 'Live' : 'Connecting...'}
+                        </div>
+                    </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex-1 min-w-[200px]">
+                        <label className="text-[10px] font-bold uppercase theme-text-secondary mb-1 block px-1">View Mode</label>
+                        <select
+                            value={viewMode}
+                            onChange={(e) => {
+                                const mode = e.target.value as any;
+                                setViewMode(mode);
+                                if (mode !== 'participant') {
+                                    handleRefresh(mode, null);
+                                } else if (selectedParticipantId) {
+                                    handleRefresh(mode, selectedParticipantId);
+                                }
+                            }}
+                            className="w-full h-9 rounded-lg border theme-bg-tertiary theme-border theme-text-primary text-sm px-3 focus:border-brand-violet outline-none"
+                        >
+                            <option value="consolidated">Consolidated (Averages)</option>
+                            <option value="all">All Participants (Dots)</option>
+                            <option value="participant">Specific Participant</option>
+                        </select>
+                    </div>
+
+                    {viewMode === 'participant' && (
+                        <div className="flex-1 min-w-[200px]">
+                            <label className="text-[10px] font-bold uppercase theme-text-secondary mb-1 block px-1">Select Participant</label>
+                            <select
+                                value={selectedParticipantId || ''}
+                                onChange={(e) => {
+                                    setSelectedParticipantId(e.target.value);
+                                    handleRefresh('participant', e.target.value);
+                                }}
+                                className="w-full h-9 rounded-lg border theme-bg-tertiary theme-border theme-text-primary text-sm px-3 focus:border-brand-violet outline-none"
+                            >
+                                <option value="" disabled>Choose a participant...</option>
+                                {participantsList.map(p => (
+                                    <option key={p.id} value={p.id}>{p.display_name}</option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
+
+                    <div className="flex items-end h-9 pt-5">
+                        <Button
+                            variant="secondary"
+                            onClick={() => handleRefresh()}
+                            disabled={isRefreshing || !onRefreshMatrix || (viewMode === 'participant' && !selectedParticipantId)}
+                            className="h-9 px-3 text-xs"
+                        >
+                            <RefreshCw className={`w-3 h-3 mr-1 ${isRefreshing ? 'animate-spin' : ''}`} />
+                            Sync Data
+                        </Button>
                     </div>
                 </div>
             </div>

@@ -10,14 +10,20 @@ from typing import List, Dict, Any, Optional
 from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from app.models.models import Workshop, Participant, HotspotVote
+from app.models.models import (
+    Workshop, Participant, Vote, UseCase, 
+    CopilotSuggestion, ParticipantEngagement, WorkshopSummary, 
+    CopilotSettings, CopilotMode, WorkshopPhase,
+    SuggestionType, SuggestionPriority, AnomalyType, AnomalySeverity
+)
 from app.schemas.copilot import (
-    CopilotSuggestion,
-    EngagementMetrics,
-    WorkshopSummary,
-    CopilotRequest
+    Suggestion,
+    EngagementResponse,
+    GenerateSummaryResponse,
+    SuggestionsRequest
 )
 from app.core.config import settings
+import statistics
 
 class CopilotService:
     """
