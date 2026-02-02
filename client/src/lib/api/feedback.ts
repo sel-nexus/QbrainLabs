@@ -1,11 +1,13 @@
 import { api } from '../api';
 
-export enum FeedbackType {
-    BUG = 'bug',
-    FEATURE_REQUEST = 'feature_request',
-    IMPROVEMENT = 'improvement',
-    GENERAL = 'general',
-}
+export const FeedbackType = {
+    BUG: 'bug',
+    FEATURE_REQUEST: 'feature_request',
+    IMPROVEMENT: 'improvement',
+    GENERAL: 'general',
+} as const;
+
+export type FeedbackType = typeof FeedbackType[keyof typeof FeedbackType];
 
 export interface FeedbackData {
     type: FeedbackType;
