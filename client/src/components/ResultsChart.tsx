@@ -48,16 +48,9 @@ export function ResultsChart({
             .append("g")
             .attr("transform", `translate(${margin.left},${margin.top})`);
 
-        // Scales
-        const xValues = localData.length > 0 ? localData.map(d => d.x !== undefined ? d.x : (d.scores?.['Feasibility'] ?? 0)) : [];
-        const yValues = localData.length > 0 ? localData.map(d => d.y !== undefined ? d.y : (d.scores?.['Business Value'] ?? 0)) : [];
-        const maxVal = localData.length > 0 ? Math.max(
-            ...xValues,
-            ...yValues,
-            10 // Ensure at least 10
-        ) : 100;
-        const domainMax = maxVal > 10 ? 100 : 10;
-        const axisMid = domainMax / 2;
+        // Scales - force 0-100 scale since we've standardized the mapping
+        const domainMax = 100;
+        const axisMid = 50;
 
         const x = d3.scaleLinear()
             .domain([0, domainMax])
@@ -66,6 +59,19 @@ export function ResultsChart({
         const y = d3.scaleLinear()
             .domain([0, domainMax])
             .range([height, 0]);
+
+        // Helper to get scaled value
+        const getScaledX = (d: any) => {
+            if (d.x !== undefined && d.x !== null) return d.x;
+            const score = d.scores?.['Feasibility'] ?? d.scores?.['Ease of Implementation'] ?? axisMid / 10;
+            return score <= 10 ? score * 10 : score;
+        };
+
+        const getScaledY = (d: any) => {
+            if (d.y !== undefined && d.y !== null) return d.y;
+            const score = d.scores?.['Business Value'] ?? d.scores?.['Impact'] ?? axisMid / 10;
+            return score <= 10 ? score * 10 : score;
+        };
 
         // Quadrant Backgrounds
         const quadrants = [
@@ -284,15 +290,15 @@ export function ResultsChart({
                 .data(localData)
                 .enter()
                 .append("circle")
-                .attr("cx", d => x(d.x ?? d.scores['Feasibility'] ?? axisMid))
-                .attr("cy", d => y(d.y ?? d.scores['Business Value'] ?? axisMid))
+                .attr("cx", d => x(getScaledX(d)))
+                .attr("cy", d => y(getScaledY(d)))
                 .attr("r", d => 8 + (d.vote_count || 1) * 1.5) // Size by votes
                 .attr("fill", d => {
                     // Use participant color if available (for individual view)
                     if (d.participantColor) return d.participantColor;
 
-                    const valX = d.x ?? d.scores['Feasibility'] ?? 0;
-                    const valY = d.y ?? d.scores['Business Value'] ?? 0;
+                    const valX = getScaledX(d);
+                    const valY = getScaledY(d);
                     // Color by quadrant
                     if (valX > axisMid && valY > axisMid) {
                         return '#10b981'; // Quick Wins - Green (Top Right)
@@ -309,8 +315,8 @@ export function ResultsChart({
                 .attr("stroke-dasharray", (d: any) => d.variance > 10 ? "3,3" : "0")
                 .style("cursor", readOnly ? "default" : "grab")
                 .on("mouseover", function (_, d) {
-                    const feasValue = d.x ?? d.scores?.['Feasibility'] ?? 0;
-                    const valueScore = d.y ?? d.scores?.['Business Value'] ?? 0;
+                    const feasValue = getScaledX(d);
+                    const valueScore = getScaledY(d);
                     tooltip.style("visibility", "visible")
                         .html(`
                         <div class="font-bold mb-1">${d.title}</div>

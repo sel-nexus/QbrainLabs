@@ -428,56 +428,27 @@ export function WorkshopDetail() {
                             <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6 mt-4">
                                 <div className="p-6 rounded-2xl border theme-card theme-border bg-white/50 backdrop-blur-sm">
                                     {(() => {
-                                        const xAxisKeywords = ['Value', 'Impact', 'Urgency', 'Business Value', 'ROI', 'Benefit'];
-                                        const yAxisKeywords = ['Effort', 'Feasibility', 'Complexity', 'Cost', 'Risk', 'Resource'];
+                                        const criteriaNames = workshop.config.criteria?.map((c: any) => c.name) || [];
 
-                                        const criteriaNames = workshop.config.criteria.map((c: any) => c.name);
-                                        let xLabel = criteriaNames[0] || "Feasibility";
-                                        let yLabel = criteriaNames[1] || "Business Value";
+                                        // Standardized Keyword Mapping (matches backend matrix.py)
+                                        const xKeywords = ['Feasibility', 'Ease of Implementation', 'Effort (Inverse)', 'Readiness', 'Data Readiness', 'Organizational Readiness', 'Complexity', 'Implementation Readiness'];
+                                        const yKeywords = ['Business Value', 'Impact', 'Value', 'Business Impact', 'Strategic Alignment', 'Scalability & Value', 'ROI', 'Alignment', 'Strategic', 'Strategic Value'];
+
+                                        let xLabel = criteriaNames.find((n: string) => xKeywords.includes(n)) || criteriaNames[0] || "Feasibility";
+                                        let yLabel = criteriaNames.find((n: string) => yKeywords.includes(n)) || criteriaNames[1] || "Business Value";
+
+                                        // Ensure they are different if possible
+                                        if (xLabel === yLabel && criteriaNames.length > 1) {
+                                            yLabel = criteriaNames.find((n: string) => n !== xLabel) || yLabel;
+                                        }
 
                                         const mappedResults = results.map(item => {
-                                            const itemScores = item.scores || {};
-                                            let xTotal = 0, xCount = 0;
-                                            let yTotal = 0, yCount = 0;
-
-                                            Object.entries(itemScores).forEach(([name, score]: [string, any]) => {
-                                                if (score === -1) return;
-                                                const lowerName = name.toLowerCase();
-                                                if (xAxisKeywords.some(k => lowerName.includes(k.toLowerCase()))) {
-                                                    xTotal += score;
-                                                    xCount++;
-                                                } else if (yAxisKeywords.some(k => lowerName.includes(k.toLowerCase()))) {
-                                                    yTotal += score;
-                                                    yCount++;
-                                                }
-                                            });
-
-                                            if (xCount === 0 && yCount === 0 && criteriaNames.length > 0) {
-                                                const mid = Math.ceil(criteriaNames.length / 2);
-                                                criteriaNames.forEach((name: string, idx: number) => {
-                                                    const score = itemScores[name];
-                                                    if (score === undefined || score === -1) return;
-                                                    if (idx < mid) {
-                                                        xTotal += score;
-                                                        xCount++;
-                                                    } else {
-                                                        yTotal += score;
-                                                        yCount++;
-                                                    }
-                                                });
-                                                if (criteriaNames.length > 2) {
-                                                    xLabel = "Aggregated Value";
-                                                    yLabel = "Aggregated Effort";
-                                                }
-                                            } else {
-                                                if (xCount > 1) xLabel = "Aggregated Benefit";
-                                                if (yCount > 1) yLabel = "Aggregated Cost/Effort";
-                                            }
-
+                                            // Backend now provides standardized 0-100 coordinates
+                                            // We just ensure we have fallback values if they are missing
                                             return {
                                                 ...item,
-                                                x: xCount > 0 ? (xTotal / xCount) * 10 : (item.x || 0),
-                                                y: yCount > 0 ? (yTotal / yCount) * 10 : (item.y || 0)
+                                                x: item.x !== undefined && item.x !== null ? item.x : 50,
+                                                y: item.y !== undefined && item.y !== null ? item.y : 50
                                             };
                                         });
 
@@ -536,6 +507,7 @@ export function WorkshopDetail() {
                                     <MatrixActivityDashboard
                                         workshopId={id!}
                                         isVisible={showAnalytics === 'matrix' || showAnalytics === 'scale'}
+                                        viewMode={showAllParticipantPositions ? 'all' : 'consolidated'}
                                         onRefreshMatrix={(positions, isAllPositions) => {
                                             setResults(positions);
                                             setShowAllParticipantPositions(isAllPositions);
@@ -569,8 +541,19 @@ export function WorkshopDetail() {
                                             <span className="text-brand-violet font-mono font-bold text-xl">{r.total_score}</span>
                                         </div>
                                         <div className={`text-sm space-y-1 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
-                                            <div className="flex justify-between"><span>Feasibility</span> <span>{r.scores['Feasibility']}</span></div>
-                                            <div className="flex justify-between"><span>Value</span> <span>{r.scores['Business Value']}</span></div>
+                                            {Object.entries(r.scores || {}).map(([name, val]: [string, any]) => {
+                                                let displayVal = val;
+                                                const allScores = results.flatMap((res: any) => Object.values(res.scores || {})).filter((s): s is number => typeof s === 'number');
+                                                if (val <= 10 && allScores.length > 0 && allScores.every(s => s <= 10)) {
+                                                    displayVal = val * 10;
+                                                }
+                                                return (
+                                                    <div key={name} className="flex justify-between uppercase text-[10px] font-bold">
+                                                        <span>{name}</span>
+                                                        <span>{displayVal !== null ? Number(displayVal).toFixed(0) : '-'}</span>
+                                                    </div>
+                                                );
+                                            })}
                                         </div>
                                         <Button
                                             variant="secondary"

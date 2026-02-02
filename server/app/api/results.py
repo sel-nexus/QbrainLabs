@@ -8,6 +8,8 @@ from app.models.models import Workshop, UseCase, Vote
 from app.schemas.results import AggregatedResult
 from typing import List
 
+from app.utils.matrix import calculate_matrix_position, detect_scale_max
+
 router = APIRouter()
 
 @router.get("/{workshop_id}", response_model=List[AggregatedResult])
@@ -17,6 +19,9 @@ async def get_workshop_results(workshop_id: str, db: AsyncSession = Depends(get_
     workshop = workshop_result.scalars().first()
     if not workshop:
         raise HTTPException(status_code=404, detail="Workshop not found")
+    
+    # Store template_id for coordinate calculation
+    ws_template_id = workshop.config.get('template_id')
         
     # Simplify: Fetch all usecases for this workshop with their votes
     result = await db.execute(
@@ -29,7 +34,6 @@ async def get_workshop_results(workshop_id: str, db: AsyncSession = Depends(get_
     aggregated_results = []
     
     # Get criteria weights from config
-    # config format: { criteria: [{name: 'Feasibility', weight: 50}, ...] }
     criteria = workshop.config.get('criteria', [])
     weights = {c['name']: (c['weight'] or 0) for c in criteria}
     
@@ -52,12 +56,11 @@ async def get_workshop_results(workshop_id: str, db: AsyncSession = Depends(get_
         # Aggregate scores
         totals = {}
         counts = {}
-        raw_scores = {} # Support for variance calc
+        raw_scores = {}
         
         for v in votes:
             if not v.scores: continue
             for criterion, score in v.scores.items():
-                # Cast score to float/int to be safe
                 val = float(score)
                 totals[criterion] = totals.get(criterion, 0) + val
                 counts[criterion] = counts.get(criterion, 0) + 1
@@ -94,64 +97,26 @@ async def get_workshop_results(workshop_id: str, db: AsyncSession = Depends(get_
             else:
                 criteria_variances.append(0)
 
-        # Normalize variance for UI? Raw variance is fine for now on 0-100 scale.
         avg_variance = 0.0
         if criteria_variances:
             avg_variance = sum(criteria_variances) / len(criteria_variances)
         
-        # Calculate X and Y coordinates
-        x_val = None
-        y_val = None
+        # Detect scale max from available averages
+        # To unify across categories, we favor 100 unless it's clearly a high-precision 1-10 scale
+        scale_max = detect_scale_max([float(v) for v in avgs.values()])
         
-        template_id = workshop.config.get('template_id')
+        # If any global scores in the workshop results (if we had them) were > 10, we'd use 100
+        # For now, detect_scale_max already favors 100.
         
-        if template_id == '7_POINT_COMPREHENSIVE':
-            # Y-Axis (Value/Impact): AVG(Business Impact, Strategic Alignment, Scalability & Value)
-            y_params = ['Business Impact', 'Strategic Alignment', 'Scalability & Value']
-            y_sum = 0
-            y_count = 0
-            for p in y_params:
-                if p in avgs:
-                    y_sum += avgs[p]
-                    y_count += 1
-            if y_count > 0:
-                y_val = round(y_sum / y_count, 2)
-            
-            # X-Axis (Feasibility): AVG(Ease of Implementation, Data Readiness, Organizational Readiness, (11 - Risk))
-            x_params = ['Ease of Implementation', 'Data Readiness', 'Organizational Readiness']
-            x_sum = 0
-            x_count = 0
-            for p in x_params:
-                if p in avgs:
-                    x_sum += avgs[p]
-                    x_count += 1
-            
-            # Risk & Compliance is inverse
-            if 'Risk & Compliance' in avgs:
-                # Assuming 1-10 scale
-                inverted_risk = 11.0 - avgs['Risk & Compliance']
-                x_sum += inverted_risk
-                x_count += 1
-            
-            if x_count > 0:
-                x_val = round(x_sum / x_count, 2)
-                
-        else:
-            # Fallback / Custom Logic
-            # Try to map 'Feasibility' -> X, 'Impact'/'Value' -> Y
-            # Case insensitive lookup could be better but let's stick to simple first
-            
-            # Feasibility synonyms
-            for key in ['Feasibility', 'Ease of Implementation', 'Effort (Inverse)']:
-                if key in avgs:
-                    x_val = avgs[key]
-                    break
-            
-            # Value synonyms
-            for key in ['Business Value', 'Impact', 'Value', 'Business Impact']:
-                if key in avgs:
-                    y_val = avgs[key]
-                    break
+        # Calculate X and Y coordinates using shared utility
+        x_val, y_val = calculate_matrix_position(avgs, ws_template_id, scale_max)
+
+        # Normalize average variance to 0-100 scale (100 = maximum disagreement)
+        # Max variance for scale_max property is (scale_max^2 / 4)
+        max_variance = (scale_max ** 2) / 4
+        normalized_variance = 0.0
+        if max_variance > 0:
+            normalized_variance = round((avg_variance / max_variance) * 100, 2)
 
         aggregated_results.append(AggregatedResult(
             id=uc.id,
@@ -161,7 +126,7 @@ async def get_workshop_results(workshop_id: str, db: AsyncSession = Depends(get_
             scores=avgs,
             total_score=round(final_score, 2),
             vote_count=vote_count,
-            variance=round(avg_variance, 2),
+            variance=normalized_variance,
             x=x_val,
             y=y_val
         ))

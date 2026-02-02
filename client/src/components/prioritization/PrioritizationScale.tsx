@@ -9,6 +9,7 @@ interface PrioritizationScaleProps {
     readOnly?: boolean;
 }
 
+
 export function PrioritizationScale({
     criterion,
     useCases,
@@ -18,7 +19,27 @@ export function PrioritizationScale({
     readOnly = false
 }: PrioritizationScaleProps) {
     const { theme } = useTheme();
-    const scale = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+    // Unified 1-100 scaling across all categories
+    const isScale100 = true;
+
+    // Check if we have legacy 1-10 data that needs visual help
+    const allScores: number[] = [];
+    Object.values(scores).forEach(s => {
+        Object.values(s).forEach(v => {
+            if (v !== undefined && v !== -1) allScores.push(v);
+        });
+    });
+    participants?.forEach(p => {
+        Object.values(p.scores || {}).forEach((v: any) => {
+            if (v !== undefined && v !== -1) allScores.push(v);
+        });
+    });
+
+    const hasLegacyData = allScores.length > 0 && allScores.every(s => s <= 10);
+
+    // For 100-point UI: [10, 20, ..., 100] (as buckets)
+    const scale = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 
     const handleDragOver = (e: React.DragEvent) => {
         if (readOnly) return;
@@ -35,16 +56,33 @@ export function PrioritizationScale({
         }
     };
 
-    // Filter use cases that belong to this score for the current criterion
-    const getUseCasesInBox = (score: number) => {
-        return useCases.filter(uc => scores[uc.id]?.[criterion] === score);
+    // Filter use cases that belong to this score or bucket
+    const getUseCasesInBox = (boxScore: number) => {
+        if (boxScore === -1) {
+            return useCases.filter(uc => scores[uc.id]?.[criterion] === -1);
+        }
+
+        return useCases.filter(uc => {
+            let s = scores[uc.id]?.[criterion];
+            if (s === undefined || s <= 0) return false;
+
+            // Robust rescaling for legacy 1-10 data
+            // If the workshop is detected as legacy (only scores <= 10 everywhere)
+            // or if THIS specific score is <= 10 while others are > 10,
+            // we treat it as a 10-point score that needs x10 rescaling for the 1-100 grid.
+            if (hasLegacyData || (s <= 10 && allScores.some(val => val > 10))) {
+                s = s * 10;
+            }
+
+            return s <= boxScore && s > (boxScore - 10);
+        });
     };
 
     return (
         <div className="w-full space-y-4">
             <div className="flex items-center justify-between px-2">
-                <span className="text-xs font-semibold theme-text-secondary uppercase tracking-wider">Low Score</span>
-                <span className="text-xs font-semibold theme-text-secondary uppercase tracking-wider">High Score</span>
+                <span className="text-xs font-semibold theme-text-secondary uppercase tracking-wider">Low {criterion}</span>
+                <span className="text-xs font-semibold theme-text-secondary uppercase tracking-wider">High {criterion}</span>
             </div>
 
             <div className="grid grid-cols-10 gap-2 h-[450px]">
@@ -59,13 +97,14 @@ export function PrioritizationScale({
                             } hover:border-brand-violet/30`}
                     >
                         <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-violet text-white text-[10px] font-bold px-2 py-0.5 rounded-full z-10">
-                            {num}
+                            {isScale100 ? `≤${num}` : num}
                         </div>
 
                         <div className="flex-1 overflow-y-auto space-y-2 pt-4 scrollbar-hide">
                             {getUseCasesInBox(num).map((uc) => (
                                 <div
                                     key={uc.id}
+                                    title={`${uc.title} (Score: ${scores[uc.id]?.[criterion]})`}
                                     className={`p-2 rounded-lg border text-xs shadow-sm ${theme === 'light'
                                         ? 'bg-white border-gray-200 text-gray-900'
                                         : 'bg-surface-700 border-white/10 text-white'
@@ -79,14 +118,23 @@ export function PrioritizationScale({
                             {participants && (
                                 <div className="flex flex-wrap gap-1 mt-auto pt-2 border-t theme-border">
                                     {participants.map(p => {
-                                        const pScore = p.scores?.[criterion];
-                                        if (pScore === num) {
+                                        let pScore = p.scores?.[criterion];
+                                        if (pScore === undefined || pScore <= 0) return null;
+
+                                        // Apply same rescaling logic to participant dots
+                                        if (hasLegacyData || (pScore <= 10 && allScores.some(val => val > 10))) {
+                                            pScore = pScore * 10;
+                                        }
+
+                                        const isInBox = pScore <= num && pScore > (num - 10);
+
+                                        if (isInBox) {
                                             return (
                                                 <div
                                                     key={`${p.id}-${p.useCaseId}`}
                                                     className="w-3 h-3 rounded-full border border-white shadow-sm"
                                                     style={{ backgroundColor: p.color || '#8b5cf6' }}
-                                                    title={`${p.name} - ${p.useCaseTitle || 'Use Case'}`}
+                                                    title={`${p.name} - ${pScore} on ${p.useCaseTitle || 'Use Case'}`}
                                                 />
                                             );
                                         }

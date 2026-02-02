@@ -3,12 +3,14 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 from app.core.database import get_db
-from app.models.models import Vote, UseCase, Participant
+from app.models.models import Vote, UseCase, Participant, Workshop
 from app.schemas.vote import VoteSubmit, VoteResponse
+from app.utils.matrix import calculate_matrix_position, detect_scale_max
 from app.core.socket_manager import sio 
 from uuid import UUID
 from typing import List, Optional
 from pydantic import BaseModel
+import hashlib
 
 router = APIRouter()
 
@@ -22,15 +24,22 @@ class ParticipantMatrixPosition(BaseModel):
     scores: dict
     vote_count: int = 1
     variance: float = 0
+    color: Optional[str] = "#8B5CF6"
+
+def get_participant_color(participant_id: str) -> str:
+    """Returns a deterministic color hex for a participant ID."""
+    colors = [
+        "#3B82F6", "#EF4444", "#10B981", "#F59E0B", "#8B5CF6", 
+        "#EC4899", "#06B6D4", "#84CC16", "#F97316", "#6366F1"
+    ]
+    hash_val = int(hashlib.md5(participant_id.encode()).hexdigest(), 16)
+    return colors[hash_val % len(colors)]
 
 @router.post("/", response_model=VoteResponse, status_code=status.HTTP_201_CREATED)
 async def submit_vote(
     vote_in: VoteSubmit,
     db: AsyncSession = Depends(get_db)
 ):
-    # Check if a vote already exists for this participant/usecase to update it instead?
-    # For MVP we might just insert, but updating is safer for user error correction.
-    
     existing = await db.execute(
         select(Vote).where(
             Vote.use_case_id == vote_in.use_case_id,
@@ -39,7 +48,6 @@ async def submit_vote(
     )
     existing_vote = existing.scalars().first()
     
-    # Get previous position BEFORE updating (for matrix position updates)
     previous_position = None
     if existing_vote and existing_vote.scores and 'Feasibility' in existing_vote.scores and 'Business Value' in existing_vote.scores:
         previous_position = {
@@ -48,14 +56,9 @@ async def submit_vote(
         }
     
     if existing_vote:
-        # Merge scores instead of overwriting
         new_scores = existing_vote.scores.copy() if existing_vote.scores else {}
-        print(f"[VOTES] Merging scores for use_case {vote_in.use_case_id}, participant {vote_in.participant_id}")
-        print(f"[VOTES] Existing scores: {existing_vote.scores}")
-        print(f"[VOTES] New scores to merge: {vote_in.scores}")
         new_scores.update(vote_in.scores)
         existing_vote.scores = new_scores
-        print(f"[VOTES] Final merged scores: {new_scores}")
         db_vote = existing_vote
     else:
         db_vote = Vote(
@@ -68,13 +71,10 @@ async def submit_vote(
     await db.commit()
     await db.refresh(db_vote)
     
-    # Broadcast progress update (Participant count)
-    # We need the workshop ID.
     use_case_res = await db.execute(select(UseCase).where(UseCase.id == vote_in.use_case_id))
     use_case = use_case_res.scalars().first()
     
     if use_case:
-        # Count total votes for this card
         votes_res = await db.execute(select(Vote).where(Vote.use_case_id == use_case.id))
         count = len(votes_res.scalars().all())
         
@@ -84,26 +84,31 @@ async def submit_vote(
             room=str(use_case.workshop_id)
         )
         
-        # If this vote contains matrix position data (Feasibility and Business Value),
-        # emit matrix position update event for facilitators
     if db_vote.scores:
-        # Get participant info
         participant_res = await db.execute(select(Participant).where(Participant.id == vote_in.participant_id))
         participant = participant_res.scalars().first()
         
-        # Derive x and y for backward compatibility with 2D matrix (first 2 criteria)
-        score_values = list(db_vote.scores.values())
-        x = score_values[0] if len(score_values) > 0 else 0
-        y = score_values[1] if len(score_values) > 1 else 0
+        ws_template_id = None
+        if use_case:
+            workshop_res = await db.execute(select(Workshop).where(Workshop.id == use_case.workshop_id))
+            workshop = workshop_res.scalars().first()
+            if workshop:
+                ws_template_id = workshop.config.get('template_id')
 
-        # Emit matrix position update
+        # Detect scale from current vote scores
+        scale_max = detect_scale_max([float(v) for v in db_vote.scores.values()])
+        x, y = calculate_matrix_position(db_vote.scores, ws_template_id, scale_max)
+
+        p_color = get_participant_color(str(vote_in.participant_id))
+        
         event_data = {
             'participant_id': str(vote_in.participant_id),
             'participant_name': participant.display_name if participant else 'Participant',
+            'participant_color': p_color,
             'use_case_id': str(use_case.id),
             'use_case_title': use_case.title,
             'scores': db_vote.scores,
-            'position': {'x': x, 'y': y},
+            'position': {'x': x or 0, 'y': y or 0},
             'previous_position': previous_position
         }
         await sio.emit(
@@ -114,18 +119,12 @@ async def submit_vote(
     
     return db_vote
 
-
 @router.get("/participant/{participant_id}/matrix-positions", response_model=List[ParticipantMatrixPosition])
 async def get_participant_matrix_positions(
     participant_id: str,
     workshop_id: Optional[str] = Query(None),
     db: AsyncSession = Depends(get_db)
 ):
-    """
-    Get participant-specific matrix positions.
-    Returns only use cases that the participant has positioned on the matrix.
-    """
-    # Build query for participant's votes with matrix positions
     try:
         participant_uuid = UUID(participant_id)
     except ValueError:
@@ -138,7 +137,6 @@ async def get_participant_matrix_positions(
         .options(selectinload(Vote.use_case))
     )
     
-    # Filter by workshop if provided
     if workshop_id:
         try:
             workshop_uuid = UUID(workshop_id)
@@ -149,80 +147,60 @@ async def get_participant_matrix_positions(
     result = await db.execute(query)
     votes = result.scalars().all()
     
+    ws_template_id = None
+    if workshop_id:
+        try:
+            workshop_res = await db.execute(select(Workshop).where(Workshop.id == UUID(workshop_id)))
+            workshop = workshop_res.scalars().first()
+            if workshop:
+                ws_template_id = workshop.config.get('template_id')
+        except ValueError:
+            pass
+    
+    p_color = get_participant_color(participant_id)
+    
     positions = []
-    print(f"[VOTES] Fetching matrix positions for participant {participant_id}, workshop {workshop_id}")
-    print(f"[VOTES] Query: {query}")
-    print(f"[VOTES] Found {len(votes)} votes")
-    
-    if len(votes) > 0:
-        for vote in votes:
-            print(f"[VOTES] Vote ID: {vote.id}, Use Case ID: {vote.use_case_id}, Scores: {vote.scores}")
-    else:
-        print(f"[VOTES] No votes found for participant {participant_id} in workshop {workshop_id}")
-        # Debug: Check if there are ANY votes for this participant
-        all_votes_query = select(Vote).where(Vote.participant_id == participant_uuid)
-        all_votes_result = await db.execute(all_votes_query)
-        all_votes = all_votes_result.scalars().all()
-        print(f"[VOTES] Total votes for this participant (any workshop): {len(all_votes)}")
-        if len(all_votes) > 0:
-            for v in all_votes:
-                print(f"[VOTES]   - Vote use_case_id: {v.use_case_id}, scores: {v.scores}")
-    
-    
     for vote in votes:
         if vote.scores:
             use_case = vote.use_case
-            
-            # For backward compatibility with 2D matrix view, try to extract x/y
-            # But don't require it - the scores dict is the source of truth
-            score_values = list(vote.scores.values())
-            x = float(score_values[0]) if len(score_values) > 0 else 0
-            y = float(score_values[1]) if len(score_values) > 1 else 0
-            
-            print(f"[VOTES] Adding position for use case {use_case.id}: scores={vote.scores}, x={x}, y={y}")
+            scale_max = detect_scale_max([float(v) for v in vote.scores.values()])
+            x, y = calculate_matrix_position(vote.scores, ws_template_id, scale_max)
             
             positions.append(ParticipantMatrixPosition(
                 id=str(use_case.id),
                 title=use_case.title,
                 description=use_case.description,
                 category=use_case.category,
-                x=x,
-                y=y,
-                scores=vote.scores,  # This is what the frontend actually uses!
+                x=x or 0,
+                y=y or 0,
+                scores=vote.scores,
                 vote_count=1,
-                variance=0
+                variance=0,
+                color=p_color
             ))
     
-    print(f"[VOTES] Returning {len(positions)} positions")
     return positions
-
 
 class AllParticipantMatrixPosition(BaseModel):
     use_case_id: str
     use_case_title: str
     participant_id: str
     participant_name: str
+    participant_color: Optional[str] = "#8B5CF6"
     x: float
     y: float
     scores: dict
-
 
 @router.get("/workshop/{workshop_id}/all-matrix-positions", response_model=List[AllParticipantMatrixPosition])
 async def get_all_participant_matrix_positions(
     workshop_id: str,
     db: AsyncSession = Depends(get_db)
 ):
-    """
-    Get all participant matrix positions for a workshop.
-    Returns all use cases positioned by all participants, each with unique participant info.
-    Used by facilitators to see all participant positions with unique colors.
-    """
     try:
         workshop_uuid = UUID(workshop_id)
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid workshop ID format")
     
-    # Get all votes for this workshop that have matrix positions
     query = (
         select(Vote)
         .join(UseCase, Vote.use_case_id == UseCase.id)
@@ -234,27 +212,32 @@ async def get_all_participant_matrix_positions(
     result = await db.execute(query)
     votes = result.scalars().all()
     
+    ws_template_id = None
+    workshop_res = await db.execute(select(Workshop).where(Workshop.id == workshop_uuid))
+    workshop = workshop_res.scalars().first()
+    if workshop:
+        ws_template_id = workshop.config.get('template_id')
+
     positions = []
     for vote in votes:
         if vote.scores:
             use_case = vote.use_case
             participant = vote.participant
-            score_values = list(vote.scores.values())
-            x = score_values[0] if len(score_values) > 0 else 0
-            y = score_values[1] if len(score_values) > 1 else 0
+            scale_max = detect_scale_max([float(v) for v in vote.scores.values()])
+            x, y = calculate_matrix_position(vote.scores, ws_template_id, scale_max)
             
             positions.append(AllParticipantMatrixPosition(
                 use_case_id=str(use_case.id),
                 use_case_title=use_case.title,
                 participant_id=str(vote.participant_id),
                 participant_name=participant.display_name if participant else 'Unknown',
-                x=float(x),
-                y=float(y),
+                participant_color=get_participant_color(str(vote.participant_id)),
+                x=float(x or 0),
+                y=float(y or 0),
                 scores=vote.scores
             ))
     
     return positions
-
 
 @router.delete("/", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_vote(
@@ -268,10 +251,6 @@ async def delete_vote(
     except ValueError:
         raise HTTPException(status_code=400, detail="Invalid ID format")
 
-    # Use execute/scalars for delete to ensure we can get the necessary info for socket event if needed
-    # Or just select then delete
-    
-    # Check if exists
     result = await db.execute(
         select(Vote).where(
             Vote.use_case_id == use_case_uuid,
@@ -283,21 +262,15 @@ async def delete_vote(
     if not vote:
         raise HTTPException(status_code=404, detail="Vote not found")
 
-    # Get use case info for socket event
     use_case_res = await db.execute(select(UseCase).where(UseCase.id == use_case_uuid))
     use_case = use_case_res.scalars().first()
-    
-    # Get participant info for socket event
     participant_res = await db.execute(select(Participant).where(Participant.id == participant_uuid))
     participant = participant_res.scalars().first()
 
-    # Delete
     await db.delete(vote)
     await db.commit()
     
-    # Emit socket event so clients update
     if use_case:
-        # Update vote count
         votes_res = await db.execute(select(Vote).where(Vote.use_case_id == use_case_uuid))
         count = len(votes_res.scalars().all())
         
@@ -307,7 +280,6 @@ async def delete_vote(
             room=str(use_case.workshop_id)
         )
         
-        # Emit matrix removal
         if participant:
             await sio.emit(
                 'matrix:position_removed',

@@ -59,7 +59,7 @@ class RAGDocument(Base):
     source = Column(String, nullable=True)  # Where the document came from
     
     # Metadata
-    doc_metadata = Column(JSON, nullable=True)  # Additional metadata (renamed from metadata to avoid SQLAlchemy conflict)
+    doc_metadata = Column("metadata", JSON, nullable=True)  # Additional metadata (renamed from metadata to avoid SQLAlchemy conflict)
     embedding_id = Column(String, nullable=True)  # Reference to vector store
     
     # Status

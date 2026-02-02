@@ -35,13 +35,13 @@ class KnowledgeBaseManager:
             if reference_file.exists():
                 with open(reference_file, 'r') as f:
                     data = json.load(f)
-                print(f"✅ Loaded {len(data)} reference use cases from file")
+                print(f"[OK] Loaded {len(data)} reference use cases from file")
                 return data
             else:
-                print("⚠️  Reference data file not found, using empty list")
+                print("[WARN] Reference data file not found, using empty list")
                 return []
         except Exception as e:
-            print(f"❌ Error loading reference data: {e}")
+            print(f"[ERROR] Error loading reference data: {e}")
             return []
     
     async def ingest_document(
@@ -76,7 +76,7 @@ class KnowledgeBaseManager:
             category=category,
             source=source,
             metadata=metadata or {},
-            created_by=user_id
+            created_by=str(user_id) if user_id else None
         )
         
         db.add(doc)
@@ -86,7 +86,7 @@ class KnowledgeBaseManager:
         # Update vector store
         await self._update_vector_store()
         
-        print(f"✅ Ingested document: {title}")
+        print(f"[OK] Ingested document: {title}")
         return doc
     
     async def update_document(
@@ -126,7 +126,7 @@ class KnowledgeBaseManager:
         # Update vector store
         await self._update_vector_store()
         
-        print(f"✅ Updated document: {doc.title} (v{doc.version})")
+        print(f"[OK] Updated document: {doc.title} (v{doc.version})")
         return doc
     
     async def delete_document(
@@ -147,11 +147,11 @@ class KnowledgeBaseManager:
         if soft_delete:
             doc.is_active = False
             await db.commit()
-            print(f"✅ Deactivated document: {doc.title}")
+            print(f"[OK] Deactivated document: {doc.title}")
         else:
             await db.delete(doc)
             await db.commit()
-            print(f"✅ Deleted document: {doc.title}")
+            print(f"[OK] Deleted document: {doc.title}")
         
         # Update vector store
         await self._update_vector_store()
@@ -224,10 +224,10 @@ class KnowledgeBaseManager:
                 self.rag_service.embeddings
             )
             
-            print(f"✅ Updated vector store with {len(documents)} documents")
+            print(f"[OK] Updated vector store with {len(documents)} documents")
             
         except Exception as e:
-            print(f"❌ Failed to update vector store: {e}")
+            print(f"[ERROR] Failed to update vector store: {e}")
     
     async def export_knowledge_base(
         self,
@@ -291,11 +291,11 @@ class KnowledgeBaseManager:
                 category=doc_data.get("category"),
                 source=doc_data.get("source"),
                 metadata=doc_data.get("metadata"),
-                user_id=user_id
+                user_id=str(user_id) if user_id else None
             )
             imported_count += 1
         
-        print(f"✅ Imported {imported_count} documents")
+        print(f"[OK] Imported {imported_count} documents")
         return imported_count
     
     async def get_statistics(self, db: AsyncSession) -> Dict[str, Any]:

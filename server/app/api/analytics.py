@@ -14,10 +14,18 @@ import statistics
 import uuid
 from collections import defaultdict
 
+from app.utils.matrix import (
+    calculate_agreement_score, 
+    detect_scale_max, 
+    get_scale_factor, 
+    calculate_matrix_position,
+    STANDARD_X_KEYWORDS,
+    STANDARD_Y_KEYWORDS
+)
 from app.core.database import get_db
-from app.models import Workshop, UseCase, Vote, Participant, Organization
+from app.models.models import Workshop, UseCase, Vote, Participant, WorkshopStatus
 from app.models.analytics import AnalyticsSnapshot, GeneratedReport, IndustryBenchmark
-from app.api.auth import get_current_user
+from app.api.auth import get_current_user, get_current_active_user, get_optional_user
 from app.middleware.error_handler import NotFoundException
 from app.schemas.analytics import (
     AnalyticsOverviewResponse, 
@@ -332,38 +340,39 @@ async def get_agreement_metrics(
         
         # Calculate agreement metrics for each criterion
         criteria_agreement = {}
-        overall_variances = []
+        overall_scores = []
+        
+        # Determine scale for this use case
+        all_uc_scores = []
+        for scores in criteria_stats.values():
+            all_uc_scores.extend(scores)
+        scale_max = detect_scale_max(all_uc_scores)
         
         for criterion, scores in criteria_stats.items():
             if len(scores) >= 2:
-                variance = statistics.variance(scores)
                 std_dev = statistics.stdev(scores)
                 mean = statistics.mean(scores)
                 min_val = min(scores)
                 max_val = max(scores)
                 range_val = max_val - min_val
                 
-                # Agreement score: 100 - normalized variance (higher = more agreement)
-                # Assuming 0-10 scale, max variance would be 25 (all 0s and 10s)
-                agreement_score = max(0, 100 - (variance / 25 * 100))
+                # Use centralized agreement calculation
+                agreement_score = calculate_agreement_score(scores, scale_max)
                 
                 criteria_agreement[criterion] = {
                     "mean": round(mean, 2),
                     "std_dev": round(std_dev, 2),
-                    "variance": round(variance, 2),
+                    "variance": round(statistics.variance(scores), 2),
                     "min": round(min_val, 2),
                     "max": round(max_val, 2),
                     "range": round(range_val, 2),
                     "agreement_score": round(agreement_score, 1),
                     "vote_count": len(scores)
                 }
-                overall_variances.append(variance)
+                overall_scores.append(agreement_score)
         
         # Overall agreement score for this use case
-        overall_agreement = 0
-        if overall_variances:
-            avg_variance = sum(overall_variances) / len(overall_variances)
-            overall_agreement = max(0, 100 - (avg_variance / 25 * 100))
+        overall_agreement = sum(overall_scores) / len(overall_scores) if overall_scores else 0
         
         agreement_data.append({
             "use_case_id": str(uc.id),
@@ -423,10 +432,14 @@ async def get_score_distribution(
     distributions = {}
     for criterion, scores in criteria_scores.items():
         if scores:
-            # Create histogram buckets (0-1, 1-2, ..., 9-10)
+            scale_max = detect_scale_max(scores)
+            # Create histogram buckets (10 buckets)
+            # If scale is 10: [0-1, 1-2, ..., 9-10]
+            # If scale is 100: [0-10, 10-20, ..., 90-100]
             buckets = [0] * 10
+            bucket_size = scale_max / 10
             for score in scores:
-                bucket_idx = min(int(score), 9)
+                bucket_idx = min(int(score / bucket_size), 9)
                 buckets[bucket_idx] += 1
             
             distributions[criterion] = {
@@ -480,7 +493,18 @@ async def get_quadrant_analysis(
         "dont_do": []          # Low Value, Low Feasibility
     }
     
-    threshold = 5.0  # Mid-point on 0-10 scale
+    workshop_config = workshop.config or {}
+    template_id = workshop.ws_template_id if hasattr(workshop, 'ws_template_id') else None
+    
+    # Analyze all scores to detect scale
+    all_scores = []
+    for uc in use_cases:
+        for vote in uc.votes:
+            if vote.scores:
+                all_scores.extend([float(s) for s in vote.scores.values()])
+    
+    scale_max = detect_scale_max(all_scores)
+    threshold = scale_max / 2  # Dynamic threshold
     
     for uc in use_cases:
         if not uc.votes:
@@ -498,25 +522,19 @@ async def get_quadrant_analysis(
         
         avg_scores = {k: scores_sum[k] / scores_count[k] for k in scores_sum}
         
-        # Determine X (Feasibility) and Y (Value) coordinates
-        feasibility_keys = ['Feasibility', 'Ease of Implementation', 'Data Readiness']
-        value_keys = ['Business Value', 'Impact', 'Value', 'Business Impact', 'Strategic Alignment']
-        
-        x_val = None
-        y_val = None
-        
-        for key in feasibility_keys:
-            if key in avg_scores:
-                x_val = avg_scores[key]
-                break
-        
-        for key in value_keys:
-            if key in avg_scores:
-                y_val = avg_scores[key]
-                break
+        # Determine X and Y coordinates using centralized standardized logic
+        x_val, y_val = calculate_matrix_position(avg_scores, template_id, scale_max)
         
         if x_val is None or y_val is None:
             continue
+        
+        # Normalize back to raw scale for quadrant comparison if x_val/y_val are 0-100
+        # Wait, x_val and y_val are returned on 0-100 scale by calculate_matrix_position.
+        # So we should compare them against a 50.0 threshold if they are normalized.
+        # OR we keep them on their raw scale for the quadrant logic here?
+        # Actually, let's keep threshold at 50.0 if we use calc_matrix_pos's normalized output.
+        
+        norm_threshold = 50.0
         
         use_case_data = {
             "id": str(uc.id),
@@ -527,12 +545,12 @@ async def get_quadrant_analysis(
             "scores": {k: round(v, 2) for k, v in avg_scores.items()}
         }
         
-        # Categorize into quadrant
-        if y_val >= threshold and x_val >= threshold:
+        # Categorize into quadrant based on normalized 0-100 coordinates
+        if y_val >= norm_threshold and x_val >= norm_threshold:
             quadrants["quick_wins"].append(use_case_data)
-        elif y_val >= threshold and x_val < threshold:
+        elif y_val >= norm_threshold and x_val < norm_threshold:
             quadrants["strategic_bets"].append(use_case_data)
-        elif y_val < threshold and x_val >= threshold:
+        elif y_val < norm_threshold and x_val >= norm_threshold:
             quadrants["nice_to_have"].append(use_case_data)
         else:
             quadrants["dont_do"].append(use_case_data)
@@ -543,7 +561,9 @@ async def get_quadrant_analysis(
     
     return {
         "workshop_id": workshop_id,
-        "threshold": threshold,
+        "threshold": threshold, # Still return raw threshold for UI if needed
+        "norm_threshold": norm_threshold,
+        "scale_max": scale_max,
         "quadrants": quadrants,
         "summary": {
             "quick_wins_count": len(quadrants["quick_wins"]),

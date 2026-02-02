@@ -289,7 +289,7 @@ async def upload_document(
                 "content_type": file.content_type,
                 "file_size": file.size
             },
-            user_id=current_user.id
+            user_id=str(current_user.id)
         )
         
         return {

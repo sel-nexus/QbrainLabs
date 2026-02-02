@@ -112,6 +112,20 @@ async def get_current_user_optional(
     user = result.scalars().first()
     return user
 
+async def get_current_active_user(
+    current_user: User = Depends(get_current_user)
+) -> User:
+    """Check if the current user is active (admins bypass this)"""
+    if not current_user.is_admin_user and current_user.status != AccountStatus.ACTIVE.value:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Account is not active"
+        )
+    return current_user
+
+# Aliases for compatibility
+get_optional_user = get_current_user_optional
+
 @router.post("/signup", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
 async def signup(user_data: UserCreate, db: AsyncSession = Depends(get_db)):
     """

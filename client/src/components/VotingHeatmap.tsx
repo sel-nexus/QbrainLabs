@@ -43,12 +43,27 @@ export function VotingHeatmap({ workshopId }: VotingHeatmapProps) {
     const getColorForScore = (score: number | null): string => {
         if (score === null) return 'theme-bg-tertiary';
 
+        // Unified 1-100 scaling
+        const scaleMax = 100;
+
+        // Handle legacy 1-10 data for heatmap coloring
+        let effectiveScore = score;
+        if (score > 0 && score <= 10) {
+            // Check if heatmap has any scores > 10 to decide if this is legacy
+            const allScores = data?.heatmap.flatMap(row => Object.values(row.scores)).filter((s): s is number => s !== null) || [];
+            if (allScores.every(s => s <= 10)) {
+                effectiveScore = score * 10;
+            }
+        }
+
+        const normalizedScore = (effectiveScore / scaleMax) * 10;
+
         // Color scale from red (low) to yellow (mid) to green (high)
-        if (score <= 3) {
+        if (normalizedScore <= 3) {
             return 'bg-red-600/70';
-        } else if (score <= 5) {
+        } else if (normalizedScore <= 5) {
             return 'bg-orange-500/70';
-        } else if (score <= 7) {
+        } else if (normalizedScore <= 7) {
             return 'bg-yellow-500/70';
         } else {
             return 'bg-green-500/70';
@@ -135,22 +150,39 @@ export function VotingHeatmap({ workshopId }: VotingHeatmapProps) {
             {/* Legend */}
             <div className="mt-4 flex items-center justify-center gap-4 text-xs theme-text-secondary">
                 <span>Score Legend:</span>
-                <div className="flex items-center gap-1">
-                    <div className="w-4 h-4 bg-red-600/70 rounded"></div>
-                    <span>1-3</span>
-                </div>
-                <div className="flex items-center gap-1">
-                    <div className="w-4 h-4 bg-orange-500/70 rounded"></div>
-                    <span>4-5</span>
-                </div>
-                <div className="flex items-center gap-1">
-                    <div className="w-4 h-4 bg-yellow-500/70 rounded"></div>
-                    <span>6-7</span>
-                </div>
-                <div className="flex items-center gap-1">
-                    <div className="w-4 h-4 bg-green-500/70 rounded"></div>
-                    <span>8-10</span>
-                </div>
+                {(() => {
+                    const isScale100 = true; // Force unified scale in legend
+                    const scaleMax = 100;
+                    const step = scaleMax / 10;
+
+                    const formatScore = (s: number) => {
+                        if (isScale100) {
+                            return s.toFixed(0); // For 100-point scale, show as integer
+                        }
+                        return s.toFixed(1); // For 10-point scale, show one decimal
+                    };
+
+                    return (
+                        <>
+                            <div className="flex items-center gap-1">
+                                <div className="w-4 h-4 bg-red-600/70 rounded"></div>
+                                <span>{`${formatScore(0.1)}-${formatScore(3 * step)}`}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <div className="w-4 h-4 bg-orange-500/70 rounded"></div>
+                                <span>{`${3 * step + 1}-${5 * step}`}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <div className="w-4 h-4 bg-yellow-500/70 rounded"></div>
+                                <span>{`${5 * step + 1}-${7 * step}`}</span>
+                            </div>
+                            <div className="flex items-center gap-1">
+                                <div className="w-4 h-4 bg-green-500/70 rounded"></div>
+                                <span>{`${7 * step + 1}-${10 * step}`}</span>
+                            </div>
+                        </>
+                    );
+                })()}
             </div>
         </div>
     );

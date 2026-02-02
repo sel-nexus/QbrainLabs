@@ -22,11 +22,18 @@ interface ParticipantAction {
 interface MatrixActivityDashboardProps {
     workshopId: string;
     isVisible: boolean;
+    viewMode?: 'consolidated' | 'all' | 'participant';
     onRefreshMatrix?: (positions: any[], isAllPositions: boolean) => void;
     onPositionUpdate?: (position: any) => void;
 }
 
-export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix, onPositionUpdate }: MatrixActivityDashboardProps) {
+export function MatrixActivityDashboard({
+    workshopId,
+    isVisible,
+    viewMode: externalViewMode,
+    onRefreshMatrix,
+    onPositionUpdate
+}: MatrixActivityDashboardProps) {
     const { theme } = useTheme();
     const [recentActions, setRecentActions] = useState<ParticipantAction[]>([]);
     const [activeParticipants, setActiveParticipants] = useState<Set<string>>(new Set());
@@ -40,6 +47,13 @@ export function MatrixActivityDashboard({ workshopId, isVisible, onRefreshMatrix
         totalActions: 0,
         recentActivityCount: 0
     });
+
+    useEffect(() => {
+        if (externalViewMode && externalViewMode !== viewMode) {
+            setViewMode(externalViewMode);
+            handleRefresh(externalViewMode, selectedParticipantId);
+        }
+    }, [externalViewMode]);
 
     useEffect(() => {
         if (!isVisible || !workshopId) return;

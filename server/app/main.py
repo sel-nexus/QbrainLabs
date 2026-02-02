@@ -99,7 +99,7 @@ app.include_router(results.router, prefix="/api/results", tags=["results"])
 
 from app.api import ai, auth, admin, knowledge_base, surveys, participant_auth, analytics, export, organizations, marketplace, errors, facilitators, members, settings, subscription, rag_admin
 app.include_router(ai.router, prefix="/api/ai", tags=["ai"])
-app.include_router(rag_admin.router, prefix="/api/rag", tags=["rag-admin"])
+app.include_router(rag_admin.router, prefix="/api/knowledge-base", tags=["rag-admin"])
 app.include_router(errors.router, tags=["errors"])
 app.include_router(auth.router, tags=["authentication"])
 app.include_router(admin.router, tags=["admin"])
