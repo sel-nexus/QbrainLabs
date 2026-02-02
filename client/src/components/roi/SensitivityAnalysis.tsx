@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import type { CostInputs, BenefitInputs, ROIParameters, ROIResults } from '../../types/roi';
 import { api } from '../../lib/api';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { TrendingUp, TrendingDown } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { TrendingUp } from 'lucide-react';
 
 interface SensitivityData {
     variable: string;
@@ -44,10 +44,10 @@ export const SensitivityAnalysis: React.FC<SensitivityAnalysisProps> = ({
                 if (typeof baseValue !== 'number' || baseValue === 0) continue;
 
                 const variance = variancePercent / 100;
-                
+
                 // Calculate with increased value
                 const highCosts = { ...costs, [key]: baseValue * (1 + variance) };
-                const highResponse = await api.post('/roi/calculate-only', {
+                const highResponse = await api.post('roi/calculate-only', {
                     costs: highCosts,
                     benefits,
                     parameters
@@ -56,7 +56,7 @@ export const SensitivityAnalysis: React.FC<SensitivityAnalysisProps> = ({
 
                 // Calculate with decreased value
                 const lowCosts = { ...costs, [key]: baseValue * (1 - variance) };
-                const lowResponse = await api.post('/roi/calculate-only', {
+                const lowResponse = await api.post('roi/calculate-only', {
                     costs: lowCosts,
                     benefits,
                     parameters
@@ -80,9 +80,9 @@ export const SensitivityAnalysis: React.FC<SensitivityAnalysisProps> = ({
                 if (typeof baseValue !== 'number' || baseValue === 0) continue;
 
                 const variance = variancePercent / 100;
-                
+
                 const highBenefits = { ...benefits, [key]: baseValue * (1 + variance) };
-                const highResponse = await api.post('/roi/calculate-only', {
+                const highResponse = await api.post('roi/calculate-only', {
                     costs,
                     benefits: highBenefits,
                     parameters
@@ -185,7 +185,11 @@ export const SensitivityAnalysis: React.FC<SensitivityAnalysisProps> = ({
                                         tick={{ fontSize: 12 }}
                                     />
                                     <Tooltip
-                                        formatter={(value: number) => `${value > 0 ? '+' : ''}${value.toFixed(2)}%`}
+                                        formatter={(value: number | string | undefined) => {
+                                            if (value === undefined) return '';
+                                            const numValue = typeof value === 'string' ? parseFloat(value) : value;
+                                            return `${numValue > 0 ? '+' : ''}${numValue.toFixed(2)}%`;
+                                        }}
                                         contentStyle={{
                                             backgroundColor: '#1F2937',
                                             color: '#F9FAFB',
@@ -236,11 +240,10 @@ export const SensitivityAnalysis: React.FC<SensitivityAnalysisProps> = ({
                                         </td>
                                         <td className="px-4 py-3">
                                             <span
-                                                className={`px-2 py-1 text-xs font-medium rounded-full ${
-                                                    item.category === 'cost'
-                                                        ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
-                                                        : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
-                                                }`}
+                                                className={`px-2 py-1 text-xs font-medium rounded-full ${item.category === 'cost'
+                                                    ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                                                    : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400'
+                                                    }`}
                                             >
                                                 {item.category}
                                             </span>

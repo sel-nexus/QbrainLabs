@@ -104,7 +104,7 @@ export function WorkshopDetail() {
             // Refresh results when participant positions change
             if (currentPhase === 'ANALYSIS') {
                 try {
-                    const resultsData = await api.get(`/results/${id}`);
+                    const resultsData = await api.get(`results/${id}`);
                     setResults(resultsData.data);
                 } catch (e) {
                     console.error('Failed to refresh results:', e);
@@ -141,7 +141,7 @@ export function WorkshopDetail() {
     // ... (keep existing methods)
     const fetchWorkshop = async () => {
         try {
-            const { data } = await api.get(`/workshops/${id}`);
+            const { data } = await api.get(`workshops/${id}`);
             setWorkshop(data);
             setCurrentPhase(data.current_phase);
             setActiveCardId(data.active_use_case_id);
@@ -150,12 +150,12 @@ export function WorkshopDetail() {
             }
 
             // Fetch existing use cases
-            const ucData = await api.get(`/usecases/${id}`);
+            const ucData = await api.get(`usecases/${id}`);
             setUseCases(ucData.data);
 
             // If already analysis, fetch results
             if (data.current_phase === 'ANALYSIS') {
-                const resultsData = await api.get(`/results/${id}`);
+                const resultsData = await api.get(`results/${id}`);
                 setResults(resultsData.data);
                 setShowAllParticipantPositions(false); // Reset to aggregated view
             }
@@ -167,10 +167,10 @@ export function WorkshopDetail() {
 
     const startPhase = async (phase: string) => {
         try {
-            await api.post(`/workshops/${id}/phase`, { phase });
+            await api.post(`workshops/${id}/phase`, { phase });
             setCurrentPhase(phase);
             if (phase === 'ANALYSIS') {
-                const { data } = await api.get(`/results/${id}`);
+                const { data } = await api.get(`results/${id}`);
                 setResults(data);
             }
             toast.success(`Started ${phase} phase`);
@@ -182,7 +182,7 @@ export function WorkshopDetail() {
 
     const activateCard = async (ucId: string) => {
         try {
-            await api.post(`/workshops/${id}/active_card`, { use_case_id: ucId });
+            await api.post(`workshops/${id}/active_card`, { use_case_id: ucId });
             setActiveCardId(ucId);
             toast.success("Card presented for voting");
         } catch (e) {
@@ -193,7 +193,7 @@ export function WorkshopDetail() {
 
     const handleFacilitatorAction = async (participantId: string, role: string) => {
         try {
-            await api.patch(`/participants/${participantId}/role`, { role });
+            await api.patch(`participants/${participantId}/role`, { role });
             // Remove from list
             setPendingFacilitators(prev => prev.filter(p => p.participant_id !== participantId));
             toast.success(`User ${role === 'FACILITATOR' ? 'approved' : 'denied'}`);
@@ -205,7 +205,7 @@ export function WorkshopDetail() {
 
     const handleSubmitUseCase = async (data: UseCaseData) => {
         try {
-            await api.post('/usecases/', {
+            await api.post('usecases/', {
                 ...data,
                 workshop_id: id,
                 added_by_facilitator: true
@@ -223,7 +223,7 @@ export function WorkshopDetail() {
     const handleEditSubmission = async (data: UseCaseData) => {
         if (!editingUseCase) return;
         try {
-            await api.put(`/usecases/${editingUseCase.id}`, {
+            await api.put(`usecases/${editingUseCase.id}`, {
                 ...data, // Include all form fields
                 // Ensure we handle fields that might be missing in data but needed or ignored
             });
@@ -241,7 +241,7 @@ export function WorkshopDetail() {
         if (!confirm("Are you sure you want to delete this use case? This cannot be undone.")) return;
 
         try {
-            await api.delete(`/usecases/${ucId}`);
+            await api.delete(`usecases/${ucId}`);
             // Socket will update the list
             toast.success("Use case deleted");
         } catch (err) {
@@ -388,7 +388,7 @@ export function WorkshopDetail() {
                                         variant={!showAllParticipantPositions ? 'primary' : 'secondary'}
                                         className="py-1 px-3 text-sm"
                                         onClick={async () => {
-                                            const resultsData = await api.get(`/results/${id}`);
+                                            const resultsData = await api.get(`results/${id}`);
                                             setResults(resultsData.data);
                                             setShowAllParticipantPositions(false);
                                         }}
@@ -554,7 +554,7 @@ export function WorkshopDetail() {
                                             } else {
                                                 // If in aggregated view, we should probably fetch results to get the new average
                                                 // but for now, we can just trigger a fetch if it's been a while
-                                                api.get(`/results/${id}`).then(res => setResults(res.data)).catch(console.error);
+                                                api.get(`results/${id}`).then(res => setResults(res.data)).catch(console.error);
                                             }
                                         }}
                                     />

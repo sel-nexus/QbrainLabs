@@ -25,7 +25,7 @@ export function AdminDashboard() {
 
     const fetchWorkshops = async () => {
         try {
-            const { data } = await api.get('/workshops/');
+            const { data } = await api.get('workshops/');
             setWorkshops(data);
         } catch (e) {
             console.error(e);
@@ -66,13 +66,12 @@ export function AdminDashboard() {
                         </div>
                     ) : workshops.length > 0 ? (
                         workshops.map((w: any) => (
-                            <div 
-                                key={w.id} 
-                                className={`rounded-2xl p-6 transition-all cursor-pointer ${
-                                    theme === 'light' 
-                                        ? 'bg-white border-2 border-gray-200 hover:border-brand-violet/50 hover:shadow-lg' 
+                            <div
+                                key={w.id}
+                                className={`rounded-2xl p-6 transition-all cursor-pointer ${theme === 'light'
+                                        ? 'bg-white border-2 border-gray-200 hover:border-brand-violet/50 hover:shadow-lg'
                                         : 'bg-surface-800/50 border border-white/10 hover:border-brand-violet/50'
-                                }`}
+                                    }`}
                                 onClick={() => navigate(`/workshop/${w.id}`)}
                             >
                                 <div className="flex justify-between items-start mb-4">
@@ -80,9 +79,8 @@ export function AdminDashboard() {
                                         {w.status || 'OPEN'}
                                     </span>
                                     <div className="text-right">
-                                        <div className={`text-xs uppercase tracking-wider mb-1 font-medium ${
-                                            theme === 'light' ? 'text-gray-500' : 'text-gray-400'
-                                        }`}>
+                                        <div className={`text-xs uppercase tracking-wider mb-1 font-medium ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'
+                                            }`}>
                                             PIN Code
                                         </div>
                                         <div className="font-mono text-xl font-bold text-brand-magenta">{w.pin}</div>
@@ -100,11 +98,10 @@ export function AdminDashboard() {
                             </div>
                         ))
                     ) : (
-                        <div className={`col-span-1 md:col-span-3 h-64 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center ${
-                            theme === 'light' 
-                                ? 'border-gray-300 text-gray-500 bg-gray-50' 
+                        <div className={`col-span-1 md:col-span-3 h-64 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center ${theme === 'light'
+                                ? 'border-gray-300 text-gray-500 bg-gray-50'
                                 : 'border-white/10 text-gray-400 bg-white/5'
-                        }`}>
+                            }`}>
                             <Users className="w-12 h-12 mb-4 opacity-50" />
                             <p>No active workshops found.</p>
                             {isAdmin ? (

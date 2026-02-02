@@ -164,7 +164,7 @@ export async function getSuggestions(
     workshopId: string,
     contextType: 'proactive' | 'reactive' = 'proactive'
 ): Promise<SuggestionsResponse> {
-    const response = await api.post('/copilot/suggestions', {
+    const response = await api.post('copilot/suggestions', {
         workshop_id: workshopId,
         context_type: contextType,
     });
@@ -178,7 +178,7 @@ export async function dismissSuggestion(
     suggestionId: string,
     action: 'dismiss' | 'acted_upon' = 'dismiss'
 ): Promise<{ success: boolean; status: string }> {
-    const response = await api.post('/copilot/suggestions/dismiss', {
+    const response = await api.post('copilot/suggestions/dismiss', {
         suggestion_id: suggestionId,
         action,
     });
@@ -189,7 +189,7 @@ export async function dismissSuggestion(
  * Get participant engagement metrics
  */
 export async function getEngagement(workshopId: string): Promise<EngagementResponse> {
-    const response = await api.get(`/copilot/engagement/${workshopId}`);
+    const response = await api.get(`copilot/engagement/${workshopId}`);
     return response.data;
 }
 
@@ -200,7 +200,7 @@ export async function analyzeVariance(
     useCaseId: string,
     workshopId: string
 ): Promise<VarianceAnalysisResponse> {
-    const response = await api.post('/copilot/analyze-variance', {
+    const response = await api.post('copilot/analyze-variance', {
         use_case_id: useCaseId,
         workshop_id: workshopId,
     });
@@ -215,7 +215,7 @@ export async function getDiscussionPrompts(
     workshopId?: string
 ): Promise<DiscussionPromptsResponse> {
     const params = workshopId ? `?workshop_id=${workshopId}` : '';
-    const response = await api.get(`/copilot/discussion-prompts/${useCaseId}${params}`);
+    const response = await api.get(`copilot/discussion-prompts/${useCaseId}${params}`);
     return response.data;
 }
 
@@ -226,7 +226,7 @@ export async function enhanceContent(
     content: { title?: string; description?: string; kpi?: string },
     context?: { industry?: string; workshop_goals?: string }
 ): Promise<EnhanceContentResponse> {
-    const response = await api.post('/copilot/enhance-content', {
+    const response = await api.post('copilot/enhance-content', {
         content,
         context,
     });
@@ -241,7 +241,7 @@ export async function generateSummary(
     format: 'executive' | 'detailed' | 'email' | 'slides' = 'executive',
     sections?: string[]
 ): Promise<GenerateSummaryResponse> {
-    const response = await api.post('/copilot/generate-summary', {
+    const response = await api.post('copilot/generate-summary', {
         workshop_id: workshopId,
         format,
         sections,
@@ -256,7 +256,7 @@ export async function detectAnomalies(
     workshopId: string,
     dataType: 'votes' | 'content' | 'behavior' | 'all' = 'all'
 ): Promise<DetectAnomaliesResponse> {
-    const response = await api.post('/copilot/detect-anomalies', {
+    const response = await api.post('copilot/detect-anomalies', {
         workshop_id: workshopId,
         data_type: dataType,
     });
@@ -267,7 +267,7 @@ export async function detectAnomalies(
  * Get copilot settings for a workshop
  */
 export async function getSettings(workshopId: string): Promise<CopilotSettingsData> {
-    const response = await api.get(`/copilot/settings/${workshopId}`);
+    const response = await api.get(`copilot/settings/${workshopId}`);
     return response.data;
 }
 
@@ -287,7 +287,7 @@ export async function updateSettings(
         rapid_voting_threshold_seconds: number;
     }>
 ): Promise<CopilotSettingsData> {
-    const response = await api.put(`/copilot/settings/${workshopId}`, {
+    const response = await api.put(`copilot/settings/${workshopId}`, {
         workshop_id: workshopId,
         ...settings,
     });

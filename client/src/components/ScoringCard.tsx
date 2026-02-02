@@ -35,7 +35,7 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
 
         const loadExistingVote = async () => {
             try {
-                const { data } = await api.get(`/votes/participant/${session.participantId}/matrix-positions?workshop_id=${session.workshopId}`);
+                const { data } = await api.get(`votes/participant/${session.participantId}/matrix-positions?workshop_id=${session.workshopId}`);
                 const existingVote = data.find((v: any) => v.id === activeCard.id);
                 if (existingVote && existingVote.scores) {
                     setScores(existingVote.scores);
@@ -54,7 +54,7 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
         if (!activeCard) return;
         setLoading(true);
         try {
-            await api.post('/votes/', {
+            await api.post('votes/', {
                 use_case_id: activeCard.id,
                 participant_id: session.participantId,
                 scores: scores

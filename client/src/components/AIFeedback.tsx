@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ThumbsUp, ThumbsDown, Star, MessageSquare, Send } from 'lucide-react';
 import { toast } from 'sonner';
-import api from '../lib/api';
+import { api } from '../lib/api';
 
 interface AIFeedbackProps {
     endpoint: string;
@@ -37,7 +37,7 @@ export default function AIFeedback({
 
         setSubmitting(true);
         try {
-            await api.post('/rag/feedback', {
+            await api.post('rag/feedback', {
                 endpoint,
                 request_data: requestData,
                 response_data: responseData,
@@ -85,8 +85,8 @@ export default function AIFeedback({
                         key={star}
                         onClick={() => setRating(star)}
                         className={`p-1 rounded transition ${rating && star <= rating
-                                ? 'text-yellow-500'
-                                : 'text-gray-300 dark:text-gray-600 hover:text-yellow-400'
+                            ? 'text-yellow-500'
+                            : 'text-gray-300 dark:text-gray-600 hover:text-yellow-400'
                             }`}
                         disabled={submitting}
                     >
@@ -103,8 +103,8 @@ export default function AIFeedback({
                 <button
                     onClick={() => setIsHelpful(true)}
                     className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm transition ${isHelpful === true
-                            ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
-                            : 'bg-white dark:bg-surface-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-surface-600'
+                        ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                        : 'bg-white dark:bg-surface-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-surface-600'
                         }`}
                     disabled={submitting}
                 >
@@ -115,8 +115,8 @@ export default function AIFeedback({
                 <button
                     onClick={() => setIsHelpful(false)}
                     className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm transition ${isHelpful === false
-                            ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
-                            : 'bg-white dark:bg-surface-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-surface-600'
+                        ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400'
+                        : 'bg-white dark:bg-surface-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-surface-600'
                         }`}
                     disabled={submitting}
                 >

@@ -62,7 +62,7 @@ export const challengesApi = {
    * List all challenge cards for a workshop
    */
   list: async (workshopId: string): Promise<ChallengeCard[]> => {
-    const response = await api.get(`/challenges/workshops/${workshopId}/challenges`);
+    const response = await api.get(`challenges/workshops/${workshopId}/challenges`);
     return response.data;
   },
 
@@ -70,7 +70,7 @@ export const challengesApi = {
    * Get a single challenge card by ID
    */
   get: async (challengeId: string): Promise<ChallengeCard> => {
-    const response = await api.get(`/challenges/${challengeId}`);
+    const response = await api.get(`challenges/${challengeId}`);
     return response.data;
   },
 
@@ -78,7 +78,7 @@ export const challengesApi = {
    * Create a new challenge card
    */
   create: async (workshopId: string, data: ChallengeCardCreate): Promise<ChallengeCard> => {
-    const response = await api.post(`/challenges/workshops/${workshopId}/challenges`, data);
+    const response = await api.post(`challenges/workshops/${workshopId}/challenges`, data);
     return response.data;
   },
 
@@ -86,7 +86,7 @@ export const challengesApi = {
    * Update a challenge card
    */
   update: async (challengeId: string, data: ChallengeCardUpdate): Promise<ChallengeCard> => {
-    const response = await api.put(`/challenges/${challengeId}`, data);
+    const response = await api.put(`challenges/${challengeId}`, data);
     return response.data;
   },
 
@@ -94,14 +94,14 @@ export const challengesApi = {
    * Delete a challenge card
    */
   delete: async (challengeId: string): Promise<void> => {
-    await api.delete(`/challenges/${challengeId}`);
+    await api.delete(`challenges/${challengeId}`);
   },
 
   /**
    * Reorder a challenge card
    */
   reorder: async (challengeId: string, displayOrder: number): Promise<ChallengeCard> => {
-    const response = await api.patch(`/challenges/${challengeId}/reorder`, {
+    const response = await api.patch(`challenges/${challengeId}/reorder`, {
       display_order: displayOrder
     });
     return response.data;
@@ -116,7 +116,7 @@ export const challengesApi = {
     options?: StepGenerationRequest
   ): Promise<StepGenerationResponse> => {
     const response = await api.post(
-      `/challenges/${challengeId}/steps/${stepNumber}/generate-prompt`,
+      `challenges/${challengeId}/steps/${stepNumber}/generate-prompt`,
       options || {}
     );
     return response.data;
@@ -131,7 +131,7 @@ export const challengesApi = {
     options?: StepGenerationRequest
   ): Promise<StepGenerationResponse> => {
     const response = await api.post(
-      `/challenges/${challengeId}/steps/${stepNumber}/generate-summary`,
+      `challenges/${challengeId}/steps/${stepNumber}/generate-summary`,
       options || {}
     );
     return response.data;
@@ -145,7 +145,7 @@ export const challengesApi = {
     options: GenerateAllStepsRequest
   ): Promise<GenerateAllStepsResponse> => {
     const response = await api.post(
-      `/challenges/${challengeId}/steps/generate-all`,
+      `challenges/${challengeId}/steps/generate-all`,
       options
     );
     return response.data;
@@ -157,7 +157,7 @@ export const challengesApi = {
   analyzeFile: async (file: File): Promise<ChallengeCardCreate[]> => {
     const formData = new FormData();
     formData.append('file', file);
-    const response = await api.post('/ai/analyze-file', formData, {
+    const response = await api.post('ai/analyze-file', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

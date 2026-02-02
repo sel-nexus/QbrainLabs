@@ -2181,3 +2181,875 @@ Sending Request to the Target: GET /api
 Received Response from the Target: 404 /api
 Sending Request to the Target: GET /api
 Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/challenges/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/challenges
+Received Response from the Target: 200 /api/challenges/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/challenges
+Sending Request to the Target: GET /api/challenges/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/challenges
+Received Response from the Target: 200 /api/challenges/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/challenges
+Sending Request to the Target: GET /api/surveys/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/breakout-rooms
+Received Response from the Target: 200 /api/surveys/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/surveys/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/breakout-rooms
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/breakout-rooms
+Received Response from the Target: 200 /api/surveys/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/breakout-rooms
+Sending Request to the Target: GET /api/knowledge-base/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/insights
+Received Response from the Target: 200 /api/knowledge-base/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/insights
+Sending Request to the Target: GET /api/knowledge-base/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/insights
+Received Response from the Target: 200 /api/knowledge-base/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/insights
+Sending Request to the Target: POST /api/copilot/suggestions
+Received Response from the Target: 200 /api/copilot/suggestions
+Sending Request to the Target: GET /api/copilot/engagement/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/copilot/engagement/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/copilot/engagement/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/copilot/engagement/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/copilot/settings/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/copilot/settings/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/copilot/settings/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/copilot/settings/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: POST /api/copilot/suggestions
+Received Response from the Target: 200 /api/copilot/suggestions
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: POST /api/join
+Received Response from the Target: 200 /api/join
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d?participant_id=de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d?participant_id=de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d?participant_id=de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d?participant_id=de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: POST /api/ai/enhance
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/ai/enhance
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: POST /api/ai/business-value
+Received Response from the Target: 200 /api/ai/business-value
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: POST /api/ai/feasibility
+Received Response from the Target: 500 /api/ai/feasibility
+Sending Request to the Target: POST /api/ai/technical-analysis
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/ai/technical-analysis
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: POST /api/ai/duplicates
+Received Response from the Target: 200 /api/ai/duplicates
+Sending Request to the Target: POST /api/usecases/
+Received Response from the Target: 201 /api/usecases/
+Sending Request to the Target: POST /api/gamification/points
+Received Response from the Target: 500 /api/gamification/points
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+[2m2:32:18 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/CreateWorkshop.tsx, /src/pages/JoinWorkshop.tsx, /src/pages/WaitingRoom.tsx, /src/pages/ParticipantDashboard.tsx, /src/pages/ScoringPhase.tsx, /src/pages/ParticipantMatrix.tsx, /src/pages/WorkshopDetail.tsx, /src/components/templates/TemplateSelector.tsx, /src/components/MatrixActivityDashboard.tsx, /src/components/UseCaseForm.tsx, /src/pages/AnalyticsDashboard.tsx, /src/components/UseCaseCanvas.tsx, /src/components/feedback/FeedbackWidget.tsx, /src/components/ParticipantAuth.tsx, /src/components/AnalyticsDashboard.tsx, /src/components/usecases/UseCaseDetailModal.tsx, /src/components/ScoringCard.tsx, /src/components/survey/SurveyParticipant.tsx, /src/components/roadmap/RoadmapGenerator.tsx, /src/components/gamification/Leaderboard.tsx, /src/components/gamification/BadgeGrid.tsx, /src/components/gamification/PointsDisplay.tsx, /src/components/breakout/BreakoutRoom.tsx, /src/components/roi/ROICalculator.tsx, /src/components/breakout/BreakoutManager.tsx, /src/components/roi/BusinessCaseGenerator.tsx, /src/components/roi/ScenarioModeler.tsx, /src/components/VotingHeatmap.tsx, /src/components/roi/ROIComparisonView.tsx, /src/components/roi/BenchmarkPanel.tsx, /src/components/polls/QAPanel.tsx, /src/components/polls/ReactionBar.tsx, /src/components/polls/PollManager.tsx, /src/components/polls/PollResponder.tsx, /src/components/roi/SensitivityAnalysis.tsx, /src/components/challenges/ChallengeManager.tsx, /src/components/challenges/ChallengeForm.tsx, /src/components/challenges/ChallengeCardDetail.tsx, /src/components/ai-copilot/DiscussionPrompts.tsx, /src/components/ai-copilot/CopilotSettings.tsx, /src/components/ai-copilot/SummaryGenerator.tsx, /src/components/ai-copilot/EngagementMonitor.tsx, /src/components/ai-copilot/CopilotPanel.tsx[22m
+
+[2m[103.31ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.15ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 57.31ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 30.06ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 10.42ms][22m  [2m ↳ [22mBuild utilities
+[2m[  5.20ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[2m2:32:23 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/JoinWorkshop.tsx[22m
+
+[2m[96.38ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.15ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[50.52ms][22m  [2m ↳ [22mScan for candidates
+[2m[39.37ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.25ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 4.88ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:32:33 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/JoinWorkshop.tsx[22m
+
+[2m[69.54ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.16ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[37.28ms][22m  [2m ↳ [22mScan for candidates
+[2m[19.99ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.45ms][22m  [2m ↳ [22mBuild utilities
+[2m[10.39ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:32:46 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/ParticipantAuth.tsx[22m
+
+[2m[81.12ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.12ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[30.92ms][22m  [2m ↳ [22mScan for candidates
+[2m[32.59ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 8.20ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 9.14ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:32:57 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/gamification/Leaderboard.tsx, /src/components/UseCaseCanvas.tsx, /src/components/gamification/BadgeGrid.tsx, /src/components/ScoringCard.tsx, /src/components/gamification/PointsDisplay.tsx[22m
+
+[2m[103.37ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.13ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 54.20ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 39.51ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  6.88ms][22m  [2m ↳ [22mBuild utilities
+[2m[  2.50ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:33:03 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/feedback/FeedbackWidget.tsx[22m
+
+[2m[81.86ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[50.31ms][22m  [2m ↳ [22mScan for candidates
+[2m[27.58ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.77ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.96ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:33:12 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/AnalyticsDashboard.tsx[22m
+
+[2m[188.83ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.20ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[149.73ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 33.21ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  1.08ms][22m  [2m ↳ [22mBuild utilities
+[2m[  4.42ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:33:21 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/challenges/ChallengeManager.tsx, /src/components/challenges/ChallengeForm.tsx, /src/components/challenges/ChallengeCardDetail.tsx[22m
+
+[2m[267.31ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[200.83ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 55.00ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  7.28ms][22m  [2m ↳ [22mBuild utilities
+[2m[  3.96ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:33:32 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/ai-copilot/DiscussionPrompts.tsx, /src/components/ai-copilot/CopilotSettings.tsx, /src/components/ai-copilot/SummaryGenerator.tsx, /src/components/ai-copilot/EngagementMonitor.tsx, /src/components/ai-copilot/CopilotPanel.tsx[22m
+
+[2m[85.99ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.10ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[38.00ms][22m  [2m ↳ [22mScan for candidates
+[2m[33.30ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 9.91ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 4.54ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:33:48 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/WorkshopDetail.tsx[22m
+
+[2m[92.51ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.10ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[51.21ms][22m  [2m ↳ [22mScan for candidates
+[2m[35.39ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.13ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 4.45ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:33:59 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/WorkshopDetail.tsx[22m
+
+[2m[52.78ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.12ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[27.72ms][22m  [2m ↳ [22mScan for candidates
+[2m[21.75ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.87ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.23ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:34:09 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/WorkshopDetail.tsx[22m
+
+[2m[104.65ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  1.22ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 48.65ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 48.77ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  1.32ms][22m  [2m ↳ [22mBuild utilities
+[2m[  4.55ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:34:33 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/ParticipantMatrix.tsx[22m
+
+[2m[123.79ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.08ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 42.15ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 65.86ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  1.06ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 14.52ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[2m2:34:38 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/ParticipantMatrix.tsx[22m
+
+[2m[175.41ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.13ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[136.81ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 30.95ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  1.10ms][22m  [2m ↳ [22mBuild utilities
+[2m[  6.27ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[2m2:34:45 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/CreateWorkshop.tsx[22m
+
+[2m[105.15ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.08ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 31.61ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 67.26ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  1.11ms][22m  [2m ↳ [22mBuild utilities
+[2m[  4.97ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:34:56 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/UseCaseForm.tsx[22m
+
+[2m[92.99ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.12ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[32.18ms][22m  [2m ↳ [22mScan for candidates
+[2m[49.24ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 7.20ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 4.11ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:35:08 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/UseCaseCanvas.tsx[22m
+
+[2m[69.94ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.08ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[21.68ms][22m  [2m ↳ [22mScan for candidates
+[2m[43.21ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.00ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 3.84ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:35:26 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[71.39ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.12ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[30.46ms][22m  [2m ↳ [22mScan for candidates
+[2m[35.09ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.27ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 4.31ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:35:34 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/templates/TemplateSelector.tsx[22m
+
+[2m[66.38ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.23ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[27.76ms][22m  [2m ↳ [22mScan for candidates
+[2m[28.79ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 5.51ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 3.96ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:35:44 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/roi/ROICalculator.tsx[22m
+
+[2m[79.68ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[44.23ms][22m  [2m ↳ [22mScan for candidates
+[2m[29.29ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 3.67ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.27ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:35:51 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/roi/ScenarioModeler.tsx[22m
+
+[2m[82.78ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.21ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[38.36ms][22m  [2m ↳ [22mScan for candidates
+[2m[40.09ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.22ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.74ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:36:02 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/roi/SensitivityAnalysis.tsx[22m
+
+[2m[76.67ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.34ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[49.68ms][22m  [2m ↳ [22mScan for candidates
+[2m[23.10ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.05ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.37ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:36:10 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/roi/BusinessCaseGenerator.tsx[22m
+
+[2m[50.06ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.08ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[23.40ms][22m  [2m ↳ [22mScan for candidates
+[2m[23.48ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.73ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.25ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:36:19 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[55.22ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.14ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[23.78ms][22m  [2m ↳ [22mScan for candidates
+[2m[23.38ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 4.57ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 3.14ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:36:26 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/roadmap/RoadmapGenerator.tsx[22m
+
+[2m[86.48ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.12ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[48.02ms][22m  [2m ↳ [22mScan for candidates
+[2m[29.71ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 4.37ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 4.13ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:36:32 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[79.69ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.09ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[44.57ms][22m  [2m ↳ [22mScan for candidates
+[2m[31.47ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.83ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.61ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:36:40 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/ScoringCard.tsx[22m
+
+[2m[159.98ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.10ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 34.68ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 30.97ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 70.34ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 23.74ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:36:48 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[55.86ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.09ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[23.91ms][22m  [2m ↳ [22mScan for candidates
+[2m[22.23ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 6.56ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.95ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:37:04 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/roadmap/RoadmapGenerator.tsx[22m
+
+[2m[92.86ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.16ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[40.86ms][22m  [2m ↳ [22mScan for candidates
+[2m[46.29ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.40ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 3.99ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:37:09 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/roi/SensitivityAnalysis.tsx[22m
+
+[2m[135.84ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.07ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 33.35ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 61.07ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 27.63ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 13.58ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:37:16 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/roi/SensitivityAnalysis.tsx[22m
+
+[2m[72.19ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.09ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[36.26ms][22m  [2m ↳ [22mScan for candidates
+[2m[25.43ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.02ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 9.25ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:37:27 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/UseCaseForm.tsx[22m
+
+[2m[85.34ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.10ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[31.52ms][22m  [2m ↳ [22mScan for candidates
+[2m[48.50ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.07ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 4.03ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:37:37 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[88.05ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[33.39ms][22m  [2m ↳ [22mScan for candidates
+[2m[48.94ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.14ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 4.29ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:37:44 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/UseCaseForm.tsx[22m
+
+[2m[83.46ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.19ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[32.54ms][22m  [2m ↳ [22mScan for candidates
+[2m[44.47ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 2.11ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 3.99ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:37:49 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/templates/TemplateSelector.tsx[22m
+
+[2m[74.72ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.14ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[43.07ms][22m  [2m ↳ [22mScan for candidates
+[2m[25.32ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.74ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 5.27ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:37:54 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/roi/ROICalculator.tsx[22m
+
+[2m[75.68ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 1.03ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[35.90ms][22m  [2m ↳ [22mScan for candidates
+[2m[24.71ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.66ms][22m  [2m ↳ [22mBuild utilities
+[2m[12.21ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:37:59 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/roi/ScenarioModeler.tsx[22m
+
+[2m[91.51ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.09ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[50.10ms][22m  [2m ↳ [22mScan for candidates
+[2m[37.85ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.75ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.60ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:38:03 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/roi/BusinessCaseGenerator.tsx[22m
+
+[2m[416.69ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.16ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[194.47ms][22m  [2m ↳ [22mScan for candidates
+[2m[211.65ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  1.03ms][22m  [2m ↳ [22mBuild utilities
+[2m[  9.23ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Sending Request to the Target: GET /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Received Response from the Target: 200 /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: POST /api/auth/logout
+Received Response from the Target: 200 /api/auth/logout
+Sending Request to the Target: POST /api/auth/login
+Received Response from the Target: 200 /api/auth/login
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/knowledge-base/overview
+Received Response from the Target: 200 /api/knowledge-base/overview
+Sending Request to the Target: GET /api/knowledge-base/overview
+Received Response from the Target: 200 /api/knowledge-base/overview
+Sending Request to the Target: GET /api/admin/llm-usage/summary
+Received Response from the Target: 200 /api/admin/llm-usage/summary
+Sending Request to the Target: GET /api/admin/llm-usage/summary
+Sending Request to the Target: GET /api/admin/llm-usage/by-feature
+Sending Request to the Target: GET /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/llm-usage/by-user
+Sending Request to the Target: GET /api/admin/llm-usage/by-feature
+Sending Request to the Target: GET /api/admin/llm-usage/by-workshop
+Received Response from the Target: 200 /api/admin/llm-usage/summary
+Received Response from the Target: 200 /api/admin/llm-usage/by-feature
+Received Response from the Target: 200 /api/admin/llm-usage/by-workshop
+Received Response from the Target: 200 /api/admin/llm-usage/by-feature
+Received Response from the Target: 200 /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/by-user
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: POST /api/copilot/suggestions
+Received Response from the Target: 500 /api/copilot/suggestions
+Sending Request to the Target: POST /api/copilot/suggestions
+Received Response from the Target: 500 /api/copilot/suggestions
+Sending Request to the Target: GET /api/copilot/engagement/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/copilot/engagement/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/challenges/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/challenges
+Received Response from the Target: 200 /api/challenges/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/challenges
+Sending Request to the Target: POST /api/auth/logout
+Received Response from the Target: 200 /api/auth/logout
+Sending Request to the Target: POST /api/join
+Received Response from the Target: 200 /api/join
+Sending Request to the Target: GET /api/session/a539c12b-40b2-47dc-80db-88f3d736bc0f
+Received Response from the Target: 200 /api/session/a539c12b-40b2-47dc-80db-88f3d736bc0f
+Sending Request to the Target: GET /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d?participant_id=a539c12b-40b2-47dc-80db-88f3d736bc0f
+Received Response from the Target: 200 /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d?participant_id=a539c12b-40b2-47dc-80db-88f3d736bc0f
+Sending Request to the Target: GET /api/gamification/points/a539c12b-40b2-47dc-80db-88f3d736bc0f
+Received Response from the Target: 200 /api/gamification/points/a539c12b-40b2-47dc-80db-88f3d736bc0f
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/votes/participant/a539c12b-40b2-47dc-80db-88f3d736bc0f/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/votes/participant/a539c12b-40b2-47dc-80db-88f3d736bc0f/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: POST /api/votes/
+Received Response from the Target: 201 /api/votes/
+Sending Request to the Target: POST /api/votes/
+Received Response from the Target: 201 /api/votes/
+Sending Request to the Target: POST /api/votes/
+Received Response from the Target: 201 /api/votes/
+Sending Request to the Target: GET /api/session/a539c12b-40b2-47dc-80db-88f3d736bc0f
+Received Response from the Target: 200 /api/session/a539c12b-40b2-47dc-80db-88f3d736bc0f
+Sending Request to the Target: GET /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d?participant_id=a539c12b-40b2-47dc-80db-88f3d736bc0f
+Received Response from the Target: 200 /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d?participant_id=a539c12b-40b2-47dc-80db-88f3d736bc0f
+Sending Request to the Target: GET /api/gamification/points/a539c12b-40b2-47dc-80db-88f3d736bc0f
+Received Response from the Target: 200 /api/gamification/points/a539c12b-40b2-47dc-80db-88f3d736bc0f
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/votes/participant/a539c12b-40b2-47dc-80db-88f3d736bc0f/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/votes/participant/a539c12b-40b2-47dc-80db-88f3d736bc0f/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: POST /api/votes/
+Received Response from the Target: 201 /api/votes/
+Sending Request to the Target: POST /api/votes/
+Received Response from the Target: 201 /api/votes/
+Sending Request to the Target: POST /api/votes/
+Received Response from the Target: 201 /api/votes/
+Sending Request to the Target: GET /api/session/a539c12b-40b2-47dc-80db-88f3d736bc0f
+Received Response from the Target: 200 /api/session/a539c12b-40b2-47dc-80db-88f3d736bc0f
+Sending Request to the Target: GET /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d?participant_id=a539c12b-40b2-47dc-80db-88f3d736bc0f
+Received Response from the Target: 200 /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d?participant_id=a539c12b-40b2-47dc-80db-88f3d736bc0f
+Sending Request to the Target: GET /api/gamification/points/a539c12b-40b2-47dc-80db-88f3d736bc0f
+Received Response from the Target: 200 /api/gamification/points/a539c12b-40b2-47dc-80db-88f3d736bc0f
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/votes/participant/a539c12b-40b2-47dc-80db-88f3d736bc0f/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/votes/participant/a539c12b-40b2-47dc-80db-88f3d736bc0f/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d?participant_id=de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d?participant_id=de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d?participant_id=de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d
+Received Response from the Target: 200 /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d?participant_id=de9d52c3-2535-44ea-8daf-fbf93c06327d
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions?workshop_id=beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: POST /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/phase
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/phase
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: POST /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/phase
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/phase
+Sending Request to the Target: GET /api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/participants/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 404 /api/participants/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/participants/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 404 /api/participants/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d

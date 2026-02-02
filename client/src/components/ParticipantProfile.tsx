@@ -38,7 +38,7 @@ export function ParticipantProfile({ token, onLogout }: ParticipantProfileProps)
 
     const fetchProfile = async () => {
         try {
-            const response = await api.get('/participant-auth/me', {
+            const response = await api.get('participant-auth/me', {
                 params: { token }
             });
             setProfile(response.data);
@@ -51,7 +51,7 @@ export function ParticipantProfile({ token, onLogout }: ParticipantProfileProps)
 
     const fetchStats = async () => {
         try {
-            const response = await api.get('/participant-auth/stats', {
+            const response = await api.get('participant-auth/stats', {
                 params: { token }
             });
             setStats(response.data);
@@ -64,7 +64,7 @@ export function ParticipantProfile({ token, onLogout }: ParticipantProfileProps)
 
     const handleUpdateProfile = async () => {
         try {
-            const response = await api.put('/participant-auth/profile', {
+            const response = await api.put('participant-auth/profile', {
                 display_name: displayName,
                 organization: organization || null
             }, {

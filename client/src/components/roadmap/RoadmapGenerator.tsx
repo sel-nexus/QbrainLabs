@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { api } from '../../lib/api';
 import { toast } from 'sonner';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
-import { Modal } from '../ui/Modal';
-import { Loader2, Map, Calendar, Users, Target, CheckCircle2 } from 'lucide-react';
+import { Loader2, Map, Calendar, Users, Target } from 'lucide-react';
 import { GanttChart } from './GanttChart';
 import { ResourcePlanner } from './ResourcePlanner';
 import { MilestoneTracker } from './MilestoneTracker';
@@ -26,10 +25,9 @@ interface RoadmapGeneratorProps {
 export function RoadmapGenerator({ workshopId, useCases, onClose }: RoadmapGeneratorProps) {
     const [selectedUseCases, setSelectedUseCases] = useState<string[]>([]);
     const [roadmap, setRoadmap] = useState<any>(null);
-    const [loading, setLoading] = useState(false);
     const [generating, setGenerating] = useState(false);
     const [activeView, setActiveView] = useState<'gantt' | 'resources' | 'milestones'>('gantt');
-    
+
     const [constraints, setConstraints] = useState({
         start_date: new Date().toISOString().split('T')[0],
         deadline: '',
@@ -52,7 +50,7 @@ export function RoadmapGenerator({ workshopId, useCases, onClose }: RoadmapGener
 
         setGenerating(true);
         try {
-            const response = await api.post('/roadmaps/generate', {
+            const response = await api.post('roadmaps/generate', {
                 workshop_id: workshopId,
                 use_case_ids: selectedUseCases,
                 constraints: {
@@ -90,13 +88,13 @@ export function RoadmapGenerator({ workshopId, useCases, onClose }: RoadmapGener
                     <h2 className="text-2xl font-bold theme-text-primary">Generated Roadmap</h2>
                     <div className="flex gap-2">
                         <Button
-                            variant="outline"
+                            variant="primary"
                             onClick={() => setRoadmap(null)}
                         >
                             Generate New
                         </Button>
                         {onClose && (
-                            <Button variant="outline" onClick={onClose}>
+                            <Button variant="ghost" onClick={onClose}>
                                 Close
                             </Button>
                         )}
@@ -107,33 +105,30 @@ export function RoadmapGenerator({ workshopId, useCases, onClose }: RoadmapGener
                 <div className="flex gap-2 border-b theme-border-primary">
                     <button
                         onClick={() => setActiveView('gantt')}
-                        className={`px-4 py-2 font-medium transition-colors ${
-                            activeView === 'gantt'
-                                ? 'border-b-2 border-brand-violet theme-text-primary'
-                                : 'theme-text-secondary'
-                        }`}
+                        className={`px-4 py-2 font-medium transition-colors ${activeView === 'gantt'
+                            ? 'border-b-2 border-brand-violet theme-text-primary'
+                            : 'theme-text-secondary'
+                            }`}
                     >
                         <Calendar className="inline w-4 h-4 mr-2" />
                         Timeline
                     </button>
                     <button
                         onClick={() => setActiveView('resources')}
-                        className={`px-4 py-2 font-medium transition-colors ${
-                            activeView === 'resources'
-                                ? 'border-b-2 border-brand-violet theme-text-primary'
-                                : 'theme-text-secondary'
-                        }`}
+                        className={`px-4 py-2 font-medium transition-colors ${activeView === 'resources'
+                            ? 'border-b-2 border-brand-violet theme-text-primary'
+                            : 'theme-text-secondary'
+                            }`}
                     >
                         <Users className="inline w-4 h-4 mr-2" />
                         Resources
                     </button>
                     <button
                         onClick={() => setActiveView('milestones')}
-                        className={`px-4 py-2 font-medium transition-colors ${
-                            activeView === 'milestones'
-                                ? 'border-b-2 border-brand-violet theme-text-primary'
-                                : 'theme-text-secondary'
-                        }`}
+                        className={`px-4 py-2 font-medium transition-colors ${activeView === 'milestones'
+                            ? 'border-b-2 border-brand-violet theme-text-primary'
+                            : 'theme-text-secondary'
+                            }`}
                     >
                         <Target className="inline w-4 h-4 mr-2" />
                         Milestones
@@ -159,7 +154,7 @@ export function RoadmapGenerator({ workshopId, useCases, onClose }: RoadmapGener
             <div className="flex items-center justify-between">
                 <h2 className="text-2xl font-bold theme-text-primary">Generate Implementation Roadmap</h2>
                 {onClose && (
-                    <Button variant="outline" onClick={onClose}>
+                    <Button variant="ghost" onClick={onClose}>
                         Close
                     </Button>
                 )}
@@ -172,11 +167,10 @@ export function RoadmapGenerator({ workshopId, useCases, onClose }: RoadmapGener
                     {useCases.map(uc => (
                         <label
                             key={uc.id}
-                            className={`flex items-start p-4 border rounded-lg cursor-pointer transition-colors ${
-                                selectedUseCases.includes(uc.id)
-                                    ? 'border-brand-violet bg-brand-violet/10'
-                                    : 'theme-border-primary theme-bg-secondary'
-                            }`}
+                            className={`flex items-start p-4 border rounded-lg cursor-pointer transition-colors ${selectedUseCases.includes(uc.id)
+                                ? 'border-brand-violet bg-brand-violet/10'
+                                : 'theme-border-primary theme-bg-secondary'
+                                }`}
                         >
                             <input
                                 type="checkbox"
@@ -189,7 +183,7 @@ export function RoadmapGenerator({ workshopId, useCases, onClose }: RoadmapGener
                                 <div className="text-sm theme-text-secondary mt-1">{uc.description}</div>
                                 {(uc.value_score !== undefined || uc.feasibility_score !== undefined) && (
                                     <div className="text-xs theme-text-secondary mt-2">
-                                        Value: {uc.value_score?.toFixed(1) || 'N/A'} | 
+                                        Value: {uc.value_score?.toFixed(1) || 'N/A'} |
                                         Feasibility: {uc.feasibility_score?.toFixed(1) || 'N/A'}
                                     </div>
                                 )}

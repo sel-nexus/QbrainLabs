@@ -43,12 +43,11 @@ export const BusinessCaseGenerator: React.FC<BusinessCaseGeneratorProps> = ({
     roiCalculationId,
     roiResults,
     useCaseTitle,
-    useCaseDescription
 }) => {
     const [generating, setGenerating] = useState(false);
     const [businessCase, setBusinessCase] = useState<BusinessCase | null>(null);
     const [showPreview, setShowPreview] = useState(false);
-    
+
     // Configuration
     const [selectedTemplate, setSelectedTemplate] = useState('formal');
     const [selectedSections, setSelectedSections] = useState<string[]>(
@@ -75,7 +74,7 @@ export const BusinessCaseGenerator: React.FC<BusinessCaseGeneratorProps> = ({
     const handleGenerate = async () => {
         setGenerating(true);
         try {
-            const response = await api.post('/roi/business-case/generate', {
+            const response = await api.post('roi/business-case/generate', {
                 use_case_id: useCaseId,
                 roi_calculation_id: roiCalculationId,
                 template: selectedTemplate,
@@ -96,13 +95,13 @@ export const BusinessCaseGenerator: React.FC<BusinessCaseGeneratorProps> = ({
 
     const handleExport = async (format: 'pdf' | 'docx' | 'gdocs') => {
         if (!businessCase) return;
-        
+
         try {
             toast.info(`Exporting to ${format.toUpperCase()}...`);
             // In production, this would call an export endpoint
             // const response = await api.post(`/roi/business-case/${businessCase.id}/export`, { format });
             // window.open(response.data.download_url, '_blank');
-            
+
             // Mock for now
             setTimeout(() => {
                 toast.success(`Export to ${format.toUpperCase()} complete!`);
@@ -151,11 +150,10 @@ export const BusinessCaseGenerator: React.FC<BusinessCaseGeneratorProps> = ({
                                     <button
                                         key={template.id}
                                         onClick={() => setSelectedTemplate(template.id)}
-                                        className={`p-4 rounded-lg border-2 text-left transition-all ${
-                                            selectedTemplate === template.id
-                                                ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                                                : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
-                                        }`}
+                                        className={`p-4 rounded-lg border-2 text-left transition-all ${selectedTemplate === template.id
+                                            ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
+                                            : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                                            }`}
                                     >
                                         <p className="font-medium text-gray-900 dark:text-white">{template.name}</p>
                                         <p className="text-xs text-gray-500 mt-1">{template.description}</p>
@@ -173,11 +171,10 @@ export const BusinessCaseGenerator: React.FC<BusinessCaseGeneratorProps> = ({
                                 {SECTIONS.map(section => (
                                     <label
                                         key={section.id}
-                                        className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${
-                                            selectedSections.includes(section.id)
-                                                ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                                                : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
-                                        } ${section.required ? 'opacity-75 cursor-not-allowed' : ''}`}
+                                        className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-all ${selectedSections.includes(section.id)
+                                            ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
+                                            : 'border-gray-200 dark:border-gray-700 hover:border-gray-300'
+                                            } ${section.required ? 'opacity-75 cursor-not-allowed' : ''}`}
                                     >
                                         <input
                                             type="checkbox"
@@ -331,7 +328,7 @@ export const BusinessCaseGenerator: React.FC<BusinessCaseGeneratorProps> = ({
                             {/* Sections */}
                             {Object.entries(businessCase.content).map(([section, content]) => {
                                 if (section === 'is_mock') return null;
-                                
+
                                 return (
                                     <div key={section} className="mb-8">
                                         <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3 uppercase tracking-wide">

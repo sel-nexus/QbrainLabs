@@ -61,7 +61,7 @@ export function ParticipantMatrix() {
                 if (!itemScores) return;
 
                 // Save to DB
-                await api.post('/votes/', {
+                await api.post('votes/', {
                     use_case_id: id,
                     participant_id: session?.participantId,
                     scores: itemScores
@@ -111,7 +111,7 @@ export function ParticipantMatrix() {
         fetchMatrixData();
 
         const handleNewSubmission = (data: any) => {
-            api.get(`/usecases/${session.workshopId}`)
+            api.get(`usecases/${session.workshopId}`)
                 .then(response => {
                     setUseCases(response.data || []);
                 })
@@ -145,17 +145,17 @@ export function ParticipantMatrix() {
 
         try {
             setLoading(true);
-            const workshopResponse = await api.get(`/workshops/${session.workshopId}`);
+            const workshopResponse = await api.get(`workshops/${session.workshopId}`);
             setWorkshopTitle(workshopResponse.data?.title || 'Workshop');
             setWorkshopCriteria(workshopResponse.data?.config?.criteria || []);
 
-            const useCasesResponse = await api.get(`/usecases/${session.workshopId}`);
+            const useCasesResponse = await api.get(`usecases/${session.workshopId}`);
             setUseCases(useCasesResponse.data || []);
 
             try {
                 console.log('[ParticipantMatrix] Fetching participant positions...');
                 const positionsResponse = await api.get(
-                    `/votes/participant/${session.participantId}/matrix-positions?workshop_id=${session.workshopId}`
+                    `votes/participant/${session.participantId}/matrix-positions?workshop_id=${session.workshopId}`
                 );
                 const participantPositions = positionsResponse.data || [];
 
@@ -172,7 +172,7 @@ export function ParticipantMatrix() {
                     await new Promise(resolve => setTimeout(resolve, 500));
 
                     const retryResponse = await api.get(
-                        `/votes/participant/${session.participantId}/matrix-positions?workshop_id=${session.workshopId}`
+                        `votes/participant/${session.participantId}/matrix-positions?workshop_id=${session.workshopId}`
                     );
                     const retryPositions = retryResponse.data || [];
 
@@ -245,7 +245,7 @@ export function ParticipantMatrix() {
                 participant_id: session.participantId,
                 scores: itemScores
             });
-            await api.post('/votes/', {
+            await api.post('votes/', {
                 use_case_id: useCaseId,
                 participant_id: session.participantId,
                 scores: itemScores

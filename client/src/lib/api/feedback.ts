@@ -17,7 +17,7 @@ export interface FeedbackData {
 
 export const feedbackApi = {
     submitFeedback: async (data: FeedbackData) => {
-        const response = await api.post('/feedback', {
+        const response = await api.post('feedback', {
             ...data,
             page_url: window.location.pathname,
         });

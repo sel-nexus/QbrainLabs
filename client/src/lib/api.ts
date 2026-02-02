@@ -5,12 +5,13 @@ const TOKEN_KEY = 'hm_auth_token';
 const PARTICIPANT_TOKEN_KEY = 'participant_token';
 
 export const api = axios.create({
-    baseURL: `${API_BASE_URL}/api`,
+    baseURL: API_BASE_URL ? `${API_BASE_URL}/api` : '/api',
     headers: {
         'Content-Type': 'application/json',
     },
     timeout: 30000, // 30 second timeout
 });
+
 
 
 // Add auth token to all requests (facilitator or participant)

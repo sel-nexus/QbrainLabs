@@ -13,7 +13,7 @@ import { BenchmarkPanel } from './BenchmarkPanel';
 import { BusinessCaseGenerator } from './BusinessCaseGenerator';
 import { api } from '../../lib/api';
 import { toast } from 'sonner';
-import { Loader2, Calculator, Save, Sparkles, FileText, BarChart3, GitCompare, Database, TrendingUp } from 'lucide-react';
+import { Loader2, Calculator, Save, Sparkles, FileText, GitCompare, Database, TrendingUp } from 'lucide-react';
 
 interface ROICalculatorProps {
     workshopId: string;
@@ -45,9 +45,9 @@ export const ROICalculator: React.FC<ROICalculatorProps> = ({
 
     // ROI ID for business case generation
     const [roiId, setRoiId] = useState<string | null>(null);
-    
+
     // Use case metadata for business case
-    const [useCaseMetadata, setUseCaseMetadata] = useState<{title: string; description: string}>({
+    const [useCaseMetadata, setUseCaseMetadata] = useState<{ title: string; description: string }>({
         title: '',
         description: ''
     });
@@ -57,7 +57,7 @@ export const ROICalculator: React.FC<ROICalculatorProps> = ({
         const fetchData = async () => {
             try {
                 // Fetch ROI data
-                const roiResponse = await api.get(`/roi/workshops/${workshopId}/usecases/${useCaseId}`);
+                const roiResponse = await api.get(`roi/workshops/${workshopId}/usecases/${useCaseId}`);
                 if (roiResponse.data) {
                     setCosts(roiResponse.data.costs);
                     setBenefits(roiResponse.data.benefits);
@@ -65,9 +65,9 @@ export const ROICalculator: React.FC<ROICalculatorProps> = ({
                     setResults(roiResponse.data.results);
                     setRoiId(roiResponse.data.id);
                 }
-                
+
                 // Fetch use case metadata
-                const useCaseResponse = await api.get(`/usecases/${useCaseId}`);
+                const useCaseResponse = await api.get(`usecases/${useCaseId}`);
                 if (useCaseResponse.data) {
                     setUseCaseMetadata({
                         title: useCaseResponse.data.title,
@@ -89,7 +89,7 @@ export const ROICalculator: React.FC<ROICalculatorProps> = ({
     const handleCalculate = async () => {
         setLoading(true);
         try {
-            const response = await api.post('/roi/calculate-only', {
+            const response = await api.post('roi/calculate-only', {
                 costs,
                 benefits,
                 parameters
@@ -111,7 +111,7 @@ export const ROICalculator: React.FC<ROICalculatorProps> = ({
         }
         setSaving(true);
         try {
-            const response = await api.post(`/roi/workshops/${workshopId}/usecases/${useCaseId}`, {
+            const response = await api.post(`roi/workshops/${workshopId}/usecases/${useCaseId}`, {
                 use_case_id: useCaseId,
                 costs,
                 benefits,
@@ -133,7 +133,7 @@ export const ROICalculator: React.FC<ROICalculatorProps> = ({
     const handleEstimate = async () => {
         setEstimating(true);
         try {
-            const response = await api.post('/roi/estimate', {
+            const response = await api.post('roi/estimate', {
                 use_case_id: useCaseId
             });
             const { estimates } = response.data;
@@ -225,13 +225,12 @@ export const ROICalculator: React.FC<ROICalculatorProps> = ({
                                 key={tab.id}
                                 onClick={() => !tab.disabled && setActiveTab(tab.id)}
                                 disabled={tab.disabled}
-                                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all whitespace-nowrap ${
-                                    activeTab === tab.id
-                                        ? 'border-indigo-600 text-indigo-600'
-                                        : tab.disabled
+                                className={`flex items-center gap-2 px-4 py-3 text-sm font-medium border-b-2 transition-all whitespace-nowrap ${activeTab === tab.id
+                                    ? 'border-indigo-600 text-indigo-600'
+                                    : tab.disabled
                                         ? 'border-transparent text-gray-400 cursor-not-allowed'
                                         : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:border-gray-300'
-                                }`}
+                                    }`}
                             >
                                 <Icon className="w-4 h-4" />
                                 {tab.name}

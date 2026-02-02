@@ -56,7 +56,7 @@ export async function awardPoints(
     action: string,
     metadata?: any
 ): Promise<PointEarnedResponse> {
-    const { data } = await api.post('/gamification/points', {
+    const { data } = await api.post('gamification/points', {
         participant_id: participantId,
         workshop_id: workshopId,
         action,
@@ -69,7 +69,7 @@ export async function awardPoints(
  * Get points for a participant
  */
 export async function getParticipantPoints(participantId: string): Promise<PointsResponse> {
-    const { data } = await api.get(`/gamification/points/${participantId}`);
+    const { data } = await api.get(`gamification/points/${participantId}`);
     return data;
 }
 
@@ -77,7 +77,7 @@ export async function getParticipantPoints(participantId: string): Promise<Point
  * Get all available badges
  */
 export async function getAllBadges(): Promise<BadgeResponse[]> {
-    const { data } = await api.get('/gamification/badges');
+    const { data } = await api.get('gamification/badges');
     return data;
 }
 
@@ -85,7 +85,7 @@ export async function getAllBadges(): Promise<BadgeResponse[]> {
  * Get badges earned by a participant
  */
 export async function getEarnedBadges(participantId: string): Promise<EarnedBadgeResponse[]> {
-    const { data } = await api.get(`/gamification/badges/${participantId}`);
+    const { data } = await api.get(`gamification/badges/${participantId}`);
     return data;
 }
 
@@ -93,6 +93,6 @@ export async function getEarnedBadges(participantId: string): Promise<EarnedBadg
  * Get leaderboard for a workshop (accepts PIN or workshop ID)
  */
 export async function getWorkshopLeaderboard(identifier: string): Promise<LeaderboardResponse> {
-    const { data } = await api.get(`/gamification/workshops/${identifier}/leaderboard`);
+    const { data } = await api.get(`gamification/workshops/${identifier}/leaderboard`);
     return data;
 }

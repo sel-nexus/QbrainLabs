@@ -36,7 +36,7 @@ export const analyticsApi = {
         if (periodStart) params.append('period_start', periodStart);
         if (periodEnd) params.append('period_end', periodEnd);
 
-        const response = await api.get<AnalyticsOverview>(`/analytics/overview?${params.toString()}`);
+        const response = await api.get<AnalyticsOverview>(`analytics/overview?${params.toString()}`);
         return response.data;
     },
 
@@ -44,12 +44,12 @@ export const analyticsApi = {
         const params = new URLSearchParams();
         if (industry) params.append('industry', industry);
 
-        const response = await api.get<BenchmarkData>(`/analytics/benchmarks?${params.toString()}`);
+        const response = await api.get<BenchmarkData>(`analytics/benchmarks?${params.toString()}`);
         return response.data;
     },
 
     generateReport: async (title: string, type: string) => {
-        const response = await api.post('/analytics/reports/generate', {
+        const response = await api.post('analytics/reports/generate', {
             title,
             report_type: type,
         });

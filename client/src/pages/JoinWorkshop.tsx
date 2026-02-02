@@ -26,7 +26,7 @@ export function JoinWorkshop() {
     const [email, setEmail] = useState('');
 
     const { login, session } = useSession();
-    
+
     // If user already has a valid session with workshop, redirect to dashboard
     useEffect(() => {
         if (session && session.workshopId && session.participantId) {
@@ -37,11 +37,11 @@ export function JoinWorkshop() {
     const handleAdvancedAuthSuccess = async (data: { token: string; participant: any; mode: 'anonymous' | 'registered' }) => {
         // Store token for future requests
         localStorage.setItem('participant_token', data.token);
-        
+
         try {
             let workshopId = '';
             let participantId = data.participant.id;
-            
+
             // For anonymous participants, they always have a Participant record created during join
             // For registered participants:
             //   - If they logged in WITH a workshop PIN: participant.id is the Participant ID (from join-registered)
@@ -49,7 +49,7 @@ export function JoinWorkshop() {
             // 
             // We can distinguish by checking if the participant has is_registered flag and trying to fetch session
             // If it's a RegisteredParticipant ID, the session fetch will fail (404) because there's no Participant record yet
-            
+
             if (data.participant.id) {
                 try {
                     const response = await api.get(`/session/${data.participant.id}`);
@@ -67,7 +67,7 @@ export function JoinWorkshop() {
                     }
                 }
             }
-            
+
             // Only create session and navigate if participant has joined a workshop
             if (workshopId && participantId) {
                 // Login via session context
@@ -77,7 +77,7 @@ export function JoinWorkshop() {
                     name: data.participant.display_name,
                     role: 'PARTICIPANT'
                 });
-                
+
                 // Navigate to participant dashboard
                 navigate('/participant-dashboard');
             } else {
@@ -96,7 +96,7 @@ export function JoinWorkshop() {
     const handleJoin = async (e: React.FormEvent) => {
         e.preventDefault();
         e.stopPropagation();
-        
+
         // Prevent multiple submissions
         if (loading) return;
         if (!pin || !name) return;
@@ -107,12 +107,12 @@ export function JoinWorkshop() {
         try {
             // US32: If requesting facilitator access, submit the request first
             if (requestFacilitatorAccess) {
-                const { data: requestData } = await api.post(`/workshops/${pin.toUpperCase()}/facilitator-request`, {
+                const { data: requestData } = await api.post(`workshops/${pin.toUpperCase()}/facilitator-request`, {
                     name: name,
                     email: email || undefined,
                     session_id: undefined
                 });
-                
+
                 setFacilitatorRequestId(requestData.request_id);
                 setShowFacilitatorRequestSuccess(true);
                 toast.success('Facilitator access request submitted!');
@@ -120,7 +120,7 @@ export function JoinWorkshop() {
                 return;
             }
 
-            const { data } = await api.post('/join', {
+            const { data } = await api.post('join', {
                 pin: pin.toUpperCase(),
                 display_name: name,
                 role: isFacilitator ? "FACILITATOR" : "PARTICIPANT"
@@ -152,17 +152,15 @@ export function JoinWorkshop() {
     };
 
     return (
-        <div className={`min-h-screen flex flex-col items-center justify-center p-6 ${
-            theme === 'light' ? 'bg-gray-50' : 'bg-surface-900'
-        }`}>
+        <div className={`min-h-screen flex flex-col items-center justify-center p-6 ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-900'
+            }`}>
             <motion.div
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 className="w-full max-w-md"
             >
-                <h1 className={`text-3xl font-heading font-bold text-center mb-8 ${
-                    theme === 'light' ? 'text-gray-900' : 'text-white'
-                }`}>
+                <h1 className={`text-3xl font-heading font-bold text-center mb-8 ${theme === 'light' ? 'text-gray-900' : 'text-white'
+                    }`}>
                     Join Session
                 </h1>
 
@@ -207,11 +205,10 @@ export function JoinWorkshop() {
                             Join as:
                         </p>
                         <div className="space-y-2">
-                            <label className={`flex items-center gap-3 p-2 rounded cursor-pointer ${
-                                !requestFacilitatorAccess 
-                                    ? (theme === 'light' ? 'bg-brand-violet/10 border-brand-violet' : 'bg-brand-violet/20') 
-                                    : ''
-                            }`}>
+                            <label className={`flex items-center gap-3 p-2 rounded cursor-pointer ${!requestFacilitatorAccess
+                                ? (theme === 'light' ? 'bg-brand-violet/10 border-brand-violet' : 'bg-brand-violet/20')
+                                : ''
+                                }`}>
                                 <input
                                     type="radio"
                                     name="joinType"
@@ -224,11 +221,10 @@ export function JoinWorkshop() {
                                     Participant (Default)
                                 </span>
                             </label>
-                            <label className={`flex items-center gap-3 p-2 rounded cursor-pointer ${
-                                requestFacilitatorAccess 
-                                    ? (theme === 'light' ? 'bg-brand-violet/10 border-brand-violet' : 'bg-brand-violet/20') 
-                                    : ''
-                            }`}>
+                            <label className={`flex items-center gap-3 p-2 rounded cursor-pointer ${requestFacilitatorAccess
+                                ? (theme === 'light' ? 'bg-brand-violet/10 border-brand-violet' : 'bg-brand-violet/20')
+                                : ''
+                                }`}>
                                 <input
                                     type="radio"
                                     name="joinType"
@@ -242,7 +238,7 @@ export function JoinWorkshop() {
                                 </span>
                             </label>
                         </div>
-                        
+
                         {/* Email field for facilitator request */}
                         {requestFacilitatorAccess && (
                             <div className="mt-3">
@@ -275,11 +271,10 @@ export function JoinWorkshop() {
                     <button
                         type="button"
                         onClick={() => setShowAdvancedAuth(true)}
-                        className={`w-full text-sm transition-colors flex items-center justify-center gap-2 ${
-                            theme === 'light' 
-                                ? 'text-gray-500 hover:text-brand-violet' 
-                                : 'text-gray-400 hover:text-brand-violet'
-                        }`}
+                        className={`w-full text-sm transition-colors flex items-center justify-center gap-2 ${theme === 'light'
+                            ? 'text-gray-500 hover:text-brand-violet'
+                            : 'text-gray-400 hover:text-brand-violet'
+                            }`}
                     >
                         <UserCircle className="w-4 h-4" />
                         Sign in to track contributions
@@ -288,13 +283,12 @@ export function JoinWorkshop() {
 
                 {/* Back to Home */}
                 <div className="text-center mt-8">
-                    <Link 
-                        to="/" 
-                        className={`text-sm transition-colors ${
-                            theme === 'light' 
-                                ? 'text-gray-500 hover:text-gray-700' 
-                                : 'text-gray-400 hover:text-gray-300'
-                        }`}
+                    <Link
+                        to="/"
+                        className={`text-sm transition-colors ${theme === 'light'
+                            ? 'text-gray-500 hover:text-gray-700'
+                            : 'text-gray-400 hover:text-gray-300'
+                            }`}
                     >
                         ← Back to Home
                     </Link>
@@ -307,30 +301,27 @@ export function JoinWorkshop() {
                     <motion.div
                         initial={{ scale: 0.95, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
-                        className={`rounded-xl border p-6 w-full max-w-md ${
-                            theme === 'light' 
-                                ? 'bg-white border-gray-200 shadow-xl' 
-                                : 'bg-surface-900 border-white/10'
-                        }`}
+                        className={`rounded-xl border p-6 w-full max-w-md ${theme === 'light'
+                            ? 'bg-white border-gray-200 shadow-xl'
+                            : 'bg-surface-900 border-white/10'
+                            }`}
                     >
-                        <h2 className={`text-xl font-bold mb-4 text-center ${
-                            theme === 'light' ? 'text-gray-900' : 'text-white'
-                        }`}>
+                        <h2 className={`text-xl font-bold mb-4 text-center ${theme === 'light' ? 'text-gray-900' : 'text-white'
+                            }`}>
                             Join Workshop
                         </h2>
-                        
+
                         {/* PIN display if provided */}
                         {pin && (
-                            <div className={`text-center mb-4 p-2 rounded-lg ${
-                                theme === 'light' ? 'bg-gray-100' : 'bg-surface-800'
-                            }`}>
+                            <div className={`text-center mb-4 p-2 rounded-lg ${theme === 'light' ? 'bg-gray-100' : 'bg-surface-800'
+                                }`}>
                                 <span className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
                                     Workshop PIN:{' '}
                                 </span>
                                 <span className="font-mono font-bold text-brand-violet">{pin.toUpperCase()}</span>
                             </div>
                         )}
-                        
+
                         <ParticipantAuth
                             workshopPin={pin.toUpperCase()}
                             onAuthSuccess={handleAdvancedAuthSuccess}
@@ -346,28 +337,25 @@ export function JoinWorkshop() {
                     <motion.div
                         initial={{ scale: 0.95, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
-                        className={`rounded-xl border p-6 w-full max-w-md ${
-                            theme === 'light' 
-                                ? 'bg-white border-gray-200 shadow-xl' 
-                                : 'bg-surface-900 border-white/10'
-                        }`}
+                        className={`rounded-xl border p-6 w-full max-w-md ${theme === 'light'
+                            ? 'bg-white border-gray-200 shadow-xl'
+                            : 'bg-surface-900 border-white/10'
+                            }`}
                     >
                         <div className="text-center">
                             <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
                                 <CheckCircle className="w-10 h-10 text-green-600" />
                             </div>
-                            <h2 className={`text-xl font-bold mb-2 ${
-                                theme === 'light' ? 'text-gray-900' : 'text-white'
-                            }`}>
+                            <h2 className={`text-xl font-bold mb-2 ${theme === 'light' ? 'text-gray-900' : 'text-white'
+                                }`}>
                                 Request Submitted
                             </h2>
                             <p className={`mb-4 ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>
                                 Your request to join as a facilitator has been submitted for approval.
                             </p>
-                            
-                            <div className={`p-4 rounded-lg mb-4 text-left ${
-                                theme === 'light' ? 'bg-gray-50' : 'bg-surface-800'
-                            }`}>
+
+                            <div className={`p-4 rounded-lg mb-4 text-left ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-800'
+                                }`}>
                                 <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
                                     <strong>Workshop PIN:</strong> {pin.toUpperCase()}
                                 </p>

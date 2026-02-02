@@ -37,7 +37,7 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
 
         setLoading(true);
         try {
-            const response = await api.post('/participant-auth/join-anonymous', {
+            const response = await api.post('participant-auth/join-anonymous', {
                 workshop_pin: workshopPin,
                 display_name: displayName.trim()
             });
@@ -79,7 +79,7 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
         setLoading(true);
         try {
             console.log('Attempting participant login...');
-            const response = await api.post('/participant-auth/login', {
+            const response = await api.post('participant-auth/login', {
                 email,
                 password
             });
@@ -94,7 +94,7 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
                 const token = response.data.access_token;
                 console.log('Using token for join-registered:', token ? `${token.substring(0, 20)}...` : 'NO TOKEN');
 
-                const joinResponse = await api.post('/participant-auth/join-registered', {
+                const joinResponse = await api.post('participant-auth/join-registered', {
                     workshop_pin: workshopPin
                 }, {
                     headers: { 'Authorization': `Bearer ${token}` }
@@ -163,7 +163,7 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
 
         setLoading(true);
         try {
-            const response = await api.post('/participant-auth/register', {
+            const response = await api.post('participant-auth/register', {
                 email,
                 password,
                 display_name: displayName.trim(),
@@ -175,7 +175,7 @@ export function ParticipantAuth({ workshopPin, onAuthSuccess, onCancel }: Partic
 
             // If workshop PIN is provided, also join the workshop
             if (workshopPin) {
-                const joinResponse = await api.post('/participant-auth/join-registered', {
+                const joinResponse = await api.post('participant-auth/join-registered', {
                     workshop_pin: workshopPin
                 }, {
                     headers: { 'Authorization': `Bearer ${response.data.access_token}` }

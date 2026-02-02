@@ -7,7 +7,6 @@ import { Loader2, Check, Sparkles, AlertTriangle, AlertCircle, Server, Code, Lay
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { Modal } from './ui/Modal';
-import { useTheme } from '../context/ThemeContext';
 
 export interface UseCaseData {
     title: string;
@@ -27,7 +26,6 @@ interface UseCaseFormProps {
 }
 
 export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Matrix", initialData, onSuccess }: UseCaseFormProps) {
-    const { theme } = useTheme();
     const [loading, setLoading] = useState(false);
     const [enhancing, setEnhancing] = useState(false);
     const [checkingFeasibility, setCheckingFeasibility] = useState(false);
@@ -59,7 +57,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
 
         // 1. Check Duplicates
         try {
-            const { data } = await api.post('/ai/duplicates', {
+            const { data } = await api.post('ai/duplicates', {
                 workshop_id: workshopId,
                 title: formData.title,
                 description: formData.description
@@ -120,7 +118,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
         setEnhancing(true);
         try {
             console.log('[UseCaseForm] Calling /ai/enhance API...');
-            const { data } = await api.post('/ai/enhance', { text: formData.description + " " + formData.proposed_solution });
+            const { data } = await api.post('ai/enhance', { text: formData.description + " " + formData.proposed_solution });
             console.log('[UseCaseForm] AI Enhance response:', data);
 
             toast.success("AI Enhanced the content!");
@@ -150,7 +148,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
         setCheckingFeasibility(true);
         try {
             console.log('[UseCaseForm] Calling /ai/feasibility API...');
-            const { data } = await api.post('/ai/feasibility', { solution: formData.proposed_solution });
+            const { data } = await api.post('ai/feasibility', { solution: formData.proposed_solution });
             console.log('[UseCaseForm] Feasibility response:', data);
             setFeasibilityData({ score: data.score, reason: data.reason });
             toast.success(`Feasibility: ${data.score}`);
@@ -170,7 +168,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
         }
         setEnhancingBusinessValue(true);
         try {
-            const { data } = await api.post('/ai/business-value', {
+            const { data } = await api.post('ai/business-value', {
                 title: formData.title,
                 description: formData.description,
                 category: formData.category,
@@ -199,7 +197,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
         }
         setGeneratingArch(true);
         try {
-            const { data } = await api.post('/ai/technical-analysis', {
+            const { data } = await api.post('ai/technical-analysis', {
                 title: formData.title,
                 description: formData.description,
                 proposed_solution: formData.proposed_solution

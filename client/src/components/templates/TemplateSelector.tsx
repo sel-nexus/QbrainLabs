@@ -31,7 +31,7 @@ interface TemplateSelectorProps {
   selectedTemplateId?: string;
 }
 
-export function TemplateSelector({ onSelectTemplate, selectedTemplateId }: TemplateSelectorProps) {
+export function TemplateSelector({ onSelectTemplate }: TemplateSelectorProps) {
   const [showModal, setShowModal] = useState(false);
   const [workshopTemplates, setWorkshopTemplates] = useState<WorkshopTemplate[]>([]);
   const [criteriaTemplates, setCriteriaTemplates] = useState<CriteriaTemplate[]>([]);
@@ -49,8 +49,8 @@ export function TemplateSelector({ onSelectTemplate, selectedTemplateId }: Templ
     setLoading(true);
     try {
       const [workshopRes, criteriaRes] = await Promise.all([
-        api.get('/templates/workshop-templates'),
-        api.get('/templates/criteria-templates')
+        api.get('templates/workshop-templates'),
+        api.get('templates/criteria-templates')
       ]);
       setWorkshopTemplates(workshopRes.data);
       setCriteriaTemplates(criteriaRes.data);
@@ -64,7 +64,7 @@ export function TemplateSelector({ onSelectTemplate, selectedTemplateId }: Templ
 
   const handleSelectWorkshopTemplate = async (template: WorkshopTemplate) => {
     try {
-      const { data } = await api.post(`/templates/workshop-templates/${template.id}/use`, {
+      const { data } = await api.post(`templates/workshop-templates/${template.id}/use`, {
         customize: true
       });
       onSelectTemplate({
@@ -90,7 +90,7 @@ export function TemplateSelector({ onSelectTemplate, selectedTemplateId }: Templ
   };
 
   const filteredWorkshopTemplates = workshopTemplates.filter(t => {
-    const matchesSearch = !searchQuery || 
+    const matchesSearch = !searchQuery ||
       t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       t.description?.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = !selectedCategory || t.category === selectedCategory;
@@ -98,7 +98,7 @@ export function TemplateSelector({ onSelectTemplate, selectedTemplateId }: Templ
   });
 
   const filteredCriteriaTemplates = criteriaTemplates.filter(t => {
-    const matchesSearch = !searchQuery || 
+    const matchesSearch = !searchQuery ||
       t.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       t.description?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesSearch;

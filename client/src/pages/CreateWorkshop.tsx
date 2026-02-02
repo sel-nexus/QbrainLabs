@@ -76,7 +76,7 @@ export function CreateWorkshop() {
 
         setLoading(true);
         try {
-            await api.post('/workshops/', {
+            await api.post('workshops/', {
                 title,
                 config: {
                     criteria,
@@ -98,11 +98,10 @@ export function CreateWorkshop() {
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className={`backdrop-blur-md p-8 rounded-2xl shadow-xl ${
-                    theme === 'light' 
-                        ? 'bg-white border-2 border-gray-200' 
+                className={`backdrop-blur-md p-8 rounded-2xl shadow-xl ${theme === 'light'
+                        ? 'bg-white border-2 border-gray-200'
                         : 'bg-surface-800/60 border border-white/10'
-                }`}
+                    }`}
             >
                 <Button
                     type="button"
@@ -120,9 +119,8 @@ export function CreateWorkshop() {
                     <X className="w-5 h-5" />
                 </Button>
                 {/* Back button now in main Header */}
-                <h1 className={`text-3xl font-heading font-bold mb-2 ${
-                    theme === 'light' ? 'text-gray-900' : 'text-white'
-                }`}>
+                <h1 className={`text-3xl font-heading font-bold mb-2 ${theme === 'light' ? 'text-gray-900' : 'text-white'
+                    }`}>
                     Create New Workshop
                 </h1>
                 <p className={`mb-8 ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>
@@ -139,9 +137,8 @@ export function CreateWorkshop() {
 
                     <div className="space-y-2">
                         <div className="flex items-center justify-between">
-                            <label className={`text-sm font-medium ${
-                                theme === 'light' ? 'text-gray-700' : 'text-gray-300'
-                            }`}>
+                            <label className={`text-sm font-medium ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+                                }`}>
                                 Evaluation Template
                             </label>
                             <TemplateSelector
@@ -158,13 +155,12 @@ export function CreateWorkshop() {
                                     key={key}
                                     type="button"
                                     onClick={() => handleTemplateChange(key)}
-                                    className={`p-4 rounded-xl border text-sm font-medium transition-all ${
-                                        template === key
+                                    className={`p-4 rounded-xl border text-sm font-medium transition-all ${template === key
                                             ? 'bg-brand-violet/20 border-brand-violet text-brand-violet'
                                             : theme === 'light'
                                                 ? 'bg-gray-50 border-gray-200 text-gray-600 hover:bg-gray-100 hover:border-gray-300'
                                                 : 'bg-surface-800 border-white/10 text-gray-300 hover:bg-surface-700'
-                                    }`}
+                                        }`}
                                 >
                                     {btn.label}
                                 </button>
@@ -174,9 +170,8 @@ export function CreateWorkshop() {
 
                     <div className="space-y-4">
                         <div className="flex justify-between items-center">
-                            <label className={`text-sm font-medium ${
-                                theme === 'light' ? 'text-gray-700' : 'text-gray-300'
-                            }`}>
+                            <label className={`text-sm font-medium ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'
+                                }`}>
                                 Scoring Criteria
                             </label>
                             <span className={`text-sm font-mono font-semibold ${totalWeight === 100 ? 'text-semantic-success' : 'text-semantic-warning'}`}>

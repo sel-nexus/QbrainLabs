@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import type { CostInputs, BenefitInputs, ROIParameters, ROIResults } from '../../types/roi';
 import { api } from '../../lib/api';
 import { toast } from 'sonner';
-import { Plus, Trash2, Play, Copy } from 'lucide-react';
+import { Plus, Trash2, Play } from 'lucide-react';
 
 interface Scenario {
     id: string;
@@ -134,7 +134,7 @@ export const ScenarioModeler: React.FC<ScenarioModelerProps> = ({
                 ...activeScenario.adjustments.parameters
             };
 
-            const response = await api.post('/roi/calculate-only', {
+            const response = await api.post('roi/calculate-only', {
                 costs: adjustedCosts,
                 benefits: adjustedBenefits,
                 parameters: adjustedParams
@@ -194,7 +194,7 @@ export const ScenarioModeler: React.FC<ScenarioModelerProps> = ({
                 {/* Scenarios List */}
                 <div className="space-y-2">
                     <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Scenarios</h4>
-                    
+
                     {/* Baseline */}
                     <div className="p-3 bg-gray-50 dark:bg-gray-800/50 rounded-lg border border-gray-200 dark:border-gray-700">
                         <div className="flex items-center justify-between">
@@ -208,11 +208,10 @@ export const ScenarioModeler: React.FC<ScenarioModelerProps> = ({
                     {scenarios.map(scenario => (
                         <div
                             key={scenario.id}
-                            className={`p-3 rounded-lg border cursor-pointer transition-all ${
-                                activeScenario?.id === scenario.id
-                                    ? 'bg-indigo-50 dark:bg-indigo-900/30 border-indigo-300 dark:border-indigo-700'
-                                    : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-indigo-200'
-                            }`}
+                            className={`p-3 rounded-lg border cursor-pointer transition-all ${activeScenario?.id === scenario.id
+                                ? 'bg-indigo-50 dark:bg-indigo-900/30 border-indigo-300 dark:border-indigo-700'
+                                : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-indigo-200'
+                                }`}
                             onClick={() => setActiveScenario(scenario)}
                         >
                             <div className="flex items-center justify-between">

@@ -16,7 +16,7 @@ export function UseCaseCanvas({ session, onSuccess }: UseCaseCanvasProps) {
 
     const handleSubmit = async (data: UseCaseData) => {
         // Proceed with submission (Duplicate check already handled by UseCaseForm)
-        await api.post('/usecases/', {
+        await api.post('usecases/', {
             ...data,
             participant_id: session.participantId,
             workshop_id: session.workshopId

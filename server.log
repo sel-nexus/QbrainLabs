@@ -1429,3 +1429,660 @@ Client disconnected: FBYqSvj6f9GOWpRSAAAC
 {"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T02:10:36.619334Z"}
 2026-02-02 02:10:47,574 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
 {"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.63, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T02:10:47.575272Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 16.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:16:15.252745Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 17.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:16:15.290239Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 23.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:16:17.600009Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 21.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:16:17.635877Z"}
+INFO:     ('127.0.0.1', 53025) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+Client connected: Q4zaZ5mjXZfpB7BoAAAE (unauthenticated - participant access)
+SID Q4zaZ5mjXZfpB7BoAAAE joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID Q4zaZ5mjXZfpB7BoAAAE joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 26.06, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:16:21.161767Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 20.89, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:16:21.198470Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 13.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:16:21.200553Z"}
+SID Q4zaZ5mjXZfpB7BoAAAE joined copilot room for workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID Q4zaZ5mjXZfpB7BoAAAE joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID Q4zaZ5mjXZfpB7BoAAAE left copilot room for workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID Q4zaZ5mjXZfpB7BoAAAE joined copilot room for workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 47.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:16:21.289107Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 42.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:16:21.291170Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 5.7, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:16:21.353066Z"}
+{"method": "GET", "path": "/api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 13.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:17:05.018716Z"}
+{"method": "GET", "path": "/api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 9.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:17:05.039041Z"}
+{"method": "GET", "path": "/api/challenges/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/challenges", "status_code": 200, "duration_ms": 14.82, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:17:07.158000Z"}
+{"method": "GET", "path": "/api/challenges/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/challenges", "status_code": 200, "duration_ms": 13.03, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:17:07.180483Z"}
+{"method": "GET", "path": "/api/surveys/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 24.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:17:07.911961Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/breakout-rooms", "status_code": 200, "duration_ms": 19.61, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:17:07.915984Z"}
+{"method": "GET", "path": "/api/surveys/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 45.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:17:07.978517Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/breakout-rooms", "status_code": 200, "duration_ms": 38.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:17:07.991320Z"}
+{"method": "GET", "path": "/api/knowledge-base/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/insights", "status_code": 200, "duration_ms": 1170.38, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:17:09.825054Z"}
+{"method": "GET", "path": "/api/knowledge-base/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/insights", "status_code": 200, "duration_ms": 925.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:17:10.762053Z"}
+{"method": "POST", "path": "/api/copilot/suggestions", "status_code": 200, "duration_ms": 51.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:17:19.663479Z"}
+{"method": "GET", "path": "/api/copilot/engagement/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 19.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:17:21.528482Z"}
+{"method": "GET", "path": "/api/copilot/engagement/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 20.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:17:21.559220Z"}
+{"method": "GET", "path": "/api/copilot/settings/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 10.21, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:17:24.667627Z"}
+{"method": "GET", "path": "/api/copilot/settings/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 11.7, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:17:24.694053Z"}
+{"method": "POST", "path": "/api/copilot/suggestions", "status_code": 200, "duration_ms": 40.76, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:17:27.326805Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 76.84, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:18:46.810368Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 29.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:18:46.904387Z"}
+{"method": "POST", "path": "/api/join", "status_code": 200, "duration_ms": 18.33, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:03.945924Z"}
+INFO:     ('127.0.0.1', 50089) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+Client connected: 28dKXtWV22qYJVFfAAAG (unauthenticated - participant access)
+SID 28dKXtWV22qYJVFfAAAG joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 40.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:04.034918Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 14.33, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:04.066208Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 14.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:04.100225Z"}
+{"method": "GET", "path": "/api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 53.16, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:04.189544Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 48.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:04.216207Z"}
+{"method": "GET", "path": "/api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 60.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:04.296015Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 52.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:04.330684Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 8.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:09.146042Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 11.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:14.016284Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 8.61, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:14.140205Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 9.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:19.155693Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 15.16, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:24.024170Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 6.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:24.154161Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 6.23, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:29.140187Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 14.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:34.017495Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 7.16, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:34.143557Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 5.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:39.140417Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 7.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:44.009239Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 10.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:44.159914Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 6.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:49.144159Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 9.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:54.019767Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 6.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:54.144765Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 5.89, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:19:59.152362Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 7.53, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:04.013389Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 6.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:04.193535Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 8.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:09.201729Z"}
+2026-02-02 02:20:13,559 - langchain_openai.embeddings.base - WARNING - Warning: model not found. Using cl100k_base encoding.
+2026-02-02 02:20:13,561 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x0000018058F30400>, 'json_data': {'input': [[19997, 4476, 8471, 42187, 39346, 19735, 2403, 26551, 35653, 449, 15592, 13, 25122, 433, 374, 35208, 2763, 315, 892, 439, 433, 374, 3823, 16625, 13, 220]], 'model': 'text-embedding-3-large', 'encoding_format': 'base64'}, 'headers': {'api-key': '<redacted>'}, 'idempotency_key': 'stainless-python-retry-008782e4-24f6-4c45-849a-be414cf02526'}
+2026-02-02 02:20:13,563 - openai._base_client - DEBUG - Sending HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview
+2026-02-02 02:20:13,565 - httpcore.connection - DEBUG - close.started
+2026-02-02 02:20:13,565 - httpcore.connection - DEBUG - close.complete
+2026-02-02 02:20:13,565 - httpcore.connection - DEBUG - connect_tcp.started host='ai-lshcerupod.cognitiveservices.azure.com' port=443 local_address=None timeout=None socket_options=None
+2026-02-02 02:20:13,822 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000180585F6050>
+2026-02-02 02:20:13,822 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001804E47FEC0> server_hostname='ai-lshcerupod.cognitiveservices.azure.com' timeout=None
+2026-02-02 02:20:14,331 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000018058DA62D0>
+2026-02-02 02:20:14,331 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-02-02 02:20:14,332 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-02-02 02:20:14,332 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-02-02 02:20:14,336 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-02-02 02:20:14,338 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-02-02 02:20:14,620 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Length', b'16608'), (b'Content-Type', b'application/json'), (b'access-control-allow-origin', b'*'), (b'apim-request-id', b'ccfbe269-bbba-48a7-be12-ce134beaa058'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains; preload'), (b'x-content-type-options', b'nosniff'), (b'x-ms-region', b'South India'), (b'x-ratelimit-remaining-tokens', b'249974'), (b'x-ratelimit-limit-tokens', b'250000'), (b'x-request-id', b'7099fe1b-5590-416f-a923-a81f39089167'), (b'azureml-model-session', b'd20251211235432-7d8ceb63c60b4c6a'), (b'x-envoy-upstream-service-time', b'40'), (b'x-ms-client-request-id', b'ccfbe269-bbba-48a7-be12-ce134beaa058'), (b'x-ms-deployment-name', b'text-embedding-3-large'), (b'Date', b'Mon, 02 Feb 2026 02:20:14 GMT')])
+2026-02-02 02:20:14,621 - httpx - INFO - HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
+2026-02-02 02:20:14,621 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-02-02 02:20:14,622 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-02-02 02:20:14,622 - httpcore.http11 - DEBUG - response_closed.started
+2026-02-02 02:20:14,622 - httpcore.http11 - DEBUG - response_closed.complete
+2026-02-02 02:20:14,622 - openai._base_client - DEBUG - HTTP Response: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "200 OK" Headers({'content-length': '16608', 'content-type': 'application/json', 'access-control-allow-origin': '*', 'apim-request-id': 'ccfbe269-bbba-48a7-be12-ce134beaa058', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'x-content-type-options': 'nosniff', 'x-ms-region': 'South India', 'x-ratelimit-remaining-tokens': '249974', 'x-ratelimit-limit-tokens': '250000', 'x-request-id': '7099fe1b-5590-416f-a923-a81f39089167', 'azureml-model-session': 'd20251211235432-7d8ceb63c60b4c6a', 'x-envoy-upstream-service-time': '40', 'x-ms-client-request-id': 'ccfbe269-bbba-48a7-be12-ce134beaa058', 'x-ms-deployment-name': 'text-embedding-3-large', 'date': 'Mon, 02 Feb 2026 02:20:14 GMT'})
+2026-02-02 02:20:14,622 - openai._base_client - DEBUG - request_id: 7099fe1b-5590-416f-a923-a81f39089167
+2026-02-02 02:20:14,681 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event CollectionQueryEvent: capture() takes 1 positional argument but 3 were given
+2026-02-02 02:20:15,069 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/chat/completions', 'files': None, 'json_data': {'messages': [{'role': 'user', 'content': 'You are an expert AI Solution Architect.\nUser Input: "Review Software Services Procurement Contract against Enterprise Standards with AI. Currently it is consuming lot of time as it is human driven. "\n\nSimilar Success Stories:\nAutomated Invoice Processing: Use OCR and LLM extraction to parse PDF invoices and feed data into SAP.\nCustomer Support Chatbot: RAG-based chatbot to answer customer queries using internal knowledge base.\n\nTask: \n1. Create a professional Title.\n2. Refine the Description to be technical and value-focused.\n3. Propose a technical Solution using standard modern AI stack.\n4. Suggest a specific KPI suitable for this use case.\n\nReturn JSON only: { "title": "...", "description": "...", "solution": "...", "kpi": "..." }'}], 'model': 'gpt-4.1', 'n': 1, 'stream': False, 'temperature': 0.7}, 'headers': {'api-key': '<redacted>'}, 'idempotency_key': 'stainless-python-retry-1ff891b7-c76a-4491-9b8c-4f0c2878226c'}
+2026-02-02 02:20:15,074 - openai._base_client - DEBUG - Sending HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2024-12-01-preview
+2026-02-02 02:20:15,079 - httpcore.connection - DEBUG - connect_tcp.started host='ai-lshcerupod.cognitiveservices.azure.com' port=443 local_address=None timeout=None socket_options=None
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 44.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:15.125448Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 59.49, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:15.140739Z"}
+2026-02-02 02:20:15,326 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x00000180593F6010>
+2026-02-02 02:20:15,326 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001804E47FDA0> server_hostname='ai-lshcerupod.cognitiveservices.azure.com' timeout=None
+2026-02-02 02:20:15,840 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x0000018059052350>
+2026-02-02 02:20:15,845 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-02-02 02:20:15,846 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-02-02 02:20:15,847 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-02-02 02:20:15,847 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-02-02 02:20:15,847 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-02-02 02:20:18,946 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Length', b'2256'), (b'Content-Type', b'application/json'), (b'apim-request-id', b'3a6d99e9-c5ae-431a-9443-2ceea28d87d8'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains; preload'), (b'x-content-type-options', b'nosniff'), (b'x-ms-region', b'South India'), (b'x-ratelimit-remaining-requests', b'1283'), (b'x-ratelimit-limit-requests', b'1284'), (b'x-ratelimit-remaining-tokens', b'1283814'), (b'x-ratelimit-limit-tokens', b'1284000'), (b'azureml-model-session', b'd20251212104603-35dc5bdbf53341ff'), (b'x-accel-buffering', b'no'), (b'x-ms-rai-invoked', b'true'), (b'x-request-id', b'1b71aeea-6b3f-42c6-9be2-ea9e4774fe4b'), (b'x-ms-deployment-name', b'gpt-4.1'), (b'Date', b'Mon, 02 Feb 2026 02:20:17 GMT')])
+2026-02-02 02:20:18,946 - httpx - INFO - HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
+2026-02-02 02:20:18,946 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-02-02 02:20:18,948 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-02-02 02:20:18,948 - httpcore.http11 - DEBUG - response_closed.started
+2026-02-02 02:20:18,948 - httpcore.http11 - DEBUG - response_closed.complete
+2026-02-02 02:20:18,948 - openai._base_client - DEBUG - HTTP Response: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2024-12-01-preview "200 OK" Headers({'content-length': '2256', 'content-type': 'application/json', 'apim-request-id': '3a6d99e9-c5ae-431a-9443-2ceea28d87d8', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'x-content-type-options': 'nosniff', 'x-ms-region': 'South India', 'x-ratelimit-remaining-requests': '1283', 'x-ratelimit-limit-requests': '1284', 'x-ratelimit-remaining-tokens': '1283814', 'x-ratelimit-limit-tokens': '1284000', 'azureml-model-session': 'd20251212104603-35dc5bdbf53341ff', 'x-accel-buffering': 'no', 'x-ms-rai-invoked': 'true', 'x-request-id': '1b71aeea-6b3f-42c6-9be2-ea9e4774fe4b', 'x-ms-deployment-name': 'gpt-4.1', 'date': 'Mon, 02 Feb 2026 02:20:17 GMT'})
+2026-02-02 02:20:18,948 - openai._base_client - DEBUG - request_id: 1b71aeea-6b3f-42c6-9be2-ea9e4774fe4b
+{"method": "POST", "path": "/api/ai/enhance", "status_code": 200, "duration_ms": 5435.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:18.993731Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 8.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:19.157121Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 8.8, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:24.018492Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 7.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:24.156065Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 6.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:29.154474Z"}
+2026-02-02 02:20:30,516 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/chat/completions', 'files': None, 'json_data': {'messages': [{'role': 'user', 'content': 'You are an expert Business Value Analyst specializing in AI/ML projects.\n\nUse Case Title: "AI-Powered Contract Compliance Review for Software Services Procurement"\nDescription: "Implement an AI-driven solution to automate the review of Software Services Procurement Contracts against Enterprise Policy Standards. The system leverages advanced natural language processing (NLP) to rapidly analyze contract clauses, identify deviations from standardized requirements, and surface risks. This reduces manual effort, accelerates procurement cycles, and ensures high compliance accuracy."\nCategory: "Generative AI"\nCurrent KPI: "Reduction in average contract review time (hours per contract)"\n\nTask: Enhance the business value proposition with:\n1. An enhanced, specific KPI statement (measurable, time-bound)\n2. 3-5 specific metrics this use case could improve\n3. 3-4 ROI indicators (expected ROI %, payback period, NPV range)\n4. 2-3 industry benchmarks with sources\n5. A compelling business impact statement (2-3 sentences)\n6. A confidence score (0.0-1.0) for these estimates\n\nReturn ONLY valid JSON in this exact format:\n{\n    "enhanced_kpi": "Specific, measurable KPI statement",\n    "specific_metrics": ["metric 1", "metric 2", "metric 3"],\n    "roi_indicators": ["ROI indicator 1", "ROI indicator 2"],\n    "benchmarks": [\n        {"source": "Source name", "metric": "Metric name", "value": "Value"},\n        {"source": "Source name", "metric": "Metric name", "value": "Value"}\n    ],\n    "business_impact": "Compelling 2-3 sentence impact statement",\n    "confidence_score": 0.8\n}'}], 'model': 'gpt-4.1', 'n': 1, 'stream': False, 'temperature': 0.7}, 'headers': {'api-key': '<redacted>'}, 'idempotency_key': 'stainless-python-retry-e542e282-1fef-4840-94a3-cf514dac7007'}
+2026-02-02 02:20:30,517 - openai._base_client - DEBUG - Sending HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2024-12-01-preview
+2026-02-02 02:20:30,517 - httpcore.connection - DEBUG - close.started
+2026-02-02 02:20:30,518 - httpcore.connection - DEBUG - close.complete
+2026-02-02 02:20:30,518 - httpcore.connection - DEBUG - connect_tcp.started host='ai-lshcerupod.cognitiveservices.azure.com' port=443 local_address=None timeout=None socket_options=None
+2026-02-02 02:20:30,788 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x00000180594F8F50>
+2026-02-02 02:20:30,788 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001804E47FDA0> server_hostname='ai-lshcerupod.cognitiveservices.azure.com' timeout=None
+2026-02-02 02:20:31,300 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x0000018059082C90>
+2026-02-02 02:20:31,304 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-02-02 02:20:31,305 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-02-02 02:20:31,305 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-02-02 02:20:31,309 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-02-02 02:20:31,309 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-02-02 02:20:33,830 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Length', b'2622'), (b'Content-Type', b'application/json'), (b'apim-request-id', b'17e6b4f1-b3b4-4194-8222-e6224b294bb8'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains; preload'), (b'x-content-type-options', b'nosniff'), (b'x-ms-region', b'South India'), (b'x-ratelimit-remaining-requests', b'1282'), (b'x-ratelimit-limit-requests', b'1284'), (b'x-ratelimit-remaining-tokens', b'1283418'), (b'x-ratelimit-limit-tokens', b'1284000'), (b'azureml-model-session', b'd20251214131224-7310faba6fd94f4f'), (b'x-accel-buffering', b'no'), (b'x-ms-rai-invoked', b'true'), (b'x-request-id', b'71fed360-3a7b-4913-b8f4-a03c37ea5576'), (b'x-ms-deployment-name', b'gpt-4.1'), (b'Date', b'Mon, 02 Feb 2026 02:20:33 GMT')])
+2026-02-02 02:20:33,832 - httpx - INFO - HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
+2026-02-02 02:20:33,832 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-02-02 02:20:33,832 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-02-02 02:20:33,832 - httpcore.http11 - DEBUG - response_closed.started
+2026-02-02 02:20:33,832 - httpcore.http11 - DEBUG - response_closed.complete
+2026-02-02 02:20:33,833 - openai._base_client - DEBUG - HTTP Response: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2024-12-01-preview "200 OK" Headers({'content-length': '2622', 'content-type': 'application/json', 'apim-request-id': '17e6b4f1-b3b4-4194-8222-e6224b294bb8', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'x-content-type-options': 'nosniff', 'x-ms-region': 'South India', 'x-ratelimit-remaining-requests': '1282', 'x-ratelimit-limit-requests': '1284', 'x-ratelimit-remaining-tokens': '1283418', 'x-ratelimit-limit-tokens': '1284000', 'azureml-model-session': 'd20251214131224-7310faba6fd94f4f', 'x-accel-buffering': 'no', 'x-ms-rai-invoked': 'true', 'x-request-id': '71fed360-3a7b-4913-b8f4-a03c37ea5576', 'x-ms-deployment-name': 'gpt-4.1', 'date': 'Mon, 02 Feb 2026 02:20:33 GMT'})
+2026-02-02 02:20:33,833 - openai._base_client - DEBUG - request_id: 71fed360-3a7b-4913-b8f4-a03c37ea5576
+{"method": "POST", "path": "/api/ai/business-value", "status_code": 200, "duration_ms": 3323.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:33.836660Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 21.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:34.027727Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 18.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:34.172011Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 8.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:39.149209Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 12.58, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:44.022452Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 5.58, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:44.141203Z"}
+2026-02-02 02:20:44,738 - qbrainlabs - WARNING - HTTPException: 500 - name 'ChatPromptTemplate' is not defined
+{"method": "POST", "path": "/api/ai/feasibility", "status_code": 500, "duration_ms": 8.51, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "error", "timestamp": "2026-02-02T02:20:44.743467Z"}
+2026-02-02 02:20:48,838 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/chat/completions', 'files': None, 'json_data': {'messages': [{'role': 'user', 'content': 'You are an expert Chief Software Architect.\n\nAnalyze this AI Use Case:\nTitle: "AI-Powered Contract Compliance Review for Software Services Procurement"\nDescription: "Implement an AI-driven solution to automate the review of Software Services Procurement Contracts against Enterprise Policy Standards. The system leverages advanced natural language processing (NLP) to rapidly analyze contract clauses, identify deviations from standardized requirements, and surface risks. This reduces manual effort, accelerates procurement cycles, and ensures high compliance accuracy."\nProposed Solution: "Deploy a pipeline combining document ingestion (OCR for scanned contracts), text preprocessing, and a Large Language Model (LLM) fine-tuned on enterprise contract standards. The solution utilizes Retrieval-Augmented Generation (RAG) to dynamically reference enterprise policy documents during review. A user interface provides reviewers with flagged discrepancies, explanations, and actionable recommendations. Key technologies: AWS Textract/Azure Form Recognizer, OpenAI GPT-4 or Azure OpenAI Service, vector database (e.g., Pinecone), and a secure web application for workflow integration."\n\nProvide a technical deep dive:\n1. High-level Architecture Overview (1 paragraph)\n2. Recommended Tech Stack (Specific tools for Frontend, Backend, DB, AI)\n3. 5 High-level Implementation Steps\n4. 3-4 Technical Risks to mitigate\n5. Complexity Score (1-10)\n\nReturn valid JSON:\n{\n    "architecture_overview": "...",\n    "recommended_stack": [\n        { "category": "...", "name": "...", "justification": "..." }\n    ],\n    "implementation_steps": ["1. ...", "2. ..."],\n    "technical_risks": ["..."],\n    "complexity_score": 5\n}'}], 'model': 'gpt-4.1', 'n': 1, 'stream': False, 'temperature': 0.7}, 'headers': {'api-key': '<redacted>'}, 'idempotency_key': 'stainless-python-retry-31753e9a-cf68-49ac-a093-b221fa50b2bd'}
+2026-02-02 02:20:48,838 - openai._base_client - DEBUG - Sending HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2024-12-01-preview
+2026-02-02 02:20:48,840 - httpcore.connection - DEBUG - close.started
+2026-02-02 02:20:48,840 - httpcore.connection - DEBUG - close.complete
+2026-02-02 02:20:48,840 - httpcore.connection - DEBUG - connect_tcp.started host='ai-lshcerupod.cognitiveservices.azure.com' port=443 local_address=None timeout=None socket_options=None
+2026-02-02 02:20:49,079 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x00000180594A17D0>
+2026-02-02 02:20:49,079 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001804E47FDA0> server_hostname='ai-lshcerupod.cognitiveservices.azure.com' timeout=None
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 7.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:49.158649Z"}
+2026-02-02 02:20:49,551 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x00000180594A3250>
+2026-02-02 02:20:49,552 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-02-02 02:20:49,553 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-02-02 02:20:49,553 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-02-02 02:20:49,553 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-02-02 02:20:49,553 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 8.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:54.011857Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 6.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:54.143985Z"}
+2026-02-02 02:20:54,820 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Length', b'4174'), (b'Content-Type', b'application/json'), (b'apim-request-id', b'9b11983b-7e85-4614-af72-a2a4da18aa55'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains; preload'), (b'x-content-type-options', b'nosniff'), (b'x-ms-region', b'South India'), (b'x-ratelimit-remaining-requests', b'1281'), (b'x-ratelimit-limit-requests', b'1284'), (b'x-ratelimit-remaining-tokens', b'1282990'), (b'x-ratelimit-limit-tokens', b'1284000'), (b'azureml-model-session', b'd20251214091116-ee638e09ca404729'), (b'x-accel-buffering', b'no'), (b'x-ms-rai-invoked', b'true'), (b'x-request-id', b'd3b94646-9f6c-4bad-8d20-6010de0d17c1'), (b'x-ms-deployment-name', b'gpt-4.1'), (b'Date', b'Mon, 02 Feb 2026 02:20:54 GMT')])
+2026-02-02 02:20:54,821 - httpx - INFO - HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
+2026-02-02 02:20:54,821 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-02-02 02:20:54,821 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-02-02 02:20:54,821 - httpcore.http11 - DEBUG - response_closed.started
+2026-02-02 02:20:54,822 - httpcore.http11 - DEBUG - response_closed.complete
+2026-02-02 02:20:54,822 - openai._base_client - DEBUG - HTTP Response: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2024-12-01-preview "200 OK" Headers({'content-length': '4174', 'content-type': 'application/json', 'apim-request-id': '9b11983b-7e85-4614-af72-a2a4da18aa55', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'x-content-type-options': 'nosniff', 'x-ms-region': 'South India', 'x-ratelimit-remaining-requests': '1281', 'x-ratelimit-limit-requests': '1284', 'x-ratelimit-remaining-tokens': '1282990', 'x-ratelimit-limit-tokens': '1284000', 'azureml-model-session': 'd20251214091116-ee638e09ca404729', 'x-accel-buffering': 'no', 'x-ms-rai-invoked': 'true', 'x-request-id': 'd3b94646-9f6c-4bad-8d20-6010de0d17c1', 'x-ms-deployment-name': 'gpt-4.1', 'date': 'Mon, 02 Feb 2026 02:20:54 GMT'})
+2026-02-02 02:20:54,822 - openai._base_client - DEBUG - request_id: d3b94646-9f6c-4bad-8d20-6010de0d17c1
+{"method": "POST", "path": "/api/ai/technical-analysis", "status_code": 200, "duration_ms": 5991.3, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:54.824363Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 6.58, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:20:59.142597Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 9.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:04.023071Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 8.06, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:04.157400Z"}
+{"method": "POST", "path": "/api/ai/duplicates", "status_code": 200, "duration_ms": 10.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:06.749967Z"}
+{"method": "POST", "path": "/api/usecases/", "status_code": 201, "duration_ms": 29.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:06.795174Z"}
+2026-02-02 02:21:06,828 - qbrainlabs - ERROR - Unhandled exception: 'action_metadata' is an invalid keyword argument for ParticipantPoint
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\anyio\streams\memory.py", line 98, in receive
+    return self.receive_nowait()
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\anyio\streams\memory.py", line 93, in receive_nowait
+    raise WouldBlock
+anyio.WouldBlock
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 78, in call_next
+    message = await recv_stream.receive()
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\anyio\streams\memory.py", line 118, in receive
+    raise EndOfStream
+anyio.EndOfStream
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 426, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 84, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\applications.py", line 1106, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\applications.py", line 122, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\errors.py", line 184, in __call__
+    raise exc
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 108, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\middleware\cors_dynamic.py", line 93, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 84, in call_next
+    raise app_exc
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 70, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 108, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\middleware\request_id.py", line 22, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 84, in call_next
+    raise app_exc
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 70, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 108, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\middleware\security.py", line 122, in dispatch
+    return await call_next(request)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 84, in call_next
+    raise app_exc
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 70, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 108, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\middleware\security.py", line 82, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 84, in call_next
+    raise app_exc
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 70, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 108, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\middleware\security.py", line 37, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 84, in call_next
+    raise app_exc
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 70, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 108, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\middleware\security.py", line 18, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 84, in call_next
+    raise app_exc
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 70, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 79, in __call__
+    raise exc
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 68, in __call__
+    await self.app(scope, receive, sender)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 20, in __call__
+    raise e
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 17, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 718, in __call__
+    await route.handle(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 276, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 66, in app
+    response = await func(request)
+               ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 274, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 191, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\api\gamification.py", line 141, in award_points
+    point_record = ParticipantPoint(
+                   ^^^^^^^^^^^^^^^^^
+  File "<string>", line 4, in __init__
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\orm\state.py", line 566, in _initialize_instance
+    with util.safe_reraise():
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 146, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\orm\state.py", line 564, in _initialize_instance
+    manager.original_init(*mixed[1:], **kwargs)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\orm\decl_base.py", line 2142, in _declarative_constructor
+    raise TypeError(
+TypeError: 'action_metadata' is an invalid keyword argument for ParticipantPoint
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 14.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:09.161511Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 8.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:14.012426Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 6.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:14.143955Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 8.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:15.876374Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 6.33, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:19.143988Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 11.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:24.010730Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 5.88, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:24.145667Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 6.58, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:29.874051Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 11.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:34.886682Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 16.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:34.888724Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 5.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:39.139155Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 10.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:44.021200Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 5.82, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:44.141564Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 6.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:49.875015Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 12.71, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:54.882998Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 9.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:54.882998Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 6.14, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:21:59.874404Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 9.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:04.884561Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 13.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:04.885647Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 5.58, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:09.873462Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 19.14, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:14.900961Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 16.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:14.900961Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 6.84, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:19.875140Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 11.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:24.879530Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 9.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:24.881055Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 6.26, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:29.876817Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 12.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:34.883351Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 10.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:34.883930Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 5.9, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:39.875926Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 8.51, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:44.020001Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 6.51, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:44.141767Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 5.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:49.154628Z"}
+SID 28dKXtWV22qYJVFfAAAG joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID 28dKXtWV22qYJVFfAAAG joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 14.6, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:50.126445Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 19.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:50.168683Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 10.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:50.169793Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 11.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:50.219889Z"}
+[VOTES] Fetching matrix positions for participant de9d52c3-2535-44ea-8daf-fbf93c06327d, workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[VOTES] Query: SELECT votes.id, votes.use_case_id, votes.participant_id, votes.scores 
+FROM votes JOIN use_cases ON votes.use_case_id = use_cases.id 
+WHERE votes.participant_id = :participant_id_1 AND use_cases.workshop_id = :workshop_id_1
+[VOTES] Found 0 votes
+[VOTES] No votes found for participant de9d52c3-2535-44ea-8daf-fbf93c06327d in workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[VOTES] Total votes for this participant (any workshop): 0
+[VOTES] Returning 0 positions
+{"method": "GET", "path": "/api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions", "status_code": 200, "duration_ms": 18.76, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:50.227149Z"}
+[VOTES] Fetching matrix positions for participant de9d52c3-2535-44ea-8daf-fbf93c06327d, workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[VOTES] Query: SELECT votes.id, votes.use_case_id, votes.participant_id, votes.scores 
+FROM votes JOIN use_cases ON votes.use_case_id = use_cases.id 
+WHERE votes.participant_id = :participant_id_1 AND use_cases.workshop_id = :workshop_id_1
+[VOTES] Found 0 votes
+[VOTES] No votes found for participant de9d52c3-2535-44ea-8daf-fbf93c06327d in workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[VOTES] Total votes for this participant (any workshop): 0
+[VOTES] Returning 0 positions
+{"method": "GET", "path": "/api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions", "status_code": 200, "duration_ms": 8.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:22:50.253334Z"}
+2026-02-02 02:24:48,215 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T02:24:48.216218Z"}
+2026-02-02 02:24:53,744 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 3.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T02:24:53.747276Z"}
+SID 28dKXtWV22qYJVFfAAAG joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 9.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:32:20.622972Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 5.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:32:20.674580Z"}
+[VOTES] Fetching matrix positions for participant de9d52c3-2535-44ea-8daf-fbf93c06327d, workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[VOTES] Query: SELECT votes.id, votes.use_case_id, votes.participant_id, votes.scores 
+FROM votes JOIN use_cases ON votes.use_case_id = use_cases.id 
+WHERE votes.participant_id = :participant_id_1 AND use_cases.workshop_id = :workshop_id_1
+[VOTES] Found 0 votes
+[VOTES] No votes found for participant de9d52c3-2535-44ea-8daf-fbf93c06327d in workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[VOTES] Total votes for this participant (any workshop): 0
+[VOTES] Returning 0 positions
+{"method": "GET", "path": "/api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions", "status_code": 200, "duration_ms": 16.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:32:20.717005Z"}
+SID 28dKXtWV22qYJVFfAAAG joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 8.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:34:35.522959Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 4.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:34:35.550056Z"}
+[VOTES] Fetching matrix positions for participant de9d52c3-2535-44ea-8daf-fbf93c06327d, workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[VOTES] Query: SELECT votes.id, votes.use_case_id, votes.participant_id, votes.scores 
+FROM votes JOIN use_cases ON votes.use_case_id = use_cases.id 
+WHERE votes.participant_id = :participant_id_1 AND use_cases.workshop_id = :workshop_id_1
+[VOTES] Found 0 votes
+[VOTES] No votes found for participant de9d52c3-2535-44ea-8daf-fbf93c06327d in workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[VOTES] Total votes for this participant (any workshop): 0
+[VOTES] Returning 0 positions
+{"method": "GET", "path": "/api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions", "status_code": 200, "duration_ms": 11.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:34:35.578018Z"}
+SID 28dKXtWV22qYJVFfAAAG joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 7.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:34:40.919935Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 7.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:34:40.977986Z"}
+[VOTES] Fetching matrix positions for participant de9d52c3-2535-44ea-8daf-fbf93c06327d, workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[VOTES] Query: SELECT votes.id, votes.use_case_id, votes.participant_id, votes.scores 
+FROM votes JOIN use_cases ON votes.use_case_id = use_cases.id 
+WHERE votes.participant_id = :participant_id_1 AND use_cases.workshop_id = :workshop_id_1
+[VOTES] Found 0 votes
+[VOTES] No votes found for participant de9d52c3-2535-44ea-8daf-fbf93c06327d in workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[VOTES] Total votes for this participant (any workshop): 0
+[VOTES] Returning 0 positions
+{"method": "GET", "path": "/api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions", "status_code": 200, "duration_ms": 10.3, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:34:41.009042Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 5.5, "client_ip": "184.105.139.69", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:41:03.588292Z"}
+2026-02-02 02:42:14,190 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.32, "client_ip": "184.105.139.101", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T02:42:14.191684Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.29, "client_ip": "184.105.139.93", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:42:25.522043Z"}
+WARNING:  Unsupported upgrade request.
+WARNING:  No supported WebSocket library detected. Please use "pip install 'uvicorn[standard]'", or install 'websockets' or 'wsproto' manually.
+WARNING:  Invalid HTTP request received.
+2026-02-02 02:42:45,647 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T02:42:45.647255Z"}
+2026-02-02 03:02:38,308 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.88, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T03:02:38.308374Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+2026-02-02 03:14:28,318 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.88, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T03:14:28.320047Z"}
+Client disconnected: Q4zaZ5mjXZfpB7BoAAAE
+Client disconnected: 28dKXtWV22qYJVFfAAAG
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.5, "client_ip": "4.172.78.87", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T04:14:57.408184Z"}
+2026-02-02 04:25:03,935 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.85, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T04:25:03.937152Z"}
+2026-02-02 04:35:11,304 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 3.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T04:35:11.305992Z"}
+2026-02-02 04:41:35,783 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 4.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T04:41:35.785238Z"}
+2026-02-02 04:42:57,658 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T04:42:57.660966Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.51, "client_ip": "147.185.132.252", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T05:25:20.183339Z"}
+2026-02-02 05:26:51,213 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T05:26:51.213760Z"}
+2026-02-02 05:45:28,858 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T05:45:28.858376Z"}
+2026-02-02 05:50:15,768 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T05:50:15.770537Z"}
+2026-02-02 05:54:21,693 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.84, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T05:54:21.695515Z"}
+2026-02-02 05:55:51,331 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T05:55:51.331721Z"}
+2026-02-02 06:34:38,294 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 3.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T06:34:38.296007Z"}
+2026-02-02 06:47:17,892 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T06:47:17.894489Z"}
+2026-02-02 06:51:51,052 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T06:51:51.052627Z"}
+2026-02-02 07:01:21,733 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 3.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T07:01:21.735070Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.05, "client_ip": "3.130.96.91", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T07:04:03.722835Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.92, "client_ip": "3.130.96.91", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T07:05:56.137629Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+2026-02-02 07:31:46,452 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T07:31:46.452976Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.93, "client_ip": "185.247.137.245", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T07:41:33.496681Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 4.53, "client_ip": "162.243.69.216", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T08:03:56.501719Z"}
+2026-02-02 08:03:56,642 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/login", "status_code": 404, "duration_ms": 2.4, "client_ip": "162.243.69.216", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T08:03:56.643687Z"}
+2026-02-02 10:04:13,010 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.41, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T10:04:13.012337Z"}
+2026-02-02 10:49:36,510 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T10:49:36.512964Z"}
+2026-02-02 11:40:56,893 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.6, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T11:40:56.894876Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 284.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:41.093054Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 288.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:41.095141Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 299.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:41.128197Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 306.8, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:41.136962Z"}
+{"method": "POST", "path": "/api/auth/logout", "status_code": 200, "duration_ms": 110.11, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:43.865559Z"}
+2026-02-02 11:51:53,939 - multipart.multipart - DEBUG - Calling on_field_start with no data
+2026-02-02 11:51:53,939 - multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2026-02-02 11:51:53,939 - multipart.multipart - DEBUG - Calling on_field_data with data[9:31]
+2026-02-02 11:51:53,939 - multipart.multipart - DEBUG - Calling on_field_end with no data
+2026-02-02 11:51:53,939 - multipart.multipart - DEBUG - Calling on_field_start with no data
+2026-02-02 11:51:53,939 - multipart.multipart - DEBUG - Calling on_field_name with data[32:40]
+2026-02-02 11:51:53,939 - multipart.multipart - DEBUG - Calling on_field_data with data[41:49]
+2026-02-02 11:51:53,939 - multipart.multipart - DEBUG - Calling on_field_end with no data
+2026-02-02 11:51:53,939 - multipart.multipart - DEBUG - Calling on_end with no data
+{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 867.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:54.803664Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 18.21, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:54.910018Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 14.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:54.930430Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 6.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:57.152923Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 6.51, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:57.179052Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 17.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:58.062850Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 32.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:58.109112Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 28.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:58.111385Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 31.88, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:58.115305Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 30.51, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:58.115305Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 33.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:58.118031Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 20.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:58.146103Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 9.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:58.183644Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 13.27, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:58.991551Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 12.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:51:59.020306Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 23.22, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:52:00.053776Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 26.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:52:00.082374Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 8.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:52:03.878605Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 6.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:52:03.948292Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 6.89, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:52:03.974723Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 7.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:52:04.037113Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 14.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:52:15.247427Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 13.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:52:15.270249Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 6.04, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:52:19.958885Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 4.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:52:20.022473Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 5.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:52:20.050869Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 3.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:52:20.115784Z"}
+2026-02-02 11:52:24,748 - qbrainlabs - WARNING - HTTPException: 500 - greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+{"method": "POST", "path": "/api/copilot/suggestions", "status_code": 500, "duration_ms": 33.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "error", "timestamp": "2026-02-02T11:52:24.750015Z"}
+2026-02-02 11:52:29,750 - qbrainlabs - WARNING - HTTPException: 500 - greenlet_spawn has not been called; can't call await_only() here. Was IO attempted in an unexpected place? (Background on this error at: https://sqlalche.me/e/20/xd2s)
+{"method": "POST", "path": "/api/copilot/suggestions", "status_code": 500, "duration_ms": 28.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "error", "timestamp": "2026-02-02T11:52:29.752020Z"}
+{"method": "GET", "path": "/api/copilot/engagement/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 18.6, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:52:31.507728Z"}
+{"method": "GET", "path": "/api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 7.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:52:38.418453Z"}
+{"method": "GET", "path": "/api/challenges/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/challenges", "status_code": 200, "duration_ms": 9.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:52:39.366399Z"}
+{"method": "POST", "path": "/api/auth/logout", "status_code": 200, "duration_ms": 11.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:56:34.219523Z"}
+{"method": "POST", "path": "/api/join", "status_code": 200, "duration_ms": 16.55, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:56:45.759822Z"}
+{"method": "GET", "path": "/api/session/a539c12b-40b2-47dc-80db-88f3d736bc0f", "status_code": 200, "duration_ms": 13.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:56:45.870319Z"}
+{"method": "GET", "path": "/api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 9.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:56:45.993251Z"}
+{"method": "GET", "path": "/api/gamification/points/a539c12b-40b2-47dc-80db-88f3d736bc0f", "status_code": 200, "duration_ms": 10.71, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:56:46.024415Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 5.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:56:48.924196Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 5.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:56:49.011852Z"}
+[VOTES] Fetching matrix positions for participant a539c12b-40b2-47dc-80db-88f3d736bc0f, workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[VOTES] Query: SELECT votes.id, votes.use_case_id, votes.participant_id, votes.scores 
+FROM votes JOIN use_cases ON votes.use_case_id = use_cases.id 
+WHERE votes.participant_id = :participant_id_1 AND use_cases.workshop_id = :workshop_id_1
+[VOTES] Found 0 votes
+[VOTES] No votes found for participant a539c12b-40b2-47dc-80db-88f3d736bc0f in workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[VOTES] Total votes for this participant (any workshop): 0
+[VOTES] Returning 0 positions
+{"method": "GET", "path": "/api/votes/participant/a539c12b-40b2-47dc-80db-88f3d736bc0f/matrix-positions", "status_code": 200, "duration_ms": 7.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:56:49.084723Z"}
+{"method": "POST", "path": "/api/votes/", "status_code": 201, "duration_ms": 25.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:08.489526Z"}
+{"method": "POST", "path": "/api/votes/", "status_code": 201, "duration_ms": 23.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:10.680882Z"}
+{"method": "POST", "path": "/api/votes/", "status_code": 201, "duration_ms": 18.58, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:15.738334Z"}
+{"method": "GET", "path": "/api/session/a539c12b-40b2-47dc-80db-88f3d736bc0f", "status_code": 200, "duration_ms": 7.76, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:18.561998Z"}
+{"method": "GET", "path": "/api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 6.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:18.774112Z"}
+{"method": "GET", "path": "/api/gamification/points/a539c12b-40b2-47dc-80db-88f3d736bc0f", "status_code": 200, "duration_ms": 5.71, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:18.801228Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 6.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:20.011439Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 4.37, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:20.074511Z"}
+[VOTES] Fetching matrix positions for participant a539c12b-40b2-47dc-80db-88f3d736bc0f, workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[VOTES] Query: SELECT votes.id, votes.use_case_id, votes.participant_id, votes.scores 
+FROM votes JOIN use_cases ON votes.use_case_id = use_cases.id 
+WHERE votes.participant_id = :participant_id_1 AND use_cases.workshop_id = :workshop_id_1
+[VOTES] Found 3 votes
+[VOTES] Vote ID: 979f4b60-272a-4e07-9424-99e1216aa477, Use Case ID: a06b4760-66fd-45f5-ac42-8df8fed39c2d, Scores: {'Business Impact': 5}
+[VOTES] Vote ID: 1ca92e1a-d241-42dc-a065-cd61925ae6b9, Use Case ID: 620223ea-666c-42f3-bf2c-2cdfc4b6b86e, Scores: {'Business Impact': 8}
+[VOTES] Vote ID: 81cbcdd6-1be4-4e0a-a5d9-4c25d99303e4, Use Case ID: 69f6280e-40f9-42fa-86a1-8da95a829da4, Scores: {'Business Impact': 6}
+[VOTES] Adding position for use case a06b4760-66fd-45f5-ac42-8df8fed39c2d: scores={'Business Impact': 5}, x=5.0, y=0
+[VOTES] Adding position for use case 620223ea-666c-42f3-bf2c-2cdfc4b6b86e: scores={'Business Impact': 8}, x=8.0, y=0
+[VOTES] Adding position for use case 69f6280e-40f9-42fa-86a1-8da95a829da4: scores={'Business Impact': 6}, x=6.0, y=0
+[VOTES] Returning 3 positions
+{"method": "GET", "path": "/api/votes/participant/a539c12b-40b2-47dc-80db-88f3d736bc0f/matrix-positions", "status_code": 200, "duration_ms": 14.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:20.146773Z"}
+[VOTES] Merging scores for use_case 620223ea-666c-42f3-bf2c-2cdfc4b6b86e, participant a539c12b-40b2-47dc-80db-88f3d736bc0f
+[VOTES] Existing scores: {'Business Impact': 8}
+[VOTES] New scores to merge: {'Business Impact': 8, 'Strategic Alignment': 9}
+[VOTES] Final merged scores: {'Business Impact': 8, 'Strategic Alignment': 9}
+{"method": "POST", "path": "/api/votes/", "status_code": 201, "duration_ms": 14.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:32.239718Z"}
+[VOTES] Merging scores for use_case a06b4760-66fd-45f5-ac42-8df8fed39c2d, participant a539c12b-40b2-47dc-80db-88f3d736bc0f
+[VOTES] Existing scores: {'Business Impact': 5}
+[VOTES] New scores to merge: {'Business Impact': 5, 'Strategic Alignment': 8}
+[VOTES] Final merged scores: {'Business Impact': 5, 'Strategic Alignment': 8}
+{"method": "POST", "path": "/api/votes/", "status_code": 201, "duration_ms": 13.58, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:34.936202Z"}
+[VOTES] Merging scores for use_case 69f6280e-40f9-42fa-86a1-8da95a829da4, participant a539c12b-40b2-47dc-80db-88f3d736bc0f
+[VOTES] Existing scores: {'Business Impact': 6}
+[VOTES] New scores to merge: {'Business Impact': 6, 'Strategic Alignment': 8}
+[VOTES] Final merged scores: {'Business Impact': 6, 'Strategic Alignment': 8}
+{"method": "POST", "path": "/api/votes/", "status_code": 201, "duration_ms": 17.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:36.701354Z"}
+{"method": "GET", "path": "/api/session/a539c12b-40b2-47dc-80db-88f3d736bc0f", "status_code": 200, "duration_ms": 7.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:40.823185Z"}
+{"method": "GET", "path": "/api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 6.11, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:40.900151Z"}
+{"method": "GET", "path": "/api/gamification/points/a539c12b-40b2-47dc-80db-88f3d736bc0f", "status_code": 200, "duration_ms": 6.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:40.926892Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 6.23, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:42.025855Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 4.61, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:42.089867Z"}
+[VOTES] Fetching matrix positions for participant a539c12b-40b2-47dc-80db-88f3d736bc0f, workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[VOTES] Query: SELECT votes.id, votes.use_case_id, votes.participant_id, votes.scores 
+FROM votes JOIN use_cases ON votes.use_case_id = use_cases.id 
+WHERE votes.participant_id = :participant_id_1 AND use_cases.workshop_id = :workshop_id_1
+[VOTES] Found 3 votes
+[VOTES] Vote ID: 979f4b60-272a-4e07-9424-99e1216aa477, Use Case ID: a06b4760-66fd-45f5-ac42-8df8fed39c2d, Scores: {'Business Impact': 5, 'Strategic Alignment': 8}
+[VOTES] Vote ID: 1ca92e1a-d241-42dc-a065-cd61925ae6b9, Use Case ID: 620223ea-666c-42f3-bf2c-2cdfc4b6b86e, Scores: {'Business Impact': 8, 'Strategic Alignment': 9}
+[VOTES] Vote ID: 81cbcdd6-1be4-4e0a-a5d9-4c25d99303e4, Use Case ID: 69f6280e-40f9-42fa-86a1-8da95a829da4, Scores: {'Business Impact': 6, 'Strategic Alignment': 8}
+[VOTES] Adding position for use case a06b4760-66fd-45f5-ac42-8df8fed39c2d: scores={'Business Impact': 5, 'Strategic Alignment': 8}, x=5.0, y=8.0
+[VOTES] Adding position for use case 620223ea-666c-42f3-bf2c-2cdfc4b6b86e: scores={'Business Impact': 8, 'Strategic Alignment': 9}, x=8.0, y=9.0
+[VOTES] Adding position for use case 69f6280e-40f9-42fa-86a1-8da95a829da4: scores={'Business Impact': 6, 'Strategic Alignment': 8}, x=6.0, y=8.0
+[VOTES] Returning 3 positions
+{"method": "GET", "path": "/api/votes/participant/a539c12b-40b2-47dc-80db-88f3d736bc0f/matrix-positions", "status_code": 200, "duration_ms": 8.44, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:42.160307Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 9.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:58.808213Z"}
+{"method": "GET", "path": "/api/session/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 23.26, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:58.845817Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 15.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:58.886889Z"}
+{"method": "GET", "path": "/api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 35.46, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:58.906874Z"}
+{"method": "GET", "path": "/api/gamification/points/de9d52c3-2535-44ea-8daf-fbf93c06327d", "status_code": 200, "duration_ms": 91.9, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:59.057069Z"}
+{"method": "GET", "path": "/api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 69.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:57:59.067383Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 7.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:03.134598Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 16.79, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:03.166149Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 16.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:03.168703Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 9.37, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:03.204380Z"}
+[VOTES] Fetching matrix positions for participant de9d52c3-2535-44ea-8daf-fbf93c06327d, workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[VOTES] Query: SELECT votes.id, votes.use_case_id, votes.participant_id, votes.scores 
+FROM votes JOIN use_cases ON votes.use_case_id = use_cases.id 
+WHERE votes.participant_id = :participant_id_1 AND use_cases.workshop_id = :workshop_id_1
+[VOTES] Found 0 votes
+[VOTES] No votes found for participant de9d52c3-2535-44ea-8daf-fbf93c06327d in workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[VOTES] Total votes for this participant (any workshop): 0
+[VOTES] Returning 0 positions
+{"method": "GET", "path": "/api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions", "status_code": 200, "duration_ms": 15.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:03.213637Z"}
+[VOTES] Fetching matrix positions for participant de9d52c3-2535-44ea-8daf-fbf93c06327d, workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[VOTES] Query: SELECT votes.id, votes.use_case_id, votes.participant_id, votes.scores 
+FROM votes JOIN use_cases ON votes.use_case_id = use_cases.id 
+WHERE votes.participant_id = :participant_id_1 AND use_cases.workshop_id = :workshop_id_1
+[VOTES] Found 0 votes
+[VOTES] No votes found for participant de9d52c3-2535-44ea-8daf-fbf93c06327d in workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+[VOTES] Total votes for this participant (any workshop): 0
+[VOTES] Returning 0 positions
+{"method": "GET", "path": "/api/votes/participant/de9d52c3-2535-44ea-8daf-fbf93c06327d/matrix-positions", "status_code": 200, "duration_ms": 7.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:03.238265Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 34.6, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:21.453160Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 28.7, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:21.497304Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 7.55, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:24.169053Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 13.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:24.203072Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 17.37, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:24.206874Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 72.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:24.312444Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 65.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:24.313782Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 5.93, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:24.336984Z"}
+{"method": "POST", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/phase", "status_code": 200, "duration_ms": 19.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:29.047286Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 10.55, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:29.096654Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 18.42, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:29.129683Z"}
+{"method": "POST", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/phase", "status_code": 200, "duration_ms": 12.03, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:31.704687Z"}
+{"method": "GET", "path": "/api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 15.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:31.734964Z"}
+2026-02-02 11:58:31,793 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api/participants/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 404, "duration_ms": 9.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T11:58:31.798209Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 27.51, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:31.824443Z"}
+{"method": "GET", "path": "/api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 36.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:31.834148Z"}
+2026-02-02 11:58:31,837 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api/participants/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 404, "duration_ms": 7.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T11:58:31.842799Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 20.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:31.893407Z"}
+{"method": "GET", "path": "/api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 20.7, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:31.905016Z"}
+{"method": "GET", "path": "/api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 72.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:32.010048Z"}
+{"method": "GET", "path": "/api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 8.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:35.397348Z"}
+INFO:     connection closed
+INFO:     ('127.0.0.1', 51695) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+Client connected: gSYJAspPMpwngJUqAAAI (unauthenticated - participant access)
+{"method": "GET", "path": "/api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 8.63, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:58:51.856720Z"}
+{"method": "GET", "path": "/api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 8.9, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T11:59:02.623319Z"}
+INFO:     connection closed
+INFO:     ('127.0.0.1', 59317) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
