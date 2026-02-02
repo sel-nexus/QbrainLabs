@@ -17,6 +17,7 @@ import { AdminWorkshops } from './pages/AdminWorkshops';
 import { AdminUsers } from './pages/AdminUsers';
 import { AdminKnowledgeBase } from './pages/AdminKnowledgeBase';
 import { AdminMyWorkshops } from './pages/AdminMyWorkshops';
+import { AdminLLMUsage } from './pages/AdminLLMUsage';
 import { FacilitatorManagement } from './pages/FacilitatorManagement';
 import { KnowledgeBase } from './pages/KnowledgeBase';
 import { AdminLayout } from './components/AdminLayout';
@@ -47,13 +48,13 @@ const PrivateRoute = ({ children, requireAdmin = false }: { children: ReactEleme
 };
 
 // Layout wrapper for authenticated routes with header
-const AuthenticatedRoute = ({ 
-  children, 
+const AuthenticatedRoute = ({
+  children,
   requireAdmin = false,
   showBackButton = true,
   title
-}: { 
-  children: ReactElement, 
+}: {
+  children: ReactElement,
   requireAdmin?: boolean,
   showBackButton?: boolean,
   title?: string
@@ -73,7 +74,7 @@ const AdminPanelLayout = ({ children, title }: { children: ReactElement, title: 
 // Global dialogs that need auth context
 const GlobalDialogs = () => {
   const { showChangePasswordDialog, closeChangePasswordDialog } = useAuth();
-  
+
   return (
     <>
       {showChangePasswordDialog && (
@@ -119,6 +120,7 @@ function App() {
           <Route path="/admin/users" element={<PrivateRoute requireAdmin><AdminUsers /></PrivateRoute>} />
           <Route path="/admin/facilitators" element={<PrivateRoute requireAdmin><FacilitatorManagement /></PrivateRoute>} />
           <Route path="/admin/knowledge-base" element={<PrivateRoute requireAdmin><AdminKnowledgeBase /></PrivateRoute>} />
+          <Route path="/admin/llm-usage" element={<PrivateRoute requireAdmin><AdminLLMUsage /></PrivateRoute>} />
           <Route path="/admin/my-workshops" element={<PrivateRoute requireAdmin><AdminMyWorkshops /></PrivateRoute>} />
 
           {/* Catch-all */}
@@ -127,7 +129,7 @@ function App() {
 
         {/* Global Feedback Widget */}
         <FeedbackWidget />
-        
+
         {/* Global Dialogs */}
         <GlobalDialogs />
       </div>

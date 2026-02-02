@@ -3,6 +3,7 @@ import json
 import random
 from typing import List, Dict, Any
 from app.core.config import settings
+from app.utils.llm_tracking import track_llm_usage, get_usage_from_response
 
 class RAGService:
     def __init__(self):
@@ -163,36 +164,69 @@ class RAGService:
             }
         
         # Real Logic
-        from langchain.prompts import ChatPromptTemplate
-        
-        # 1. Retrieve context
-        docs = self.vector_store.similarity_search(text, k=2)
-        context_str = "\n".join([d.page_content for d in docs])
-        
-        # 2. Call LLM
-        prompt = ChatPromptTemplate.from_template("""
-        You are an expert AI Solution Architect.
-        User Input: "{text}"
-        
-        Similar Success Stories:
-        {context}
-        
-        Task: 
-        1. Create a professional Title.
-        2. Refine the Description to be technical and value-focused.
-        3. Propose a technical Solution using standard modern AI stack.
-        4. Suggest a specific KPI suitable for this use case.
-        
-        Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "kpi": "..." }}
-        """)
-        
-        chain = prompt | self.llm
-        response = await chain.ainvoke({"text": text, "context": context_str})
+        from langchain_core.messages import HumanMessage
         
         try:
-            return json.loads(response.content)
-        except:
-            return {"error": "Failed to parse LLM response", "raw": response.content}
+            # 1. Retrieve context
+            if self.vector_store:
+                docs = self.vector_store.similarity_search(text, k=2)
+                context_str = "\n".join([d.page_content for d in docs])
+            else:
+                context_str = "No reference context available."
+            
+            # 2. Build prompt message directly
+            prompt_text = f"""You are an expert AI Solution Architect.
+User Input: "{text}"
+
+Similar Success Stories:
+{context_str}
+
+Task: 
+1. Create a professional Title.
+2. Refine the Description to be technical and value-focused.
+3. Propose a technical Solution using standard modern AI stack.
+4. Suggest a specific KPI suitable for this use case.
+
+Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "kpi": "..." }}"""
+            
+            # 3. Call LLM directly (not via chain)
+            message = HumanMessage(content=prompt_text)
+            response = await self.llm.ainvoke([message])
+            
+            # Track Usage
+            usage = get_usage_from_response(response)
+            await track_llm_usage(
+                feature="enhance",
+                model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
+                prompt_tokens=usage["prompt"],
+                completion_tokens=usage["completion"]
+            )
+            
+            # 4. Parse response
+            response_content = response.content if hasattr(response, 'content') else str(response)
+            
+            # Try to extract JSON from the response
+            import re
+            json_match = re.search(r'\{[^{}]*\}', response_content, re.DOTALL)
+            if json_match:
+                return json.loads(json_match.group())
+            else:
+                return json.loads(response_content)
+        except json.JSONDecodeError as e:
+            print(f"[RAG] JSON parse error: {e}")
+            return {
+                "title": "AI-Enhanced Use Case",
+                "description": text,
+                "solution": "Recommend using standard AI/ML stack for implementation.",
+                "kpi": "Improve efficiency by 30%",
+                "is_mock": False,
+                "parse_error": str(e)
+            }
+        except Exception as e:
+            print(f"[RAG] Error in enhance_use_case: {e}")
+            import traceback
+            traceback.print_exc()
+            raise
 
     async def check_feasibility(self, solution_text: str) -> Dict[str, Any]:
         if self.mock_mode:
@@ -219,6 +253,16 @@ class RAGService:
         
         chain = prompt | self.llm
         response = await chain.ainvoke({"solution": solution_text})
+        
+        # Track Usage
+        usage = get_usage_from_response(response)
+        await track_llm_usage(
+            feature="feasibility",
+            model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
+            prompt_tokens=usage["prompt"],
+            completion_tokens=usage["completion"]
+        )
+        
         try:
             return json.loads(response.content)
         except:
@@ -301,6 +345,16 @@ class RAGService:
             "description": use_case_desc,
             "industry": industry or "General"
         })
+        
+        # Track Usage
+        usage = get_usage_from_response(response)
+        await track_llm_usage(
+            feature="roi",
+            model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
+            prompt_tokens=usage["prompt"],
+            completion_tokens=usage["completion"]
+        )
+        
         try:
             res = json.loads(response.content)
             res["is_mock"] = False
@@ -343,6 +397,16 @@ class RAGService:
             "payback": roi_results.get("payback_months"),
             "npv": roi_results.get("npv")
         })
+        
+        # Track Usage
+        usage = get_usage_from_response(response)
+        await track_llm_usage(
+            feature="business_case",
+            model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
+            prompt_tokens=usage["prompt"],
+            completion_tokens=usage["completion"]
+        )
+        
         try:
             res = json.loads(response.content)
             res["is_mock"] = False
@@ -424,51 +488,52 @@ class RAGService:
             }
         
         # Real LLM Logic
-        from langchain.prompts import ChatPromptTemplate
-        
-        prompt = ChatPromptTemplate.from_template("""
-        You are an expert Business Value Analyst specializing in AI/ML projects.
-        
-        Use Case Title: "{title}"
-        Description: "{description}"
-        Category: "{category}"
-        Current KPI: "{current_kpi}"
-        
-        Task: Enhance the business value proposition with:
-        1. An enhanced, specific KPI statement (measurable, time-bound)
-        2. 3-5 specific metrics this use case could improve
-        3. 3-4 ROI indicators (expected ROI %, payback period, NPV range)
-        4. 2-3 industry benchmarks with sources
-        5. A compelling business impact statement (2-3 sentences)
-        6. A confidence score (0.0-1.0) for these estimates
-        
-        Return ONLY valid JSON in this exact format:
-        {{
-            "enhanced_kpi": "Specific, measurable KPI statement",
-            "specific_metrics": ["metric 1", "metric 2", "metric 3"],
-            "roi_indicators": ["ROI indicator 1", "ROI indicator 2"],
-            "benchmarks": [
-                {{"source": "Source name", "metric": "Metric name", "value": "Value"}},
-                {{"source": "Source name", "metric": "Metric name", "value": "Value"}}
-            ],
-            "business_impact": "Compelling 2-3 sentence impact statement",
-            "confidence_score": 0.8
-        }}
-        """)
-        
-        chain = prompt | self.llm
-        response = await chain.ainvoke({
-            "title": title,
-            "description": description,
-            "category": category,
-            "current_kpi": current_kpi or "Not specified"
-        })
+        from langchain_core.messages import HumanMessage
         
         try:
-            result = json.loads(response.content)
+            prompt_text = f"""You are an expert Business Value Analyst specializing in AI/ML projects.
+
+Use Case Title: "{title}"
+Description: "{description}"
+Category: "{category}"
+Current KPI: "{current_kpi or 'Not specified'}"
+
+Task: Enhance the business value proposition with:
+1. An enhanced, specific KPI statement (measurable, time-bound)
+2. 3-5 specific metrics this use case could improve
+3. 3-4 ROI indicators (expected ROI %, payback period, NPV range)
+4. 2-3 industry benchmarks with sources
+5. A compelling business impact statement (2-3 sentences)
+6. A confidence score (0.0-1.0) for these estimates
+
+Return ONLY valid JSON in this exact format:
+{{
+    "enhanced_kpi": "Specific, measurable KPI statement",
+    "specific_metrics": ["metric 1", "metric 2", "metric 3"],
+    "roi_indicators": ["ROI indicator 1", "ROI indicator 2"],
+    "benchmarks": [
+        {{"source": "Source name", "metric": "Metric name", "value": "Value"}},
+        {{"source": "Source name", "metric": "Metric name", "value": "Value"}}
+    ],
+    "business_impact": "Compelling 2-3 sentence impact statement",
+    "confidence_score": 0.8
+}}"""
+            
+            message = HumanMessage(content=prompt_text)
+            response = await self.llm.ainvoke([message])
+            
+            response_content = response.content if hasattr(response, 'content') else str(response)
+            
+            # Try to extract JSON from the response
+            import re
+            json_match = re.search(r'\{[\s\S]*\}', response_content, re.DOTALL)
+            if json_match:
+                result = json.loads(json_match.group())
+            else:
+                result = json.loads(response_content)
             result["is_mock"] = False
             return result
-        except Exception as e:
+        except json.JSONDecodeError as e:
             print(f"Failed to parse LLM response: {e}")
             # Fallback to mock on parse error
             return {
@@ -479,8 +544,13 @@ class RAGService:
                 "business_impact": "This solution will deliver measurable business value through automation and improved decision-making.",
                 "confidence_score": 0.7,
                 "is_mock": False,
-                "error": str(e)
+                "parse_error": str(e)
             }
+        except Exception as e:
+            print(f"Error in enhance_business_value: {e}")
+            import traceback
+            traceback.print_exc()
+            raise
 
     async def analyze_technical_feasibility(self, title: str, description: str, proposed_solution: str) -> Dict[str, Any]:
         """
@@ -512,47 +582,49 @@ class RAGService:
             }
 
         # Real LLM Logic
-        from langchain.prompts import ChatPromptTemplate
-        
-        prompt = ChatPromptTemplate.from_template("""
-        You are an expert Chief Software Architect.
-        
-        Analyze this AI Use Case:
-        Title: "{title}"
-        Description: "{description}"
-        Proposed Solution: "{proposed_solution}"
-        
-        Provide a technical deep dive:
-        1. High-level Architecture Overview (1 paragraph)
-        2. Recommended Tech Stack (Specific tools for Frontend, Backend, DB, AI)
-        3. 5 High-level Implementation Steps
-        4. 3-4 Technical Risks to mitigate
-        5. Complexity Score (1-10)
-        
-        Return valid JSON:
-        {{
-            "architecture_overview": "...",
-            "recommended_stack": [
-                {{ "category": "...", "name": "...", "justification": "..." }}
-            ],
-            "implementation_steps": ["1. ...", "2. ..."],
-            "technical_risks": ["..."],
-            "complexity_score": 5
-        }}
-        """)
-        
-        chain = prompt | self.llm
-        response = await chain.ainvoke({
-            "title": title,
-            "description": description,
-            "proposed_solution": proposed_solution
-        })
+        from langchain_core.messages import HumanMessage
         
         try:
-            result = json.loads(response.content)
+            prompt_text = f"""You are an expert Chief Software Architect.
+
+Analyze this AI Use Case:
+Title: "{title}"
+Description: "{description}"
+Proposed Solution: "{proposed_solution}"
+
+Provide a technical deep dive:
+1. High-level Architecture Overview (1 paragraph)
+2. Recommended Tech Stack (Specific tools for Frontend, Backend, DB, AI)
+3. 5 High-level Implementation Steps
+4. 3-4 Technical Risks to mitigate
+5. Complexity Score (1-10)
+
+Return valid JSON:
+{{
+    "architecture_overview": "...",
+    "recommended_stack": [
+        {{ "category": "...", "name": "...", "justification": "..." }}
+    ],
+    "implementation_steps": ["1. ...", "2. ..."],
+    "technical_risks": ["..."],
+    "complexity_score": 5
+}}"""
+            
+            message = HumanMessage(content=prompt_text)
+            response = await self.llm.ainvoke([message])
+            
+            response_content = response.content if hasattr(response, 'content') else str(response)
+            
+            # Try to extract JSON from the response
+            import re
+            json_match = re.search(r'\{[\s\S]*\}', response_content, re.DOTALL)
+            if json_match:
+                result = json.loads(json_match.group())
+            else:
+                result = json.loads(response_content)
             result["is_mock"] = False
             return result
-        except Exception as e:
+        except json.JSONDecodeError as e:
             print(f"Failed to parse LLM response: {e}")
             return {
                 "architecture_overview": "Standard Web App with AI Integration (Fallback)",
@@ -561,8 +633,13 @@ class RAGService:
                 "technical_risks": ["Integration complexity"],
                 "complexity_score": 5,
                 "is_mock": False,
-                "error": str(e)
+                "parse_error": str(e)
             }
+        except Exception as e:
+            print(f"Error in analyze_technical_feasibility: {e}")
+            import traceback
+            traceback.print_exc()
+            raise
 
     async def analyze_document_context(self, text: str) -> List[Dict[str, Any]]:
         """
@@ -580,37 +657,43 @@ class RAGService:
                 }
             ]
 
-        from langchain.prompts import ChatPromptTemplate
-        
-        prompt = ChatPromptTemplate.from_template("""
-        You are an expert Business Analyst. 
-        Analyze the following document text and identify key business or technology challenges.
-        
-        Document Text:
-        "{text}"
-        
-        Task:
-        Extract one or more 'Challenge Cards' from this text.
-        For each challenge, provide:
-        1. A concise Title (max 100 chars).
-        2. A detailed Description (max 2000 chars, describing the problem).
-        3. A list of Success Criteria (measurable outcomes, max 10 items).
-
-        Return valid JSON as a list of objects:
-        [
-            {{
-                "title": "...",
-                "challenge_description": "...",
-                "success_criteria": ["...", "..."]
-            }}
-        ]
-        """)
-        
-        chain = prompt | self.llm
-        response = await chain.ainvoke({"text": text})
+        from langchain_core.messages import HumanMessage
         
         try:
-            result = json.loads(response.content)
+            prompt_text = f"""You are an expert Business Analyst. 
+Analyze the following document text and identify key business or technology challenges.
+
+Document Text:
+"{text}"
+
+Task:
+Extract one or more 'Challenge Cards' from this text.
+For each challenge, provide:
+1. A concise Title (max 100 chars).
+2. A detailed Description (max 2000 chars, describing the problem).
+3. A list of Success Criteria (measurable outcomes, max 10 items).
+
+Return valid JSON as a list of objects:
+[
+    {{
+        "title": "...",
+        "challenge_description": "...",
+        "success_criteria": ["...", "..."]
+    }}
+]"""
+            
+            message = HumanMessage(content=prompt_text)
+            response = await self.llm.ainvoke([message])
+            
+            response_content = response.content if hasattr(response, 'content') else str(response)
+            
+            # Try to extract JSON array from the response
+            import re
+            json_match = re.search(r'\[[\s\S]*\]', response_content, re.DOTALL)
+            if json_match:
+                result = json.loads(json_match.group())
+            else:
+                result = json.loads(response_content)
             # Ensure it's a list
             if isinstance(result, dict):
                 result = [result]
@@ -629,7 +712,7 @@ class RAGService:
 
         try:
             import base64
-            from langchain.schema.messages import HumanMessage
+            from langchain_core.messages import HumanMessage
             
             # Encode image
             base64_image = base64.b64encode(image_bytes).decode('utf-8')

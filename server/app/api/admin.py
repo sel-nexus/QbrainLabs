@@ -25,6 +25,7 @@ from app.models.marketplace import MarketplaceTemplate, TemplateReview, Template
 from app.models.feedback import Feedback, OnboardingProgress, HelpArticle, UserTourProgress
 from app.models.challenge import ChallengeCard
 from app.models.analytics import CustomDashboard, GeneratedReport
+from app.models.llm_usage import LLMUsageLog
 from app.schemas.admin import (
     WorkshopListItem,
     SystemStats,
@@ -32,7 +33,11 @@ from app.schemas.admin import (
     UserCreate,
     WorkshopStatusUpdate,
     UserUpdateByAdmin,
-    UserDeletionImpact
+    UserDeletionImpact,
+    LLMUsageSummary,
+    LLMUsageByFeature,
+    LLMUsageByWorkshop,
+    LLMUsageByUser
 )
 from app.api.auth import hash_password
 from sqlalchemy import update, delete
@@ -554,3 +559,174 @@ async def deactivate_user(
         print(f"Error deleting user: {str(e)}")
         print(traceback.format_exc())
         raise HTTPException(status_code=500, detail=f"Failed to delete user: {str(e)}")
+
+
+# ============================================================================
+# LLM Usage Tracking Endpoints
+# ============================================================================
+
+@router.get("/llm-usage/summary", response_model=LLMUsageSummary)
+async def get_llm_usage_summary(
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+    start_date: datetime = None,
+    end_date: datetime = None
+):
+    """
+    Get overall LLM usage statistics.
+    Optional date range filtering with start_date and end_date query params.
+    """
+    query = select(
+        func.count(LLMUsageLog.id).label('total_calls'),
+        func.coalesce(func.sum(LLMUsageLog.prompt_tokens), 0).label('total_prompt_tokens'),
+        func.coalesce(func.sum(LLMUsageLog.completion_tokens), 0).label('total_completion_tokens'),
+        func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
+        func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents'),
+        func.count(func.distinct(LLMUsageLog.user_id)).label('unique_users'),
+        func.count(func.distinct(LLMUsageLog.workshop_id)).label('unique_workshops')
+    )
+    
+    if start_date:
+        query = query.where(LLMUsageLog.created_at >= start_date)
+    if end_date:
+        query = query.where(LLMUsageLog.created_at <= end_date)
+    
+    result = await db.execute(query)
+    row = result.first()
+    
+    return LLMUsageSummary(
+        total_calls=row.total_calls or 0,
+        total_prompt_tokens=row.total_prompt_tokens or 0,
+        total_completion_tokens=row.total_completion_tokens or 0,
+        total_tokens=row.total_tokens or 0,
+        estimated_cost_cents=row.estimated_cost_cents or 0,
+        unique_users=row.unique_users or 0,
+        unique_workshops=row.unique_workshops or 0
+    )
+
+
+@router.get("/llm-usage/by-feature", response_model=List[LLMUsageByFeature])
+async def get_llm_usage_by_feature(
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+    start_date: datetime = None,
+    end_date: datetime = None
+):
+    """
+    Get LLM usage grouped by feature.
+    """
+    query = select(
+        LLMUsageLog.feature,
+        func.count(LLMUsageLog.id).label('call_count'),
+        func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
+        func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents')
+    ).group_by(LLMUsageLog.feature).order_by(func.sum(LLMUsageLog.total_tokens).desc())
+    
+    if start_date:
+        query = query.where(LLMUsageLog.created_at >= start_date)
+    if end_date:
+        query = query.where(LLMUsageLog.created_at <= end_date)
+    
+    result = await db.execute(query)
+    rows = result.all()
+    
+    return [
+        LLMUsageByFeature(
+            feature=row.feature,
+            call_count=row.call_count,
+            total_tokens=row.total_tokens or 0,
+            estimated_cost_cents=row.estimated_cost_cents or 0
+        )
+        for row in rows
+    ]
+
+
+@router.get("/llm-usage/by-workshop", response_model=List[LLMUsageByWorkshop])
+async def get_llm_usage_by_workshop(
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+    start_date: datetime = None,
+    end_date: datetime = None,
+    limit: int = 20
+):
+    """
+    Get LLM usage grouped by workshop.
+    Returns top workshops by token usage.
+    """
+    query = select(
+        LLMUsageLog.workshop_id,
+        Workshop.title.label('workshop_title'),
+        func.count(LLMUsageLog.id).label('call_count'),
+        func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
+        func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents')
+    ).outerjoin(Workshop, LLMUsageLog.workshop_id == Workshop.id
+    ).where(LLMUsageLog.workshop_id.isnot(None)
+    ).group_by(LLMUsageLog.workshop_id, Workshop.title
+    ).order_by(func.sum(LLMUsageLog.total_tokens).desc()
+    ).limit(limit)
+    
+    if start_date:
+        query = query.where(LLMUsageLog.created_at >= start_date)
+    if end_date:
+        query = query.where(LLMUsageLog.created_at <= end_date)
+    
+    result = await db.execute(query)
+    rows = result.all()
+    
+    return [
+        LLMUsageByWorkshop(
+            workshop_id=str(row.workshop_id) if row.workshop_id else "",
+            workshop_title=row.workshop_title,
+            call_count=row.call_count,
+            total_tokens=row.total_tokens or 0,
+            estimated_cost_cents=row.estimated_cost_cents or 0
+        )
+        for row in rows
+    ]
+
+
+@router.get("/llm-usage/by-user", response_model=List[LLMUsageByUser])
+async def get_llm_usage_by_user(
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+    start_date: datetime = None,
+    end_date: datetime = None,
+    limit: int = 20
+):
+    """
+    Get LLM usage grouped by user.
+    Returns top users by token usage.
+    """
+    query = select(
+        LLMUsageLog.user_id,
+        User.email.label('user_email'),
+        User.full_name.label('user_name'),
+        func.count(LLMUsageLog.id).label('call_count'),
+        func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
+        func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents')
+    ).outerjoin(User, LLMUsageLog.user_id == User.id
+    ).where(LLMUsageLog.user_id.isnot(None)
+    ).group_by(LLMUsageLog.user_id, User.email, User.full_name
+    ).order_by(func.sum(LLMUsageLog.total_tokens).desc()
+    ).limit(limit)
+    
+    if start_date:
+        query = query.where(LLMUsageLog.created_at >= start_date)
+    if end_date:
+        query = query.where(LLMUsageLog.created_at <= end_date)
+    
+    result = await db.execute(query)
+    rows = result.all()
+    
+    return [
+        LLMUsageByUser(
+            user_id=str(row.user_id) if row.user_id else "",
+            user_email=row.user_email,
+            user_name=row.user_name,
+            call_count=row.call_count,
+            total_tokens=row.total_tokens or 0,
+            estimated_cost_cents=row.estimated_cost_cents or 0
+        )
+        for row in rows
+    ]
+

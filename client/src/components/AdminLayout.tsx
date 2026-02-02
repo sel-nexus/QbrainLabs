@@ -4,7 +4,8 @@ import {
     Users,
     FolderKanban,
     Settings,
-    Brain
+    Brain,
+    Activity
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { Header } from './Header';
@@ -31,6 +32,7 @@ export function AdminLayout({ children, title, actions }: AdminLayoutProps) {
         { path: '/admin/users', label: 'Users', icon: Users },
         { path: '/admin/facilitators', label: 'Facilitators', icon: Users },
         { path: '/admin/knowledge-base', label: 'AI Knowledge Base', icon: Brain },
+        { path: '/admin/llm-usage', label: 'LLM Usage', icon: Activity },
         { path: '/admin/settings', label: 'System Settings', icon: Settings },
         { path: '/admin/my-workshops', label: 'My Workshops', icon: FolderKanban },
     ];

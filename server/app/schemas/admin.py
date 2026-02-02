@@ -78,3 +78,41 @@ class UserDeletionImpact(BaseModel):
     has_recent_activity: bool = False  # E.g., in last 30 days
     warning_message: Optional[str] = None
 
+
+# LLM Usage Schemas
+class LLMUsageSummary(BaseModel):
+    """Summary statistics for LLM usage"""
+    total_calls: int
+    total_prompt_tokens: int
+    total_completion_tokens: int
+    total_tokens: int
+    estimated_cost_cents: int
+    unique_users: int
+    unique_workshops: int
+
+
+class LLMUsageByFeature(BaseModel):
+    """LLM usage grouped by feature"""
+    feature: str
+    call_count: int
+    total_tokens: int
+    estimated_cost_cents: int
+
+
+class LLMUsageByWorkshop(BaseModel):
+    """LLM usage grouped by workshop"""
+    workshop_id: str
+    workshop_title: Optional[str] = None
+    call_count: int
+    total_tokens: int
+    estimated_cost_cents: int
+
+
+class LLMUsageByUser(BaseModel):
+    """LLM usage grouped by user"""
+    user_id: str
+    user_email: Optional[str] = None
+    user_name: Optional[str] = None
+    call_count: int
+    total_tokens: int
+    estimated_cost_cents: int

@@ -23,6 +23,7 @@ from app.schemas.copilot import (
     SuggestionsRequest
 )
 from app.core.config import settings
+from app.utils.llm_tracking import track_llm_usage, get_usage_from_response
 import statistics
 
 class CopilotService:

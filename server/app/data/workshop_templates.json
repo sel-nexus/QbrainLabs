@@ -1,0 +1,401 @@
+{
+    "templates": [
+        {
+            "name": "AI Strategy Workshop - Standard",
+            "category": "AI_STRATEGY",
+            "industry": null,
+            "description": "A comprehensive workshop template for developing AI strategy. Includes strategic alignment, feasibility analysis, and business impact assessment.",
+            "config": {
+                "phases": [
+                    "ideation",
+                    "evaluation",
+                    "prioritization"
+                ],
+                "duration_hours": 4,
+                "max_participants": 30
+            },
+            "criteria": [
+                {
+                    "name": "Business Impact",
+                    "weight": 20,
+                    "description": "ROI, cost savings, revenue growth potential"
+                },
+                {
+                    "name": "Strategic Alignment",
+                    "weight": 20,
+                    "description": "Alignment with organizational goals"
+                },
+                {
+                    "name": "Feasibility",
+                    "weight": 20,
+                    "description": "Technical and organizational feasibility"
+                },
+                {
+                    "name": "Data Readiness",
+                    "weight": 20,
+                    "description": "Data availability and quality"
+                },
+                {
+                    "name": "Risk & Compliance",
+                    "weight": 20,
+                    "description": "Regulatory and security considerations"
+                }
+            ],
+            "agenda": "1. Introduction (15 min)\n2. Use Case Ideation (60 min)\n3. Break (15 min)\n4. Evaluation & Scoring (90 min)\n5. Prioritization & Roadmap (60 min)",
+            "facilitator_guide": "Guide participants through structured ideation. Use AI-powered refinement to enhance use case descriptions.",
+            "is_public": true
+        },
+        {
+            "name": "Healthcare AI Transformation",
+            "category": "AI_STRATEGY",
+            "industry": "Healthcare",
+            "description": "Healthcare-specific AI use case discovery workshop with HIPAA compliance considerations and clinical value focus.",
+            "config": {
+                "phases": [
+                    "discovery",
+                    "evaluation",
+                    "compliance_review"
+                ],
+                "duration_hours": 6,
+                "max_participants": 25
+            },
+            "criteria": [
+                {
+                    "name": "Clinical Impact",
+                    "weight": 25,
+                    "description": "Patient outcomes and care quality improvement"
+                },
+                {
+                    "name": "Operational Efficiency",
+                    "weight": 20,
+                    "description": "Workflow automation and resource optimization"
+                },
+                {
+                    "name": "Compliance & Privacy",
+                    "weight": 20,
+                    "description": "HIPAA compliance and patient data protection"
+                },
+                {
+                    "name": "Integration Feasibility",
+                    "weight": 20,
+                    "description": "EHR and clinical system integration"
+                },
+                {
+                    "name": "ROI Potential",
+                    "weight": 15,
+                    "description": "Cost reduction and revenue opportunities"
+                }
+            ],
+            "agenda": "1. Industry Context (20 min)\n2. Clinical Workflow Analysis (45 min)\n3. AI Opportunity Mapping (60 min)\n4. Lunch Break (45 min)\n5. Use Case Development (90 min)\n6. Compliance Review (45 min)\n7. Prioritization (45 min)",
+            "facilitator_guide": "Focus on clinical workflows and patient safety. Ensure compliance considerations are addressed early.",
+            "is_public": true
+        },
+        {
+            "name": "Financial Services AI Innovation",
+            "category": "AI_STRATEGY",
+            "industry": "Finance",
+            "description": "AI workshop template designed for financial institutions with emphasis on risk management, regulatory compliance, and customer experience.",
+            "config": {
+                "phases": [
+                    "opportunity_assessment",
+                    "risk_analysis",
+                    "prioritization"
+                ],
+                "duration_hours": 5,
+                "max_participants": 20
+            },
+            "criteria": [
+                {
+                    "name": "Revenue Impact",
+                    "weight": 20,
+                    "description": "Revenue generation and cost reduction"
+                },
+                {
+                    "name": "Customer Experience",
+                    "weight": 20,
+                    "description": "Client satisfaction and engagement"
+                },
+                {
+                    "name": "Risk Mitigation",
+                    "weight": 20,
+                    "description": "Fraud prevention and risk management"
+                },
+                {
+                    "name": "Regulatory Compliance",
+                    "weight": 20,
+                    "description": "SEC, FINRA, and other regulatory alignment"
+                },
+                {
+                    "name": "Technical Feasibility",
+                    "weight": 20,
+                    "description": "Implementation complexity and integration"
+                }
+            ],
+            "agenda": "1. Market Landscape (30 min)\n2. Use Case Discovery (60 min)\n3. Risk & Compliance Review (45 min)\n4. Break (15 min)\n5. Detailed Evaluation (75 min)\n6. Prioritization Matrix (45 min)",
+            "is_public": true
+        },
+        {
+            "name": "Retail & E-commerce AI Sprint",
+            "category": "INNOVATION_SPRINT",
+            "industry": "Retail",
+            "description": "Fast-paced innovation sprint for retail and e-commerce AI opportunities focusing on customer personalization and supply chain optimization.",
+            "config": {
+                "phases": [
+                    "rapid_ideation",
+                    "quick_evaluation",
+                    "mvp_planning"
+                ],
+                "duration_hours": 3,
+                "max_participants": 15
+            },
+            "criteria": [
+                {
+                    "name": "Customer Impact",
+                    "weight": 25,
+                    "description": "Personalization and customer experience"
+                },
+                {
+                    "name": "Revenue Potential",
+                    "weight": 25,
+                    "description": "Sales increase and conversion improvement"
+                },
+                {
+                    "name": "Speed to Value",
+                    "weight": 25,
+                    "description": "Time to implementation and quick wins"
+                },
+                {
+                    "name": "Scalability",
+                    "weight": 25,
+                    "description": "Ability to scale across channels"
+                }
+            ],
+            "agenda": "1. Quick Context (10 min)\n2. Rapid Ideation (45 min)\n3. Lightning Evaluation (60 min)\n4. Sprint Planning (45 min)",
+            "is_public": true
+        },
+        {
+            "name": "Executive AI Briefing",
+            "category": "EXECUTIVE_BRIEFING",
+            "industry": null,
+            "description": "Condensed strategic workshop for executive leadership focused on high-impact AI initiatives and investment decisions.",
+            "config": {
+                "phases": [
+                    "strategic_overview",
+                    "use_case_review",
+                    "decision_making"
+                ],
+                "duration_hours": 2,
+                "max_participants": 10
+            },
+            "criteria": [
+                {
+                    "name": "Strategic Value",
+                    "weight": 30,
+                    "description": "Alignment with corporate strategy"
+                },
+                {
+                    "name": "Financial Impact",
+                    "weight": 30,
+                    "description": "ROI and investment requirements"
+                },
+                {
+                    "name": "Competitive Advantage",
+                    "weight": 20,
+                    "description": "Market differentiation"
+                },
+                {
+                    "name": "Execution Risk",
+                    "weight": 20,
+                    "description": "Implementation and organizational risk"
+                }
+            ],
+            "agenda": "1. AI Landscape Overview (15 min)\n2. Top Use Cases Review (45 min)\n3. Investment Discussion (30 min)\n4. Decision & Next Steps (30 min)",
+            "is_public": true
+        },
+        {
+            "name": "Manufacturing AI Optimization",
+            "category": "TECHNICAL_DEEP_DIVE",
+            "industry": "Manufacturing",
+            "description": "Technical workshop for manufacturing AI applications including predictive maintenance, quality control, and supply chain optimization.",
+            "config": {
+                "phases": [
+                    "technical_discovery",
+                    "feasibility_analysis",
+                    "proof_of_concept"
+                ],
+                "duration_hours": 6,
+                "max_participants": 20
+            },
+            "criteria": [
+                {
+                    "name": "Operational Efficiency",
+                    "weight": 25,
+                    "description": "Production optimization and downtime reduction"
+                },
+                {
+                    "name": "Quality Improvement",
+                    "weight": 20,
+                    "description": "Defect reduction and quality control"
+                },
+                {
+                    "name": "Cost Savings",
+                    "weight": 20,
+                    "description": "Material and labor cost reduction"
+                },
+                {
+                    "name": "Technical Feasibility",
+                    "weight": 20,
+                    "description": "Sensor data and system integration"
+                },
+                {
+                    "name": "Safety Enhancement",
+                    "weight": 15,
+                    "description": "Workplace safety and compliance"
+                }
+            ],
+            "is_public": true
+        }
+    ],
+    "criteria_templates": [
+        {
+            "name": "Standard 2-Point Evaluation",
+            "category": "QUICK_EVALUATION",
+            "description": "Simple feasibility and business value assessment for quick decisions.",
+            "criteria": [
+                {
+                    "name": "Feasibility",
+                    "weight": 50,
+                    "description": "Technical and organizational feasibility"
+                },
+                {
+                    "name": "Business Value",
+                    "weight": 50,
+                    "description": "Expected business impact and ROI"
+                }
+            ]
+        },
+        {
+            "name": "Comprehensive 7-Point Framework",
+            "category": "STANDARD_7_POINT",
+            "description": "US10-based comprehensive evaluation framework for thorough AI use case assessment.",
+            "criteria": [
+                {
+                    "name": "Business Impact",
+                    "weight": 15,
+                    "description": "ROI, cost savings, revenue growth, customer satisfaction"
+                },
+                {
+                    "name": "Strategic Alignment",
+                    "weight": 15,
+                    "description": "Alignment with business goals, executive support"
+                },
+                {
+                    "name": "Scalability & Value",
+                    "weight": 14,
+                    "description": "Long-term impact, ability to scale"
+                },
+                {
+                    "name": "Ease of Implementation",
+                    "weight": 14,
+                    "description": "Technical feasibility, integration, resource needs"
+                },
+                {
+                    "name": "Data Readiness",
+                    "weight": 14,
+                    "description": "Data availability, quality, governance"
+                },
+                {
+                    "name": "Organizational Readiness",
+                    "weight": 14,
+                    "description": "Leadership buy-in, workforce adaptability"
+                },
+                {
+                    "name": "Risk & Compliance",
+                    "weight": 14,
+                    "description": "Regulatory, ethical, security considerations"
+                }
+            ]
+        },
+        {
+            "name": "Executive Summary View",
+            "category": "EXECUTIVE_VIEW",
+            "description": "High-level criteria for executive decision making.",
+            "criteria": [
+                {
+                    "name": "Strategic Value",
+                    "weight": 35,
+                    "description": "Alignment with corporate strategy and competitive advantage"
+                },
+                {
+                    "name": "Financial Impact",
+                    "weight": 35,
+                    "description": "ROI, investment requirements, and payback period"
+                },
+                {
+                    "name": "Execution Risk",
+                    "weight": 30,
+                    "description": "Implementation complexity and organizational readiness"
+                }
+            ]
+        },
+        {
+            "name": "Innovation Sprint Criteria",
+            "category": "INNOVATION_SPRINT",
+            "description": "Fast evaluation criteria optimized for innovation sprints and rapid prototyping.",
+            "criteria": [
+                {
+                    "name": "Customer Value",
+                    "weight": 30,
+                    "description": "Direct impact on customer experience"
+                },
+                {
+                    "name": "Speed to Value",
+                    "weight": 30,
+                    "description": "Time to implement and see results"
+                },
+                {
+                    "name": "Learn Potential",
+                    "weight": 20,
+                    "description": "Learning opportunities and data generation"
+                },
+                {
+                    "name": "Resource Efficiency",
+                    "weight": 20,
+                    "description": "Minimal resources for maximum impact"
+                }
+            ]
+        },
+        {
+            "name": "Technical Feasibility Focus",
+            "category": "TECHNICAL_DEEP_DIVE",
+            "description": "Technical-focused evaluation for engineering teams and architects.",
+            "criteria": [
+                {
+                    "name": "Technical Complexity",
+                    "weight": 20,
+                    "description": "Algorithm complexity and development effort"
+                },
+                {
+                    "name": "Data Requirements",
+                    "weight": 20,
+                    "description": "Data availability, quality, and pipeline needs"
+                },
+                {
+                    "name": "Integration Effort",
+                    "weight": 20,
+                    "description": "System integration and API requirements"
+                },
+                {
+                    "name": "Scalability",
+                    "weight": 20,
+                    "description": "Performance at scale and infrastructure needs"
+                },
+                {
+                    "name": "Maintenance",
+                    "weight": 20,
+                    "description": "Model monitoring, retraining, and MLOps"
+                }
+            ]
+        }
+    ]
+}

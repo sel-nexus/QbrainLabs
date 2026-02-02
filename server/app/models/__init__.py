@@ -159,3 +159,7 @@ from .roadmap import (
 from .challenge import (
     ChallengeCard
 )
+
+from .llm_usage import (
+    LLMUsageLog
+)

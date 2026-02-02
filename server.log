@@ -1,8 +1,8 @@
 INFO:     Will watch for changes in these directories: ['C:\\Users\\azvmuser1\\windsurf-wrkspace\\QbrainLabs\\server']
 INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [17716] using WatchFiles
-2026-02-01 23:10:09,971 - qbrainlabs - INFO - Exception handlers registered
-{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-02-01T23:10:09.983787Z"}
+INFO:     Started reloader process [24180] using WatchFiles
+2026-02-02 01:17:05,349 - qbrainlabs - INFO - Exception handlers registered
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-02-02T01:17:05.356742Z"}
 ============================================================
 RAGService Initialization Starting...
 ============================================================
@@ -31,42 +31,42 @@ AI Mock Mode Setting: False
    [OK] Azure OpenAI Embeddings initialized
 
    [VECTOR] Initializing Vector Store with 5 documents...
-2026-02-01 23:10:44,341 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
-2026-02-01 23:10:50,215 - chromadb.config - DEBUG - Starting component System
-2026-02-01 23:10:50,215 - chromadb.config - DEBUG - Starting component Posthog
-2026-02-01 23:10:50,215 - chromadb.config - DEBUG - Starting component OpenTelemetryClient
-2026-02-01 23:10:50,215 - chromadb.config - DEBUG - Starting component SimpleAssignmentPolicy
-2026-02-01 23:10:50,215 - chromadb.config - DEBUG - Starting component SqliteDB
-2026-02-01 23:10:50,310 - chromadb.config - DEBUG - Starting component LocalSegmentManager
-2026-02-01 23:10:50,310 - chromadb.config - DEBUG - Starting component SegmentAPI
-2026-02-01 23:10:50,321 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
-2026-02-01 23:10:50,386 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
-2026-02-01 23:10:50,413 - langchain_openai.embeddings.base - WARNING - Warning: model not found. Using cl100k_base encoding.
-2026-02-01 23:10:51,077 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x00000221A749AC00>, 'json_data': {'input': [[42172, 660, 41290, 29225, 25, 5560, 81677, 323, 445, 11237, 33289, 311, 4820, 11612, 65152, 323, 5510, 828, 1139, 37321, 13], [13084, 9365, 13149, 6465, 25, 432, 1929, 6108, 6369, 6465, 311, 4320, 6130, 20126, 1701, 5419, 6677, 2385, 13], [54644, 535, 39306, 25, 38527, 3059, 12271, 828, 311, 7168, 7241, 8060, 1603, 433, 8741, 13], [5648, 1413, 18729, 14882, 25, 20400, 35649, 2613, 8661, 3048, 369, 2204, 6130, 21282, 13], [2123, 21943, 22103, 25, 5560, 445, 11237, 82, 311, 5625, 20160, 7432, 33, 1971, 2082, 311, 8102, 13]], 'model': 'text-embedding-3-large', 'encoding_format': 'base64'}, 'headers': {'api-key': '<redacted>'}, 'idempotency_key': 'stainless-python-retry-c18c3623-c0ec-4ec9-862e-4102ee5ef912'}
-2026-02-01 23:10:51,098 - openai._base_client - DEBUG - Sending HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview
-2026-02-01 23:10:51,098 - httpcore.connection - DEBUG - connect_tcp.started host='ai-lshcerupod.cognitiveservices.azure.com' port=443 local_address=None timeout=None socket_options=None
-2026-02-01 23:10:51,339 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000221A757FFD0>
-2026-02-01 23:10:51,339 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x00000221A5803AD0> server_hostname='ai-lshcerupod.cognitiveservices.azure.com' timeout=None
-2026-02-01 23:10:51,810 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x00000221A758A490>
-2026-02-01 23:10:51,811 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
-2026-02-01 23:10:51,811 - httpcore.http11 - DEBUG - send_request_headers.complete
-2026-02-01 23:10:51,811 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
-2026-02-01 23:10:51,812 - httpcore.http11 - DEBUG - send_request_body.complete
-2026-02-01 23:10:51,812 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
-2026-02-01 23:10:52,114 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Length', b'82472'), (b'Content-Type', b'application/json'), (b'access-control-allow-origin', b'*'), (b'apim-request-id', b'82ea9600-5246-480f-ad26-a7f4e9198bf9'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains; preload'), (b'x-content-type-options', b'nosniff'), (b'x-ms-region', b'South India'), (b'x-ratelimit-remaining-tokens', b'249911'), (b'x-ratelimit-limit-tokens', b'250000'), (b'x-request-id', b'8ce51723-2026-43a1-b16d-2ba02fd84c39'), (b'azureml-model-session', b'd20251211235432-7d8ceb63c60b4c6a'), (b'x-envoy-upstream-service-time', b'61'), (b'x-ms-client-request-id', b'82ea9600-5246-480f-ad26-a7f4e9198bf9'), (b'x-ms-deployment-name', b'text-embedding-3-large'), (b'Date', b'Sun, 01 Feb 2026 23:10:51 GMT')])
-2026-02-01 23:10:52,116 - httpx - INFO - HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
-2026-02-01 23:10:52,116 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
-2026-02-01 23:10:52,574 - httpcore.http11 - DEBUG - receive_response_body.complete
-2026-02-01 23:10:52,574 - httpcore.http11 - DEBUG - response_closed.started
-2026-02-01 23:10:52,575 - httpcore.http11 - DEBUG - response_closed.complete
-2026-02-01 23:10:52,575 - openai._base_client - DEBUG - HTTP Response: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "200 OK" Headers({'content-length': '82472', 'content-type': 'application/json', 'access-control-allow-origin': '*', 'apim-request-id': '82ea9600-5246-480f-ad26-a7f4e9198bf9', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'x-content-type-options': 'nosniff', 'x-ms-region': 'South India', 'x-ratelimit-remaining-tokens': '249911', 'x-ratelimit-limit-tokens': '250000', 'x-request-id': '8ce51723-2026-43a1-b16d-2ba02fd84c39', 'azureml-model-session': 'd20251211235432-7d8ceb63c60b4c6a', 'x-envoy-upstream-service-time': '61', 'x-ms-client-request-id': '82ea9600-5246-480f-ad26-a7f4e9198bf9', 'x-ms-deployment-name': 'text-embedding-3-large', 'date': 'Sun, 01 Feb 2026 23:10:51 GMT'})
-2026-02-01 23:10:52,576 - openai._base_client - DEBUG - request_id: 8ce51723-2026-43a1-b16d-2ba02fd84c39
-2026-02-01 23:10:52,598 - chromadb.config - DEBUG - Starting component LocalHnswSegment
+2026-02-02 01:17:13,180 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2026-02-02 01:17:14,179 - chromadb.config - DEBUG - Starting component System
+2026-02-02 01:17:14,180 - chromadb.config - DEBUG - Starting component Posthog
+2026-02-02 01:17:14,180 - chromadb.config - DEBUG - Starting component OpenTelemetryClient
+2026-02-02 01:17:14,180 - chromadb.config - DEBUG - Starting component SimpleAssignmentPolicy
+2026-02-02 01:17:14,180 - chromadb.config - DEBUG - Starting component SqliteDB
+2026-02-02 01:17:14,202 - chromadb.config - DEBUG - Starting component LocalSegmentManager
+2026-02-02 01:17:14,202 - chromadb.config - DEBUG - Starting component SegmentAPI
+2026-02-02 01:17:14,203 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-02 01:17:14,220 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+2026-02-02 01:17:14,222 - langchain_openai.embeddings.base - WARNING - Warning: model not found. Using cl100k_base encoding.
+2026-02-02 01:17:15,369 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x000001F3DF22CF40>, 'json_data': {'input': [[42172, 660, 41290, 29225, 25, 5560, 81677, 323, 445, 11237, 33289, 311, 4820, 11612, 65152, 323, 5510, 828, 1139, 37321, 13], [13084, 9365, 13149, 6465, 25, 432, 1929, 6108, 6369, 6465, 311, 4320, 6130, 20126, 1701, 5419, 6677, 2385, 13], [54644, 535, 39306, 25, 38527, 3059, 12271, 828, 311, 7168, 7241, 8060, 1603, 433, 8741, 13], [5648, 1413, 18729, 14882, 25, 20400, 35649, 2613, 8661, 3048, 369, 2204, 6130, 21282, 13], [2123, 21943, 22103, 25, 5560, 445, 11237, 82, 311, 5625, 20160, 7432, 33, 1971, 2082, 311, 8102, 13]], 'model': 'text-embedding-3-large', 'encoding_format': 'base64'}, 'headers': {'api-key': '<redacted>'}, 'idempotency_key': 'stainless-python-retry-5a8ea5af-0060-47f7-b43a-1adb8f8f2a08'}
+2026-02-02 01:17:15,395 - openai._base_client - DEBUG - Sending HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview
+2026-02-02 01:17:15,396 - httpcore.connection - DEBUG - connect_tcp.started host='ai-lshcerupod.cognitiveservices.azure.com' port=443 local_address=None timeout=None socket_options=None
+2026-02-02 01:17:15,650 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001F3DD12F690>
+2026-02-02 01:17:15,650 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001F3DD4527B0> server_hostname='ai-lshcerupod.cognitiveservices.azure.com' timeout=None
+2026-02-02 01:17:16,144 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001F3DED6FFD0>
+2026-02-02 01:17:16,144 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-02-02 01:17:16,153 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-02-02 01:17:16,153 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-02-02 01:17:16,154 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-02-02 01:17:16,154 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-02-02 01:17:16,457 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Length', b'82472'), (b'Content-Type', b'application/json'), (b'access-control-allow-origin', b'*'), (b'apim-request-id', b'8d93f4c4-f6fe-441e-b2c8-b7858a115317'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains; preload'), (b'x-content-type-options', b'nosniff'), (b'x-ms-region', b'South India'), (b'x-ratelimit-remaining-tokens', b'249911'), (b'x-ratelimit-limit-tokens', b'250000'), (b'x-request-id', b'44504475-a59e-4b95-891f-435ad020795b'), (b'azureml-model-session', b'd20251211235432-7d8ceb63c60b4c6a'), (b'x-envoy-upstream-service-time', b'57'), (b'x-ms-client-request-id', b'8d93f4c4-f6fe-441e-b2c8-b7858a115317'), (b'x-ms-deployment-name', b'text-embedding-3-large'), (b'Date', b'Mon, 02 Feb 2026 01:17:15 GMT')])
+2026-02-02 01:17:16,458 - httpx - INFO - HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
+2026-02-02 01:17:16,459 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-02-02 01:17:16,925 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-02-02 01:17:16,925 - httpcore.http11 - DEBUG - response_closed.started
+2026-02-02 01:17:16,925 - httpcore.http11 - DEBUG - response_closed.complete
+2026-02-02 01:17:16,925 - openai._base_client - DEBUG - HTTP Response: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "200 OK" Headers({'content-length': '82472', 'content-type': 'application/json', 'access-control-allow-origin': '*', 'apim-request-id': '8d93f4c4-f6fe-441e-b2c8-b7858a115317', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'x-content-type-options': 'nosniff', 'x-ms-region': 'South India', 'x-ratelimit-remaining-tokens': '249911', 'x-ratelimit-limit-tokens': '250000', 'x-request-id': '44504475-a59e-4b95-891f-435ad020795b', 'azureml-model-session': 'd20251211235432-7d8ceb63c60b4c6a', 'x-envoy-upstream-service-time': '57', 'x-ms-client-request-id': '8d93f4c4-f6fe-441e-b2c8-b7858a115317', 'x-ms-deployment-name': 'text-embedding-3-large', 'date': 'Mon, 02 Feb 2026 01:17:15 GMT'})
+2026-02-02 01:17:16,926 - openai._base_client - DEBUG - request_id: 44504475-a59e-4b95-891f-435ad020795b
+2026-02-02 01:17:16,999 - chromadb.config - DEBUG - Starting component LocalHnswSegment
 C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_info" has conflict with protected namespace "model_".
 
 You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
   warnings.warn(
-INFO:     Started server process [24664]
+INFO:     Started server process [24992]
 INFO:     Waiting for application startup.
    [OK] Vector store initialized successfully
 
@@ -77,356 +77,720 @@ RAGService Initialization Complete - Mode: REAL
 
 RoadmapService running in MOCK MODE (No API Key found)
 CopilotService running in MOCK MODE (No API Key found)
-2026-02-01 23:10:57,341 - app.middleware.cors_dynamic - INFO - Detected server IP addresses: ['172.16.0.4', '48.214.144.154']
-2026-02-01 23:10:57,341 - app.middleware.cors_dynamic - INFO - Allowed CORS origins: ['http://127.0.0.1:3000', 'http://127.0.0.1:5173', 'http://172.16.0.4:3000', 'http://172.16.0.4:5173', 'http://172.16.0.4:80', 'http://172.31.33.5:5173', 'http://172.31.33.5:80', 'http://18.191.118.132:5173', 'http://18.191.118.132:80', 'http://192.168.4.247:5173', 'http://48.214.144.154:3000', 'http://48.214.144.154:5173', 'http://48.214.144.154:80', 'http://localhost:3000', 'http://localhost:5173', 'http://qbrainlabs.com', 'https://172.16.0.4:443', 'https://172.16.0.4:5173', 'https://48.214.144.154:443', 'https://48.214.144.154:5173']
-{"event": "Starting application...", "level": "info", "timestamp": "2026-02-01T23:10:57.342791Z"}
-{"event": "Database tables created", "level": "info", "timestamp": "2026-02-01T23:10:57.508677Z"}
+2026-02-02 01:17:20,594 - app.middleware.cors_dynamic - INFO - Detected server IP addresses: ['172.16.0.4', '48.214.144.154']
+2026-02-02 01:17:20,594 - app.middleware.cors_dynamic - INFO - Allowed CORS origins: ['http://127.0.0.1:3000', 'http://127.0.0.1:5173', 'http://172.16.0.4:3000', 'http://172.16.0.4:5173', 'http://172.16.0.4:80', 'http://172.31.33.5:5173', 'http://172.31.33.5:80', 'http://18.191.118.132:5173', 'http://18.191.118.132:80', 'http://192.168.4.247:5173', 'http://48.214.144.154:3000', 'http://48.214.144.154:5173', 'http://48.214.144.154:80', 'http://localhost:3000', 'http://localhost:5173', 'http://qbrainlabs.com', 'https://172.16.0.4:443', 'https://172.16.0.4:5173', 'https://48.214.144.154:443', 'https://48.214.144.154:5173']
+{"event": "Starting application...", "level": "info", "timestamp": "2026-02-02T01:17:20.595848Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-02-02T01:17:20.869894Z"}
 INFO:     Application startup complete.
-{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-02-01T23:11:11.676053Z"}
-2026-02-01 23:11:11,678 - multipart.multipart - DEBUG - Calling on_field_start with no data
-2026-02-01 23:11:11,678 - multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
-2026-02-01 23:11:11,678 - multipart.multipart - DEBUG - Calling on_field_data with data[9:31]
-2026-02-01 23:11:11,678 - multipart.multipart - DEBUG - Calling on_field_end with no data
-2026-02-01 23:11:11,678 - multipart.multipart - DEBUG - Calling on_field_start with no data
-2026-02-01 23:11:11,678 - multipart.multipart - DEBUG - Calling on_field_name with data[32:40]
-2026-02-01 23:11:11,678 - multipart.multipart - DEBUG - Calling on_field_data with data[41:49]
-2026-02-01 23:11:11,678 - multipart.multipart - DEBUG - Calling on_field_end with no data
-2026-02-01 23:11:11,678 - multipart.multipart - DEBUG - Calling on_end with no data
-{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 884.6, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:12.560606Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 89.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:12.741077Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 50.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:12.887110Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 35.5, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:14.937590Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 22.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:14.972017Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 37.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:15.832545Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 217.89, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:16.069664Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 934.33, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:16.738034Z"}
-{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 807.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:16.782099Z"}
-{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 811.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:16.786295Z"}
-{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 826.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:16.801281Z"}
-{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 828.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:16.803354Z"}
-{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 71.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:16.809932Z"}
-{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 159.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:16.966197Z"}
-{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 169.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:17.021849Z"}
-{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 156.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:17.062761Z"}
-{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 165.61, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:17.072057Z"}
-{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 127.63, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:17.076599Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 252.04, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:17.105275Z"}
-{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 516.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:17.618133Z"}
-{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 527.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:17.668015Z"}
-{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 627.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:17.814213Z"}
-{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 500.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:17.832395Z"}
-{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 363.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:18.379331Z"}
-{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 281.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:18.390881Z"}
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 741.3, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:18.395529Z"}
-{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 56.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:18.577691Z"}
-{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 42.7, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:18.585081Z"}
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 80.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:18.621354Z"}
-{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 19.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:18.636286Z"}
-INFO:     ('127.0.0.1', 49213) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     ('127.0.0.1', 60389) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
 INFO:     connection open
-Client connected: Z6wX8OEcaCY3aC_4AAAB (unauthenticated - participant access)
-SID Z6wX8OEcaCY3aC_4AAAB joined room 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-SID Z6wX8OEcaCY3aC_4AAAB joined room 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 25.14, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:19.787688Z"}
-SID Z6wX8OEcaCY3aC_4AAAB joined room 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-SID Z6wX8OEcaCY3aC_4AAAB joined copilot room for workshop 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 49.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:19.858374Z"}
-SID Z6wX8OEcaCY3aC_4AAAB left copilot room for workshop 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-SID Z6wX8OEcaCY3aC_4AAAB joined copilot room for workshop 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-{"method": "GET", "path": "/api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 44.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:19.867831Z"}
-{"method": "GET", "path": "/api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 23.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:19.920546Z"}
-{"method": "GET", "path": "/api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 20.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:19.920546Z"}
-{"method": "GET", "path": "/api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17", "status_code": 200, "duration_ms": 8.41, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:19.958525Z"}
-{"method": "DELETE", "path": "/api/usecases/9f1a83f7-4720-4c02-b47a-0f6ba81d4e1a", "status_code": 204, "duration_ms": 59.26, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:24.358692Z"}
-{"method": "POST", "path": "/api/ai/duplicates", "status_code": 200, "duration_ms": 7.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:46.348583Z"}
-{"method": "PUT", "path": "/api/usecases/072a8296-506a-45af-be42-8c2948b411fd", "status_code": 200, "duration_ms": 21.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:47.940322Z"}
-SID Z6wX8OEcaCY3aC_4AAAB left copilot room for workshop 22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 28.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:55.963296Z"}
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 35.58, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:56.019422Z"}
-{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 23.88, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:57.321176Z"}
-{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 28.98, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:57.374674Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 8.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:58.042970Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 12.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:58.097270Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 33.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:58.826091Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 51.93, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:58.836471Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 41.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:58.896908Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 58.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:58.917308Z"}
-{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 60.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:59.020071Z"}
-{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 52.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:59.053523Z"}
-{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 53.53, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:59.055557Z"}
-{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 61.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:59.062116Z"}
-{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 51.14, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:59.063106Z"}
-{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 113.14, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:59.125892Z"}
-{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 431.53, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:11:59.662088Z"}
-{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 419.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:00.050517Z"}
-{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 428.41, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:00.088446Z"}
-{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 435.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:00.102148Z"}
-{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 437.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:00.104146Z"}
-{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 75.8, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:00.203565Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 568.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:00.235265Z"}
-{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 128.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:00.323472Z"}
-{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 126.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:00.327740Z"}
-{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 121.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:00.333960Z"}
-{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 125.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:00.337898Z"}
-{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 144.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:00.548679Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 207.23, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:00.551585Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 351.5, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:00.779734Z"}
-{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 122.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:00.874300Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 167.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:01.075479Z"}
-{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 175.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:01.375712Z"}
-{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 183.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:01.383322Z"}
-{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 176.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:01.384459Z"}
-{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 169.84, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:01.407531Z"}
-{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 173.44, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:01.411449Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 643.84, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:01.772936Z"}
-{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 276.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:01.979266Z"}
-{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 229.16, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:01.986795Z"}
-{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 234.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:01.993467Z"}
-{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 278.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:02.070857Z"}
-{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 293.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:02.081887Z"}
-{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 90.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:02.491989Z"}
-{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 77.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:02.496988Z"}
-{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 65.63, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:02.500514Z"}
-{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 39.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:02.603370Z"}
-{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 22.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:02.683660Z"}
-{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 98.55, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:02.939722Z"}
-{"method": "GET", "path": "/api/admin/users/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/impact", "status_code": 200, "duration_ms": 38.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:05.621532Z"}
-Error deleting user: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedFunctionError'>: operator does not exist: character varying = uuid
-HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
-[SQL: UPDATE ai_feedback SET user_id=$1::VARCHAR WHERE ai_feedback.user_id = $2::UUID]
-[parameters: (None, UUID('c1758feb-b5f6-4ecb-9dfe-09c62e1c4769'))]
-(Background on this error at: https://sqlalche.me/e/20/f405)
+Client connected: wD2W81h_BpFKLmE9AAAB (unauthenticated - participant access)
+SID wD2W81h_BpFKLmE9AAAB joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID wD2W81h_BpFKLmE9AAAB joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID wD2W81h_BpFKLmE9AAAB joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-02-02T01:17:24.573696Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 12.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:17:24.589523Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 12.38, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:17:24.618068Z"}
+2026-02-02 01:17:34,090 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/chat/completions', 'files': None, 'json_data': {'messages': [{'role': 'user', 'content': 'You are an expert Business Value Analyst specializing in AI/ML projects.\n\nUse Case Title: "Product Labelling Automation"\nDescription: "Manual product labelling is slow"\nCategory: "Generative AI"\nCurrent KPI: "Reduce errors by 20%"\n\nTask: Enhance the business value proposition with:\n1. An enhanced, specific KPI statement (measurable, time-bound)\n2. 3-5 specific metrics this use case could improve\n3. 3-4 ROI indicators (expected ROI %, payback period, NPV range)\n4. 2-3 industry benchmarks with sources\n5. A compelling business impact statement (2-3 sentences)\n6. A confidence score (0.0-1.0) for these estimates\n\nReturn ONLY valid JSON in this exact format:\n{\n    "enhanced_kpi": "Specific, measurable KPI statement",\n    "specific_metrics": ["metric 1", "metric 2", "metric 3"],\n    "roi_indicators": ["ROI indicator 1", "ROI indicator 2"],\n    "benchmarks": [\n        {"source": "Source name", "metric": "Metric name", "value": "Value"},\n        {"source": "Source name", "metric": "Metric name", "value": "Value"}\n    ],\n    "business_impact": "Compelling 2-3 sentence impact statement",\n    "confidence_score": 0.8\n}'}], 'model': 'gpt-4.1', 'n': 1, 'stream': False, 'temperature': 0.7}, 'headers': {'api-key': '<redacted>'}, 'idempotency_key': 'stainless-python-retry-abde3489-43a3-4010-98e7-e1b52c925d6d'}
+2026-02-02 01:17:34,090 - openai._base_client - DEBUG - Sending HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2024-12-01-preview
+2026-02-02 01:17:34,091 - httpcore.connection - DEBUG - connect_tcp.started host='ai-lshcerupod.cognitiveservices.azure.com' port=443 local_address=None timeout=None socket_options=None
+2026-02-02 01:17:34,355 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x000001F3E7A4D010>
+2026-02-02 01:17:34,355 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001F3DD452690> server_hostname='ai-lshcerupod.cognitiveservices.azure.com' timeout=None
+2026-02-02 01:17:34,834 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x000001F3E7A6C3D0>
+2026-02-02 01:17:34,835 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-02-02 01:17:34,835 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-02-02 01:17:34,835 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-02-02 01:17:34,835 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-02-02 01:17:34,835 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-02-02 01:17:38,517 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Length', b'2721'), (b'Content-Type', b'application/json'), (b'apim-request-id', b'b3182e8d-31fa-44f4-ac23-d204d07b1410'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains; preload'), (b'x-content-type-options', b'nosniff'), (b'x-ms-region', b'South India'), (b'x-ratelimit-remaining-requests', b'1283'), (b'x-ratelimit-limit-requests', b'1284'), (b'x-ratelimit-remaining-tokens', b'1283719'), (b'x-ratelimit-limit-tokens', b'1284000'), (b'azureml-model-session', b'd20251212182244-fc1a538e93574246'), (b'x-accel-buffering', b'no'), (b'x-ms-rai-invoked', b'true'), (b'x-request-id', b'4e018d7f-c22d-43cb-9b7f-762c457d32f9'), (b'x-ms-deployment-name', b'gpt-4.1'), (b'Date', b'Mon, 02 Feb 2026 01:17:37 GMT')])
+2026-02-02 01:17:38,517 - httpx - INFO - HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
+2026-02-02 01:17:38,517 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-02-02 01:17:38,517 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-02-02 01:17:38,517 - httpcore.http11 - DEBUG - response_closed.started
+2026-02-02 01:17:38,517 - httpcore.http11 - DEBUG - response_closed.complete
+2026-02-02 01:17:38,519 - openai._base_client - DEBUG - HTTP Response: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2024-12-01-preview "200 OK" Headers({'content-length': '2721', 'content-type': 'application/json', 'apim-request-id': 'b3182e8d-31fa-44f4-ac23-d204d07b1410', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'x-content-type-options': 'nosniff', 'x-ms-region': 'South India', 'x-ratelimit-remaining-requests': '1283', 'x-ratelimit-limit-requests': '1284', 'x-ratelimit-remaining-tokens': '1283719', 'x-ratelimit-limit-tokens': '1284000', 'azureml-model-session': 'd20251212182244-fc1a538e93574246', 'x-accel-buffering': 'no', 'x-ms-rai-invoked': 'true', 'x-request-id': '4e018d7f-c22d-43cb-9b7f-762c457d32f9', 'x-ms-deployment-name': 'gpt-4.1', 'date': 'Mon, 02 Feb 2026 01:17:37 GMT'})
+2026-02-02 01:17:38,519 - openai._base_client - DEBUG - request_id: 4e018d7f-c22d-43cb-9b7f-762c457d32f9
+{"method": "POST", "path": "/api/ai/business-value", "status_code": 200, "duration_ms": 4497.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:17:38.543282Z"}
+INFO:     connection closed
+Client disconnected: wD2W81h_BpFKLmE9AAAB
+2026-02-02 01:19:15,267 - multipart.multipart - DEBUG - Calling on_field_start with no data
+2026-02-02 01:19:15,269 - multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2026-02-02 01:19:15,269 - multipart.multipart - DEBUG - Calling on_field_data with data[9:31]
+2026-02-02 01:19:15,269 - multipart.multipart - DEBUG - Calling on_field_end with no data
+2026-02-02 01:19:15,269 - multipart.multipart - DEBUG - Calling on_field_start with no data
+2026-02-02 01:19:15,269 - multipart.multipart - DEBUG - Calling on_field_name with data[32:40]
+2026-02-02 01:19:15,269 - multipart.multipart - DEBUG - Calling on_field_data with data[41:49]
+2026-02-02 01:19:15,269 - multipart.multipart - DEBUG - Calling on_field_end with no data
+2026-02-02 01:19:15,269 - multipart.multipart - DEBUG - Calling on_end with no data
+{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 472.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:19:15.738081Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 39.41, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:19:15.868471Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 48.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:19:15.962066Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 50.41, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:19:17.704731Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 25.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:19:17.764635Z"}
+INFO:     ('127.0.0.1', 58324) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+Client connected: SrSvwrqSPRKZJPbhAAAD (unauthenticated - participant access)
+SID SrSvwrqSPRKZJPbhAAAD joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID SrSvwrqSPRKZJPbhAAAD joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 20.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:19:20.296962Z"}
+SID SrSvwrqSPRKZJPbhAAAD joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID SrSvwrqSPRKZJPbhAAAD joined copilot room for workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID SrSvwrqSPRKZJPbhAAAD left copilot room for workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID SrSvwrqSPRKZJPbhAAAD joined copilot room for workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 147.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:19:20.476517Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 251.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:19:20.606339Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 13.82, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:19:20.608920Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 18.58, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:19:20.726820Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 14.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:19:20.767948Z"}
+2026-02-02 01:22:09,834 - qbrainlabs - WARNING - HTTPException: 405 - Method Not Allowed
+{"method": "HEAD", "path": "/", "status_code": 405, "duration_ms": 2.75, "client_ip": "60.191.125.35", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T01:22:09.834083Z"}
+2026-02-02 01:22:34,135 - langchain_openai.embeddings.base - WARNING - Warning: model not found. Using cl100k_base encoding.
+2026-02-02 01:22:34,138 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x000001F3E7B4E0C0>, 'json_data': {'input': [[22078, 12117, 29225, 51198, 505, 2204, 12006, 220]], 'model': 'text-embedding-3-large', 'encoding_format': 'base64'}, 'headers': {'api-key': '<redacted>'}, 'idempotency_key': 'stainless-python-retry-8014ee51-32ea-422c-a3d0-935bebc36e75'}
+2026-02-02 01:22:34,138 - openai._base_client - DEBUG - Sending HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview
+2026-02-02 01:22:34,139 - httpcore.connection - DEBUG - close.started
+2026-02-02 01:22:34,139 - httpcore.connection - DEBUG - close.complete
+2026-02-02 01:22:34,139 - httpcore.connection - DEBUG - connect_tcp.started host='ai-lshcerupod.cognitiveservices.azure.com' port=443 local_address=None timeout=None socket_options=None
+2026-02-02 01:22:34,408 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001F3E7BFE510>
+2026-02-02 01:22:34,408 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001F3DD4527B0> server_hostname='ai-lshcerupod.cognitiveservices.azure.com' timeout=None
+2026-02-02 01:22:34,880 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001F3E7186AD0>
+2026-02-02 01:22:34,881 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-02-02 01:22:34,881 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-02-02 01:22:34,882 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-02-02 01:22:34,882 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-02-02 01:22:34,883 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-02-02 01:22:35,470 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Length', b'16606'), (b'Content-Type', b'application/json'), (b'access-control-allow-origin', b'*'), (b'apim-request-id', b'867cf1a8-378a-40eb-a390-ecab66826613'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains; preload'), (b'x-content-type-options', b'nosniff'), (b'x-ms-region', b'South India'), (b'x-ratelimit-remaining-tokens', b'249992'), (b'x-ratelimit-limit-tokens', b'250000'), (b'x-request-id', b'2659a444-c419-424e-9daa-34cbb8ea3cf3'), (b'azureml-model-session', b'd022-20251204093306'), (b'x-envoy-upstream-service-time', b'343'), (b'x-ms-client-request-id', b'867cf1a8-378a-40eb-a390-ecab66826613'), (b'x-ms-deployment-name', b'text-embedding-3-large'), (b'Date', b'Mon, 02 Feb 2026 01:22:34 GMT')])
+2026-02-02 01:22:35,471 - httpx - INFO - HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
+2026-02-02 01:22:35,471 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-02-02 01:22:35,472 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-02-02 01:22:35,472 - httpcore.http11 - DEBUG - response_closed.started
+2026-02-02 01:22:35,472 - httpcore.http11 - DEBUG - response_closed.complete
+2026-02-02 01:22:35,472 - openai._base_client - DEBUG - HTTP Response: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "200 OK" Headers({'content-length': '16606', 'content-type': 'application/json', 'access-control-allow-origin': '*', 'apim-request-id': '867cf1a8-378a-40eb-a390-ecab66826613', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'x-content-type-options': 'nosniff', 'x-ms-region': 'South India', 'x-ratelimit-remaining-tokens': '249992', 'x-ratelimit-limit-tokens': '250000', 'x-request-id': '2659a444-c419-424e-9daa-34cbb8ea3cf3', 'azureml-model-session': 'd022-20251204093306', 'x-envoy-upstream-service-time': '343', 'x-ms-client-request-id': '867cf1a8-378a-40eb-a390-ecab66826613', 'x-ms-deployment-name': 'text-embedding-3-large', 'date': 'Mon, 02 Feb 2026 01:22:34 GMT'})
+2026-02-02 01:22:35,472 - openai._base_client - DEBUG - request_id: 2659a444-c419-424e-9daa-34cbb8ea3cf3
+2026-02-02 01:22:35,475 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event CollectionQueryEvent: capture() takes 1 positional argument but 3 were given
+2026-02-02 01:22:35,478 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/chat/completions', 'files': None, 'json_data': {'messages': [{'role': 'user', 'content': 'You are an expert AI Solution Architect.\nUser Input: "Optimize Processing Claims from different channels "\n\nSimilar Success Stories:\nAutomated Invoice Processing: Use OCR and LLM extraction to parse PDF invoices and feed data into SAP.\nCustomer Support Chatbot: RAG-based chatbot to answer customer queries using internal knowledge base.\n\nTask: \n1. Create a professional Title.\n2. Refine the Description to be technical and value-focused.\n3. Propose a technical Solution using standard modern AI stack.\n4. Suggest a specific KPI suitable for this use case.\n\nReturn JSON only: { "title": "...", "description": "...", "solution": "...", "kpi": "..." }'}], 'model': 'gpt-4.1', 'n': 1, 'stream': False, 'temperature': 0.7}, 'headers': {'api-key': '<redacted>'}, 'idempotency_key': 'stainless-python-retry-0f16c8bb-7bb6-4051-b595-4775bb05dbe0'}
+2026-02-02 01:22:35,478 - openai._base_client - DEBUG - Sending HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2024-12-01-preview
+2026-02-02 01:22:35,479 - httpcore.connection - DEBUG - close.started
+2026-02-02 01:22:35,479 - httpcore.connection - DEBUG - close.complete
+2026-02-02 01:22:35,479 - httpcore.connection - DEBUG - connect_tcp.started host='ai-lshcerupod.cognitiveservices.azure.com' port=443 local_address=None timeout=None socket_options=None
+2026-02-02 01:22:35,709 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x000001F3DF23A610>
+2026-02-02 01:22:35,709 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001F3DD452690> server_hostname='ai-lshcerupod.cognitiveservices.azure.com' timeout=None
+2026-02-02 01:22:36,178 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x000001F3DEE3AD10>
+2026-02-02 01:22:36,179 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-02-02 01:22:36,179 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-02-02 01:22:36,179 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-02-02 01:22:36,180 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-02-02 01:22:36,180 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-02-02 01:22:38,924 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Length', b'2329'), (b'Content-Type', b'application/json'), (b'apim-request-id', b'21c3e800-1171-451a-b36c-745c6b23bce0'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains; preload'), (b'x-content-type-options', b'nosniff'), (b'x-ms-region', b'South India'), (b'x-ratelimit-remaining-requests', b'1283'), (b'x-ratelimit-limit-requests', b'1284'), (b'x-ratelimit-remaining-tokens', b'1283837'), (b'x-ratelimit-limit-tokens', b'1284000'), (b'azureml-model-session', b'd20251212104603-35dc5bdbf53341ff'), (b'x-accel-buffering', b'no'), (b'x-ms-rai-invoked', b'true'), (b'x-request-id', b'e6ae36c3-e57d-408a-93e2-8a6c4f6c942f'), (b'x-ms-deployment-name', b'gpt-4.1'), (b'Date', b'Mon, 02 Feb 2026 01:22:38 GMT')])
+2026-02-02 01:22:38,925 - httpx - INFO - HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
+2026-02-02 01:22:38,925 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-02-02 01:22:38,926 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-02-02 01:22:38,926 - httpcore.http11 - DEBUG - response_closed.started
+2026-02-02 01:22:38,926 - httpcore.http11 - DEBUG - response_closed.complete
+2026-02-02 01:22:38,926 - openai._base_client - DEBUG - HTTP Response: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2024-12-01-preview "200 OK" Headers({'content-length': '2329', 'content-type': 'application/json', 'apim-request-id': '21c3e800-1171-451a-b36c-745c6b23bce0', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'x-content-type-options': 'nosniff', 'x-ms-region': 'South India', 'x-ratelimit-remaining-requests': '1283', 'x-ratelimit-limit-requests': '1284', 'x-ratelimit-remaining-tokens': '1283837', 'x-ratelimit-limit-tokens': '1284000', 'azureml-model-session': 'd20251212104603-35dc5bdbf53341ff', 'x-accel-buffering': 'no', 'x-ms-rai-invoked': 'true', 'x-request-id': 'e6ae36c3-e57d-408a-93e2-8a6c4f6c942f', 'x-ms-deployment-name': 'gpt-4.1', 'date': 'Mon, 02 Feb 2026 01:22:38 GMT'})
+2026-02-02 01:22:38,927 - openai._base_client - DEBUG - request_id: e6ae36c3-e57d-408a-93e2-8a6c4f6c942f
+{"method": "POST", "path": "/api/ai/enhance", "status_code": 200, "duration_ms": 4796.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:22:38.929508Z"}
+2026-02-02 01:22:46,871 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/chat/completions', 'files': None, 'json_data': {'messages': [{'role': 'user', 'content': 'You are an expert Business Value Analyst specializing in AI/ML projects.\n\nUse Case Title: "AI-Driven Multi-Channel Claims Processing Automation"\nDescription: "Implement an intelligent solution to automate and optimize the ingestion, extraction, and validation of insurance claims received from diverse channels such as email, web portals, and scanned documents. This approach leverages advanced AI techniques to ensure faster turnaround times, reduced manual intervention, and improved data accuracy across the claims lifecycle."\nCategory: "Generative AI"\nCurrent KPI: "Percentage reduction in average claims processing time across all channels"\n\nTask: Enhance the business value proposition with:\n1. An enhanced, specific KPI statement (measurable, time-bound)\n2. 3-5 specific metrics this use case could improve\n3. 3-4 ROI indicators (expected ROI %, payback period, NPV range)\n4. 2-3 industry benchmarks with sources\n5. A compelling business impact statement (2-3 sentences)\n6. A confidence score (0.0-1.0) for these estimates\n\nReturn ONLY valid JSON in this exact format:\n{\n    "enhanced_kpi": "Specific, measurable KPI statement",\n    "specific_metrics": ["metric 1", "metric 2", "metric 3"],\n    "roi_indicators": ["ROI indicator 1", "ROI indicator 2"],\n    "benchmarks": [\n        {"source": "Source name", "metric": "Metric name", "value": "Value"},\n        {"source": "Source name", "metric": "Metric name", "value": "Value"}\n    ],\n    "business_impact": "Compelling 2-3 sentence impact statement",\n    "confidence_score": 0.8\n}'}], 'model': 'gpt-4.1', 'n': 1, 'stream': False, 'temperature': 0.7}, 'headers': {'api-key': '<redacted>'}, 'idempotency_key': 'stainless-python-retry-9c171385-47b7-4a86-8f70-177bd627de87'}
+2026-02-02 01:22:46,872 - openai._base_client - DEBUG - Sending HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2024-12-01-preview
+2026-02-02 01:22:46,872 - httpcore.connection - DEBUG - close.started
+2026-02-02 01:22:46,872 - httpcore.connection - DEBUG - close.complete
+2026-02-02 01:22:46,873 - httpcore.connection - DEBUG - connect_tcp.started host='ai-lshcerupod.cognitiveservices.azure.com' port=443 local_address=None timeout=None socket_options=None
+2026-02-02 01:22:47,115 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x000001F3E7C0C1D0>
+2026-02-02 01:22:47,115 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001F3DD452690> server_hostname='ai-lshcerupod.cognitiveservices.azure.com' timeout=None
+2026-02-02 01:22:47,587 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.anyio.AnyIOStream object at 0x000001F3E7C0D210>
+2026-02-02 01:22:47,588 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-02-02 01:22:47,588 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-02-02 01:22:47,588 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-02-02 01:22:47,589 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-02-02 01:22:47,589 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-02-02 01:22:50,939 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Length', b'2601'), (b'Content-Type', b'application/json'), (b'apim-request-id', b'85005be1-7850-4ae1-8458-82a64410d203'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains; preload'), (b'x-content-type-options', b'nosniff'), (b'x-ms-region', b'South India'), (b'x-ratelimit-remaining-requests', b'1282'), (b'x-ratelimit-limit-requests', b'1284'), (b'x-ratelimit-remaining-tokens', b'1283452'), (b'x-ratelimit-limit-tokens', b'1284000'), (b'azureml-model-session', b'd20251228223449-bf27ad12a6704c39'), (b'x-accel-buffering', b'no'), (b'x-ms-rai-invoked', b'true'), (b'x-request-id', b'7fb91f50-cfce-41cc-83e2-ed1500701166'), (b'x-ms-deployment-name', b'gpt-4.1'), (b'Date', b'Mon, 02 Feb 2026 01:22:50 GMT')])
+2026-02-02 01:22:50,939 - httpx - INFO - HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
+2026-02-02 01:22:50,939 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-02-02 01:22:50,940 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-02-02 01:22:50,940 - httpcore.http11 - DEBUG - response_closed.started
+2026-02-02 01:22:50,940 - httpcore.http11 - DEBUG - response_closed.complete
+2026-02-02 01:22:50,941 - openai._base_client - DEBUG - HTTP Response: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/gpt-4.1/chat/completions?api-version=2024-12-01-preview "200 OK" Headers({'content-length': '2601', 'content-type': 'application/json', 'apim-request-id': '85005be1-7850-4ae1-8458-82a64410d203', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'x-content-type-options': 'nosniff', 'x-ms-region': 'South India', 'x-ratelimit-remaining-requests': '1282', 'x-ratelimit-limit-requests': '1284', 'x-ratelimit-remaining-tokens': '1283452', 'x-ratelimit-limit-tokens': '1284000', 'azureml-model-session': 'd20251228223449-bf27ad12a6704c39', 'x-accel-buffering': 'no', 'x-ms-rai-invoked': 'true', 'x-request-id': '7fb91f50-cfce-41cc-83e2-ed1500701166', 'x-ms-deployment-name': 'gpt-4.1', 'date': 'Mon, 02 Feb 2026 01:22:50 GMT'})
+2026-02-02 01:22:50,941 - openai._base_client - DEBUG - request_id: 7fb91f50-cfce-41cc-83e2-ed1500701166
+{"method": "POST", "path": "/api/ai/business-value", "status_code": 200, "duration_ms": 4075.74, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:22:50.943912Z"}
+{"method": "POST", "path": "/api/ai/duplicates", "status_code": 200, "duration_ms": 12.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:23:04.672632Z"}
+{"method": "POST", "path": "/api/usecases/", "status_code": 201, "duration_ms": 24.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:23:04.714197Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 9.11, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:23:04.766656Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 7.26, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:23:04.797800Z"}
+{"method": "GET", "path": "/api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 14.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:23:12.688737Z"}
+{"method": "GET", "path": "/api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 9.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:23:12.711039Z"}
+{"method": "GET", "path": "/api/challenges/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/challenges", "status_code": 200, "duration_ms": 14.26, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:23:14.840492Z"}
+{"method": "GET", "path": "/api/challenges/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/challenges", "status_code": 200, "duration_ms": 14.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:23:14.864869Z"}
+{"method": "POST", "path": "/api/copilot/suggestions", "status_code": 200, "duration_ms": 65.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:23:21.498648Z"}
+SID SrSvwrqSPRKZJPbhAAAD left copilot room for workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 64.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:25:17.031811Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 49.23, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:25:17.097877Z"}
+SID SrSvwrqSPRKZJPbhAAAD joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID SrSvwrqSPRKZJPbhAAAD joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID SrSvwrqSPRKZJPbhAAAD joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 36.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:25:19.697172Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 9.38, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:25:19.732229Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 14.21, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:25:19.733222Z"}
+SID SrSvwrqSPRKZJPbhAAAD joined copilot room for workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID SrSvwrqSPRKZJPbhAAAD left copilot room for workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID SrSvwrqSPRKZJPbhAAAD joined copilot room for workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 30.22, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:25:19.851907Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 21.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:25:19.853413Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 5.26, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:25:19.880171Z"}
+{"method": "GET", "path": "/api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 5.76, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:25:23.348870Z"}
+{"method": "GET", "path": "/api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 10.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:25:23.368987Z"}
+{"method": "GET", "path": "/api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 8.5, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:25:25.691667Z"}
+{"method": "GET", "path": "/api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 7.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:25:25.711336Z"}
+{"method": "GET", "path": "/api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 9.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:25:27.445326Z"}
+{"method": "GET", "path": "/api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 6.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:25:27.467265Z"}
+{"method": "POST", "path": "/api/copilot/suggestions", "status_code": 200, "duration_ms": 30.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:13.575922Z"}
+{"method": "GET", "path": "/api/copilot/engagement/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 14.03, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:18.414924Z"}
+{"method": "GET", "path": "/api/copilot/engagement/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 24.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:18.448309Z"}
+SID SrSvwrqSPRKZJPbhAAAD left copilot room for workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 29.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:22.392962Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 43.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:22.456471Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 14.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:25.845040Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 24.76, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:25.885682Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 21.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:30.414386Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 46.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:30.471966Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 6.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:33.110224Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 7.3, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:33.143051Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 29.44, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:35.259107Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 52.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:35.266208Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 41.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:35.319236Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 50.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:35.343556Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 112.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:35.505138Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 85.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:35.508153Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 80.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:35.509674Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 124.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:35.560655Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 247.89, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:35.891901Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 458.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:35.894931Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 253.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:35.897529Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 257.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:35.929136Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 246.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:35.971104Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 528.7, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:35.974114Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 447.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:36.708661Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 456.33, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:36.715896Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 360.16, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:36.751108Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 274.79, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:36.759657Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 284.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:36.766757Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 263.76, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:36.827193Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 217.93, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:37.109544Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 191.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:37.155982Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 217.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:37.297527Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 135.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:37.379866Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 119.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:37.424017Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 104.79, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:37.622638Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 96.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:37.636593Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 28.88, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:37.725330Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 65.46, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:27:37.868850Z"}
+WARNING:  WatchFiles detected changes in 'app\models\llm_usage.py'. Reloading...
+INFO:     Shutting down
+INFO:     connection closed
+INFO:     Waiting for application shutdown.
+Client disconnected: SrSvwrqSPRKZJPbhAAAD
+{"event": "Shutting down application...", "level": "info", "timestamp": "2026-02-02T01:31:09.055690Z"}
+INFO:     Application shutdown complete.
+INFO:     Finished server process [24992]
+WARNING:  WatchFiles detected changes in 'app\api\admin.py', 'app\schemas\admin.py', 'app\models\__init__.py'. Reloading...
+2026-02-02 01:31:14,592 - qbrainlabs - INFO - Exception handlers registered
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-02-02T01:31:14.597982Z"}
+============================================================
+RAGService Initialization Starting...
+============================================================
+OpenAI API Key: NOT SET
+Azure OpenAI API Key: SET
+Azure OpenAI Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+AI Mock Mode Setting: False
+
+[RAG] Service Mode: REAL AI
+[OK] Loaded 5 reference use cases
+
+[RAG] Initializing REAL AI components...
+   [INFO] Importing LangChain modules...
+   [OK] LangChain modules imported successfully
+
+   [AZURE] Initializing Azure OpenAI Client...
+      Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+      Deployment: gpt-4.1
+      Model: gpt-4.1
+      API Version: 2024-12-01-preview
+   [OK] Azure OpenAI Chat client initialized
+
+   [AZURE] Initializing Azure OpenAI Embeddings...
+      Deployment: text-embedding-3-large
+      Model: text-embedding-3-large
+   [OK] Azure OpenAI Embeddings initialized
+
+   [VECTOR] Initializing Vector Store with 5 documents...
+2026-02-02 01:31:18,907 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2026-02-02 01:31:21,406 - chromadb.config - DEBUG - Starting component System
+2026-02-02 01:31:21,407 - chromadb.config - DEBUG - Starting component Posthog
+2026-02-02 01:31:21,407 - chromadb.config - DEBUG - Starting component OpenTelemetryClient
+2026-02-02 01:31:21,407 - chromadb.config - DEBUG - Starting component SimpleAssignmentPolicy
+2026-02-02 01:31:21,407 - chromadb.config - DEBUG - Starting component SqliteDB
+2026-02-02 01:31:21,426 - chromadb.config - DEBUG - Starting component LocalSegmentManager
+2026-02-02 01:31:21,426 - chromadb.config - DEBUG - Starting component SegmentAPI
+2026-02-02 01:31:21,432 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-02 01:31:21,474 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+2026-02-02 01:31:21,478 - langchain_openai.embeddings.base - WARNING - Warning: model not found. Using cl100k_base encoding.
+2026-02-02 01:31:23,630 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x000002350951A8E0>, 'json_data': {'input': [[42172, 660, 41290, 29225, 25, 5560, 81677, 323, 445, 11237, 33289, 311, 4820, 11612, 65152, 323, 5510, 828, 1139, 37321, 13], [13084, 9365, 13149, 6465, 25, 432, 1929, 6108, 6369, 6465, 311, 4320, 6130, 20126, 1701, 5419, 6677, 2385, 13], [54644, 535, 39306, 25, 38527, 3059, 12271, 828, 311, 7168, 7241, 8060, 1603, 433, 8741, 13], [5648, 1413, 18729, 14882, 25, 20400, 35649, 2613, 8661, 3048, 369, 2204, 6130, 21282, 13], [2123, 21943, 22103, 25, 5560, 445, 11237, 82, 311, 5625, 20160, 7432, 33, 1971, 2082, 311, 8102, 13]], 'model': 'text-embedding-3-large', 'encoding_format': 'base64'}, 'headers': {'api-key': '<redacted>'}, 'idempotency_key': 'stainless-python-retry-4bf86aa3-6b11-46df-a7f0-19b1baef20ee'}
+2026-02-02 01:31:23,646 - openai._base_client - DEBUG - Sending HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview
+2026-02-02 01:31:23,646 - httpcore.connection - DEBUG - connect_tcp.started host='ai-lshcerupod.cognitiveservices.azure.com' port=443 local_address=None timeout=None socket_options=None
+2026-02-02 01:31:23,897 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000023508C97C10>
+2026-02-02 01:31:23,897 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x00000235075EBC80> server_hostname='ai-lshcerupod.cognitiveservices.azure.com' timeout=None
+2026-02-02 01:31:24,377 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000023509067190>
+2026-02-02 01:31:24,377 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-02-02 01:31:24,377 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-02-02 01:31:24,377 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-02-02 01:31:24,377 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-02-02 01:31:24,377 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-02-02 01:31:24,703 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Length', b'82472'), (b'Content-Type', b'application/json'), (b'access-control-allow-origin', b'*'), (b'apim-request-id', b'bc2d633c-20d6-4037-976f-9e55c26752b5'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains; preload'), (b'x-content-type-options', b'nosniff'), (b'x-ms-region', b'South India'), (b'x-ratelimit-remaining-tokens', b'249911'), (b'x-ratelimit-limit-tokens', b'250000'), (b'x-request-id', b'914b39fa-75e1-45fc-914a-614db0f35a6e'), (b'azureml-model-session', b'd20251211235432-7d8ceb63c60b4c6a'), (b'x-envoy-upstream-service-time', b'58'), (b'x-ms-client-request-id', b'bc2d633c-20d6-4037-976f-9e55c26752b5'), (b'x-ms-deployment-name', b'text-embedding-3-large'), (b'Date', b'Mon, 02 Feb 2026 01:31:24 GMT')])
+2026-02-02 01:31:24,704 - httpx - INFO - HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
+2026-02-02 01:31:24,704 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-02-02 01:31:25,180 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-02-02 01:31:25,182 - httpcore.http11 - DEBUG - response_closed.started
+2026-02-02 01:31:25,182 - httpcore.http11 - DEBUG - response_closed.complete
+2026-02-02 01:31:25,182 - openai._base_client - DEBUG - HTTP Response: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "200 OK" Headers({'content-length': '82472', 'content-type': 'application/json', 'access-control-allow-origin': '*', 'apim-request-id': 'bc2d633c-20d6-4037-976f-9e55c26752b5', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'x-content-type-options': 'nosniff', 'x-ms-region': 'South India', 'x-ratelimit-remaining-tokens': '249911', 'x-ratelimit-limit-tokens': '250000', 'x-request-id': '914b39fa-75e1-45fc-914a-614db0f35a6e', 'azureml-model-session': 'd20251211235432-7d8ceb63c60b4c6a', 'x-envoy-upstream-service-time': '58', 'x-ms-client-request-id': 'bc2d633c-20d6-4037-976f-9e55c26752b5', 'x-ms-deployment-name': 'text-embedding-3-large', 'date': 'Mon, 02 Feb 2026 01:31:24 GMT'})
+2026-02-02 01:31:25,182 - openai._base_client - DEBUG - request_id: 914b39fa-75e1-45fc-914a-614db0f35a6e
+2026-02-02 01:31:25,288 - chromadb.config - DEBUG - Starting component LocalHnswSegment
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_info" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+INFO:     Started server process [5896]
+INFO:     Waiting for application startup.
+   [OK] Vector store initialized successfully
+
+   [OK] Real AI components initialization complete
+============================================================
+RAGService Initialization Complete - Mode: REAL
+============================================================
+
+RoadmapService running in MOCK MODE (No API Key found)
+CopilotService running in MOCK MODE (No API Key found)
+2026-02-02 01:31:28,026 - app.middleware.cors_dynamic - INFO - Detected server IP addresses: ['172.16.0.4', '48.214.144.154']
+2026-02-02 01:31:28,026 - app.middleware.cors_dynamic - INFO - Allowed CORS origins: ['http://127.0.0.1:3000', 'http://127.0.0.1:5173', 'http://172.16.0.4:3000', 'http://172.16.0.4:5173', 'http://172.16.0.4:80', 'http://172.31.33.5:5173', 'http://172.31.33.5:80', 'http://18.191.118.132:5173', 'http://18.191.118.132:80', 'http://192.168.4.247:5173', 'http://48.214.144.154:3000', 'http://48.214.144.154:5173', 'http://48.214.144.154:80', 'http://localhost:3000', 'http://localhost:5173', 'http://qbrainlabs.com', 'https://172.16.0.4:443', 'https://172.16.0.4:5173', 'https://48.214.144.154:443', 'https://48.214.144.154:5173']
+{"event": "Starting application...", "level": "info", "timestamp": "2026-02-02T01:31:28.028087Z"}
+ERROR:    Traceback (most recent call last):
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\server.py", line 78, in serve
+    await self.startup(sockets=sockets)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\server.py", line 89, in startup
+    await self.lifespan.startup()
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\lifespan\on.py", line 54, in startup
+    await self.startup_event.wait()
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\locks.py", line 213, in wait
+    await fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
 Traceback (most recent call last):
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 533, in _prepare_and_execute
-    prepared_stmt, attributes = await adapt_connection._prepare(
-                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 784, in _prepare
-    prepared_stmt = await self._connection.prepare(
-                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\asyncpg\connection.py", line 636, in prepare
-    return await self._prepare(
-           ^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\asyncpg\connection.py", line 654, in _prepare
-    stmt = await self._get_statement(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\asyncpg\connection.py", line 433, in _get_statement
-    statement = await self._protocol.prepare(
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "asyncpg\protocol\protocol.pyx", line 166, in prepare
-asyncpg.exceptions.UndefinedFunctionError: operator does not exist: character varying = uuid
-HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
 
-The above exception was the direct cause of the following exception:
+During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
-    self.dialect.do_execute(
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
-    cursor.execute(statement, parameters)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 591, in execute
-    self._adapt_connection.await_(
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 125, in await_only
-    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 185, in greenlet_spawn
-    value = await result
-            ^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 569, in _prepare_and_execute
-    self._handle_exception(error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 520, in _handle_exception
-    self._adapt_connection._handle_exception(error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 808, in _handle_exception
-    raise translated_error from error
-sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.ProgrammingError: <class 'asyncpg.exceptions.UndefinedFunctionError'>: operator does not exist: character varying = uuid
-HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 677, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\main.py", line 26, in lifespan
+    await asyncio.wait_for(create_tables(), timeout=5.0)
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\tasks.py", line 476, in wait_for
+    await waiter
+asyncio.exceptions.CancelledError
 
-The above exception was the direct cause of the following exception:
+Process SpawnProcess-2:
+Traceback (most recent call last):
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\server.py", line 78, in serve
+    await self.startup(sockets=sockets)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\server.py", line 89, in startup
+    await self.lifespan.startup()
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\lifespan\on.py", line 54, in startup
+    await self.startup_event.wait()
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\locks.py", line 213, in wait
+    await fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\api\admin.py", line 513, in deactivate_user
-    await db.execute(
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 455, in execute
-    result = await greenlet_spawn(
-             ^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 190, in greenlet_spawn
-    result = context.throw(*sys.exc_info())
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2308, in execute
-    return self._execute_internal(
-           ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2190, in _execute_internal
-    result: Result[Any] = compile_state_cls.orm_execute_statement(
-                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\orm\bulk_persistence.py", line 1617, in orm_execute_statement
-    return super().orm_execute_statement(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\orm\context.py", line 293, in orm_execute_statement
-    result = conn.execute(
-             ^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
-    return meth(
-           ^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 516, in _execute_on_connection
-    return connection._execute_clauseelement(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1639, in _execute_clauseelement
-    ret = self._execute_context(
-          ^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
-    return self._exec_single_context(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
-    self._handle_dbapi_exception(
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2343, in _handle_dbapi_exception
-    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
-    self.dialect.do_execute(
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
-    cursor.execute(statement, parameters)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 591, in execute
-    self._adapt_connection.await_(
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 125, in await_only
-    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 185, in greenlet_spawn
-    value = await result
-            ^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 569, in _prepare_and_execute
-    self._handle_exception(error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 520, in _handle_exception
-    self._adapt_connection._handle_exception(error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 808, in _handle_exception
-    raise translated_error from error
-sqlalchemy.exc.ProgrammingError: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedFunctionError'>: operator does not exist: character varying = uuid
-HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
-[SQL: UPDATE ai_feedback SET user_id=$1::VARCHAR WHERE ai_feedback.user_id = $2::UUID]
-[parameters: (None, UUID('c1758feb-b5f6-4ecb-9dfe-09c62e1c4769'))]
-(Background on this error at: https://sqlalche.me/e/20/f405)
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\_subprocess.py", line 76, in subprocess_started
+    target(sockets=sockets)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\server.py", line 61, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
+2026-02-02 01:31:39,321 - qbrainlabs - INFO - Exception handlers registered
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-02-02T01:31:39.324759Z"}
+============================================================
+RAGService Initialization Starting...
+============================================================
+OpenAI API Key: NOT SET
+Azure OpenAI API Key: SET
+Azure OpenAI Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+AI Mock Mode Setting: False
 
-2026-02-01 23:12:06,791 - qbrainlabs - WARNING - HTTPException: 500 - Failed to delete user: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedFunctionError'>: operator does not exist: character varying = uuid
-HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
-[SQL: UPDATE ai_feedback SET user_id=$1::VARCHAR WHERE ai_feedback.user_id = $2::UUID]
-[parameters: (None, UUID('c1758feb-b5f6-4ecb-9dfe-09c62e1c4769'))]
-(Background on this error at: https://sqlalche.me/e/20/f405)
-{"method": "DELETE", "path": "/api/admin/users/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769", "status_code": 500, "duration_ms": 86.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "error", "timestamp": "2026-02-01T23:12:06.795860Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 34.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:09.601873Z"}
-{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 24.3, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:09.643292Z"}
-{"method": "GET", "path": "/api/admin/users/8ec75cd8-e168-42ed-b799-02a2f2924d88/impact", "status_code": 200, "duration_ms": 30.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-01T23:12:15.336186Z"}
-Error deleting user: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedFunctionError'>: operator does not exist: character varying = uuid
-HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
-[SQL: UPDATE ai_feedback SET user_id=$1::VARCHAR WHERE ai_feedback.user_id = $2::UUID]
-[parameters: (None, UUID('8ec75cd8-e168-42ed-b799-02a2f2924d88'))]
-(Background on this error at: https://sqlalche.me/e/20/f405)
+[RAG] Service Mode: REAL AI
+[OK] Loaded 5 reference use cases
+
+[RAG] Initializing REAL AI components...
+   [INFO] Importing LangChain modules...
+   [OK] LangChain modules imported successfully
+
+   [AZURE] Initializing Azure OpenAI Client...
+      Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+      Deployment: gpt-4.1
+      Model: gpt-4.1
+      API Version: 2024-12-01-preview
+   [OK] Azure OpenAI Chat client initialized
+
+   [AZURE] Initializing Azure OpenAI Embeddings...
+      Deployment: text-embedding-3-large
+      Model: text-embedding-3-large
+   [OK] Azure OpenAI Embeddings initialized
+
+   [VECTOR] Initializing Vector Store with 5 documents...
+2026-02-02 01:31:44,018 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2026-02-02 01:31:44,641 - chromadb.config - DEBUG - Starting component System
+2026-02-02 01:31:44,642 - chromadb.config - DEBUG - Starting component Posthog
+2026-02-02 01:31:44,642 - chromadb.config - DEBUG - Starting component OpenTelemetryClient
+2026-02-02 01:31:44,642 - chromadb.config - DEBUG - Starting component SimpleAssignmentPolicy
+2026-02-02 01:31:44,642 - chromadb.config - DEBUG - Starting component SqliteDB
+2026-02-02 01:31:44,652 - chromadb.config - DEBUG - Starting component LocalSegmentManager
+2026-02-02 01:31:44,652 - chromadb.config - DEBUG - Starting component SegmentAPI
+2026-02-02 01:31:44,653 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-02 01:31:44,668 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+2026-02-02 01:31:44,669 - langchain_openai.embeddings.base - WARNING - Warning: model not found. Using cl100k_base encoding.
+2026-02-02 01:31:45,247 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x000002557B4B6840>, 'json_data': {'input': [[42172, 660, 41290, 29225, 25, 5560, 81677, 323, 445, 11237, 33289, 311, 4820, 11612, 65152, 323, 5510, 828, 1139, 37321, 13], [13084, 9365, 13149, 6465, 25, 432, 1929, 6108, 6369, 6465, 311, 4320, 6130, 20126, 1701, 5419, 6677, 2385, 13], [54644, 535, 39306, 25, 38527, 3059, 12271, 828, 311, 7168, 7241, 8060, 1603, 433, 8741, 13], [5648, 1413, 18729, 14882, 25, 20400, 35649, 2613, 8661, 3048, 369, 2204, 6130, 21282, 13], [2123, 21943, 22103, 25, 5560, 445, 11237, 82, 311, 5625, 20160, 7432, 33, 1971, 2082, 311, 8102, 13]], 'model': 'text-embedding-3-large', 'encoding_format': 'base64'}, 'headers': {'api-key': '<redacted>'}, 'idempotency_key': 'stainless-python-retry-889b71d2-0ffb-47cc-b47b-091d1ccd28b9'}
+2026-02-02 01:31:45,261 - openai._base_client - DEBUG - Sending HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview
+2026-02-02 01:31:45,262 - httpcore.connection - DEBUG - connect_tcp.started host='ai-lshcerupod.cognitiveservices.azure.com' port=443 local_address=None timeout=None socket_options=None
+2026-02-02 01:31:45,499 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002557AB40210>
+2026-02-02 01:31:45,499 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000002557958BC80> server_hostname='ai-lshcerupod.cognitiveservices.azure.com' timeout=None
+2026-02-02 01:31:45,964 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002557B492A10>
+2026-02-02 01:31:45,965 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-02-02 01:31:45,965 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-02-02 01:31:45,965 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-02-02 01:31:45,966 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-02-02 01:31:45,966 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-02-02 01:31:46,387 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Length', b'82472'), (b'Content-Type', b'application/json'), (b'access-control-allow-origin', b'*'), (b'apim-request-id', b'6d3a5f21-4928-4c31-9115-cff66f24207a'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains; preload'), (b'x-content-type-options', b'nosniff'), (b'x-ms-region', b'South India'), (b'x-ratelimit-remaining-tokens', b'249822'), (b'x-ratelimit-limit-tokens', b'250000'), (b'x-request-id', b'c4c20b70-3feb-4bdd-8074-b9476f26b33d'), (b'azureml-model-session', b'd20251211235432-7d8ceb63c60b4c6a'), (b'x-envoy-upstream-service-time', b'63'), (b'x-ms-client-request-id', b'6d3a5f21-4928-4c31-9115-cff66f24207a'), (b'x-ms-deployment-name', b'text-embedding-3-large'), (b'Date', b'Mon, 02 Feb 2026 01:31:46 GMT')])
+2026-02-02 01:31:46,387 - httpx - INFO - HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
+2026-02-02 01:31:46,387 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-02-02 01:31:46,842 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-02-02 01:31:46,842 - httpcore.http11 - DEBUG - response_closed.started
+2026-02-02 01:31:46,843 - httpcore.http11 - DEBUG - response_closed.complete
+2026-02-02 01:31:46,843 - openai._base_client - DEBUG - HTTP Response: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "200 OK" Headers({'content-length': '82472', 'content-type': 'application/json', 'access-control-allow-origin': '*', 'apim-request-id': '6d3a5f21-4928-4c31-9115-cff66f24207a', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'x-content-type-options': 'nosniff', 'x-ms-region': 'South India', 'x-ratelimit-remaining-tokens': '249822', 'x-ratelimit-limit-tokens': '250000', 'x-request-id': 'c4c20b70-3feb-4bdd-8074-b9476f26b33d', 'azureml-model-session': 'd20251211235432-7d8ceb63c60b4c6a', 'x-envoy-upstream-service-time': '63', 'x-ms-client-request-id': '6d3a5f21-4928-4c31-9115-cff66f24207a', 'x-ms-deployment-name': 'text-embedding-3-large', 'date': 'Mon, 02 Feb 2026 01:31:46 GMT'})
+2026-02-02 01:31:46,843 - openai._base_client - DEBUG - request_id: c4c20b70-3feb-4bdd-8074-b9476f26b33d
+2026-02-02 01:31:46,878 - chromadb.config - DEBUG - Starting component LocalHnswSegment
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_info" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+INFO:     Started server process [7164]
+INFO:     Waiting for application startup.
+   [OK] Vector store initialized successfully
+
+   [OK] Real AI components initialization complete
+============================================================
+RAGService Initialization Complete - Mode: REAL
+============================================================
+
+RoadmapService running in MOCK MODE (No API Key found)
+CopilotService running in MOCK MODE (No API Key found)
+2026-02-02 01:31:50,189 - app.middleware.cors_dynamic - INFO - Detected server IP addresses: ['172.16.0.4', '48.214.144.154']
+2026-02-02 01:31:50,189 - app.middleware.cors_dynamic - INFO - Allowed CORS origins: ['http://127.0.0.1:3000', 'http://127.0.0.1:5173', 'http://172.16.0.4:3000', 'http://172.16.0.4:5173', 'http://172.16.0.4:80', 'http://172.31.33.5:5173', 'http://172.31.33.5:80', 'http://18.191.118.132:5173', 'http://18.191.118.132:80', 'http://192.168.4.247:5173', 'http://48.214.144.154:3000', 'http://48.214.144.154:5173', 'http://48.214.144.154:80', 'http://localhost:3000', 'http://localhost:5173', 'http://qbrainlabs.com', 'https://172.16.0.4:443', 'https://172.16.0.4:5173', 'https://48.214.144.154:443', 'https://48.214.144.154:5173']
+{"event": "Starting application...", "level": "info", "timestamp": "2026-02-02T01:31:50.189621Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-02-02T01:31:50.541985Z"}
+INFO:     Application startup complete.
+INFO:     ('127.0.0.1', 61413) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     ('127.0.0.1', 57753) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection open
+INFO:     connection closed
+WARNING:  WatchFiles detected changes in 'app\utils\llm_tracking.py'. Reloading...
+Client connected: qHh0cRLLF8Jph1KKAAAC (unauthenticated - participant access)
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-02-02T01:34:41.987100Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 593.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:42.581475Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 12.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:42.604443Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 52.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:44.362650Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 34.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:44.420282Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 281.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:44.626621Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 282.9, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:44.626621Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 287.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:44.632195Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 25.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:44.672973Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 28.88, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:44.676040Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 20.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:44.680601Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 47.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:52.847007Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 69.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:52.856363Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 50.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:52.915166Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 198.41, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:53.082455Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 77.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:53.087063Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 78.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:53.088098Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 78.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:53.088098Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 517.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:53.527493Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 88.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:53.543554Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 525.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:53.545555Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 51.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:53.546602Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 52.77, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:53.548900Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 54.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:53.550465Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 60.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:53.639196Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 35.74, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:53.640201Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 32.85, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:53.642206Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 30.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:53.703422Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 29.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:53.705970Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 30.06, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:53.707487Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 20.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:53.761307Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 17.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:53.762858Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 48.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:54.134148Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 97.33, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:54.304755Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 26.76, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:55.653324Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 27.93, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:55.708349Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 32.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:57.216806Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 24.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:57.252509Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 24.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:58.824395Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 54.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:58.846607Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 66.38, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:58.915382Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 100.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:58.999076Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 35.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:59.021186Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 38.33, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:59.024396Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 41.71, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:59.027788Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 32.46, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:59.031521Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 35.77, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:59.035069Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 52.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:59.091270Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 181.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:59.289537Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 188.49, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:59.293203Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 179.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:59.300816Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 185.98, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:59.308366Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 188.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:59.308894Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 233.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:59.532092Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 57.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:59.696144Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 34.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:59.765780Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 37.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:34:59.835118Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 42.41, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:00.943347Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 46.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:00.960193Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 48.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:00.974818Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 54.93, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:00.974818Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 140.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:01.141959Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 159.63, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:01.184373Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 115.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:01.193383Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 112.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:01.205505Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 46.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:02.303747Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 15.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:02.332875Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 40.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:03.350068Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 22.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:03.385040Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 15.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:05.171452Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 23.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:05.219286Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 27.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:08.207564Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 26.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:08.245389Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 16.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:11.874371Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 34.38, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:11.924354Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 21.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:15.264565Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 25.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:15.301877Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 13.84, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:16.576534Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 31.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:16.621549Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 24.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:17.837997Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 16.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:17.871453Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 23.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:32.545508Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 25.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:32.585782Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 27.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:33.500089Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 24.04, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:33.539801Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 21.44, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:38.955188Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 18.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:39.007495Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 55.77, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:40.354558Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 39.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:40.356592Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 45.44, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:40.359012Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 40.55, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:40.364260Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 110.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:40.506550Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 82.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:40.515886Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 73.6, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:40.518121Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 67.71, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:35:40.521659Z"}
+INFO:     Shutting down
+INFO:     connection closed
+INFO:     Waiting for application shutdown.
+Client disconnected: qHh0cRLLF8Jph1KKAAAC
+{"event": "Shutting down application...", "level": "info", "timestamp": "2026-02-02T01:35:43.282359Z"}
+INFO:     Application shutdown complete.
+INFO:     Finished server process [7164]
+WARNING:  WatchFiles detected changes in 'alembic\versions\a3e96c70897a_add_llm_usage_logs_table.py', 'app\utils\llm_tracking.py', 'app\services\rag_service.py', 'app\services\copilot_service.py'. Reloading...
+2026-02-02 01:35:48,606 - qbrainlabs - INFO - Exception handlers registered
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-02-02T01:35:48.611203Z"}
+============================================================
+RAGService Initialization Starting...
+============================================================
+OpenAI API Key: NOT SET
+Azure OpenAI API Key: SET
+Azure OpenAI Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+AI Mock Mode Setting: False
+
+[RAG] Service Mode: REAL AI
+[OK] Loaded 5 reference use cases
+
+[RAG] Initializing REAL AI components...
+   [INFO] Importing LangChain modules...
+   [OK] LangChain modules imported successfully
+
+   [AZURE] Initializing Azure OpenAI Client...
+      Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+      Deployment: gpt-4.1
+      Model: gpt-4.1
+      API Version: 2024-12-01-preview
+   [OK] Azure OpenAI Chat client initialized
+
+   [AZURE] Initializing Azure OpenAI Embeddings...
+      Deployment: text-embedding-3-large
+      Model: text-embedding-3-large
+   [OK] Azure OpenAI Embeddings initialized
+
+   [VECTOR] Initializing Vector Store with 5 documents...
+2026-02-02 01:35:54,420 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2026-02-02 01:35:55,211 - chromadb.config - DEBUG - Starting component System
+2026-02-02 01:35:55,212 - chromadb.config - DEBUG - Starting component Posthog
+2026-02-02 01:35:55,212 - chromadb.config - DEBUG - Starting component OpenTelemetryClient
+2026-02-02 01:35:55,212 - chromadb.config - DEBUG - Starting component SimpleAssignmentPolicy
+2026-02-02 01:35:55,212 - chromadb.config - DEBUG - Starting component SqliteDB
+2026-02-02 01:35:55,221 - chromadb.config - DEBUG - Starting component LocalSegmentManager
+2026-02-02 01:35:55,221 - chromadb.config - DEBUG - Starting component SegmentAPI
+2026-02-02 01:35:55,222 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-02 01:35:55,239 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+2026-02-02 01:35:55,240 - langchain_openai.embeddings.base - WARNING - Warning: model not found. Using cl100k_base encoding.
+2026-02-02 01:35:55,827 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x000001EAD070AE80>, 'json_data': {'input': [[42172, 660, 41290, 29225, 25, 5560, 81677, 323, 445, 11237, 33289, 311, 4820, 11612, 65152, 323, 5510, 828, 1139, 37321, 13], [13084, 9365, 13149, 6465, 25, 432, 1929, 6108, 6369, 6465, 311, 4320, 6130, 20126, 1701, 5419, 6677, 2385, 13], [54644, 535, 39306, 25, 38527, 3059, 12271, 828, 311, 7168, 7241, 8060, 1603, 433, 8741, 13], [5648, 1413, 18729, 14882, 25, 20400, 35649, 2613, 8661, 3048, 369, 2204, 6130, 21282, 13], [2123, 21943, 22103, 25, 5560, 445, 11237, 82, 311, 5625, 20160, 7432, 33, 1971, 2082, 311, 8102, 13]], 'model': 'text-embedding-3-large', 'encoding_format': 'base64'}, 'headers': {'api-key': '<redacted>'}, 'idempotency_key': 'stainless-python-retry-d908ade5-6fe5-4711-b5fb-5d09ceb0b246'}
+2026-02-02 01:35:55,858 - openai._base_client - DEBUG - Sending HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview
+2026-02-02 01:35:55,858 - httpcore.connection - DEBUG - connect_tcp.started host='ai-lshcerupod.cognitiveservices.azure.com' port=443 local_address=None timeout=None socket_options=None
+2026-02-02 01:35:56,105 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001EAD024E810>
+2026-02-02 01:35:56,105 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001EACE7CBDA0> server_hostname='ai-lshcerupod.cognitiveservices.azure.com' timeout=None
+2026-02-02 01:35:56,569 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001EACFE98D10>
+2026-02-02 01:35:56,569 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-02-02 01:35:56,570 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-02-02 01:35:56,570 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-02-02 01:35:56,570 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-02-02 01:35:56,570 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-02-02 01:35:56,865 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Length', b'82472'), (b'Content-Type', b'application/json'), (b'access-control-allow-origin', b'*'), (b'apim-request-id', b'3fa96583-7816-4a0b-a058-e16d96606c88'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains; preload'), (b'x-content-type-options', b'nosniff'), (b'x-ms-region', b'South India'), (b'x-ratelimit-remaining-tokens', b'249911'), (b'x-ratelimit-limit-tokens', b'250000'), (b'x-request-id', b'8db8e3eb-ebb3-4adb-8ed5-c7ee5ca4ad2d'), (b'azureml-model-session', b'd013-20251205054128'), (b'x-envoy-upstream-service-time', b'58'), (b'x-ms-client-request-id', b'3fa96583-7816-4a0b-a058-e16d96606c88'), (b'x-ms-deployment-name', b'text-embedding-3-large'), (b'Date', b'Mon, 02 Feb 2026 01:35:55 GMT')])
+2026-02-02 01:35:56,865 - httpx - INFO - HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
+2026-02-02 01:35:56,865 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-02-02 01:35:57,315 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-02-02 01:35:57,315 - httpcore.http11 - DEBUG - response_closed.started
+2026-02-02 01:35:57,316 - httpcore.http11 - DEBUG - response_closed.complete
+2026-02-02 01:35:57,316 - openai._base_client - DEBUG - HTTP Response: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "200 OK" Headers({'content-length': '82472', 'content-type': 'application/json', 'access-control-allow-origin': '*', 'apim-request-id': '3fa96583-7816-4a0b-a058-e16d96606c88', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'x-content-type-options': 'nosniff', 'x-ms-region': 'South India', 'x-ratelimit-remaining-tokens': '249911', 'x-ratelimit-limit-tokens': '250000', 'x-request-id': '8db8e3eb-ebb3-4adb-8ed5-c7ee5ca4ad2d', 'azureml-model-session': 'd013-20251205054128', 'x-envoy-upstream-service-time': '58', 'x-ms-client-request-id': '3fa96583-7816-4a0b-a058-e16d96606c88', 'x-ms-deployment-name': 'text-embedding-3-large', 'date': 'Mon, 02 Feb 2026 01:35:55 GMT'})
+2026-02-02 01:35:57,316 - openai._base_client - DEBUG - request_id: 8db8e3eb-ebb3-4adb-8ed5-c7ee5ca4ad2d
+2026-02-02 01:35:57,358 - chromadb.config - DEBUG - Starting component LocalHnswSegment
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_info" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+INFO:     Started server process [24048]
+INFO:     Waiting for application startup.
+   [OK] Vector store initialized successfully
+
+   [OK] Real AI components initialization complete
+============================================================
+RAGService Initialization Complete - Mode: REAL
+============================================================
+
+RoadmapService running in MOCK MODE (No API Key found)
+CopilotService running in MOCK MODE (No API Key found)
+2026-02-02 01:36:00,564 - app.middleware.cors_dynamic - INFO - Detected server IP addresses: ['172.16.0.4', '48.214.144.154']
+2026-02-02 01:36:00,564 - app.middleware.cors_dynamic - INFO - Allowed CORS origins: ['http://127.0.0.1:3000', 'http://127.0.0.1:5173', 'http://172.16.0.4:3000', 'http://172.16.0.4:5173', 'http://172.16.0.4:80', 'http://172.31.33.5:5173', 'http://172.31.33.5:80', 'http://18.191.118.132:5173', 'http://18.191.118.132:80', 'http://192.168.4.247:5173', 'http://48.214.144.154:3000', 'http://48.214.144.154:5173', 'http://48.214.144.154:80', 'http://localhost:3000', 'http://localhost:5173', 'http://qbrainlabs.com', 'https://172.16.0.4:443', 'https://172.16.0.4:5173', 'https://48.214.144.154:443', 'https://48.214.144.154:5173']
+{"event": "Starting application...", "level": "info", "timestamp": "2026-02-02T01:36:00.564780Z"}
+ERROR:    Traceback (most recent call last):
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\server.py", line 78, in serve
+    await self.startup(sockets=sockets)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\server.py", line 89, in startup
+    await self.lifespan.startup()
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\lifespan\on.py", line 54, in startup
+    await self.startup_event.wait()
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\locks.py", line 213, in wait
+    await fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
+
 Traceback (most recent call last):
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 533, in _prepare_and_execute
-    prepared_stmt, attributes = await adapt_connection._prepare(
-                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 784, in _prepare
-    prepared_stmt = await self._connection.prepare(
-                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\asyncpg\connection.py", line 636, in prepare
-    return await self._prepare(
-           ^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\asyncpg\connection.py", line 654, in _prepare
-    stmt = await self._get_statement(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\asyncpg\connection.py", line 433, in _get_statement
-    statement = await self._protocol.prepare(
-                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "asyncpg\protocol\protocol.pyx", line 166, in prepare
-asyncpg.exceptions.UndefinedFunctionError: operator does not exist: character varying = uuid
-HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt
 
-The above exception was the direct cause of the following exception:
+During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
-    self.dialect.do_execute(
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
-    cursor.execute(statement, parameters)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 591, in execute
-    self._adapt_connection.await_(
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 125, in await_only
-    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 185, in greenlet_spawn
-    value = await result
-            ^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 569, in _prepare_and_execute
-    self._handle_exception(error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 520, in _handle_exception
-    self._adapt_connection._handle_exception(error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 808, in _handle_exception
-    raise translated_error from error
-sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.ProgrammingError: <class 'asyncpg.exceptions.UndefinedFunctionError'>: operator does not exist: character varying = uuid
-HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 677, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\main.py", line 26, in lifespan
+    await asyncio.wait_for(create_tables(), timeout=5.0)
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\tasks.py", line 476, in wait_for
+    await waiter
+asyncio.exceptions.CancelledError
 
-The above exception was the direct cause of the following exception:
+Process SpawnProcess-4:
+Traceback (most recent call last):
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\server.py", line 78, in serve
+    await self.startup(sockets=sockets)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\server.py", line 89, in startup
+    await self.lifespan.startup()
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\lifespan\on.py", line 54, in startup
+    await self.startup_event.wait()
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\locks.py", line 213, in wait
+    await fut
+asyncio.exceptions.CancelledError
+
+During handling of the above exception, another exception occurred:
 
 Traceback (most recent call last):
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\api\admin.py", line 513, in deactivate_user
-    await db.execute(
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 455, in execute
-    result = await greenlet_spawn(
-             ^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 190, in greenlet_spawn
-    result = context.throw(*sys.exc_info())
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2308, in execute
-    return self._execute_internal(
-           ^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2190, in _execute_internal
-    result: Result[Any] = compile_state_cls.orm_execute_statement(
-                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\orm\bulk_persistence.py", line 1617, in orm_execute_statement
-    return super().orm_execute_statement(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\orm\context.py", line 293, in orm_execute_statement
-    result = conn.execute(
-             ^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
-    return meth(
-           ^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 516, in _execute_on_connection
-    return connection._execute_clauseelement(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1639, in _execute_clauseelement
-    ret = self._execute_context(
-          ^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
-    return self._exec_single_context(
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
-    self._handle_dbapi_exception(
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2343, in _handle_dbapi_exception
-    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
-    self.dialect.do_execute(
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
-    cursor.execute(statement, parameters)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 591, in execute
-    self._adapt_connection.await_(
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 125, in await_only
-    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 185, in greenlet_spawn
-    value = await result
-            ^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 569, in _prepare_and_execute
-    self._handle_exception(error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 520, in _handle_exception
-    self._adapt_connection._handle_exception(error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 808, in _handle_exception
-    raise translated_error from error
-sqlalchemy.exc.ProgrammingError: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedFunctionError'>: operator does not exist: character varying = uuid
-HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
-[SQL: UPDATE ai_feedback SET user_id=$1::VARCHAR WHERE ai_feedback.user_id = $2::UUID]
-[parameters: (None, UUID('8ec75cd8-e168-42ed-b799-02a2f2924d88'))]
-(Background on this error at: https://sqlalche.me/e/20/f405)
-
-2026-02-01 23:12:16,717 - qbrainlabs - WARNING - HTTPException: 500 - Failed to delete user: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedFunctionError'>: operator does not exist: character varying = uuid
-HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
-[SQL: UPDATE ai_feedback SET user_id=$1::VARCHAR WHERE ai_feedback.user_id = $2::UUID]
-[parameters: (None, UUID('8ec75cd8-e168-42ed-b799-02a2f2924d88'))]
-(Background on this error at: https://sqlalche.me/e/20/f405)
-{"method": "DELETE", "path": "/api/admin/users/8ec75cd8-e168-42ed-b799-02a2f2924d88", "status_code": 500, "duration_ms": 59.22, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "error", "timestamp": "2026-02-01T23:12:16.718449Z"}
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\_subprocess.py", line 76, in subprocess_started
+    target(sockets=sockets)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\server.py", line 61, in run
+    return asyncio.run(self.serve(sockets=sockets))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 123, in run
+    raise KeyboardInterrupt()
+KeyboardInterrupt

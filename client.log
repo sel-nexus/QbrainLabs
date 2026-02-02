@@ -3,7 +3,7 @@
 > vite
 
 
-  [32m[1mVITE[22m v7.3.1[39m  [2mready in [0m[1m485[22m[2m[0m ms[22m
+  [32m[1mVITE[22m v7.3.1[39m  [2mready in [0m[1m871[22m[2m[0m ms[22m
 
   [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
   [32m➜[39m  [1mNetwork[22m: [36mhttp://172.16.0.4:[1m5173[22m/[39m
@@ -16,24 +16,24 @@ proxy error Error: connect ECONNREFUSED 127.0.0.1:8000
   address: '127.0.0.1',
   port: 8000
 }
-[2m11:10:04 PM[22m [31m[1m[vite][22m[39m [31mws proxy error:[39m
+[2m1:17:05 AM[22m [31m[1m[vite][22m[39m [31mws proxy error:[39m
 Error: connect ECONNREFUSED 127.0.0.1:8000
     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
 
-[2m[619.48ms][22m [@tailwindcss/postcss] src\index.css
-[2m[  0.15ms][22m  [2m ↳ [22mQuick bail check
-[2m[ 44.17ms][22m  [2m ↳ [22mSetup compiler
-[2m[  2.33ms][22m    [2m ↳ [22mPostCSS AST -> Tailwind CSS AST
-[2m[ 41.79ms][22m    [2m ↳ [22mCreate compiler
+[2m[419.02ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.10ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 59.10ms][22m  [2m ↳ [22mSetup compiler
+[2m[  1.74ms][22m    [2m ↳ [22mPostCSS AST -> Tailwind CSS AST
+[2m[ 57.25ms][22m    [2m ↳ [22mCreate compiler
 [2m[  0.18ms][22m  [2m ↳ [22mRegister full rebuild paths
-[2m[  3.45ms][22m  [2m ↳ [22mSetup scanner
-[2m[ 87.99ms][22m  [2m ↳ [22mScan for candidates
-[2m[ 82.19ms][22m  [2m ↳ [22mRegister dependency messages
-[2m[357.97ms][22m  [2m ↳ [22mBuild utilities
-[2m[ 30.13ms][22m  [2m ↳ [22mTransform Tailwind CSS AST into PostCSS AST
-[2m[ 12.12ms][22m  [2m ↳ [22mUpdate PostCSS AST
+[2m[  8.05ms][22m  [2m ↳ [22mSetup scanner
+[2m[ 96.22ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 70.84ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[144.72ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 30.19ms][22m  [2m ↳ [22mTransform Tailwind CSS AST into PostCSS AST
+[2m[  8.70ms][22m  [2m ↳ [22mUpdate PostCSS AST
 
-Sending Request to the Target: POST /api/auth/login
+Sending Request to the Target: GET /api/auth/me
 proxy error Error: connect ECONNREFUSED 127.0.0.1:8000
     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16) {
   errno: -4078,
@@ -42,10 +42,9 @@ proxy error Error: connect ECONNREFUSED 127.0.0.1:8000
   address: '127.0.0.1',
   port: 8000
 }
-[2m11:10:22 PM[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/auth/login[39m
+[2m1:17:12 AM[22m [31m[1m[vite][22m[39m [31mws proxy error:[39m
 Error: connect ECONNREFUSED 127.0.0.1:8000
     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
-Sending Request to the Target: POST /api/auth/login
 proxy error Error: connect ECONNREFUSED 127.0.0.1:8000
     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16) {
   errno: -4078,
@@ -54,95 +53,161 @@ proxy error Error: connect ECONNREFUSED 127.0.0.1:8000
   address: '127.0.0.1',
   port: 8000
 }
-[2m11:10:25 PM[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/auth/login[39m
+[2m1:17:12 AM[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/auth/me[39m
 Error: connect ECONNREFUSED 127.0.0.1:8000
     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+Sending Request to the Target: GET /api/auth/me
+proxy error Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16) {
+  errno: -4078,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 8000
+}
+[2m1:17:12 AM[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/auth/me[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+proxy error Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16) {
+  errno: -4078,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 8000
+}
+[2m1:17:12 AM[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+proxy error Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16) {
+  errno: -4078,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 8000
+}
+[2m1:17:12 AM[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+proxy error Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16) {
+  errno: -4078,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 8000
+}
+[2m1:17:13 AM[22m [31m[1m[vite][22m[39m [31mws proxy error:[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+proxy error Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16) {
+  errno: -4078,
+  code: 'ECONNREFUSED',
+  syscall: 'connect',
+  address: '127.0.0.1',
+  port: 8000
+}
+[2m1:17:16 AM[22m [31m[1m[vite][22m[39m [31mws proxy error:[39m
+Error: connect ECONNREFUSED 127.0.0.1:8000
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
 Sending Request to the Target: POST /api/auth/login
 Received Response from the Target: 200 /api/auth/login
 Sending Request to the Target: GET /api/admin/stats
 Received Response from the Target: 200 /api/admin/stats
 Sending Request to the Target: GET /api/admin/stats
 Received Response from the Target: 200 /api/admin/stats
-Sending Request to the Target: GET /api/admin/facilitators?
-Received Response from the Target: 200 /api/admin/facilitators?
-Sending Request to the Target: GET /api/admin/facilitators?
-Received Response from the Target: 200 /api/admin/facilitators?
-Sending Request to the Target: GET /api/admin/facilitators?
-Sending Request to the Target: GET /api/admin/workshops
-Received Response from the Target: 200 /api/admin/facilitators?
-Sending Request to the Target: GET /api/admin/facilitators?
-Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
-Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
-Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
-Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
-Received Response from the Target: 200 /api/admin/facilitators?
-Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
-Received Response from the Target: 200 /api/admin/workshops
-Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
-Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
-Sending Request to the Target: GET /api/admin/workshops
-Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
-Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
-Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
-Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
-Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
-Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
-Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
-Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
-Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
-Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
-Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
-Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
-Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
-Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
-Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
-Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
-Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
-Received Response from the Target: 200 /api/admin/workshops
 Sending Request to the Target: GET /api/facilitator/workshops
-Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
-Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
-Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
-Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
-Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
-Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
-Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
-Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
-Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
 Received Response from the Target: 200 /api/facilitator/workshops
-Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
 Sending Request to the Target: GET /api/facilitator/workshops
-Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
-Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
-Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
 Received Response from the Target: 200 /api/facilitator/workshops
-Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
-Sending Request to the Target: GET /api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-Received Response from the Target: 200 /api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-Sending Request to the Target: GET /api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-Sending Request to the Target: GET /api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-Received Response from the Target: 200 /api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-Sending Request to the Target: GET /api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-Received Response from the Target: 200 /api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-Sending Request to the Target: GET /api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-Received Response from the Target: 200 /api/workshops/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-Received Response from the Target: 200 /api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-Sending Request to the Target: GET /api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-Received Response from the Target: 200 /api/usecases/22ae53fd-81b5-4ea4-afc9-2fb5a7085a17
-Sending Request to the Target: DELETE /api/usecases/9f1a83f7-4720-4c02-b47a-0f6ba81d4e1a
-Received Response from the Target: 204 /api/usecases/9f1a83f7-4720-4c02-b47a-0f6ba81d4e1a
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: POST /api/ai/enhance
+Received Response from the Target: 200 /api/ai/enhance
+Sending Request to the Target: POST /api/ai/business-value
+Received Response from the Target: 200 /api/ai/business-value
 Sending Request to the Target: POST /api/ai/duplicates
 Received Response from the Target: 200 /api/ai/duplicates
-Sending Request to the Target: PUT /api/usecases/072a8296-506a-45af-be42-8c2948b411fd
-Received Response from the Target: 200 /api/usecases/072a8296-506a-45af-be42-8c2948b411fd
+Sending Request to the Target: POST /api/usecases/
+Received Response from the Target: 201 /api/usecases/
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/challenges/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/challenges
+Received Response from the Target: 200 /api/challenges/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/challenges
+Sending Request to the Target: GET /api/challenges/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/challenges
+Received Response from the Target: 200 /api/challenges/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/challenges
+Sending Request to the Target: POST /api/copilot/suggestions
+Received Response from the Target: 200 /api/copilot/suggestions
 Sending Request to the Target: GET /api/facilitator/workshops
 Received Response from the Target: 200 /api/facilitator/workshops
 Sending Request to the Target: GET /api/facilitator/workshops
 Received Response from the Target: 200 /api/facilitator/workshops
-Sending Request to the Target: GET /api/admin/settings
-Received Response from the Target: 200 /api/admin/settings
-Sending Request to the Target: GET /api/admin/settings
-Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/polls/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: POST /api/copilot/suggestions
+Received Response from the Target: 200 /api/copilot/suggestions
+Sending Request to the Target: GET /api/copilot/engagement/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/copilot/engagement/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/copilot/engagement/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Received Response from the Target: 200 /api/copilot/engagement/beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
 Sending Request to the Target: GET /api/knowledge-base/overview
 Received Response from the Target: 200 /api/knowledge-base/overview
 Sending Request to the Target: GET /api/knowledge-base/overview
@@ -163,85 +228,274 @@ Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b7
 Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
 Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
 Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
-Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
 Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
-Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
-Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
-Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
 Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
-Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
-Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
 Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
-Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
 Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
-Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
 Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
 Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
-Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
-Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
-Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
 Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
-Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
-Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
 Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/settings
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+[2m1:31:20 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/AdminLayout.tsx[22m
+
+[2m[230.31ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.15ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 45.39ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 27.58ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[103.39ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 34.55ms][22m  [2m ↳ [22mTransform Tailwind CSS AST into PostCSS AST
+[2m[ 18.35ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:31:59 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/AdminLayout.tsx[22m
+
+[2m[64.79ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.29ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[36.04ms][22m  [2m ↳ [22mScan for candidates
+[2m[24.33ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.22ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.72ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:32:01 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[74.62ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[43.04ms][22m  [2m ↳ [22mScan for candidates
+[2m[24.77ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.29ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 5.24ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:32:03 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/App.tsx, /src/index.css[22m
+
+[2m[215.24ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.16ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[134.01ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 65.67ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  1.29ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 13.89ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/llm-usage/summary
+Sending Request to the Target: GET /api/admin/llm-usage/by-feature
+Sending Request to the Target: GET /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/summary
+Sending Request to the Target: GET /api/admin/llm-usage/summary
+Received Response from the Target: 200 /api/admin/llm-usage/summary
+Received Response from the Target: 200 /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/by-feature
+Sending Request to the Target: GET /api/admin/llm-usage/by-feature
+Received Response from the Target: 200 /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/by-workshop
+Received Response from the Target: 200 /api/admin/llm-usage/by-feature
+Sending Request to the Target: GET /api/admin/facilitators?
 Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
 Received Response from the Target: 200 /api/admin/facilitators?
 Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
 Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
-Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
-Sending Request to the Target: GET /api/admin/facilitators?
-Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
 Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
 Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/workshops
 Received Response from the Target: 200 /api/admin/workshops
 Sending Request to the Target: GET /api/admin/workshops
 Received Response from the Target: 200 /api/admin/facilitators?
 Sending Request to the Target: GET /api/admin/facilitators?
 Received Response from the Target: 200 /api/admin/workshops
-Received Response from the Target: 200 /api/admin/facilitators?
-Sending Request to the Target: GET /api/admin/facilitators?
 Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
 Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
 Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
 Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
 Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
-Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
 Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
-Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
 Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
 Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
 Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
-Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
-Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
 Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
 Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
-Received Response from the Target: 200 /api/admin/facilitators?
 Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
-Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
 Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
-Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
-Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
-Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
 Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
-Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
-Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
 Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
-Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
-Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
 Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
 Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/knowledge-base/overview
 Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
-Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
-Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
-Sending Request to the Target: GET /api/admin/users/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/impact
-Received Response from the Target: 200 /api/admin/users/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/impact
-Sending Request to the Target: DELETE /api/admin/users/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769
-Received Response from the Target: 500 /api/admin/users/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769
+Received Response from the Target: 200 /api/knowledge-base/overview
+Sending Request to the Target: GET /api/knowledge-base/overview
+Received Response from the Target: 200 /api/knowledge-base/overview
+Sending Request to the Target: GET /api/admin/llm-usage/summary
+Sending Request to the Target: GET /api/admin/llm-usage/by-feature
+Sending Request to the Target: GET /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/summary
+Sending Request to the Target: GET /api/admin/llm-usage/summary
+Received Response from the Target: 200 /api/admin/llm-usage/by-feature
+Sending Request to the Target: GET /api/admin/llm-usage/by-feature
+Received Response from the Target: 200 /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/llm-usage/by-user
+Sending Request to the Target: GET /api/admin/llm-usage/by-workshop
+Received Response from the Target: 200 /api/admin/llm-usage/summary
+Received Response from the Target: 200 /api/admin/llm-usage/by-feature
+Received Response from the Target: 200 /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
 Sending Request to the Target: GET /api/admin/facilitators?
 Received Response from the Target: 200 /api/admin/facilitators?
 Sending Request to the Target: GET /api/admin/facilitators?
 Received Response from the Target: 200 /api/admin/facilitators?
-Sending Request to the Target: GET /api/admin/users/8ec75cd8-e168-42ed-b799-02a2f2924d88/impact
-Received Response from the Target: 200 /api/admin/users/8ec75cd8-e168-42ed-b799-02a2f2924d88/impact
-Sending Request to the Target: DELETE /api/admin/users/8ec75cd8-e168-42ed-b799-02a2f2924d88
-Received Response from the Target: 500 /api/admin/users/8ec75cd8-e168-42ed-b799-02a2f2924d88
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/llm-usage/by-feature
+Sending Request to the Target: GET /api/admin/llm-usage/summary
+Sending Request to the Target: GET /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/by-feature
+Sending Request to the Target: GET /api/admin/llm-usage/by-feature
+Received Response from the Target: 200 /api/admin/llm-usage/by-workshop
+Received Response from the Target: 200 /api/admin/llm-usage/summary
+Sending Request to the Target: GET /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/llm-usage/summary
+Received Response from the Target: 200 /api/admin/llm-usage/by-user
+Sending Request to the Target: GET /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/by-feature
+Received Response from the Target: 200 /api/admin/llm-usage/by-workshop
+Received Response from the Target: 200 /api/admin/llm-usage/summary
+Received Response from the Target: 200 /api/admin/llm-usage/by-user
