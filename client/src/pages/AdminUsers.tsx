@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 import { AdminLayout } from '../components/AdminLayout';
 import { ConfirmationModal } from '../components/ConfirmationModal';
 import { useTheme } from '../context/ThemeContext';
@@ -37,32 +38,10 @@ interface FacilitatorListResponse {
   pending_count: number;
 }
 
-const statusConfig = {
-  pending: {
-    label: 'Pending',
-    color: 'bg-yellow-100 text-yellow-800',
-    icon: Clock
-  },
-  active: {
-    label: 'Active',
-    color: 'bg-green-100 text-green-800',
-    icon: CheckCircle
-  },
-  disabled: {
-    label: 'Disabled',
-    color: 'bg-red-100 text-red-800',
-    icon: XCircle
-  },
-  suspended: {
-    label: 'Suspended',
-    color: 'bg-gray-100 text-gray-800',
-    icon: XCircle
-  },
-};
-
 export function AdminUsers() {
   const { token } = useAuth();
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const [facilitators, setFacilitators] = useState<Facilitator[]>([]);
   const [pendingCount, setPendingCount] = useState(0);
   const [total, setTotal] = useState(0);
@@ -78,6 +57,29 @@ export function AdminUsers() {
   const [isCheckingImpact, setIsCheckingImpact] = useState(false);
 
   const isLight = theme === 'light';
+
+  const statusConfig = {
+    pending: {
+      label: t('workshop.pending'),
+      color: 'bg-yellow-100 text-yellow-800',
+      icon: Clock
+    },
+    active: {
+      label: t('workshop.active'),
+      color: 'bg-green-100 text-green-800',
+      icon: CheckCircle
+    },
+    disabled: {
+      label: t('admin.disable'),
+      color: 'bg-red-100 text-red-800',
+      icon: XCircle
+    },
+    suspended: {
+      label: t('workshop.suspended', 'Suspended'),
+      color: 'bg-gray-100 text-gray-800',
+      icon: XCircle
+    },
+  };
 
   const fetchFacilitators = useCallback(async () => {
     if (!token) return;
@@ -104,12 +106,12 @@ export function AdminUsers() {
       setTotal(data.total);
       setPendingCount(data.pending_count);
     } catch (error) {
-      toast.error('Failed to load facilitators');
+      toast.error(t('admin.failedLoadUsers', 'Failed to load facilitators'));
       console.error(error);
     } finally {
       setIsLoading(false);
     }
-  }, [token, searchTerm, statusFilter]);
+  }, [token, searchTerm, statusFilter, t]);
 
   useEffect(() => {
     fetchFacilitators();
@@ -131,10 +133,10 @@ export function AdminUsers() {
 
       if (!response.ok) throw new Error('Failed to approve facilitator');
 
-      toast.success('Facilitator approved successfully');
+      toast.success(t('admin.approveSuccess', 'Facilitator approved successfully'));
       fetchFacilitators();
     } catch (error) {
-      toast.error('Failed to approve facilitator');
+      toast.error(t('admin.approveError', 'Failed to approve facilitator'));
       console.error(error);
     }
     setActionMenuOpen(null);
@@ -156,10 +158,10 @@ export function AdminUsers() {
 
       if (!response.ok) throw new Error('Failed to reject facilitator');
 
-      toast.success('Facilitator rejected');
+      toast.success(t('admin.rejectSuccess', 'Facilitator rejected'));
       fetchFacilitators();
     } catch (error) {
-      toast.error('Failed to reject facilitator');
+      toast.error(t('admin.rejectError', 'Failed to reject facilitator'));
       console.error(error);
     }
     setActionMenuOpen(null);
@@ -181,10 +183,10 @@ export function AdminUsers() {
 
       if (!response.ok) throw new Error('Failed to disable facilitator');
 
-      toast.success('Facilitator disabled');
+      toast.success(t('admin.disableSuccess', 'Facilitator disabled'));
       fetchFacilitators();
     } catch (error) {
-      toast.error('Failed to disable facilitator');
+      toast.error(t('admin.disableError', 'Failed to disable facilitator'));
       console.error(error);
     }
     setActionMenuOpen(null);
@@ -206,10 +208,10 @@ export function AdminUsers() {
 
       if (!response.ok) throw new Error('Failed to enable facilitator');
 
-      toast.success('Facilitator enabled');
+      toast.success(t('admin.enableSuccess', 'Facilitator enabled'));
       fetchFacilitators();
     } catch (error) {
-      toast.error('Failed to enable facilitator');
+      toast.error(t('admin.enableError', 'Failed to enable facilitator'));
       console.error(error);
     }
     setActionMenuOpen(null);
@@ -219,7 +221,7 @@ export function AdminUsers() {
     setUserToDelete(facilitatorId);
     setActionMenuOpen(null);
 
-    const defaultMsg = "Are you sure you want to delete this user? This action cannot be undone and will remove all associated data, including the user's workshops.";
+    const defaultMsg = t('admin.deleteUserConfirm');
     setDeleteMessage(defaultMsg);
 
     setIsCheckingImpact(true);
@@ -236,9 +238,9 @@ export function AdminUsers() {
       if (response.ok) {
         const impact = await response.json();
         if (impact.warning_message) {
-          setDeleteMessage(`${impact.warning_message} Are you sure you want to proceed?`);
+          setDeleteMessage(`${impact.warning_message} ${t('common.confirmProceed', 'Are you sure you want to proceed?')}`);
         } else if (impact.has_recent_activity) {
-          setDeleteMessage(`This user has been active recently. ${defaultMsg}`);
+          setDeleteMessage(`${t('admin.recentActivityWarning', 'This user has been active recently.')} ${defaultMsg}`);
         }
       }
     } catch (error) {
@@ -268,11 +270,11 @@ export function AdminUsers() {
         throw new Error(data.detail || 'Failed to delete user');
       }
 
-      toast.success('User deleted successfully');
+      toast.success(t('admin.deleteSuccess', 'User deleted successfully'));
       setFacilitators(prev => prev.filter(f => f.id !== userToDelete));
       fetchFacilitators(); // Refresh stats
     } catch (error) {
-      toast.error(error instanceof Error ? error.message : 'Failed to delete user');
+      toast.error(error instanceof Error ? error.message : t('admin.deleteError', 'Failed to delete user'));
       console.error(error);
     }
     setDeleteModalOpen(false);
@@ -285,17 +287,17 @@ export function AdminUsers() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className={`rounded-xl p-4 border ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
           <div className={`text-2xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{total}</div>
-          <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Total Users</div>
+          <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.totalUsers')}</div>
         </div>
         <div className={`rounded-xl p-4 border ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
           <div className="text-2xl font-bold text-yellow-500">{pendingCount}</div>
-          <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Pending Approval</div>
+          <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.pendingApproval')}</div>
         </div>
         <div className={`rounded-xl p-4 border ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
           <div className="text-2xl font-bold text-green-500">
             {facilitators.filter(f => f.status === 'active').length}
           </div>
-          <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Active Users</div>
+          <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.activeUsers')}</div>
         </div>
       </div>
 
@@ -305,7 +307,7 @@ export function AdminUsers() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             type="text"
-            placeholder="Search by name or email..."
+            placeholder={t('admin.searchPlaceholder') as string}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className={`w-full pl-10 pr-4 py-2 rounded-lg border focus:outline-none focus:border-amber-500/50 ${isLight ? 'bg-white border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-surface-800 border-white/10 text-white placeholder-gray-400'}`}
@@ -316,31 +318,31 @@ export function AdminUsers() {
           onChange={(e) => setStatusFilter(e.target.value)}
           className={`px-4 py-2 rounded-lg border focus:outline-none focus:border-amber-500/50 ${isLight ? 'bg-white border-gray-200 text-gray-900' : 'bg-surface-800 border-white/10 text-white'}`}
         >
-          <option value="">All Status</option>
-          <option value="pending">Pending</option>
-          <option value="active">Active</option>
-          <option value="disabled">Disabled</option>
+          <option value="">{t('admin.allStatus')}</option>
+          <option value="pending">{t('workshop.pending')}</option>
+          <option value="active">{t('workshop.active')}</option>
+          <option value="disabled">{t('admin.disable')}</option>
         </select>
       </div>
 
       {/* Users Table */}
       {isLoading ? (
-        <div className={`text-center py-12 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Loading users...</div>
+        <div className={`text-center py-12 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('common.loading')}</div>
       ) : facilitators.length === 0 ? (
         <div className="text-center py-12">
           <Building2 className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-          <p className={isLight ? 'text-gray-500' : 'text-gray-400'}>No users found</p>
+          <p className={isLight ? 'text-gray-500' : 'text-gray-400'}>{t('admin.noUsersFound')}</p>
         </div>
       ) : (
         <div className={`rounded-xl border overflow-hidden ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
           <table className="w-full">
             <thead>
               <tr className={`border-b ${isLight ? 'border-gray-200' : 'border-white/10'}`}>
-                <th className={`text-left py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>User</th>
-                <th className={`text-left py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Organization</th>
-                <th className={`text-left py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Status</th>
-                <th className={`text-left py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Workshops</th>
-                <th className={`text-right py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Actions</th>
+                <th className={`text-left py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.user')}</th>
+                <th className={`text-left py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.organization')}</th>
+                <th className={`text-left py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.status')}</th>
+                <th className={`text-left py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.workshops')}</th>
+                <th className={`text-right py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.actions')}</th>
               </tr>
             </thead>
             <tbody>
@@ -384,14 +386,14 @@ export function AdminUsers() {
                                   className={`w-full flex items-center gap-2 px-4 py-2 text-sm text-green-600 ${isLight ? 'hover:bg-gray-50' : 'hover:bg-white/5'}`}
                                 >
                                   <UserCheck className="w-4 h-4" />
-                                  Approve
+                                  {t('admin.approve')}
                                 </button>
                                 <button
                                   onClick={() => handleReject(facilitator.id)}
                                   className={`w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 ${isLight ? 'hover:bg-gray-50' : 'hover:bg-white/5'}`}
                                 >
                                   <UserX className="w-4 h-4" />
-                                  Reject
+                                  {t('admin.reject')}
                                 </button>
                               </>
                             )}
@@ -401,7 +403,7 @@ export function AdminUsers() {
                                 className={`w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 ${isLight ? 'hover:bg-gray-50' : 'hover:bg-white/5'}`}
                               >
                                 <UserX className="w-4 h-4" />
-                                Disable
+                                {t('admin.disable')}
                               </button>
                             )}
                             {facilitator.status === 'disabled' && (
@@ -410,7 +412,7 @@ export function AdminUsers() {
                                 className={`w-full flex items-center gap-2 px-4 py-2 text-sm text-green-600 ${isLight ? 'hover:bg-gray-50' : 'hover:bg-white/5'}`}
                               >
                                 <UserCheck className="w-4 h-4" />
-                                Enable
+                                {t('admin.enable')}
                               </button>
                             )}
 
@@ -421,7 +423,7 @@ export function AdminUsers() {
                               className={`w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 ${isLight ? 'hover:bg-gray-50' : 'hover:bg-white/5'}`}
                             >
                               <UserX className="w-4 h-4" />
-                              Delete User
+                              {t('admin.deleteUser')}
                             </button>
                           </div>
                         )}
@@ -439,10 +441,10 @@ export function AdminUsers() {
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         onConfirm={handleConfirmDelete}
-        title="Delete User"
-        message={isCheckingImpact ? "Checking user data..." : deleteMessage}
-        confirmText="Delete User"
-        cancelText="Cancel"
+        title={t('admin.deleteUser')}
+        message={isCheckingImpact ? t('admin.checkingImpact') : deleteMessage}
+        confirmText={t('admin.deleteUser')}
+        cancelText={t('common.cancel')}
         variant="danger"
       />
     </AdminLayout>

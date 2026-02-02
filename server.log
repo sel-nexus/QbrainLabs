@@ -794,3 +794,638 @@ Traceback (most recent call last):
   File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\asyncio\runners.py", line 123, in run
     raise KeyboardInterrupt()
 KeyboardInterrupt
+2026-02-02 01:36:10,904 - qbrainlabs - INFO - Exception handlers registered
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-02-02T01:36:10.909274Z"}
+============================================================
+RAGService Initialization Starting...
+============================================================
+OpenAI API Key: NOT SET
+Azure OpenAI API Key: SET
+Azure OpenAI Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+AI Mock Mode Setting: False
+
+[RAG] Service Mode: REAL AI
+[OK] Loaded 5 reference use cases
+
+[RAG] Initializing REAL AI components...
+   [INFO] Importing LangChain modules...
+   [OK] LangChain modules imported successfully
+
+   [AZURE] Initializing Azure OpenAI Client...
+      Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+      Deployment: gpt-4.1
+      Model: gpt-4.1
+      API Version: 2024-12-01-preview
+   [OK] Azure OpenAI Chat client initialized
+
+   [AZURE] Initializing Azure OpenAI Embeddings...
+      Deployment: text-embedding-3-large
+      Model: text-embedding-3-large
+   [OK] Azure OpenAI Embeddings initialized
+
+   [VECTOR] Initializing Vector Store with 5 documents...
+2026-02-02 01:36:18,330 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2026-02-02 01:36:18,954 - chromadb.config - DEBUG - Starting component System
+2026-02-02 01:36:18,954 - chromadb.config - DEBUG - Starting component Posthog
+2026-02-02 01:36:18,954 - chromadb.config - DEBUG - Starting component OpenTelemetryClient
+2026-02-02 01:36:18,954 - chromadb.config - DEBUG - Starting component SimpleAssignmentPolicy
+2026-02-02 01:36:18,955 - chromadb.config - DEBUG - Starting component SqliteDB
+2026-02-02 01:36:18,961 - chromadb.config - DEBUG - Starting component LocalSegmentManager
+2026-02-02 01:36:18,961 - chromadb.config - DEBUG - Starting component SegmentAPI
+2026-02-02 01:36:18,963 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-02 01:36:18,977 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+2026-02-02 01:36:18,978 - langchain_openai.embeddings.base - WARNING - Warning: model not found. Using cl100k_base encoding.
+2026-02-02 01:36:19,752 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x00000180503AED40>, 'json_data': {'input': [[42172, 660, 41290, 29225, 25, 5560, 81677, 323, 445, 11237, 33289, 311, 4820, 11612, 65152, 323, 5510, 828, 1139, 37321, 13], [13084, 9365, 13149, 6465, 25, 432, 1929, 6108, 6369, 6465, 311, 4320, 6130, 20126, 1701, 5419, 6677, 2385, 13], [54644, 535, 39306, 25, 38527, 3059, 12271, 828, 311, 7168, 7241, 8060, 1603, 433, 8741, 13], [5648, 1413, 18729, 14882, 25, 20400, 35649, 2613, 8661, 3048, 369, 2204, 6130, 21282, 13], [2123, 21943, 22103, 25, 5560, 445, 11237, 82, 311, 5625, 20160, 7432, 33, 1971, 2082, 311, 8102, 13]], 'model': 'text-embedding-3-large', 'encoding_format': 'base64'}, 'headers': {'api-key': '<redacted>'}, 'idempotency_key': 'stainless-python-retry-2d8fdceb-0113-4894-b41c-0dc1aaa1af89'}
+2026-02-02 01:36:19,766 - openai._base_client - DEBUG - Sending HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview
+2026-02-02 01:36:19,768 - httpcore.connection - DEBUG - connect_tcp.started host='ai-lshcerupod.cognitiveservices.azure.com' port=443 local_address=None timeout=None socket_options=None
+2026-02-02 01:36:20,004 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000001804FFC1490>
+2026-02-02 01:36:20,004 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000001804E47FEC0> server_hostname='ai-lshcerupod.cognitiveservices.azure.com' timeout=None
+2026-02-02 01:36:20,475 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000018050213910>
+2026-02-02 01:36:20,475 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-02-02 01:36:20,476 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-02-02 01:36:20,476 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-02-02 01:36:20,476 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-02-02 01:36:20,476 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-02-02 01:36:20,785 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Length', b'82472'), (b'Content-Type', b'application/json'), (b'access-control-allow-origin', b'*'), (b'apim-request-id', b'08f22272-f862-4aa5-8f79-0180000fea89'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains; preload'), (b'x-content-type-options', b'nosniff'), (b'x-ms-region', b'South India'), (b'x-ratelimit-remaining-tokens', b'249822'), (b'x-ratelimit-limit-tokens', b'250000'), (b'x-request-id', b'59865351-676c-4001-8cf9-f5968ab6beb0'), (b'azureml-model-session', b'd013-20251205054128'), (b'x-envoy-upstream-service-time', b'61'), (b'x-ms-client-request-id', b'08f22272-f862-4aa5-8f79-0180000fea89'), (b'x-ms-deployment-name', b'text-embedding-3-large'), (b'Date', b'Mon, 02 Feb 2026 01:36:20 GMT')])
+2026-02-02 01:36:20,786 - httpx - INFO - HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
+2026-02-02 01:36:20,786 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-02-02 01:36:21,247 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-02-02 01:36:21,248 - httpcore.http11 - DEBUG - response_closed.started
+2026-02-02 01:36:21,248 - httpcore.http11 - DEBUG - response_closed.complete
+2026-02-02 01:36:21,249 - openai._base_client - DEBUG - HTTP Response: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "200 OK" Headers({'content-length': '82472', 'content-type': 'application/json', 'access-control-allow-origin': '*', 'apim-request-id': '08f22272-f862-4aa5-8f79-0180000fea89', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'x-content-type-options': 'nosniff', 'x-ms-region': 'South India', 'x-ratelimit-remaining-tokens': '249822', 'x-ratelimit-limit-tokens': '250000', 'x-request-id': '59865351-676c-4001-8cf9-f5968ab6beb0', 'azureml-model-session': 'd013-20251205054128', 'x-envoy-upstream-service-time': '61', 'x-ms-client-request-id': '08f22272-f862-4aa5-8f79-0180000fea89', 'x-ms-deployment-name': 'text-embedding-3-large', 'date': 'Mon, 02 Feb 2026 01:36:20 GMT'})
+2026-02-02 01:36:21,249 - openai._base_client - DEBUG - request_id: 59865351-676c-4001-8cf9-f5968ab6beb0
+2026-02-02 01:36:21,273 - chromadb.config - DEBUG - Starting component LocalHnswSegment
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_info" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+INFO:     Started server process [19100]
+INFO:     Waiting for application startup.
+   [OK] Vector store initialized successfully
+
+   [OK] Real AI components initialization complete
+============================================================
+RAGService Initialization Complete - Mode: REAL
+============================================================
+
+RoadmapService running in MOCK MODE (No API Key found)
+CopilotService running in MOCK MODE (No API Key found)
+2026-02-02 01:36:24,222 - app.middleware.cors_dynamic - INFO - Detected server IP addresses: ['172.16.0.4', '48.214.144.154']
+2026-02-02 01:36:24,222 - app.middleware.cors_dynamic - INFO - Allowed CORS origins: ['http://127.0.0.1:3000', 'http://127.0.0.1:5173', 'http://172.16.0.4:3000', 'http://172.16.0.4:5173', 'http://172.16.0.4:80', 'http://172.31.33.5:5173', 'http://172.31.33.5:80', 'http://18.191.118.132:5173', 'http://18.191.118.132:80', 'http://192.168.4.247:5173', 'http://48.214.144.154:3000', 'http://48.214.144.154:5173', 'http://48.214.144.154:80', 'http://localhost:3000', 'http://localhost:5173', 'http://qbrainlabs.com', 'https://172.16.0.4:443', 'https://172.16.0.4:5173', 'https://48.214.144.154:443', 'https://48.214.144.154:5173']
+{"event": "Starting application...", "level": "info", "timestamp": "2026-02-02T01:36:24.223261Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-02-02T01:36:24.423686Z"}
+INFO:     Application startup complete.
+INFO:     ('127.0.0.1', 55621) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     ('127.0.0.1', 64665) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection open
+INFO:     connection closed
+Client connected: FBYqSvj6f9GOWpRSAAAC (unauthenticated - participant access)
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-02-02T01:36:32.340005Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 635.55, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:36:32.976174Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 12.27, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:36:32.998972Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 37.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:36:38.097449Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 16.3, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:36:38.128303Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 10.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:36:39.423495Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 16.16, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:36:39.460718Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 35.88, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:44.464061Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 15.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:44.490031Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 47.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:50.048337Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 25.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:50.085493Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 71.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:51.330060Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 351.5, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:51.711071Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 1051.27, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:52.328831Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 747.9, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:52.331702Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 763.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:52.347277Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 765.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:52.348307Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 768.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:52.351988Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 126.98, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:52.360871Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 148.27, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:52.578918Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 172.51, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:52.653186Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 192.22, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:52.694502Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 189.55, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:52.718013Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 390.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:52.820321Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 353.63, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:52.834426Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 302.98, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:53.196088Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 219.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:53.209234Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 220.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:53.227208Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 149.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:53.338825Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 20.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:56.205572Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 16.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:56.235374Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 38.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:57.047074Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 50.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:57.112577Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 22.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:58.616607Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 54.3, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:58.639157Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 42.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:58.683266Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 42.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:58.716743Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 163.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:58.911861Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 191.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:58.954296Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 193.76, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:58.955817Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 155.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:58.961470Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 117.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:58.969360Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 202.23, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:59.008221Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 83.3, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:59.112933Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 83.23, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:59.128924Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 88.14, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:59.136574Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 78.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:59.142595Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 57.49, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:59.147655Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 55.14, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:59.155041Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 46.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:59.233798Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 48.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:59.235330Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 44.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:59.239416Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 27.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:59.250495Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 29.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:59.257674Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 133.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:59.429963Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 146.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:59.431480Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 144.61, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:59.445431Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 67.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:59.504167Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 21.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:37:59.608448Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 239.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:00.439671Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 225.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:00.460516Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 186.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:00.474067Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 193.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:00.481554Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 205.53, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:00.798427Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 202.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:00.843199Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 171.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:00.850818Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 189.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:00.863867Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 152.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:01.228240Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 75.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:01.411457Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 29.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:01.986618Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 34.82, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:02.035541Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 17.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:02.947333Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 17.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:03.003358Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 23.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:06.871912Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 16.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:06.901152Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 27.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:16.541610Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 42.35, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:16.546269Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 32.98, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:16.598678Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 40.88, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:16.610470Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 104.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:16.740401Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 104.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:16.740401Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 91.38, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:16.742401Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 84.6, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:16.744921Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 85.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:16.745944Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 86.77, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:16.747476Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 337.35, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:17.182704Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 368.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:17.212095Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 270.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:17.221093Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 271.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:17.235615Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 227.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:17.241678Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 228.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:17.242676Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 207.82, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:17.643520Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 214.33, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:17.651082Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 157.33, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:17.661718Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 147.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:17.665197Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 148.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:17.666748Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 149.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:17.950272Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 123.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:17.954918Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 123.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:17.981741Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 124.9, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:17.982270Z"}
+{"method": "GET", "path": "/api/admin/users/8ec75cd8-e168-42ed-b799-02a2f2924d88/impact", "status_code": 200, "duration_ms": 46.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:53.288106Z"}
+Error deleting user: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedFunctionError'>: operator does not exist: character varying = uuid
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+[SQL: UPDATE ai_feedback SET user_id=$1::VARCHAR WHERE ai_feedback.user_id = $2::UUID]
+[parameters: (None, UUID('8ec75cd8-e168-42ed-b799-02a2f2924d88'))]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+Traceback (most recent call last):
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 533, in _prepare_and_execute
+    prepared_stmt, attributes = await adapt_connection._prepare(
+                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 784, in _prepare
+    prepared_stmt = await self._connection.prepare(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\asyncpg\connection.py", line 636, in prepare
+    return await self._prepare(
+           ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\asyncpg\connection.py", line 654, in _prepare
+    stmt = await self._get_statement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\asyncpg\connection.py", line 433, in _get_statement
+    statement = await self._protocol.prepare(
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "asyncpg\protocol\protocol.pyx", line 166, in prepare
+asyncpg.exceptions.UndefinedFunctionError: operator does not exist: character varying = uuid
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 591, in execute
+    self._adapt_connection.await_(
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 125, in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 185, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 569, in _prepare_and_execute
+    self._handle_exception(error)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 520, in _handle_exception
+    self._adapt_connection._handle_exception(error)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 808, in _handle_exception
+    raise translated_error from error
+sqlalchemy.dialects.postgresql.asyncpg.AsyncAdapt_asyncpg_dbapi.ProgrammingError: <class 'asyncpg.exceptions.UndefinedFunctionError'>: operator does not exist: character varying = uuid
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\api\admin.py", line 518, in deactivate_user
+    await db.execute(
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 455, in execute
+    result = await greenlet_spawn(
+             ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 190, in greenlet_spawn
+    result = context.throw(*sys.exc_info())
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2308, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2190, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\orm\bulk_persistence.py", line 1617, in orm_execute_statement
+    return super().orm_execute_statement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\orm\context.py", line 293, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 516, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1639, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2343, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\engine\default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 591, in execute
+    self._adapt_connection.await_(
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 125, in await_only
+    return current.driver.switch(awaitable)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 185, in greenlet_spawn
+    value = await result
+            ^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 569, in _prepare_and_execute
+    self._handle_exception(error)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 520, in _handle_exception
+    self._adapt_connection._handle_exception(error)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\sqlalchemy\dialects\postgresql\asyncpg.py", line 808, in _handle_exception
+    raise translated_error from error
+sqlalchemy.exc.ProgrammingError: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedFunctionError'>: operator does not exist: character varying = uuid
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+[SQL: UPDATE ai_feedback SET user_id=$1::VARCHAR WHERE ai_feedback.user_id = $2::UUID]
+[parameters: (None, UUID('8ec75cd8-e168-42ed-b799-02a2f2924d88'))]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+
+2026-02-02 01:38:54,750 - qbrainlabs - WARNING - HTTPException: 500 - Failed to delete user: (sqlalchemy.dialects.postgresql.asyncpg.ProgrammingError) <class 'asyncpg.exceptions.UndefinedFunctionError'>: operator does not exist: character varying = uuid
+HINT:  No operator matches the given name and argument types. You might need to add explicit type casts.
+[SQL: UPDATE ai_feedback SET user_id=$1::VARCHAR WHERE ai_feedback.user_id = $2::UUID]
+[parameters: (None, UUID('8ec75cd8-e168-42ed-b799-02a2f2924d88'))]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+{"method": "DELETE", "path": "/api/admin/users/8ec75cd8-e168-42ed-b799-02a2f2924d88", "status_code": 500, "duration_ms": 95.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "error", "timestamp": "2026-02-02T01:38:54.751914Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 8.85, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:59.408444Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 9.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:38:59.429588Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 27.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:00.380184Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 34.7, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:00.424846Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 13.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:03.298382Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 27.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:03.337255Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 15.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:07.331952Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 20.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:07.368469Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 29.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:10.196207Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 41.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:10.202028Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 83.88, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:10.303586Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 177.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:10.440194Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 126.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:10.455851Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 127.33, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:10.455851Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 127.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:10.464651Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 129.38, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:10.466457Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 65.27, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:10.523301Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 233.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:10.751771Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 281.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:10.890227Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 281.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:10.891223Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 287.61, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:10.917789Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 290.85, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:10.921492Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 243.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:11.094513Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 298.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:11.375742Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 151.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:11.547887Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 112.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:11.614604Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 66.82, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:11.726647Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 28.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:18.106640Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 39.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:18.109163Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 26.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:20.266133Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 26.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:20.271087Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 23.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:22.370934Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 18.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:22.372742Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 19.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:24.582844Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 17.79, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:24.587503Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 41.41, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:27.344578Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 62.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:27.348578Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 16.53, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:30.108893Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 21.51, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:30.152254Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 20.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:31.547613Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 15.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:31.578511Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 26.5, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:32.810007Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 25.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:32.852828Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 52.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:33.680468Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 13.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:33.703304Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 17.85, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:34.609973Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 17.38, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:34.644652Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 17.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:37.162020Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 20.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:37.195391Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 16.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:37.926912Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 15.71, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:37.966640Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 30.49, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:38.882522Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 27.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:38.886082Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 27.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:38.887114Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 28.58, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:38.887631Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 30.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:38.951144Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 24.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:38.954764Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 29.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:38.955785Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 27.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:38.958335Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 6.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:39.915196Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 16.53, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:39.942811Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 29.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:40.986127Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 41.41, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:40.989369Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 35.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.046297Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 87.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.104616Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 71.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.167807Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 74.51, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.170545Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 79.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.174734Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 71.46, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.177301Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 102.03, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.211594Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 167.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.391698Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 148.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.439926Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 104.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.456516Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 104.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.456516Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 109.38, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.461609Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 74.44, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.463321Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 66.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.538781Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 39.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.569138Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 48.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.577682Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 48.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.578678Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 45.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.631990Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 23.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:41.679246Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 25.35, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:42.441589Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 20.37, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:42.478947Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 15.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:43.298976Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 16.6, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:43.333749Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 16.5, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:44.501397Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 17.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:44.532698Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 13.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:45.769619Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 13.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:45.799017Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 18.61, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:46.494364Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 14.93, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:46.529413Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 15.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:47.518200Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 19.46, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:47.559809Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 37.71, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:48.795881Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 20.79, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:48.830171Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 25.82, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:49.791676Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 42.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:49.794673Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 38.03, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:49.845584Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 54.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:49.881024Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 94.04, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:49.977509Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 87.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:49.987285Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 72.49, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:49.993991Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 82.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:50.007141Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 82.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:50.008172Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 62.06, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:50.050785Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 131.14, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:50.186729Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 135.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:50.191722Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 129.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:50.199030Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 111.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:50.212643Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 112.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:50.214415Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 85.8, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:50.282676Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 107.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:50.404585Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 95.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:50.412292Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 153.42, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:50.472988Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 154.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:50.483147Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 182.16, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:50.593133Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 48.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:50.748120Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 31.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:51.003115Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 10.63, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:51.041498Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 37.33, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:51.992961Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 25.93, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:52.004655Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 29.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:52.008873Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 24.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:52.011412Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 43.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:52.067486Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 33.93, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:52.073531Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 27.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:52.077579Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 23.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:52.080617Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 11.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:53.168907Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 23.35, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:53.229267Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 25.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:54.351637Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 14.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:54.378681Z"}
+2026-02-02 01:39:55,779 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 3.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T01:39:55.780994Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 14.93, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:55.816377Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 17.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:39:55.845050Z"}
+INFO:     connection closed
+Client disconnected: FBYqSvj6f9GOWpRSAAAC
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 7.14, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:45:07.105204Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 6.44, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:45:07.119408Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 14.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:45:07.165880Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 16.03, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:45:07.192825Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 17.11, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:45:32.012414Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 16.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:46:06.856450Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 38.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:46:28.603973Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 78.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:46:28.717842Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 45.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:46:28.724740Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 53.46, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:46:28.806547Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 7.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:46:33.654462Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 13.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:46:33.696668Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 30.23, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:46:33.753901Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 11.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:46:33.778455Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 40.89, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:47:46.562160Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 17.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:47:46.595682Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 6.38, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:50:02.513110Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 5.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:50:02.527891Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 14.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:50:02.581919Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 13.11, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:50:02.604141Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 6.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:50:34.701037Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 5.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:50:34.714630Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 14.3, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:50:34.768319Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 15.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:50:34.792672Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 18.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:51:50.904793Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 6.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:52:11.887106Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 4.93, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:52:11.902171Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 14.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:52:11.975909Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 12.79, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:52:11.998265Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 15.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:52:12.024198Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 7.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:52:39.755137Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 5.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:52:39.769561Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 13.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:52:39.841190Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 15.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:52:39.867471Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 17.82, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:52:39.894263Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 17.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:53:55.906464Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 9.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:54:06.072506Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 5.49, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:54:06.085754Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 17.93, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:54:06.167143Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 13.03, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:54:06.190382Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 16.61, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:54:06.218061Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 9.51, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:55:18.450145Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 5.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:55:18.465684Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 14.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:55:18.532905Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 14.49, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:55:18.557923Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 17.46, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:55:18.585027Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 7.53, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:55:27.207158Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 22.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:55:27.224517Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 8.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:55:27.233222Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 16.11, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:55:27.258454Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 13.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:55:27.283049Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 22.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:56:31.004187Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 7.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:57:56.676047Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 5.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:57:56.692305Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 16.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:57:56.756961Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 17.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T01:57:56.784142Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 21.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:29.712617Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 51.44, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:29.776248Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 18.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:33.619865Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 17.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:33.651563Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 10.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:35.709742Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 20.98, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:35.745185Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 68.76, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:39.824010Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 18.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:39.829732Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 21.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:39.832807Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 25.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:39.833840Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 43.42, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:39.902248Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 27.84, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:39.906247Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 34.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:39.906247Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 30.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:39.908311Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 17.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:43.897686Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 18.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:43.929943Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 5.71, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:45.065157Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 25.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:45.121529Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 34.41, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.094175Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 47.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.102076Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 53.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.168886Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 168.82, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.310605Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 102.23, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.376477Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 80.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.380999Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 81.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.382886Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 82.33, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.384491Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 93.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.401194Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 115.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.527097Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 73.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.566034Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 59.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.567581Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 73.27, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.580199Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 68.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.585077Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 70.84, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.592289Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 71.51, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.668096Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 42.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.692721Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 41.27, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.698347Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 41.35, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.701381Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 49.77, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.717464Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 79.35, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.805333Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 19.16, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:46.856794Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 56.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:47.150748Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 97.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:47.354661Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 22.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:00:51.252868Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 21.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:01:01.720493Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 25.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:01:18.453911Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 9.9, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:01:20.395550Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 10.98, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:01:20.437473Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 9.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:02:29.195031Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 7.69, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:02:29.213543Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 8.74, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:02:29.259288Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 8.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:02:29.276383Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 6.51, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:02:34.795195Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 5.41, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:02:34.812094Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 14.37, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:02:34.868206Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 9.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:02:34.887817Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 12.37, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:03:07.667409Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 6.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:03:07.688241Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 10.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:03:07.781918Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 10.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:03:07.804725Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 10.16, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:04:37.911225Z"}
+2026-02-02 02:06:18,635 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 9.7, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T02:06:18.641642Z"}
+{"method": "POST", "path": "/api/auth/logout", "status_code": 200, "duration_ms": 14.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:07:14.721420Z"}
+2026-02-02 02:08:32,218 - multipart.multipart - DEBUG - Calling on_field_start with no data
+2026-02-02 02:08:32,218 - multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2026-02-02 02:08:32,218 - multipart.multipart - DEBUG - Calling on_field_data with data[9:31]
+2026-02-02 02:08:32,218 - multipart.multipart - DEBUG - Calling on_field_end with no data
+2026-02-02 02:08:32,218 - multipart.multipart - DEBUG - Calling on_field_start with no data
+2026-02-02 02:08:32,218 - multipart.multipart - DEBUG - Calling on_field_name with data[32:40]
+2026-02-02 02:08:32,218 - multipart.multipart - DEBUG - Calling on_field_data with data[41:49]
+2026-02-02 02:08:32,218 - multipart.multipart - DEBUG - Calling on_field_end with no data
+2026-02-02 02:08:32,219 - multipart.multipart - DEBUG - Calling on_end with no data
+{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 625.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:08:32.841559Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 156.33, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:08:33.063927Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 247.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:08:33.330154Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 126.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:09:22.734664Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 126.53, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:09:22.871602Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 30.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:09:30.027858Z"}
+2026-02-02 02:09:31,294 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 3.11, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T02:09:31.294668Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 32.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:09:33.898758Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 21.58, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:09:36.530549Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 13.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:09:38.010569Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 17.5, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:09:38.041957Z"}
+2026-02-02 02:09:40,971 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.06, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T02:09:40.971741Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 19.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:09.778527Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 24.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:09.816619Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 20.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:11.885571Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 26.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:11.924730Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 29.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:16.575144Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 19.61, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:16.615267Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 18.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:17.539416Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 17.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:17.570812Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 31.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:18.549779Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 34.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:18.595027Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 22.88, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:19.357053Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 35.77, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:19.430918Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 19.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:19.937539Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 27.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:19.981250Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 18.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:20.560243Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 20.5, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:20.598714Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 32.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:21.348207Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 31.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:21.394497Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 19.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:22.192511Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 67.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:22.230888Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 37.04, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:22.263134Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 41.77, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:22.300674Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 105.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:22.476199Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 106.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:22.477193Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 87.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:22.480854Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 110.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:22.481558Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 85.77, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:22.486998Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 58.6, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:22.488745Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 67.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:22.602750Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 67.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:22.602750Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 69.38, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:22.605650Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 48.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:22.608797Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 57.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:22.624895Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 58.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:22.629471Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 333.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:23.085393Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 339.9, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:23.096164Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 328.46, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:23.110115Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 288.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:23.156306Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 292.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:23.159759Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 168.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:23.208035Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 305.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:23.610247Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 320.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:23.648373Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 306.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:23.685812Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 318.3, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:23.696501Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 159.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-02T02:10:23.704398Z"}
+2026-02-02 02:10:36,619 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T02:10:36.619334Z"}
+2026-02-02 02:10:47,574 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api", "status_code": 404, "duration_ms": 2.63, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-02T02:10:47.575272Z"}

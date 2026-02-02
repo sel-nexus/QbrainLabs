@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import {
     Users,
@@ -29,6 +30,7 @@ interface SystemStats {
 
 export function AdminPanel() {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const { theme } = useTheme();
     const [stats, setStats] = useState<SystemStats | null>(null);
     const [loading, setLoading] = useState(true);
@@ -55,7 +57,7 @@ export function AdminPanel() {
             setStats(data);
         } catch (error: any) {
             console.error('Error fetching stats:', error);
-            toast.error('Failed to load system statistics');
+            toast.error(t('common.error'));
         } finally {
             setLoading(false);
         }
@@ -64,7 +66,7 @@ export function AdminPanel() {
     if (loading) {
         return (
             <div className={`min-h-screen flex items-center justify-center ${isLight ? 'bg-gray-50' : 'bg-surface-900'}`}>
-                <div className={`text-xl ${isLight ? 'text-gray-900' : 'text-white'}`}>Loading...</div>
+                <div className={`text-xl ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('common.loading')}</div>
             </div>
         );
     }
@@ -82,7 +84,7 @@ export function AdminPanel() {
                         <TrendingUp className="w-5 h-5 text-green-400" />
                     </div>
                     <div className={`text-3xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{stats?.total_workshops || 0}</div>
-                    <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Total Workshops</div>
+                    <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.workshops')}</div>
                 </div>
 
                 {/* Total Users */}
@@ -94,7 +96,7 @@ export function AdminPanel() {
                         <TrendingUp className="w-5 h-5 text-green-400" />
                     </div>
                     <div className={`text-3xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{stats?.total_users || 0}</div>
-                    <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Facilitators</div>
+                    <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.facilitators')}</div>
                 </div>
 
                 {/* Total Participants */}
@@ -106,7 +108,7 @@ export function AdminPanel() {
                         <TrendingUp className="w-5 h-5 text-green-400" />
                     </div>
                     <div className={`text-3xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{stats?.total_participants || 0}</div>
-                    <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Total Participants</div>
+                    <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('workshop.participants')}</div>
                 </div>
 
                 {/* Active Workshops */}
@@ -118,48 +120,49 @@ export function AdminPanel() {
                         <Activity className="w-5 h-5 text-amber-400" />
                     </div>
                     <div className={`text-3xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{stats?.active_workshops || 0}</div>
-                    <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Active Now</div>
+                    <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.activeNow')}</div>
                 </div>
             </div>
 
             {/* Quick Actions */}
             <div className={`rounded-xl p-6 border ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
-                <h3 className={`text-xl font-bold mb-4 ${isLight ? 'text-gray-900' : 'text-white'}`}>Quick Actions</h3>
+                <h3 className={`text-xl font-bold mb-4 ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.quickActions')}</h3>
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                     <button
                         onClick={() => navigate('/admin/workshops')}
                         className={`p-4 rounded-lg border transition text-left ${isLight ? 'bg-gray-50 hover:bg-gray-100 border-gray-200' : 'bg-white/5 hover:bg-white/10 border-white/10'}`}
                     >
                         <FolderKanban className="w-8 h-8 text-purple-500 mb-2" />
-                        <div className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>Manage Workshops</div>
-                        <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>View and manage all workshops</div>
+                        <div className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.manageWorkshops')}</div>
+                        <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.manageWorkshopsDesc')}</div>
                     </button>
                     <button
                         onClick={() => navigate('/admin/users')}
                         className={`p-4 rounded-lg border transition text-left ${isLight ? 'bg-gray-50 hover:bg-gray-100 border-gray-200' : 'bg-white/5 hover:bg-white/10 border-white/10'}`}
                     >
                         <Users className="w-8 h-8 text-blue-500 mb-2" />
-                        <div className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>Manage Users</div>
-                        <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Create and manage facilitators</div>
+                        <div className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.manageUsers')}</div>
+                        <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.manageUsersDesc')}</div>
                     </button>
                     <button
                         onClick={() => navigate('/admin/knowledge-base')}
                         className={`p-4 rounded-lg border transition text-left ${isLight ? 'bg-gray-50 hover:bg-gray-100 border-gray-200' : 'bg-white/5 hover:bg-white/10 border-white/10'}`}
                     >
                         <Brain className="w-8 h-8 text-pink-500 mb-2" />
-                        <div className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>AI Knowledge Base</div>
-                        <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Browse industry use cases</div>
+                        <div className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.knowledgeBase.title')}</div>
+                        <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.aiKnowledgeBaseDesc')}</div>
                     </button>
                     <button
                         onClick={() => navigate('/admin/my-workshops')}
                         className={`p-4 rounded-lg border transition text-left ${isLight ? 'bg-gray-50 hover:bg-gray-100 border-gray-200' : 'bg-white/5 hover:bg-white/10 border-white/10'}`}
                     >
                         <LayoutDashboard className="w-8 h-8 text-green-500 mb-2" />
-                        <div className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>My Workshops</div>
-                        <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>View your own workshops</div>
+                        <div className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.myWorkshops')}</div>
+                        <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.myWorkshopsDesc')}</div>
                     </button>
                 </div>
             </div>
         </>
     );
 }
+

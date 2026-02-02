@@ -59,8 +59,11 @@ const enTranslations = {
         knowledgeBase: "Knowledge Base",
         changePassword: "Change Password",
         signIn: "Sign In",
-        signOut: "Sign Out"
+        signOut: "Sign Out",
+        createworkshop: "Create Workshop",
+        analytics: "Analytics"
     },
+
     auth: {
         login: "Login",
         register: "Register",
@@ -84,7 +87,33 @@ const enTranslations = {
         results: "Results",
         active: "Active",
         completed: "Completed",
-        pending: "Pending"
+        pending: "Pending",
+        open: "Open",
+        draft: "Draft",
+        closed: "Closed",
+        pincode: "PIN Code",
+        phase: "Phase",
+        openDashboard: "Open Dashboard",
+        newWorkshop: "New Workshop",
+        noWorkshops: "No active workshops found.",
+        createFirst: "Create your first session",
+        contactAdmin: "Contact an administrator to get assigned to workshops.",
+        deleteWorkshopConfirm: "Are you sure you want to delete this workshop? This action cannot be undone.",
+        deleteWorkshopSuccess: "Workshop deleted successfully",
+        searchWorkshops: "Search by title or PIN...",
+        showingWorkshops: "Showing {{count}} of {{total}} workshops",
+        by: "by",
+        viewWorkshop: "View Workshop",
+        deleteWorkshop: "Delete Workshop",
+        failedLoad: "Failed to load workshops",
+        phases: {
+            setup: "Setup",
+            intake: "Intake",
+            analysis: "Analysis",
+            brainstorming: "Brainstorming",
+            prioritization: "Prioritization",
+            roadmap: "Roadmap"
+        }
     },
     matrix: {
         title: "Prioritization Matrix",
@@ -154,14 +183,118 @@ const enTranslations = {
     admin: {
         title: "Admin Dashboard",
         users: "Users",
+        facilitators: "Facilitators",
         workshops: "Workshops",
-        settings: "Settings",
         statistics: "Statistics",
         totalUsers: "Total Users",
         activeWorkshops: "Active Workshops",
-        totalSubmissions: "Total Submissions"
+        totalSubmissions: "Total Submissions",
+        llmUsage: "LLM Usage",
+        systemSettings: "System Settings",
+        myWorkshops: "My Workshops",
+        activeNow: "Active Now",
+        quickActions: "Quick Actions",
+        dashboard: "Dashboard",
+        manageWorkshops: "Manage Workshops",
+        manageWorkshopsDesc: "View and manage all workshops",
+        manageUsers: "Manage Users",
+        manageUsersDesc: "Create and manage facilitators",
+        aiKnowledgeBaseDesc: "Browse industry use cases",
+        myWorkshopsDesc: "View your own workshops",
+        // Lowercase keys for AdminLayout title mapping
+        myworkshops: "My Workshops",
+        allworkshops: "All Workshops",
+        aiknowledgebase: "AI Knowledge Base",
+        pendingApproval: "Pending Approval",
+        activeUsers: "Active Users",
+        searchPlaceholder: "Search by name or email...",
+        allStatus: "All Status",
+        user: "User",
+        organization: "Organization",
+        status: "Status",
+        actions: "Actions",
+        approve: "Approve",
+        reject: "Reject",
+        disable: "Disable",
+        enable: "Enable",
+        deleteUser: "Delete User",
+        deleteUserConfirm: "Are you sure you want to delete this user? This action cannot be undone and will remove all associated data, including the user's workshops.",
+        checkingImpact: "Checking user data...",
+        noUsersFound: "No users found",
+        failedLoadUsers: "Failed to load facilitators",
+        recentActivityWarning: "This user has been active recently.",
+        deleteSuccess: "User deleted successfully",
+        deleteError: "Failed to delete user",
+        knowledgeBase: {
+            title: "AI Knowledge Base",
+            importKnowledge: "Import Knowledge",
+            searchPlaceholder: "Search AI use cases across all industries...",
+            industries: "Industries",
+            useCases: "Use Cases",
+            categories: "Categories",
+            technologies: "Technologies",
+            browseByIndustry: "Browse by Industry",
+            backTo: "Back to {{name}}",
+            backToIndustries: "Back to Industries",
+            complexity: "Complexity",
+            typicalRoi: "Typical ROI",
+            implementationTime: "Implementation Time",
+            dataRequirements: "Data Requirements",
+            kpis: "Key Performance Indicators",
+            uploadPrompt: "Click to upload or drag and drop",
+            uploadNote: "PDF, PPTX, DOCX, JPG, PNG (max 10MB)",
+            processing: "Processing...",
+            importDocument: "Import Document",
+            removeFile: "Remove file",
+            uploadHelp: "Upload PDF, PPT, Word documents, or Images (JPG, PNG) to enhance the AI knowledge base.",
+            importSuccess: "Successfully imported {{name}}",
+            failedLoad: "Failed to load Knowledge Base",
+            failedLoadIndustry: "Failed to load industry details"
+        },
+        settings: {
+            title: "System Settings",
+            subtitle: "Configure system-wide settings and limits",
+            tabs: {
+                features: "Features",
+                limits: "Limits",
+                rate_limiting: "Rate Limiting",
+                security: "Security"
+            },
+            labels: {
+                enabled: "Enabled",
+                disabled: "Disabled",
+                defaultValue: "Default: "
+            },
+            actions: {
+                save: "Save",
+                reset: "Reset",
+                resetConfirm: "Reset \"{{key}}\" to default value?"
+            },
+            messages: {
+                loadError: "Failed to load settings",
+                updateSuccess: "Updated {{key}}",
+                updateError: "Failed to update setting",
+                resetSuccess: "Reset {{key}} to default",
+                resetError: "Failed to reset setting",
+                noSettings: "No settings found in this category"
+            },
+            keys: {
+                "features.ai_enhancement": "AI Enhancement",
+                "features.export_csv": "Export CSV",
+                "features.export_pdf": "Export PDF",
+                "features.knowledge_base": "Knowledge Base"
+            },
+            descriptions: {
+                "features.ai_enhancement": "Enable AI-powered use case enhancement",
+                "features.export_csv": "Enable CSV export functionality",
+                "features.export_pdf": "Enable PDF export functionality",
+                "features.knowledge_base": "Enable Knowledge Base access"
+            }
+        },
+        systemsettings: "System Settings"
     }
 };
+
 
 i18n
     // Load translation using HTTP backend

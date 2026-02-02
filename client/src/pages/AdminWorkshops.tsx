@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 import {
     FolderKanban,
     Search,
@@ -31,6 +32,7 @@ interface Workshop {
 export function AdminWorkshops() {
     const navigate = useNavigate();
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const [workshops, setWorkshops] = useState<Workshop[]>([]);
     const [loading, setLoading] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
@@ -57,19 +59,19 @@ export function AdminWorkshops() {
             setWorkshops(data.workshops || data);
         } catch (error: any) {
             console.error('Error fetching workshops:', error);
-            toast.error('Failed to load workshops');
+            toast.error(t('workshop.failedLoad'));
         } finally {
             setLoading(false);
         }
     };
 
     const handleDeleteWorkshop = async (workshopId: string) => {
-        if (!confirm('Are you sure you want to delete this workshop? This action cannot be undone.')) return;
+        if (!confirm(t('workshop.deleteWorkshopConfirm'))) return;
 
         try {
             const authToken = localStorage.getItem('hm_auth_token');
             if (!authToken) {
-                toast.error('Authentication required. Please log in again.');
+                toast.error(t('auth.loginRequired'));
                 return;
             }
 
@@ -83,29 +85,29 @@ export function AdminWorkshops() {
 
             if (!response.ok) {
                 // Try to get error message from response
-                let errorMessage = 'Failed to delete workshop';
+                let errorMessage = t('workshop.deleteWorkshopError', 'Failed to delete workshop');
                 try {
                     const errorData = await response.json();
                     errorMessage = errorData.detail || errorMessage;
                 } catch {
                     // If response is not JSON, use status text
                     if (response.status === 404) {
-                        errorMessage = 'Workshop not found';
+                        errorMessage = t('workshop.notFound', 'Workshop not found');
                     } else if (response.status === 403) {
-                        errorMessage = 'You do not have permission to delete workshops';
+                        errorMessage = t('admin.noPermission', 'You do not have permission');
                     } else if (response.status === 400) {
-                        errorMessage = 'Workshop is already deleted';
+                        errorMessage = t('workshop.alreadyDeleted', 'Workshop is already deleted');
                     }
                 }
                 throw new Error(errorMessage);
             }
 
-            toast.success('Workshop deleted successfully');
+            toast.success(t('workshop.deleteWorkshopSuccess'));
             // Refresh the workshop list
             await fetchWorkshops();
         } catch (error) {
             console.error('Error deleting workshop:', error);
-            toast.error(error instanceof Error ? error.message : 'Failed to delete workshop');
+            toast.error(error instanceof Error ? error.message : t('workshop.deleteWorkshopError', 'Failed to delete workshop'));
         }
     };
 
@@ -116,7 +118,7 @@ export function AdminWorkshops() {
 
     const formatDate = (dateStr?: string) => {
         if (!dateStr) return 'N/A';
-        return new Date(dateStr).toLocaleDateString('en-US', {
+        return new Date(dateStr).toLocaleDateString(undefined, {
             year: 'numeric',
             month: 'short',
             day: 'numeric'
@@ -130,7 +132,7 @@ export function AdminWorkshops() {
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
                         type="text"
-                        placeholder="Search by title or PIN..."
+                        placeholder={t('workshop.searchWorkshops') as string}
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className={`pl-10 pr-4 py-2 rounded-lg border focus:outline-none focus:border-amber-500/50 w-64 ${isLight ? 'bg-white border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-surface-800 border-white/10 text-white placeholder-gray-400'}`}
@@ -139,23 +141,23 @@ export function AdminWorkshops() {
             </div>
 
             {loading ? (
-                <div className={`text-center py-12 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Loading workshops...</div>
+                <div className={`text-center py-12 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('common.loading')}</div>
             ) : filteredWorkshops.length === 0 ? (
                 <div className="text-center py-12">
                     <FolderKanban className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-                    <p className={isLight ? 'text-gray-500' : 'text-gray-400'}>No workshops found</p>
+                    <p className={isLight ? 'text-gray-500' : 'text-gray-400'}>{t('workshop.noWorkshops')}</p>
                 </div>
             ) : (
                 <div className={`rounded-xl border overflow-hidden ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
                     <table className="w-full">
                         <thead>
                             <tr className={`border-b ${isLight ? 'border-gray-200' : 'border-white/10'}`}>
-                                <th className={`text-left py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Workshop</th>
-                                <th className={`text-left py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>PIN</th>
-                                <th className={`text-left py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Status</th>
-                                <th className={`text-left py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Phase</th>
-                                <th className={`text-left py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Created</th>
-                                <th className={`text-right py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Actions</th>
+                                <th className={`text-left py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('workshop.title')}</th>
+                                <th className={`text-left py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('workshop.pincode')}</th>
+                                <th className={`text-left py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.status')}</th>
+                                <th className={`text-left py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('workshop.phase')}</th>
+                                <th className={`text-left py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('common.created', 'Created')}</th>
+                                <th className={`text-right py-4 px-6 text-sm font-medium ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.actions')}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -164,7 +166,7 @@ export function AdminWorkshops() {
                                     <td className="py-4 px-6">
                                         <div className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>{workshop.title}</div>
                                         {workshop.facilitator_name && (
-                                            <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>by {workshop.facilitator_name}</div>
+                                            <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('workshop.by')} {workshop.facilitator_name}</div>
                                         )}
                                     </td>
                                     <td className="py-4 px-6">
@@ -172,16 +174,16 @@ export function AdminWorkshops() {
                                     </td>
                                     <td className="py-4 px-6">
                                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${workshop.status === 'active' || workshop.status === 'OPEN'
-                                                ? 'bg-green-500/20 text-green-600'
-                                                : workshop.status === 'completed'
-                                                    ? 'bg-blue-500/20 text-blue-600'
-                                                    : 'bg-gray-500/20 text-gray-600'
+                                            ? 'bg-green-500/20 text-green-600'
+                                            : workshop.status === 'completed'
+                                                ? 'bg-blue-500/20 text-blue-600'
+                                                : 'bg-gray-500/20 text-gray-600'
                                             }`}>
-                                            {workshop.status || 'OPEN'}
+                                            {String(workshop.status ? t(`workshop.${workshop.status.toLowerCase()}`, workshop.status) : t('workshop.open'))}
                                         </span>
                                     </td>
                                     <td className={`py-4 px-6 ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
-                                        {workshop.current_phase || 'Setup'}
+                                        {String(workshop.current_phase ? t(`workshop.phases.${workshop.current_phase.toLowerCase()}`, workshop.current_phase) : t('workshop.phases.setup'))}
                                     </td>
                                     <td className={`py-4 px-6 text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
                                         <div className="flex items-center gap-1">
@@ -194,14 +196,14 @@ export function AdminWorkshops() {
                                             <button
                                                 onClick={() => navigate(`/workshop/${workshop.id}`)}
                                                 className={`p-2 rounded-lg transition ${isLight ? 'text-gray-500 hover:text-gray-900 hover:bg-gray-100' : 'text-gray-400 hover:text-white hover:bg-white/10'}`}
-                                                title="View Workshop"
+                                                title={t('workshop.viewWorkshop') as string}
                                             >
                                                 <Eye className="w-4 h-4" />
                                             </button>
                                             <button
                                                 onClick={() => handleDeleteWorkshop(workshop.id)}
                                                 className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition"
-                                                title="Delete Workshop"
+                                                title={t('workshop.deleteWorkshop') as string}
                                             >
                                                 <Trash2 className="w-4 h-4" />
                                             </button>
@@ -215,7 +217,7 @@ export function AdminWorkshops() {
             )}
 
             <div className={`mt-4 text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
-                Showing {filteredWorkshops.length} of {workshops.length} workshops
+                {t('workshop.showingWorkshops', { count: filteredWorkshops.length, total: workshops.length })}
             </div>
         </AdminLayout>
     );

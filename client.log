@@ -499,3 +499,1685 @@ Received Response from the Target: 200 /api/admin/llm-usage/by-feature
 Received Response from the Target: 200 /api/admin/llm-usage/by-workshop
 Received Response from the Target: 200 /api/admin/llm-usage/summary
 Received Response from the Target: 200 /api/admin/llm-usage/by-user
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/knowledge-base/overview
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/knowledge-base/overview
+Sending Request to the Target: GET /api/knowledge-base/overview
+Received Response from the Target: 200 /api/knowledge-base/overview
+Sending Request to the Target: GET /api/admin/llm-usage/summary
+Sending Request to the Target: GET /api/admin/llm-usage/by-feature
+Sending Request to the Target: GET /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/summary
+Sending Request to the Target: GET /api/admin/llm-usage/summary
+Received Response from the Target: 200 /api/admin/llm-usage/by-feature
+Sending Request to the Target: GET /api/admin/llm-usage/by-feature
+Received Response from the Target: 200 /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/llm-usage/by-user
+Sending Request to the Target: GET /api/admin/llm-usage/by-workshop
+Received Response from the Target: 200 /api/admin/llm-usage/summary
+Received Response from the Target: 200 /api/admin/llm-usage/by-feature
+Received Response from the Target: 200 /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/users/8ec75cd8-e168-42ed-b799-02a2f2924d88/impact
+Received Response from the Target: 200 /api/admin/users/8ec75cd8-e168-42ed-b799-02a2f2924d88/impact
+Sending Request to the Target: DELETE /api/admin/users/8ec75cd8-e168-42ed-b799-02a2f2924d88
+Received Response from the Target: 500 /api/admin/users/8ec75cd8-e168-42ed-b799-02a2f2924d88
+Sending Request to the Target: GET /api/knowledge-base/overview
+Received Response from the Target: 200 /api/knowledge-base/overview
+Sending Request to the Target: GET /api/knowledge-base/overview
+Received Response from the Target: 200 /api/knowledge-base/overview
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators?status_filter=active
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators?status_filter=active
+Sending Request to the Target: GET /api/admin/facilitators?status_filter=pending
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators?status_filter=pending
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/facilitators?status_filter=disabled
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators?status_filter=disabled
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/facilitators?status_filter=suspended
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators?status_filter=suspended
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/admin/llm-usage/summary
+Sending Request to the Target: GET /api/admin/llm-usage/by-feature
+Sending Request to the Target: GET /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/summary
+Received Response from the Target: 200 /api/admin/llm-usage/by-feature
+Sending Request to the Target: GET /api/admin/llm-usage/summary
+Received Response from the Target: 200 /api/admin/llm-usage/by-workshop
+Received Response from the Target: 200 /api/admin/llm-usage/by-user
+Sending Request to the Target: GET /api/admin/llm-usage/by-feature
+Sending Request to the Target: GET /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/summary
+Received Response from the Target: 200 /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/by-feature
+Received Response from the Target: 200 /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/knowledge-base/overview
+Received Response from the Target: 200 /api/knowledge-base/overview
+Sending Request to the Target: GET /api/knowledge-base/overview
+Received Response from the Target: 200 /api/knowledge-base/overview
+Sending Request to the Target: GET /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/knowledge-base/overview
+Received Response from the Target: 200 /api/knowledge-base/overview
+Sending Request to the Target: GET /api/knowledge-base/overview
+Received Response from the Target: 200 /api/knowledge-base/overview
+Sending Request to the Target: GET /api/admin/llm-usage/summary
+Sending Request to the Target: GET /api/admin/llm-usage/by-feature
+Sending Request to the Target: GET /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/summary
+Sending Request to the Target: GET /api/admin/llm-usage/summary
+Received Response from the Target: 200 /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/llm-usage/by-workshop
+Received Response from the Target: 200 /api/admin/llm-usage/by-feature
+Sending Request to the Target: GET /api/admin/llm-usage/by-feature
+Received Response from the Target: 200 /api/admin/llm-usage/by-user
+Sending Request to the Target: GET /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/summary
+Received Response from the Target: 200 /api/admin/llm-usage/by-workshop
+Received Response from the Target: 200 /api/admin/llm-usage/by-feature
+Received Response from the Target: 200 /api/admin/llm-usage/by-user
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+[2m1:45:04 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
+
+[2m[331.56ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.16ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[230.35ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 68.94ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 23.79ms][22m  [2m ↳ [22mBuild utilities
+[2m[  8.08ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+[2m1:45:11 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[85.64ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.15ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[38.17ms][22m  [2m ↳ [22mScan for candidates
+[2m[31.02ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[11.90ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 4.16ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:45:17 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[76.02ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[30.45ms][22m  [2m ↳ [22mScan for candidates
+[2m[30.10ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 9.93ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 5.00ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:45:23 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[77.01ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.14ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[40.81ms][22m  [2m ↳ [22mScan for candidates
+[2m[24.92ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 8.37ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.58ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:45:31 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/AdminLayout.tsx[22m
+
+[2m[45.39ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.18ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[23.76ms][22m  [2m ↳ [22mScan for candidates
+[2m[18.20ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.86ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.24ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+[2m1:46:01 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/AdminPanel.tsx[22m
+[2m1:46:01 AM[22m [31m[1m[vite][22m[39m [31mInternal server error: C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\src\pages\AdminPanel.tsx: Unexpected token (169:4)
+
+[0m [90m 167 |[31m }
+ [90m 168 |[31m
+[31m[1m>[22m[31m[90m 169 |[31m     )[33m;[31m
+ [90m     |[31m     [31m[1m^[22m[31m
+ [90m 170 |[31m }
+ [90m 171 |[31m[0m[39m
+  Plugin: [35mvite:react-babel[39m
+  File: [36mC:/Users/azvmuser1/windsurf-wrkspace/QbrainLabs/client/src/pages/AdminPanel.tsx[39m:169:4
+      at constructor (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:365:19)
+      at TypeScriptParserMixin.raise (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:6599:19)
+      at TypeScriptParserMixin.unexpected (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:6619:16)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:11432:22)
+      at TypeScriptParserMixin.parseExprAtom (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:4764:20)
+      at TypeScriptParserMixin.parseExprSubscripts (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:11071:23)
+      at TypeScriptParserMixin.parseUpdate (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:11056:21)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:11036:23)
+      at TypeScriptParserMixin.parseMaybeUnary (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:9827:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:10889:61)
+      at TypeScriptParserMixin.parseExprOps (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:10894:23)
+      at TypeScriptParserMixin.parseMaybeConditional (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:10871:23)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:10821:21)
+      at TypeScriptParserMixin.parseMaybeAssign (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:9776:20)
+      at TypeScriptParserMixin.parseExpressionBase (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:10774:23)
+      at C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:10770:39
+      at TypeScriptParserMixin.allowInAnd (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:12411:16)
+      at TypeScriptParserMixin.parseExpression (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:10770:17)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:12885:23)
+      at TypeScriptParserMixin.parseStatementContent (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:12757:17)
+      at TypeScriptParserMixin.parseModuleItem (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:12734:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:13306:36)
+      at TypeScriptParserMixin.parseBlockBody (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:13299:10)
+      at TypeScriptParserMixin.parseProgram (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:12612:10)
+      at TypeScriptParserMixin.parseTopLevel (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:12602:25)
+      at TypeScriptParserMixin.parse (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:14478:25)
+      at TypeScriptParserMixin.parse (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:10116:18)
+      at parse (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\parser\lib\index.js:14512:38)
+      at parser (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\core\lib\parser\index.js:41:34)
+      at parser.next (<anonymous>)
+      at normalizeFile (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\core\lib\transformation\normalize-file.js:64:37)
+      at normalizeFile.next (<anonymous>)
+      at run (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\core\lib\transformation\index.js:22:50)
+      at run.next (<anonymous>)
+      at transform (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\core\lib\transform.js:22:33)
+      at transform.next (<anonymous>)
+      at step (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\gensync\index.js:261:32)
+      at C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\gensync\index.js:273:13
+      at async.call.result.err.err (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\gensync\index.js:223:11)
+      at C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\gensync\index.js:189:28
+      at C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\@babel\core\lib\gensync-utils\async.js:67:7
+      at C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\gensync\index.js:113:33
+      at step (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\gensync\index.js:287:14)
+      at C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\gensync\index.js:273:13
+      at async.call.result.err.err (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\gensync\index.js:223:11)
+
+[2m[140.69ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.16ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 85.51ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 42.28ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  1.38ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 11.09ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:46:06 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/AdminPanel.tsx[22m
+
+[2m[48.73ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.10ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[22.52ms][22m  [2m ↳ [22mScan for candidates
+[2m[18.92ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.81ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 6.25ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+[2m1:46:15 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/AdminLayout.tsx[22m
+
+[2m[59.91ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.29ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[31.71ms][22m  [2m ↳ [22mScan for candidates
+[2m[24.24ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.28ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.21ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:46:27 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
+
+[2m[162.86ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.14ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 39.05ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 42.31ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 50.01ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 31.15ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/auth/me
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/admin/stats
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+[2m1:46:32 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
+
+[2m[54.08ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.19ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[25.70ms][22m  [2m ↳ [22mScan for candidates
+[2m[20.67ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.68ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 5.26ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/auth/me
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+[2m1:46:37 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[59.86ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.12ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[33.41ms][22m  [2m ↳ [22mScan for candidates
+[2m[21.80ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.43ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.82ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:46:42 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[48.89ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[23.35ms][22m  [2m ↳ [22mScan for candidates
+[2m[20.68ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.64ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 3.84ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:46:47 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[55.06ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.08ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[31.81ms][22m  [2m ↳ [22mScan for candidates
+[2m[20.12ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.67ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.19ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:46:52 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[55.47ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.12ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[31.29ms][22m  [2m ↳ [22mScan for candidates
+[2m[21.18ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.65ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.09ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:46:57 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[114.32ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.10ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 58.25ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 47.24ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  2.65ms][22m  [2m ↳ [22mBuild utilities
+[2m[  5.90ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:47:03 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[67.96ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.13ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[42.03ms][22m  [2m ↳ [22mScan for candidates
+[2m[22.55ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.66ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.43ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:47:08 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/Header.tsx[22m
+[2m1:47:08 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/Header.tsx[22m
+
+[2m[54.65ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.17ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[27.99ms][22m  [2m ↳ [22mScan for candidates
+[2m[22.47ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.70ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 3.14ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[2m1:50:00 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
+[2m1:50:00 AM[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [33mwarning: [33mDuplicate key "users" in object literal[33m
+182 |          allworkshops: "All Workshops",
+183 |          aiknowledgebase: "AI Knowledge Base",
+184 |          users: "Users"
+    |          ^
+185 |      },
+186 |      workshop: {
+[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36mC:/Users/azvmuser1/windsurf-wrkspace/QbrainLabs/client/src/i18n.ts[39m
+[2m1:50:00 AM[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [33mwarning: [33mDuplicate key "workshop" in object literal[33m
+184 |          users: "Users"
+185 |      },
+186 |      workshop: {
+    |      ^
+187 |          title: "Workshop",
+188 |          create: "Create Workshop",
+[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36mC:/Users/azvmuser1/windsurf-wrkspace/QbrainLabs/client/src/i18n.ts[39m
+
+[2m[208.26ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.17ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[120.46ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 76.26ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  8.22ms][22m  [2m ↳ [22mBuild utilities
+[2m[  2.95ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[2m1:50:15 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
+[2m1:50:15 AM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m Pre-transform error: Transform failed with 1 error:
+C:/Users/azvmuser1/windsurf-wrkspace/QbrainLabs/client/src/i18n.ts:215:0: ERROR: Unexpected "}"
+  Plugin: [35mvite:esbuild[39m
+  File: [36mC:/Users/azvmuser1/windsurf-wrkspace/QbrainLabs/client/src/i18n.ts[39m:215:0
+[33m  
+  [33mUnexpected "}"[33m
+  213 |  };
+  214 |  
+  215 |  };
+      |  ^
+  216 |  
+  217 |  i18n
+  [39m
+[2m1:50:15 AM[22m [31m[1m[vite][22m[39m [31m[2m(client)[22m[39m Pre-transform error: Transform failed with 1 error:
+C:/Users/azvmuser1/windsurf-wrkspace/QbrainLabs/client/src/i18n.ts:215:0: ERROR: Unexpected "}"
+  Plugin: [35mvite:esbuild[39m
+  File: [36mC:/Users/azvmuser1/windsurf-wrkspace/QbrainLabs/client/src/i18n.ts[39m:215:0
+[33m  
+  [33mUnexpected "}"[33m
+  213 |  };
+  214 |  
+  215 |  };
+      |  ^
+  216 |  
+  217 |  i18n
+  [39m
+
+[2m[55.58ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.10ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[26.75ms][22m  [2m ↳ [22mScan for candidates
+[2m[25.74ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.65ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.23ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:50:16 AM[22m [31m[1m[vite][22m[39m [31mInternal server error: Transform failed with 1 error:
+C:/Users/azvmuser1/windsurf-wrkspace/QbrainLabs/client/src/i18n.ts:215:0: ERROR: Unexpected "}"[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36mC:/Users/azvmuser1/windsurf-wrkspace/QbrainLabs/client/src/i18n.ts[39m:215:0
+[33m  
+  [33mUnexpected "}"[33m
+  213 |  };
+  214 |  
+  215 |  };
+      |  ^
+  216 |  
+  217 |  i18n
+  [39m
+      at failureErrorWithLog (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\esbuild\lib\main.js:1467:15)
+      at C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\esbuild\lib\main.js:736:50
+      at responseCallbacks.<computed> (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\esbuild\lib\main.js:603:9)
+      at handleIncomingPacket (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\esbuild\lib\main.js:658:12)
+      at Socket.readFromStdout (C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\client\node_modules\esbuild\lib\main.js:581:7)
+      at Socket.emit (node:events:508:28)
+      at addChunk (node:internal/streams/readable:559:12)
+      at readableAddChunkPushByteMode (node:internal/streams/readable:510:3)
+      at Readable.push (node:internal/streams/readable:390:5)
+      at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+[2m1:50:33 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
+
+[2m[61.48ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.10ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[29.77ms][22m  [2m ↳ [22mScan for candidates
+[2m[25.92ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.02ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 4.52ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[2m1:50:40 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[92.09ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.12ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[26.96ms][22m  [2m ↳ [22mScan for candidates
+[2m[21.26ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[41.44ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.17ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:50:52 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[58.08ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.10ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[31.09ms][22m  [2m ↳ [22mScan for candidates
+[2m[23.71ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.68ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.36ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:50:56 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[67.20ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.19ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[30.95ms][22m  [2m ↳ [22mScan for candidates
+[2m[30.97ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.72ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 4.23ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:51:06 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[74.40ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.09ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[36.04ms][22m  [2m ↳ [22mScan for candidates
+[2m[24.96ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 4.76ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 8.39ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:51:14 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[80.28ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.09ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[51.65ms][22m  [2m ↳ [22mScan for candidates
+[2m[25.61ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.69ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.10ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:51:18 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[56.73ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.08ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[29.76ms][22m  [2m ↳ [22mScan for candidates
+[2m[24.04ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.65ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.09ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:51:27 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[74.22ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.15ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[31.75ms][22m  [2m ↳ [22mScan for candidates
+[2m[27.21ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 9.16ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 5.78ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:51:31 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[72.99ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[30.99ms][22m  [2m ↳ [22mScan for candidates
+[2m[37.18ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.04ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 3.50ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:51:49 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/AdminMyWorkshops.tsx[22m
+
+[2m[92.09ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 1.83ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[43.29ms][22m  [2m ↳ [22mScan for candidates
+[2m[40.17ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 4.41ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.20ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[2m1:52:09 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
+
+[2m[128.95ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.12ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 43.38ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 70.09ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  6.62ms][22m  [2m ↳ [22mBuild utilities
+[2m[  8.59ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[2m1:52:15 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[62.03ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[31.26ms][22m  [2m ↳ [22mScan for candidates
+[2m[19.76ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 8.50ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.24ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:52:21 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[139.68ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.13ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 72.21ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 56.86ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  6.29ms][22m  [2m ↳ [22mBuild utilities
+[2m[  4.02ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:52:30 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[71.22ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.14ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[34.17ms][22m  [2m ↳ [22mScan for candidates
+[2m[26.23ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 8.26ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.25ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:52:37 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
+
+[2m[129.02ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.16ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 46.48ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 74.42ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  1.01ms][22m  [2m ↳ [22mBuild utilities
+[2m[  6.78ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[2m1:52:42 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[95.36ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.10ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[56.39ms][22m  [2m ↳ [22mScan for candidates
+[2m[36.01ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.67ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.06ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:52:47 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[54.94ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[29.19ms][22m  [2m ↳ [22mScan for candidates
+[2m[22.70ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.72ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.10ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:52:52 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[61.95ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.13ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[33.13ms][22m  [2m ↳ [22mScan for candidates
+[2m[22.92ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.93ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 4.65ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:53:46 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/AdminUsers.tsx[22m
+
+[2m[82.48ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.12ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[38.06ms][22m  [2m ↳ [22mScan for candidates
+[2m[30.31ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 8.29ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 5.52ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:53:55 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/AdminMyWorkshops.tsx[22m
+
+[2m[49.55ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.13ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[25.83ms][22m  [2m ↳ [22mScan for candidates
+[2m[20.42ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.71ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.33ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[2m1:54:04 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
+
+[2m[142.72ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.15ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 81.94ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 48.65ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  6.68ms][22m  [2m ↳ [22mBuild utilities
+[2m[  5.13ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[2m1:54:10 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[160.76ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.16ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[124.56ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 25.46ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  7.75ms][22m  [2m ↳ [22mBuild utilities
+[2m[  2.66ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:54:15 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[66.62ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.15ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[37.16ms][22m  [2m ↳ [22mScan for candidates
+[2m[23.02ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 4.10ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.05ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:54:22 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[133.92ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.14ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[105.91ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 19.17ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  5.98ms][22m  [2m ↳ [22mBuild utilities
+[2m[  2.41ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:54:52 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/AdminWorkshops.tsx[22m
+
+[2m[79.33ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 1.14ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[36.99ms][22m  [2m ↳ [22mScan for candidates
+[2m[30.82ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 6.34ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 3.85ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:55:16 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
+[2m1:55:16 AM[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [33mwarning: [33mDuplicate key "checkingImpact" in object literal[33m
+225 |          noUsersFound: "No users found",
+226 |          failedLoadUsers: "Failed to load facilitators",
+227 |          checkingImpact: "Checking user data...",
+    |          ^
+228 |          recentActivityWarning: "This user has been active recently.",
+229 |          deleteSuccess: "User deleted successfully",
+[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36mC:/Users/azvmuser1/windsurf-wrkspace/QbrainLabs/client/src/i18n.ts[39m
+[2m1:55:16 AM[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [33mwarning: [33mDuplicate key "knowledgeBase" in object literal[33m
+229 |          deleteSuccess: "User deleted successfully",
+230 |          deleteError: "Failed to delete user",
+231 |          knowledgeBase: {
+    |          ^
+232 |              title: "AI Knowledge Base",
+233 |              importKnowledge: "Import Knowledge",
+[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36mC:/Users/azvmuser1/windsurf-wrkspace/QbrainLabs/client/src/i18n.ts[39m
+
+[2m[76.97ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.14ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[36.39ms][22m  [2m ↳ [22mScan for candidates
+[2m[31.45ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 6.68ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.14ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[2m1:55:24 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
+[2m1:55:26 AM[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [33mwarning: [33mDuplicate key "knowledgeBase" in object literal[33m
+228 |          deleteSuccess: "User deleted successfully",
+229 |          deleteError: "Failed to delete user",
+230 |          knowledgeBase: {
+    |          ^
+231 |              title: "AI Knowledge Base",
+232 |              importKnowledge: "Import Knowledge",
+[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36mC:/Users/azvmuser1/windsurf-wrkspace/QbrainLabs/client/src/i18n.ts[39m
+
+[2m[221.92ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.14ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[188.55ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 30.14ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  0.70ms][22m  [2m ↳ [22mBuild utilities
+[2m[  2.20ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/auth/me
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/auth/me
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[2m1:55:32 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[85.39ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[46.48ms][22m  [2m ↳ [22mScan for candidates
+[2m[23.60ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[12.96ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.08ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:55:46 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[148.98ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.13ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 38.76ms][22m  [2m ↳ [22mScan for candidates
+[2m[100.44ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  7.27ms][22m  [2m ↳ [22mBuild utilities
+[2m[  2.21ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:55:56 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[65.20ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.16ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[32.11ms][22m  [2m ↳ [22mScan for candidates
+[2m[25.64ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 5.00ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.12ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[2m1:57:08 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/AdminKnowledgeBase.tsx[22m
+
+[2m[63.52ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.24ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[29.27ms][22m  [2m ↳ [22mScan for candidates
+[2m[26.11ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.61ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 6.09ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:57:54 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
+
+[2m[121.23ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.15ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 67.86ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 44.43ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  4.20ms][22m  [2m ↳ [22mBuild utilities
+[2m[  4.41ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[2m1:58:03 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/components/AdminLayout.tsx[22m
+
+[2m[119.84ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.13ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 90.23ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 26.14ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  0.77ms][22m  [2m ↳ [22mBuild utilities
+[2m[  2.44ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:58:08 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/AdminPanel.tsx[22m
+
+[2m[65.21ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.15ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[34.15ms][22m  [2m ↳ [22mScan for candidates
+[2m[27.54ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.90ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.22ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:58:21 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[80.00ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.15ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[38.47ms][22m  [2m ↳ [22mScan for candidates
+[2m[31.36ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 3.17ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 4.30ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:58:33 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[70.08ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.00ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.07ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[34.75ms][22m  [2m ↳ [22mScan for candidates
+[2m[32.16ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 0.75ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.22ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m1:58:47 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[81.57ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.09ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[44.61ms][22m  [2m ↳ [22mScan for candidates
+[2m[33.02ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.05ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.65ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/admin/llm-usage/summary
+Sending Request to the Target: GET /api/admin/llm-usage/by-feature
+Sending Request to the Target: GET /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/summary
+Sending Request to the Target: GET /api/admin/llm-usage/summary
+Received Response from the Target: 200 /api/admin/llm-usage/by-user
+Sending Request to the Target: GET /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/by-workshop
+Received Response from the Target: 200 /api/admin/llm-usage/by-feature
+Sending Request to the Target: GET /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/llm-usage/by-feature
+Received Response from the Target: 200 /api/admin/llm-usage/summary
+Received Response from the Target: 200 /api/admin/llm-usage/by-feature
+Received Response from the Target: 200 /api/admin/llm-usage/by-user
+Received Response from the Target: 200 /api/admin/llm-usage/by-workshop
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/knowledge-base/overview
+Received Response from the Target: 200 /api/knowledge-base/overview
+Sending Request to the Target: GET /api/knowledge-base/overview
+Received Response from the Target: 200 /api/knowledge-base/overview
+Sending Request to the Target: GET /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+[2m2:02:26 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
+[2m2:02:28 AM[22m [33m[1m[vite][22m[39m [33m[2m(client)[22m[39m [33mwarning: [33mDuplicate key "settings" in object literal[33m
+253 |              failedLoadIndustry: "Failed to load industry details"
+254 |          },
+255 |          settings: {
+    |          ^
+256 |              title: "System Settings",
+257 |              subtitle: "Configure system-wide settings and limits",
+[39m
+  Plugin: [35mvite:esbuild[39m
+  File: [36mC:/Users/azvmuser1/windsurf-wrkspace/QbrainLabs/client/src/i18n.ts[39m
+
+[2m[153.47ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.20ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 46.33ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 73.34ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 23.77ms][22m  [2m ↳ [22mBuild utilities
+[2m[  9.61ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+[2m2:02:32 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
+
+[2m[212.15ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.02ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.16ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 45.29ms][22m  [2m ↳ [22mScan for candidates
+[2m[157.03ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  1.29ms][22m  [2m ↳ [22mBuild utilities
+[2m[  8.16ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+[2m2:02:40 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[59.85ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.13ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[30.97ms][22m  [2m ↳ [22mScan for candidates
+[2m[21.85ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 4.66ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.10ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:02:49 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[94.96ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[27.89ms][22m  [2m ↳ [22mScan for candidates
+[2m[60.75ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 3.80ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.26ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:02:58 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[166.34ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[ 39.37ms][22m  [2m ↳ [22mScan for candidates
+[2m[117.87ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  4.84ms][22m  [2m ↳ [22mBuild utilities
+[2m[  3.98ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:03:06 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mpage reload [39m[2msrc/i18n.ts[22m
+
+[2m[92.02ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.15ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[42.20ms][22m  [2m ↳ [22mScan for candidates
+[2m[42.34ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 4.46ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.68ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+[2m2:03:13 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[73.10ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.13ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[41.86ms][22m  [2m ↳ [22mScan for candidates
+[2m[22.22ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 6.46ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.26ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:03:19 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[69.42ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.14ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[37.40ms][22m  [2m ↳ [22mScan for candidates
+[2m[21.96ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 7.27ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.44ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:03:27 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css[22m
+
+[2m[57.27ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.08ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[27.72ms][22m  [2m ↳ [22mScan for candidates
+[2m[21.69ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 3.25ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 4.40ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:04:37 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/AdminSettings.tsx[22m
+
+[2m[81.54ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.11ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[50.06ms][22m  [2m ↳ [22mScan for candidates
+[2m[23.27ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 2.73ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 5.20ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+[2m2:04:48 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/AdminSettings.tsx[22m
+
+[2m[49.30ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.15ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[25.76ms][22m  [2m ↳ [22mScan for candidates
+[2m[18.88ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.93ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 2.37ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:05:15 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/AdminSettings.tsx[22m
+
+[2m[203.70ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.12ms][22m  [2m ↳ [22mQuick bail check
+[2m[  0.17ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[135.58ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 60.22ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[  1.13ms][22m  [2m ↳ [22mBuild utilities
+[2m[  4.40ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+[2m2:05:21 AM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/AdminSettings.tsx[22m
+
+[2m[70.64ms][22m [@tailwindcss/postcss] src\index.css
+[2m[ 0.01ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 0.16ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[34.38ms][22m  [2m ↳ [22mScan for candidates
+[2m[29.37ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[ 1.21ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 5.39ms][22m  [2m ↳ [22mUpdate PostCSS AST
+
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: POST /api/auth/logout
+Received Response from the Target: 200 /api/auth/logout
+Sending Request to the Target: POST /api/auth/login
+Received Response from the Target: 200 /api/auth/login
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/knowledge-base/overview
+Received Response from the Target: 200 /api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/knowledge-base/overview
+Sending Request to the Target: GET /api/knowledge-base/overview
+Received Response from the Target: 200 /api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops
+Received Response from the Target: 200 /api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops
+Received Response from the Target: 200 /api/knowledge-base/overview
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api
+Sending Request to the Target: GET /api
+Received Response from the Target: 404 /api

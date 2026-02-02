@@ -1,4 +1,5 @@
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
     LayoutDashboard,
     Users,
@@ -19,23 +20,24 @@ interface AdminLayoutProps {
 export function AdminLayout({ children, title, actions }: AdminLayoutProps) {
     const navigate = useNavigate();
     const location = useLocation();
+    const { t } = useTranslation();
     const { theme } = useTheme();
     const isLight = theme === 'light';
     // Auth check is handled by AdminGuard wrapper in routes
 
-
     const isActive = (path: string) => location.pathname === path;
 
     const navItems = [
-        { path: '/admin', label: 'Dashboard', icon: LayoutDashboard },
-        { path: '/admin/workshops', label: 'Workshops', icon: FolderKanban },
-        { path: '/admin/users', label: 'Users', icon: Users },
-        { path: '/admin/facilitators', label: 'Facilitators', icon: Users },
-        { path: '/admin/knowledge-base', label: 'AI Knowledge Base', icon: Brain },
-        { path: '/admin/llm-usage', label: 'LLM Usage', icon: Activity },
-        { path: '/admin/settings', label: 'System Settings', icon: Settings },
-        { path: '/admin/my-workshops', label: 'My Workshops', icon: FolderKanban },
+        { path: '/admin', label: t('admin.statistics'), icon: LayoutDashboard },
+        { path: '/admin/workshops', label: t('admin.workshops'), icon: FolderKanban },
+        { path: '/admin/users', label: t('admin.users'), icon: Users },
+        { path: '/admin/facilitators', label: t('admin.facilitators'), icon: Users },
+        { path: '/admin/knowledge-base', label: t('admin.knowledgeBase.title'), icon: Brain },
+        { path: '/admin/llm-usage', label: t('admin.llmUsage'), icon: Activity },
+        { path: '/admin/settings', label: t('admin.systemSettings'), icon: Settings },
+        { path: '/admin/my-workshops', label: t('admin.myWorkshops'), icon: FolderKanban },
     ];
+
 
     return (
         <div className={`min-h-screen ${isLight ? 'bg-gray-50' : 'bg-surface-900'}`}>
@@ -72,9 +74,10 @@ export function AdminLayout({ children, title, actions }: AdminLayoutProps) {
                 {/* Main Content */}
                 <main className="flex-1 p-8">
                     <div className="flex justify-between items-center mb-8">
-                        {title && <h2 className={`text-3xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{title}</h2>}
+                        {title && <h2 className={`text-3xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{t(`admin.${title.toLowerCase().replace(/\s+/g, '')}`, title)}</h2>}
                         {actions && <div>{actions}</div>}
                     </div>
+
                     {children}
                 </main>
             </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import {
     Settings,
@@ -56,6 +57,7 @@ const categoryColors: Record<string, string> = {
 };
 
 export function AdminSettings() {
+    const { t } = useTranslation();
     const { theme } = useTheme();
     const isLight = theme === 'light';
     const [settings, setSettings] = useState<SystemSetting[]>([]);
@@ -118,7 +120,7 @@ export function AdminSettings() {
                 throw new Error(error.detail || 'Failed to update setting');
             }
 
-            toast.success(`Updated ${setting.key}`);
+            toast.success(t('admin.settings.messages.updateSuccess', { key: setting.key, defaultValue: `Updated ${setting.key}` }));
             await fetchSettings();
 
             // Clear edited value
@@ -129,14 +131,14 @@ export function AdminSettings() {
             });
         } catch (error: any) {
             console.error('Error updating setting:', error);
-            toast.error(error.message || 'Failed to update setting');
+            toast.error(error.message || t('admin.settings.messages.updateError'));
         } finally {
             setSaving(null);
         }
     };
 
     const handleReset = async (setting: SystemSetting) => {
-        if (!confirm(`Reset "${setting.key}" to default value?`)) return;
+        if (!confirm(t('admin.settings.actions.resetConfirm', { key: setting.key, defaultValue: `Reset "${setting.key}" to default value?` }))) return;
 
         try {
             setSaving(setting.key);
@@ -150,7 +152,7 @@ export function AdminSettings() {
 
             if (!response.ok) throw new Error('Failed to reset setting');
 
-            toast.success(`Reset ${setting.key} to default`);
+            toast.success(t('admin.settings.messages.resetSuccess', { key: setting.key, defaultValue: `Reset ${setting.key} to default` }));
             await fetchSettings();
 
             // Clear edited value
@@ -161,7 +163,7 @@ export function AdminSettings() {
             });
         } catch (error: any) {
             console.error('Error resetting setting:', error);
-            toast.error('Failed to reset setting');
+            toast.error(t('admin.settings.messages.resetError'));
         } finally {
             setSaving(null);
         }
@@ -184,7 +186,7 @@ export function AdminSettings() {
                         />
                     </button>
                     <span className={`text-sm ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
-                        {currentValue ? 'Enabled' : 'Disabled'}
+                        {currentValue ? t('admin.settings.labels.enabled') : t('admin.settings.labels.disabled')}
                     </span>
                 </div>
             );
@@ -225,7 +227,7 @@ export function AdminSettings() {
 
     if (loading) {
         return (
-            <AdminLayout title="System Settings">
+            <AdminLayout title={t('admin.settings.title')}>
                 <div className="flex items-center justify-center h-64">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-violet"></div>
                 </div>
@@ -234,10 +236,10 @@ export function AdminSettings() {
     }
 
     return (
-        <AdminLayout title="System Settings">
+        <AdminLayout title={String(t('admin.settings.title'))}>
             {/* Description */}
             <p className={`mb-6 -mt-4 ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
-                Configure system-wide settings and limits
+                {t('admin.settings.subtitle')}
             </p>
 
             {/* Category Tabs */}
@@ -256,8 +258,8 @@ export function AdminSettings() {
                                 }`}
                         >
                             <Icon className={`w-4 h-4 ${selectedCategory === category ? color : ''}`} />
-                            <span className="font-medium capitalize">
-                                {category.replace('_', ' ')}
+                            <span className="font-medium">
+                                {t(`admin.settings.tabs.${category}`, category.replace('_', ' '))}
                             </span>
                         </button>
                     );
@@ -282,14 +284,14 @@ export function AdminSettings() {
                                 <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-1">
                                         <h3 className={`font-semibold ${isLight ? 'text-gray-900' : 'text-white'}`}>
-                                            {setting.key.split('.').pop()?.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                                            {t(`admin.settings.keys.${setting.key}`, { defaultValue: setting.key.split('.').pop()?.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()) })}
                                         </h3>
                                         {setting.is_sensitive && (
                                             <Shield className="w-4 h-4 text-amber-500" />
                                         )}
                                     </div>
                                     <p className={`text-sm mb-3 ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
-                                        {setting.description}
+                                        {t(`admin.settings.descriptions.${setting.key}`, { defaultValue: setting.description })}
                                     </p>
                                     <div className="flex items-center gap-3">
                                         {renderSettingInput(setting)}
@@ -302,7 +304,7 @@ export function AdminSettings() {
                                         )}
                                     </div>
                                     <div className={`text-xs mt-2 ${isLight ? 'text-gray-500' : 'text-gray-500'}`}>
-                                        Default: {JSON.stringify(setting.default_value)}
+                                        {t('admin.settings.labels.defaultValue')}{JSON.stringify(setting.default_value)}
                                     </div>
                                 </div>
 
@@ -320,7 +322,7 @@ export function AdminSettings() {
                                         ) : (
                                             <Save className="w-4 h-4" />
                                         )}
-                                        Save
+                                        {t('admin.settings.actions.save')}
                                     </button>
                                     <button
                                         onClick={() => handleReset(setting)}
@@ -342,7 +344,7 @@ export function AdminSettings() {
             {filteredSettings && filteredSettings.length === 0 && (
                 <div className={`text-center py-12 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
                     <Settings className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                    <p>No settings found in this category</p>
+                    <p>{t('admin.settings.messages.noSettings')}</p>
                 </div>
             )}
         </AdminLayout>

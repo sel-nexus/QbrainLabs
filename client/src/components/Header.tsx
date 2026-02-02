@@ -128,9 +128,10 @@ export function Header({ showBackButton = true, showHomeButton = true, title }: 
           {title && (
             <h1 className={`text-lg font-semibold ${theme === 'light' ? 'text-gray-900' : 'text-white'
               }`}>
-              {title}
+              {t(`nav.${title.toLowerCase().replace(/\s+/g, '')}`, title)}
             </h1>
           )}
+
         </div>
 
         <div className="flex items-center gap-2">
