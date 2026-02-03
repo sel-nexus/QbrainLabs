@@ -12,6 +12,15 @@ export const getApiBaseUrl = () => {
     // This supports accessing the app from other devices on the network via the frontend port (5173)
     // The Vite proxy will forward /api requests to the backend port (8000)
     const hostname = window.location.hostname;
+
+    // US32 FIX: Explicitly handle the public IP case
+    // We revert to using the proxy (relative path) because port 8000 might be firewall blocked.
+    // The Vite proxy at port 5173 IS accessible (since the page loads), so we must rely on it.
+    if (hostname == '48.214.144.154') {
+        console.log(`[Config] Public IP detected (${hostname}). Using relative path to leverage Vite proxy.`);
+        return '';
+    }
+
     if (hostname !== 'localhost' && hostname !== '127.0.0.1') {
         console.log(`[Config] Network access detected (${hostname}). Using relative API path for proxy.`);
         return '';

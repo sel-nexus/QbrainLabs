@@ -9,9 +9,14 @@ import {
     TrendingUp,
     ChevronRight,
     ArrowLeft,
-    BookOpen
+    BookOpen,
+    Trash2,
+    Clock,
+    CheckCircle,
+    AlertCircle
 } from 'lucide-react';
 import { AdminLayout } from '../components/AdminLayout';
+import { ConfirmationModal } from '../components/ConfirmationModal';
 import { useTheme } from '../context/ThemeContext';
 
 interface Industry {
@@ -49,6 +54,18 @@ interface IndustryDetail {
     use_cases: UseCaseTemplate[];
 }
 
+interface KnowledgeArticle {
+    id: string;
+    title: string;
+    source_type: string;
+    source_filename?: string;
+    source_url?: string;
+    validation_status: string;
+    validation_score?: number;
+    imported_at: string;
+    linked_usecases_count: number;
+}
+
 import { API_BASE_URL } from '../lib/config';
 
 const API_BASE = API_BASE_URL;
@@ -58,6 +75,10 @@ export function AdminKnowledgeBase() {
     const { t } = useTranslation();
     const [overview, setOverview] = useState<KnowledgeBaseOverview | null>(null);
     const [loading, setLoading] = useState(true);
+    const [activeTab, setActiveTab] = useState<'overview' | 'articles'>('overview');
+    const [articles, setArticles] = useState<KnowledgeArticle[]>([]);
+    const [loadingArticles, setLoadingArticles] = useState(false);
+    const [articleToDelete, setArticleToDelete] = useState<string | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedIndustry, setSelectedIndustry] = useState<IndustryDetail | null>(null);
     const [selectedUseCase, setSelectedUseCase] = useState<UseCaseTemplate | null>(null);
@@ -137,11 +158,58 @@ export function AdminKnowledgeBase() {
             setUploadFile(null);
             setShowUploadModal(false);
             fetchOverview(); // Refresh stats
+            fetchArticles(); // Refresh list
+            setActiveTab('articles'); // Switch to articles view
         } catch (error) {
             console.error('Upload error:', error);
             toast.error(error instanceof Error ? error.message : t('common.error', 'Error occurred'));
         } finally {
             setUploading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (activeTab === 'articles') {
+            fetchArticles();
+        }
+    }, [activeTab]);
+
+    const fetchArticles = async () => {
+        setLoadingArticles(true);
+        try {
+            const authToken = localStorage.getItem('hm_auth_token');
+            const response = await fetch(`${API_BASE}/api/knowledge/articles`, {
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            if (!response.ok) throw new Error('Failed to fetch articles');
+            const data = await response.json();
+            setArticles(data);
+        } catch (error) {
+            console.error('Error fetching articles:', error);
+            toast.error(t('admin.knowledgeBase.failedLoadArticles', 'Failed to load articles'));
+        } finally {
+            setLoadingArticles(false);
+        }
+    };
+
+    const handleDeleteArticle = async () => {
+        if (!articleToDelete) return;
+
+        try {
+            const authToken = localStorage.getItem('hm_auth_token');
+            const response = await fetch(`${API_BASE}/api/knowledge/articles/${articleToDelete}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+
+            if (!response.ok) throw new Error('Failed to delete article');
+
+            toast.success(t('admin.knowledgeBase.deleteSuccess', 'Article deleted successfully'));
+            fetchArticles(); // Refresh list
+            setArticleToDelete(null);
+        } catch (error) {
+            console.error('Error deleting article:', error);
+            toast.error(t('admin.knowledgeBase.failedDelete', 'Failed to delete article'));
         }
     };
 
@@ -265,7 +333,7 @@ export function AdminKnowledgeBase() {
                     </div>
                     <div>
                         <h3 className={`text-2xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{selectedIndustry.name}</h3>
-                        <p className={isLight ? 'text-gray-500' : 'text-gray-400'}>{t('workshop.showingWorkshops', { count: selectedIndustry.use_cases?.length || 0, total: selectedIndustry.use_cases?.length || 0 })}</p>
+                        <p className={isLight ? 'text-gray-500' : 'text-gray-400'}>{t('admin.knowledgeBase.showingKeyAIUseCases')}</p>
                     </div>
                 </div>
 
@@ -307,63 +375,190 @@ export function AdminKnowledgeBase() {
                 {t('admin.knowledgeBase.importKnowledge', 'Import Knowledge')}
             </button>
         }>
-            {/* Search */}
-            <div className="relative mb-8">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <input
-                    type="text"
-                    placeholder={t('admin.knowledgeBase.searchPlaceholder') as string}
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className={`w-full pl-12 pr-4 py-3 rounded-xl border focus:outline-none focus:border-purple-500/50 ${isLight ? 'bg-white border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-surface-800 border-white/10 text-white placeholder-gray-400'}`}
-                />
+            {/* Tabs */}
+            <div className="flex items-center gap-4 mb-8 border-b border-gray-200 dark:border-white/10">
+                <button
+                    onClick={() => setActiveTab('overview')}
+                    className={`pb-3 text-sm font-medium transition ${activeTab === 'overview'
+                        ? 'text-purple-500 border-b-2 border-purple-500'
+                        : isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'
+                        }`}
+                >
+                    {t('admin.knowledgeBase.overview', 'Overview')}
+                </button>
+                <button
+                    onClick={() => setActiveTab('articles')}
+                    className={`pb-3 text-sm font-medium transition ${activeTab === 'articles'
+                        ? 'text-purple-500 border-b-2 border-purple-500'
+                        : isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'
+                        }`}
+                >
+                    {t('admin.knowledgeBase.manageArticles', 'Manage Articles')}
+                </button>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div className={`rounded-xl p-4 border ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
-                    <div className={`text-2xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{overview?.total_industries || 0}</div>
-                    <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.industries', 'Industries')}</div>
-                </div>
-                <div className={`rounded-xl p-4 border ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
-                    <div className="text-2xl font-bold text-purple-500">{overview?.total_use_cases || 0}</div>
-                    <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.useCases', 'Use Cases')}</div>
-                </div>
-                <div className={`rounded-xl p-4 border ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
-                    <div className="text-2xl font-bold text-blue-500">{overview?.total_categories || 0}</div>
-                    <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.categories', 'Categories')}</div>
-                </div>
-                <div className={`rounded-xl p-4 border ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
-                    <div className="text-2xl font-bold text-green-500">{overview?.total_technologies || 0}</div>
-                    <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.technologies', 'Technologies')}</div>
-                </div>
-            </div>
+            {activeTab === 'overview' && (
+                <>
+                    {/* Search */}
+                    <div className="relative mb-8">
+                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                        <input
+                            type="text"
+                            placeholder={t('admin.knowledgeBase.searchPlaceholder') as string}
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className={`w-full pl-12 pr-4 py-3 rounded-xl border focus:outline-none focus:border-purple-500/50 ${isLight ? 'bg-white border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-surface-800 border-white/10 text-white placeholder-gray-400'}`}
+                        />
+                    </div>
 
-            {/* Industries Grid */}
-            <h3 className={`text-xl font-bold mb-4 ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.knowledgeBase.browseByIndustry', 'Browse by Industry')}</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {overview?.industries.map((industry) => {
-                    const Icon = getIndustryIcon(industry.icon);
-                    return (
-                        <div
-                            key={industry.id}
-                            onClick={() => fetchIndustry(industry.id)}
-                            className={`rounded-xl border p-6 cursor-pointer transition ${isLight ? 'bg-white border-gray-200 shadow-sm hover:border-purple-400' : 'bg-surface-800 border-white/10 hover:border-purple-500/50'}`}
-                        >
-                            <div className="flex items-center gap-4">
-                                <div className="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                                    <Icon className="w-6 h-6 text-purple-500" />
+                    {/* Stats */}
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                        <div className={`rounded-xl p-4 border ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
+                            <div className={`text-2xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{overview?.total_industries || 0}</div>
+                            <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.industries', 'Industries')}</div>
+                        </div>
+                        <div className={`rounded-xl p-4 border ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
+                            <div className="text-2xl font-bold text-purple-500">{overview?.total_use_cases || 0}</div>
+                            <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.useCases', 'Use Cases')}</div>
+                        </div>
+                        <div className={`rounded-xl p-4 border ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
+                            <div className="text-2xl font-bold text-blue-500">{overview?.total_categories || 0}</div>
+                            <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.categories', 'Categories')}</div>
+                        </div>
+                        <div className={`rounded-xl p-4 border ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
+                            <div className="text-2xl font-bold text-green-500">{overview?.total_technologies || 0}</div>
+                            <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.technologies', 'Technologies')}</div>
+                        </div>
+                    </div>
+
+                    {/* Industries Grid */}
+                    <h3 className={`text-xl font-bold mb-4 ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.knowledgeBase.browseByIndustry', 'Browse by Industry')}</h3>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {overview?.industries.map((industry) => {
+                            const Icon = getIndustryIcon(industry.icon);
+                            return (
+                                <div
+                                    key={industry.id}
+                                    onClick={() => fetchIndustry(industry.id)}
+                                    className={`rounded-xl border p-6 cursor-pointer transition ${isLight ? 'bg-white border-gray-200 shadow-sm hover:border-purple-400' : 'bg-surface-800 border-white/10 hover:border-purple-500/50'}`}
+                                >
+                                    <div className="flex items-center gap-4">
+                                        <div className="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                                            <Icon className="w-6 h-6 text-purple-500" />
+                                        </div>
+                                        <div className="flex-1">
+                                            <h4 className={`text-lg font-semibold ${isLight ? 'text-gray-900' : 'text-white'}`}>{industry.name}</h4>
+                                            <p className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.showingKeyAIUseCases')}</p>
+                                        </div>
+                                        <ChevronRight className="w-5 h-5 text-gray-400" />
+                                    </div>
                                 </div>
-                                <div className="flex-1">
-                                    <h4 className={`text-lg font-semibold ${isLight ? 'text-gray-900' : 'text-white'}`}>{industry.name}</h4>
-                                    <p className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('workshop.showingWorkshops', { count: industry.use_case_count, total: industry.use_case_count })}</p>
-                                </div>
-                                <ChevronRight className="w-5 h-5 text-gray-400" />
+                            );
+                        })}
+                    </div>
+                </>
+            )}
+
+            {activeTab === 'articles' && (
+                <div className="space-y-6">
+                    {loadingArticles ? (
+                        <div className="flex justify-center py-12">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
+                        </div>
+                    ) : articles.length === 0 ? (
+                        <div className={`text-center py-12 ${isLight ? 'bg-gray-50' : 'bg-surface-800'} rounded-xl border ${isLight ? 'border-gray-200' : 'border-white/10'}`}>
+                            <BookOpen className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+                            <h3 className={`text-lg font-medium mb-2 ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.knowledgeBase.noArticles', 'No articles found')}</h3>
+                            <p className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                                {t('admin.knowledgeBase.importPrompt', 'Import a document to get started.')}
+                            </p>
+                        </div>
+                    ) : (
+                        <div className={`rounded-xl border overflow-hidden ${isLight ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/10'}`}>
+                            <div className="overflow-x-auto">
+                                <table className="w-full">
+                                    <thead className={`border-b ${isLight ? 'bg-gray-50 border-gray-200' : 'bg-white/5 border-white/10'}`}>
+                                        <tr>
+                                            <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                                                {t('common.title')}
+                                            </th>
+                                            <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                                                {t('admin.knowledgeBase.source', 'Source')}
+                                            </th>
+                                            <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                                                {t('admin.knowledgeBase.validation', 'Validation')}
+                                            </th>
+                                            <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                                                {t('admin.knowledgeBase.linkages', 'Linkages')}
+                                            </th>
+                                            <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                                                {t('common.date')}
+                                            </th>
+                                            <th className={`px-6 py-3 text-right text-xs font-medium uppercase tracking-wider ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                                                {t('common.actions')}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className={`divide-y ${isLight ? 'divide-gray-200' : 'divide-white/10'}`}>
+                                        {articles.map((article) => (
+                                            <tr key={article.id} className={`transition-colors ${isLight ? 'hover:bg-gray-50' : 'hover:bg-white/5'}`}>
+                                                <td className="px-6 py-4">
+                                                    <div className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>
+                                                        {article.title}
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <div className="flex items-center gap-2">
+                                                        <span className={`px-2 py-1 text-xs rounded uppercase font-medium ${isLight ? 'bg-gray-100 text-gray-600' : 'bg-white/10 text-gray-300'
+                                                            }`}>
+                                                            {article.source_type}
+                                                        </span>
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <div className="flex items-center gap-2">
+                                                        {article.validation_status === 'validated' ? (
+                                                            <span className="flex items-center gap-1.5 px-2 py-1 bg-green-500/10 text-green-500 rounded text-xs">
+                                                                <CheckCircle className="w-3.5 h-3.5" />
+                                                                {article.validation_score}/100
+                                                            </span>
+                                                        ) : (
+                                                            <span className="flex items-center gap-1.5 px-2 py-1 bg-yellow-500/10 text-yellow-500 rounded text-xs">
+                                                                <AlertCircle className="w-3.5 h-3.5" />
+                                                                {t('common.pending')}
+                                                            </span>
+                                                        )}
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <div className={`text-sm ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
+                                                        {article.linked_usecases_count} Use Cases
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4">
+                                                    <div className={`text-sm flex items-center gap-2 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                                                        <Clock className="w-3.5 h-3.5" />
+                                                        {new Date(article.imported_at).toLocaleDateString()}
+                                                    </div>
+                                                </td>
+                                                <td className="px-6 py-4 text-right">
+                                                    <button
+                                                        onClick={() => setArticleToDelete(article.id)}
+                                                        className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
+                                                        title={t('common.delete')}
+                                                    >
+                                                        <Trash2 className="w-4 h-4" />
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                    );
-                })}
-            </div>
+                    )}
+                </div>
+            )}
 
             {/* Upload Modal */}
             {showUploadModal && (
@@ -445,6 +640,17 @@ export function AdminKnowledgeBase() {
                     </div>
                 </div>
             )}
+
+            <ConfirmationModal
+                isOpen={!!articleToDelete}
+                onClose={() => setArticleToDelete(null)}
+                onConfirm={handleDeleteArticle}
+                title={t('admin.knowledgeBase.deleteConfirmTitle', 'Delete Knowledge Article')}
+                message={t('admin.knowledgeBase.deleteConfirmMessage', 'Are you sure you want to delete this knowledge article? This will remove all associated use case linkages and cannot be undone.')}
+                confirmText={t('common.delete')}
+                cancelText={t('common.cancel')}
+                variant="danger"
+            />
         </AdminLayout>
     );
 }

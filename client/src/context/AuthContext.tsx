@@ -157,9 +157,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json',
       },
       body: formData,
     });
+
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('text/html')) {
+      const text = await response.text();
+      console.error('[Auth] Received HTML response instead of JSON:', text.substring(0, 500));
+
+      // Check if the HTML response indicates a network-level block (e.g. AT&T ActiveArmor)
+      const isBlocked = text.includes('myhomenetwork.att.com') || text.includes('phishing');
+      const message = isBlocked
+        ? 'Login blocked by network security (ISP/Firewall). Please whitelist this site in your AT&T Smart Home Manager or check your internet filter settings.'
+        : 'Server returned HTML response. This usually means the API is unreachable.';
+
+      throw new Error(message);
+    }
 
     if (!response.ok) {
       const error = await response.json();
@@ -196,6 +211,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       },
       body: JSON.stringify(data),
     });
+
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('text/html')) {
+      const text = await response.text();
+      console.error('[Auth] Received HTML response instead of JSON (register):', text.substring(0, 500));
+      throw new Error('Server returned HTML. API unreachable.');
+    }
 
     if (!response.ok) {
       const error = await response.json();

@@ -174,11 +174,25 @@ async def login(
     OAuth2 compatible endpoint - use 'username' field for email
     Includes role and status validation.
     """
+    from app.core.logging import get_logger
+    logger = get_logger("auth")
+    
+    # Mask email for privacy logging
+    masked_email = username[:3] + "***" + username.split("@")[-1] if "@" in username else "INVALID_EMAIL"
+    logger.info(f"Login attempt for user: {masked_email}")
+
     try:
         # Find user by email (username field in OAuth2 form)
         result = await db.execute(select(User).where(User.email == username))
         user = result.scalars().first()
+        
+        if user:
+            logger.info(f"User found: {masked_email} (ID: {user.id})")
+        else:
+            logger.warning(f"User not found: {masked_email}")
+            
     except (SQLAlchemyError, OperationalError) as e:
+        logger.error(f"Database error during login for {masked_email}: {str(e)}")
         # Handle database connection errors gracefully
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -187,21 +201,26 @@ async def login(
         )
     
     if not user or not verify_password(password, user.password_hash):
+        logger.warning(f"Failed login attempt for {masked_email}: User found={bool(user)}, PwdValid={bool(user and verify_password(password, user.password_hash))}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
     
+    logger.info(f"Password verified for {masked_email}")
+
     # Check account status (admins bypass status check)
     # US32: Allow pending facilitators to login (they see restricted dashboard)
     if not user.is_admin_user:
         if user.status == AccountStatus.DISABLED.value:
+            logger.warning(f"Login blocked: Account disabled for {masked_email}")
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Your account has been disabled. Please contact your administrator."
             )
         elif user.status == AccountStatus.SUSPENDED.value:
+            logger.warning(f"Login blocked: Account suspended for {masked_email}")
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Your account has been suspended. Please contact your administrator."
@@ -216,6 +235,7 @@ async def login(
         # Get workshop IDs for token
         workshop_ids = await get_user_workshop_ids(str(user.id), db)
     except (SQLAlchemyError, OperationalError) as e:
+        logger.error(f"Error updating login stats for {masked_email}: {str(e)}")
         # If commit fails, still allow login but log the error
         # Return empty workshop list as fallback
         workshop_ids = []
@@ -237,6 +257,8 @@ async def login(
         },
         expires_delta=access_token_expires
     )
+    
+    logger.info(f"Login successful for {masked_email}. Token generated.")
     
     return TokenWithRoleResponse(
         access_token=access_token,

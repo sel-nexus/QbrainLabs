@@ -740,4 +740,509 @@ Return valid JSON as a list of objects:
             return f"[ERROR] Failed to analyze image: {str(e)}"
 
 
+    # ========================================================================
+    # KNOWLEDGE VALIDATION METHODS
+    # ========================================================================
+
+    async def import_knowledge_article(self, content: str, title: str, source_type: str, metadata: dict = None) -> Dict[str, Any]:
+        """
+        Import a knowledge article into the RAG system.
+        Generates embeddings and stores in vector database.
+        
+        Args:
+            content: Full article text content
+            title: Article title
+            source_type: Type of source (pdf, docx, url, etc.)
+            metadata: Additional metadata (source_url, filename, etc.)
+        
+        Returns:
+            Dict with article_id, embedding_id, and summary
+        """
+        if metadata is None:
+            metadata = {}
+        
+        if self.mock_mode:
+            return {
+                "article_id": f"mock_article_{random.randint(1000, 9999)}",
+                "embedding_id": f"emb_{random.randint(1000, 9999)}",
+                "summary": f"Mock summary of article: {title[:100]}...",
+                "is_mock": True
+            }
+        
+        try:
+            from langchain.schema import Document
+            from langchain_core.messages import HumanMessage
+            
+            # Generate summary using LLM
+            summary_prompt = f"""Summarize the following article in 2-3 sentences, focusing on key insights and findings:
+
+Title: {title}
+
+Content:
+{content[:2000]}...
+
+Provide a concise summary:"""
+            
+            message = HumanMessage(content=summary_prompt)
+            response = await self.llm.ainvoke([message])
+            summary = response.content if hasattr(response, 'content') else str(response)
+            
+            # Create document for embedding
+            doc = Document(
+                page_content=f"{title}\n\n{content}",
+                metadata={
+                    "title": title,
+                    "source_type": source_type,
+                    **metadata
+                }
+            )
+            
+            # Generate embedding and store in vector database
+            if self.vector_store and self.embeddings:
+                # Add to existing vector store
+                embedding_ids = self.vector_store.add_documents([doc])
+                embedding_id = embedding_ids[0] if embedding_ids else None
+            else:
+                embedding_id = None
+            
+            return {
+                "embedding_id": embedding_id,
+                "summary": summary,
+                "is_mock": False
+            }
+            
+        except Exception as e:
+            print(f"[RAG] Error importing knowledge article: {e}")
+            import traceback
+            traceback.print_exc()
+            raise
+
+
+
+    async def delete_knowledge_article(self, embedding_id: str) -> bool:
+        """
+        Delete a knowledge article's embeddings from the vector store.
+        """
+        if self.mock_mode:
+            return True
+            
+        if not embedding_id:
+            return True # Nothing to delete from vector store
+            
+        try:
+            if self.vector_store:
+                # Chroma deletion by ID
+                self.vector_store.delete([embedding_id])
+                print(f"[RAG] Deleted embedding {embedding_id} from vector store")
+            return True
+        except Exception as e:
+            print(f"[RAG] Error deleting embedding {embedding_id}: {e}")
+            return False
+
+    async def validate_against_research(self, article_title: str, article_content: str, provider: str = "llm_only") -> Dict[str, Any]:
+        """
+        Validate article content against public research.
+        
+        Args:
+            article_title: Title of the article
+            article_content: Content to validate
+            provider: Research API provider (perplexity, google_scholar, arxiv, llm_only)
+        
+        Returns:
+            Dict with validation_score, sources, and notes
+        """
+        # Perplexity API integration
+        if provider == "perplexity" and not self.mock_mode:
+            try:
+                import os
+                import requests
+                
+                perplexity_api_key = os.getenv("PERPLEXITY_API_KEY", "").strip('"')
+                
+                if not perplexity_api_key:
+                    print("[RAG] Perplexity API key not configured, falling back to LLM-only mode")
+                    provider = "llm_only"
+                else:
+                    # Call Perplexity API to search for related research
+                    search_query = f"Latest research and findings about: {article_title}"
+                    
+                    headers = {
+                        "Authorization": f"Bearer {perplexity_api_key}",
+                        "Content-Type": "application/json"
+                    }
+                    
+                    payload = {
+                        "model": "sonar",
+                        "messages": [
+                            {
+                                "role": "system",
+                                "content": "You are a research validation expert. Provide credible sources and assess the validity of claims."
+                            },
+                            {
+                                "role": "user",
+                                "content": f"""Validate the following article against current research and provide credible sources:
+
+Title: {article_title}
+
+Content Summary:
+{article_content[:1000]}...
+
+Please provide:
+1. A credibility score (0-100) based on how well the claims align with current research
+2. List of credible research sources that support or contradict the claims
+3. Any concerns or red flags
+
+Return your response in JSON format:
+{{
+    "validation_score": 85,
+    "sources": [
+        {{"source": "Source name", "relevance": "High/Medium/Low", "url": "URL if available", "finding": "Brief summary"}}
+    ],
+    "notes": "Overall assessment and any concerns"
+}}"""
+                            }
+                        ],
+                        "temperature": 0.2,
+                        "max_tokens": 1000
+                    }
+                    
+                    response = requests.post(
+                        "https://api.perplexity.ai/chat/completions",
+                        headers=headers,
+                        json=payload,
+                        timeout=30
+                    )
+                    
+                    if response.status_code == 200:
+                        result_data = response.json()
+                        content = result_data.get("choices", [{}])[0].get("message", {}).get("content", "")
+                        
+                        # Parse JSON from response
+                        import re
+                        json_match = re.search(r'\{[\s\S]*\}', content, re.DOTALL)
+                        if json_match:
+                            validation_result = json.loads(json_match.group())
+                            
+                            return {
+                                "validation_score": validation_result.get("validation_score", 75),
+                                "sources": validation_result.get("sources", []),
+                                "notes": validation_result.get("notes", "Validated using Perplexity AI research."),
+                                "is_mock": False,
+                                "provider": "perplexity"
+                            }
+                        else:
+                            print(f"[RAG] Failed to parse Perplexity response: {content}")
+                            provider = "llm_only"
+                    else:
+                        print(f"[RAG] Perplexity API error: {response.status_code} - {response.text}")
+                        provider = "llm_only"
+                        
+            except Exception as e:
+                print(f"[RAG] Error calling Perplexity API: {e}")
+                import traceback
+                traceback.print_exc()
+                provider = "llm_only"
+        
+        # Mock mode or LLM-only validation
+        if self.mock_mode or provider == "llm_only":
+            # Mock sources for mock mode
+            mock_sources = [
+                {"source": "Gartner Research 2025", "relevance": "High", "url": "https://example.com/research1"},
+                {"source": "McKinsey AI Report", "relevance": "Medium", "url": "https://example.com/research2"},
+                {"source": "IEEE AI Standards", "relevance": "High", "url": "https://example.com/research3"}
+            ]
+            
+            if self.mock_mode:
+                return {
+                    "validation_score": random.uniform(70, 95),
+                    "sources": mock_sources,
+                    "notes": "Mock validation: Article appears credible based on simulated research sources.",
+                    "is_mock": True
+                }
+        
+        # LLM-only validation (when not using external APIs)
+        try:
+            from langchain_core.messages import HumanMessage
+            
+            # Use LLM to assess credibility and suggest research sources
+            validation_prompt = f"""You are a research validation expert. Analyze the following article and assess its credibility.
+
+Title: {article_title}
+
+Content:
+{article_content[:1500]}...
+
+Tasks:
+1. Assess the credibility of the claims made (score 0-100)
+2. Identify potential research sources that could validate these claims
+3. Note any red flags or areas requiring verification
+
+Return JSON only:
+{{
+    "validation_score": 85,
+    "suggested_sources": [
+        {{"source": "Source name", "relevance": "High/Medium/Low", "reason": "Why this source is relevant"}}
+    ],
+    "notes": "Brief assessment of credibility and any concerns"
+}}"""
+            
+            message = HumanMessage(content=validation_prompt)
+            response = await self.llm.ainvoke([message])
+            response_content = response.content if hasattr(response, 'content') else str(response)
+            
+            # Parse JSON response
+            import re
+            json_match = re.search(r'\{[\s\S]*\}', response_content, re.DOTALL)
+            if json_match:
+                result = json.loads(json_match.group())
+            else:
+                result = json.loads(response_content)
+            
+            # Format sources
+            sources = []
+            for src in result.get("suggested_sources", []):
+                sources.append({
+                    "source": src.get("source", "Unknown"),
+                    "relevance": src.get("relevance", "Medium"),
+                    "url": f"https://scholar.google.com/scholar?q={src.get('source', '').replace(' ', '+')}"
+                })
+            
+            return {
+                "validation_score": result.get("validation_score", 75),
+                "sources": sources,
+                "notes": result.get("notes", "Validation completed using LLM analysis."),
+                "is_mock": False,
+                "provider": "llm_only"
+            }
+            
+        except Exception as e:
+            print(f"[RAG] Error validating article: {e}")
+            import traceback
+            traceback.print_exc()
+            # Return default validation
+            return {
+                "validation_score": 70,
+                "sources": [],
+                "notes": f"Validation error: {str(e)}",
+                "is_mock": False
+            }
+
+    async def find_trending_use_cases(self, industry: str = "General", count: int = 3) -> List[Dict[str, Any]]:
+        """
+        Find trending AI use cases for a specific industry using Perplexity API.
+        
+        Args:
+            industry: Industry name (e.g. "Healthcare", "Finance")
+            count: Number of use cases to find
+            
+        Returns:
+            List of use case dictionaries
+        """
+        import uuid
+        import random
+        
+        # Mock data generator
+        def get_mock_data():
+            mock_cases = []
+            for i in range(count):
+                mock_cases.append({
+                    "id": f"fresh_{uuid.uuid4()}",
+                    "title": f"Generative {industry} Agent {i+1}",
+                    "description": f"AI agent that autonomously coordinates {industry.lower()} workflows using LLMs.",
+                    "industry": industry,
+                    "industry_name": industry,
+                    "category": "Agentic AI",
+                    "complexity": "High",
+                    "typical_roi": "30-50% Efficiency Gain",
+                    "relevance_score": 0.95 - (i * 0.05),
+                    "is_trending": True
+                })
+            return mock_cases
+
+        if self.mock_mode:
+            return get_mock_data()
+
+        # Try Perplexity API
+        try:
+            import os
+            import requests
+            
+            perplexity_api_key = os.getenv("PERPLEXITY_API_KEY", "").strip('"')
+            
+            if not perplexity_api_key:
+                print("[RAG] Perplexity API key not configured, falling back to mock data")
+                return get_mock_data()
+                
+            # Call Perplexity API
+            headers = {
+                "Authorization": f"Bearer {perplexity_api_key}",
+                "Content-Type": "application/json"
+            }
+            
+            payload = {
+                "model": "sonar",
+                "messages": [
+                    {
+                        "role": "system",
+                        "content": "You are a strategic AI consultant. Identify top trending AI use cases."
+                    },
+                    {
+                        "role": "user",
+                        "content": f"""Identify the top {count} trending AI use cases in the {industry} industry for 2024-2025.
+Focus on actionable, high-value applications.
+
+Return JSON in this format:
+{{
+    "use_cases": [
+        {{
+            "title": "Use Case Title",
+            "description": "2-3 sentence description",
+            "category": "Category (e.g. Generative AI, Predictive Analytics)",
+            "complexity": "Low/Medium/High",
+            "typical_roi": "Estimated ROI (e.g. 20% cost reduction)",
+            "relevance_score": 0.95 (0.0-1.0 score)
+        }}
+    ]
+}}"""
+                    }
+                ],
+                "temperature": 0.2,
+                "max_tokens": 1000
+            }
+            
+            response = requests.post(
+                "https://api.perplexity.ai/chat/completions",
+                headers=headers,
+                json=payload,
+                timeout=30
+            )
+            
+            if response.status_code == 200:
+                result_data = response.json()
+                content = result_data.get("choices", [{}])[0].get("message", {}).get("content", "")
+                
+                # Parse JSON
+                import re
+                json_match = re.search(r'\{[\s\S]*\}', content, re.DOTALL)
+                if json_match:
+                    result = json.loads(json_match.group())
+                    use_cases = result.get("use_cases", [])
+                    
+                    # Add IDs and industry info
+                    formatted_cases = []
+                    for uc in use_cases:
+                        uc["id"] = f"fresh_{uuid.uuid4()}"
+                        uc["industry"] = industry
+                        uc["industry_name"] = industry
+                        uc["is_trending"] = True
+                        formatted_cases.append(uc)
+                        
+                    return formatted_cases[:count]
+                else:
+                    print(f"[RAG] Failed to parse Perplexity response for trending use cases: {content}")
+                    return get_mock_data()
+            else:
+                print(f"[RAG] Perplexity API error: {response.status_code} - {response.text}")
+                return get_mock_data()
+                
+        except Exception as e:
+            print(f"[RAG] Error finding trending use cases: {e}")
+            return get_mock_data()
+
+
+    async def find_affected_usecases(self, article_content: str, article_title: str, existing_usecases: List[Dict]) -> List[Dict]:
+        """
+        Find use cases that could be enhanced by the knowledge article.
+        
+        Args:
+            article_content: Content of the knowledge article
+            article_title: Title of the article
+            existing_usecases: List of existing use case dicts
+        
+        Returns:
+            List of dicts with usecase_id, relevance_score, impact_type, and suggested_changes
+        """
+        if self.mock_mode:
+            # Mock affected use cases
+            affected = []
+            for uc in existing_usecases[:3]:  # Mock: affect first 3
+                affected.append({
+                    "usecase_id": uc.get("id"),
+                    "usecase_title": uc.get("title"),
+                    "relevance_score": random.uniform(60, 95),
+                    "impact_type": random.choice(["addition", "refinement", "validation"]),
+                    "suggested_changes": {
+                        "description": f"Enhanced description based on {article_title}",
+                        "typical_roi": "Updated ROI based on latest research",
+                        "technologies": ["GPT-4", "RAG", "Vector DB"]
+                    }
+                })
+            return affected
+        
+        try:
+            from langchain_core.messages import HumanMessage
+            
+            affected_usecases = []
+            
+            # Analyze each use case for potential impact
+            for uc in existing_usecases:
+                analysis_prompt = f"""Analyze if this knowledge article is relevant to the use case and suggest improvements.
+
+Knowledge Article: {article_title}
+Article Summary: {article_content[:800]}...
+
+Use Case: {uc.get('title')}
+Description: {uc.get('description', '')}
+Category: {uc.get('category', '')}
+
+Tasks:
+1. Determine relevance (score 0-100)
+2. Identify impact type: "addition" (new info), "refinement" (improve existing), "validation" (confirms existing), or "none"
+3. Suggest specific changes if relevant
+
+Return JSON only:
+{{
+    "relevance_score": 75,
+    "impact_type": "refinement",
+    "suggested_changes": {{
+        "description": "Updated description text",
+        "typical_roi": "Updated ROI estimate",
+        "key_benefits": ["benefit1", "benefit2"]
+    }}
+}}
+
+If not relevant, return: {{"relevance_score": 0, "impact_type": "none", "suggested_changes": {{}}}}"""
+                
+                message = HumanMessage(content=analysis_prompt)
+                response = await self.llm.ainvoke([message])
+                response_content = response.content if hasattr(response, 'content') else str(response)
+                
+                # Parse JSON response
+                import re
+                json_match = re.search(r'\{[\s\S]*\}', response_content, re.DOTALL)
+                if json_match:
+                    result = json.loads(json_match.group())
+                else:
+                    result = json.loads(response_content)
+                
+                # Only include if relevance is above threshold
+                if result.get("relevance_score", 0) >= 50 and result.get("impact_type") != "none":
+                    affected_usecases.append({
+                        "usecase_id": uc.get("id"),
+                        "usecase_title": uc.get("title"),
+                        "relevance_score": result.get("relevance_score"),
+                        "impact_type": result.get("impact_type"),
+                        "suggested_changes": result.get("suggested_changes", {})
+                    })
+            
+            return affected_usecases
+            
+        except Exception as e:
+            print(f"[RAG] Error finding affected use cases: {e}")
+            import traceback
+            traceback.print_exc()
+            return []
+
+
 rag_service = RAGService()
+

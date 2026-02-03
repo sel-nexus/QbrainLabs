@@ -3,34 +3,516 @@
 > vite
 
 
-  [32m[1mVITE[22m v7.3.1[39m  [2mready in [0m[1m627[22m[2m[0m ms[22m
+  [32m[1mVITE[22m v7.3.1[39m  [2mready in [0m[1m751[22m[2m[0m ms[22m
 
-  [32m➜[39m  [1mLocal[22m:   [36mhttp://localhost:[1m5173[22m/[39m
-  [32m➜[39m  [1mNetwork[22m: [36mhttp://172.16.0.4:[1m5173[22m/[39m
+  [32m➜[39m  [1mLocal[22m:   [36mhttps://localhost:[1m5173[22m/[39m
+  [32m➜[39m  [1mLocal[22m:   [36mhttps://qbrainlabs.com:[1m5173[22m/[39m
+  [32m➜[39m  [1mNetwork[22m: [36mhttps://172.16.0.4:[1m5173[22m/[39m
 [2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
+[Vite Request] GET /
+[Vite Request] GET /@vite/client
+[Vite Request] GET /src/main.tsx
+[Vite Request] GET /@react-refresh
+[Vite Request] GET /node_modules/vite/dist/client/env.mjs
+[Vite Request] GET /node_modules/.vite/deps/react_jsx-dev-runtime.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/react.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/react-dom_client.js?v=8489571b
+[Vite Request] GET /src/index.css
+[Vite Request] GET /src/i18n.ts
+[Vite Request] GET /src/App.tsx
+[Vite Request] GET /src/context/ThemeContext.tsx
+[Vite Request] GET /src/context/AuthContext.tsx
+[Vite Request] GET /src/context/SessionContext.tsx
+[Vite Request] GET /node_modules/.vite/deps/chunk-WUR7D6NS.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/chunk-G3PMV62Z.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/i18next.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/react-i18next.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/i18next-browser-languagedetector.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/i18next-http-backend.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/chunk-YF4B4G2L.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/react-router-dom.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/sonner.js?v=8489571b
+[Vite Request] GET /src/components/ChangePasswordDialog.tsx
+[Vite Request] GET /src/pages/Landing.tsx
+[Vite Request] GET /src/pages/CreateWorkshop.tsx
+[Vite Request] GET /src/pages/JoinWorkshop.tsx
+[Vite Request] GET /src/pages/WorkshopDetail.tsx
+[Vite Request] GET /src/pages/FacilitatorLogin.tsx
+[Vite Request] GET /src/pages/FacilitatorDashboard.tsx
+[Vite Request] GET /src/pages/AdminPanel.tsx
+[Vite Request] GET /src/pages/AdminSettings.tsx
+[Vite Request] GET /src/pages/AdminWorkshops.tsx
+[Vite Request] GET /src/pages/AdminUsers.tsx
+[Vite Request] GET /src/pages/AdminKnowledgeBase.tsx
+[Vite Request] GET /src/pages/AdminMyWorkshops.tsx
+[Vite Request] GET /src/pages/AdminLLMUsage.tsx
+[Vite Request] GET /src/pages/FacilitatorManagement.tsx
+[Vite Request] GET /src/pages/KnowledgeBase.tsx
+[Vite Request] GET /src/components/AdminLayout.tsx
+[Vite Request] GET /src/components/AuthenticatedLayout.tsx
+[Vite Request] GET /src/components/feedback/FeedbackWidget.tsx
+[Vite Request] GET /src/pages/AnalyticsDashboard.tsx
+[Vite Request] GET /src/pages/WaitingRoom.tsx
+[Vite Request] GET /src/pages/ParticipantDashboard.tsx
+[Vite Request] GET /src/pages/ParticipantMatrix.tsx
+[Vite Request] GET /src/pages/IntakePhase.tsx
+[Vite Request] GET /src/pages/ScoringPhase.tsx
+[Vite Request] GET /src/lib/config.ts
+[Vite Request] GET /src/lib/socket.ts
 
-[2m[282.24ms][22m [@tailwindcss/postcss] src\index.css
-[2m[  0.13ms][22m  [2m ↳ [22mQuick bail check
-[2m[ 41.78ms][22m  [2m ↳ [22mSetup compiler
-[2m[  2.52ms][22m    [2m ↳ [22mPostCSS AST -> Tailwind CSS AST
-[2m[ 39.20ms][22m    [2m ↳ [22mCreate compiler
-[2m[  0.22ms][22m  [2m ↳ [22mRegister full rebuild paths
-[2m[  2.62ms][22m  [2m ↳ [22mSetup scanner
-[2m[ 62.48ms][22m  [2m ↳ [22mScan for candidates
-[2m[ 52.68ms][22m  [2m ↳ [22mRegister dependency messages
-[2m[ 99.33ms][22m  [2m ↳ [22mBuild utilities
-[2m[ 12.71ms][22m  [2m ↳ [22mTransform Tailwind CSS AST into PostCSS AST
-[2m[  9.28ms][22m  [2m ↳ [22mUpdate PostCSS AST
+[2m[311.33ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.26ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 36.67ms][22m  [2m ↳ [22mSetup compiler
+[2m[  1.79ms][22m    [2m ↳ [22mPostCSS AST -> Tailwind CSS AST
+[2m[ 34.77ms][22m    [2m ↳ [22mCreate compiler
+[2m[  0.20ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[  2.85ms][22m  [2m ↳ [22mSetup scanner
+[2m[ 79.19ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 56.66ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[106.50ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 17.66ms][22m  [2m ↳ [22mTransform Tailwind CSS AST into PostCSS AST
+[2m[ 10.54ms][22m  [2m ↳ [22mUpdate PostCSS AST
 
-Sending Request to the Target: GET /api/auth/me
-Received Response from the Target: 200 /api/auth/me
-Sending Request to the Target: GET /api/auth/me
-Received Response from the Target: 200 /api/auth/me
-Sending Request to the Target: GET /api/admin/stats
-Received Response from the Target: 200 /api/admin/stats
-Sending Request to the Target: GET /api/admin/stats
-Received Response from the Target: 200 /api/admin/stats
+[Vite Request] GET /node_modules/.vite/deps/chunk-DS5EPX4M.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/chunk-TXHHHGR3.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/socket__io-client.js?v=8489571b
+[Vite Request] GET /src/components/TileCarousel/index.ts
+[Vite Request] GET /src/components/HomeTiles/index.ts
+[Vite Request] GET /src/components/Header.tsx
+[Vite Request] GET /node_modules/.vite/deps/lucide-react.js?v=8489571b
+[Vite Request] GET /src/components/ui/Button.tsx
+[Vite Request] GET /src/components/ui/Input.tsx
+[Vite Request] GET /src/lib/api.ts
+[Vite Request] GET /node_modules/.vite/deps/framer-motion.js?v=8489571b
+[Vite Request] GET /src/components/ParticipantAuth.tsx
+[Vite Request] GET /src/components/templates/TemplateSelector.tsx
+[Vite Request] GET /src/components/ui/ActionTile.tsx
+[Vite Request] GET /src/components/ConfirmationModal.tsx
+[Vite Request] GET /src/components/UseCaseCanvas.tsx
+[Vite Request] GET /src/components/survey/SurveyParticipant.tsx
+[Vite Request] GET /src/components/ScoringCard.tsx
+[Vite Request] GET /src/components/prioritization/PrioritizationScale.tsx
+[Vite Request] GET /src/components/polls/PollResponder.tsx
+[Vite Request] GET /src/components/polls/ReactionBar.tsx
+[Vite Request] GET /src/components/polls/ReactionOverlay.tsx
+[Vite Request] GET /src/components/polls/QAPanel.tsx
+[Vite Request] GET /src/components/gamification/PointsDisplay.tsx
+[Vite Request] GET /src/components/gamification/AchievementToast.tsx
+[Vite Request] GET /src/components/gamification/Leaderboard.tsx
+[Vite Request] GET /src/components/gamification/BadgeGrid.tsx
+[Vite Request] GET /src/components/usecases/UseCaseDetailModal.tsx
+[Vite Request] GET /src/lib/api/feedback.ts
+[Vite Request] GET /node_modules/.vite/deps/recharts.js?v=8489571b
+[Vite Request] GET /src/lib/api/analytics.ts
+[Vite Request] GET /src/components/UseCaseForm.tsx
+[Vite Request] GET /src/components/ResultsChart.tsx
+[Vite Request] GET /src/components/WorkshopInsights.tsx
+[Vite Request] GET /src/components/AnalyticsDashboard.tsx
+[Vite Request] GET /src/components/survey/index.ts
+[Vite Request] GET /node_modules/.vite/deps/qrcode__react.js?v=8489571b
+[Vite Request] GET /src/components/ui/Modal.tsx
+[Vite Request] GET /src/components/polls/PollManager.tsx
+[Vite Request] GET /src/components/roi/index.ts
+[Vite Request] GET /src/components/breakout/index.ts
+[Vite Request] GET /src/components/roadmap/index.ts
+[Vite Request] GET /src/components/challenges/index.ts
+[Vite Request] GET /src/components/ai-copilot/index.ts
+[Vite Request] GET /src/components/MatrixActivityDashboard.tsx
+[Vite Request] GET /src/components/ui/ThemeToggle.tsx
+[Vite Request] GET /src/components/common/LanguageSwitcher.tsx
+[Vite Request] GET /src/components/NotificationIcon.tsx
+[Vite Request] GET /src/components/NotificationDetailModal.tsx
+[Vite Request] GET /node_modules/.vite/deps/chunk-2YVA4HRZ.js?v=8489571b
+[Vite Request] GET /src/components/TileCarousel/TileCarousel.tsx
+[Vite Request] GET /src/components/TileCarousel/TileNavigation.tsx
+[Vite Request] GET /src/components/HomeTiles/HeroTile.tsx
+[Vite Request] GET /src/components/HomeTiles/FeaturesTile.tsx
+[Vite Request] GET /src/components/HomeTiles/HowItWorksTile.tsx
+[Vite Request] GET /src/components/HomeTiles/BenefitsTile.tsx
+[Vite Request] GET /src/components/HomeTiles/CTATile.tsx
+[Vite Request] GET /node_modules/.vite/deps/clsx.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/tailwind-merge.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/axios.js?v=8489571b
+[Vite Request] GET /src/lib/api/gamification.ts
+[Vite Request] GET /src/components/gamification/PointsAnimation.tsx
+[Vite Request] GET /src/lib/api/polls.ts
+[Vite Request] GET /src/components/gamification/BadgeCard.tsx
+[Vite Request] GET /node_modules/.vite/deps/d3.js?v=8489571b
+[Vite Request] GET /src/components/survey/SurveyBuilder.tsx
+[Vite Request] GET /src/components/survey/SurveyList.tsx
+[Vite Request] GET /src/components/survey/SurveyResults.tsx
+[Vite Request] GET /src/components/roi/ROICalculator.tsx
+[Vite Request] GET /src/components/roi/CostBenefitForms.tsx
+[Vite Request] GET /src/components/roi/ROIResultsDisplay.tsx
+[Vite Request] GET /src/components/roi/ROICalculatorModal.tsx
+[Vite Request] GET /src/components/roi/ROIComparisonView.tsx
+[Vite Request] GET /src/components/roi/ScenarioModeler.tsx
+[Vite Request] GET /src/components/roi/SensitivityAnalysis.tsx
+[Vite Request] GET /src/components/roi/BenchmarkPanel.tsx
+[Vite Request] GET /src/components/roi/BusinessCaseGenerator.tsx
+[Vite Request] GET /src/components/VotingHeatmap.tsx
+[Vite Request] GET /src/components/challenges/ChallengeCard.tsx
+[Vite Request] GET /src/components/challenges/ChallengeForm.tsx
+[Vite Request] GET /src/components/challenges/ChallengeCardDetail.tsx
+[Vite Request] GET /src/components/challenges/ChallengeManager.tsx
+[Vite Request] GET /src/components/roadmap/RoadmapGenerator.tsx
+[Vite Request] GET /src/components/roadmap/GanttChart.tsx
+[Vite Request] GET /src/components/roadmap/ResourcePlanner.tsx
+[Vite Request] GET /src/components/roadmap/MilestoneTracker.tsx
+[Vite Request] GET /src/components/breakout/BreakoutManager.tsx
+[Vite Request] GET /src/components/breakout/BreakoutRoom.tsx
+[Vite Request] GET /node_modules/.vite/deps/chunk-U7P2NEEE.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/chunk-YZQ63ACW.js?v=8489571b
+[Vite Request] GET /src/components/ai-copilot/CopilotPanel.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotToggle.tsx
+[Vite Request] GET /src/components/ai-copilot/SuggestionCard.tsx
+[Vite Request] GET /src/components/ai-copilot/AlertBanner.tsx
+[Vite Request] GET /src/components/ai-copilot/EngagementMonitor.tsx
+[Vite Request] GET /src/components/ai-copilot/DiscussionPrompts.tsx
+[Vite Request] GET /src/components/ai-copilot/SummaryGenerator.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotSettings.tsx
+[Vite Request] GET /src/components/ai-copilot/InsightsPanel.tsx
+[Vite Request] GET /src/lib/api/challenges.ts
+[Vite Request] GET /src/hooks/useTileCarousel.ts
+[Vite Request] GET /src/types/roi.ts
+[Vite Request] GET /src/lib/api/copilot.ts
+[Vite Request] GET /vite.svg
+[Vite Request] GET /vite.svg
+[Vite Request] POST /api/auth/login
+[Proxy] Rewriting path: /api/auth/login
+Sending Request to the Target: POST /api/auth/login
+Received Response from the Target: 401 /api/auth/login
+[Vite Request] POST /api/auth/login
+[Proxy] Rewriting path: /api/auth/login
+Sending Request to the Target: POST /api/auth/login
+Received Response from the Target: 200 /api/auth/login
+[Vite Request] GET /vite.svg
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /
+[Vite Request] GET /@vite/client
+[Vite Request] GET /src/main.tsx
+[Vite Request] GET /@react-refresh
+[Vite Request] GET /node_modules/.vite/deps/react_jsx-dev-runtime.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/react.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/react-dom_client.js?v=8489571b
+[Vite Request] GET /src/index.css
+[Vite Request] GET /src/i18n.ts
+[Vite Request] GET /src/App.tsx
+[Vite Request] GET /src/context/ThemeContext.tsx
+[Vite Request] GET /src/context/AuthContext.tsx
+[Vite Request] GET /src/context/SessionContext.tsx
+[Vite Request] GET /node_modules/vite/dist/client/env.mjs
+[Vite Request] GET /node_modules/.vite/deps/chunk-WUR7D6NS.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/chunk-G3PMV62Z.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/chunk-YF4B4G2L.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/react-router-dom.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/sonner.js?v=8489571b
+[Vite Request] GET /src/components/ChangePasswordDialog.tsx
+[Vite Request] GET /src/pages/Landing.tsx
+[Vite Request] GET /src/pages/CreateWorkshop.tsx
+[Vite Request] GET /src/pages/JoinWorkshop.tsx
+[Vite Request] GET /src/pages/WorkshopDetail.tsx
+[Vite Request] GET /src/pages/FacilitatorLogin.tsx
+[Vite Request] GET /src/pages/FacilitatorDashboard.tsx
+[Vite Request] GET /src/pages/AdminPanel.tsx
+[Vite Request] GET /src/pages/AdminSettings.tsx
+[Vite Request] GET /src/pages/AdminWorkshops.tsx
+[Vite Request] GET /src/pages/AdminUsers.tsx
+[Vite Request] GET /src/pages/AdminKnowledgeBase.tsx
+[Vite Request] GET /src/pages/AdminMyWorkshops.tsx
+[Vite Request] GET /src/pages/AdminLLMUsage.tsx
+[Vite Request] GET /src/pages/FacilitatorManagement.tsx
+[Vite Request] GET /src/pages/KnowledgeBase.tsx
+[Vite Request] GET /src/components/AdminLayout.tsx
+[Vite Request] GET /src/components/AuthenticatedLayout.tsx
+[Vite Request] GET /src/components/feedback/FeedbackWidget.tsx
+[Vite Request] GET /src/pages/AnalyticsDashboard.tsx
+[Vite Request] GET /src/pages/WaitingRoom.tsx
+[Vite Request] GET /src/pages/ParticipantDashboard.tsx
+[Vite Request] GET /src/pages/ParticipantMatrix.tsx
+[Vite Request] GET /src/pages/IntakePhase.tsx
+[Vite Request] GET /src/pages/ScoringPhase.tsx
+[Vite Request] GET /node_modules/.vite/deps/i18next.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/react-i18next.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/i18next-browser-languagedetector.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/i18next-http-backend.js?v=8489571b
+[Vite Request] GET /src/lib/socket.ts
+[Vite Request] GET /src/lib/config.ts
+[Vite Request] GET /node_modules/.vite/deps/lucide-react.js?v=8489571b
+[Vite Request] GET /src/components/TileCarousel/index.ts
+[Vite Request] GET /src/components/HomeTiles/index.ts
+[Vite Request] GET /src/components/Header.tsx
+[Vite Request] GET /src/components/ui/Button.tsx
+[Vite Request] GET /src/components/ui/Input.tsx
+[Vite Request] GET /src/lib/api.ts
+[Vite Request] GET /node_modules/.vite/deps/framer-motion.js?v=8489571b
+[Vite Request] GET /src/components/templates/TemplateSelector.tsx
+[Vite Request] GET /src/components/ParticipantAuth.tsx
+[Vite Request] GET /src/components/UseCaseForm.tsx
+[Vite Request] GET /src/components/ResultsChart.tsx
+[Vite Request] GET /src/components/WorkshopInsights.tsx
+[Vite Request] GET /src/components/AnalyticsDashboard.tsx
+[Vite Request] GET /src/components/survey/index.ts
+[Vite Request] GET /node_modules/.vite/deps/qrcode__react.js?v=8489571b
+[Vite Request] GET /src/components/ui/Modal.tsx
+[Vite Request] GET /src/components/polls/PollManager.tsx
+[Vite Request] GET /src/components/polls/ReactionOverlay.tsx
+[Vite Request] GET /src/components/polls/QAPanel.tsx
+[Vite Request] GET /src/components/roi/index.ts
+[Vite Request] GET /src/components/breakout/index.ts
+[Vite Request] GET /src/components/roadmap/index.ts
+[Vite Request] GET /src/components/challenges/index.ts
+[Vite Request] GET /src/components/ai-copilot/index.ts
+[Vite Request] GET /src/components/MatrixActivityDashboard.tsx
+[Vite Request] GET /src/components/prioritization/PrioritizationScale.tsx
+[Vite Request] GET /src/components/ui/ActionTile.tsx
+[Vite Request] GET /src/components/ConfirmationModal.tsx
+[Vite Request] GET /node_modules/.vite/deps/recharts.js?v=8489571b
+[Vite Request] GET /src/lib/api/analytics.ts
+[Vite Request] GET /src/lib/api/feedback.ts
+[Vite Request] GET /src/components/survey/SurveyParticipant.tsx
+[Vite Request] GET /src/components/UseCaseCanvas.tsx
+[Vite Request] GET /src/components/polls/PollResponder.tsx
+[Vite Request] GET /src/components/polls/ReactionBar.tsx
+[Vite Request] GET /src/components/gamification/PointsDisplay.tsx
+[Vite Request] GET /src/components/gamification/AchievementToast.tsx
+[Vite Request] GET /src/components/gamification/Leaderboard.tsx
+[Vite Request] GET /src/components/gamification/BadgeGrid.tsx
+[Vite Request] GET /src/components/usecases/UseCaseDetailModal.tsx
+[Vite Request] GET /node_modules/.vite/deps/chunk-DS5EPX4M.js?v=8489571b
+[Vite Request] GET /src/components/ScoringCard.tsx
+[Vite Request] GET /node_modules/.vite/deps/chunk-TXHHHGR3.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/socket__io-client.js?v=8489571b
+[Vite Request] GET /src/components/TileCarousel/TileCarousel.tsx
+[Vite Request] GET /src/components/TileCarousel/TileNavigation.tsx
+[Vite Request] GET /src/components/HomeTiles/HeroTile.tsx
+[Vite Request] GET /src/components/HomeTiles/FeaturesTile.tsx
+[Vite Request] GET /src/components/HomeTiles/HowItWorksTile.tsx
+[Vite Request] GET /src/components/HomeTiles/BenefitsTile.tsx
+[Vite Request] GET /src/components/HomeTiles/CTATile.tsx
+[Vite Request] GET /src/components/ui/ThemeToggle.tsx
+[Vite Request] GET /src/components/common/LanguageSwitcher.tsx
+[Vite Request] GET /src/components/NotificationIcon.tsx
+[Vite Request] GET /src/components/NotificationDetailModal.tsx
+[Vite Request] GET /node_modules/.vite/deps/clsx.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/tailwind-merge.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/axios.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/chunk-2YVA4HRZ.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/d3.js?v=8489571b
+[Vite Request] GET /src/components/VotingHeatmap.tsx
+[Vite Request] GET /src/components/survey/SurveyBuilder.tsx
+[Vite Request] GET /src/components/survey/SurveyList.tsx
+[Vite Request] GET /src/components/survey/SurveyResults.tsx
+[Vite Request] GET /src/lib/api/polls.ts
+[Vite Request] GET /src/components/roi/ROICalculator.tsx
+[Vite Request] GET /src/components/roi/CostBenefitForms.tsx
+[Vite Request] GET /src/components/roi/ROIResultsDisplay.tsx
+[Vite Request] GET /src/components/roi/ROICalculatorModal.tsx
+[Vite Request] GET /src/components/roi/ROIComparisonView.tsx
+[Vite Request] GET /src/components/roi/ScenarioModeler.tsx
+[Vite Request] GET /src/components/roi/SensitivityAnalysis.tsx
+[Vite Request] GET /src/components/roi/BenchmarkPanel.tsx
+[Vite Request] GET /src/components/roi/BusinessCaseGenerator.tsx
+[Vite Request] GET /src/components/breakout/BreakoutManager.tsx
+[Vite Request] GET /src/components/breakout/BreakoutRoom.tsx
+[Vite Request] GET /src/components/roadmap/RoadmapGenerator.tsx
+[Vite Request] GET /src/components/roadmap/GanttChart.tsx
+[Vite Request] GET /src/components/roadmap/ResourcePlanner.tsx
+[Vite Request] GET /src/components/roadmap/MilestoneTracker.tsx
+[Vite Request] GET /src/components/challenges/ChallengeCard.tsx
+[Vite Request] GET /src/components/challenges/ChallengeForm.tsx
+[Vite Request] GET /src/components/challenges/ChallengeCardDetail.tsx
+[Vite Request] GET /src/components/challenges/ChallengeManager.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotPanel.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotToggle.tsx
+[Vite Request] GET /src/components/ai-copilot/SuggestionCard.tsx
+[Vite Request] GET /src/components/ai-copilot/AlertBanner.tsx
+[Vite Request] GET /src/components/ai-copilot/EngagementMonitor.tsx
+[Vite Request] GET /src/components/ai-copilot/DiscussionPrompts.tsx
+[Vite Request] GET /src/components/ai-copilot/SummaryGenerator.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotSettings.tsx
+[Vite Request] GET /src/components/ai-copilot/InsightsPanel.tsx
+[Vite Request] GET /src/lib/api/gamification.ts
+[Vite Request] GET /src/components/gamification/PointsAnimation.tsx
+[Vite Request] GET /src/components/gamification/BadgeCard.tsx
+[Vite Request] GET /node_modules/.vite/deps/chunk-U7P2NEEE.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/chunk-YZQ63ACW.js?v=8489571b
+[Vite Request] GET /src/hooks/useTileCarousel.ts
+[Vite Request] GET /src/types/roi.ts
+[Vite Request] GET /src/lib/api/copilot.ts
+[Vite Request] GET /src/lib/api/challenges.ts
+[Vite Request] GET /vite.svg
+[Vite Request] POST /api/auth/login
+[Proxy] Rewriting path: /api/auth/login
+Sending Request to the Target: POST /api/auth/login
+Received Response from the Target: 200 /api/auth/login
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/participants/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/participants/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/participants/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 404 /api/participants/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/participants/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/participants/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/participants/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 404 /api/participants/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/votes/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/all-matrix-positions
+[Proxy] Rewriting path: /api/votes/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/all-matrix-positions
+Sending Request to the Target: GET /api/votes/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/all-matrix-positions
+Received Response from the Target: 200 /api/votes/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/all-matrix-positions
+[Vite Request] GET /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/agreement
+[Proxy] Rewriting path: /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/agreement
+Sending Request to the Target: GET /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/agreement
+[Vite Request] GET /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/quadrant-analysis
+[Proxy] Rewriting path: /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/quadrant-analysis
+Sending Request to the Target: GET /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/quadrant-analysis
+[Vite Request] GET /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/distribution
+[Proxy] Rewriting path: /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/distribution
+Sending Request to the Target: GET /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/distribution
+Received Response from the Target: 200 /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/distribution
+[Vite Request] GET /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/distribution
+[Proxy] Rewriting path: /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/distribution
+Sending Request to the Target: GET /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/distribution
+Received Response from the Target: 500 /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/quadrant-analysis
+[Vite Request] GET /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/quadrant-analysis
+[Proxy] Rewriting path: /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/quadrant-analysis
+Sending Request to the Target: GET /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/quadrant-analysis
+Received Response from the Target: 200 /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/agreement
+Received Response from the Target: 200 /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/distribution
+Received Response from the Target: 500 /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/quadrant-analysis
+[Vite Request] GET /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/agreement
+[Proxy] Rewriting path: /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/agreement
+Sending Request to the Target: GET /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/agreement
+Received Response from the Target: 200 /api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/agreement
+[Vite Request] GET /api/roi/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/roi/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/roi/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/roi/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/roi/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/roi/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/roi/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/roi/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/knowledge-base/overview
+[Proxy] Rewriting path: /api/knowledge-base/overview
 Sending Request to the Target: GET /api/knowledge-base/overview
 Received Response from the Target: 200 /api/knowledge-base/overview
+[Vite Request] GET /api/knowledge-base/overview
+[Proxy] Rewriting path: /api/knowledge-base/overview
 Sending Request to the Target: GET /api/knowledge-base/overview
 Received Response from the Target: 200 /api/knowledge-base/overview
+[Vite Request] POST /api/knowledge-base/refresh
+[Proxy] Rewriting path: /api/knowledge-base/refresh
+Sending Request to the Target: POST /api/knowledge-base/refresh
+Received Response from the Target: 200 /api/knowledge-base/refresh
+[Vite Request] POST /api/knowledge-base/add
+[Proxy] Rewriting path: /api/knowledge-base/add
+Sending Request to the Target: POST /api/knowledge-base/add
+Received Response from the Target: 404 /api/knowledge-base/add
+[Vite Request] POST /api/knowledge-base/add
+[Proxy] Rewriting path: /api/knowledge-base/add
+Sending Request to the Target: POST /api/knowledge-base/add
+Received Response from the Target: 404 /api/knowledge-base/add
+[Vite Request] POST /api/auth/logout
+[Proxy] Rewriting path: /api/auth/logout
+Sending Request to the Target: POST /api/auth/logout
+Received Response from the Target: 200 /api/auth/logout
+[Vite Request] POST /api/auth/login
+[Proxy] Rewriting path: /api/auth/login
+Sending Request to the Target: POST /api/auth/login
+Received Response from the Target: 200 /api/auth/login
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /api/admin/stats
+[Proxy] Rewriting path: /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+[Vite Request] GET /notifications/stats
+Received Response from the Target: 200 /api/admin/stats
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /api/admin/stats
+[Proxy] Rewriting path: /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+[Vite Request] GET /notifications/stats
+Received Response from the Target: 200 /api/admin/stats
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /api/knowledge-base/overview
+[Proxy] Rewriting path: /api/knowledge-base/overview
+Sending Request to the Target: GET /api/knowledge-base/overview
+Received Response from the Target: 200 /api/knowledge-base/overview
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /api/knowledge-base/overview
+[Proxy] Rewriting path: /api/knowledge-base/overview
+Sending Request to the Target: GET /api/knowledge-base/overview
+Received Response from the Target: 200 /api/knowledge-base/overview
+[Vite Request] GET /notifications/stats

@@ -25,12 +25,25 @@ from app.schemas.knowledge_base import (
     UseCaseAnalysis,
     UseCaseTemplate
 )
+from app.services.rag_service import rag_service
 from pydantic import BaseModel
 
 class RefreshRequest(BaseModel):
     provider: str = "perplexity"  # or "google"
     industry_id: Optional[str] = None
     query: Optional[str] = None
+
+
+class AddUseCaseRequest(BaseModel):
+    title: str
+    description: str
+    industry_id: str
+    category: str
+    complexity: str = "Medium"
+    typical_roi: str = "TBD"
+    implementation_time: str = "3-6 months"
+    technologies: List[str] = []
+
 
 router = APIRouter(prefix="/api/knowledge-base", tags=["knowledge-base"])
 
@@ -45,6 +58,17 @@ def load_knowledge_base():
         return {"industries": [], "categories": [], "technologies": []}
 
 KB_DATA = load_knowledge_base()
+
+
+# Save knowledge base data
+def save_knowledge_base(data):
+    try:
+        with open("app/data/knowledge_base.json", "w") as f:
+            json.dump(data, f, indent=2)
+        return True
+    except Exception as e:
+        print(f"Error saving knowledge base: {e}")
+        return False
 
 
 @router.get("/overview", response_model=KnowledgeBaseOverview)
@@ -190,10 +214,7 @@ async def refresh_use_cases(
     """
     results = []
     
-    # Simulate finding new trending use cases based on industry
-    # In a real implementation, this would call Perplexity API with a prompt like:
-    # "What are the latest trending AI use cases in {industry}?"
-    
+    # Determine industry name
     industry_name = "General"
     if request.industry_id:
         for ind in KB_DATA.get("industries", []):
@@ -201,47 +222,75 @@ async def refresh_use_cases(
                 industry_name = ind["name"]
                 break
     
-    # Mocked "Fresh" Results
-    fresh_use_cases = [
-        {
-            "id": f"fresh_{uuid.uuid4()}",
-            "title": f"Generative {industry_name} Coordinator",
-            "description": f"AI agent that autonomously coordinates {industry_name.lower()} workflows and scheduling using LLMs.",
-            "industry": request.industry_id or "tech",
-            "industry_name": industry_name,
-            "category": "Agentic AI",
-            "complexity": "High",
-            "typical_roi": "40% Efficiency Gain",
-            "relevance_score": 0.95
-        },
-        {
-            "id": f"fresh_{uuid.uuid4()}",
-            "title": f"Real-time {industry_name} Compliance Monitor",
-            "description": f"Continuous monitoring of {industry_name.lower()} operations for regulatory compliance using multimodal models.",
-            "industry": request.industry_id or "finance",
-            "industry_name": industry_name,
-            "category": "Risk & Compliance",
-            "complexity": "Medium",
-            "typical_roi": "Risk Reduction",
-            "relevance_score": 0.88
-        },
-        {
-            "id": f"fresh_{uuid.uuid4()}",
-            "title": "Quantum-Inspired Optimization",
-            "description": "Using quantum-inspired algorithms to solve complex logistics and resource allocation problems.",
-            "industry": request.industry_id or "logistics",
-            "industry_name": industry_name,
-            "category": "Optimization",
-            "complexity": "Very High",
-            "typical_roi": "15% Cost Reduction",
-            "relevance_score": 0.82
-        }
-    ]
+    # Call RAG service to get trending use cases
+    fresh_use_cases = await rag_service.find_trending_use_cases(
+        industry=industry_name,
+        count=3
+    )
     
     for item in fresh_use_cases:
         results.append(UseCaseSearchResult(**item))
         
     return results
+
+
+@router.post("/add", response_model=UseCaseSearchResult)
+async def add_use_case(
+    request: AddUseCaseRequest,
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Add a new use case to the knowledge base library
+    """
+    # Create new use case object
+    new_id = f"{request.industry_id}-{uuid.uuid4().hex[:6]}"
+    
+    new_use_case = {
+        "id": new_id,
+        "title": request.title,
+        "description": request.description,
+        "category": request.category,
+        "complexity": request.complexity,
+        "data_requirements": "To be defined",
+        "typical_roi": request.typical_roi,
+        "implementation_time": request.implementation_time,
+        "technologies": request.technologies,
+        "kpis": []
+    }
+    
+    # Find industry and add use case
+    industry_found = False
+    industry_name = "Unknown"
+    
+    # Reload data to ensure we have latest
+    global KB_DATA
+    KB_DATA = load_knowledge_base()
+    
+    for ind in KB_DATA.get("industries", []):
+        if ind["id"] == request.industry_id:
+            ind["use_cases"].append(new_use_case)
+            industry_name = ind["name"]
+            industry_found = True
+            break
+            
+    if not industry_found:
+        raise HTTPException(status_code=404, detail="Industry not found")
+        
+    # Save back to file
+    if not save_knowledge_base(KB_DATA):
+        raise HTTPException(status_code=500, detail="Failed to save knowledge base")
+        
+    return UseCaseSearchResult(
+        id=new_id,
+        title=new_use_case["title"],
+        description=new_use_case["description"],
+        industry=request.industry_id,
+        industry_name=industry_name,
+        category=new_use_case["category"],
+        complexity=new_use_case["complexity"],
+        typical_roi=new_use_case["typical_roi"],
+        relevance_score=1.0
+    )
 
 
 @router.get("/workshop/{workshop_id}/insights", response_model=WorkshopInsight)

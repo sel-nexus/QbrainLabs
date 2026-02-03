@@ -8,6 +8,8 @@ import { useAuth } from '../context/AuthContext';
 import { useState, useRef, useEffect } from 'react';
 import { ArrowLeft, Home, Grid3X3, LogOut, User, LayoutDashboard, Key, ChevronDown, Shield, Brain } from 'lucide-react';
 import { toast } from 'sonner';
+import { NotificationIcon } from './NotificationIcon';
+import { NotificationDetailModal } from './NotificationDetailModal';
 
 interface HeaderProps {
   showBackButton?: boolean;
@@ -23,6 +25,8 @@ export function Header({ showBackButton = true, showHomeButton = true, title }: 
   const { session, logout: sessionLogout } = useSession();
   const { user: currentUser, token: authToken, isAuthenticated, logout: authLogout, openChangePasswordDialog } = useAuth();
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [selectedNotification, setSelectedNotification] = useState<any>(null);
+  const [showNotificationModal, setShowNotificationModal] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const isLandingPage = location.pathname === '/';
@@ -152,6 +156,16 @@ export function Header({ showBackButton = true, showHomeButton = true, title }: 
           <LanguageSwitcher />
 
           <ThemeToggle />
+
+          {/* Notification Icon (Admin Only) */}
+          {currentUser?.is_admin && (
+            <NotificationIcon
+              onNotificationClick={(notification) => {
+                setSelectedNotification(notification);
+                setShowNotificationModal(true);
+              }}
+            />
+          )}
 
           {/* User Menu */}
           {isLoggedIn ? (
@@ -285,6 +299,25 @@ export function Header({ showBackButton = true, showHomeButton = true, title }: 
           )}
         </div>
       </div>
+
+      {/* Notification Detail Modal */}
+      {selectedNotification && (
+        <NotificationDetailModal
+          notification={selectedNotification}
+          isOpen={showNotificationModal}
+          onClose={() => {
+            setShowNotificationModal(false);
+            setSelectedNotification(null);
+          }}
+          onApprove={() => {
+            // Refresh notifications after approval
+            window.location.reload();
+          }}
+          onDismiss={() => {
+            // Just close modal
+          }}
+        />
+      )}
     </header>
   );
 }

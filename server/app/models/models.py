@@ -225,6 +225,10 @@ class UseCase(Base):
     
     status = Column(String, default="PENDING") # PENDING, APPROVED, REJECTED
     
+    # Timestamps
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
     participant = relationship("Participant", back_populates="use_cases", foreign_keys=[participant_id])
     workshop = relationship("Workshop", back_populates="use_cases", foreign_keys=[workshop_id])
     roi_calculation = relationship("ROICalculation", back_populates="use_case", uselist=False)

@@ -23,8 +23,8 @@ export const AnalyticsDashboard = () => {
             try {
                 setLoading(true);
                 const [overviewData, benchmarkData] = await Promise.all([
-                    analyticsApi.getOverview(),
-                    analyticsApi.getBenchmarks()
+                    analyticsApi.getOverview(period),
+                    analyticsApi.getBenchmarks(benchmarks?.industry || 'Technology')
                 ]);
                 setData(overviewData);
                 setBenchmarks(benchmarkData);

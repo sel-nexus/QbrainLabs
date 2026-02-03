@@ -8,6 +8,7 @@ export const api = axios.create({
     baseURL: API_BASE_URL ? `${API_BASE_URL}/api` : '/api',
     headers: {
         'Content-Type': 'application/json',
+        'Accept': 'application/json',
     },
     timeout: 30000, // 30 second timeout
 });
@@ -37,9 +38,18 @@ api.interceptors.request.use((config) => {
     return Promise.reject(error);
 });
 
-// Add response interceptor for better error handling
 api.interceptors.response.use(
-    (response) => response,
+    (response) => {
+        // Check if response is HTML (when we expect JSON)
+        const contentType = response.headers['content-type'];
+        if (contentType && (contentType.includes('text/html') || contentType.includes('application/x-javascript'))) {
+            // If we got HTML, it's likely the SPA fallback
+            console.error('[API] Received HTML response:', response.data?.substring?.(0, 200));
+            // Return a rejected promise with a clear error
+            return Promise.reject(new Error('API returned HTML instead of JSON. Check proxy configuration.'));
+        }
+        return response;
+    },
     (error) => {
         // Handle network errors (no response from server)
         if (!error.response) {
@@ -51,7 +61,7 @@ api.interceptors.response.use(
             } else if (error.code === 'ERR_NETWORK' || error.message.includes('Network Error') || error.code === 'ECONNREFUSED') {
                 error.networkError = {
                     type: 'network',
-                    message: `Cannot connect to server at ${API_BASE_URL}. The server is not running. Please start the backend server first.`,
+                    message: `Cannot connect to server at ${API_BASE_URL}. The server is not running or unreachable.`,
                 };
             } else {
                 error.networkError = {

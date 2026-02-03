@@ -10,6 +10,8 @@ from app.middleware.security import setup_security_middleware
 
 # Initialize logging with centralized configuration
 setup_logging()  # Uses settings.LOG_LEVEL and settings.LOG_FORMAT
+
+# Trigger reload
 logger = get_logger("main")
 
 @asynccontextmanager
@@ -68,12 +70,20 @@ if settings.ENABLE_DYNAMIC_CORS:
     logger.info("Using dynamic CORS middleware - accepts origins matching server IP addresses")
 else:
     # Fallback to standard CORS middleware
-    from fastapi.middleware.cors import CORSMiddleware
+    # US32 FIX: Explicitly add public IP origins for CORS to handle direct access
     cors_origins = [
         origin.strip() 
         for origin in settings.CORS_ORIGINS.split(",") 
         if origin.strip()
     ] if settings.CORS_ORIGINS else []
+    
+    # Add public IP explicitly
+    cors_origins.extend([
+        "http://48.214.144.154:5173",
+        "https://48.214.144.154:5173",
+        "http://qbrainlabs.com",
+        "https://qbrainlabs.com"
+    ])
     
     app.add_middleware(
         CORSMiddleware,
@@ -121,13 +131,15 @@ app.include_router(analytics_dashboard.router, prefix="/api/analytics", tags=["a
 app.include_router(polls.router, prefix="/api", tags=["polls"])
 app.include_router(gamification.router, prefix="/api/gamification", tags=["gamification"])
 
-from app.api import roi, templates, breakout, roadmap, challenge, copilot
+from app.api import roi, templates, breakout, roadmap, challenge, copilot, knowledge_validation, notifications
 app.include_router(roi.router, tags=["roi"])
 app.include_router(templates.router, prefix="/api/templates", tags=["templates"])
 app.include_router(breakout.router, prefix="/api", tags=["breakout-rooms"])
 app.include_router(roadmap.router, tags=["roadmaps"])
 app.include_router(challenge.router, tags=["challenges"])
 app.include_router(copilot.router, tags=["ai-copilot"])
+app.include_router(knowledge_validation.router, tags=["knowledge-validation"])
+app.include_router(notifications.router, tags=["notifications"])
 
 
 @app.get("/")

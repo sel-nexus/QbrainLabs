@@ -249,7 +249,8 @@ const enTranslations = {
             uploadHelp: "Upload PDF, PPT, Word documents, or Images (JPG, PNG) to enhance the AI knowledge base.",
             importSuccess: "Successfully imported {{name}}",
             failedLoad: "Failed to load Knowledge Base",
-            failedLoadIndustry: "Failed to load industry details"
+            failedLoadIndustry: "Failed to load industry details",
+            showingKeyAIUseCases: "Showing Key AI usecases"
         },
         settings: {
             title: "System Settings",

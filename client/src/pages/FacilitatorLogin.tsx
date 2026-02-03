@@ -30,16 +30,27 @@ export function FacilitatorLogin() {
         e.preventDefault();
         setLoading(true);
 
+        const logData = {
+            isLogin,
+            email: formData.email, // Safe to log email
+            hasPassword: !!formData.password, // Don't log password
+            passwordLength: formData.password.length
+        };
+        console.log('[FacilitatorLogin] Submitting form:', logData);
+
         try {
 
 
             if (isLogin) {
                 // Use AuthContext login for proper state management
+                console.log('[FacilitatorLogin] Attempting login via AuthContext...');
                 await login(formData.email, formData.password);
+                console.log('[FacilitatorLogin] Login successful');
                 toast.success('Welcome back!');
                 // Navigation will be handled by the useEffect above when isAuthenticated changes
             } else {
                 // Handle signup separately
+                console.log('[FacilitatorLogin] Attempting signup...');
                 const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -50,17 +61,22 @@ export function FacilitatorLogin() {
                     }),
                 });
 
+                console.log('[FacilitatorLogin] Signup response status:', response.status);
+
                 if (!response.ok) {
                     const error = await response.json();
+                    console.error('[FacilitatorLogin] Signup failed:', error);
                     throw new Error(error.detail || 'Signup failed');
                 }
 
+                console.log('[FacilitatorLogin] Signup successful');
                 // After signup, switch to login
                 toast.success('Account created! Please log in.');
                 setIsLogin(true);
                 setFormData({ ...formData, full_name: '' });
             }
         } catch (error: any) {
+            console.error('[FacilitatorLogin] Error:', error);
             toast.error(error.message || 'Something went wrong');
         } finally {
             setLoading(false);

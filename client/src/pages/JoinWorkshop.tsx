@@ -101,18 +101,27 @@ export function JoinWorkshop() {
         if (loading) return;
         if (!pin || !name) return;
 
+        console.log('[JoinWorkshop] Attempting join:', {
+            pin: pin.toUpperCase(),
+            name,
+            isFacilitator,
+            requestFacilitatorAccess
+        });
+
         setLoading(true);
         setError('');
 
         try {
             // US32: If requesting facilitator access, submit the request first
             if (requestFacilitatorAccess) {
+                console.log('[JoinWorkshop] Submitting facilitator request...');
                 const { data: requestData } = await api.post(`workshops/${pin.toUpperCase()}/facilitator-request`, {
                     name: name,
                     email: email || undefined,
                     session_id: undefined
                 });
 
+                console.log('[JoinWorkshop] Facilitator request success:', requestData);
                 setFacilitatorRequestId(requestData.request_id);
                 setShowFacilitatorRequestSuccess(true);
                 toast.success('Facilitator access request submitted!');
@@ -120,18 +129,23 @@ export function JoinWorkshop() {
                 return;
             }
 
+            console.log('[JoinWorkshop] Sending join request...');
             const { data } = await api.post('join', {
                 pin: pin.toUpperCase(),
                 display_name: name,
                 role: isFacilitator ? "FACILITATOR" : "PARTICIPANT"
             });
 
+            console.log('[JoinWorkshop] Join response:', data);
+
             // Validate response data before proceeding
             if (!data || !data.participant_id || !data.workshop_id) {
+                console.error('[JoinWorkshop] Invalid response data:', data);
                 throw new Error('Invalid response from server');
             }
 
             // Save session info via Context
+            console.log('[JoinWorkshop] saving session context...');
             login({
                 participantId: data.participant_id,
                 workshopId: data.workshop_id,
@@ -141,9 +155,10 @@ export function JoinWorkshop() {
 
             // Navigate to participant dashboard to show tiles
             // Dashboard will handle phase-based redirects (e.g., to /scoring if in SCORING phase)
+            console.log('[JoinWorkshop] Navigating to dashboard...');
             navigate('/participant-dashboard', { replace: true });
         } catch (err: any) {
-            console.error('Join error:', err);
+            console.error('[JoinWorkshop] Join error:', err);
             const errorMessage = err.response?.data?.detail || err.message || "Failed to join. Please check PIN and try again.";
             setError(errorMessage);
             toast.error(errorMessage);

@@ -18,6 +18,7 @@ import {
     Bot,
     Plus
 } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 import { Button } from '../components/ui/Button';
 import { API_BASE_URL as API_BASE } from '../lib/config';
 
@@ -70,6 +71,8 @@ interface IndustryDetail {
 
 export function KnowledgeBase() {
     const navigate = useNavigate();
+    const { theme } = useTheme();
+    const isLight = theme === 'light';
     const [overview, setOverview] = useState<KnowledgeBaseOverview | null>(null);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
@@ -77,7 +80,7 @@ export function KnowledgeBase() {
     const [searching, setSearching] = useState(false);
     const [selectedIndustry, setSelectedIndustry] = useState<IndustryDetail | null>(null);
     const [selectedUseCase, setSelectedUseCase] = useState<UseCaseTemplate | null>(null);
-    const [currentUser, setCurrentUser] = useState<any>(null);
+    const [currentUser, setCurrentUser] = useState<unknown>(null);
 
     const [showResearchModal, setShowResearchModal] = useState(false);
     const [researchProvider, setResearchProvider] = useState<'perplexity' | 'google'>('perplexity');
@@ -184,11 +187,42 @@ export function KnowledgeBase() {
         }
     };
 
-    const handleAddResearchItem = (item: SearchResult) => {
-        toast.success(`Added "${item.title}" to library`);
-        // In a real app, we would POST to /api/knowledge-base/add
-        // For now, we just remove it from the list to simulate adding
-        setResearchResults(prev => prev.filter(r => r.id !== item.id));
+    const handleAddResearchItem = async (item: SearchResult) => {
+        try {
+            const authToken = localStorage.getItem('hm_auth_token');
+            const response = await fetch(`${API_BASE}/api/knowledge-base/add`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: item.title,
+                    description: item.description,
+                    industry_id: item.industry,
+                    category: item.category,
+                    complexity: item.complexity,
+                    typical_roi: item.typical_roi
+                })
+            });
+
+            if (!response.ok) throw new Error('Failed to add use case');
+
+            toast.success(`Added "${item.title}" to library`);
+            setResearchResults(prev => prev.filter(r => r.id !== item.id));
+
+            // Update stats
+            fetchOverview();
+
+            // If viewing the industry detailing this item, refresh it too
+            if (selectedIndustry && selectedIndustry.id === item.industry) {
+                fetchIndustry(item.industry);
+            }
+
+        } catch (error) {
+            console.error('Error adding use case:', error);
+            toast.error('Failed to add use case to library');
+        }
     };
 
     const getComplexityColor = (complexity: string) => {
@@ -206,15 +240,15 @@ export function KnowledgeBase() {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-surface-900 flex items-center justify-center">
-                <div className="text-white text-xl">Loading Knowledge Base...</div>
+            <div className={`min-h-screen flex items-center justify-center ${isLight ? 'bg-gray-50' : 'bg-surface-900'}`}>
+                <div className={`text-xl ${isLight ? 'text-gray-900' : 'text-white'}`}>Loading Knowledge Base...</div>
             </div>
         );
     }
 
     // Header is now provided by AuthenticatedLayout wrapper
     return (
-        <div className="min-h-screen bg-surface-900">
+        <div className={`min-h-screen ${isLight ? 'bg-gray-50' : 'bg-surface-900'}`}>
             {/* Page Header - Title and Actions */}
             <div className="max-w-7xl mx-auto px-6 py-4">
                 <div className="flex justify-between items-center">
@@ -223,12 +257,12 @@ export function KnowledgeBase() {
                             <Brain className="w-6 h-6 text-white" />
                         </div>
                         <div>
-                            <h1 className="text-xl font-bold text-white">AI Knowledge Base</h1>
-                            <p className="text-xs text-gray-400">Industry Use Case Library</p>
+                            <h1 className={`text-xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>AI Knowledge Base</h1>
+                            <p className={`text-xs ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Industry Use Case Library</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-4">
-                        {currentUser && (
+                        {!!currentUser && (
                             <Button
                                 onClick={() => setShowResearchModal(true)}
                                 variant="secondary"
@@ -245,18 +279,18 @@ export function KnowledgeBase() {
             {/* Research Modal */}
             {showResearchModal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-                    <div className="bg-surface-800 rounded-xl border border-white/10 w-full max-w-2xl max-h-[80vh] flex flex-col shadow-2xl">
-                        <div className="p-6 border-b border-white/10 flex justify-between items-center">
+                    <div className={`rounded-xl border w-full max-w-2xl max-h-[80vh] flex flex-col shadow-2xl ${isLight ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/10'}`}>
+                        <div className={`p-6 border-b flex justify-between items-center ${isLight ? 'border-gray-200' : 'border-white/10'}`}>
                             <div className="flex items-center gap-3">
                                 <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
                                     <Globe className="w-5 h-5 text-blue-400" />
                                 </div>
                                 <div>
-                                    <h2 className="text-xl font-bold text-white">Public Research Refresh</h2>
-                                    <p className="text-sm text-gray-400">Discover trending use cases from the web</p>
+                                    <h2 className={`text-xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>Public Research Refresh</h2>
+                                    <p className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Discover trending use cases from the web</p>
                                 </div>
                             </div>
-                            <button onClick={() => setShowResearchModal(false)} className="text-gray-400 hover:text-white">
+                            <button onClick={() => setShowResearchModal(false)} className={`${isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'}`}>
                                 <X className="w-5 h-5" />
                             </button>
                         </div>
@@ -265,13 +299,15 @@ export function KnowledgeBase() {
                             {!researchResults.length && !researchLoading ? (
                                 <div className="space-y-6">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-300 mb-2">Research Provider</label>
+                                        <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>Research Provider</label>
                                         <div className="grid grid-cols-2 gap-4">
                                             <button
                                                 onClick={() => setResearchProvider('perplexity')}
                                                 className={`p-4 rounded-lg border flex items-center gap-3 transition ${researchProvider === 'perplexity'
-                                                    ? 'bg-blue-500/10 border-blue-500 text-white'
-                                                    : 'bg-surface-700 border-white/5 text-gray-400 hover:bg-surface-600'
+                                                    ? 'bg-blue-500/10 border-blue-500 text-blue-600'
+                                                    : isLight
+                                                        ? 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-gray-100'
+                                                        : 'bg-surface-700 border-white/5 text-gray-400 hover:bg-surface-600'
                                                     }`}
                                             >
                                                 <Bot className="w-5 h-5" />
@@ -283,8 +319,10 @@ export function KnowledgeBase() {
                                             <button
                                                 onClick={() => setResearchProvider('google')}
                                                 className={`p-4 rounded-lg border flex items-center gap-3 transition ${researchProvider === 'google'
-                                                    ? 'bg-green-500/10 border-green-500 text-white'
-                                                    : 'bg-surface-700 border-white/5 text-gray-400 hover:bg-surface-600'
+                                                    ? 'bg-green-500/10 border-green-500 text-green-600'
+                                                    : isLight
+                                                        ? 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-gray-100'
+                                                        : 'bg-surface-700 border-white/5 text-gray-400 hover:bg-surface-600'
                                                     }`}
                                             >
                                                 <Globe className="w-5 h-5" />
@@ -296,9 +334,9 @@ export function KnowledgeBase() {
                                         </div>
                                     </div>
 
-                                    <div className="bg-surface-700/50 rounded-lg p-4 border border-white/5">
-                                        <h4 className="text-sm font-medium text-white mb-2">Scope</h4>
-                                        <p className="text-sm text-gray-400">
+                                    <div className={`rounded-lg p-4 border ${isLight ? 'bg-gray-50 border-gray-200' : 'bg-surface-700/50 border-white/5'}`}>
+                                        <h4 className={`text-sm font-medium mb-2 ${isLight ? 'text-gray-900' : 'text-white'}`}>Scope</h4>
+                                        <p className={`text-sm ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
                                             {selectedIndustry
                                                 ? `Searching for trending AI use cases in ${selectedIndustry.name}...`
                                                 : "Searching for general trending AI use cases across all industries..."}
@@ -324,26 +362,26 @@ export function KnowledgeBase() {
                                     {researchLoading && (
                                         <div className="flex flex-col items-center justify-center py-12">
                                             <RefreshCw className="w-8 h-8 animate-spin text-blue-400 mb-4" />
-                                            <p className="text-gray-400">Analyzing search results...</p>
+                                            <p className={isLight ? 'text-gray-500' : 'text-gray-400'}>Analyzing search results...</p>
                                         </div>
                                     )}
 
                                     {researchResults.map((result) => (
-                                        <div key={result.id} className="bg-surface-700 rounded-lg p-4 border border-white/5 flex gap-4">
+                                        <div key={result.id} className={`rounded-lg p-4 border flex gap-4 ${isLight ? 'bg-gray-50 border-gray-200' : 'bg-surface-700 border-white/5'}`}>
                                             <div className="w-10 h-10 rounded-lg bg-green-500/10 flex-shrink-0 flex items-center justify-center">
                                                 <TrendingUp className="w-5 h-5 text-green-400" />
                                             </div>
                                             <div className="flex-1">
                                                 <div className="flex justify-between items-start">
                                                     <div>
-                                                        <h4 className="font-medium text-white">{result.title}</h4>
+                                                        <h4 className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>{result.title}</h4>
                                                         <span className="text-xs text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded mt-1 inline-block">
                                                             {result.industry_name}
                                                         </span>
                                                     </div>
                                                     <span className="text-xs text-gray-500 uppercase">{researchProvider}</span>
                                                 </div>
-                                                <p className="text-sm text-gray-400 mt-2 mb-3">{result.description}</p>
+                                                <p className={`text-sm mt-2 mb-3 ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>{result.description}</p>
                                                 <div className="flex items-center gap-4 text-xs text-gray-500">
                                                     <span>ROI: <span className="text-green-400">{result.typical_roi}</span></span>
                                                     <span>•</span>
@@ -352,7 +390,7 @@ export function KnowledgeBase() {
                                             </div>
                                             <button
                                                 onClick={() => handleAddResearchItem(result)}
-                                                className="self-center p-2 rounded-lg bg-surface-600 hover:bg-purple-600 hover:text-white text-gray-400 transition"
+                                                className={`self-center p-2 rounded-lg transition ${isLight ? 'bg-gray-200 hover:bg-purple-100 hover:text-purple-600 text-gray-500' : 'bg-surface-600 hover:bg-purple-600 hover:text-white text-gray-400'}`}
                                                 title="Add to Library"
                                             >
                                                 <Plus className="w-5 h-5" />
@@ -378,7 +416,7 @@ export function KnowledgeBase() {
 
             <main className="max-w-7xl mx-auto px-6 py-8">
                 {/* Search Section */}
-                <div className="bg-surface-800 rounded-xl p-6 border border-white/10 mb-8">
+                <div className={`rounded-xl p-6 border mb-8 ${isLight ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/10'}`}>
                     <div className="flex items-center gap-4">
                         <div className="flex-1 relative">
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -388,7 +426,7 @@ export function KnowledgeBase() {
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-                                className="w-full pl-12 pr-4 py-3 bg-surface-700 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                                className={`w-full pl-12 pr-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 ${isLight ? 'bg-gray-50 border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-surface-700 border-white/10 text-white placeholder-gray-500'}`}
                             />
                         </div>
                         <Button onClick={handleSearch} disabled={searching || searchQuery.length < 2}>
@@ -400,12 +438,12 @@ export function KnowledgeBase() {
                     {searchResults.length > 0 && (
                         <div className="mt-6">
                             <div className="flex items-center justify-between mb-4">
-                                <h3 className="text-lg font-semibold text-white">
+                                <h3 className={`text-lg font-semibold ${isLight ? 'text-gray-900' : 'text-white'}`}>
                                     Search Results ({searchResults.length})
                                 </h3>
                                 <button
                                     onClick={() => { setSearchResults([]); setSearchQuery(''); }}
-                                    className="text-gray-400 hover:text-white"
+                                    className={`${isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'}`}
                                 >
                                     <X className="w-5 h-5" />
                                 </button>
@@ -414,15 +452,15 @@ export function KnowledgeBase() {
                                 {searchResults.map((result) => (
                                     <div
                                         key={result.id}
-                                        className="p-4 bg-surface-700 rounded-lg border border-white/5 hover:border-purple-500/50 cursor-pointer transition"
+                                        className={`p-4 rounded-lg border cursor-pointer transition ${isLight ? 'bg-gray-50 border-gray-200 hover:border-purple-400' : 'bg-surface-700 border-white/5 hover:border-purple-500/50'}`}
                                         onClick={() => {
                                             fetchIndustry(result.industry);
                                         }}
                                     >
                                         <div className="flex items-start justify-between">
                                             <div className="flex-1">
-                                                <h4 className="text-white font-medium">{result.title}</h4>
-                                                <p className="text-sm text-gray-400 mt-1 line-clamp-2">{result.description}</p>
+                                                <h4 className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>{result.title}</h4>
+                                                <p className={`text-sm mt-1 line-clamp-2 ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>{result.description}</p>
                                                 <div className="flex items-center gap-3 mt-2">
                                                     <span className="text-xs text-purple-400">{result.industry_name}</span>
                                                     <span className="text-xs text-gray-500">•</span>
@@ -451,52 +489,52 @@ export function KnowledgeBase() {
                 {overview && !selectedIndustry && (
                     <>
                         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                            <div className="bg-surface-800 rounded-xl p-6 border border-white/10">
+                            <div className={`rounded-xl p-6 border ${isLight ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/10'}`}>
                                 <div className="flex items-center gap-3 mb-3">
                                     <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center">
                                         <Building2 className="w-5 h-5 text-purple-400" />
                                     </div>
                                 </div>
-                                <div className="text-3xl font-bold text-white">{overview.total_industries}</div>
-                                <div className="text-sm text-gray-400">Industries</div>
+                                <div className={`text-3xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{overview.total_industries}</div>
+                                <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Industries</div>
                             </div>
-                            <div className="bg-surface-800 rounded-xl p-6 border border-white/10">
+                            <div className={`rounded-xl p-6 border ${isLight ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/10'}`}>
                                 <div className="flex items-center gap-3 mb-3">
                                     <div className="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
                                         <BookOpen className="w-5 h-5 text-blue-400" />
                                     </div>
                                 </div>
-                                <div className="text-3xl font-bold text-white">{overview.total_use_cases}</div>
-                                <div className="text-sm text-gray-400">Use Case Templates</div>
+                                <div className={`text-3xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{overview.total_use_cases}</div>
+                                <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Use Case Templates</div>
                             </div>
-                            <div className="bg-surface-800 rounded-xl p-6 border border-white/10">
+                            <div className={`rounded-xl p-6 border ${isLight ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/10'}`}>
                                 <div className="flex items-center gap-3 mb-3">
                                     <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center">
                                         <Filter className="w-5 h-5 text-green-400" />
                                     </div>
                                 </div>
-                                <div className="text-3xl font-bold text-white">{overview.total_categories}</div>
-                                <div className="text-sm text-gray-400">Categories</div>
+                                <div className={`text-3xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{overview.total_categories}</div>
+                                <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Categories</div>
                             </div>
-                            <div className="bg-surface-800 rounded-xl p-6 border border-white/10">
+                            <div className={`rounded-xl p-6 border ${isLight ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/10'}`}>
                                 <div className="flex items-center gap-3 mb-3">
                                     <div className="w-10 h-10 rounded-lg bg-amber-500/10 flex items-center justify-center">
                                         <Cpu className="w-5 h-5 text-amber-400" />
                                     </div>
                                 </div>
-                                <div className="text-3xl font-bold text-white">{overview.total_technologies}</div>
-                                <div className="text-sm text-gray-400">Technologies</div>
+                                <div className={`text-3xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{overview.total_technologies}</div>
+                                <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Technologies</div>
                             </div>
                         </div>
 
                         {/* Industries Grid */}
-                        <h2 className="text-2xl font-bold text-white mb-6">Browse by Industry</h2>
+                        <h2 className={`text-2xl font-bold mb-6 ${isLight ? 'text-gray-900' : 'text-white'}`}>Browse by Industry</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {overview.industries.map((industry) => (
                                 <button
                                     key={industry.id}
                                     onClick={() => fetchIndustry(industry.id)}
-                                    className="bg-surface-800 rounded-xl p-6 border border-white/10 hover:border-purple-500/50 transition text-left group"
+                                    className={`rounded-xl p-6 border transition text-left group ${isLight ? 'bg-white border-gray-200 hover:border-purple-400' : 'bg-surface-800 border-white/10 hover:border-purple-500/50'}`}
                                 >
                                     <div className="flex items-center justify-between mb-4">
                                         <div className="w-12 h-12 rounded-lg bg-purple-500/10 flex items-center justify-center">
@@ -504,8 +542,8 @@ export function KnowledgeBase() {
                                         </div>
                                         <ChevronRight className="w-5 h-5 text-gray-500 group-hover:text-purple-400 transition" />
                                     </div>
-                                    <h3 className="text-lg font-semibold text-white mb-1">{industry.name}</h3>
-                                    <p className="text-sm text-gray-400">{industry.use_case_count} use case templates</p>
+                                    <h3 className={`text-lg font-semibold mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>{industry.name}</h3>
+                                    <p className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{industry.use_case_count} use case templates</p>
                                 </button>
                             ))}
                         </div>
@@ -517,7 +555,7 @@ export function KnowledgeBase() {
                     <div>
                         <button
                             onClick={() => setSelectedIndustry(null)}
-                            className="flex items-center gap-2 text-gray-400 hover:text-white mb-6"
+                            className={`flex items-center gap-2 mb-6 ${isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'}`}
                         >
                             <ArrowLeft className="w-4 h-4" />
                             Back to Industries
@@ -528,8 +566,8 @@ export function KnowledgeBase() {
                                 {getIndustryIcon()}
                             </div>
                             <div>
-                                <h2 className="text-2xl font-bold text-white">{selectedIndustry.name}</h2>
-                                <p className="text-gray-400">{selectedIndustry.use_cases.length} use case templates</p>
+                                <h2 className={`text-2xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{selectedIndustry.name}</h2>
+                                <p className={isLight ? 'text-gray-500' : 'text-gray-400'}>{selectedIndustry.use_cases.length} use case templates</p>
                             </div>
                         </div>
 
@@ -538,20 +576,20 @@ export function KnowledgeBase() {
                                 <div
                                     key={uc.id}
                                     onClick={() => setSelectedUseCase(uc)}
-                                    className="bg-surface-800 rounded-xl p-6 border border-white/10 hover:border-purple-500/50 cursor-pointer transition"
+                                    className={`rounded-xl p-6 border cursor-pointer transition ${isLight ? 'bg-white border-gray-200 hover:border-purple-400' : 'bg-surface-800 border-white/10 hover:border-purple-500/50'}`}
                                 >
                                     <div className="flex items-start justify-between">
                                         <div className="flex-1">
                                             <div className="flex items-center gap-3 mb-2">
-                                                <h3 className="text-lg font-semibold text-white">{uc.title}</h3>
+                                                <h3 className={`text-lg font-semibold ${isLight ? 'text-gray-900' : 'text-white'}`}>{uc.title}</h3>
                                                 <span className={`text-xs px-2 py-0.5 rounded ${getComplexityColor(uc.complexity)}`}>
                                                     {uc.complexity}
                                                 </span>
                                             </div>
-                                            <p className="text-gray-400 mb-4">{uc.description}</p>
+                                            <p className={`mb-4 ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>{uc.description}</p>
                                             <div className="flex flex-wrap gap-2">
                                                 {uc.technologies.slice(0, 4).map((tech) => (
-                                                    <span key={tech} className="text-xs px-2 py-1 bg-surface-700 text-gray-300 rounded">
+                                                    <span key={tech} className={`text-xs px-2 py-1 rounded ${isLight ? 'bg-gray-100 text-gray-600' : 'bg-surface-700 text-gray-300'}`}>
                                                         {tech}
                                                     </span>
                                                 ))}
@@ -579,44 +617,44 @@ export function KnowledgeBase() {
                     <div>
                         <button
                             onClick={() => setSelectedUseCase(null)}
-                            className="flex items-center gap-2 text-gray-400 hover:text-white mb-6"
+                            className={`flex items-center gap-2 mb-6 ${isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'}`}
                         >
                             <ArrowLeft className="w-4 h-4" />
                             Back to {selectedIndustry?.name}
                         </button>
 
-                        <div className="bg-surface-800 rounded-xl p-8 border border-white/10">
+                        <div className={`rounded-xl p-8 border ${isLight ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/10'}`}>
                             <div className="flex items-start justify-between mb-6">
                                 <div>
                                     <div className="flex items-center gap-3 mb-2">
-                                        <h2 className="text-2xl font-bold text-white">{selectedUseCase.title}</h2>
+                                        <h2 className={`text-2xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{selectedUseCase.title}</h2>
                                         <span className={`text-sm px-3 py-1 rounded ${getComplexityColor(selectedUseCase.complexity)}`}>
                                             {selectedUseCase.complexity} Complexity
                                         </span>
                                     </div>
-                                    <p className="text-gray-400">{selectedUseCase.category}</p>
+                                    <p className={isLight ? 'text-gray-600' : 'text-gray-400'}>{selectedUseCase.category}</p>
                                 </div>
                                 <div className="text-right">
                                     <div className="text-2xl font-bold text-green-400">{selectedUseCase.typical_roi}</div>
-                                    <div className="text-sm text-gray-400">Typical ROI</div>
+                                    <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Typical ROI</div>
                                 </div>
                             </div>
 
-                            <p className="text-lg text-gray-300 mb-8">{selectedUseCase.description}</p>
+                            <p className={`text-lg mb-8 ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>{selectedUseCase.description}</p>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                                <div className="bg-surface-700 rounded-lg p-4">
-                                    <h4 className="text-sm font-medium text-gray-400 mb-2">Data Requirements</h4>
-                                    <p className="text-white">{selectedUseCase.data_requirements}</p>
+                                <div className={`rounded-lg p-4 ${isLight ? 'bg-gray-50' : 'bg-surface-700'}`}>
+                                    <h4 className={`text-sm font-medium mb-2 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Data Requirements</h4>
+                                    <p className={isLight ? 'text-gray-900' : 'text-white'}>{selectedUseCase.data_requirements}</p>
                                 </div>
-                                <div className="bg-surface-700 rounded-lg p-4">
-                                    <h4 className="text-sm font-medium text-gray-400 mb-2">Implementation Time</h4>
-                                    <p className="text-white">{selectedUseCase.implementation_time}</p>
+                                <div className={`rounded-lg p-4 ${isLight ? 'bg-gray-50' : 'bg-surface-700'}`}>
+                                    <h4 className={`text-sm font-medium mb-2 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Implementation Time</h4>
+                                    <p className={isLight ? 'text-gray-900' : 'text-white'}>{selectedUseCase.implementation_time}</p>
                                 </div>
                             </div>
 
                             <div className="mb-8">
-                                <h4 className="text-sm font-medium text-gray-400 mb-3">Technologies</h4>
+                                <h4 className={`text-sm font-medium mb-3 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Technologies</h4>
                                 <div className="flex flex-wrap gap-2">
                                     {selectedUseCase.technologies.map((tech) => (
                                         <span key={tech} className="px-3 py-1.5 bg-purple-500/10 text-purple-400 rounded-lg text-sm">
@@ -627,7 +665,7 @@ export function KnowledgeBase() {
                             </div>
 
                             <div>
-                                <h4 className="text-sm font-medium text-gray-400 mb-3">Key Performance Indicators</h4>
+                                <h4 className={`text-sm font-medium mb-3 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Key Performance Indicators</h4>
                                 <div className="flex flex-wrap gap-2">
                                     {selectedUseCase.kpis.map((kpi) => (
                                         <span key={kpi} className="px-3 py-1.5 bg-green-500/10 text-green-400 rounded-lg text-sm">

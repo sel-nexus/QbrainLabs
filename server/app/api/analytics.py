@@ -72,8 +72,9 @@ async def get_overview(
     
     # Calculate workshop stats
     total_workshops = len(workshops)
-    active_workshops = sum(1 for w in workshops if w.status == "active")
-    completed_workshops = sum(1 for w in workshops if w.status == "completed")
+    # Fix: Count both OPEN and IN_PROGRESS as active
+    active_workshops = sum(1 for w in workshops if w.status in ["OPEN", "IN_PROGRESS", "active"])
+    completed_workshops = sum(1 for w in workshops if w.status in ["COMPLETED", "completed"])
     
     # Get participants and use cases count via subqueries or loop aggregation
     # For MVP, loop aggregation is acceptable if N is small
@@ -128,10 +129,21 @@ async def get_overview(
     recent_trend = []
     current_point = start_date
     while current_point <= today:
+        # Handle potential None created_at values by falling back to today's date for old data or skipping
+        daily_workshops = [w for w in workshops if w.created_at and w.created_at.date() == current_point]
+        
+        # Safe handling for use cases with potentially None created_at (though we just added the column, old ones might be null)
+        daily_use_cases = []
+        for uc in use_cases:
+            uc_date = uc.created_at.date() if hasattr(uc, 'created_at') and uc.created_at else None
+            # Fallback logic: if no created_at, assume it belongs to the workshop's creation date or today
+            # ideally, we should migrate data. For now, we skip if None to avoid crash
+            if uc_date == current_point:
+                daily_use_cases.append(uc)
+                
         recent_trend.append({
             "date": current_point.isoformat(),
-            "value": len([w for w in workshops if w.created_at.date() == current_point]) + 
-                     len([uc for uc in use_cases if uc.created_at.date() == current_point])
+            "value": len(daily_workshops) + len(daily_use_cases)
         })
         current_point += timedelta(days=1)
         

@@ -152,15 +152,31 @@ async def login_participant(
     """
     Login an existing participant.
     """
-    result = await db.execute(
-        select(RegisteredParticipant).where(RegisteredParticipant.email == data.email)
-    )
-    participant = result.scalars().first()
+    from app.core.logging import get_logger
+    logger = get_logger("participant_auth")
+    masked_email = data.email[:3] + "***" + data.email.split("@")[-1] if "@" in data.email else "INVALID"
     
+    logger.info(f"Participant login attempt: {masked_email}")
+
+    try:
+        result = await db.execute(
+            select(RegisteredParticipant).where(RegisteredParticipant.email == data.email)
+        )
+        participant = result.scalars().first()
+        
+        if not participant:
+            logger.warning(f"Participant not found: {masked_email}")
+        
+    except Exception as e:
+        logger.error(f"Database error during participant login {masked_email}: {str(e)}")
+        raise
+
     if not participant or not verify_password(data.password, participant.password_hash):
+        logger.warning(f"Invalid credentials for participant: {masked_email}")
         raise AuthenticationException("Invalid email or password")
     
     if not participant.is_active:
+        logger.warning(f"Deactivated participant account: {masked_email}")
         raise AuthenticationException("Account is deactivated")
     
     # Update last login
@@ -169,6 +185,8 @@ async def login_participant(
     
     # Create token
     access_token = create_participant_token({"sub": str(participant.id)})
+    
+    logger.info(f"Participant logged in successfully: {masked_email}")
     
     return ParticipantToken(
         access_token=access_token,
@@ -195,6 +213,11 @@ async def join_workshop_anonymous(
     Join a workshop anonymously (no account required).
     Creates a session-based participant.
     """
+    from app.core.logging import get_logger
+    logger = get_logger("participant_auth")
+    
+    logger.info(f"Anonymous join request for PIN: {data.workshop_pin} by '{data.display_name}'")
+
     # Find workshop by PIN
     result = await db.execute(
         select(Workshop).where(Workshop.pin == data.workshop_pin)
@@ -202,37 +225,45 @@ async def join_workshop_anonymous(
     workshop = result.scalars().first()
     
     if not workshop:
+        logger.warning(f"Workshop not found for PIN: {data.workshop_pin}")
         raise NotFoundException("Workshop", data.workshop_pin)
     
     if workshop.status not in ["OPEN", "IN_PROGRESS"]:
+        logger.warning(f"Workshop {data.workshop_pin} not open. Status: {workshop.status}")
         raise ValidationException("Workshop is not accepting participants")
     
-    # Create anonymous participant
-    participant = Participant(
-        workshop_id=workshop.id,
-        display_name=data.display_name,
-        role="PARTICIPANT"
-    )
-    
-    db.add(participant)
-    await db.commit()
-    await db.refresh(participant)
-    
-    # Create token (short-lived for anonymous)
-    access_token = create_participant_token(
-        {"sub": str(participant.id), "workshop_id": str(workshop.id), "anonymous": True},
-        expires_delta=timedelta(hours=24)
-    )
-    
-    return ParticipantToken(
-        access_token=access_token,
-        participant=ParticipantResponse(
-            id=str(participant.id),
-            display_name=participant.display_name,
-            is_registered=False
-        ),
-        mode=ParticipantMode.ANONYMOUS
-    )
+    try:
+        # Create anonymous participant
+        participant = Participant(
+            workshop_id=workshop.id,
+            display_name=data.display_name,
+            role="PARTICIPANT"
+        )
+        
+        db.add(participant)
+        await db.commit()
+        await db.refresh(participant)
+        
+        # Create token (short-lived for anonymous)
+        access_token = create_participant_token(
+            {"sub": str(participant.id), "workshop_id": str(workshop.id), "anonymous": True},
+            expires_delta=timedelta(hours=24)
+        )
+        
+        logger.info(f"Anonymous participant joined successfully. ID: {participant.id}")
+        
+        return ParticipantToken(
+            access_token=access_token,
+            participant=ParticipantResponse(
+                id=str(participant.id),
+                display_name=participant.display_name,
+                is_registered=False
+            ),
+            mode=ParticipantMode.ANONYMOUS
+        )
+    except Exception as e:
+        logger.error(f"Error joining anonymous participant: {str(e)}")
+        raise
 
 
 @router.post("/join-registered", response_model=ParticipantToken)
@@ -245,9 +276,15 @@ async def join_workshop_registered(
     Join a workshop as a registered participant.
     Links the workshop participation to the registered account.
     """
+    from app.core.logging import get_logger
+    logger = get_logger("participant_auth")
+    
     if not registered_participant:
+        logger.warning("Unauthenticated registered join attempt")
         raise AuthenticationException("Authentication required. Please provide a valid participant token.")
     
+    logger.info(f"Registered participant joining workshop {data.workshop_pin}. User: {registered_participant.email}")
+
     # Find workshop by PIN
     result = await db.execute(
         select(Workshop).where(Workshop.pin == data.workshop_pin)
@@ -255,9 +292,11 @@ async def join_workshop_registered(
     workshop = result.scalars().first()
     
     if not workshop:
+        logger.warning(f"Workshop not found for PIN: {data.workshop_pin}")
         raise NotFoundException("Workshop", data.workshop_pin)
     
     if workshop.status not in ["OPEN", "IN_PROGRESS"]:
+        logger.warning(f"Workshop {data.workshop_pin} not accepting participants (Status: {workshop.status})")
         raise ValidationException("Workshop is not accepting participants")
     
     # Check if already joined this workshop
@@ -268,52 +307,59 @@ async def join_workshop_registered(
         )
     )
     if existing_link.scalars().first():
+        logger.info(f"Participant {registered_participant.email} already joined workshop {data.workshop_pin}")
         raise ConflictException("Already joined this workshop")
     
-    # Create participant entry
-    participant = Participant(
-        workshop_id=workshop.id,
-        display_name=registered_participant.display_name,
-        role="PARTICIPANT"
-    )
-    db.add(participant)
-    await db.flush()
-    
-    # Link to registered account
-    link = ParticipantWorkshopLink(
-        registered_participant_id=registered_participant.id,
-        participant_id=participant.id,
-        workshop_id=workshop.id
-    )
-    db.add(link)
-    
-    # Update statistics
-    registered_participant.total_workshops_attended += 1
-    
-    await db.commit()
-    await db.refresh(participant)
-    
-    # Create new token with workshop context
-    access_token = create_participant_token({
-        "sub": str(registered_participant.id),
-        "participant_id": str(participant.id),
-        "workshop_id": str(workshop.id)
-    })
-    
-    return ParticipantToken(
-        access_token=access_token,
-        participant=ParticipantResponse(
-            id=str(participant.id),
-            email=registered_participant.email,
+    try:
+        # Create participant entry
+        participant = Participant(
+            workshop_id=workshop.id,
             display_name=registered_participant.display_name,
-            organization=registered_participant.organization,
-            is_registered=True,
-            total_workshops_attended=registered_participant.total_workshops_attended,
-            total_use_cases_submitted=registered_participant.total_use_cases_submitted,
-            total_votes_cast=registered_participant.total_votes_cast
-        ),
-        mode=ParticipantMode.REGISTERED
-    )
+            role="PARTICIPANT"
+        )
+        db.add(participant)
+        await db.flush()
+        
+        # Link to registered account
+        link = ParticipantWorkshopLink(
+            registered_participant_id=registered_participant.id,
+            participant_id=participant.id,
+            workshop_id=workshop.id
+        )
+        db.add(link)
+        
+        # Update statistics
+        registered_participant.total_workshops_attended += 1
+        
+        await db.commit()
+        await db.refresh(participant)
+        
+        # Create new token with workshop context
+        access_token = create_participant_token({
+            "sub": str(registered_participant.id),
+            "participant_id": str(participant.id),
+            "workshop_id": str(workshop.id)
+        })
+        
+        logger.info(f"Registered participant successfully joined workshop {data.workshop_pin}")
+        
+        return ParticipantToken(
+            access_token=access_token,
+            participant=ParticipantResponse(
+                id=str(participant.id),
+                email=registered_participant.email,
+                display_name=registered_participant.display_name,
+                organization=registered_participant.organization,
+                is_registered=True,
+                total_workshops_attended=registered_participant.total_workshops_attended,
+                total_use_cases_submitted=registered_participant.total_use_cases_submitted,
+                total_votes_cast=registered_participant.total_votes_cast
+            ),
+            mode=ParticipantMode.REGISTERED
+        )
+    except Exception as e:
+        logger.error(f"Error joining registered participant: {str(e)}")
+        raise
 
 
 @router.get("/me", response_model=ParticipantResponse)
