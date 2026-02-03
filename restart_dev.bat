@@ -13,6 +13,12 @@ if exist ".env" (
 )
 
 REM Configuration with defaults (if not set in .env)
+if "%USE_HTTPS%"=="true" (
+    set PROTOCOL=https
+) else (
+    set PROTOCOL=http
+)
+
 if not defined SERVER_PORT set SERVER_PORT=8000
 if not defined CLIENT_PORT set CLIENT_PORT=5173
 if not defined SERVER_HOST set SERVER_HOST=0.0.0.0
@@ -191,16 +197,16 @@ echo [OK] Backend starting on %BACKEND_HOST%:%BACKEND_PORT%...
 REM Use the venv Python executable directly for better compatibility
 if exist ".venv\Scripts\python.exe" (
     REM Windows-native venv
-    echo    [INFO] Starting Backend with HTTPS enabled...
-    start "Backend Server" /min cmd /c "cd /d %CD% && .venv\Scripts\python.exe -m uvicorn app.main:app --reload --host %BACKEND_HOST% --port %BACKEND_PORT% --ssl-keyfile certs/key.pem --ssl-certfile certs/cert.pem > ..\server.log 2>&1"
+    echo    [INFO] Starting Backend with %PROTOCOL%...
+    start "Backend Server" /min cmd /c "cd /d %CD% && .venv\Scripts\python.exe -m app.run > ..\server.log 2>&1"
 ) else if exist ".venv\bin\python" (
     REM Cross-platform/WSL venv detected
-    echo    [INFO] Starting Backend with HTTPS enabled...
-    start "Backend Server" /min cmd /c "cd /d %CD% && %PYTHON_CMD% -m uvicorn app.main:app --reload --host %BACKEND_HOST% --port %BACKEND_PORT% --ssl-keyfile certs/key.pem --ssl-certfile certs/cert.pem > ..\server.log 2>&1"
+    echo    [INFO] Starting Backend with %PROTOCOL%...
+    start "Backend Server" /min cmd /c "cd /d %CD% && %PYTHON_CMD% -m app.run > ..\server.log 2>&1"
 ) else (
     REM Fallback to system Python
-    echo    [INFO] Starting Backend with HTTPS enabled...
-    start "Backend Server" /min cmd /c "cd /d %CD% && %PYTHON_CMD% -m uvicorn app.main:app --reload --host %BACKEND_HOST% --port %BACKEND_PORT% --ssl-keyfile certs/key.pem --ssl-certfile certs/cert.pem > ..\server.log 2>&1"
+    echo    [INFO] Starting Backend with %PROTOCOL%...
+    start "Backend Server" /min cmd /c "cd /d %CD% && %PYTHON_CMD% -m app.run > ..\server.log 2>&1"
 )
 
 cd ..
@@ -243,22 +249,26 @@ for /f "tokens=2 delims=:" %%a in ('ipconfig ^| findstr /c:"IPv4 Address"') do (
 
 REM Display backend URLs
 if "%BACKEND_HOST%"=="0.0.0.0" (
-    echo Backend:  http://localhost:%BACKEND_PORT%/docs
+    echo Backend:  %PROTOCOL%://localhost:%BACKEND_PORT%/docs
     if defined LOCAL_IP (
-        echo          http://%LOCAL_IP%:%BACKEND_PORT%/docs (network)
+        echo          %PROTOCOL%://%LOCAL_IP%:%BACKEND_PORT%/docs (network)
     )
 ) else (
-    echo Backend:  http://%BACKEND_HOST%:%BACKEND_PORT%/docs
+    echo Backend:  %PROTOCOL%://%BACKEND_HOST%:%BACKEND_PORT%/docs
 )
 
 REM Display frontend URLs
 if "%FRONTEND_HOST%"=="0.0.0.0" (
-    echo Frontend: http://localhost:%FRONTEND_PORT%
+    echo Frontend: %PROTOCOL%://localhost:%FRONTEND_PORT%
     if defined LOCAL_IP (
-        echo          http://%LOCAL_IP%:%FRONTEND_PORT% (network)
+        echo          %PROTOCOL%://%LOCAL_IP%:%FRONTEND_PORT% (network)
     )
 ) else (
-    echo Frontend: http://%FRONTEND_HOST%:%FRONTEND_PORT%
+    echo Frontend: %PROTOCOL%://%FRONTEND_HOST%:%FRONTEND_PORT%
+)
+
+if "%USE_HTTPS%"=="true" (
+    echo Public Domain: https://qbrainlabs.com
 )
 
 echo ================================================

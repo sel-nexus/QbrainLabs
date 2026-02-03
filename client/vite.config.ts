@@ -22,18 +22,20 @@ export default defineConfig(({ mode }) => {
       }
     ],
     server: {
-      https: {
+      https: (env.USE_HTTPS === 'true' || process.env.USE_HTTPS === 'true') ? {
         key: resolve(__dirname, '../server/certs/key.pem'),
         cert: resolve(__dirname, '../server/certs/cert.pem'),
-      },
-      host: env.CLIENT_HOST === '0.0.0.0' || process.env.CLIENT_HOST === '0.0.0.0' ? true : (env.CLIENT_HOST || process.env.CLIENT_HOST || true), // Use true for all interfaces (Windows compatible)
+      } : undefined,
+      host: env.CLIENT_HOST === '0.0.0.0' || process.env.CLIENT_HOST === '0.0.0.0' ? true : (env.CLIENT_HOST || process.env.CLIENT_HOST || true), // Use true for all interfaces
       port: parseInt(env.CLIENT_PORT || process.env.CLIENT_PORT || '5173', 10),
       strictPort: false, // Allow fallback if port is in use
       allowedHosts: ['localhost', '127.0.0.1', '48.214.144.154', 'qbrainlabs.com'], // Explicitly allow Public IP
       cors: { origin: '*', credentials: true }, // Allow all origins for the dev server itself
       proxy: {
         '/api': {
-          target: 'https://127.0.0.1:8000', // Update to HTTPS backend
+          target: (env.USE_HTTPS === 'true' || process.env.USE_HTTPS === 'true')
+            ? `https://127.0.0.1:${env.SERVER_PORT || process.env.SERVER_PORT || 8000}`
+            : `http://127.0.0.1:${env.SERVER_PORT || process.env.SERVER_PORT || 8000}`,
           changeOrigin: true,
           secure: false, // Allow self-signed certs for backend
           rewrite: (path) => {
@@ -58,7 +60,9 @@ export default defineConfig(({ mode }) => {
           },
         },
         '/ws': {
-          target: 'https://127.0.0.1:8000', // Update to HTTPS backend
+          target: (env.USE_HTTPS === 'true' || process.env.USE_HTTPS === 'true')
+            ? `https://127.0.0.1:${env.SERVER_PORT || process.env.SERVER_PORT || 8000}`
+            : `http://127.0.0.1:${env.SERVER_PORT || process.env.SERVER_PORT || 8000}`,
           changeOrigin: true,
           secure: false, // Allow self-signed certs
           ws: true,

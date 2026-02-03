@@ -1,8 +1,8 @@
 INFO:     Will watch for changes in these directories: ['C:\\Users\\azvmuser1\\windsurf-wrkspace\\QbrainLabs\\server']
 INFO:     Uvicorn running on https://0.0.0.0:8000 (Press CTRL+C to quit)
-INFO:     Started reloader process [24652] using WatchFiles
-2026-02-03 12:20:43,965 - qbrainlabs - INFO - Exception handlers registered
-{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-02-03T12:20:43.970674Z"}
+INFO:     Started reloader process [12840] using WatchFiles
+2026-02-03 18:32:20,998 - qbrainlabs - INFO - Exception handlers registered
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-02-03T18:32:21.001412Z"}
 ============================================================
 RAGService Initialization Starting...
 ============================================================
@@ -31,42 +31,42 @@ AI Mock Mode Setting: False
    [OK] Azure OpenAI Embeddings initialized
 
    [VECTOR] Initializing Vector Store with 5 documents...
-2026-02-03 12:20:49,313 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
-2026-02-03 12:20:50,205 - chromadb.config - DEBUG - Starting component System
-2026-02-03 12:20:50,206 - chromadb.config - DEBUG - Starting component Posthog
-2026-02-03 12:20:50,206 - chromadb.config - DEBUG - Starting component OpenTelemetryClient
-2026-02-03 12:20:50,206 - chromadb.config - DEBUG - Starting component SimpleAssignmentPolicy
-2026-02-03 12:20:50,206 - chromadb.config - DEBUG - Starting component SqliteDB
-2026-02-03 12:20:50,224 - chromadb.config - DEBUG - Starting component LocalSegmentManager
-2026-02-03 12:20:50,225 - chromadb.config - DEBUG - Starting component SegmentAPI
-2026-02-03 12:20:50,227 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
-2026-02-03 12:20:50,248 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
-2026-02-03 12:20:50,250 - langchain_openai.embeddings.base - WARNING - Warning: model not found. Using cl100k_base encoding.
-2026-02-03 12:20:51,834 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x0000020CB150F740>, 'json_data': {'input': [[42172, 660, 41290, 29225, 25, 5560, 81677, 323, 445, 11237, 33289, 311, 4820, 11612, 65152, 323, 5510, 828, 1139, 37321, 13], [13084, 9365, 13149, 6465, 25, 432, 1929, 6108, 6369, 6465, 311, 4320, 6130, 20126, 1701, 5419, 6677, 2385, 13], [54644, 535, 39306, 25, 38527, 3059, 12271, 828, 311, 7168, 7241, 8060, 1603, 433, 8741, 13], [5648, 1413, 18729, 14882, 25, 20400, 35649, 2613, 8661, 3048, 369, 2204, 6130, 21282, 13], [2123, 21943, 22103, 25, 5560, 445, 11237, 82, 311, 5625, 20160, 7432, 33, 1971, 2082, 311, 8102, 13]], 'model': 'text-embedding-3-large', 'encoding_format': 'base64'}, 'headers': {'api-key': '<redacted>'}, 'idempotency_key': 'stainless-python-retry-03361d9c-e3f6-4c35-bceb-c7f3cdae5f8d'}
-2026-02-03 12:20:51,850 - openai._base_client - DEBUG - Sending HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview
-2026-02-03 12:20:51,850 - httpcore.connection - DEBUG - connect_tcp.started host='ai-lshcerupod.cognitiveservices.azure.com' port=443 local_address=None timeout=None socket_options=None
-2026-02-03 12:20:52,102 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000020CB3619850>
-2026-02-03 12:20:52,102 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x0000020CB0A64440> server_hostname='ai-lshcerupod.cognitiveservices.azure.com' timeout=None
-2026-02-03 12:20:52,586 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x0000020CB0B6E110>
-2026-02-03 12:20:52,586 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
-2026-02-03 12:20:52,586 - httpcore.http11 - DEBUG - send_request_headers.complete
-2026-02-03 12:20:52,586 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
-2026-02-03 12:20:52,586 - httpcore.http11 - DEBUG - send_request_body.complete
-2026-02-03 12:20:52,586 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
-2026-02-03 12:20:52,892 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Length', b'82472'), (b'Content-Type', b'application/json'), (b'access-control-allow-origin', b'*'), (b'apim-request-id', b'348c8a6b-b363-4274-9d2b-73e14312e126'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains; preload'), (b'x-content-type-options', b'nosniff'), (b'x-ms-region', b'South India'), (b'x-ratelimit-remaining-tokens', b'249911'), (b'x-ratelimit-limit-tokens', b'250000'), (b'x-request-id', b'cbc1cef0-4656-4444-8e5b-5cb0f1443175'), (b'azureml-model-session', b'd013-20251205054128'), (b'x-envoy-upstream-service-time', b'60'), (b'x-ms-client-request-id', b'348c8a6b-b363-4274-9d2b-73e14312e126'), (b'x-ms-deployment-name', b'text-embedding-3-large'), (b'Date', b'Tue, 03 Feb 2026 12:20:52 GMT')])
-2026-02-03 12:20:52,893 - httpx - INFO - HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
-2026-02-03 12:20:52,893 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
-2026-02-03 12:20:53,356 - httpcore.http11 - DEBUG - receive_response_body.complete
-2026-02-03 12:20:53,356 - httpcore.http11 - DEBUG - response_closed.started
-2026-02-03 12:20:53,356 - httpcore.http11 - DEBUG - response_closed.complete
-2026-02-03 12:20:53,357 - openai._base_client - DEBUG - HTTP Response: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "200 OK" Headers({'content-length': '82472', 'content-type': 'application/json', 'access-control-allow-origin': '*', 'apim-request-id': '348c8a6b-b363-4274-9d2b-73e14312e126', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'x-content-type-options': 'nosniff', 'x-ms-region': 'South India', 'x-ratelimit-remaining-tokens': '249911', 'x-ratelimit-limit-tokens': '250000', 'x-request-id': 'cbc1cef0-4656-4444-8e5b-5cb0f1443175', 'azureml-model-session': 'd013-20251205054128', 'x-envoy-upstream-service-time': '60', 'x-ms-client-request-id': '348c8a6b-b363-4274-9d2b-73e14312e126', 'x-ms-deployment-name': 'text-embedding-3-large', 'date': 'Tue, 03 Feb 2026 12:20:52 GMT'})
-2026-02-03 12:20:53,357 - openai._base_client - DEBUG - request_id: cbc1cef0-4656-4444-8e5b-5cb0f1443175
-2026-02-03 12:20:53,437 - chromadb.config - DEBUG - Starting component LocalHnswSegment
+2026-02-03 18:32:25,116 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2026-02-03 18:32:25,574 - chromadb.config - DEBUG - Starting component System
+2026-02-03 18:32:25,574 - chromadb.config - DEBUG - Starting component Posthog
+2026-02-03 18:32:25,574 - chromadb.config - DEBUG - Starting component OpenTelemetryClient
+2026-02-03 18:32:25,574 - chromadb.config - DEBUG - Starting component SimpleAssignmentPolicy
+2026-02-03 18:32:25,574 - chromadb.config - DEBUG - Starting component SqliteDB
+2026-02-03 18:32:25,580 - chromadb.config - DEBUG - Starting component LocalSegmentManager
+2026-02-03 18:32:25,580 - chromadb.config - DEBUG - Starting component SegmentAPI
+2026-02-03 18:32:25,582 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-03 18:32:25,597 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+2026-02-03 18:32:25,598 - langchain_openai.embeddings.base - WARNING - Warning: model not found. Using cl100k_base encoding.
+2026-02-03 18:32:26,115 - openai._base_client - DEBUG - Request options: {'method': 'post', 'url': '/embeddings', 'files': None, 'post_parser': <function Embeddings.create.<locals>.parser at 0x000002DAC90BF600>, 'json_data': {'input': [[42172, 660, 41290, 29225, 25, 5560, 81677, 323, 445, 11237, 33289, 311, 4820, 11612, 65152, 323, 5510, 828, 1139, 37321, 13], [13084, 9365, 13149, 6465, 25, 432, 1929, 6108, 6369, 6465, 311, 4320, 6130, 20126, 1701, 5419, 6677, 2385, 13], [54644, 535, 39306, 25, 38527, 3059, 12271, 828, 311, 7168, 7241, 8060, 1603, 433, 8741, 13], [5648, 1413, 18729, 14882, 25, 20400, 35649, 2613, 8661, 3048, 369, 2204, 6130, 21282, 13], [2123, 21943, 22103, 25, 5560, 445, 11237, 82, 311, 5625, 20160, 7432, 33, 1971, 2082, 311, 8102, 13]], 'model': 'text-embedding-3-large', 'encoding_format': 'base64'}, 'headers': {'api-key': '<redacted>'}, 'idempotency_key': 'stainless-python-retry-cfe4360d-6833-45b3-a2af-e0add21a693c'}
+2026-02-03 18:32:26,130 - openai._base_client - DEBUG - Sending HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview
+2026-02-03 18:32:26,130 - httpcore.connection - DEBUG - connect_tcp.started host='ai-lshcerupod.cognitiveservices.azure.com' port=443 local_address=None timeout=None socket_options=None
+2026-02-03 18:32:26,379 - httpcore.connection - DEBUG - connect_tcp.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002DACA790A90>
+2026-02-03 18:32:26,379 - httpcore.connection - DEBUG - start_tls.started ssl_context=<ssl.SSLContext object at 0x000002DAC860C560> server_hostname='ai-lshcerupod.cognitiveservices.azure.com' timeout=None
+2026-02-03 18:32:26,851 - httpcore.connection - DEBUG - start_tls.complete return_value=<httpcore._backends.sync.SyncStream object at 0x000002DACA790A50>
+2026-02-03 18:32:26,851 - httpcore.http11 - DEBUG - send_request_headers.started request=<Request [b'POST']>
+2026-02-03 18:32:26,851 - httpcore.http11 - DEBUG - send_request_headers.complete
+2026-02-03 18:32:26,851 - httpcore.http11 - DEBUG - send_request_body.started request=<Request [b'POST']>
+2026-02-03 18:32:26,851 - httpcore.http11 - DEBUG - send_request_body.complete
+2026-02-03 18:32:26,851 - httpcore.http11 - DEBUG - receive_response_headers.started request=<Request [b'POST']>
+2026-02-03 18:32:27,162 - httpcore.http11 - DEBUG - receive_response_headers.complete return_value=(b'HTTP/1.1', 200, b'OK', [(b'Content-Length', b'82472'), (b'Content-Type', b'application/json'), (b'access-control-allow-origin', b'*'), (b'apim-request-id', b'5f970e9a-5d22-4c1f-8dd6-151367e7ed39'), (b'Strict-Transport-Security', b'max-age=31536000; includeSubDomains; preload'), (b'x-content-type-options', b'nosniff'), (b'x-ms-region', b'South India'), (b'x-ratelimit-remaining-tokens', b'249911'), (b'x-ratelimit-limit-tokens', b'250000'), (b'x-request-id', b'e14fec89-9c81-4ed1-87c0-47c264657250'), (b'azureml-model-session', b'd013-20251205054128'), (b'x-envoy-upstream-service-time', b'62'), (b'x-ms-client-request-id', b'5f970e9a-5d22-4c1f-8dd6-151367e7ed39'), (b'x-ms-deployment-name', b'text-embedding-3-large'), (b'Date', b'Tue, 03 Feb 2026 18:32:26 GMT')])
+2026-02-03 18:32:27,162 - httpx - INFO - HTTP Request: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "HTTP/1.1 200 OK"
+2026-02-03 18:32:27,162 - httpcore.http11 - DEBUG - receive_response_body.started request=<Request [b'POST']>
+2026-02-03 18:32:27,624 - httpcore.http11 - DEBUG - receive_response_body.complete
+2026-02-03 18:32:27,625 - httpcore.http11 - DEBUG - response_closed.started
+2026-02-03 18:32:27,625 - httpcore.http11 - DEBUG - response_closed.complete
+2026-02-03 18:32:27,625 - openai._base_client - DEBUG - HTTP Response: POST https://ai-lshcerupod.cognitiveservices.azure.com/openai/deployments/text-embedding-3-large/embeddings?api-version=2024-12-01-preview "200 OK" Headers({'content-length': '82472', 'content-type': 'application/json', 'access-control-allow-origin': '*', 'apim-request-id': '5f970e9a-5d22-4c1f-8dd6-151367e7ed39', 'strict-transport-security': 'max-age=31536000; includeSubDomains; preload', 'x-content-type-options': 'nosniff', 'x-ms-region': 'South India', 'x-ratelimit-remaining-tokens': '249911', 'x-ratelimit-limit-tokens': '250000', 'x-request-id': 'e14fec89-9c81-4ed1-87c0-47c264657250', 'azureml-model-session': 'd013-20251205054128', 'x-envoy-upstream-service-time': '62', 'x-ms-client-request-id': '5f970e9a-5d22-4c1f-8dd6-151367e7ed39', 'x-ms-deployment-name': 'text-embedding-3-large', 'date': 'Tue, 03 Feb 2026 18:32:26 GMT'})
+2026-02-03 18:32:27,625 - openai._base_client - DEBUG - request_id: e14fec89-9c81-4ed1-87c0-47c264657250
+2026-02-03 18:32:27,657 - chromadb.config - DEBUG - Starting component LocalHnswSegment
 C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_info" has conflict with protected namespace "model_".
 
 You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
   warnings.warn(
-INFO:     Started server process [15672]
+INFO:     Started server process [12752]
 INFO:     Waiting for application startup.
    [OK] Vector store initialized successfully
 
@@ -77,366 +77,195 @@ RAGService Initialization Complete - Mode: REAL
 
 RoadmapService running in MOCK MODE (No API Key found)
 CopilotService running in MOCK MODE (No API Key found)
-2026-02-03 12:20:58,711 - app.middleware.cors_dynamic - INFO - Detected server IP addresses: ['172.16.0.4', '48.214.144.154']
-2026-02-03 12:20:58,711 - app.middleware.cors_dynamic - INFO - Allowed CORS origins: ['http://127.0.0.1:3000', 'http://127.0.0.1:5173', 'http://172.16.0.4:3000', 'http://172.16.0.4:5173', 'http://172.16.0.4:80', 'http://172.31.33.5:5173', 'http://172.31.33.5:80', 'http://18.191.118.132:5173', 'http://18.191.118.132:80', 'http://192.168.4.247:5173', 'http://48.214.144.154:3000', 'http://48.214.144.154:5173', 'http://48.214.144.154:80', 'http://localhost:3000', 'http://localhost:5173', 'http://qbrainlabs.com', 'https://172.16.0.4:443', 'https://172.16.0.4:5173', 'https://48.214.144.154:443', 'https://48.214.144.154:5173']
-{"event": "Starting application...", "level": "info", "timestamp": "2026-02-03T12:20:58.711960Z"}
-{"event": "Database tables created", "level": "info", "timestamp": "2026-02-03T12:20:58.967159Z"}
+2026-02-03 18:32:30,484 - app.middleware.cors_dynamic - INFO - Detected server IP addresses: ['172.16.0.4', '48.214.144.154']
+2026-02-03 18:32:30,484 - app.middleware.cors_dynamic - INFO - Allowed CORS origins: ['http://127.0.0.1:3000', 'http://127.0.0.1:5173', 'http://172.16.0.4:3000', 'http://172.16.0.4:5173', 'http://172.16.0.4:80', 'http://172.31.33.5:5173', 'http://172.31.33.5:80', 'http://18.191.118.132:5173', 'http://18.191.118.132:80', 'http://192.168.4.247:5173', 'http://48.214.144.154:3000', 'http://48.214.144.154:5173', 'http://48.214.144.154:80', 'http://localhost:3000', 'http://localhost:5173', 'http://qbrainlabs.com', 'https://127.0.0.1:5173', 'https://172.16.0.4:443', 'https://172.16.0.4:5173', 'https://48.214.144.154:443', 'https://48.214.144.154:5173', 'https://localhost:5173']
+{"event": "Starting application...", "level": "info", "timestamp": "2026-02-03T18:32:30.484536Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-02-03T18:32:30.649081Z"}
 INFO:     Application startup complete.
-{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-02-03T12:21:40.420691Z"}
-2026-02-03 12:21:40,422 - multipart.multipart - DEBUG - Calling on_field_start with no data
-2026-02-03 12:21:40,422 - multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
-2026-02-03 12:21:40,422 - multipart.multipart - DEBUG - Calling on_field_data with data[9:31]
-2026-02-03 12:21:40,422 - multipart.multipart - DEBUG - Calling on_field_end with no data
-2026-02-03 12:21:40,422 - multipart.multipart - DEBUG - Calling on_field_start with no data
-2026-02-03 12:21:40,422 - multipart.multipart - DEBUG - Calling on_field_name with data[32:40]
-2026-02-03 12:21:40,422 - multipart.multipart - DEBUG - Calling on_field_data with data[41:49]
-2026-02-03 12:21:40,422 - multipart.multipart - DEBUG - Calling on_field_end with no data
-2026-02-03 12:21:40,422 - multipart.multipart - DEBUG - Calling on_end with no data
-{"event": "Login attempt for user: adm***qbrainlabs.com", "level": "info", "timestamp": "2026-02-03T12:21:40.422727Z"}
-{"event": "User found: adm***qbrainlabs.com (ID: 48e54d46-a245-4044-bd1b-c9b1eb244049)", "level": "info", "timestamp": "2026-02-03T12:21:41.043453Z"}
-{"event": "Failed login attempt for adm***qbrainlabs.com: User found=True, PwdValid=False", "level": "warning", "timestamp": "2026-02-03T12:21:41.692414Z"}
-2026-02-03 12:21:41,694 - qbrainlabs - WARNING - HTTPException: 401 - Incorrect email or password
-{"method": "POST", "path": "/api/auth/login", "status_code": 401, "duration_ms": 1274.33, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T12:21:41.695644Z"}
-2026-02-03 12:21:55,797 - multipart.multipart - DEBUG - Calling on_field_start with no data
-2026-02-03 12:21:55,797 - multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
-2026-02-03 12:21:55,797 - multipart.multipart - DEBUG - Calling on_field_data with data[9:27]
-2026-02-03 12:21:55,797 - multipart.multipart - DEBUG - Calling on_field_end with no data
-2026-02-03 12:21:55,797 - multipart.multipart - DEBUG - Calling on_field_start with no data
-2026-02-03 12:21:55,797 - multipart.multipart - DEBUG - Calling on_field_name with data[28:36]
-2026-02-03 12:21:55,797 - multipart.multipart - DEBUG - Calling on_field_data with data[37:47]
-2026-02-03 12:21:55,797 - multipart.multipart - DEBUG - Calling on_field_end with no data
-2026-02-03 12:21:55,797 - multipart.multipart - DEBUG - Calling on_end with no data
-{"event": "Login attempt for user: vsr***outlook.com", "level": "info", "timestamp": "2026-02-03T12:21:55.800054Z"}
-{"event": "User found: vsr***outlook.com (ID: ef47c2ab-77c9-42ec-8720-02abbdb24472)", "level": "info", "timestamp": "2026-02-03T12:21:55.801077Z"}
-{"event": "Password verified for vsr***outlook.com", "level": "info", "timestamp": "2026-02-03T12:21:56.142705Z"}
-{"event": "Login successful for vsr***outlook.com. Token generated.", "level": "info", "timestamp": "2026-02-03T12:21:56.160921Z"}
-{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 364.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:21:56.161916Z"}
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 65.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:21:56.313464Z"}
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 44.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:21:56.395249Z"}
-2026-02-03 12:22:54,168 - multipart.multipart - DEBUG - Calling on_field_start with no data
-2026-02-03 12:22:54,168 - multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
-2026-02-03 12:22:54,168 - multipart.multipart - DEBUG - Calling on_field_data with data[9:27]
-2026-02-03 12:22:54,168 - multipart.multipart - DEBUG - Calling on_field_end with no data
-2026-02-03 12:22:54,168 - multipart.multipart - DEBUG - Calling on_field_start with no data
-2026-02-03 12:22:54,168 - multipart.multipart - DEBUG - Calling on_field_name with data[28:36]
-2026-02-03 12:22:54,169 - multipart.multipart - DEBUG - Calling on_field_data with data[37:47]
-2026-02-03 12:22:54,169 - multipart.multipart - DEBUG - Calling on_field_end with no data
-2026-02-03 12:22:54,169 - multipart.multipart - DEBUG - Calling on_end with no data
-{"event": "Login attempt for user: vsr***outlook.com", "level": "info", "timestamp": "2026-02-03T12:22:54.169656Z"}
-{"event": "User found: vsr***outlook.com (ID: ef47c2ab-77c9-42ec-8720-02abbdb24472)", "level": "info", "timestamp": "2026-02-03T12:22:54.173501Z"}
-{"event": "Password verified for vsr***outlook.com", "level": "info", "timestamp": "2026-02-03T12:22:54.503255Z"}
-{"event": "Login successful for vsr***outlook.com. Token generated.", "level": "info", "timestamp": "2026-02-03T12:22:54.510361Z"}
-{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 343.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:22:54.511602Z"}
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 9.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:22:54.687623Z"}
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 8.35, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:22:54.730460Z"}
-{"method": "GET", "path": "/api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 9.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:02.855330Z"}
-{"method": "GET", "path": "/api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 10.61, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:02.905408Z"}
-2026-02-03 12:23:02,928 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
-{"method": "GET", "path": "/api/participants/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 404, "duration_ms": 6.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T12:23:02.932224Z"}
-INFO:     ('127.0.0.1', 49573) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
-{"method": "GET", "path": "/api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 90.6, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:03.016946Z"}
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-02-03T18:35:30.355780Z"}
+2026-02-03 18:35:30,359 - multipart.multipart - DEBUG - Calling on_field_start with no data
+2026-02-03 18:35:30,359 - multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2026-02-03 18:35:30,359 - multipart.multipart - DEBUG - Calling on_field_data with data[9:31]
+2026-02-03 18:35:30,359 - multipart.multipart - DEBUG - Calling on_field_end with no data
+2026-02-03 18:35:30,359 - multipart.multipart - DEBUG - Calling on_field_start with no data
+2026-02-03 18:35:30,359 - multipart.multipart - DEBUG - Calling on_field_name with data[32:40]
+2026-02-03 18:35:30,359 - multipart.multipart - DEBUG - Calling on_field_data with data[41:49]
+2026-02-03 18:35:30,359 - multipart.multipart - DEBUG - Calling on_field_end with no data
+2026-02-03 18:35:30,359 - multipart.multipart - DEBUG - Calling on_end with no data
+{"event": "Login attempt for user: adm***qbrainlabs.com", "level": "info", "timestamp": "2026-02-03T18:35:30.360905Z"}
+{"event": "User found: adm***qbrainlabs.com (ID: 48e54d46-a245-4044-bd1b-c9b1eb244049)", "level": "info", "timestamp": "2026-02-03T18:35:30.944574Z"}
+{"event": "Failed login attempt for adm***qbrainlabs.com: User found=True, PwdValid=False", "level": "warning", "timestamp": "2026-02-03T18:35:31.566907Z"}
+2026-02-03 18:35:31,568 - qbrainlabs - WARNING - HTTPException: 401 - Incorrect email or password
+{"method": "POST", "path": "/api/auth/login", "status_code": 401, "duration_ms": 1213.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:35:31.570088Z"}
+2026-02-03 18:35:41,294 - multipart.multipart - DEBUG - Calling on_field_start with no data
+2026-02-03 18:35:41,294 - multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2026-02-03 18:35:41,296 - multipart.multipart - DEBUG - Calling on_field_data with data[9:31]
+2026-02-03 18:35:41,296 - multipart.multipart - DEBUG - Calling on_field_end with no data
+2026-02-03 18:35:41,296 - multipart.multipart - DEBUG - Calling on_field_start with no data
+2026-02-03 18:35:41,296 - multipart.multipart - DEBUG - Calling on_field_name with data[32:40]
+2026-02-03 18:35:41,296 - multipart.multipart - DEBUG - Calling on_field_data with data[41:54]
+2026-02-03 18:35:41,296 - multipart.multipart - DEBUG - Calling on_field_end with no data
+2026-02-03 18:35:41,296 - multipart.multipart - DEBUG - Calling on_end with no data
+{"event": "Login attempt for user: adm***qbrainlabs.com", "level": "info", "timestamp": "2026-02-03T18:35:41.296318Z"}
+{"event": "User found: adm***qbrainlabs.com (ID: 48e54d46-a245-4044-bd1b-c9b1eb244049)", "level": "info", "timestamp": "2026-02-03T18:35:41.302828Z"}
+{"event": "Password verified for adm***qbrainlabs.com", "level": "info", "timestamp": "2026-02-03T18:35:41.634527Z"}
+{"event": "Login successful for adm***qbrainlabs.com. Token generated.", "level": "info", "timestamp": "2026-02-03T18:35:41.674107Z"}
+{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 383.16, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:35:41.675144Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 19.6, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:35:41.759402Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 10.98, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:35:41.804732Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 5.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:31.926641Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 4.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:32.025293Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 32.8, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:34.687166Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 13.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:34.929909Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 294.22, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:34.948841Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 293.84, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:34.953493Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 302.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:34.957028Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 14.27, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:35.009614Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 14.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:35.011499Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 17.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:35.015642Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 14.51, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:35.824068Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 11.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:35.871103Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 24.58, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:36.557788Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 17.44, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:36.615994Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 19.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:38.011500Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 14.89, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:38.061617Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 11.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:38.743510Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 18.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:38.864725Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 31.58, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:39.913605Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 24.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:39.970925Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 15.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:40.619303Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 35.11, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:40.636250Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 15.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:40.672225Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 65.42, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:40.736553Z"}
+{"method": "GET", "path": "/api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops", "status_code": 200, "duration_ms": 415.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.128049Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 418.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.132659Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 421.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.134712Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 458.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.171533Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 461.03, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.174177Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 466.35, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.180202Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 466.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.180202Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 29.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.222632Z"}
+{"method": "GET", "path": "/api/admin/facilitators/24402a45-e12d-43cb-ba1b-92212acdd1a4/workshops", "status_code": 200, "duration_ms": 27.55, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.224269Z"}
+{"method": "GET", "path": "/api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops", "status_code": 200, "duration_ms": 36.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.228607Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 35.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.264256Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 37.53, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.269253Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 33.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.277848Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 33.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.277848Z"}
+{"method": "GET", "path": "/api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops", "status_code": 200, "duration_ms": 16.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.297381Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 18.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.330491Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 17.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.345284Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 17.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.345284Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 16.82, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.347377Z"}
+{"method": "GET", "path": "/api/admin/facilitators/3e64a2a3-783f-4d40-88d6-440659aa9a87/workshops", "status_code": 200, "duration_ms": 19.42, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.489204Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 20.44, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.489204Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 31.23, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.500961Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 29.29, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.501987Z"}
+{"method": "GET", "path": "/api/admin/facilitators/c1758feb-b5f6-4ecb-9dfe-09c62e1c4769/workshops", "status_code": 200, "duration_ms": 16.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.618822Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 16.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.619335Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 16.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.619335Z"}
+{"method": "GET", "path": "/api/admin/facilitators/8ec75cd8-e168-42ed-b799-02a2f2924d88/workshops", "status_code": 200, "duration_ms": 12.16, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.673142Z"}
+{"method": "GET", "path": "/api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops", "status_code": 200, "duration_ms": 11.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:36:41.674143Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 6.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:37:31.315453Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 5.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:37:31.360230Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 22.16, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:37:34.965045Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 22.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:37:34.965045Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 25.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:37:34.968395Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 30.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:37:34.972821Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 20.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:37:35.034803Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 25.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:37:35.042994Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 28.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:37:35.052118Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 27.09, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:37:35.052118Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 13.19, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:37:40.185193Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 7.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:37:40.228968Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 15.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:37:47.951588Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 20.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:37:48.062221Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 13.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:37:55.912156Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 20.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:37:55.967134Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 11.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:38:53.114400Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 11.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:38:53.164659Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 20.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:38:53.173619Z"}
+2026-02-03 18:38:53,175 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api/participants/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 404, "duration_ms": 5.55, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:38:53.178957Z"}
+{"method": "GET", "path": "/api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 25.61, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:38:53.198391Z"}
+2026-02-03 18:38:53,229 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api/participants/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 404, "duration_ms": 7.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:38:53.233294Z"}
+{"method": "GET", "path": "/api/workshops/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 20.8, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:38:53.237470Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 15.51, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:38:53.237470Z"}
+INFO:     ('127.0.0.1', 51582) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
 INFO:     connection open
-2026-02-03 12:23:03,055 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
-{"method": "GET", "path": "/api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 162.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:03.060167Z"}
-{"method": "GET", "path": "/api/participants/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 404, "duration_ms": 15.7, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T12:23:03.061690Z"}
-Client connected: bsM4Smgr20PU5CzrAAAB (unauthenticated - participant access)
-SID bsM4Smgr20PU5CzrAAAB joined room 0c943ee7-5293-426b-a8a0-1d1819a9bbc1
-SID bsM4Smgr20PU5CzrAAAB joined room 0c943ee7-5293-426b-a8a0-1d1819a9bbc1
-SID bsM4Smgr20PU5CzrAAAB joined copilot room for workshop 0c943ee7-5293-426b-a8a0-1d1819a9bbc1
-SID bsM4Smgr20PU5CzrAAAB joined room 0c943ee7-5293-426b-a8a0-1d1819a9bbc1
-SID bsM4Smgr20PU5CzrAAAB left copilot room for workshop 0c943ee7-5293-426b-a8a0-1d1819a9bbc1
-SID bsM4Smgr20PU5CzrAAAB joined copilot room for workshop 0c943ee7-5293-426b-a8a0-1d1819a9bbc1
-SID bsM4Smgr20PU5CzrAAAB joined room 0c943ee7-5293-426b-a8a0-1d1819a9bbc1
-{"method": "GET", "path": "/api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 383.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:03.389734Z"}
-{"method": "GET", "path": "/api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 369.16, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:03.589342Z"}
-{"method": "GET", "path": "/api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 433.93, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:03.593927Z"}
-{"method": "GET", "path": "/api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 10.44, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:03.665738Z"}
-{"method": "GET", "path": "/api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 8.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:03.673465Z"}
-{"method": "GET", "path": "/api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 12.49, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:03.717260Z"}
-{"method": "GET", "path": "/api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 16.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:03.842525Z"}
-{"method": "GET", "path": "/api/votes/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/all-matrix-positions", "status_code": 200, "duration_ms": 15.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:06.019771Z"}
-{"method": "GET", "path": "/api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 11.11, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:07.526756Z"}
-{"method": "GET", "path": "/api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 7.7, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:07.583469Z"}
-{"method": "GET", "path": "/api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/distribution", "status_code": 200, "duration_ms": 14.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:11.242486Z"}
-{"method": "GET", "path": "/api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/agreement", "status_code": 200, "duration_ms": 18.78, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:11.247253Z"}
-2026-02-03 12:23:11,477 - qbrainlabs - ERROR - Unhandled exception: cannot access local variable 'norm_threshold' where it is not associated with a value
-ERROR:    Exception in ASGI application
-Traceback (most recent call last):
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\anyio\streams\memory.py", line 98, in receive
-    return self.receive_nowait()
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\anyio\streams\memory.py", line 93, in receive_nowait
-    raise WouldBlock
-anyio.WouldBlock
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 78, in call_next
-    message = await recv_stream.receive()
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\anyio\streams\memory.py", line 118, in receive
-    raise EndOfStream
-anyio.EndOfStream
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 426, in run_asgi
-    result = await app(  # type: ignore[func-returns-value]
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 84, in __call__
-    return await self.app(scope, receive, send)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\applications.py", line 1106, in __call__
-    await super().__call__(scope, receive, send)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\applications.py", line 122, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\errors.py", line 184, in __call__
-    raise exc
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\errors.py", line 162, in __call__
-    await self.app(scope, receive, _send)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 108, in __call__
-    response = await self.dispatch_func(request, call_next)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\middleware\cors_dynamic.py", line 93, in dispatch
-    response = await call_next(request)
-               ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 84, in call_next
-    raise app_exc
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 70, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 108, in __call__
-    response = await self.dispatch_func(request, call_next)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\middleware\request_id.py", line 22, in dispatch
-    response = await call_next(request)
-               ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 84, in call_next
-    raise app_exc
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 70, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 108, in __call__
-    response = await self.dispatch_func(request, call_next)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\middleware\security.py", line 122, in dispatch
-    return await call_next(request)
-           ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 84, in call_next
-    raise app_exc
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 70, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 108, in __call__
-    response = await self.dispatch_func(request, call_next)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\middleware\security.py", line 82, in dispatch
-    response = await call_next(request)
-               ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 84, in call_next
-    raise app_exc
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 70, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 108, in __call__
-    response = await self.dispatch_func(request, call_next)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\middleware\security.py", line 37, in dispatch
-    response = await call_next(request)
-               ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 84, in call_next
-    raise app_exc
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 70, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 108, in __call__
-    response = await self.dispatch_func(request, call_next)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\middleware\security.py", line 18, in dispatch
-    response = await call_next(request)
-               ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 84, in call_next
-    raise app_exc
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 70, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 79, in __call__
-    raise exc
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 68, in __call__
-    await self.app(scope, receive, sender)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 20, in __call__
-    raise e
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 17, in __call__
-    await self.app(scope, receive, send)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 718, in __call__
-    await route.handle(scope, receive, send)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 276, in handle
-    await self.app(scope, receive, send)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 66, in app
-    response = await func(request)
-               ^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 274, in app
-    raw_response = await run_endpoint_function(
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 191, in run_endpoint_function
-    return await dependant.call(**values)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\api\analytics.py", line 577, in get_quadrant_analysis
-    "norm_threshold": norm_threshold,
-                      ^^^^^^^^^^^^^^
-UnboundLocalError: cannot access local variable 'norm_threshold' where it is not associated with a value
-{"method": "GET", "path": "/api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/distribution", "status_code": 200, "duration_ms": 12.21, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:11.637648Z"}
-2026-02-03 12:23:11,645 - qbrainlabs - ERROR - Unhandled exception: cannot access local variable 'norm_threshold' where it is not associated with a value
-ERROR:    Exception in ASGI application
-Traceback (most recent call last):
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\anyio\streams\memory.py", line 98, in receive
-    return self.receive_nowait()
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\anyio\streams\memory.py", line 93, in receive_nowait
-    raise WouldBlock
-anyio.WouldBlock
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 78, in call_next
-    message = await recv_stream.receive()
-              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\anyio\streams\memory.py", line 118, in receive
-    raise EndOfStream
-anyio.EndOfStream
-
-During handling of the above exception, another exception occurred:
-
-Traceback (most recent call last):
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 426, in run_asgi
-    result = await app(  # type: ignore[func-returns-value]
-             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 84, in __call__
-    return await self.app(scope, receive, send)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\applications.py", line 1106, in __call__
-    await super().__call__(scope, receive, send)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\applications.py", line 122, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\errors.py", line 184, in __call__
-    raise exc
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\errors.py", line 162, in __call__
-    await self.app(scope, receive, _send)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 108, in __call__
-    response = await self.dispatch_func(request, call_next)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\middleware\cors_dynamic.py", line 93, in dispatch
-    response = await call_next(request)
-               ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 84, in call_next
-    raise app_exc
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 70, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 108, in __call__
-    response = await self.dispatch_func(request, call_next)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\middleware\request_id.py", line 22, in dispatch
-    response = await call_next(request)
-               ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 84, in call_next
-    raise app_exc
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 70, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 108, in __call__
-    response = await self.dispatch_func(request, call_next)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\middleware\security.py", line 122, in dispatch
-    return await call_next(request)
-           ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 84, in call_next
-    raise app_exc
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 70, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 108, in __call__
-    response = await self.dispatch_func(request, call_next)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\middleware\security.py", line 82, in dispatch
-    response = await call_next(request)
-               ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 84, in call_next
-    raise app_exc
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 70, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 108, in __call__
-    response = await self.dispatch_func(request, call_next)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\middleware\security.py", line 37, in dispatch
-    response = await call_next(request)
-               ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 84, in call_next
-    raise app_exc
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 70, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 108, in __call__
-    response = await self.dispatch_func(request, call_next)
-               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\middleware\security.py", line 18, in dispatch
-    response = await call_next(request)
-               ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 84, in call_next
-    raise app_exc
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 70, in coro
-    await self.app(scope, receive_or_disconnect, send_no_error)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 79, in __call__
-    raise exc
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 68, in __call__
-    await self.app(scope, receive, sender)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 20, in __call__
-    raise e
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 17, in __call__
-    await self.app(scope, receive, send)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 718, in __call__
-    await route.handle(scope, receive, send)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 276, in handle
-    await self.app(scope, receive, send)
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 66, in app
-    response = await func(request)
-               ^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 274, in app
-    raw_response = await run_endpoint_function(
-                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\routing.py", line 191, in run_endpoint_function
-    return await dependant.call(**values)
-           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\app\api\analytics.py", line 577, in get_quadrant_analysis
-    "norm_threshold": norm_threshold,
-                      ^^^^^^^^^^^^^^
-UnboundLocalError: cannot access local variable 'norm_threshold' where it is not associated with a value
-{"method": "GET", "path": "/api/analytics/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1/agreement", "status_code": 200, "duration_ms": 7.28, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:11.697740Z"}
-{"method": "GET", "path": "/api/roi/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 13.85, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:13.798760Z"}
-{"method": "GET", "path": "/api/roi/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 6.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:13.840516Z"}
-SID bsM4Smgr20PU5CzrAAAB left copilot room for workshop 0c943ee7-5293-426b-a8a0-1d1819a9bbc1
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 23.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:14.861759Z"}
-{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 24.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:14.928605Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 7.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:15.939469Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 7.41, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:15.983716Z"}
-2026-02-03 12:23:23,757 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.perplexity.ai:443
-2026-02-03 12:23:28,338 - urllib3.connectionpool - DEBUG - https://api.perplexity.ai:443 "POST /chat/completions HTTP/1.1" 200 None
-{"method": "POST", "path": "/api/knowledge-base/refresh", "status_code": 200, "duration_ms": 4594.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:23:28.342458Z"}
-2026-02-03 12:23:31,505 - qbrainlabs - WARNING - HTTPException: 404 - Industry not found
-{"method": "POST", "path": "/api/knowledge-base/add", "status_code": 404, "duration_ms": 9.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T12:23:31.505775Z"}
-2026-02-03 12:28:04,138 - qbrainlabs - WARNING - HTTPException: 404 - Industry not found
-{"method": "POST", "path": "/api/knowledge-base/add", "status_code": 404, "duration_ms": 10.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T12:28:04.138544Z"}
-{"method": "POST", "path": "/api/auth/logout", "status_code": 200, "duration_ms": 13.48, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:28:11.483537Z"}
+{"method": "GET", "path": "/api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 26.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:38:53.262565Z"}
+{"method": "GET", "path": "/api/usecases/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 4.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:38:53.283528Z"}
+Client connected: fOv45BApDoZAwEcdAAAB (unauthenticated - participant access)
+{"method": "GET", "path": "/api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 13.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:38:53.316040Z"}
+SID fOv45BApDoZAwEcdAAAB joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID fOv45BApDoZAwEcdAAAB joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID fOv45BApDoZAwEcdAAAB joined copilot room for workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID fOv45BApDoZAwEcdAAAB joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID fOv45BApDoZAwEcdAAAB left copilot room for workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID fOv45BApDoZAwEcdAAAB joined copilot room for workshop beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+{"method": "GET", "path": "/api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 14.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:38:53.362508Z"}
+SID fOv45BApDoZAwEcdAAAB joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+{"method": "GET", "path": "/api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 46.81, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:38:53.465393Z"}
+{"method": "GET", "path": "/api/votes/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/all-matrix-positions", "status_code": 200, "duration_ms": 23.42, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:39:04.079353Z"}
+{"method": "GET", "path": "/api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 9.03, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:39:07.614958Z"}
+{"method": "GET", "path": "/api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 12.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:39:07.772111Z"}
+{"method": "GET", "path": "/api/votes/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/all-matrix-positions", "status_code": 200, "duration_ms": 16.24, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:39:09.017837Z"}
+{"method": "GET", "path": "/api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 11.21, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:39:10.911673Z"}
+{"method": "GET", "path": "/api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 12.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:39:10.994354Z"}
+{"method": "GET", "path": "/api/analytics/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/agreement", "status_code": 200, "duration_ms": 23.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:39:12.635081Z"}
+{"method": "GET", "path": "/api/analytics/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/distribution", "status_code": 200, "duration_ms": 23.63, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:39:12.636081Z"}
+{"method": "GET", "path": "/api/analytics/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/quadrant-analysis", "status_code": 200, "duration_ms": 25.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:39:12.637608Z"}
+{"method": "GET", "path": "/api/analytics/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/agreement", "status_code": 200, "duration_ms": 18.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:39:12.704665Z"}
+{"method": "GET", "path": "/api/analytics/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/distribution", "status_code": 200, "duration_ms": 19.3, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:39:12.704665Z"}
+{"method": "GET", "path": "/api/analytics/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d/quadrant-analysis", "status_code": 200, "duration_ms": 23.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:39:12.709053Z"}
+SID fOv45BApDoZAwEcdAAAB joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+SID fOv45BApDoZAwEcdAAAB joined room beafb0d0-e9c2-4aa5-9510-c480e5cc232d
+2026-02-03 18:39:13,502 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api/participants/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 404, "duration_ms": 5.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:39:13.506764Z"}
+{"method": "GET", "path": "/api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 14.89, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:39:13.516137Z"}
+2026-02-03 18:39:13,552 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api/participants/workshop/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 404, "duration_ms": 4.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:39:13.555096Z"}
+{"method": "GET", "path": "/api/results/beafb0d0-e9c2-4aa5-9510-c480e5cc232d", "status_code": 200, "duration_ms": 12.84, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T18:39:13.566181Z"}
+2026-02-03 18:40:58,520 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/mcp", "status_code": 404, "duration_ms": 3.13, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:40:58.522728Z"}
+2026-02-03 18:40:58,638 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api/mcp", "status_code": 404, "duration_ms": 2.4, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:40:58.638523Z"}
+2026-02-03 18:40:58,763 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/v1/mcp", "status_code": 404, "duration_ms": 2.89, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:40:58.766460Z"}
+2026-02-03 18:40:58,888 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/jsonrpc", "status_code": 404, "duration_ms": 3.6, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:40:58.889735Z"}
+2026-02-03 18:40:59,011 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/mcp", "status_code": 404, "duration_ms": 1.97, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:40:59.011715Z"}
+2026-02-03 18:40:59,135 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api/mcp", "status_code": 404, "duration_ms": 2.06, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:40:59.135501Z"}
+2026-02-03 18:40:59,263 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/v1/mcp", "status_code": 404, "duration_ms": 2.33, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:40:59.264438Z"}
+2026-02-03 18:40:59,386 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/jsonrpc", "status_code": 404, "duration_ms": 2.42, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:40:59.386670Z"}
+2026-02-03 18:40:59,510 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/mcp", "status_code": 404, "duration_ms": 2.51, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:40:59.512376Z"}
+2026-02-03 18:40:59,634 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api/mcp", "status_code": 404, "duration_ms": 2.39, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:40:59.635536Z"}
+2026-02-03 18:40:59,758 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/v1/mcp", "status_code": 404, "duration_ms": 3.57, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:40:59.760090Z"}
+2026-02-03 18:40:59,882 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/jsonrpc", "status_code": 404, "duration_ms": 2.46, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:40:59.884341Z"}
+2026-02-03 18:41:00,007 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/mcp", "status_code": 404, "duration_ms": 2.34, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:41:00.007762Z"}
+2026-02-03 18:41:00,135 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api/mcp", "status_code": 404, "duration_ms": 2.54, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:41:00.136791Z"}
+2026-02-03 18:41:00,259 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/v1/mcp", "status_code": 404, "duration_ms": 2.34, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:41:00.259710Z"}
+2026-02-03 18:41:00,381 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/jsonrpc", "status_code": 404, "duration_ms": 2.04, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:41:00.384656Z"}
+2026-02-03 18:41:00,508 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/mcp", "status_code": 404, "duration_ms": 2.04, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:41:00.509254Z"}
+2026-02-03 18:41:00,639 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api/mcp", "status_code": 404, "duration_ms": 9.99, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:41:00.639521Z"}
+2026-02-03 18:41:00,763 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/v1/mcp", "status_code": 404, "duration_ms": 2.13, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:41:00.764550Z"}
+2026-02-03 18:41:00,887 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/jsonrpc", "status_code": 404, "duration_ms": 4.2, "client_ip": "13.93.228.37", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-03T18:41:00.889338Z"}
 INFO:     connection closed
-Client disconnected: bsM4Smgr20PU5CzrAAAB
-2026-02-03 12:28:18,395 - multipart.multipart - DEBUG - Calling on_field_start with no data
-2026-02-03 12:28:18,397 - multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
-2026-02-03 12:28:18,397 - multipart.multipart - DEBUG - Calling on_field_data with data[9:31]
-2026-02-03 12:28:18,397 - multipart.multipart - DEBUG - Calling on_field_end with no data
-2026-02-03 12:28:18,397 - multipart.multipart - DEBUG - Calling on_field_start with no data
-2026-02-03 12:28:18,397 - multipart.multipart - DEBUG - Calling on_field_name with data[32:40]
-2026-02-03 12:28:18,397 - multipart.multipart - DEBUG - Calling on_field_data with data[41:49]
-2026-02-03 12:28:18,397 - multipart.multipart - DEBUG - Calling on_field_end with no data
-2026-02-03 12:28:18,397 - multipart.multipart - DEBUG - Calling on_end with no data
-{"event": "Login attempt for user: adm***qbrainlabs.com", "level": "info", "timestamp": "2026-02-03T12:28:18.397260Z"}
-{"event": "User found: adm***qbrainlabs.com (ID: 48e54d46-a245-4044-bd1b-c9b1eb244049)", "level": "info", "timestamp": "2026-02-03T12:28:18.401194Z"}
-{"event": "Password verified for adm***qbrainlabs.com", "level": "info", "timestamp": "2026-02-03T12:28:18.699020Z"}
-{"event": "Login successful for adm***qbrainlabs.com. Token generated.", "level": "info", "timestamp": "2026-02-03T12:28:18.710484Z"}
-{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 316.53, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:28:18.712572Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 27.06, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:28:19.002614Z"}
-{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 18.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:28:19.058650Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 5.07, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:28:21.120906Z"}
-{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 3.98, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-03T12:28:21.159912Z"}
+INFO:     ('127.0.0.1', 59965) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
