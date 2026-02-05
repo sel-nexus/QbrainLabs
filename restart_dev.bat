@@ -268,7 +268,11 @@ if "%FRONTEND_HOST%"=="0.0.0.0" (
 )
 
 if "%USE_HTTPS%"=="true" (
-    echo Public Domain: https://qbrainlabs.com
+    echo Public Domains: https://qbrainlabs.com
+    echo                 https://qbitzai.com
+) else (
+    echo Public Domains: http://qbrainlabs.com
+    echo                 http://qbitzai.com
 )
 
 echo ================================================

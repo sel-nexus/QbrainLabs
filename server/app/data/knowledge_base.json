@@ -528,6 +528,34 @@
             "API"
           ],
           "kpis": []
+        },
+        {
+          "id": "it-976e89",
+          "title": "AI Agents for IT Operations and Automation",
+          "description": "AI agents autonomously optimize IT networks, handle complex IT operations, and execute multi-step workflows, moving beyond simple automation to proactive management. This addresses top enterprise use cases like IT operations identified in 2024 polls, with scaling reported by 23% of organizations in 2025 surveys. High-value for IT by reducing manual intervention and improving efficiency.",
+          "category": "Agentic AI",
+          "complexity": "Medium",
+          "data_requirements": "To be defined",
+          "typical_roi": "20-30% reduction in IT operational costs",
+          "implementation_time": "3-6 months",
+          "technologies": [
+            "AI"
+          ],
+          "kpis": []
+        },
+        {
+          "id": "it-8a7acc",
+          "title": "AI-Driven IT Operations and Automation (AIOps)",
+          "description": "AI systems proactively optimize IT networks, automate routine operations, and predict issues to minimize downtime. This includes anomaly detection in vast datasets and real-time resource allocation for enhanced efficiency. High-value for IT teams seeking scalable infrastructure management.",
+          "category": "Predictive Analytics",
+          "complexity": "Medium",
+          "data_requirements": "To be defined",
+          "typical_roi": "30-50% reduction in IT operational costs",
+          "implementation_time": "3-6 months",
+          "technologies": [
+            "AI"
+          ],
+          "kpis": []
         }
       ]
     },

@@ -7,6 +7,8 @@ import { ServerResponse } from 'http'
 export default defineConfig(({ mode }) => {
   // Load env file from parent directory (project root)
   const env = loadEnv(mode, resolve(__dirname, '..'), '')
+  console.log('[Vite Config] USE_HTTPS:', env.USE_HTTPS || process.env.USE_HTTPS);
+  console.log('[Vite Config] SERVER_PORT:', env.SERVER_PORT || process.env.SERVER_PORT);
 
   return {
     plugins: [
@@ -29,15 +31,17 @@ export default defineConfig(({ mode }) => {
       host: env.CLIENT_HOST === '0.0.0.0' || process.env.CLIENT_HOST === '0.0.0.0' ? true : (env.CLIENT_HOST || process.env.CLIENT_HOST || true), // Use true for all interfaces
       port: parseInt(env.CLIENT_PORT || process.env.CLIENT_PORT || '5173', 10),
       strictPort: false, // Allow fallback if port is in use
-      allowedHosts: ['localhost', '127.0.0.1', '48.214.144.154', 'qbrainlabs.com'], // Explicitly allow Public IP
+      allowedHosts: ['localhost', '127.0.0.1', '48.214.144.154', 'qbrainlabs.com', 'qbitzai.com'], // Explicitly allow Public IP and domains
       cors: { origin: '*', credentials: true }, // Allow all origins for the dev server itself
       proxy: {
         '/api': {
           target: (env.USE_HTTPS === 'true' || process.env.USE_HTTPS === 'true')
-            ? `https://127.0.0.1:${env.SERVER_PORT || process.env.SERVER_PORT || 8000}`
-            : `http://127.0.0.1:${env.SERVER_PORT || process.env.SERVER_PORT || 8000}`,
+            ? `https://localhost:${env.SERVER_PORT || process.env.SERVER_PORT || 8000}`
+            : `http://localhost:${env.SERVER_PORT || process.env.SERVER_PORT || 8000}`,
           changeOrigin: true,
           secure: false, // Allow self-signed certs for backend
+          timeout: 60000,
+          proxyTimeout: 60000,
           rewrite: (path) => {
             console.log('[Proxy] Rewriting path:', path);
             return path;

@@ -25,7 +25,8 @@ class KnowledgeBaseManager:
             rag_service: The RAG service instance to update
         """
         self.rag_service = rag_service
-        self.data_dir = Path("app/data")
+        self.base_dir = Path(__file__).parent.parent
+        self.data_dir = self.base_dir / "data"
         self.data_dir.mkdir(exist_ok=True)
         
     async def load_reference_data(self) -> List[Dict[str, Any]]:

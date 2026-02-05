@@ -104,6 +104,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             });
 
             if (response.ok) {
+              const contentType = response.headers.get('content-type');
+              if (contentType && contentType.includes('text/html')) {
+                const text = await response.text();
+                console.error('[Auth] initAuth: Received HTML instead of JSON:', text.substring(0, 200));
+                throw new Error('API returned HTML');
+              }
               const freshUser = await response.json();
               localStorage.setItem(USER_KEY, JSON.stringify(freshUser));
               setState(prev => ({

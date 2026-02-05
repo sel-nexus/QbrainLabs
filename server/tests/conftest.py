@@ -94,5 +94,5 @@ def sample_user_data() -> dict:
     return {
         "email": "test@example.com",
         "password": "testpassword123",
-        "name": "Test User"
+        "full_name": "Test User"
     }

@@ -228,7 +228,14 @@ async def refresh_use_cases(
         count=3
     )
     
+    
+    
     for item in fresh_use_cases:
+        # Pydantic model expects 'industry' to be the ID
+        if request.industry_id:
+            item["industry"] = request.industry_id
+            item["industry_name"] = industry_name
+        
         results.append(UseCaseSearchResult(**item))
         
     return results

@@ -20,8 +20,8 @@ test.describe('Authentication', () => {
 
   test('should login with valid credentials', async ({ page }) => {
     await page.goto('/login');
-    await page.getByLabel(/email/i).fill('admin@hotspotmatrix.com');
-    await page.getByLabel(/password/i).fill('admin123');
+    await page.getByLabel(/email/i).fill('admin@qbrainlabs.com');
+    await page.getByLabel(/password/i).fill('Tcs@$2026');
     await page.getByRole('button', { name: /sign in/i }).click();
     await expect(page).toHaveURL(/.*dashboard|workshops/);
   });

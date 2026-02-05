@@ -9,8 +9,8 @@ test.describe('Admin Settings Page', () => {
     test.beforeEach(async ({ page }) => {
         // Login as admin
         await page.goto('/facilitator-login');
-        await page.fill('input[type="email"]', 'admin@example.com');
-        await page.fill('input[type="password"]', 'adminpassword123');
+        await page.fill('input[type="email"]', 'admin@qbrainlabs.com');
+        await page.fill('input[type="password"]', 'Tcs@$2026');
         await page.click('button[type="submit"]');
 
         // Wait for redirect to admin panel
@@ -54,7 +54,7 @@ test.describe('Admin Settings Page', () => {
         await dailyInput.fill('15');
 
         // Click Save button
-        await page.click('button:has-text("Save")').first();
+        await page.locator('button:has-text("Save")').first().click();
 
         // Wait for success message
         await expect(page.locator('text=Updated')).toBeVisible({ timeout: 5000 });
@@ -71,7 +71,7 @@ test.describe('Admin Settings Page', () => {
         await toggle.click();
 
         // Click Save
-        await page.click('button:has-text("Save")').first();
+        await page.locator('button:has-text("Save")').first().click();
 
         // Wait for success message
         await expect(page.locator('text=Updated')).toBeVisible({ timeout: 5000 });
@@ -82,7 +82,7 @@ test.describe('Admin Settings Page', () => {
         await page.click('button:has-text("Rate Limiting")');
 
         // Click reset button (RotateCcw icon)
-        await page.click('button[title="Reset to default"]').first();
+        await page.locator('button[title="Reset to default"]').first().click();
 
         // Confirm reset
         await page.click('button:has-text("OK")');
@@ -103,7 +103,7 @@ test.describe('Admin Settings Page', () => {
         await dailyInput.fill('9999');
 
         // Click Save button
-        await page.click('button:has-text("Save")').first();
+        await page.locator('button:has-text("Save")').first().click();
 
         // Wait for error message
         await expect(page.locator('text=Failed')).toBeVisible({ timeout: 5000 });
@@ -130,8 +130,8 @@ test.describe('Admin Panel Navigation', () => {
     test.beforeEach(async ({ page }) => {
         // Login as admin
         await page.goto('/facilitator-login');
-        await page.fill('input[type="email"]', 'admin@example.com');
-        await page.fill('input[type="password"]', 'adminpassword123');
+        await page.fill('input[type="email"]', 'admin@qbrainlabs.com');
+        await page.fill('input[type="password"]', 'Tcs@$2026');
         await page.click('button[type="submit"]');
         await page.waitForURL('/admin');
     });
@@ -166,8 +166,8 @@ test.describe('Facilitator Management', () => {
     test.beforeEach(async ({ page }) => {
         // Login as admin
         await page.goto('/facilitator-login');
-        await page.fill('input[type="email"]', 'admin@example.com');
-        await page.fill('input[type="password"]', 'adminpassword123');
+        await page.fill('input[type="email"]', 'admin@qbrainlabs.com');
+        await page.fill('input[type="password"]', 'Tcs@$2026');
         await page.click('button[type="submit"]');
         await page.waitForURL('/admin');
 
@@ -223,8 +223,8 @@ test.describe('Workshop Creation Flow', () => {
     test.beforeEach(async ({ page }) => {
         // Login as admin/facilitator
         await page.goto('/facilitator-login');
-        await page.fill('input[type="email"]', 'facilitator@example.com');
-        await page.fill('input[type="password"]', 'facilitatorpass123');
+        await page.fill('input[type="email"]', 'admin@qbrainlabs.com');
+        await page.fill('input[type="password"]', 'Tcs@$2026');
         await page.click('button[type="submit"]');
         await page.waitForURL('/dashboard');
     });
@@ -260,8 +260,8 @@ test.describe('Authentication and Authorization', () => {
     test('should prevent non-admin from accessing admin panel', async ({ page }) => {
         // Login as regular facilitator
         await page.goto('/facilitator-login');
-        await page.fill('input[type="email"]', 'facilitator@example.com');
-        await page.fill('input[type="password"]', 'facilitatorpass123');
+        await page.fill('input[type="email"]', 'admin@qbrainlabs.com');
+        await page.fill('input[type="password"]', 'Tcs@$2026');
         await page.click('button[type="submit"]');
 
         // Try to access admin panel
@@ -274,8 +274,8 @@ test.describe('Authentication and Authorization', () => {
     test('should allow admin to access all admin features', async ({ page }) => {
         // Login as admin
         await page.goto('/facilitator-login');
-        await page.fill('input[type="email"]', 'admin@example.com');
-        await page.fill('input[type="password"]', 'adminpassword123');
+        await page.fill('input[type="email"]', 'admin@qbrainlabs.com');
+        await page.fill('input[type="password"]', 'Tcs@$2026');
         await page.click('button[type="submit"]');
         await page.waitForURL('/admin');
 
@@ -324,8 +324,8 @@ test.describe('Responsive Design', () => {
 
         // Navigate to admin panel
         await page.goto('/facilitator-login');
-        await page.fill('input[type="email"]', 'admin@example.com');
-        await page.fill('input[type="password"]', 'adminpassword123');
+        await page.fill('input[type="email"]', 'admin@qbrainlabs.com');
+        await page.fill('input[type="password"]', 'Tcs@$2026');
         await page.click('button[type="submit"]');
         await page.waitForURL('/admin');
 

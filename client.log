@@ -3,38 +3,197 @@
 > vite
 
 
-  [32m[1mVITE[22m v7.3.1[39m  [2mready in [0m[1m513[22m[2m[0m ms[22m
+  [32m[1mVITE[22m v7.3.1[39m  [2mready in [0m[1m546[22m[2m[0m ms[22m
 
   [32m➜[39m  [1mLocal[22m:   [36mhttps://localhost:[1m5173[22m/[39m
   [32m➜[39m  [1mLocal[22m:   [36mhttps://qbrainlabs.com:[1m5173[22m/[39m
   [32m➜[39m  [1mNetwork[22m: [36mhttps://172.16.0.4:[1m5173[22m/[39m
 [2m[32m  ➜[39m[22m[2m  press [22m[1mh + enter[22m[2m to show help[22m
-[Vite Request] GET /notifications/stats
+[Vite Request] GET /
+[Vite Request] GET /@vite/client
+[Vite Request] GET /src/main.tsx
+[Vite Request] GET /@react-refresh
+[Vite Request] GET /node_modules/vite/dist/client/env.mjs
+[Vite Request] GET /node_modules/.vite/deps/react_jsx-dev-runtime.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/react.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/react-dom_client.js?v=8489571b
+[Vite Request] GET /src/index.css
+[Vite Request] GET /src/i18n.ts
+[Vite Request] GET /src/App.tsx
+[Vite Request] GET /src/context/ThemeContext.tsx
+[Vite Request] GET /src/context/AuthContext.tsx
+[Vite Request] GET /src/context/SessionContext.tsx
+[Vite Request] GET /node_modules/.vite/deps/chunk-WUR7D6NS.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/chunk-G3PMV62Z.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/i18next.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/react-i18next.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/i18next-browser-languagedetector.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/i18next-http-backend.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/chunk-YF4B4G2L.js?v=8489571b
+[Vite Request] GET /src/lib/socket.ts
+[Vite Request] GET /src/lib/config.ts
 
-[2m[249.78ms][22m [@tailwindcss/postcss] src\index.css
-[2m[  0.16ms][22m  [2m ↳ [22mQuick bail check
-[2m[ 32.06ms][22m  [2m ↳ [22mSetup compiler
-[2m[  1.48ms][22m    [2m ↳ [22mPostCSS AST -> Tailwind CSS AST
-[2m[ 30.53ms][22m    [2m ↳ [22mCreate compiler
-[2m[  0.17ms][22m  [2m ↳ [22mRegister full rebuild paths
-[2m[  2.30ms][22m  [2m ↳ [22mSetup scanner
-[2m[ 58.04ms][22m  [2m ↳ [22mScan for candidates
-[2m[ 47.77ms][22m  [2m ↳ [22mRegister dependency messages
-[2m[ 89.65ms][22m  [2m ↳ [22mBuild utilities
-[2m[ 13.63ms][22m  [2m ↳ [22mTransform Tailwind CSS AST into PostCSS AST
-[2m[  5.31ms][22m  [2m ↳ [22mUpdate PostCSS AST
+[2m[321.71ms][22m [@tailwindcss/postcss] src\index.css
+[2m[  0.24ms][22m  [2m ↳ [22mQuick bail check
+[2m[ 39.57ms][22m  [2m ↳ [22mSetup compiler
+[2m[  2.03ms][22m    [2m ↳ [22mPostCSS AST -> Tailwind CSS AST
+[2m[ 37.48ms][22m    [2m ↳ [22mCreate compiler
+[2m[  0.53ms][22m  [2m ↳ [22mRegister full rebuild paths
+[2m[  2.66ms][22m  [2m ↳ [22mSetup scanner
+[2m[ 75.23ms][22m  [2m ↳ [22mScan for candidates
+[2m[ 64.50ms][22m  [2m ↳ [22mRegister dependency messages
+[2m[109.81ms][22m  [2m ↳ [22mBuild utilities
+[2m[ 19.53ms][22m  [2m ↳ [22mTransform Tailwind CSS AST into PostCSS AST
+[2m[  8.52ms][22m  [2m ↳ [22mUpdate PostCSS AST
 
-[Vite Request] GET /notifications/stats
-[Vite Request] GET /notifications/stats
-[Vite Request] GET /notifications/stats
-[Vite Request] GET /notifications/stats
-[Vite Request] GET /notifications/stats
-[Vite Request] GET /notifications/stats
-[Vite Request] GET /notifications/stats
-[Vite Request] GET /notifications/stats
-[Vite Request] GET /notifications/stats
-[Vite Request] GET /notifications/stats
-[Vite Request] GET /notifications/stats
-[Vite Request] GET /notifications/stats
-[Vite Request] GET /notifications/stats
-[Vite Request] GET /notifications/stats
+[Vite Request] GET /node_modules/.vite/deps/react-router-dom.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/sonner.js?v=8489571b
+[Vite Request] GET /src/components/ChangePasswordDialog.tsx
+[Vite Request] GET /src/pages/Landing.tsx
+[Vite Request] GET /src/pages/CreateWorkshop.tsx
+[Vite Request] GET /src/pages/JoinWorkshop.tsx
+[Vite Request] GET /src/pages/WorkshopDetail.tsx
+[Vite Request] GET /src/pages/FacilitatorLogin.tsx
+[Vite Request] GET /src/pages/FacilitatorDashboard.tsx
+[Vite Request] GET /src/pages/AdminPanel.tsx
+[Vite Request] GET /src/pages/AdminSettings.tsx
+[Vite Request] GET /src/pages/AdminWorkshops.tsx
+[Vite Request] GET /src/pages/AdminUsers.tsx
+[Vite Request] GET /src/pages/AdminKnowledgeBase.tsx
+[Vite Request] GET /src/pages/AdminMyWorkshops.tsx
+[Vite Request] GET /src/pages/AdminLLMUsage.tsx
+[Vite Request] GET /src/pages/FacilitatorManagement.tsx
+[Vite Request] GET /src/pages/KnowledgeBase.tsx
+[Vite Request] GET /src/components/AdminLayout.tsx
+[Vite Request] GET /src/components/AuthenticatedLayout.tsx
+[Vite Request] GET /src/components/feedback/FeedbackWidget.tsx
+[Vite Request] GET /src/pages/AnalyticsDashboard.tsx
+[Vite Request] GET /src/pages/WaitingRoom.tsx
+[Vite Request] GET /src/pages/ParticipantDashboard.tsx
+[Vite Request] GET /src/pages/ParticipantMatrix.tsx
+[Vite Request] GET /src/pages/IntakePhase.tsx
+[Vite Request] GET /src/pages/ScoringPhase.tsx
+[Vite Request] GET /node_modules/.vite/deps/chunk-DS5EPX4M.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/chunk-TXHHHGR3.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/socket__io-client.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/lucide-react.js?v=8489571b
+[Vite Request] GET /src/lib/api/feedback.ts
+[Vite Request] GET /src/components/TileCarousel/index.ts
+[Vite Request] GET /src/components/HomeTiles/index.ts
+[Vite Request] GET /src/components/Header.tsx
+[Vite Request] GET /src/components/ui/Button.tsx
+[Vite Request] GET /src/components/ui/Input.tsx
+[Vite Request] GET /src/lib/api.ts
+[Vite Request] GET /node_modules/.vite/deps/framer-motion.js?v=8489571b
+[Vite Request] GET /src/components/templates/TemplateSelector.tsx
+[Vite Request] GET /src/components/ParticipantAuth.tsx
+[Vite Request] GET /src/components/ui/ActionTile.tsx
+[Vite Request] GET /src/components/ConfirmationModal.tsx
+[Vite Request] GET /node_modules/.vite/deps/recharts.js?v=8489571b
+[Vite Request] GET /src/lib/api/analytics.ts
+[Vite Request] GET /src/components/survey/SurveyParticipant.tsx
+[Vite Request] GET /src/components/ScoringCard.tsx
+[Vite Request] GET /src/components/UseCaseForm.tsx
+[Vite Request] GET /src/components/ResultsChart.tsx
+[Vite Request] GET /src/components/WorkshopInsights.tsx
+[Vite Request] GET /src/components/AnalyticsDashboard.tsx
+[Vite Request] GET /src/components/survey/index.ts
+[Vite Request] GET /node_modules/.vite/deps/qrcode__react.js?v=8489571b
+[Vite Request] GET /src/components/ui/Modal.tsx
+[Vite Request] GET /src/components/polls/PollManager.tsx
+[Vite Request] GET /src/components/polls/ReactionOverlay.tsx
+[Vite Request] GET /src/components/polls/QAPanel.tsx
+[Vite Request] GET /src/components/roi/index.ts
+[Vite Request] GET /src/components/breakout/index.ts
+[Vite Request] GET /src/components/roadmap/index.ts
+[Vite Request] GET /src/components/challenges/index.ts
+[Vite Request] GET /src/components/ai-copilot/index.ts
+[Vite Request] GET /src/components/MatrixActivityDashboard.tsx
+[Vite Request] GET /src/components/prioritization/PrioritizationScale.tsx
+[Vite Request] GET /src/components/UseCaseCanvas.tsx
+[Vite Request] GET /src/components/polls/PollResponder.tsx
+[Vite Request] GET /src/components/polls/ReactionBar.tsx
+[Vite Request] GET /src/components/gamification/PointsDisplay.tsx
+[Vite Request] GET /src/components/gamification/AchievementToast.tsx
+[Vite Request] GET /src/components/gamification/Leaderboard.tsx
+[Vite Request] GET /src/components/gamification/BadgeGrid.tsx
+[Vite Request] GET /src/components/usecases/UseCaseDetailModal.tsx
+[Vite Request] GET /node_modules/.vite/deps/chunk-2YVA4HRZ.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/axios.js?v=8489571b
+[Vite Request] GET /src/components/TileCarousel/TileCarousel.tsx
+[Vite Request] GET /src/components/TileCarousel/TileNavigation.tsx
+[Vite Request] GET /src/components/HomeTiles/HeroTile.tsx
+[Vite Request] GET /src/components/HomeTiles/FeaturesTile.tsx
+[Vite Request] GET /src/components/HomeTiles/HowItWorksTile.tsx
+[Vite Request] GET /src/components/HomeTiles/BenefitsTile.tsx
+[Vite Request] GET /src/components/HomeTiles/CTATile.tsx
+[Vite Request] GET /src/components/VotingHeatmap.tsx
+[Vite Request] GET /node_modules/.vite/deps/clsx.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/tailwind-merge.js?v=8489571b
+[Vite Request] GET /src/components/ui/ThemeToggle.tsx
+[Vite Request] GET /src/components/common/LanguageSwitcher.tsx
+[Vite Request] GET /src/components/NotificationIcon.tsx
+[Vite Request] GET /src/components/NotificationDetailModal.tsx
+[Vite Request] GET /src/lib/api/gamification.ts
+[Vite Request] GET /src/components/gamification/PointsAnimation.tsx
+[Vite Request] GET /node_modules/.vite/deps/d3.js?v=8489571b
+[Vite Request] GET /src/components/survey/SurveyBuilder.tsx
+[Vite Request] GET /src/components/survey/SurveyList.tsx
+[Vite Request] GET /src/components/survey/SurveyResults.tsx
+[Vite Request] GET /node_modules/.vite/deps/chunk-U7P2NEEE.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/chunk-YZQ63ACW.js?v=8489571b
+[Vite Request] GET /src/lib/api/polls.ts
+[Vite Request] GET /src/components/roi/ROICalculator.tsx
+[Vite Request] GET /src/components/roi/CostBenefitForms.tsx
+[Vite Request] GET /src/components/roi/ROIResultsDisplay.tsx
+[Vite Request] GET /src/components/roi/ROICalculatorModal.tsx
+[Vite Request] GET /src/components/roi/ROIComparisonView.tsx
+[Vite Request] GET /src/components/roi/ScenarioModeler.tsx
+[Vite Request] GET /src/components/roi/SensitivityAnalysis.tsx
+[Vite Request] GET /src/components/roi/BenchmarkPanel.tsx
+[Vite Request] GET /src/components/roi/BusinessCaseGenerator.tsx
+[Vite Request] GET /src/components/breakout/BreakoutManager.tsx
+[Vite Request] GET /src/components/breakout/BreakoutRoom.tsx
+[Vite Request] GET /src/components/roadmap/RoadmapGenerator.tsx
+[Vite Request] GET /src/components/roadmap/GanttChart.tsx
+[Vite Request] GET /src/components/roadmap/ResourcePlanner.tsx
+[Vite Request] GET /src/components/roadmap/MilestoneTracker.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotPanel.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotToggle.tsx
+[Vite Request] GET /src/components/ai-copilot/SuggestionCard.tsx
+[Vite Request] GET /src/components/ai-copilot/AlertBanner.tsx
+[Vite Request] GET /src/components/ai-copilot/EngagementMonitor.tsx
+[Vite Request] GET /src/components/ai-copilot/DiscussionPrompts.tsx
+[Vite Request] GET /src/components/ai-copilot/SummaryGenerator.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotSettings.tsx
+[Vite Request] GET /src/components/ai-copilot/InsightsPanel.tsx
+[Vite Request] GET /src/components/challenges/ChallengeCard.tsx
+[Vite Request] GET /src/components/challenges/ChallengeForm.tsx
+[Vite Request] GET /src/components/challenges/ChallengeCardDetail.tsx
+[Vite Request] GET /src/components/challenges/ChallengeManager.tsx
+[Vite Request] GET /src/components/gamification/BadgeCard.tsx
+[Vite Request] GET /src/hooks/useTileCarousel.ts
+[Vite Request] GET /src/lib/api/copilot.ts
+[Vite Request] GET /src/types/roi.ts
+[Vite Request] GET /src/lib/api/challenges.ts
+[Vite Request] GET /vite.svg
+[Vite Request] GET /vite.svg
+[Vite Request] POST /api/auth/login
+[Proxy] Rewriting path: /api/auth/login
+Sending Request to the Target: POST /api/auth/login
+proxy error Error: write EPROTO 28110000:error:0A0000C6:SSL routines:tls_get_more_records:packet length too long:openssl\ssl\record\methods\tls_common.c:663:
+
+    at WriteWrap.onWriteComplete [as oncomplete] (node:internal/stream_base_commons:87:19) {
+  errno: -4046,
+  code: 'EPROTO',
+  syscall: 'write'
+}
+[2m2:39:58 AM[22m [31m[1m[vite][22m[39m [31mhttp proxy error: /api/auth/login[39m
+Error: write EPROTO 28110000:error:0A0000C6:SSL routines:tls_get_more_records:packet length too long:openssl\ssl\record\methods\tls_common.c:663:
+
+    at WriteWrap.onWriteComplete [as oncomplete] (node:internal/stream_base_commons:87:19)
+[Vite Request] GET /manifest.json
+[2m2:41:59 AM[22m [36m[1m[vite][22m[39m [32mvite.config.ts changed, restarting server...[39m
+[Vite Config] USE_HTTPS: true
+[Vite Config] SERVER_PORT: 8000
+[2m2:42:00 AM[22m [36m[1m[vite][22m[39m server restarted.

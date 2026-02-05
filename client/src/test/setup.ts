@@ -60,7 +60,11 @@ vi.mock('../lib/socket', () => ({
 // Mock react-i18next
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string) => key,
+    t: (key: string, options?: any) => {
+      if (typeof options === 'string') return options;
+      if (options && typeof options === 'object' && options.defaultValue) return options.defaultValue;
+      return key;
+    },
     i18n: {
       changeLanguage: vi.fn(),
       language: 'en',

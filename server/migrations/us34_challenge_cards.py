@@ -64,8 +64,8 @@ async def create_challenge_cards_table():
         """))
         
         # Create trigger for updated_at
+        await conn.execute(text("DROP TRIGGER IF EXISTS update_challenge_cards_updated_at ON challenge_cards;"))
         await conn.execute(text("""
-            DROP TRIGGER IF EXISTS update_challenge_cards_updated_at ON challenge_cards;
             CREATE TRIGGER update_challenge_cards_updated_at
                 BEFORE UPDATE ON challenge_cards
                 FOR EACH ROW

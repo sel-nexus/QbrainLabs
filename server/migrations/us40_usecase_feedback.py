@@ -4,11 +4,11 @@ Creates the usecase_feedback table for participant feedback on use cases
 """
 import asyncio
 from sqlalchemy import text
-from app.core.database import async_session_maker
+from app.core.database import AsyncSessionLocal
 
 async def run_migration():
     """Create usecase_feedback table"""
-    async with async_session_maker() as session:
+    async with AsyncSessionLocal() as session:
         try:
             # Create usecase_feedback table
             await session.execute(text("""

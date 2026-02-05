@@ -152,7 +152,7 @@ export function AdminSettings() {
 
             if (!response.ok) throw new Error('Failed to reset setting');
 
-            toast.success(t('admin.settings.messages.resetSuccess', { key: setting.key, defaultValue: `Reset ${setting.key} to default` }));
+            toast.success(t('admin.settings.messages.resetSuccess', { key: setting.key, defaultValue: `Successfully reset ${setting.key} to default` }));
             await fetchSettings();
 
             // Clear edited value
@@ -163,7 +163,7 @@ export function AdminSettings() {
             });
         } catch (error: any) {
             console.error('Error resetting setting:', error);
-            toast.error(t('admin.settings.messages.resetError'));
+            toast.error(t('admin.settings.messages.resetError', 'Failed to reset setting'));
         } finally {
             setSaving(null);
         }
@@ -186,7 +186,7 @@ export function AdminSettings() {
                         />
                     </button>
                     <span className={`text-sm ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
-                        {currentValue ? t('admin.settings.labels.enabled') : t('admin.settings.labels.disabled')}
+                        {currentValue ? t('admin.settings.labels.enabled', 'Enabled') : t('admin.settings.labels.disabled', 'Disabled')}
                     </span>
                 </div>
             );
@@ -227,7 +227,7 @@ export function AdminSettings() {
 
     if (loading) {
         return (
-            <AdminLayout title={t('admin.settings.title')}>
+            <AdminLayout title={String(t('admin.settings.title', 'System Settings'))}>
                 <div className="flex items-center justify-center h-64">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-violet"></div>
                 </div>
@@ -236,10 +236,10 @@ export function AdminSettings() {
     }
 
     return (
-        <AdminLayout title={String(t('admin.settings.title'))}>
+        <AdminLayout title={String(t('admin.settings.title', 'System Settings'))}>
             {/* Description */}
             <p className={`mb-6 -mt-4 ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
-                {t('admin.settings.subtitle')}
+                {t('admin.settings.subtitle', 'Configure system-wide parameters and feature flags.')}
             </p>
 
             {/* Category Tabs */}
@@ -304,7 +304,7 @@ export function AdminSettings() {
                                         )}
                                     </div>
                                     <div className={`text-xs mt-2 ${isLight ? 'text-gray-500' : 'text-gray-500'}`}>
-                                        {t('admin.settings.labels.defaultValue')}{JSON.stringify(setting.default_value)}
+                                        {t('admin.settings.labels.defaultValue', 'Default: ')}{JSON.stringify(setting.default_value)}
                                     </div>
                                 </div>
 
@@ -312,6 +312,7 @@ export function AdminSettings() {
                                     <button
                                         onClick={() => handleSave(setting)}
                                         disabled={!hasChanged || isSaving}
+                                        aria-label={t('admin.settings.actions.save', 'Save')}
                                         className={`px-4 py-2 rounded-lg flex items-center gap-2 transition ${hasChanged && !isSaving
                                             ? 'bg-brand-violet text-white hover:bg-brand-violet/90'
                                             : 'bg-gray-200 text-gray-400 cursor-not-allowed'
@@ -322,11 +323,12 @@ export function AdminSettings() {
                                         ) : (
                                             <Save className="w-4 h-4" />
                                         )}
-                                        {t('admin.settings.actions.save')}
+                                        {t('admin.settings.actions.save', 'Save')}
                                     </button>
                                     <button
                                         onClick={() => handleReset(setting)}
                                         disabled={isSaving}
+                                        aria-label={t('admin.settings.actions.reset', 'Reset')}
                                         className={`p-2 rounded-lg transition ${isLight
                                             ? 'hover:bg-gray-100 text-gray-600'
                                             : 'hover:bg-white/5 text-gray-400'
@@ -344,7 +346,7 @@ export function AdminSettings() {
             {filteredSettings && filteredSettings.length === 0 && (
                 <div className={`text-center py-12 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
                     <Settings className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                    <p>{t('admin.settings.messages.noSettings')}</p>
+                    <p>{t('admin.settings.messages.noSettings', 'No settings found in this category.')}</p>
                 </div>
             )}
         </AdminLayout>

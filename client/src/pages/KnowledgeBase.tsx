@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 import {
     Brain,
     Search,
@@ -72,6 +73,7 @@ interface IndustryDetail {
 export function KnowledgeBase() {
     const navigate = useNavigate();
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const isLight = theme === 'light';
     const [overview, setOverview] = useState<KnowledgeBaseOverview | null>(null);
     const [loading, setLoading] = useState(true);
@@ -241,7 +243,7 @@ export function KnowledgeBase() {
     if (loading) {
         return (
             <div className={`min-h-screen flex items-center justify-center ${isLight ? 'bg-gray-50' : 'bg-surface-900'}`}>
-                <div className={`text-xl ${isLight ? 'text-gray-900' : 'text-white'}`}>Loading Knowledge Base...</div>
+                <div className={`text-xl ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('common.loading', 'Loading Knowledge Base...')}</div>
             </div>
         );
     }
@@ -257,8 +259,8 @@ export function KnowledgeBase() {
                             <Brain className="w-6 h-6 text-white" />
                         </div>
                         <div>
-                            <h1 className={`text-xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>AI Knowledge Base</h1>
-                            <p className={`text-xs ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Industry Use Case Library</p>
+                            <h1 className={`text-xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.knowledgeBase.title', 'AI Knowledge Base')}</h1>
+                            <p className={`text-xs ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.aiKnowledgeBaseDesc', 'Industry Use Case Library')}</p>
                         </div>
                     </div>
                     <div className="flex items-center gap-4">
@@ -269,7 +271,7 @@ export function KnowledgeBase() {
                                 className="gap-2 hidden md:flex border-purple-500/50 text-purple-400 hover:bg-purple-500/10"
                             >
                                 <Globe className="w-4 h-4" />
-                                Research Use Cases
+                                {t('admin.knowledgeBase.researchUseCases', 'Research Use Cases')}
                             </Button>
                         )}
                     </div>
@@ -286,8 +288,8 @@ export function KnowledgeBase() {
                                     <Globe className="w-5 h-5 text-blue-400" />
                                 </div>
                                 <div>
-                                    <h2 className={`text-xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>Public Research Refresh</h2>
-                                    <p className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Discover trending use cases from the web</p>
+                                    <h2 className={`text-xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.knowledgeBase.publicResearchRefresh', 'Public Research Refresh')}</h2>
+                                    <p className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.discoverTrendingDesc', 'Discover trending use cases from the web')}</p>
                                 </div>
                             </div>
                             <button onClick={() => setShowResearchModal(false)} className={`${isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'}`}>
@@ -299,7 +301,7 @@ export function KnowledgeBase() {
                             {!researchResults.length && !researchLoading ? (
                                 <div className="space-y-6">
                                     <div>
-                                        <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>Research Provider</label>
+                                        <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>{t('admin.knowledgeBase.researchProvider', 'Research Provider')}</label>
                                         <div className="grid grid-cols-2 gap-4">
                                             <button
                                                 onClick={() => setResearchProvider('perplexity')}
@@ -335,7 +337,7 @@ export function KnowledgeBase() {
                                     </div>
 
                                     <div className={`rounded-lg p-4 border ${isLight ? 'bg-gray-50 border-gray-200' : 'bg-surface-700/50 border-white/5'}`}>
-                                        <h4 className={`text-sm font-medium mb-2 ${isLight ? 'text-gray-900' : 'text-white'}`}>Scope</h4>
+                                        <h4 className={`text-sm font-medium mb-2 ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.knowledgeBase.scope', 'Scope')}</h4>
                                         <p className={`text-sm ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
                                             {selectedIndustry
                                                 ? `Searching for trending AI use cases in ${selectedIndustry.name}...`
@@ -347,12 +349,12 @@ export function KnowledgeBase() {
                                         {researchLoading ? (
                                             <>
                                                 <RefreshCw className="w-5 h-5 animate-spin mr-2" />
-                                                Researching...
+                                                {t('admin.knowledgeBase.processing', 'Researching...')}
                                             </>
                                         ) : (
                                             <>
                                                 <Globe className="w-5 h-5 mr-2" />
-                                                Start Discovery
+                                                {t('admin.knowledgeBase.startDiscovery', 'Start Discovery')}
                                             </>
                                         )}
                                     </Button>
@@ -422,7 +424,7 @@ export function KnowledgeBase() {
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                             <input
                                 type="text"
-                                placeholder="Search AI use cases (e.g., 'fraud detection', 'chatbot', 'predictive maintenance')"
+                                placeholder={t('admin.knowledgeBase.searchPlaceholder', "Search AI use cases across all industries...")}
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
                                 onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
@@ -430,7 +432,7 @@ export function KnowledgeBase() {
                             />
                         </div>
                         <Button onClick={handleSearch} disabled={searching || searchQuery.length < 2}>
-                            {searching ? 'Searching...' : 'Search'}
+                            {searching ? t('common.searching', 'Searching...') : t('common.search', 'Search')}
                         </Button>
                     </div>
 
@@ -439,7 +441,7 @@ export function KnowledgeBase() {
                         <div className="mt-6">
                             <div className="flex items-center justify-between mb-4">
                                 <h3 className={`text-lg font-semibold ${isLight ? 'text-gray-900' : 'text-white'}`}>
-                                    Search Results ({searchResults.length})
+                                    {t('common.searchResults', 'Search Results')} ({searchResults.length})
                                 </h3>
                                 <button
                                     onClick={() => { setSearchResults([]); setSearchQuery(''); }}
@@ -496,7 +498,7 @@ export function KnowledgeBase() {
                                     </div>
                                 </div>
                                 <div className={`text-3xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{overview.total_industries}</div>
-                                <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Industries</div>
+                                <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.industries', 'Industries')}</div>
                             </div>
                             <div className={`rounded-xl p-6 border ${isLight ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/10'}`}>
                                 <div className="flex items-center gap-3 mb-3">
@@ -505,7 +507,7 @@ export function KnowledgeBase() {
                                     </div>
                                 </div>
                                 <div className={`text-3xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{overview.total_use_cases}</div>
-                                <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Use Case Templates</div>
+                                <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.useCases', 'Use Cases')}</div>
                             </div>
                             <div className={`rounded-xl p-6 border ${isLight ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/10'}`}>
                                 <div className="flex items-center gap-3 mb-3">
@@ -514,7 +516,7 @@ export function KnowledgeBase() {
                                     </div>
                                 </div>
                                 <div className={`text-3xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{overview.total_categories}</div>
-                                <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Categories</div>
+                                <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.categories', 'Categories')}</div>
                             </div>
                             <div className={`rounded-xl p-6 border ${isLight ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/10'}`}>
                                 <div className="flex items-center gap-3 mb-3">
@@ -523,12 +525,12 @@ export function KnowledgeBase() {
                                     </div>
                                 </div>
                                 <div className={`text-3xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{overview.total_technologies}</div>
-                                <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Technologies</div>
+                                <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.technologies', 'Technologies')}</div>
                             </div>
                         </div>
 
                         {/* Industries Grid */}
-                        <h2 className={`text-2xl font-bold mb-6 ${isLight ? 'text-gray-900' : 'text-white'}`}>Browse by Industry</h2>
+                        <h2 className={`text-2xl font-bold mb-6 ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.knowledgeBase.browseByIndustry', 'Browse by Industry')}</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {overview.industries.map((industry) => (
                                 <button
@@ -543,7 +545,7 @@ export function KnowledgeBase() {
                                         <ChevronRight className="w-5 h-5 text-gray-500 group-hover:text-purple-400 transition" />
                                     </div>
                                     <h3 className={`text-lg font-semibold mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>{industry.name}</h3>
-                                    <p className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{industry.use_case_count} use case templates</p>
+                                    <p className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.showingKeyAIUseCases', 'Showing Key AI usecases')}</p>
                                 </button>
                             ))}
                         </div>
@@ -558,7 +560,7 @@ export function KnowledgeBase() {
                             className={`flex items-center gap-2 mb-6 ${isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'}`}
                         >
                             <ArrowLeft className="w-4 h-4" />
-                            Back to Industries
+                            {t('admin.knowledgeBase.backToIndustries', 'Back to Industries')}
                         </button>
 
                         <div className="flex items-center gap-4 mb-8">
@@ -567,7 +569,7 @@ export function KnowledgeBase() {
                             </div>
                             <div>
                                 <h2 className={`text-2xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{selectedIndustry.name}</h2>
-                                <p className={isLight ? 'text-gray-500' : 'text-gray-400'}>{selectedIndustry.use_cases.length} use case templates</p>
+                                <p className={isLight ? 'text-gray-500' : 'text-gray-400'}>{t('admin.knowledgeBase.showingKeyAIUseCases', 'Showing Key AI usecases')}</p>
                             </div>
                         </div>
 
@@ -620,7 +622,7 @@ export function KnowledgeBase() {
                             className={`flex items-center gap-2 mb-6 ${isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'}`}
                         >
                             <ArrowLeft className="w-4 h-4" />
-                            Back to {selectedIndustry?.name}
+                            {t('admin.knowledgeBase.backTo', { name: selectedIndustry?.name || 'Industry' })}
                         </button>
 
                         <div className={`rounded-xl p-8 border ${isLight ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/10'}`}>
@@ -629,14 +631,14 @@ export function KnowledgeBase() {
                                     <div className="flex items-center gap-3 mb-2">
                                         <h2 className={`text-2xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{selectedUseCase.title}</h2>
                                         <span className={`text-sm px-3 py-1 rounded ${getComplexityColor(selectedUseCase.complexity)}`}>
-                                            {selectedUseCase.complexity} Complexity
+                                            {selectedUseCase.complexity} {t('admin.knowledgeBase.complexity', 'Complexity')}
                                         </span>
                                     </div>
                                     <p className={isLight ? 'text-gray-600' : 'text-gray-400'}>{selectedUseCase.category}</p>
                                 </div>
                                 <div className="text-right">
                                     <div className="text-2xl font-bold text-green-400">{selectedUseCase.typical_roi}</div>
-                                    <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Typical ROI</div>
+                                    <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.typicalRoi', 'Typical ROI')}</div>
                                 </div>
                             </div>
 
@@ -644,17 +646,17 @@ export function KnowledgeBase() {
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                                 <div className={`rounded-lg p-4 ${isLight ? 'bg-gray-50' : 'bg-surface-700'}`}>
-                                    <h4 className={`text-sm font-medium mb-2 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Data Requirements</h4>
+                                    <h4 className={`text-sm font-medium mb-2 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.dataRequirements', 'Data Requirements')}</h4>
                                     <p className={isLight ? 'text-gray-900' : 'text-white'}>{selectedUseCase.data_requirements}</p>
                                 </div>
                                 <div className={`rounded-lg p-4 ${isLight ? 'bg-gray-50' : 'bg-surface-700'}`}>
-                                    <h4 className={`text-sm font-medium mb-2 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Implementation Time</h4>
+                                    <h4 className={`text-sm font-medium mb-2 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.implementationTime', 'Implementation Time')}</h4>
                                     <p className={isLight ? 'text-gray-900' : 'text-white'}>{selectedUseCase.implementation_time}</p>
                                 </div>
                             </div>
 
                             <div className="mb-8">
-                                <h4 className={`text-sm font-medium mb-3 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Technologies</h4>
+                                <h4 className={`text-sm font-medium mb-3 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.technologies', 'Technologies')}</h4>
                                 <div className="flex flex-wrap gap-2">
                                     {selectedUseCase.technologies.map((tech) => (
                                         <span key={tech} className="px-3 py-1.5 bg-purple-500/10 text-purple-400 rounded-lg text-sm">
@@ -665,7 +667,7 @@ export function KnowledgeBase() {
                             </div>
 
                             <div>
-                                <h4 className={`text-sm font-medium mb-3 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Key Performance Indicators</h4>
+                                <h4 className={`text-sm font-medium mb-3 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.kpis', 'Key Performance Indicators')}</h4>
                                 <div className="flex flex-wrap gap-2">
                                     {selectedUseCase.kpis.map((kpi) => (
                                         <span key={kpi} className="px-3 py-1.5 bg-green-500/10 text-green-400 rounded-lg text-sm">

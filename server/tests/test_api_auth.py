@@ -14,7 +14,8 @@ class TestAuthAPI:
         response = await client.post("/api/auth/signup", json=sample_user_data)
         assert response.status_code in [200, 201]
         data = response.json()
-        assert "access_token" in data or "user" in data
+        assert "email" in data
+        assert data["email"] == sample_user_data["email"]
     
     async def test_signup_duplicate_email(self, client: AsyncClient, sample_user_data: dict):
         """Test registration with duplicate email fails"""
@@ -30,10 +31,10 @@ class TestAuthAPI:
         await client.post("/api/auth/signup", json=sample_user_data)
         # Login
         login_data = {
-            "email": sample_user_data["email"],
+            "username": sample_user_data["email"],
             "password": sample_user_data["password"]
         }
-        response = await client.post("/api/auth/login", json=login_data)
+        response = await client.post("/api/auth/login", data=login_data)
         assert response.status_code == 200
         data = response.json()
         assert "access_token" in data
@@ -41,10 +42,10 @@ class TestAuthAPI:
     async def test_login_invalid_credentials(self, client: AsyncClient):
         """Test login with invalid credentials fails"""
         login_data = {
-            "email": "nonexistent@example.com",
+            "username": "nonexistent@example.com",
             "password": "wrongpassword"
         }
-        response = await client.post("/api/auth/login", json=login_data)
+        response = await client.post("/api/auth/login", data=login_data)
         assert response.status_code in [401, 404]
     
     async def test_login_missing_fields(self, client: AsyncClient):
