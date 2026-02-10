@@ -556,6 +556,18 @@
             "AI"
           ],
           "kpis": []
+        },
+        {
+          "id": "it-02091e",
+          "title": "AI-Driven IT Operations and Automation",
+          "description": "AI systems proactively optimize entire IT networks, automate routine operations, and handle complex problem-solving beyond simple ticket routing. This includes predictive maintenance and resource allocation to reduce downtime and improve efficiency. High-value for IT teams seeking scalable automation without extensive manual intervention.",
+          "category": "Agentic AI",
+          "complexity": "Medium",
+          "data_requirements": "To be defined",
+          "typical_roi": "30-50% reduction in IT operational costs",
+          "implementation_time": "3-6 months",
+          "technologies": [],
+          "kpis": []
         }
       ]
     },
