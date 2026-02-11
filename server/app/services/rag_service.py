@@ -306,7 +306,10 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
         }
 
     async def estimate_roi(self, use_case_title: str, use_case_desc: str, industry: str = None) -> Dict[str, Any]:
-        """AI-powered ROI parameter estimation."""
+        """
+        AI-powered Robust ROI parameter estimation.
+        Performs multi-step reasoning to identify cost drivers and benefit levers.
+        """
         if self.mock_mode:
             return {
                 "estimates": {
@@ -314,105 +317,190 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
                     "infrastructure": {"low": 500, "mid": 2000, "high": 5000, "confidence": 0.7},
                     "time_savings": {"low": 10, "mid": 30, "high": 60, "confidence": 0.6}
                 },
+                "cost_drivers": ["API Token Costs", "Cloud Computer", "Data Storage"],
+                "benefit_levers": ["Labor Efficiency", "Error Reduction"],
+                "assumptions": ["3 engineers for 3 months", "20% initial adoption rate"],
                 "benchmarks": [{"source": "Industry Report", "metric": "Avg ROI", "value": "250%"}],
                 "is_mock": True
             }
 
         from langchain.prompts import ChatPromptTemplate
-        prompt = ChatPromptTemplate.from_template("""
-        As an AI Business Analyst, estimate ROI parameters for this use case:
+        
+        # Step 1: Analyze Cost Drivers & Benefit Levers
+        analysis_prompt = ChatPromptTemplate.from_template("""
+        Analyze the financial implications of this AI Use Case:
         Title: {title}
         Description: {description}
         Industry: {industry}
-
-        Estimate cost and benefit ranges (low, mid, high) and confidence levels (0-1).
-        Include: implementation cost, monthly infrastructure cost, and weekly time savings (hours).
-
-        Return JSON only:
-        {{
-            "estimates": {{
-                "implementation": {{"low": 0, "mid": 0, "high": 0, "confidence": 0.0}},
-                "infrastructure": {{"low": 0, "mid": 0, "high": 0, "confidence": 0.0}},
-                "time_savings": {{"low": 0, "mid": 0, "high": 0, "confidence": 0.0}}
-            }},
-            "benchmarks": [{{ "source": "...", "metric": "...", "value": "..." }}]
-        }}
+        
+        Identify:
+        1. 3 Major Cost Drivers (e.g., API costs, GPU compute, Integration labor)
+        2. 3 Major Benefit Levers (e.g., FTE savings, Revenue uplift, Error reduction)
+        3. Key Assumptions needed for estimation
+        
+        Return JSON: {{ "cost_drivers": [], "benefit_levers": [], "assumptions": [] }}
         """)
-
-        chain = prompt | self.llm
-        response = await chain.ainvoke({
+        
+        chain1 = analysis_prompt | self.llm
+        analysis_res = await chain1.ainvoke({
             "title": use_case_title,
             "description": use_case_desc,
             "industry": industry or "General"
         })
         
+        try:
+            # Clean up potential markdown code blocks
+            content = analysis_res.content
+            if "```json" in content:
+                content = content.split("```json")[1].split("```")[0].strip()
+            elif "```" in content:
+                content = content.split("```")[1].split("```")[0].strip()
+            
+            analysis_data = json.loads(content)
+        except:
+            analysis_data = {"cost_drivers": [], "benefit_levers": [], "assumptions": []}
+
+        # Step 2: quantitative Estimation
+        est_prompt = ChatPromptTemplate.from_template("""
+        Based on these drivers, estimate financial ranges (Low, Mid, High) for a pilot implementation.
+        
+        Use Case: {title}
+        Cost Drivers: {drivers}
+        Benefit Levers: {levers}
+        Assumptions: {assumptions}
+        
+        Estimate:
+        1. One-time Implementation Cost ($)
+        2. Monthly Operational/Infrastructure Cost ($)
+        3. Annual Financial Value Generated ($)
+        
+        Return JSON:
+        {{
+            "implementation_cost": {{"low": 0, "mid": 0, "high": 0, "confidence": 0.0}},
+            "monthly_run_cost": {{"low": 0, "mid": 0, "high": 0, "confidence": 0.0}},
+            "annual_value": {{"low": 0, "mid": 0, "high": 0, "confidence": 0.0}}
+        }}
+        """)
+
+        chain2 = est_prompt | self.llm
+        est_res = await chain2.ainvoke({
+            "title": use_case_title,
+            "drivers": ", ".join(analysis_data.get("cost_drivers", [])),
+            "levers": ", ".join(analysis_data.get("benefit_levers", [])),
+            "assumptions": ", ".join(analysis_data.get("assumptions", []))
+        })
+        
         # Track Usage
-        usage = get_usage_from_response(response)
+        usage = get_usage_from_response(est_res)
         await track_llm_usage(
-            feature="roi",
+            feature="roi_robust",
             model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
             prompt_tokens=usage["prompt"],
             completion_tokens=usage["completion"]
         )
         
         try:
-            res = json.loads(response.content)
-            res["is_mock"] = False
-            return res
+            content = est_res.content
+            if "```json" in content:
+                content = content.split("```json")[1].split("```")[0].strip()
+            elif "```" in content:
+                content = content.split("```")[1].split("```")[0].strip()
+                
+            estimates = json.loads(content)
+            
+            # Combine results
+            return {
+                "estimates": {
+                    "implementation": estimates.get("implementation_cost"),
+                    "infrastructure": estimates.get("monthly_run_cost"),
+                    "value": estimates.get("annual_value")
+                },
+                "cost_drivers": analysis_data.get("cost_drivers"),
+                "benefit_levers": analysis_data.get("benefit_levers"),
+                "assumptions": analysis_data.get("assumptions"),
+                "is_mock": False
+            }
         except:
-            return {"error": "Failed to parse estimate"}
+            return {"error": "Failed to parse estimate", "is_mock": False}
 
     async def generate_business_case(self, use_case_data: Dict, roi_results: Dict) -> Dict[str, Any]:
-        """Generates a full business case narrative."""
+        """Generates a comprehensive, professional Business Case narrative."""
         if self.mock_mode:
             return {
                 "executive_summary": "This project aims to automate core processes using AI...",
                 "problem_statement": use_case_data.get("description", ""),
                 "proposed_solution": use_case_data.get("proposed_solution", "Implement a RAG-based AI system."),
-                "financial_overview": f"Expected ROI: {roi_results.get('roi_percent')}% with a payback of {roi_results.get('payback_months')} months.",
-                "risks": "Data privacy, model accuracy, and adoption speed.",
+                "financial_overview": f"Expected ROI: {roi_results.get('roi_percent', 0)}% with a payback period.",
+                "strategic_alignment": "Aligns with digital transformation goals.",
+                "risks_and_mitigation": "Data privacy risks mitigated by local processing.",
+                "recommendation": "Proceed with pilot.",
                 "is_mock": True
             }
 
         from langchain.prompts import ChatPromptTemplate
+        
+        # Prepare financial context
+        estimates = roi_results.get("estimates", {})
+        impl_cost = estimates.get("implementation", {}).get("mid", "N/A")
+        annual_val = estimates.get("value", {}).get("mid", "N/A")
+        run_cost = estimates.get("infrastructure", {}).get("mid", "N/A")
+        
         prompt = ChatPromptTemplate.from_template("""
-        Write a professional Business Case for:
-        Use Case: {title}
-        Description: {description}
+        Write a formal Business Case Document for this AI initiative.
+        
+        Project: {title}
+        Problem: {description}
         Solution: {solution}
-        ROI: {roi}%
-        Payback: {payback} months
-        NPV: ${npv}
-
-        Sections: Executive Summary, Problem Statement, Proposed Solution, Financial Analysis, Risk Assessment.
-        Return JSON with these keys.
+        
+        Financials (Estimated):
+        - Implementation Cost: ${impl_cost}
+        - Annual Value: ${annual_val}
+        - Monthly Run Cost: ${run_cost}
+        - Drivers: {drivers}
+        
+        Structure the output as a JSON object with these sections (text content):
+        1. "executive_summary": High-level overview and recommendation (2-3 sentences).
+        2. "problem_statement": Clear articulation of the pain point and why it matters.
+        3. "strategic_alignment": How this supports broader business goals (Innovation, Efficiency).
+        4. "financial_analysis": Narrative explaining the costs vs benefits and expected ROI.
+        5. "risks_and_mitigation": Top 3 risks and how to handle them.
+        6. "recommendation": Clear Go/No-Go recommendation and next steps.
+        
+        Ensure a professional, persuasive tone suitable for a CIO/CFO.
         """)
 
         chain = prompt | self.llm
         response = await chain.ainvoke({
             "title": use_case_data.get("title"),
             "description": use_case_data.get("description"),
-            "solution": use_case_data.get("proposed_solution"),
-            "roi": roi_results.get("roi_percent"),
-            "payback": roi_results.get("payback_months"),
-            "npv": roi_results.get("npv")
+            "solution": use_case_data.get("proposed_solution", "AI-based automation"),
+            "impl_cost": impl_cost,
+            "annual_val": annual_val,
+            "run_cost": run_cost,
+            "drivers": ", ".join(roi_results.get("benefit_levers", []))
         })
         
         # Track Usage
         usage = get_usage_from_response(response)
         await track_llm_usage(
-            feature="business_case",
+            feature="business_case_full",
             model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
             prompt_tokens=usage["prompt"],
             completion_tokens=usage["completion"]
         )
         
         try:
-            res = json.loads(response.content)
+            content = response.content
+            if "```json" in content:
+                content = content.split("```json")[1].split("```")[0].strip()
+            elif "```" in content:
+                content = content.split("```")[1].split("```")[0].strip()
+                
+            res = json.loads(content)
             res["is_mock"] = False
             return res
         except:
-            return {"error": "Failed to generate business case"}
+            return {"error": "Failed to generate business case", "is_mock": False}
 
     async def generate_executive_presentation(self, top_use_cases: List[Dict]) -> Dict[str, Any]:
         """Generates a summary presentation or narrative for executives."""

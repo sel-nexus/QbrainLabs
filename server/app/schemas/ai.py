@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, List
 
 class EnhanceRequest(BaseModel):
     text: str
@@ -42,9 +42,9 @@ class BusinessValueRequest(BaseModel):
 
 class BusinessValueResponse(BaseModel):
     enhanced_kpi: str
-    specific_metrics: list[str]
-    roi_indicators: list[str]
-    benchmarks: list[Dict[str, str]]
+    specific_metrics: List[str]
+    roi_indicators: List[str]
+    benchmarks: List[Dict[str, str]]
     business_impact: str
     confidence_score: float
     is_mock: bool = False
@@ -61,8 +61,35 @@ class TechnicalAnalysisRequest(BaseModel):
 
 class TechnicalAnalysisResponse(BaseModel):
     architecture_overview: str
-    recommended_stack: list[TechStackComponent]
-    implementation_steps: list[str]
-    technical_risks: list[str]
+    recommended_stack: List[TechStackComponent]
+    implementation_steps: List[str]
+    technical_risks: List[str]
     complexity_score: int  # 1-10
+    is_mock: bool = False
+
+class ROIRequest(BaseModel):
+    title: str
+    description: str
+    industry: Optional[str] = "General"
+
+class ROIResponse(BaseModel):
+    estimates: Dict[str, Any]
+    cost_drivers: List[str]
+    benefit_levers: List[str]
+    assumptions: List[str]
+    is_mock: bool = False
+
+class BusinessCaseRequest(BaseModel):
+    title: str
+    description: str
+    proposed_solution: str
+    roi_results: Dict[str, Any]
+
+class BusinessCaseResponse(BaseModel):
+    executive_summary: str
+    problem_statement: str
+    strategic_alignment: str
+    financial_analysis: str
+    risks_and_mitigation: str
+    recommendation: str
     is_mock: bool = False

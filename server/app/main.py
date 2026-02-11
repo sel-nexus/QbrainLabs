@@ -97,6 +97,12 @@ else:
 # Mount Socket.IO
 app.mount("/ws", socket_app)
 
+# Mount Static Files for Reports
+from fastapi.staticfiles import StaticFiles
+import os
+os.makedirs("static/reports", exist_ok=True)
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 from app.api import workshops, participants, usecases, votes, results
 
 # ... (existing code)
@@ -146,3 +152,4 @@ app.include_router(notifications.router, tags=["notifications"])
 @app.get("/")
 def read_root():
     return {"message": "Qbrain AI Labs API is running"}
+

@@ -400,6 +400,30 @@ Create a compelling narrative suitable for a 2-3 minute executive presentation, 
     
     def __init__(self, db: AsyncSession):
         self.db = db
+        self.api_key = settings.OPENAI_API_KEY
+        self.mock_mode = settings.AI_MOCK_MODE or not self.api_key
+        self.llm = None
+        
+        if not self.mock_mode:
+            self._initialize_ai_components()
+        else:
+            print("ChallengeStepService running in MOCK MODE (No API Key found)")
+            
+    def _initialize_ai_components(self):
+        """Initialize LangChain/OpenAI components."""
+        try:
+            from langchain_openai import ChatOpenAI
+            self.llm = ChatOpenAI(
+                temperature=0.3, # low temp for summarization
+                model=settings.OPENAI_MODEL,
+                api_key=self.api_key
+            )
+        except ImportError:
+            print("LangChain dependencies missing. Reverting to Mock Mode.")
+            self.mock_mode = True
+        except Exception as e:
+            print(f"Failed to init AI components: {e}")
+            self.mock_mode = True
     
     def get_step_name(self, step_number: int) -> str:
         """Get the name of a step"""
@@ -427,15 +451,10 @@ Create a compelling narrative suitable for a 2-3 minute executive presentation, 
         
         # Add workshop context if requested
         if include_workshop_context:
-            # Fetch workshop and related data
-            # This would include use cases, participant data, etc.
-            # For now, we'll add a placeholder note
             context["workshop_context"] = "\n\n**Note:** Workshop context and use case data can be included here."
         
         # Add previous steps context if requested
         if include_previous_steps:
-            # Include context from previous steps
-            # For now, we'll add a placeholder note
             context["previous_steps_context"] = "\n\n**Note:** Context from previous steps can be included here."
         
         # Generate prompt using template
@@ -447,17 +466,46 @@ Create a compelling narrative suitable for a 2-3 minute executive presentation, 
         self,
         challenge_card: ChallengeCard,
         step_number: int,
-        include_workshop_context: bool = False,
-        include_previous_steps: bool = False,
+        step_content: Optional[Dict[str, Any]] = None,
         format: str = "markdown"
     ) -> str:
-        """Generate a one-slide summary for a specific step"""
+        """Generate a one-slide summary for a specific step based on content."""
         step_def = self.STEP_DEFINITIONS.get(step_number)
         if not step_def:
             raise ValueError(f"Invalid step number: {step_number}")
         
-        # Prepare context (this would be populated with actual data)
-        # For now, we'll use placeholder values
+        if self.mock_mode or not step_content:
+            return self._generate_mock_step_summary(challenge_card, step_number, step_def)
+            
+        # Use AI to generate summary
+        try:
+            from langchain.schema import HumanMessage
+            
+            prompt = f"""
+            Synthesize the following output from the '{step_def['name']}' step of an AI challenge workshop into a concise, executive-level summary slide.
+            
+            Challenge: {challenge_card.title}
+            Step Description: {step_def['description']}
+            
+            Key Content Generated:
+            {json.dumps(step_content, indent=2)}
+            
+            Format the output using this Markdown template structure:
+            {step_def['summary_template']}
+            
+            Fill in the placeholders with synthesized insights derived from the content. Keep bullet points punchy.
+            """
+            
+            response = await self.llm.ainvoke([HumanMessage(content=prompt)])
+            return response.content
+            
+        except Exception as e:
+            print(f"AI Step Summary generation failed: {e}")
+            return self._generate_mock_step_summary(challenge_card, step_number, step_def)
+
+    def _generate_mock_step_summary(self, challenge_card, step_number, step_def) -> str:
+        """Generate mock summary."""
+        # Prepare context with placeholder values
         context = {
             "title": challenge_card.title,
             "personas_summary": "Key personas identified during the Widen phase",
@@ -497,6 +545,4 @@ Create a compelling narrative suitable for a 2-3 minute executive presentation, 
         }
         
         # Generate summary using template
-        summary = step_def["summary_template"].format(**context)
-        
-        return summary
+        return step_def["summary_template"].format(**context)

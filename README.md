@@ -33,6 +33,7 @@ Qbrain AI Labs allows real-time facilitation of "Hotspot" prioritization worksho
 
 ## ✨ Key Features
 
+### Core Platform
 - **Facilitator Authentication**: Secure login/signup system for facilitators with JWT-based authentication.
 - **Enterprise Admin Panel**: System-wide dashboard for administrators with:
   - **User & Workshop Management**: System stats, user deactivation, and workshop oversight.
@@ -42,17 +43,46 @@ Qbrain AI Labs allows real-time facilitation of "Hotspot" prioritization worksho
 - **Distributed Caching & Rate Limiting**: Redis-powered protection and performance.
 - **Request ID Tracking**: Full observability for every API request.
 - **Real-Time Collaboration**: Powered by WebSockets (Socket.io), ensure instant updates for all participants.
+
+### Workshop Features
 - **Interactive Workshops**:
   - **Three-Phase Flow**: Intake, Scoring, and Analysis.
-  - **Live Polls**: Conduct real-time polls to gauge audience sentiment instantly.
-  - **Q&A**: Integrated question and answer flow.
+  - **Live Polls**: 6 poll types (Multiple Choice, Select, Rating, Yes/No, Open Text, Ranking).
+  - **Q&A**: Integrated question and answer flow with moderation.
+  - **Reactions**: 8 reaction types for real-time engagement.
+  - **Pulse Checks**: Quick feedback collection (Understanding, Pace, Energy, Confidence).
+  - **Word Clouds**: Real-time visualization of text responses.
+- **Breakout Rooms**: Team collaboration spaces with parallel sessions and collaborative canvas.
+- **Survey Management**: Full survey builder with 12 industry-specific templates and 6 question types.
+
+### AI-Powered Features
+- **AI Copilot Assistant**: Real-time facilitation suggestions, anomaly detection, and discussion prompts.
+- **AI Knowledge Base**: 250+ use case templates across 10 industries with fuzzy search.
+- **AI Roadmap Generator**: Timeline generation, Gantt charts, resource planning, and milestone tracking.
+- **Executive Summaries**: AI-generated reports available in PDF and HTML.
+
+### Analytics & Reporting
 - **Advanced Analytics & Reporting**:
   - **Heatmaps**: Visual voting patterns and participant agreement analysis.
-  - **Executive Summaries**: AI-generated reports available in PDF and HTML.
   - **Consensus Metrics**: Identify areas of alignment and divergence.
+  - **Cross-Workshop Comparisons**: Trend analysis and benchmarking.
   - **Data Export**: Full CSV export for offline analysis.
-- **Knowledge Base**: Integrated documentation and guides for users.
-- **Marketplace**: Browse and adopt industry-standard prioritization templates.
+- **ROI Calculator**: Comprehensive financial analysis with:
+  - **Scenario Modeling**: Conservative, Expected, and Optimistic scenarios.
+  - **Sensitivity Analysis**: Tornado diagrams and impact ranking.
+  - **Industry Benchmarks**: Performance percentile calculation.
+  - **Business Case Generator**: AI-powered document generation with multi-format export.
+
+### Engagement & Gamification
+- **Gamification System**: 
+  - **Points**: Earn points for submissions, votes, and quality contributions.
+  - **Badges**: Unlock achievements with rarity system (common to legendary).
+  - **Leaderboards**: Real-time rankings with WebSocket updates.
+  - **Animations**: Floating point effects and achievement notifications.
+
+### Additional Features
+- **Workshop Templates**: Template marketplace with publishing, discovery, reviews, and ratings.
+- **Multi-Language Support**: i18n with English, Spanish, French, and German.
 - **Mobile-First Participant UI**: Optimized for phone intake and voting with **QR Code Access**.
 
 ---

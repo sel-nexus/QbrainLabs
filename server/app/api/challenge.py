@@ -293,6 +293,7 @@ async def generate_step_summary(
         step_number=step_number,
         include_workshop_context=request_data.include_workshop_context,
         include_previous_steps=request_data.include_previous_steps,
+        step_content=request_data.step_content,
         format=request_data.format or "markdown"
     )
     

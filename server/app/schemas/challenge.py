@@ -74,6 +74,7 @@ class StepGenerationRequest(BaseModel):
     include_workshop_context: bool = Field(default=False)
     include_previous_steps: bool = Field(default=False)
     format: Optional[str] = Field(default="markdown", pattern="^(markdown|text|pdf)$")
+    step_content: Optional[str] = Field(None, description="Content generated in the step to be summarized")
 
 
 class StepGenerationResponse(BaseModel):

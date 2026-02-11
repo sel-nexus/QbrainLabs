@@ -81,7 +81,7 @@ class CopilotService:
         if settings and settings.mode == CopilotMode.SILENT.value:
             return []
         
-        # Phase-specific suggestion logic
+        # 1. Rule-based Suggestions (Fast, deterministic)
         if phase == WorkshopPhase.INTAKE.value or phase == "INTAKE":
             suggestions.extend(await self._generate_intake_suggestions(
                 workshop, participants, use_cases, settings
@@ -95,6 +95,16 @@ class CopilotService:
                 workshop, use_cases, votes, settings
             ))
         
+        # 2. AI-generated Nuanced Suggestions (Slower, deeper)
+        if not self.mock_mode:
+            try:
+                ai_suggestions = await self._generate_ai_suggestions(
+                    workshop, participants, use_cases, votes, phase
+                )
+                suggestions.extend(ai_suggestions)
+            except Exception as e:
+                print(f"AI Suggestion generation failed: {e}")
+
         # Always check engagement across all phases
         if not settings or settings.engagement_alerts_enabled:
             engagement_suggestions = await self._check_engagement_status(
@@ -103,6 +113,70 @@ class CopilotService:
             suggestions.extend(engagement_suggestions)
         
         return suggestions
+
+    async def _generate_ai_suggestions(
+        self,
+        workshop: Workshop,
+        participants: List[Participant],
+        use_cases: List[UseCase],
+        votes: List[Vote],
+        phase: str
+    ) -> List[Dict[str, Any]]:
+        """Generate high-level facilitation advice using LLM."""
+        from langchain.schema import HumanMessage
+        
+        # Prepare context context
+        active_participant_count = len([p for p in participants if p.role == "PARTICIPANT"])
+        use_case_count = len(use_cases)
+        vote_count = len(votes)
+        
+        context_str = f"""
+        Workshop: {workshop.title}
+        Phase: {phase}
+        Participants: {active_participant_count}
+        Use Cases: {use_case_count}
+        Votes: {vote_count}
+        """
+        
+        if phase == "INTAKE":
+            context_str += f"\nRecent Use Cases: {[uc.title for uc in use_cases[-3:]]}"
+        elif phase == "SCORING":
+            # Add voting dynamics?
+            pass
+            
+        prompt = f"""
+        Act as an Expert Workshop Facilitator. Analyze the current workshop state and provide ONE high-value suggestion/intervention if needed.
+        State:
+        {context_str}
+        
+        If everything looks normal, return null.
+        If there's an opportunity to improve energy, clarity, or depth, return a JSON object:
+        {{
+            "type": "FACILITATION",
+            "message": "Brief, punchy advice for the facilitator",
+            "priority": "LOW|MEDIUM|HIGH",
+            "actions": [{{"label": "Button Label", "action": "action_id"}}]
+        }}
+        """
+        
+        response = await self.llm.ainvoke([HumanMessage(content=prompt)])
+        content = response.content
+        if "null" in content.lower() and len(content) < 10:
+            return []
+            
+        try:
+            if "```json" in content:
+                content = content.split("```json")[1].split("```")[0].strip()
+            elif "```" in content:
+                content = content.split("```")[1].split("```")[0].strip()
+            
+            suggestion = json.loads(content)
+            if suggestion:
+                return [suggestion]
+        except:
+            pass
+            
+        return []
     
     async def _generate_intake_suggestions(
         self,
@@ -497,9 +571,13 @@ class CopilotService:
         participants: List[Participant],
         votes: List[Vote]
     ) -> List[Dict[str, Any]]:
-        """Detect voting pattern anomalies."""
+        """
+        Detect voting pattern anomalies using AI-powered analysis.
+        Includes groupthink detection and bias pattern identification.
+        """
         anomalies = []
         
+        # Individual participant anomalies
         for participant in participants:
             if participant.role != "PARTICIPANT":
                 continue
@@ -546,46 +624,183 @@ class CopilotService:
                         "recommendation": f"'{participant.display_name}' is consistently voting {direction}. Consider discussing scoring criteria."
                     })
         
-        # Check for group-level anomalies
-        if votes:
-            all_vote_values = []
-            for vote in votes:
-                if vote.scores:
-                    all_vote_values.extend(vote.scores.values())
-            
-            if len(all_vote_values) >= 10:
-                std_dev = statistics.stdev(all_vote_values)
+        # AI-powered group-level anomaly detection
+        if not self.mock_mode and len(votes) >= 10:
+            group_anomalies = await self._detect_groupthink_and_bias(participants, votes)
+            anomalies.extend(group_anomalies)
+        else:
+            # Fallback: Basic statistical groupthink detection
+            if votes:
+                all_vote_values = []
+                for vote in votes:
+                    if vote.scores:
+                        all_vote_values.extend(vote.scores.values())
                 
-                # Very low variance (groupthink)
-                if std_dev < 1.0:
-                    anomalies.append({
-                        "type": AnomalyType.GROUP_GROUPTHINK.value,
-                        "severity": AnomalySeverity.WARNING.value,
-                        "details": {
-                            "std_dev": round(std_dev, 2),
-                            "vote_count": len(votes)
-                        },
-                        "recommendation": "Very low variance in voting (σ < 1.0). This may indicate groupthink. Consider anonymous voting or structured debate."
-                    })
+                if len(all_vote_values) >= 10:
+                    std_dev = statistics.stdev(all_vote_values)
+                    
+                    # Very low variance (groupthink)
+                    if std_dev < 1.0:
+                        anomalies.append({
+                            "type": AnomalyType.GROUP_GROUPTHINK.value,
+                            "severity": AnomalySeverity.WARNING.value,
+                            "details": {
+                                "std_dev": round(std_dev, 2),
+                                "vote_count": len(votes)
+                            },
+                            "recommendation": "Very low variance in voting (σ < 1.0). This may indicate groupthink. Consider anonymous voting or structured debate."
+                        })
         
         return anomalies
+    
+    async def _detect_groupthink_and_bias(
+        self,
+        participants: List[Participant],
+        votes: List[Vote]
+    ) -> List[Dict[str, Any]]:
+        """
+        Use AI to detect groupthink patterns and voting biases.
+        Analyzes voting patterns for unusual uniformity and systematic biases.
+        """
+        try:
+            from langchain.schema import HumanMessage
+            
+            # Prepare voting data for analysis
+            voting_patterns = []
+            for participant in participants:
+                if participant.role != "PARTICIPANT":
+                    continue
+                
+                p_votes = [v for v in votes if str(v.participant_id) == str(participant.id)]
+                if not p_votes:
+                    continue
+                
+                scores = []
+                for vote in p_votes:
+                    if vote.scores:
+                        scores.extend(vote.scores.values())
+                
+                if scores:
+                    voting_patterns.append({
+                        "participant_name": participant.display_name,
+                        "vote_count": len(p_votes),
+                        "avg_score": round(sum(scores) / len(scores), 2),
+                        "min_score": min(scores),
+                        "max_score": max(scores),
+                        "score_range": max(scores) - min(scores)
+                    })
+            
+            if len(voting_patterns) < 3:
+                return []
+            
+            # Calculate overall statistics
+            all_scores = []
+            for vote in votes:
+                if vote.scores:
+                    all_scores.extend(vote.scores.values())
+            
+            overall_std = statistics.stdev(all_scores) if len(all_scores) > 1 else 0
+            overall_avg = sum(all_scores) / len(all_scores) if all_scores else 0
+            
+            prompt = f"""Analyze these voting patterns for anomalies in a workshop prioritization session.
+
+Voting Patterns by Participant:
+{json.dumps(voting_patterns, indent=2)}
+
+Overall Statistics:
+- Total Votes: {len(votes)}
+- Overall Average Score: {overall_avg:.2f}
+- Standard Deviation: {overall_std:.2f}
+
+Identify potential issues:
+1. **Groupthink**: Unusually low variance suggesting participants are not thinking independently
+2. **Systematic Bias**: Participants consistently voting high or low regardless of content
+3. **Polarization**: Extreme disagreement patterns
+4. **Recency Bias**: If detectable from patterns
+
+For each anomaly found, return:
+- Type (groupthink, systematic_bias, polarization, etc.)
+- Severity (low, medium, high)
+- Explanation of the pattern
+- Specific evidence from the data
+- Actionable recommendation
+
+Return JSON array:
+[
+  {{
+    "type": "groupthink",
+    "severity": "medium",
+    "explanation": "All participants voting very similarly with minimal variance",
+    "evidence": "Standard deviation of 0.8 across all votes, all averages within 1 point",
+    "recommendation": "Encourage devil's advocate role or anonymous voting to surface disagreements"
+  }}
+]
+
+If no significant anomalies, return empty array []."""
+
+            response = await self.llm.ainvoke([HumanMessage(content=prompt)])
+            content = response.content
+            
+            # Clean JSON from markdown
+            if "```json" in content:
+                content = content.split("```json")[1].split("```")[0].strip()
+            elif "```" in content:
+                content = content.split("```")[1].split("```")[0].strip()
+            
+            # Handle empty response
+            if content.strip() == "[]" or "no" in content.lower()[:50]:
+                return []
+            
+            detected_anomalies = json.loads(content)
+            
+            # Convert to standard anomaly format
+            anomalies = []
+            severity_map = {"low": AnomalySeverity.INFO.value, "medium": AnomalySeverity.WARNING.value, "high": AnomalySeverity.HIGH.value}
+            
+            for anomaly in detected_anomalies:
+                anomalies.append({
+                    "type": anomaly.get("type", "voting_pattern"),
+                    "severity": severity_map.get(anomaly.get("severity", "medium"), AnomalySeverity.WARNING.value),
+                    "details": {
+                        "evidence": anomaly.get("evidence", ""),
+                        "overall_std": overall_std,
+                        "participant_count": len(voting_patterns)
+                    },
+                    "explanation": anomaly.get("explanation", ""),
+                    "recommendation": anomaly.get("recommendation", "")
+                })
+            
+            return anomalies
+            
+        except Exception as e:
+            print(f"Groupthink and bias detection failed: {e}")
+            return []
+
     
     async def _detect_content_anomalies(
         self,
         use_cases: List[UseCase]
     ) -> List[Dict[str, Any]]:
-        """Detect content-related anomalies."""
+        """
+        Detect content-related anomalies using AI-powered semantic analysis.
+        Includes semantic duplicate detection and quality assessment.
+        """
         anomalies = []
         
-        # Check for duplicates
-        duplicates = await self._check_duplicates(use_cases)
-        for dup in duplicates:
-            anomalies.append({
-                "type": AnomalyType.CONTENT_DUPLICATE.value,
-                "severity": AnomalySeverity.INFO.value,
-                "details": dup,
-                "recommendation": f"Consider merging '{dup['title1']}' with '{dup['title2']}' ({dup['similarity']}% similar)."
-            })
+        # AI-powered semantic duplicate detection
+        if not self.mock_mode and len(use_cases) >= 2:
+            semantic_duplicates = await self._detect_semantic_duplicates(use_cases)
+            anomalies.extend(semantic_duplicates)
+        else:
+            # Fallback to keyword-based duplicate detection
+            duplicates = await self._check_duplicates(use_cases)
+            for dup in duplicates:
+                anomalies.append({
+                    "type": AnomalyType.CONTENT_DUPLICATE.value,
+                    "severity": AnomalySeverity.INFO.value,
+                    "details": dup,
+                    "recommendation": f"Consider merging '{dup['title1']}' with '{dup['title2']}' ({dup['similarity']}% similar)."
+                })
         
         # Check for very short/low-quality submissions
         for uc in use_cases:
@@ -602,6 +817,101 @@ class CopilotService:
                 })
         
         return anomalies
+    
+    async def _detect_semantic_duplicates(
+        self,
+        use_cases: List[UseCase]
+    ) -> List[Dict[str, Any]]:
+        """
+        Use AI to detect semantically similar use cases that may be duplicates.
+        Returns anomalies with LLM-generated explanations.
+        """
+        if len(use_cases) < 2:
+            return []
+        
+        try:
+            from langchain.schema import HumanMessage
+            
+            # Prepare use case data for analysis
+            use_case_data = []
+            for uc in use_cases:
+                use_case_data.append({
+                    "id": str(uc.id),
+                    "title": uc.title,
+                    "description": uc.description[:300] if uc.description else "",
+                    "solution": uc.proposed_solution[:200] if hasattr(uc, 'proposed_solution') and uc.proposed_solution else ""
+                })
+            
+            prompt = f"""Analyze these AI use cases for semantic similarity and potential duplicates.
+
+Use Cases:
+{json.dumps(use_case_data, indent=2)}
+
+Identify pairs or groups of use cases that:
+1. Solve the same problem with similar approaches
+2. Target the same business outcome
+3. Use similar technology stacks
+4. Would likely be redundant if both were implemented
+
+For each duplicate/similar pair found, return:
+- The IDs of the similar use cases
+- Similarity score (0.0-1.0)
+- Explanation of why they're similar
+- Recommendation (merge, differentiate, or keep both)
+
+Return JSON array:
+[
+  {{
+    "use_case_ids": ["id1", "id2"],
+    "similarity_score": 0.85,
+    "explanation": "Both propose chatbot solutions for customer service using similar LLM technology",
+    "recommendation": "merge",
+    "rationale": "These use cases overlap significantly. Consider merging into one with broader scope."
+  }}
+]
+
+If no significant duplicates found, return empty array []."""
+
+            response = await self.llm.ainvoke([HumanMessage(content=prompt)])
+            content = response.content
+            
+            # Clean JSON from markdown
+            if "```json" in content:
+                content = content.split("```json")[1].split("```")[0].strip()
+            elif "```" in content:
+                content = content.split("```")[1].split("```")[0].strip()
+            
+            # Handle empty array response
+            if content.strip() == "[]" or "no" in content.lower()[:50]:
+                return []
+            
+            duplicates = json.loads(content)
+            
+            # Convert to anomaly format
+            anomalies = []
+            for dup in duplicates:
+                if dup.get("similarity_score", 0) > 0.7:  # High similarity threshold
+                    severity = AnomalySeverity.HIGH.value if dup["similarity_score"] > 0.9 else AnomalySeverity.MEDIUM.value
+                    
+                    anomalies.append({
+                        "type": "semantic_duplicate",
+                        "severity": severity,
+                        "details": {
+                            "use_case_ids": dup["use_case_ids"],
+                            "similarity_score": dup["similarity_score"],
+                            "titles": [uc["title"] for uc in use_case_data if uc["id"] in dup["use_case_ids"]]
+                        },
+                        "explanation": dup["explanation"],
+                        "recommendation": dup["rationale"],
+                        "suggested_action": dup["recommendation"]
+                    })
+            
+            return anomalies
+            
+        except Exception as e:
+            print(f"Semantic duplicate detection failed: {e}")
+            return []
+
     
     async def _detect_behavior_anomalies(
         self,
@@ -649,68 +959,41 @@ class CopilotService:
         
         # Use AI to generate contextual prompts
         try:
+            from langchain.schema import HumanMessage
+            
+            variance_context = ""
+            if variance_data and variance_data.get('std_dev', 0) > 2:
+                variance_context = f"NOTE: High voting variance (std_dev={variance_data.get('std_dev'):.1f}) detected. {variance_data.get('disagreement_context', '')}"
+            
             prompt = f"""
-            Generate 4 thoughtful discussion questions for this AI use case in a workshop setting:
+            Generate 4 thought-provoking discussion questions for this AI use case to help the team refine or evaluate it.
             
             Title: {use_case.title}
             Description: {use_case.description}
             Proposed Solution: {use_case.proposed_solution or 'Not specified'}
             
-            {"High variance in voting detected - include questions to understand different perspectives." if variance_data and variance_data.get('std_dev', 0) > 2 else ""}
+            {variance_context}
             
-            Return JSON array with objects containing: category, question, follow_up
-            Categories: implementation, stakeholders, data, strategic
+            Return a JSON array of objects. Each object must have:
+            - "category": one of ["Risk", "Value", "Feasibility", "Alignment"]
+            - "question": The discussion question
+            - "follow_up": A follow-up probe (e.g., "What if...")
             """
             
-            response = await self.llm.ainvoke(prompt)
-            result = json.loads(response.content)
+            response = await self.llm.ainvoke([HumanMessage(content=prompt)])
+            content = response.content
+            
+            if "```json" in content:
+                content = content.split("```json")[1].split("```")[0].strip()
+            elif "```" in content:
+                content = content.split("```")[1].split("```")[0].strip()
+                
+            result = json.loads(content)
             return result
         except Exception as e:
             print(f"AI prompt generation failed: {e}")
             return self._get_mock_discussion_prompts(use_case, variance_data)
-    
-    def _get_mock_discussion_prompts(
-        self,
-        use_case: UseCase,
-        variance_data: Optional[Dict[str, Any]]
-    ) -> List[Dict[str, Any]]:
-        """Return mock discussion prompts."""
-        prompts = [
-            {
-                "category": "implementation",
-                "question": "What would be the biggest barrier to implementing this use case?",
-                "follow_up": "How might we overcome this barrier?"
-            },
-            {
-                "category": "stakeholders",
-                "question": "Who are the key stakeholders for this initiative?",
-                "follow_up": "How do we ensure their buy-in?"
-            },
-            {
-                "category": "data",
-                "question": "What data would be needed and is it currently available?",
-                "follow_up": "What data quality issues might we encounter?"
-            },
-            {
-                "category": "strategic",
-                "question": "How does this align with our strategic priorities?",
-                "follow_up": "What trade-offs are we making by pursuing this?"
-            }
-        ]
-        
-        if variance_data and variance_data.get("std_dev", 0) > 2:
-            prompts.insert(0, {
-                "category": "alignment",
-                "question": "There seems to be disagreement on this use case. What concerns should we address?",
-                "follow_up": "What would change your perspective?"
-            })
-        
-        return prompts
 
-    # =========================================================================
-    # Summary Generation
-    # =========================================================================
-    
     async def generate_summary(
         self,
         workshop: Workshop,
@@ -726,6 +1009,7 @@ class CopilotService:
         
         # Calculate aggregated data
         scored_use_cases = await self._calculate_scores(use_cases, votes)
+        
         engagement_data = await self.analyze_engagement(
             str(workshop.id), participants, votes, use_cases
         )
@@ -737,25 +1021,39 @@ class CopilotService:
         
         # Use AI to generate summary
         try:
+            from langchain.schema import HumanMessage
+            
+            top_cases = scored_use_cases[:5] if scored_use_cases else []
+            top_cases_summary = [{"title": uc.get("title"), "score": uc.get("avg_score")} for uc in top_cases]
+            
             prompt = f"""
-            Generate a {format} summary for this AI prioritization workshop:
+            Act as a Strategic Consultant. Write a {format} summary for an AI Prioritization Workshop.
             
-            Workshop: {workshop.title}
+            Workshop Title: {workshop.title}
+            Date: {datetime.utcnow().strftime('%Y-%m-%d')}
             Participants: {len(participants)}
-            Use Cases Submitted: {len(use_cases)}
+            Total Ideas: {len(use_cases)}
+             Engagement Level: {engagement_data['group_metrics']['avg_engagement']}%
             
-            Top Scored Use Cases:
-            {json.dumps(scored_use_cases[:5], indent=2)}
+            Top Prioritized Use Cases:
+            {json.dumps(top_cases_summary, indent=2)}
             
-            Engagement: {engagement_data['group_metrics']['avg_engagement']}% average
+            Please generate the following sections in JSON format:
+            {json.dumps(sections)}
             
-            Sections to include: {', '.join(sections)}
-            
-            Return JSON with keys: executive_summary, key_findings, top_recommendations, next_steps, participant_stats
+            Return JSON object with keys matching the requested sections plus 'executive_summary'.
+            Ensure the tone is professional and actionable.
             """
             
-            response = await self.llm.ainvoke(prompt)
-            result = json.loads(response.content)
+            response = await self.llm.ainvoke([HumanMessage(content=prompt)])
+            content = response.content
+            
+            if "```json" in content:
+                content = content.split("```json")[1].split("```")[0].strip()
+            elif "```" in content:
+                content = content.split("```")[1].split("```")[0].strip()
+                
+            result = json.loads(content)
             result["format"] = format
             result["generated_at"] = datetime.utcnow().isoformat()
             result["is_mock"] = False
@@ -811,6 +1109,45 @@ class CopilotService:
         }
         
         return summary
+
+    def _get_mock_discussion_prompts(
+        self,
+        use_case: UseCase,
+        variance_data: Optional[Dict[str, Any]] = None
+    ) -> List[Dict[str, Any]]:
+        """Generate mock discussion prompts."""
+        prompts = [
+            {
+                "category": "Risk",
+                "question": f"What are the main technical risks in implementing '{use_case.title}'?",
+                "follow_up": "How can we mitigate these risks early in the project?"
+            },
+            {
+                "category": "Value",
+                "question": "Who are the key stakeholders that will benefit from this solution?",
+                "follow_up": "What metrics will we use to measure success?"
+            },
+            {
+                "category": "Feasibility",
+                "question": "Do we have the necessary data and infrastructure to support this use case?",
+                "follow_up": "What gaps need to be addressed before implementation?"
+            },
+            {
+                "category": "Alignment",
+                "question": "How does this align with our strategic priorities for the quarter?",
+                "follow_up": "Are there dependencies on other initiatives?"
+            }
+        ]
+        
+        if variance_data and variance_data.get('std_dev', 0) > 2:
+            prompts.insert(0, {
+                "category": "Consensus",
+                "question": f"There's significant disagreement on this use case (variance: {variance_data.get('std_dev', 0):.1f}). What aspects are causing the divergence?",
+                "follow_up": "Should we break this down into smaller, more specific use cases?"
+            })
+        
+        return prompts
+
 
     # =========================================================================
     # Variance Analysis
