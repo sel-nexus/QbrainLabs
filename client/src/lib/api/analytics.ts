@@ -7,6 +7,7 @@ export interface AnalyticsOverview {
         completed_workshops: number;
         avg_engagement: number;
         total_participants: number;
+        total_usecases?: number;
     };
     categories: Array<{
         category: string;

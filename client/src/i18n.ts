@@ -97,8 +97,62 @@ const enTranslations = {
         newWorkshop: "New Workshop",
         noWorkshops: "No active workshops found.",
         createFirst: "Create your first session",
-        contactAdmin: "Contact an administrator to get assigned to workshops.",
-        deleteWorkshopConfirm: "Are you sure you want to delete this workshop? This action cannot be undone.",
+        dashboard: {
+            facilitator: {
+                title: "Facilitator Dashboard",
+                myWorkshops: "My Workshops",
+                createWorkshop: "Create Workshop",
+                selectWorkshop: "Select a workshop to view its use cases.",
+                noWorkshops: "No workshops assigned. Select a workshop once available to view use cases.",
+                emptyState: "You haven't created any workshops yet.",
+                createNew: "Create your first workshop to get started.",
+                quickStats: "Quick Stats",
+                activeSessions: "Active Sessions",
+                totalParticipants: "Total Participants",
+                avgEngagement: "Avg. Engagement"
+            },
+            participant: {
+                title: "Participant Dashboard",
+                welcome: "Welcome back",
+                points: "Points",
+                rank: "Rank",
+                badges: "Badges",
+                activeSession: "Active Session",
+                noActiveSession: "No active session",
+                joinSession: "Join a Session",
+                enterPin: "Enter PIN to join",
+                myContributions: "My Contributions",
+                ideasSubmitted: "Ideas Submitted",
+                votesCast: "Votes Cast",
+                achievements: "Achievements"
+            },
+            columns: {
+                workshop: "Workshop",
+                pin: "PIN",
+                phase: "Phase",
+                status: "Status",
+                participants: "Participants",
+                useCases: "Use Cases",
+                created: "Created",
+                actions: "Actions"
+            },
+            status: {
+                draft: "Draft",
+                open: "Open",
+                in_progress: "In Progress",
+                completed: "Completed",
+                paused: "Paused",
+                closed: "Closed"
+            },
+            phases: {
+                setup: "Setup",
+                intake: "Intake",
+                prioritization: "Prioritization",
+                analysis: "Analysis",
+                voting: "Voting",
+                results: "Results"
+            }
+        }, deleteWorkshopConfirm: "Are you sure you want to delete this workshop? This action cannot be undone.",
         deleteWorkshopSuccess: "Workshop deleted successfully",
         searchWorkshops: "Search by title or PIN...",
         showingWorkshops: "Showing {{count}} of {{total}} workshops",

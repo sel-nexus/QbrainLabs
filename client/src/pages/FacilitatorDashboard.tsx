@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 import { ActionTile } from '../components/ui/ActionTile';
 import {
   LayoutDashboard,
@@ -35,23 +36,24 @@ interface Workshop {
   can_delete: boolean;
 }
 
-const statusConfig: Record<string, { label: string; color: string; barColor: string; icon: React.ElementType }> = {
-  DRAFT: { label: 'Draft', color: 'theme-badge-neutral', barColor: 'theme-bg-tertiary', icon: Clock },
-  OPEN: { label: 'Open', color: 'theme-badge-success', barColor: 'theme-badge-success', icon: CheckCircle2 },
-  IN_PROGRESS: { label: 'In Progress', color: 'theme-badge-info', barColor: 'theme-badge-info', icon: Play },
-  COMPLETED: { label: 'Completed', color: 'theme-badge-info', barColor: 'theme-badge-info', icon: CheckCircle2 },
-  PAUSED: { label: 'Paused', color: 'theme-badge-warning', barColor: 'theme-badge-warning', icon: PauseCircle },
-};
-
 export function FacilitatorDashboard() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { token, user } = useAuth();
   const [workshops, setWorkshops] = useState<Workshop[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
+  const statusConfig: Record<string, { label: string; color: string; barColor: string; icon: React.ElementType }> = {
+    DRAFT: { label: t('dashboard.status.draft'), color: 'theme-badge-neutral', barColor: 'theme-bg-tertiary', icon: Clock },
+    OPEN: { label: t('dashboard.status.open'), color: 'theme-badge-success', barColor: 'theme-badge-success', icon: CheckCircle2 },
+    IN_PROGRESS: { label: t('dashboard.status.in_progress'), color: 'theme-badge-info', barColor: 'theme-badge-info', icon: Play },
+    COMPLETED: { label: t('dashboard.status.completed'), color: 'theme-badge-info', barColor: 'theme-badge-info', icon: CheckCircle2 },
+    PAUSED: { label: t('dashboard.status.paused'), color: 'theme-badge-warning', barColor: 'theme-badge-warning', icon: PauseCircle },
+  };
+
   const handleUseCasesClick = () => {
     if (workshops.length === 0) {
-      toast.info('No workshops assigned. Select a workshop once available to view use cases.');
+      toast.info(t('dashboard.facilitator.noWorkshops'));
       return;
     }
 
@@ -63,11 +65,11 @@ export function FacilitatorDashboard() {
     const el = document.getElementById('my-workshops');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      toast.info('Select a workshop to view its use cases.');
+      toast.info(t('dashboard.facilitator.selectWorkshop'));
       return;
     }
 
-    toast.info('Select a workshop to view its use cases.');
+    toast.info(t('dashboard.facilitator.selectWorkshop'));
   };
 
   const fetchWorkshops = useCallback(async () => {
@@ -86,12 +88,12 @@ export function FacilitatorDashboard() {
       const data = await response.json();
       setWorkshops(data);
     } catch (error) {
-      toast.error('Failed to load workshops');
+      toast.error(t('common.error'));
       console.error(error);
     } finally {
       setIsLoading(false);
     }
-  }, [token]);
+  }, [token, t]);
 
   useEffect(() => {
     fetchWorkshops();
@@ -205,7 +207,7 @@ export function FacilitatorDashboard() {
             </div>
             {user?.is_admin && (
               <button
-                onClick={() => navigate('/create')}
+                onClick={() => navigate('/facilitator/create')}
                 className="px-4 py-2 bg-brand-violet text-white rounded-lg hover:bg-brand-violet/90 transition-colors flex items-center gap-2"
               >
                 Create Workshop

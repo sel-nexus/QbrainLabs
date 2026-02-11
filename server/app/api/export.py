@@ -16,8 +16,9 @@ import csv
 import statistics
 
 from app.core.database import get_db
-from app.models.models import Workshop, UseCase, Vote, Participant
+from app.models.models import Workshop, UseCase, Vote, Participant, User
 from app.middleware.error_handler import NotFoundException
+from app.api.auth import get_current_user
 
 router = APIRouter(prefix="/api/export", tags=["export"])
 
@@ -220,142 +221,142 @@ async def export_workshop_pdf(
     company_name: Optional[str] = None,
     primary_color: Optional[str] = None,
     logo_url: Optional[str] = None,
+    current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
     """
     Export workshop results as a branded PDF report.
     Returns HTML that can be converted to PDF client-side.
     """
-    # Get workshop
-    workshop_result = await db.execute(
-        select(Workshop).where(Workshop.id == workshop_id)
-    )
-    workshop = workshop_result.scalars().first()
-    if not workshop:
-        raise NotFoundException("Workshop", workshop_id)
-    
-    # Get use cases with votes
-    result = await db.execute(
-        select(UseCase)
-        .where(UseCase.workshop_id == workshop_id)
-        .options(selectinload(UseCase.votes))
-    )
-    use_cases_raw = result.scalars().all()
-    
-    # Process use cases
-    use_cases = []
-    for uc in use_cases_raw:
-        scores_sum = defaultdict(float)
-        scores_count = defaultdict(int)
+    try:
+        # Get workshop
+        workshop_result = await db.execute(
+            select(Workshop).where(Workshop.id == workshop_id)
+        )
+        workshop = workshop_result.scalars().first()
+        if not workshop:
+            raise NotFoundException("Workshop", workshop_id)
         
-        for vote in uc.votes:
-            if vote.scores:
-                for criterion, score in vote.scores.items():
-                    scores_sum[criterion] += float(score)
-                    scores_count[criterion] += 1
+        # Get use cases with votes
+        result = await db.execute(
+            select(UseCase)
+            .where(UseCase.workshop_id == workshop_id)
+            .options(selectinload(UseCase.votes))
+        )
+        use_cases_raw = result.scalars().all()
         
-        avg_scores = {k: round(scores_sum[k] / scores_count[k], 2) for k in scores_sum}
-        total_score = round(sum(avg_scores.values()) / len(avg_scores), 2) if avg_scores else 0
+        # Process use cases
+        use_cases = []
+        for uc in use_cases_raw:
+            scores_sum = defaultdict(float)
+            scores_count = defaultdict(int)
+            
+            for vote in uc.votes:
+                if vote.scores:
+                    for criterion, score in vote.scores.items():
+                        scores_sum[criterion] += float(score)
+                        scores_count[criterion] += 1
+            
+            avg_scores = {k: round(scores_sum[k] / scores_count[k], 2) for k in scores_sum}
+            total_score = round(sum(avg_scores.values()) / len(avg_scores), 2) if avg_scores else 0
+            
+            use_cases.append({
+                "id": str(uc.id),
+                "title": uc.title,
+                "category": uc.category,
+                "total_score": total_score,
+                "vote_count": len(uc.votes),
+                "scores": avg_scores
+            })
         
-        use_cases.append({
-            "id": str(uc.id),
-            "title": uc.title,
-            "category": uc.category,
-            "total_score": total_score,
-            "vote_count": len(uc.votes),
-            "scores": avg_scores
-        })
-    
-    use_cases.sort(key=lambda x: x["total_score"], reverse=True)
-    
-    # Build quadrant data
-    threshold = 5.0
-    quadrant_data = {
-        "quadrants": {
-            "quick_wins": [],
-            "strategic_bets": [],
-            "nice_to_have": [],
-            "dont_do": []
-        },
-        "summary": {
-            "quick_wins_count": 0,
-            "strategic_bets_count": 0,
-            "nice_to_have_count": 0,
-            "dont_do_count": 0
+        use_cases.sort(key=lambda x: x["total_score"], reverse=True)
+        
+        # Build quadrant data
+        threshold = 5.0
+        quadrant_data = {
+            "quadrants": {
+                "quick_wins": [],
+                "strategic_bets": [],
+                "nice_to_have": [],
+                "dont_do": []
+            },
+            "summary": {
+                "quick_wins_count": 0,
+                "strategic_bets_count": 0,
+                "nice_to_have_count": 0,
+                "dont_do_count": 0
+            }
         }
-    }
-    
-    for uc in use_cases:
-        feasibility_keys = ['Feasibility', 'Ease of Implementation', 'Data Readiness']
-        value_keys = ['Business Value', 'Impact', 'Value', 'Business Impact']
         
-        x_val = next((uc["scores"].get(k) for k in feasibility_keys if k in uc["scores"]), None)
-        y_val = next((uc["scores"].get(k) for k in value_keys if k in uc["scores"]), None)
+        for uc in use_cases:
+            feasibility_keys = ['Feasibility', 'Ease of Implementation', 'Data Readiness']
+            value_keys = ['Business Value', 'Impact', 'Value', 'Business Impact']
+            
+            x_val = next((uc["scores"].get(k) for k in feasibility_keys if k in uc["scores"]), None)
+            y_val = next((uc["scores"].get(k) for k in value_keys if k in uc["scores"]), None)
+            
+            # If coordinates missing, skip or handle gracefully
+            if x_val is None or y_val is None:
+                continue
+            
+            uc_data = {**uc, "x": x_val, "y": y_val}
+            
+            if y_val >= threshold and x_val >= threshold:
+                quadrant_data["quadrants"]["quick_wins"].append(uc_data)
+            elif y_val >= threshold:
+                quadrant_data["quadrants"]["strategic_bets"].append(uc_data)
+            elif x_val >= threshold:
+                quadrant_data["quadrants"]["nice_to_have"].append(uc_data)
+            else:
+                quadrant_data["quadrants"]["dont_do"].append(uc_data)
         
-        if x_val is None or y_val is None:
-            continue
+        for key in ["quick_wins", "strategic_bets", "nice_to_have", "dont_do"]:
+            quadrant_data["summary"][f"{key}_count"] = len(quadrant_data["quadrants"][key])
         
-        uc_data = {**uc, "x": x_val, "y": y_val}
+        # Build agreement data
+        agreement_data = []
+        for uc in use_cases_raw:
+            if not uc.votes:
+                continue
+            
+            # Calculate simple agreement (higher vote count = more confidence)
+            agreement_score = min(100, len(uc.votes) * 10)
+            consensus = "High" if agreement_score >= 70 else "Medium" if agreement_score >= 40 else "Low"
+            
+            agreement_data.append({
+                "title": uc.title,
+                "overall_agreement": agreement_score,
+                "consensus_level": consensus,
+                "vote_count": len(uc.votes)
+            })
         
-        if y_val >= threshold and x_val >= threshold:
-            quadrant_data["quadrants"]["quick_wins"].append(uc_data)
-        elif y_val >= threshold:
-            quadrant_data["quadrants"]["strategic_bets"].append(uc_data)
-        elif x_val >= threshold:
-            quadrant_data["quadrants"]["nice_to_have"].append(uc_data)
-        else:
-            quadrant_data["quadrants"]["dont_do"].append(uc_data)
-    
-    for key in ["quick_wins", "strategic_bets", "nice_to_have", "dont_do"]:
-        quadrant_data["summary"][f"{key}_count"] = len(quadrant_data["quadrants"][key])
-    
-    # Build agreement data
-    agreement_data = []
-    for uc in use_cases_raw:
-        if not uc.votes:
-            continue
+        # Generate HTML report
+        branding = {}
+        if company_name:
+            branding["company_name"] = company_name
+        if primary_color:
+            branding["primary_color"] = primary_color
+        if logo_url:
+            branding["logo_url"] = logo_url
         
-        criteria_variances = []
-        for vote in uc.votes:
-            if vote.scores:
-                for criterion, score in vote.scores.items():
-                    pass  # Simplified for export
+        html_content = generate_html_report(
+            workshop=workshop,
+            use_cases=use_cases,
+            quadrant_data=quadrant_data,
+            agreement_data=agreement_data,
+            branding=branding
+        )
         
-        # Calculate simple agreement (higher vote count = more confidence)
-        agreement_score = min(100, len(uc.votes) * 10)
-        consensus = "High" if agreement_score >= 70 else "Medium" if agreement_score >= 40 else "Low"
-        
-        agreement_data.append({
-            "title": uc.title,
-            "overall_agreement": agreement_score,
-            "consensus_level": consensus,
-            "vote_count": len(uc.votes)
-        })
-    
-    # Generate HTML report
-    branding = {}
-    if company_name:
-        branding["company_name"] = company_name
-    if primary_color:
-        branding["primary_color"] = primary_color
-    if logo_url:
-        branding["logo_url"] = logo_url
-    
-    html_content = generate_html_report(
-        workshop=workshop,
-        use_cases=use_cases,
-        quadrant_data=quadrant_data,
-        agreement_data=agreement_data,
-        branding=branding
-    )
-    
-    return Response(
-        content=html_content,
-        media_type="text/html",
-        headers={
-            "Content-Disposition": f'attachment; filename="workshop_report_{workshop_id}.html"'
-        }
-    )
+        return Response(
+            content=html_content,
+            media_type="text/html",
+            headers={
+                "Content-Disposition": f'attachment; filename="workshop_report_{workshop_id}.html"'
+            }
+        )
+    except Exception as e:
+        print(f"Error generating PDF report: {str(e)}")  # Basic logging
+        raise HTTPException(status_code=500, detail=f"Failed to generate report: {str(e)}")
 
 
 @router.get("/workshop/{workshop_id}/csv")

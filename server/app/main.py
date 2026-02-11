@@ -102,7 +102,8 @@ from app.api import workshops, participants, usecases, votes, results
 # ... (existing code)
 
 app.include_router(workshops.router, prefix="/api/workshops", tags=["workshops"])
-app.include_router(participants.router, prefix="/api", tags=["participants"])
+app.include_router(participants.router, prefix="/api", tags=["participants"]) # For /join
+app.include_router(participants.router, prefix="/api/participants", tags=["participants"]) # For /workshop/{id} match
 app.include_router(usecases.router, prefix="/api/usecases", tags=["usecases"])
 app.include_router(votes.router, prefix="/api/votes", tags=["votes"])
 app.include_router(results.router, prefix="/api/results", tags=["results"])

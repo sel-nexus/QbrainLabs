@@ -5,7 +5,7 @@ import { api } from '../lib/api';
 import { socket } from '../lib/socket';
 import { Button } from '../components/ui/Button';
 import { useTheme } from '../context/ThemeContext';
-import { Play, TrendingUp, Download, FileText, BarChart3, Plus, X, Map, LayoutGrid, Vote, Target, Sparkles, Edit, Trash2 } from 'lucide-react';
+import { Play, TrendingUp, Download, FileText, BarChart3, Plus, X, Map, LayoutGrid, Vote, Target, Sparkles, Edit, Trash2, Settings } from 'lucide-react';
 import { ResultsChart } from '../components/ResultsChart';
 import { WorkshopInsights } from '../components/WorkshopInsights';
 import { AnalyticsDashboard } from '../components/AnalyticsDashboard';
@@ -14,6 +14,7 @@ import { toast } from 'sonner';
 import { QRCodeSVG } from 'qrcode.react';
 import { Modal } from '../components/ui/Modal';
 import { QrCode, Copy } from 'lucide-react';
+import { WorkshopSettingsModal } from '../components/WorkshopSettingsModal';
 
 import { PollManager } from '../components/polls/PollManager';
 import { ReactionOverlay } from '../components/polls/ReactionOverlay';
@@ -51,6 +52,7 @@ export function WorkshopDetail() {
     const [roiSelectedUseCase, setRoiSelectedUseCase] = useState<{ id: string; title: string } | null>(null);
     const [roiModalOpen, setRoiModalOpen] = useState(false);
     const [showRoadmap, setShowRoadmap] = useState(false);
+    const [showSettings, setShowSettings] = useState(false);
 
     // Tab navigation state
     type TabId = 'usecases' | 'polls' | 'challenges' | 'rooms' | 'insights';
@@ -307,6 +309,9 @@ export function WorkshopDetail() {
                 </div>
 
                 <div className="flex gap-4">
+                    <Button variant="ghost" className="text-sm h-8 px-2" onClick={() => setShowSettings(true)}>
+                        <Settings className="w-4 h-4 mr-2" /> Settings
+                    </Button>
                     <Button variant="ghost" className="text-sm h-8 px-2" onClick={() => setShowQR(true)}>
                         <QrCode className="w-4 h-4 mr-2" /> Show Join Code
                     </Button>
@@ -995,6 +1000,14 @@ export function WorkshopDetail() {
                     isFacilitator={hasRole(['admin', 'facilitator'])}
                 />
             )}
+
+            {/* Workshop Settings Modal */}
+            <WorkshopSettingsModal
+                isOpen={showSettings}
+                onClose={() => setShowSettings(false)}
+                workshop={workshop}
+                onUpdate={fetchWorkshop}
+            />
         </div>
     );
 }

@@ -103,7 +103,8 @@ async def get_overview(
         active_workshops=active_workshops,
         completed_workshops=completed_workshops,
         avg_engagement=avg_engagement,
-        total_participants=total_participants
+        total_participants=total_participants,
+        total_usecases=len(use_cases)
     )
     
     # Calculate Category Distribution
@@ -517,6 +518,7 @@ async def get_quadrant_analysis(
     
     scale_max = detect_scale_max(all_scores)
     threshold = scale_max / 2  # Dynamic threshold
+    norm_threshold = 50.0
     
     for uc in use_cases:
         if not uc.votes:
@@ -546,7 +548,7 @@ async def get_quadrant_analysis(
         # OR we keep them on their raw scale for the quadrant logic here?
         # Actually, let's keep threshold at 50.0 if we use calc_matrix_pos's normalized output.
         
-        norm_threshold = 50.0
+
         
         use_case_data = {
             "id": str(uc.id),

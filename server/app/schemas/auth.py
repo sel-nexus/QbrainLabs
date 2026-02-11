@@ -5,6 +5,7 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: str
     full_name: str
+    organization: Optional[str] = None
     
     @validator('password')
     def password_strength(cls, v):

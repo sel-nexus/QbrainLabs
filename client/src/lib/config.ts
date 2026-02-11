@@ -16,8 +16,8 @@ export const getApiBaseUrl = () => {
     // US32 FIX: Explicitly handle the public IP case
     // We revert to using the proxy (relative path) because port 8000 might be firewall blocked.
     // The Vite proxy at port 5173 IS accessible (since the page loads), so we must rely on it.
-    if (hostname == '48.214.144.154') {
-        console.log(`[Config] Public IP detected (${hostname}). Using relative path to leverage Vite proxy.`);
+    if (hostname == '48.214.144.154' || hostname === 'qbrainlabs.com' || hostname === 'qbitzai.com' || hostname === 'www.qbrainlabs.com' || hostname === 'www.qbitzai.com') {
+        console.log(`[Config] Public Domain/IP detected (${hostname}). Using relative path to leverage Vite proxy.`);
         return '';
     }
 

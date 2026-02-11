@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
-    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
+    XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
     PieChart, Pie, Cell, LineChart, Line
 } from 'recharts';
 import {
@@ -114,7 +114,7 @@ export const AnalyticsDashboard = () => {
                 />
                 <StatsCard
                     title="Use Cases"
-                    value="156"
+                    value={data.performance.total_usecases || 0}
                     icon={Target}
                     trend="+8"
                     color="orange"

@@ -12,6 +12,8 @@ export function FacilitatorLogin() {
         email: '',
         password: '',
         full_name: '',
+        organization: '',
+        confirm_password: '',
     });
     const [loading, setLoading] = useState(false);
 
@@ -49,6 +51,12 @@ export function FacilitatorLogin() {
                 toast.success('Welcome back!');
                 // Navigation will be handled by the useEffect above when isAuthenticated changes
             } else {
+                // Validate password match
+                if (formData.password !== formData.confirm_password) {
+                    toast.error('Passwords do not match');
+                    setLoading(false);
+                    return;
+                }
                 // Handle signup separately
                 console.log('[FacilitatorLogin] Attempting signup...');
                 const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
@@ -58,6 +66,7 @@ export function FacilitatorLogin() {
                         email: formData.email,
                         password: formData.password,
                         full_name: formData.full_name,
+                        organization: formData.organization,
                     }),
                 });
 
@@ -71,9 +80,9 @@ export function FacilitatorLogin() {
 
                 console.log('[FacilitatorLogin] Signup successful');
                 // After signup, switch to login
-                toast.success('Account created! Please log in.');
+                toast.success('Account created! Your registration is pending admin approval. You\'ll receive an email when your account is activated.');
                 setIsLogin(true);
-                setFormData({ ...formData, full_name: '' });
+                setFormData({ email: '', password: '', full_name: '', organization: '', confirm_password: '' });
             }
         } catch (error: any) {
             console.error('[FacilitatorLogin] Error:', error);
@@ -100,20 +109,37 @@ export function FacilitatorLogin() {
                 <div className="backdrop-blur-lg rounded-2xl p-8 shadow-2xl border theme-card">
                     <form onSubmit={handleSubmit} className="space-y-6">
                         {!isLogin && (
-                            <div>
-                                <label htmlFor="full_name" className="block text-sm font-medium mb-2 theme-text-secondary">
-                                    Full Name
-                                </label>
-                                <input
-                                    type="text"
-                                    id="full_name"
-                                    required={!isLogin}
-                                    value={formData.full_name}
-                                    onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
-                                    className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-violet focus:border-transparent transition theme-input"
-                                    placeholder="John Doe"
-                                />
-                            </div>
+                            <>
+                                <div>
+                                    <label htmlFor="full_name" className="block text-sm font-medium mb-2 theme-text-secondary">
+                                        Full Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="full_name"
+                                        required={!isLogin}
+                                        value={formData.full_name}
+                                        onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+                                        className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-violet focus:border-transparent transition theme-input"
+                                        placeholder="John Doe"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label htmlFor="organization" className="block text-sm font-medium mb-2 theme-text-secondary">
+                                        Organization
+                                    </label>
+                                    <input
+                                        type="text"
+                                        id="organization"
+                                        required={!isLogin}
+                                        value={formData.organization}
+                                        onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
+                                        className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-violet focus:border-transparent transition theme-input"
+                                        placeholder="Your Company Name"
+                                    />
+                                </div>
+                            </>
                         )}
 
                         <div>
@@ -152,6 +178,24 @@ export function FacilitatorLogin() {
                             )}
                         </div>
 
+                        {!isLogin && (
+                            <div>
+                                <label htmlFor="confirm_password" className="block text-sm font-medium mb-2 theme-text-secondary">
+                                    Confirm Password
+                                </label>
+                                <input
+                                    type="password"
+                                    id="confirm_password"
+                                    required={!isLogin}
+                                    value={formData.confirm_password}
+                                    onChange={(e) => setFormData({ ...formData, confirm_password: e.target.value })}
+                                    className="w-full px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-violet focus:border-transparent transition theme-input"
+                                    placeholder="Re-enter your password"
+                                    minLength={8}
+                                />
+                            </div>
+                        )}
+
                         <button
                             type="submit"
                             disabled={loading}
@@ -168,7 +212,7 @@ export function FacilitatorLogin() {
                             type="button"
                             onClick={() => {
                                 setIsLogin(!isLogin);
-                                setFormData({ email: '', password: '', full_name: '' });
+                                setFormData({ email: '', password: '', full_name: '', organization: '', confirm_password: '' });
                             }}
                             className="text-sm transition text-brand-violet hover:text-brand-violet/80"
                         >

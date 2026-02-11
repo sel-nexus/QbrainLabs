@@ -188,3 +188,61 @@ async def set_active_card(
     )
     
     return workshop
+
+from app.schemas.workshop_update import WorkshopUpdate
+
+@router.patch("/{workshop_id}", response_model=WorkshopResponse)
+async def update_workshop(
+    workshop_id: str,
+    workshop_update: WorkshopUpdate,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Update workshop settings. Requires authentication (facilitator/admin only)."""
+    # Fetch workshop
+    result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
+    workshop = result.scalars().first()
+    if not workshop:
+        raise HTTPException(status_code=404, detail="Workshop not found")
+    
+    # Check permissions: must be owner, assigned facilitator, or admin
+    is_owner = str(workshop.facilitator_id) == str(current_user.id)
+    is_admin = current_user.is_admin_user
+    
+    # Check if user is assigned facilitator
+    is_assigned = False
+    if not is_owner and not is_admin:
+        assigned_result = await db.execute(
+            select(WorkshopFacilitator).where(
+                WorkshopFacilitator.workshop_id == workshop_id,
+                WorkshopFacilitator.facilitator_id == current_user.id
+            )
+        )
+        is_assigned = assigned_result.scalars().first() is not None
+    
+    if not (is_owner or is_admin or is_assigned):
+        raise HTTPException(
+            status_code=403, 
+            detail="You don't have permission to edit this workshop"
+        )
+    
+    # Update fields if provided
+    if workshop_update.title is not None:
+        workshop.title = workshop_update.title
+    if workshop_update.description is not None:
+        # Store description in config
+        if workshop.config is None:
+            workshop.config = {}
+        workshop.config['description'] = workshop_update.description
+    
+    await db.commit()
+    await db.refresh(workshop)
+    
+    # Broadcast workshop update
+    await sio.emit('workshop_updated', {
+        'workshop_id': str(workshop.id),
+        'title': workshop.title,
+        'description': workshop.config.get('description') if workshop.config else None
+    }, room=str(workshop.id))
+    
+    return workshop

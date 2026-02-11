@@ -18,6 +18,7 @@ class WorkshopPerformance(BaseModel):
     completed_workshops: int
     avg_engagement: float
     total_participants: int
+    total_usecases: int = 0
 
 
 class CategoryDistribution(BaseModel):

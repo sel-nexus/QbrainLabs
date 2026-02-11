@@ -22,6 +22,13 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     const [session, setSession] = useState<Session | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
+    // Use a ref to track session for use in socket callbacks
+    // This avoids stale closures without re-subscribing to events constantly
+    const sessionRef = React.useRef<Session | null>(null);
+    useEffect(() => {
+        sessionRef.current = session;
+    }, [session]);
+
     useEffect(() => {
         const initializeSession = () => {
             try {
@@ -29,16 +36,17 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
                 if (stored) {
                     const parsedSession = JSON.parse(stored);
                     setSession(parsedSession);
+                    sessionRef.current = parsedSession;
 
                     // Re-establish socket connection if needed
                     if (!socket.connected) {
                         socket.connect();
                     }
-                    // Always emit join on reload/reconnect to ensure server knows we are here
-                    // We wrap this in a timeout or check connected to be safe, 
-                    // but usually emitting immediately after connect() call works in socket.io client 
-                    // as it buffers packets.
-                    socket.emit('join_workshop', { workshop_id: parsedSession.workshopId });
+
+                    // Emit join immediately if connected, or the connect listener will handle it
+                    if (socket.connected) {
+                        socket.emit('join_workshop', { workshop_id: parsedSession.workshopId });
+                    }
                 }
             } catch (error) {
                 console.error("Failed to parse session:", error);
@@ -50,10 +58,12 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 
         initializeSession();
 
-        // Listen for connection events to re-join if dropped
+        // Listen for connection events to re-join if dropped/connected
         const onConnect = () => {
-            if (session) {
-                socket.emit('join_workshop', { workshop_id: session.workshopId });
+            const currentSession = sessionRef.current;
+            if (currentSession) {
+                console.log('Socket connected, joining workshop:', currentSession.workshopId);
+                socket.emit('join_workshop', { workshop_id: currentSession.workshopId });
             }
         };
 
@@ -62,13 +72,8 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
             socket.off('connect', onConnect);
         };
     }, []);
-    // Note: 'session' dependencies in useEffect might cause loops if not careful, 
-    // but here we only want the initial load. 
-    // The socket listener uses the closure 'session' which is stale? 
-    // Yes, 'session' inside onConnect will be null if defined in the first render's effect.
-    // We need a ref or a separate effect for the re-join logic.
 
-    // Separate effect for socket maintenance
+    // Effect to handle session changes (e.g. login/logout)
     useEffect(() => {
         if (session && socket.connected) {
             socket.emit('join_workshop', { workshop_id: session.workshopId });

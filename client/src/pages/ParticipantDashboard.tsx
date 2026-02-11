@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { socket } from '../lib/socket';
 import { useSession } from '../context/SessionContext';
 import { useTheme } from '../context/ThemeContext';
@@ -61,6 +62,7 @@ type ActiveModal = 'usecase' | 'survey' | 'qa' | 'leaderboard' | 'badges' | null
 
 export function ParticipantDashboard() {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const { } = useTheme();
     const { session, updateRole } = useSession();
     const [sessionInfo, setSessionInfo] = useState<SessionInfo | null>(null);
@@ -258,8 +260,8 @@ export function ParticipantDashboard() {
                         {/* Tile 1: Use Cases */}
                         <ActionTile
                             icon={<FileText className="w-7 h-7" />}
-                            title="Use Cases"
-                            description="View all workshop use cases"
+                            title={t('dashboard.participant.tiles.useCases.title')}
+                            description={t('dashboard.participant.tiles.useCases.description')}
                             badge={`${sessionInfo?.use_cases.length || 0} total`}
                             badgeVariant="info"
                             onClick={handleUseCasesViewClick}
@@ -268,8 +270,8 @@ export function ParticipantDashboard() {
                         {/* Tile 2: Add a New Use Case */}
                         <ActionTile
                             icon={<Plus className="w-7 h-7" />}
-                            title="Add a New Use Case"
-                            description="Share your AI use case ideas for the workshop"
+                            title={t('dashboard.participant.tiles.addUseCase.title')}
+                            description={t('dashboard.participant.tiles.addUseCase.description')}
                             badge="Available"
                             badgeVariant="success"
                             onClick={handleUseCaseClick}
@@ -278,14 +280,14 @@ export function ParticipantDashboard() {
                         {/* Tile 3: Survey */}
                         <ActionTile
                             icon={<ClipboardCheck className="w-7 h-7" />}
-                            title="Survey"
-                            description={activeSurvey ? activeSurvey.title : "Provide your feedback"}
+                            title={t('dashboard.participant.tiles.survey.title')}
+                            description={activeSurvey ? activeSurvey.title : t('dashboard.participant.tiles.survey.description')}
                             badge={
                                 pendingSurveys > 0
-                                    ? `${pendingSurveys} pending`
+                                    ? `${pendingSurveys} ${t('dashboard.participant.tiles.survey.pending')}`
                                     : totalSurveys > 0
-                                        ? `${completedSurveys}/${totalSurveys} done`
-                                        : "No surveys"
+                                        ? `${completedSurveys}/${totalSurveys} ${t('dashboard.participant.tiles.survey.done')}`
+                                        : t('dashboard.participant.tiles.survey.noSurveys')
                             }
                             badgeVariant={
                                 pendingSurveys > 0
@@ -298,8 +300,8 @@ export function ParticipantDashboard() {
                             disabledReason={
                                 !activeSurvey
                                     ? totalSurveys === 0
-                                        ? "No surveys available"
-                                        : "All surveys completed"
+                                        ? t('dashboard.participant.tiles.survey.unavailable')
+                                        : t('dashboard.participant.tiles.survey.completed')
                                     : undefined
                             }
                             onClick={handleSurveyClick}
@@ -309,13 +311,13 @@ export function ParticipantDashboard() {
                         <ActionTile
                             icon={<Target className="w-7 h-7" />}
                             title="Hotspot Prioritization"
-                            description="Prioritize use cases on the hotspot matrix"
-                            badge={canPrioritize ? `${sessionInfo?.use_cases.length || 0} available` : "Not available"}
+                            description={t('dashboard.participant.tiles.prioritize.description')}
+                            badge={canPrioritize ? `${sessionInfo?.use_cases.length || 0} ${t('dashboard.participant.tiles.prioritize.available')}` : "Not available"}
                             badgeVariant={canPrioritize ? "warning" : "default"}
                             disabled={!canPrioritize}
                             disabledReason={
                                 !hasUseCases
-                                    ? "No use cases available to prioritize"
+                                    ? t('dashboard.participant.tiles.prioritize.noUseCases')
                                     : undefined
                             }
                             onClick={handleHotspotPrioritizationClick}
@@ -326,9 +328,9 @@ export function ParticipantDashboard() {
                         {/* Tile 1: Submit Use Case */}
                         <ActionTile
                             icon={<Lightbulb className="w-7 h-7" />}
-                            title="Submit Use Case"
-                            description="Share your AI use case ideas for the workshop"
-                            badge="0 submitted"
+                            title={t('dashboard.participant.tiles.submitUseCase.title')}
+                            description={t('dashboard.participant.tiles.addUseCase.description')}
+                            badge={`0 ${t('dashboard.participant.tiles.submitUseCase.badge')}`}
                             badgeVariant="info"
                             onClick={handleUseCaseClick}
                         />
@@ -336,26 +338,26 @@ export function ParticipantDashboard() {
                         {/* Tile 2: Prioritize Use Cases */}
                         <ActionTile
                             icon={<BarChart3 className="w-7 h-7" />}
-                            title="Prioritize Use Cases"
-                            description="Vote and score existing use cases"
+                            title={t('dashboard.participant.tiles.prioritize.title')}
+                            description={t('dashboard.participant.tiles.prioritize.description')}
                             badge="0 to review"
                             badgeVariant="default"
                             disabled={true}
-                            disabledReason="No use cases to prioritize"
+                            disabledReason={t('dashboard.participant.tiles.prioritize.noUseCases')}
                             onClick={handlePrioritizeClick}
                         />
 
                         {/* Tile 3: Complete Survey */}
                         <ActionTile
                             icon={<ClipboardCheck className="w-7 h-7" />}
-                            title="Complete Survey"
-                            description={activeSurvey ? activeSurvey.title : "Provide your feedback"}
+                            title={t('dashboard.participant.tiles.survey.title')}
+                            description={activeSurvey ? activeSurvey.title : t('dashboard.participant.tiles.survey.description')}
                             badge={
                                 pendingSurveys > 0
-                                    ? `${pendingSurveys} pending`
+                                    ? `${pendingSurveys} ${t('dashboard.participant.tiles.survey.pending')}`
                                     : totalSurveys > 0
-                                        ? `${completedSurveys}/${totalSurveys} done`
-                                        : "No surveys"
+                                        ? `${completedSurveys}/${totalSurveys} ${t('dashboard.participant.tiles.survey.done')}`
+                                        : t('dashboard.participant.tiles.survey.noSurveys')
                             }
                             badgeVariant={
                                 pendingSurveys > 0
@@ -368,8 +370,8 @@ export function ParticipantDashboard() {
                             disabledReason={
                                 !activeSurvey
                                     ? totalSurveys === 0
-                                        ? "No surveys available"
-                                        : "All surveys completed"
+                                        ? t('dashboard.participant.tiles.survey.unavailable')
+                                        : t('dashboard.participant.tiles.survey.completed')
                                     : undefined
                             }
                             onClick={handleSurveyClick}

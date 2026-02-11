@@ -283,8 +283,8 @@ export function Header({ showBackButton = true, showHomeButton = true, title }: 
               )}
             </div>
           ) : (
-            /* Login Button for non-logged users (hidden on landing and login pages) */
-            !isLandingPage && !isLoginPage && (
+            /* Login Button for non-logged users (hidden only on login page) */
+            !isLoginPage && (
               <button
                 onClick={() => navigate('/facilitator-login')}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${theme === 'light'

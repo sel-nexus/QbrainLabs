@@ -147,6 +147,7 @@ async def signup(user_data: UserCreate, db: AsyncSession = Depends(get_db)):
         email=user_data.email,
         password_hash=hashed_password,
         full_name=user_data.full_name,
+        organization=getattr(user_data, 'organization', None),  # Optional field
         role=UserRole.FACILITATOR.value,
         status=AccountStatus.PENDING.value,
         is_admin=False
