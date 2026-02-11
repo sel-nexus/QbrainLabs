@@ -57,6 +57,7 @@ async def submit_use_case(
     await db.refresh(use_case)
     
     # Broadcast to Workshop Room (Facilitator will listen)
+    # Broadcast to Workshop Room (Facilitator will listen)
     await sio.emit(
         'new_submission', 
         {
@@ -66,6 +67,19 @@ async def submit_use_case(
         }, 
         room=str(uc_in.workshop_id)
     )
+    
+    # Award points for submission
+    if uc_in.participant_id:
+        try:
+            from app.api.gamification import service_award_points
+            await service_award_points(
+                participant_id=str(uc_in.participant_id),
+                workshop_id=str(uc_in.workshop_id),
+                action="submit_use_case",
+                db=db
+            )
+        except Exception as e:
+            print(f"Error awarding points: {e}")
     
     return use_case
 

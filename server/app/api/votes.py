@@ -71,6 +71,30 @@ async def submit_vote(
     await db.commit()
     await db.refresh(db_vote)
     
+    # Award points only for new votes
+    if not existing_vote:
+        try:
+            from app.api.gamification import service_award_points
+            if db_vote.use_case and db_vote.use_case.workshop_id:
+                # Need to fetch workshop_id if not loaded
+                pass 
+            # We need workshop id. It wasn't passed directly in VoteSubmit but it's on use_case or we can look it up
+            # Actually use_case_id is in input.
+            
+            # Fetch workshop id from use case
+            use_case_res_pts = await db.execute(select(UseCase).where(UseCase.id == vote_in.use_case_id))
+            uc_pts = use_case_res_pts.scalars().first()
+            
+            if uc_pts:
+                 await service_award_points(
+                    participant_id=str(vote_in.participant_id),
+                    workshop_id=str(uc_pts.workshop_id),
+                    action="vote",
+                    db=db
+                )
+        except Exception as e:
+            print(f"Error awarding vote points: {e}")
+    
     use_case_res = await db.execute(select(UseCase).where(UseCase.id == vote_in.use_case_id))
     use_case = use_case_res.scalars().first()
     

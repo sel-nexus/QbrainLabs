@@ -76,6 +76,91 @@ const enTranslations = {
         loginError: "Login failed",
         logoutSuccess: "Logged out successfully"
     },
+    dashboard: {
+        facilitator: {
+            title: "Facilitator Dashboard",
+            myWorkshops: "My Workshops",
+            createWorkshop: "Create Workshop",
+            selectWorkshop: "Select a workshop to view its use cases.",
+            noWorkshops: "No workshops assigned. Select a workshop once available to view use cases.",
+            emptyState: "You haven't created any workshops yet.",
+            createNew: "Create your first workshop to get started.",
+            quickStats: "Quick Stats",
+            activeSessions: "Active Sessions",
+            totalParticipants: "Total Participants",
+            avgEngagement: "Avg. Engagement"
+        },
+        participant: {
+            title: "Participant Dashboard",
+            welcome: "Welcome back",
+            points: "Points",
+            rank: "Rank",
+            badges: "Badges",
+            activeSession: "Active Session",
+            noActiveSession: "No active session",
+            joinSession: "Join a Session",
+            enterPin: "Enter PIN to join",
+            myContributions: "My Contributions",
+            ideasSubmitted: "Ideas Submitted",
+            votesCast: "Votes Cast",
+            achievements: "Achievements",
+            tiles: {
+                useCases: {
+                    title: "Use Cases",
+                    description: "View and discuss submitted use cases"
+                },
+                addUseCase: {
+                    title: "Add Use Case",
+                    description: "Submit a new idea for prioritization"
+                },
+                survey: {
+                    title: "Complete Survey",
+                    description: "Share your feedback",
+                    pending: "Pending",
+                    done: "Done",
+                    noSurveys: "No surveys",
+                    unavailable: "No active surveys",
+                    completed: "Completed"
+                },
+                prioritize: {
+                    title: "Prioritize",
+                    description: "Vote on use cases",
+                    available: "Use Cases",
+                    noUseCases: "No use cases to prioritize"
+                },
+                submitUseCase: {
+                    title: "Submit Use Case",
+                    badge: "submitted"
+                }
+            }
+        },
+        columns: {
+            workshop: "Workshop",
+            pin: "PIN",
+            phase: "Phase",
+            status: "Status",
+            participants: "Participants",
+            useCases: "Use Cases",
+            created: "Created",
+            actions: "Actions"
+        },
+        status: {
+            draft: "Draft",
+            open: "Open",
+            in_progress: "In Progress",
+            completed: "Completed",
+            paused: "Paused",
+            closed: "Closed"
+        },
+        phases: {
+            setup: "Setup",
+            intake: "Intake",
+            prioritization: "Prioritization",
+            analysis: "Analysis",
+            voting: "Voting",
+            results: "Results"
+        }
+    },
     workshop: {
         title: "Workshop",
         create: "Create Workshop",
@@ -97,62 +182,7 @@ const enTranslations = {
         newWorkshop: "New Workshop",
         noWorkshops: "No active workshops found.",
         createFirst: "Create your first session",
-        dashboard: {
-            facilitator: {
-                title: "Facilitator Dashboard",
-                myWorkshops: "My Workshops",
-                createWorkshop: "Create Workshop",
-                selectWorkshop: "Select a workshop to view its use cases.",
-                noWorkshops: "No workshops assigned. Select a workshop once available to view use cases.",
-                emptyState: "You haven't created any workshops yet.",
-                createNew: "Create your first workshop to get started.",
-                quickStats: "Quick Stats",
-                activeSessions: "Active Sessions",
-                totalParticipants: "Total Participants",
-                avgEngagement: "Avg. Engagement"
-            },
-            participant: {
-                title: "Participant Dashboard",
-                welcome: "Welcome back",
-                points: "Points",
-                rank: "Rank",
-                badges: "Badges",
-                activeSession: "Active Session",
-                noActiveSession: "No active session",
-                joinSession: "Join a Session",
-                enterPin: "Enter PIN to join",
-                myContributions: "My Contributions",
-                ideasSubmitted: "Ideas Submitted",
-                votesCast: "Votes Cast",
-                achievements: "Achievements"
-            },
-            columns: {
-                workshop: "Workshop",
-                pin: "PIN",
-                phase: "Phase",
-                status: "Status",
-                participants: "Participants",
-                useCases: "Use Cases",
-                created: "Created",
-                actions: "Actions"
-            },
-            status: {
-                draft: "Draft",
-                open: "Open",
-                in_progress: "In Progress",
-                completed: "Completed",
-                paused: "Paused",
-                closed: "Closed"
-            },
-            phases: {
-                setup: "Setup",
-                intake: "Intake",
-                prioritization: "Prioritization",
-                analysis: "Analysis",
-                voting: "Voting",
-                results: "Results"
-            }
-        }, deleteWorkshopConfirm: "Are you sure you want to delete this workshop? This action cannot be undone.",
+        deleteWorkshopConfirm: "Are you sure you want to delete this workshop? This action cannot be undone.",
         deleteWorkshopSuccess: "Workshop deleted successfully",
         searchWorkshops: "Search by title or PIN...",
         showingWorkshops: "Showing {{count}} of {{total}} workshops",

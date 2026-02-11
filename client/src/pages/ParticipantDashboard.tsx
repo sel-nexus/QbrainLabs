@@ -236,24 +236,24 @@ export function ParticipantDashboard() {
                         {session?.participantId && (
                             <PointsDisplay participantId={session.participantId} />
                         )}
-                        <Button variant="ghost" onClick={() => setActiveModal('leaderboard')} className="theme-text-secondary hover:theme-text-primary">
-                            <Trophy className="w-4 h-4 mr-2" />
-                            Leaderboard
+                        <Button variant="ghost" onClick={() => setActiveModal('leaderboard')} className="theme-text-secondary hover:theme-text-primary px-2 sm:px-4">
+                            <Trophy className="w-4 h-4 sm:mr-2" />
+                            <span className="hidden sm:inline">Leaderboard</span>
                         </Button>
-                        <Button variant="ghost" onClick={() => setActiveModal('badges')} className="theme-text-secondary hover:theme-text-primary">
-                            <Award className="w-4 h-4 mr-2" />
-                            Badges
+                        <Button variant="ghost" onClick={() => setActiveModal('badges')} className="theme-text-secondary hover:theme-text-primary px-2 sm:px-4">
+                            <Award className="w-4 h-4 sm:mr-2" />
+                            <span className="hidden sm:inline">Badges</span>
                         </Button>
-                        <Button variant="ghost" onClick={() => setActiveModal('qa')} className="theme-text-secondary hover:theme-text-primary">
-                            <MessageSquare className="w-4 h-4 mr-2" />
-                            Q&A
+                        <Button variant="ghost" onClick={() => setActiveModal('qa')} className="theme-text-secondary hover:theme-text-primary px-2 sm:px-4">
+                            <MessageSquare className="w-4 h-4 sm:mr-2" />
+                            <span className="hidden sm:inline">Q&A</span>
                         </Button>
                     </div>
                 </div>
             </header>
 
             {/* Main Content */}
-            <main className="max-w-5xl mx-auto px-4 py-8">
+            <main className="max-w-5xl mx-auto px-4 py-8 pb-32">
                 {/* Action Tiles Grid - Show 4 tiles when use cases exist */}
                 {(sessionInfo?.use_cases.length || 0) > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">

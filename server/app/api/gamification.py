@@ -117,6 +117,106 @@ async def check_and_award_badges(
     return newly_earned
 
 @router.post("/points", response_model=PointEarnedResponse, status_code=status.HTTP_201_CREATED)
+async def service_award_points(
+    participant_id: str,
+    workshop_id: str,
+    action: str,
+    db: AsyncSession,
+    metadata: dict = None
+) -> PointEarnedResponse:
+    """Internal service to award points and check badges."""
+    # Determine points based on action
+    base_points = POINTS_VALUES.get(action, 0)
+    
+    # Apply bonuses from metadata if present
+    bonus_points = 0
+    if metadata:
+        if metadata.get("quality_bonus"):
+            bonus_points += metadata.get("quality_bonus", 0)
+        if metadata.get("speed_bonus"):
+            bonus_points += POINTS_VALUES.get("speed_bonus", 0)
+        if metadata.get("consistency_bonus"):
+            bonus_points += POINTS_VALUES.get("consistency_bonus", 0)
+        if metadata.get("collaboration_bonus"):
+            bonus_points += POINTS_VALUES.get("collaboration_bonus", 0)
+    
+    total_points_earned = base_points + bonus_points
+    
+    if total_points_earned == 0:
+        # No points for this action, but maybe badges? 
+        # For now, if 0 points, we might still want to record it? 
+        # But usually we only record if points > 0 or specific tracking.
+        # Let's record it.
+        pass
+
+    # Create point record
+    point_record = ParticipantPoint(
+        id=uuid.uuid4(),
+        participant_id=participant_id,
+        workshop_id=workshop_id,
+        points=total_points_earned,
+        action=action,
+        action_metadata=metadata
+    )
+    db.add(point_record)
+    # We don't commit here, we let the caller handle transaction or we flush?
+    # Actually, for async flows, it's better if we commit to ensure it's saved.
+    # But if called from another transaction, we might want to join it.
+    # For simplicity in this codebase, we will commit/flush.
+    await db.commit()
+    
+    # Check for badges
+    newly_earned_badges = await check_and_award_badges(
+        participant_id,
+        workshop_id,
+        action,
+        db,
+        metadata
+    )
+    
+    # Get new total
+    total_result = await db.execute(
+        select(func.sum(ParticipantPoint.points))
+        .where(ParticipantPoint.participant_id == participant_id)
+        .where(ParticipantPoint.workshop_id == workshop_id)
+    )
+    new_total = total_result.scalar() or 0
+    
+    # Broadcast via WebSocket
+    try:
+        if total_points_earned > 0:
+            await sio.emit(
+                'gamification:points_earned',
+                {
+                    'participant_id': str(participant_id),
+                    'points': total_points_earned,
+                    'new_total': new_total,
+                    'action': action
+                },
+                room=str(workshop_id)
+            )
+        
+        # Broadcast badge unlocks
+        if newly_earned_badges:
+            for badge_name in newly_earned_badges:
+                await sio.emit(
+                    'gamification:badge_unlocked',
+                    {
+                        'participant_id': str(participant_id),
+                        'badge_name': badge_name
+                    },
+                    room=str(workshop_id)
+                )
+    except Exception as ws_error:
+        print(f"WebSocket broadcast error: {ws_error}")
+    
+    return PointEarnedResponse(
+        new_total=new_total,
+        points_earned=total_points_earned,
+        achievements_unlocked=newly_earned_badges
+    )
+
+@router.post("/points", response_model=PointEarnedResponse, status_code=status.HTTP_201_CREATED)
 async def award_points(
     request: PointActionRequest,
     db: AsyncSession = Depends(get_db)
@@ -148,82 +248,12 @@ async def award_points(
                 detail=f"Workshop {request.workshop_id} not found"
             )
         
-        # Determine points based on action
-        base_points = POINTS_VALUES.get(request.action, 0)
-        
-        # Apply bonuses from metadata if present
-        bonus_points = 0
-        if request.metadata:
-            if request.metadata.get("quality_bonus"):
-                bonus_points += request.metadata.get("quality_bonus", 0)
-            if request.metadata.get("speed_bonus"):
-                bonus_points += POINTS_VALUES.get("speed_bonus", 0)
-            if request.metadata.get("consistency_bonus"):
-                bonus_points += POINTS_VALUES.get("consistency_bonus", 0)
-        
-        total_points_earned = base_points + bonus_points
-        
-        # Create point record
-        point_record = ParticipantPoint(
-            id=uuid.uuid4(),
-            participant_id=request.participant_id,
-            workshop_id=request.workshop_id,
-            points=total_points_earned,
-            action=request.action,
-            action_metadata=request.metadata
-        )
-        db.add(point_record)
-        await db.commit()
-        
-        # Check for badges
-        newly_earned_badges = await check_and_award_badges(
-            request.participant_id,
-            request.workshop_id,
+        return await service_award_points(
+            str(request.participant_id),
+            str(request.workshop_id),
             request.action,
             db,
             request.metadata
-        )
-        
-        # Get new total
-        total_result = await db.execute(
-            select(func.sum(ParticipantPoint.points))
-            .where(ParticipantPoint.participant_id == request.participant_id)
-            .where(ParticipantPoint.workshop_id == request.workshop_id)
-        )
-        new_total = total_result.scalar() or 0
-        
-        # Broadcast via WebSocket
-        try:
-            await sio.emit(
-                'gamification:points_earned',
-                {
-                    'participant_id': request.participant_id,
-                    'points': total_points_earned,
-                    'new_total': new_total,
-                    'action': request.action
-                },
-                room=str(request.workshop_id)
-            )
-            
-            # Broadcast badge unlocks
-            if newly_earned_badges:
-                for badge_name in newly_earned_badges:
-                    await sio.emit(
-                        'gamification:badge_unlocked',
-                        {
-                            'participant_id': request.participant_id,
-                            'badge_name': badge_name
-                        },
-                        room=str(request.workshop_id)
-                    )
-        except Exception as ws_error:
-            # Log websocket errors but don't fail the request
-            print(f"WebSocket broadcast error: {ws_error}")
-        
-        return PointEarnedResponse(
-            new_total=new_total,
-            points_earned=total_points_earned,
-            achievements_unlocked=newly_earned_badges
         )
     
     except HTTPException:
