@@ -13,7 +13,9 @@ import {
     Trash2,
     Clock,
     CheckCircle,
-    AlertCircle
+    AlertCircle,
+    Plus,
+    Sparkles
 } from 'lucide-react';
 import { AdminLayout } from '../components/AdminLayout';
 import { ConfirmationModal } from '../components/ConfirmationModal';
@@ -45,6 +47,22 @@ interface UseCaseTemplate {
     implementation_time: string;
     technologies: string[];
     kpis: string[];
+}
+
+interface SearchResult {
+    id: string;
+    title: string;
+    description: string;
+    industry: string;
+    industry_name: string;
+    category: string;
+    complexity: string;
+    typical_roi: string;
+    relevance_score: number;
+    is_new?: boolean;
+    is_refinable?: boolean;
+    existing_usecase_id?: string;
+    refinement_suggestions?: string;
 }
 
 interface IndustryDetail {
@@ -85,6 +103,11 @@ export function AdminKnowledgeBase() {
     const [showUploadModal, setShowUploadModal] = useState(false);
     const [uploading, setUploading] = useState(false);
     const [uploadFile, setUploadFile] = useState<File | null>(null);
+    const [showResearchModal, setShowResearchModal] = useState(false);
+    const [researchProvider, setResearchProvider] = useState<'perplexity' | 'google'>('perplexity');
+    const [researchLoading, setResearchLoading] = useState(false);
+    const [researchResults, setResearchResults] = useState<SearchResult[]>([]);
+    const [customScope, setCustomScope] = useState('');
     const isLight = theme === 'light';
 
     useEffect(() => {
@@ -231,6 +254,67 @@ export function AdminKnowledgeBase() {
         }
     };
 
+    const handleResearch = async () => {
+        setResearchLoading(true);
+        setResearchResults([]);
+        try {
+            const authToken = localStorage.getItem('hm_auth_token');
+            const response = await fetch(`${API_BASE}/api/knowledge-base/refresh`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    provider: researchProvider,
+                    industry_id: selectedIndustry?.id || null,
+                    custom_scope: customScope || null
+                })
+            });
+
+            if (!response.ok) throw new Error('Research failed');
+            const data = await response.json();
+            setResearchResults(data);
+            if (data.length === 0) toast.info('No new or refinable use cases found');
+        } catch (error) {
+            console.error('Error:', error);
+            toast.error('Failed to research use cases');
+        } finally {
+            setResearchLoading(false);
+        }
+    };
+
+    const handleAddResearchItem = async (result: SearchResult) => {
+        try {
+            const authToken = localStorage.getItem('hm_auth_token');
+            const response = await fetch(`${API_BASE}/api/knowledge-base/add`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    title: result.title,
+                    description: result.description,
+                    industry_id: result.industry,
+                    category: result.category,
+                    complexity: result.complexity,
+                    typical_roi: result.typical_roi,
+                    implementation_time: "3-6 months",
+                    technologies: []
+                })
+            });
+
+            if (!response.ok) throw new Error('Failed to add use case');
+            toast.success('Use case added to library');
+            setResearchResults(prev => prev.filter(r => r.id !== result.id));
+            fetchOverview(); // Refresh stats
+        } catch (error) {
+            console.error('Error:', error);
+            toast.error('Failed to add use case to library');
+        }
+    };
+
     if (loading) {
         return (
             <AdminLayout title={t('admin.knowledgeBase.title', 'AI Knowledge Base')}>
@@ -367,13 +451,22 @@ export function AdminKnowledgeBase() {
     // Show overview
     return (
         <AdminLayout title={t('admin.knowledgeBase.title', 'AI Knowledge Base')} actions={
-            <button
-                onClick={() => setShowUploadModal(true)}
-                className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg flex items-center gap-2 hover:opacity-90 transition"
-            >
-                <BookOpen className="w-4 h-4" />
-                {t('admin.knowledgeBase.importKnowledge', 'Import Knowledge')}
-            </button>
+            <div className="flex gap-3">
+                <button
+                    onClick={() => setShowResearchModal(true)}
+                    className="px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg flex items-center gap-2 hover:opacity-90 transition"
+                >
+                    <Sparkles className="w-4 h-4" />
+                    {t('admin.knowledgeBase.researchUseCases', 'Research Use Cases')}
+                </button>
+                <button
+                    onClick={() => setShowUploadModal(true)}
+                    className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg flex items-center gap-2 hover:opacity-90 transition"
+                >
+                    <BookOpen className="w-4 h-4" />
+                    {t('admin.knowledgeBase.importKnowledge', 'Import Knowledge')}
+                </button>
+            </div>
         }>
             {/* Tabs */}
             <div className="flex items-center gap-4 mb-8 border-b border-gray-200 dark:border-white/10">
@@ -651,6 +744,138 @@ export function AdminKnowledgeBase() {
                 cancelText={t('common.cancel')}
                 variant="danger"
             />
+
+            {/* Research Modal */}
+            {showResearchModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                    <div className={`relative w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6 rounded-2xl shadow-xl ${isLight ? 'bg-white' : 'bg-surface-800 border border-white/10'}`}>
+                        <button
+                            onClick={() => setShowResearchModal(false)}
+                            className={`absolute top-4 right-4 p-1 rounded-full hover:bg-black/5 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+
+                        <h2 className={`text-xl font-bold mb-2 ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.knowledgeBase.publicResearchRefresh', 'Public Research Refresh')}</h2>
+                        <p className={`text-sm mb-6 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.discoverTrendingDesc', 'Discover trending use cases from the web')}</p>
+
+                        <div className="space-y-6">
+                            <div>
+                                <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>{t('admin.knowledgeBase.researchProvider', 'Research Provider')}</label>
+                                <div className="flex gap-3">
+                                    <button
+                                        onClick={() => setResearchProvider('perplexity')}
+                                        className={`flex-1 p-3 rounded-lg border-2 transition ${researchProvider === 'perplexity'
+                                            ? 'border-purple-500 bg-purple-500/10'
+                                            : isLight ? 'border-gray-200 hover:border-gray-300' : 'border-white/10 hover:border-white/20'
+                                            }`}
+                                    >
+                                        <div className={`font-medium ${researchProvider === 'perplexity' ? 'text-purple-500' : isLight ? 'text-gray-900' : 'text-white'}`}>Perplexity AI</div>
+                                        <div className={`text-xs ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Real-time web research</div>
+                                    </button>
+                                    <button
+                                        onClick={() => setResearchProvider('google')}
+                                        className={`flex-1 p-3 rounded-lg border-2 transition ${researchProvider === 'google'
+                                            ? 'border-blue-500 bg-blue-500/10'
+                                            : isLight ? 'border-gray-200 hover:border-gray-300' : 'border-white/10 hover:border-white/20'
+                                            }`}
+                                    >
+                                        <div className={`font-medium ${researchProvider === 'google' ? 'text-blue-500' : isLight ? 'text-gray-900' : 'text-white'}`}>Google Search</div>
+                                        <div className={`text-xs ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Comprehensive search</div>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>{t('admin.knowledgeBase.scope', 'Scope')}</label>
+                                <textarea
+                                    value={customScope}
+                                    onChange={(e) => setCustomScope(e.target.value)}
+                                    placeholder="Enter custom search scope or use the default..."
+                                    maxLength={500}
+                                    rows={3}
+                                    className={`w-full p-3 rounded-lg border resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 ${isLight ? 'bg-white border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-surface-700 border-white/5 text-white placeholder-gray-500'}`}
+                                />
+                                <div className={`text-xs mt-1 text-right ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                                    {customScope.length}/500 characters
+                                </div>
+                            </div>
+
+                            <button
+                                onClick={handleResearch}
+                                disabled={researchLoading}
+                                className={`w-full py-3 rounded-lg text-white font-medium flex items-center justify-center gap-2 ${researchLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90'}`}
+                            >
+                                {researchLoading ? (
+                                    <>
+                                        <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                        {t('admin.knowledgeBase.processing', 'Researching...')}
+                                    </>
+                                ) : (
+                                    <>
+                                        <Sparkles className="w-5 h-5" />
+                                        {t('admin.knowledgeBase.startDiscovery', 'Start Discovery')}
+                                    </>
+                                )}
+                            </button>
+
+                            {researchResults.length > 0 && (
+                                <div className="space-y-3 max-h-96 overflow-y-auto">
+                                    <h3 className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>Research Results ({researchResults.length})</h3>
+                                    {researchResults.map((result) => (
+                                        <div key={result.id} className={`rounded-lg p-4 border flex gap-4 ${isLight ? 'bg-gray-50 border-gray-200' : 'bg-surface-700 border-white/5'}`}>
+                                            <div className="w-10 h-10 rounded-lg bg-green-500/10 flex-shrink-0 flex items-center justify-center">
+                                                <TrendingUp className="w-5 h-5 text-green-400" />
+                                            </div>
+                                            <div className="flex-1">
+                                                <div className="flex justify-between items-start">
+                                                    <div className="flex-1">
+                                                        <div className="flex items-center gap-2 mb-1">
+                                                            <h4 className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>{result.title}</h4>
+                                                            {result.is_new && (
+                                                                <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded font-medium">
+                                                                    NEW
+                                                                </span>
+                                                            )}
+                                                            {result.is_refinable && (
+                                                                <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded font-medium">
+                                                                    REFINABLE
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                        <span className="text-xs text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded inline-block">
+                                                            {result.industry_name}
+                                                        </span>
+                                                    </div>
+                                                    <span className="text-xs text-gray-500 uppercase">{researchProvider}</span>
+                                                </div>
+                                                <p className={`text-sm mt-2 mb-3 ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>{result.description}</p>
+                                                {result.is_refinable && result.refinement_suggestions && (
+                                                    <div className={`text-xs p-2 rounded mb-2 ${isLight ? 'bg-blue-50 text-blue-700' : 'bg-blue-500/10 text-blue-300'}`}>
+                                                        <strong>Refinements:</strong> {result.refinement_suggestions}
+                                                    </div>
+                                                )}
+                                                <div className="flex items-center gap-4 text-xs text-gray-500">
+                                                    <span>ROI: <span className="text-green-400">{result.typical_roi}</span></span>
+                                                    <span>•</span>
+                                                    <span>{result.category}</span>
+                                                </div>
+                                            </div>
+                                            <button
+                                                onClick={() => handleAddResearchItem(result)}
+                                                className={`self-center p-2 rounded-lg transition ${isLight ? 'bg-gray-200 hover:bg-purple-100 hover:text-purple-600 text-gray-500' : 'bg-surface-600 hover:bg-purple-600 hover:text-white text-gray-400'}`}
+                                                title={result.is_refinable ? "Update Existing Use Case" : "Add to Library"}
+                                            >
+                                                <Plus className="w-5 h-5" />
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </AdminLayout>
     );
 }

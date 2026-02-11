@@ -60,6 +60,11 @@ class UseCaseSearchResult(BaseModel):
     complexity: str
     typical_roi: str
     relevance_score: float
+    # Smart filtering fields
+    is_new: Optional[bool] = None
+    is_refinable: Optional[bool] = None
+    existing_usecase_id: Optional[str] = None
+    refinement_suggestions: Optional[str] = None
 
 
 class WorkshopInsight(BaseModel):

@@ -32,6 +32,7 @@ class RefreshRequest(BaseModel):
     provider: str = "perplexity"  # or "google"
     industry_id: Optional[str] = None
     query: Optional[str] = None
+    custom_scope: Optional[str] = None  # User-provided custom search scope
 
 
 class AddUseCaseRequest(BaseModel):
@@ -209,8 +210,9 @@ async def refresh_use_cases(
     current_user: User = Depends(get_current_user)
 ):
     """
-    Refresh use cases from public research (simulated).
-    US26: Connects to Perplexity/Google to find trending use cases.
+    Refresh use cases from public research.
+    US26 Enhancement: Supports custom scope and filters results against knowledge base.
+    Returns only new or refinable use cases.
     """
     results = []
     
@@ -222,22 +224,95 @@ async def refresh_use_cases(
                 industry_name = ind["name"]
                 break
     
-    # Call RAG service to get trending use cases
+    # Call RAG service to get trending use cases with custom scope
     fresh_use_cases = await rag_service.find_trending_use_cases(
         industry=industry_name,
-        count=3
+        count=5,  # Get more results since we'll filter
+        custom_scope=request.custom_scope
     )
     
+    # Build list of existing use cases for comparison
+    existing_use_cases = []
+    for ind in KB_DATA.get("industries", []):
+        for uc in ind.get("use_cases", []):
+            existing_use_cases.append({
+                "id": uc["id"],
+                "title": uc["title"],
+                "description": uc["description"],
+                "industry_id": ind["id"]
+            })
     
-    
+    # Filter and categorize each research result
     for item in fresh_use_cases:
         # Pydantic model expects 'industry' to be the ID
         if request.industry_id:
             item["industry"] = request.industry_id
             item["industry_name"] = industry_name
         
-        results.append(UseCaseSearchResult(**item))
+        # Find best match in existing use cases
+        best_match = None
+        best_similarity = 0.0
         
+        for existing in existing_use_cases:
+            # Calculate similarity using title and description
+            title_similarity = difflib.SequenceMatcher(
+                None, 
+                item["title"].lower(), 
+                existing["title"].lower()
+            ).ratio()
+            
+            desc_similarity = difflib.SequenceMatcher(
+                None,
+                item["description"].lower(),
+                existing["description"].lower()
+            ).ratio()
+            
+            # Weighted average (title is more important)
+            similarity = (title_similarity * 0.6) + (desc_similarity * 0.4)
+            
+            if similarity > best_similarity:
+                best_similarity = similarity
+                best_match = existing
+        
+        # Categorize based on similarity threshold
+        if best_similarity > 0.85:
+            # Too similar - skip (duplicate)
+            continue
+        elif best_similarity >= 0.6:
+            # Refinable - can enhance existing use case
+            item["is_new"] = False
+            item["is_refinable"] = True
+            item["existing_usecase_id"] = best_match["id"]
+            
+            # Generate refinement suggestions
+            refinement_parts = []
+            
+            # Check if new description has additional info
+            new_desc = item["description"].lower()
+            existing_desc = best_match["description"].lower()
+            
+            if len(new_desc) > len(existing_desc) * 1.2:
+                refinement_parts.append("Enhanced description with additional details")
+            
+            # Check for ROI differences
+            if item.get("typical_roi") and item["typical_roi"] != "30-50% Efficiency Gain":
+                refinement_parts.append(f"Updated ROI estimate: {item['typical_roi']}")
+            
+            # Check for category/complexity differences
+            if item.get("category"):
+                refinement_parts.append(f"Category refinement: {item['category']}")
+            
+            if refinement_parts:
+                item["refinement_suggestions"] = "; ".join(refinement_parts)
+            else:
+                item["refinement_suggestions"] = "Additional context and updated information from latest research"
+        else:
+            # New use case
+            item["is_new"] = True
+            item["is_refinable"] = False
+        
+        results.append(UseCaseSearchResult(**item))
+    
     return results
 
 

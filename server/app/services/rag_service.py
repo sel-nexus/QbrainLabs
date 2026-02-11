@@ -1115,13 +1115,14 @@ Return JSON only:
                 "is_mock": False
             }
 
-    async def find_trending_use_cases(self, industry: str = "General", count: int = 3) -> List[Dict[str, Any]]:
+    async def find_trending_use_cases(self, industry: str = "General", count: int = 3, custom_scope: Optional[str] = None) -> List[Dict[str, Any]]:
         """
         Find trending AI use cases for a specific industry using Perplexity API.
         
         Args:
             industry: Industry name (e.g. "Healthcare", "Finance")
             count: Number of use cases to find
+            custom_scope: Optional custom search scope provided by user
             
         Returns:
             List of use case dictionaries
@@ -1160,6 +1161,12 @@ Return JSON only:
             if not perplexity_api_key:
                 print("[RAG] Perplexity API key not configured, falling back to mock data")
                 return get_mock_data()
+            
+            # Determine search query based on custom scope or industry
+            if custom_scope:
+                search_query = f"Identify the top {count} trending AI use cases for: {custom_scope}"
+            else:
+                search_query = f"Identify the top {count} trending AI use cases in the {industry} industry for 2024-2025."
                 
             # Call Perplexity API
             headers = {
@@ -1176,7 +1183,7 @@ Return JSON only:
                     },
                     {
                         "role": "user",
-                        "content": f"""Identify the top {count} trending AI use cases in the {industry} industry for 2024-2025.
+                        "content": f"""{search_query}
 Focus on actionable, high-value applications.
 
 Return JSON in this format:

@@ -88,6 +88,16 @@ export function KnowledgeBase() {
     const [researchProvider, setResearchProvider] = useState<'perplexity' | 'google'>('perplexity');
     const [researchLoading, setResearchLoading] = useState(false);
     const [researchResults, setResearchResults] = useState<SearchResult[]>([]);
+    const [customScope, setCustomScope] = useState('');
+
+    // Update custom scope when industry changes
+    useEffect(() => {
+        if (selectedIndustry) {
+            setCustomScope(`Searching for trending AI use cases in ${selectedIndustry.name}...`);
+        } else {
+            setCustomScope('Searching for general trending AI use cases across all industries...');
+        }
+    }, [selectedIndustry]);
 
     useEffect(() => {
         const authToken = localStorage.getItem('hm_auth_token');
@@ -173,14 +183,15 @@ export function KnowledgeBase() {
                 },
                 body: JSON.stringify({
                     provider: researchProvider,
-                    industry_id: selectedIndustry?.id || null
+                    industry_id: selectedIndustry?.id || null,
+                    custom_scope: customScope || null
                 })
             });
 
             if (!response.ok) throw new Error('Research failed');
             const data = await response.json();
             setResearchResults(data);
-            if (data.length === 0) toast.info('No new use cases found');
+            if (data.length === 0) toast.info('No new or refinable use cases found');
         } catch (error) {
             console.error('Error:', error);
             toast.error('Failed to research use cases');
@@ -336,13 +347,19 @@ export function KnowledgeBase() {
                                         </div>
                                     </div>
 
-                                    <div className={`rounded-lg p-4 border ${isLight ? 'bg-gray-50 border-gray-200' : 'bg-surface-700/50 border-white/5'}`}>
-                                        <h4 className={`text-sm font-medium mb-2 ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.knowledgeBase.scope', 'Scope')}</h4>
-                                        <p className={`text-sm ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
-                                            {selectedIndustry
-                                                ? `Searching for trending AI use cases in ${selectedIndustry.name}...`
-                                                : "Searching for general trending AI use cases across all industries..."}
-                                        </p>
+                                    <div>
+                                        <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>{t('admin.knowledgeBase.scope', 'Scope')}</label>
+                                        <textarea
+                                            value={customScope}
+                                            onChange={(e) => setCustomScope(e.target.value)}
+                                            placeholder="Enter custom search scope or use the default..."
+                                            maxLength={500}
+                                            rows={3}
+                                            className={`w-full p-3 rounded-lg border resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 ${isLight ? 'bg-white border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-surface-700 border-white/5 text-white placeholder-gray-500'}`}
+                                        />
+                                        <div className={`text-xs mt-1 text-right ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                                            {customScope.length}/500 characters
+                                        </div>
                                     </div>
 
                                     <Button onClick={handleResearch} className="w-full py-6 text-lg" disabled={researchLoading}>
@@ -375,15 +392,32 @@ export function KnowledgeBase() {
                                             </div>
                                             <div className="flex-1">
                                                 <div className="flex justify-between items-start">
-                                                    <div>
-                                                        <h4 className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>{result.title}</h4>
-                                                        <span className="text-xs text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded mt-1 inline-block">
+                                                    <div className="flex-1">
+                                                        <div className="flex items-center gap-2 mb-1">
+                                                            <h4 className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>{result.title}</h4>
+                                                            {(result as any).is_new && (
+                                                                <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded font-medium">
+                                                                    NEW
+                                                                </span>
+                                                            )}
+                                                            {(result as any).is_refinable && (
+                                                                <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded font-medium">
+                                                                    REFINABLE
+                                                                </span>
+                                                            )}
+                                                        </div>
+                                                        <span className="text-xs text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded inline-block">
                                                             {result.industry_name}
                                                         </span>
                                                     </div>
                                                     <span className="text-xs text-gray-500 uppercase">{researchProvider}</span>
                                                 </div>
                                                 <p className={`text-sm mt-2 mb-3 ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>{result.description}</p>
+                                                {(result as any).is_refinable && (result as any).refinement_suggestions && (
+                                                    <div className={`text-xs p-2 rounded mb-2 ${isLight ? 'bg-blue-50 text-blue-700' : 'bg-blue-500/10 text-blue-300'}`}>
+                                                        <strong>Refinements:</strong> {(result as any).refinement_suggestions}
+                                                    </div>
+                                                )}
                                                 <div className="flex items-center gap-4 text-xs text-gray-500">
                                                     <span>ROI: <span className="text-green-400">{result.typical_roi}</span></span>
                                                     <span>•</span>
@@ -393,7 +427,7 @@ export function KnowledgeBase() {
                                             <button
                                                 onClick={() => handleAddResearchItem(result)}
                                                 className={`self-center p-2 rounded-lg transition ${isLight ? 'bg-gray-200 hover:bg-purple-100 hover:text-purple-600 text-gray-500' : 'bg-surface-600 hover:bg-purple-600 hover:text-white text-gray-400'}`}
-                                                title="Add to Library"
+                                                title={(result as any).is_refinable ? "Update Existing Use Case" : "Add to Library"}
                                             >
                                                 <Plus className="w-5 h-5" />
                                             </button>

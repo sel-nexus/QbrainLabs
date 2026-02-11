@@ -63347,3 +63347,214 @@ WARNING:  Invalid HTTP request received.
 2026-02-11 18:42:07,981 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
 {"method": "GET", "path": "/jsonrpc", "status_code": 404, "duration_ms": 2.34, "client_ip": "40.78.111.183", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-11T18:42:07.982652Z"}
 WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 157.49, "client_ip": "172.11.133.232:40973", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T19:55:38.768909Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 102.18, "client_ip": "172.11.133.232:40973", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T19:55:38.911007Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 158.67, "client_ip": "172.11.133.232:40973", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T19:55:40.448907Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 122.8, "client_ip": "172.11.133.232:40973", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T19:55:40.703692Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 101.2, "client_ip": "172.11.133.232:40973", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T19:55:46.538727Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 97.84, "client_ip": "172.11.133.232:40973", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T19:55:46.679402Z"}
+{"method": "GET", "path": "/api/knowledge-base/industries/it", "status_code": 200, "duration_ms": 101.49, "client_ip": "172.11.133.232:40973", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T19:55:59.737757Z"}
+{"method": "GET", "path": "/api/knowledge-base/industries/it", "status_code": 200, "duration_ms": 102.93, "client_ip": "172.11.133.232:40973", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T19:56:31.705651Z"}
+2026-02-11 19:57:21,254 - multipart.multipart - DEBUG - Calling on_field_start with no data
+2026-02-11 19:57:21,255 - multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2026-02-11 19:57:21,255 - multipart.multipart - DEBUG - Calling on_field_data with data[9:27]
+2026-02-11 19:57:21,255 - multipart.multipart - DEBUG - Calling on_field_end with no data
+2026-02-11 19:57:21,255 - multipart.multipart - DEBUG - Calling on_field_start with no data
+2026-02-11 19:57:21,255 - multipart.multipart - DEBUG - Calling on_field_name with data[28:36]
+2026-02-11 19:57:21,255 - multipart.multipart - DEBUG - Calling on_field_data with data[37:47]
+2026-02-11 19:57:21,255 - multipart.multipart - DEBUG - Calling on_field_end with no data
+2026-02-11 19:57:21,255 - multipart.multipart - DEBUG - Calling on_end with no data
+{"event": "Login attempt for user: vsr***outlook.com", "level": "info", "timestamp": "2026-02-11T19:57:21.257117Z"}
+{"event": "User found: vsr***outlook.com (ID: ef47c2ab-77c9-42ec-8720-02abbdb24472)", "level": "info", "timestamp": "2026-02-11T19:57:21.356650Z"}
+{"event": "Password verified for vsr***outlook.com", "level": "info", "timestamp": "2026-02-11T19:57:21.662606Z"}
+{"event": "Login successful for vsr***outlook.com. Token generated.", "level": "info", "timestamp": "2026-02-11T19:57:21.777849Z"}
+{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 526.62, "client_ip": "48.214.144.154:54275", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T19:57:21.777849Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 33.2, "client_ip": "48.214.144.154:54275", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T19:57:21.915577Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 37.25, "client_ip": "48.214.144.154:54275", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T19:57:21.969481Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 5.27, "client_ip": "48.214.144.154:54275", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T19:57:28.828760Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 7.92, "client_ip": "48.214.144.154:54275", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T19:57:28.850928Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+2026-02-11 20:09:39,673 - multipart.multipart - DEBUG - Calling on_field_start with no data
+2026-02-11 20:09:39,674 - multipart.multipart - DEBUG - Calling on_field_name with data[0:8]
+2026-02-11 20:09:39,674 - multipart.multipart - DEBUG - Calling on_field_data with data[9:31]
+2026-02-11 20:09:39,674 - multipart.multipart - DEBUG - Calling on_field_end with no data
+2026-02-11 20:09:39,674 - multipart.multipart - DEBUG - Calling on_field_start with no data
+2026-02-11 20:09:39,674 - multipart.multipart - DEBUG - Calling on_field_name with data[32:40]
+2026-02-11 20:09:39,674 - multipart.multipart - DEBUG - Calling on_field_data with data[41:54]
+2026-02-11 20:09:39,674 - multipart.multipart - DEBUG - Calling on_field_end with no data
+2026-02-11 20:09:39,674 - multipart.multipart - DEBUG - Calling on_end with no data
+{"event": "Login attempt for user: adm***qbrainlabs.com", "level": "info", "timestamp": "2026-02-11T20:09:39.675131Z"}
+{"event": "User found: adm***qbrainlabs.com (ID: 48e54d46-a245-4044-bd1b-c9b1eb244049)", "level": "info", "timestamp": "2026-02-11T20:09:39.681187Z"}
+{"event": "Password verified for adm***qbrainlabs.com", "level": "info", "timestamp": "2026-02-11T20:09:40.246008Z"}
+{"event": "Login successful for adm***qbrainlabs.com. Token generated.", "level": "info", "timestamp": "2026-02-11T20:09:40.262753Z"}
+{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 596.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:09:40.263807Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 32.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:09:40.503930Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 26.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:09:40.599912Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 17.49, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:09:47.164606Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 18.44, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:09:47.266791Z"}
+{"method": "GET", "path": "/api/knowledge/articles", "status_code": 200, "duration_ms": 27.76, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:10:01.757991Z"}
+{"method": "GET", "path": "/api/knowledge-base/industries/it", "status_code": 200, "duration_ms": 12.95, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:10:24.902892Z"}
+{"method": "GET", "path": "/api/knowledge-base/industries/it", "status_code": 200, "duration_ms": 12.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:11:03.079430Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 31.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:11:20.633358Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 7.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:11:20.666107Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 7.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:11:20.787983Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 7.82, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:11:20.833238Z"}
+{"method": "GET", "path": "/api/knowledge/articles", "status_code": 200, "duration_ms": 38.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:11:29.810245Z"}
+2026-02-11 20:12:08,089 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "GET", "path": "/api/mcp", "status_code": 404, "duration_ms": 4.63, "client_ip": "172.184.194.32:27210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-11T20:12:08.091118Z"}
+{"method": "GET", "path": "/api/knowledge-base/industries/it", "status_code": 200, "duration_ms": 11.22, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:12:20.195656Z"}
+{"method": "GET", "path": "/api/knowledge/articles", "status_code": 200, "duration_ms": 33.49, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:12:48.983284Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 9.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:12:56.764986Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 34.23, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:12:56.873320Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 83.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:13:06.899787Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 117.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:13:07.146975Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 86.91, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:13:07.213972Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 21.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:13:07.372882Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 117.46, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:13:19.663672Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 251.11, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:13:19.977997Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 11.17, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:13:35.937611Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 52.63, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:13:36.010153Z"}
+{"method": "GET", "path": "/api/knowledge-base/industries/it", "status_code": 200, "duration_ms": 10.83, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:13:45.665705Z"}
+{"method": "GET", "path": "/api/knowledge/articles", "status_code": 200, "duration_ms": 19.8, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:14:25.914241Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 21.79, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:14:45.244451Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 19.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:14:45.347904Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 18.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:14:54.705807Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 35.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:14:54.817143Z"}
+{"method": "GET", "path": "/api/knowledge-base/industries/it", "status_code": 200, "duration_ms": 12.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:15:15.366677Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 82.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:15:35.019061Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 105.44, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:15:35.166392Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 20.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:15:43.186785Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 18.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:15:43.238684Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 11.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:15:43.416186Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 6.6, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:15:43.467017Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 10.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:16:35.198407Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 7.64, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:16:35.225879Z"}
+2026-02-11 20:21:09,307 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "POST", "path": "/api", "status_code": 404, "duration_ms": 2.97, "client_ip": "43.226.125.39:44768", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-11T20:21:09.308398Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 9.01, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:24:31.364078Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 7.74, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:24:31.499042Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 8.46, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:24:31.600000Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 10.98, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:25:17.547753Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 9.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:25:17.577011Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 7.5, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:25:28.077791Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 15.6, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:25:28.155509Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 23.15, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:25:28.311604Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 15.25, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:25:28.373535Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 22.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:25:33.227529Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 11.5, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:25:33.318856Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 28.42, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:25:39.160373Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 5.59, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:25:39.233112Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 25.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:25:56.473034Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 102.72, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:25:56.673823Z"}
+2026-02-11 20:26:31,691 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.perplexity.ai:443
+2026-02-11 20:26:37,169 - urllib3.connectionpool - DEBUG - https://api.perplexity.ai:443 "POST /chat/completions HTTP/1.1" 200 None
+{"method": "POST", "path": "/api/knowledge-base/refresh", "status_code": 200, "duration_ms": 5810.43, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:26:37.176971Z"}
+2026-02-11 20:28:14,934 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.perplexity.ai:443
+2026-02-11 20:28:20,327 - urllib3.connectionpool - DEBUG - https://api.perplexity.ai:443 "POST /chat/completions HTTP/1.1" 200 None
+{"method": "POST", "path": "/api/knowledge-base/refresh", "status_code": 200, "duration_ms": 5635.22, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:28:20.332758Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 156.55, "client_ip": "172.11.133.232:1973", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:36:21.184659Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 151.48, "client_ip": "172.11.133.232:1973", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:36:21.186230Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 152.18, "client_ip": "172.11.133.232:1973", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:36:21.373683Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 127.01, "client_ip": "172.11.133.232:1973", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:36:21.377521Z"}
+2026-02-11 20:36:52,783 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.perplexity.ai:443
+2026-02-11 20:36:57,110 - urllib3.connectionpool - DEBUG - https://api.perplexity.ai:443 "POST /chat/completions HTTP/1.1" 200 None
+{"method": "POST", "path": "/api/knowledge-base/refresh", "status_code": 200, "duration_ms": 4431.9, "client_ip": "172.11.133.232:1973", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:36:57.115643Z"}
+2026-02-11 20:38:46,899 - qbrainlabs - WARNING - HTTPException: 404 - Industry not found
+{"method": "POST", "path": "/api/knowledge-base/add", "status_code": 404, "duration_ms": 123.15, "client_ip": "172.11.133.232:1973", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-11T20:38:46.901426Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 234.88, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:39:42.055048Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 168.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:39:42.235303Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 13.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:39:52.980219Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 9.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:39:53.023184Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 14.06, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:39:53.152729Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 11.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:39:53.207479Z"}
+2026-02-11 20:39:59,168 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "POST", "path": "/api", "status_code": 404, "duration_ms": 3.76, "client_ip": "103.254.149.26:36266", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-11T20:39:59.169550Z"}
+2026-02-11 20:40:08,533 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.perplexity.ai:443
+2026-02-11 20:40:13,696 - urllib3.connectionpool - DEBUG - https://api.perplexity.ai:443 "POST /chat/completions HTTP/1.1" 200 None
+{"method": "POST", "path": "/api/knowledge-base/refresh", "status_code": 200, "duration_ms": 5185.32, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:40:13.701672Z"}
+2026-02-11 20:40:34,611 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "POST", "path": "/api/knowledge-base/add-usecase", "status_code": 404, "duration_ms": 3.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-11T20:40:34.613358Z"}
+2026-02-11 20:40:49,940 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "POST", "path": "/api/knowledge-base/add-usecase", "status_code": 404, "duration_ms": 4.26, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-11T20:40:49.942695Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 34.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:42:25.647180Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 10.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:42:25.679138Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 11.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:42:25.785641Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 14.87, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:42:25.842944Z"}
+2026-02-11 20:42:42,834 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.perplexity.ai:443
+2026-02-11 20:42:50,326 - urllib3.connectionpool - DEBUG - https://api.perplexity.ai:443 "POST /chat/completions HTTP/1.1" 200 None
+{"method": "POST", "path": "/api/knowledge-base/refresh", "status_code": 200, "duration_ms": 7536.75, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:42:50.332445Z"}
+2026-02-11 20:43:00,208 - qbrainlabs - WARNING - HTTPException: 404 - Industry not found
+{"method": "POST", "path": "/api/knowledge-base/add", "status_code": 404, "duration_ms": 20.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-11T20:43:00.209806Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 14.88, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:43:26.954061Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 14.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:43:26.997493Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 22.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:43:38.240804Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 21.92, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:43:38.308725Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 91.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:43:38.482737Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 28.1, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:43:38.555597Z"}
+{"method": "GET", "path": "/api/knowledge/articles", "status_code": 200, "duration_ms": 24.67, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:43:47.264068Z"}
+2026-02-11 20:43:49,542 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "POST", "path": "/api", "status_code": 404, "duration_ms": 3.69, "client_ip": "103.214.172.36:57204", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-11T20:43:49.543535Z"}
+2026-02-11 20:44:27,981 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "POST", "path": "/api", "status_code": 404, "duration_ms": 3.97, "client_ip": "82.208.21.184:59324", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-11T20:44:27.981966Z"}
+2026-02-11 20:44:52,175 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.perplexity.ai:443
+2026-02-11 20:44:58,856 - urllib3.connectionpool - DEBUG - https://api.perplexity.ai:443 "POST /chat/completions HTTP/1.1" 200 None
+{"method": "POST", "path": "/api/knowledge-base/refresh", "status_code": 200, "duration_ms": 6726.8, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:44:58.862172Z"}
+2026-02-11 20:45:10,501 - qbrainlabs - WARNING - HTTPException: 404 - Industry not found
+{"method": "POST", "path": "/api/knowledge-base/add", "status_code": 404, "duration_ms": 19.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-11T20:45:10.502335Z"}
+2026-02-11 20:45:16,589 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "POST", "path": "/api", "status_code": 404, "duration_ms": 3.71, "client_ip": "13.250.101.110:34918", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-11T20:45:16.591320Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 16.13, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:45:31.039311Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 26.68, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:45:31.107960Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 12.62, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:45:31.300043Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 12.0, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:45:31.354008Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 78.22, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:45:40.296196Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 109.34, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:45:40.452862Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 19.54, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:45:40.497591Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 35.86, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:45:40.583706Z"}
+{"method": "GET", "path": "/api/knowledge-base/industries/it", "status_code": 200, "duration_ms": 65.12, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:45:55.013256Z"}
+2026-02-11 20:46:07,709 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "POST", "path": "/api", "status_code": 404, "duration_ms": 3.33, "client_ip": "103.171.34.27:36588", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-11T20:46:07.710790Z"}
+2026-02-11 20:46:40,350 - urllib3.connectionpool - DEBUG - Starting new HTTPS connection (1): api.perplexity.ai:443
+2026-02-11 20:46:48,341 - urllib3.connectionpool - DEBUG - https://api.perplexity.ai:443 "POST /chat/completions HTTP/1.1" 200 None
+{"method": "POST", "path": "/api/knowledge-base/refresh", "status_code": 200, "duration_ms": 8058.03, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:46:48.357054Z"}
+{"method": "GET", "path": "/api/knowledge-base/industries/supply-chain", "status_code": 200, "duration_ms": 10.47, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T20:46:54.234057Z"}
+2026-02-11 20:48:29,629 - qbrainlabs - WARNING - HTTPException: 404 - Not Found
+{"method": "POST", "path": "/api", "status_code": 404, "duration_ms": 3.79, "client_ip": "103.214.172.103:46018", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-11T20:48:29.632607Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 229.85, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:23:37.987934Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 312.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:23:38.258007Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 384.38, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:23:38.457221Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 321.45, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:23:38.631583Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 336.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:23:58.860928Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 322.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:23:58.863478Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 321.65, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:23:58.863992Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 324.79, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:23:58.866620Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-user", "status_code": 200, "duration_ms": 39.11, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:23:58.941451Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-workshop", "status_code": 200, "duration_ms": 49.18, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:23:58.960132Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/summary", "status_code": 200, "duration_ms": 200.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:23:59.094522Z"}
+{"method": "GET", "path": "/api/admin/llm-usage/by-feature", "status_code": 200, "duration_ms": 200.56, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:23:59.100838Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 22.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:05.240523Z"}
+{"method": "GET", "path": "/api/admin/settings", "status_code": 200, "duration_ms": 17.27, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:05.268988Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 43.57, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:06.499617Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 39.05, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:06.548789Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 38.08, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:11.340318Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 33.31, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:11.382720Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 26.02, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:12.119518Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 27.26, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:12.160951Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 56.66, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:13.343909Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 48.77, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:13.403896Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 25.97, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:28.657254Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 19.4, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:28.684625Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 9.39, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:34.924973Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 6.46, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:34.952809Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 19.99, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:37.518846Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 15.2, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:37.552577Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 30.36, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:39.641044Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 37.03, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:39.689504Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 24.94, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:41.945321Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 16.79, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:41.975042Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 8.79, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:50.011295Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 7.73, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:50.034971Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 35.96, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:52.442665Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 32.52, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:52.485319Z"}
+{"method": "POST", "path": "/api/auth/logout", "status_code": 200, "duration_ms": 40.42, "client_ip": "127.0.0.1", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-11T21:24:55.296815Z"}
