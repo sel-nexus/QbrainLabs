@@ -46,16 +46,35 @@ class AddUseCaseRequest(BaseModel):
     technologies: List[str] = []
 
 
+class MoveUseCaseRequest(BaseModel):
+    usecase_id: str
+    target_industry_id: str
+    create_industry: bool = True  # Create industry if it doesn't exist
+
+
+class DeleteUseCaseRequest(BaseModel):
+    usecase_id: str
+
+
 router = APIRouter(prefix="/api/knowledge-base", tags=["knowledge-base"])
 
+
+from pathlib import Path
+
+# Define absolute path to knowledge base file
+KB_FILE_PATH = Path(__file__).parent.parent / "data" / "knowledge_base.json"
 
 # Load knowledge base data
 def load_knowledge_base():
     try:
-        with open("app/data/knowledge_base.json", "r") as f:
+        if not KB_FILE_PATH.exists():
+            print(f"Knowledge base file not found at: {KB_FILE_PATH}")
+            return {"industries": [], "categories": [], "technologies": []}
+            
+        with open(KB_FILE_PATH, "r") as f:
             return json.load(f)
     except Exception as e:
-        print(f"Error loading knowledge base: {e}")
+        print(f"Error loading knowledge base from {KB_FILE_PATH}: {e}")
         return {"industries": [], "categories": [], "technologies": []}
 
 KB_DATA = load_knowledge_base()
@@ -64,11 +83,14 @@ KB_DATA = load_knowledge_base()
 # Save knowledge base data
 def save_knowledge_base(data):
     try:
-        with open("app/data/knowledge_base.json", "w") as f:
+        # Ensure directory exists
+        KB_FILE_PATH.parent.mkdir(parents=True, exist_ok=True)
+        
+        with open(KB_FILE_PATH, "w") as f:
             json.dump(data, f, indent=2)
         return True
     except Exception as e:
-        print(f"Error saving knowledge base: {e}")
+        print(f"Error saving knowledge base to {KB_FILE_PATH}: {e}")
         return False
 
 
@@ -244,10 +266,16 @@ async def refresh_use_cases(
     
     # Filter and categorize each research result
     for item in fresh_use_cases:
-        # Pydantic model expects 'industry' to be the ID
+        # Set industry information properly
         if request.industry_id:
+            # If user selected a specific industry, use that
             item["industry"] = request.industry_id
             item["industry_name"] = industry_name
+        else:
+            # Otherwise, use the industry name from the RAG service result
+            # This will be used to create a new industry if it doesn't exist
+            item["industry"] = item.get("industry_name", item.get("industry", "General"))
+            item["industry_name"] = item.get("industry_name", item.get("industry", "General"))
         
         # Find best match in existing use cases
         best_match = None
@@ -322,10 +350,57 @@ async def add_use_case(
     current_user: User = Depends(get_current_user)
 ):
     """
-    Add a new use case to the knowledge base library
+    Add a new use case to the knowledge base library.
+    Creates a new industry category if it doesn't exist.
     """
+    # Reload data to ensure we have latest
+    global KB_DATA
+    KB_DATA = load_knowledge_base()
+    
+    # Initialize industries list if not present
+    if "industries" not in KB_DATA:
+        KB_DATA["industries"] = []
+    
+    # Find industry and validate
+    industry_found = False
+    industry_name = request.industry_id
+    target_industry_id = request.industry_id
+    
+    # First, try to find the exact industry by ID
+    for ind in KB_DATA.get("industries", []):
+        if ind["id"] == request.industry_id:
+            industry_found = True
+            industry_name = ind["name"]
+            break
+    
+    # If not found, try to find by name (case-insensitive)
+    if not industry_found:
+        for ind in KB_DATA.get("industries", []):
+            if ind["name"].lower() == request.industry_id.lower():
+                industry_found = True
+                industry_name = ind["name"]
+                target_industry_id = ind["id"]
+                break
+    
+    # If still not found, create a new industry
+    if not industry_found:
+        # Generate industry ID from name
+        target_industry_id = request.industry_id.lower().replace(" ", "-").replace("_", "-")
+        industry_name = request.industry_id
+        
+        # Create new industry object
+        new_industry = {
+            "id": target_industry_id,
+            "name": industry_name,
+            "icon": "brain",  # Default icon
+            "use_cases": []
+        }
+        
+        KB_DATA["industries"].append(new_industry)
+        print(f"[KB] Created new industry: {industry_name} (ID: {target_industry_id})")
+    
     # Create new use case object
-    new_id = f"{request.industry_id}-{uuid.uuid4().hex[:6]}"
+    new_id = f"{target_industry_id}-{uuid.uuid4().hex[:6]}"
     
     new_use_case = {
         "id": new_id,
@@ -340,23 +415,11 @@ async def add_use_case(
         "kpis": []
     }
     
-    # Find industry and add use case
-    industry_found = False
-    industry_name = "Unknown"
-    
-    # Reload data to ensure we have latest
-    global KB_DATA
-    KB_DATA = load_knowledge_base()
-    
+    # Add use case to the industry
     for ind in KB_DATA.get("industries", []):
-        if ind["id"] == request.industry_id:
+        if ind["id"] == target_industry_id:
             ind["use_cases"].append(new_use_case)
-            industry_name = ind["name"]
-            industry_found = True
             break
-            
-    if not industry_found:
-        raise HTTPException(status_code=404, detail="Industry not found")
         
     # Save back to file
     if not save_knowledge_base(KB_DATA):
@@ -366,13 +429,140 @@ async def add_use_case(
         id=new_id,
         title=new_use_case["title"],
         description=new_use_case["description"],
-        industry=request.industry_id,
+        industry=target_industry_id,
         industry_name=industry_name,
         category=new_use_case["category"],
         complexity=new_use_case["complexity"],
         typical_roi=new_use_case["typical_roi"],
         relevance_score=1.0
     )
+
+
+@router.post("/move")
+async def move_use_case(
+    request: MoveUseCaseRequest,
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Move a use case from one industry to another.
+    Creates the target industry if it doesn't exist and create_industry is True.
+    Only accessible to admin users.
+    """
+    if not current_user.is_admin:
+        raise HTTPException(status_code=403, detail="Only admins can move use cases")
+    
+    # Reload data
+    global KB_DATA
+    KB_DATA = load_knowledge_base()
+    
+    if "industries" not in KB_DATA:
+        raise HTTPException(status_code=500, detail="Knowledge base not properly initialized")
+    
+    # Find the use case in the current industry
+    source_industry = None
+    use_case_to_move = None
+    
+    for ind in KB_DATA["industries"]:
+        for uc in ind.get("use_cases", []):
+            if uc["id"] == request.usecase_id:
+                source_industry = ind
+                use_case_to_move = uc
+                break
+        if use_case_to_move:
+            break
+    
+    if not use_case_to_move:
+        raise HTTPException(status_code=404, detail="Use case not found")
+    
+    # Find or create target industry
+    target_industry = None
+    for ind in KB_DATA["industries"]:
+        if ind["id"] == request.target_industry_id or ind["name"].lower() == request.target_industry_id.lower():
+            target_industry = ind
+            break
+    
+    if not target_industry:
+        if request.create_industry:
+            # Create new industry
+            target_industry_id = request.target_industry_id.lower().replace(" ", "-").replace("_", "-")
+            target_industry = {
+                "id": target_industry_id,
+                "name": request.target_industry_id,
+                "icon": "brain",
+                "use_cases": []
+            }
+            KB_DATA["industries"].append(target_industry)
+            print(f"[KB] Created new industry for move: {request.target_industry_id} (ID: {target_industry_id})")
+        else:
+            raise HTTPException(status_code=404, detail="Target industry not found")
+    
+    # Move the use case
+    source_industry["use_cases"].remove(use_case_to_move)
+    target_industry["use_cases"].append(use_case_to_move)
+    
+    # Save changes
+    if not save_knowledge_base(KB_DATA):
+        raise HTTPException(status_code=500, detail="Failed to save knowledge base")
+    
+    return {
+        "success": True,
+        "message": f"Use case '{use_case_to_move['title']}' moved to {target_industry['name']}",
+        "usecase_id": request.usecase_id,
+        "source_industry": source_industry["name"],
+        "target_industry": target_industry["name"]
+    }
+
+
+@router.delete("/usecases/{usecase_id}")
+async def delete_use_case(
+    usecase_id: str,
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Delete a use case from the knowledge base.
+    Only accessible to admin users.
+    """
+    if not current_user.is_admin:
+        raise HTTPException(status_code=403, detail="Only admins can delete use cases")
+    
+    # Reload data
+    global KB_DATA
+    KB_DATA = load_knowledge_base()
+    
+    if "industries" not in KB_DATA:
+        raise HTTPException(status_code=500, detail="Knowledge base not properly initialized")
+    
+    # Find and delete the use case
+    deleted = False
+    deleted_title = None
+    deleted_industry = None
+    
+    for ind in KB_DATA["industries"]:
+        for uc in ind.get("use_cases", []):
+            if uc["id"] == usecase_id:
+                deleted_title = uc["title"]
+                deleted_industry = ind["name"]
+                ind["use_cases"].remove(uc)
+                deleted = True
+                break
+        if deleted:
+            break
+    
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Use case not found")
+    
+    # Save changes
+    if not save_knowledge_base(KB_DATA):
+        raise HTTPException(status_code=500, detail="Failed to save knowledge base")
+    
+    print(f"[KB] Deleted use case: {deleted_title} from {deleted_industry}")
+    
+    return {
+        "success": True,
+        "message": f"Use case '{deleted_title}' deleted successfully",
+        "usecase_id": usecase_id,
+        "industry": deleted_industry
+    }
 
 
 @router.get("/workshop/{workshop_id}/insights", response_model=WorkshopInsight)

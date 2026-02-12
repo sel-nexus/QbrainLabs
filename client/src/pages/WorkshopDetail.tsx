@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { UseCaseForm, type UseCaseData } from '../components/UseCaseForm';
+import { BulkUseCaseForm } from '../components/BulkUseCaseForm';
 import { api } from '../lib/api';
 import { socket } from '../lib/socket';
 import { Button } from '../components/ui/Button';
@@ -47,6 +48,7 @@ export function WorkshopDetail() {
     const [showAnalytics, setShowAnalytics] = useState<'matrix' | 'analytics' | 'roi' | 'scale'>('matrix');
     const [activeCriterionIndex, setActiveCriterionIndex] = useState(0);
     const [showAddUseCase, setShowAddUseCase] = useState(false);
+    const [addMode, setAddMode] = useState<'single' | 'bulk'>('single');
     const [editingUseCase, setEditingUseCase] = useState<any>(null);
     const [showQA, setShowQA] = useState(false);
     const [roiSelectedUseCase, setRoiSelectedUseCase] = useState<{ id: string; title: string } | null>(null);
@@ -73,8 +75,13 @@ export function WorkshopDetail() {
         // I will rely on the "ReplacementContent" to just include imports and updated Render
         fetchWorkshop();
         // Join socket room as facilitator
-        socket.connect();
-        socket.emit('join_workshop', { workshop_id: id });
+        if (socket.connected) {
+            socket.emit('join_workshop', { workshop_id: id });
+        } else {
+            socket.on('connect', () => {
+                socket.emit('join_workshop', { workshop_id: id });
+            });
+        }
 
         socket.on('new_submission', (data: any) => {
             console.log("New submission:", data);
@@ -219,6 +226,26 @@ export function WorkshopDetail() {
         } catch (err) {
             console.error(err);
             toast.error("Failed to add use case");
+        }
+    };
+
+    const handleBulkSubmitUseCases = async (useCases: UseCaseData[]) => {
+        try {
+            // Submit all use cases in parallel
+            const promises = useCases.map(data => 
+                api.post('usecases/', {
+                    ...data,
+                    workshop_id: id,
+                    added_by_facilitator: true
+                })
+            );
+            
+            await Promise.all(promises);
+            setShowAddUseCase(false);
+            fetchWorkshop(); // Refresh use cases
+        } catch (err) {
+            console.error(err);
+            throw err; // Let BulkUseCaseForm handle the error
         }
     };
 
@@ -646,13 +673,28 @@ export function WorkshopDetail() {
                                         {currentPhase === 'SCORING' ? 'Scoring Queue' : 'Use Cases'}
                                         <span className={`text-sm font-normal px-2 py-0.5 rounded-full ${theme === 'light' ? 'text-gray-500 bg-gray-100' : 'text-gray-500 bg-surface-800'}`}>{useCases.length}</span>
                                     </h2>
-                                    <Button
-                                        variant="secondary"
-                                        className="h-9"
-                                        onClick={() => setShowAddUseCase(true)}
-                                    >
-                                        <Plus className="w-4 h-4 mr-2" /> Add Use Case
-                                    </Button>
+                                    <div className="flex gap-2">
+                                        <Button
+                                            variant="secondary"
+                                            className="h-9"
+                                            onClick={() => {
+                                                setAddMode('single');
+                                                setShowAddUseCase(true);
+                                            }}
+                                        >
+                                            <Plus className="w-4 h-4 mr-2" /> Add Use Case
+                                        </Button>
+                                        <Button
+                                            variant="secondary"
+                                            className="h-9"
+                                            onClick={() => {
+                                                setAddMode('bulk');
+                                                setShowAddUseCase(true);
+                                            }}
+                                        >
+                                            <FileText className="w-4 h-4 mr-2" /> Add Multiple
+                                        </Button>
+                                    </div>
                                 </div>
 
                                 <div className="grid gap-4 lg:grid-cols-2">
@@ -887,7 +929,7 @@ export function WorkshopDetail() {
             {showAddUseCase && (
                 <div className="fixed inset-0 bg-black/50 z-50 overflow-y-auto">
                     <div className="min-h-screen py-8 px-4 flex items-center justify-center">
-                        <div className={`relative w-full max-w-2xl rounded-xl border p-6 ${theme === 'light'
+                        <div className={`relative w-full ${addMode === 'bulk' ? 'max-w-4xl' : 'max-w-2xl'} rounded-xl border p-6 ${theme === 'light'
                             ? 'bg-white border-gray-200'
                             : 'bg-surface-900 border-white/10'
                             }`}>
@@ -901,17 +943,52 @@ export function WorkshopDetail() {
                                 <X className="w-5 h-5" />
                             </button>
 
-                            <h2 className={`text-xl font-bold mb-6 ${theme === 'light' ? 'text-gray-900' : 'text-white'
-                                }`}>
-                                Add Use Case
-                            </h2>
+                            <div className="mb-6">
+                                <h2 className={`text-xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'
+                                    }`}>
+                                    {addMode === 'bulk' ? 'Add Multiple Use Cases' : 'Add Use Case'}
+                                </h2>
+                                <div className="flex gap-2 mt-3">
+                                    <button
+                                        onClick={() => setAddMode('single')}
+                                        className={`px-3 py-1.5 text-sm rounded-lg transition ${
+                                            addMode === 'single'
+                                                ? 'bg-brand-violet text-white'
+                                                : theme === 'light'
+                                                ? 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                                : 'bg-white/10 text-gray-400 hover:bg-white/20'
+                                        }`}
+                                    >
+                                        Single
+                                    </button>
+                                    <button
+                                        onClick={() => setAddMode('bulk')}
+                                        className={`px-3 py-1.5 text-sm rounded-lg transition ${
+                                            addMode === 'bulk'
+                                                ? 'bg-brand-violet text-white'
+                                                : theme === 'light'
+                                                ? 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                                : 'bg-white/10 text-gray-400 hover:bg-white/20'
+                                        }`}
+                                    >
+                                        Multiple
+                                    </button>
+                                </div>
+                            </div>
 
-                            <UseCaseForm
-                                workshopId={id!}
-                                onSubmit={handleSubmitUseCase}
-                                submitLabel="Add Use Case"
-                                onSuccess={() => setShowAddUseCase(false)}
-                            />
+                            {addMode === 'single' ? (
+                                <UseCaseForm
+                                    workshopId={id!}
+                                    onSubmit={handleSubmitUseCase}
+                                    submitLabel="Add Use Case"
+                                    onSuccess={() => setShowAddUseCase(false)}
+                                />
+                            ) : (
+                                <BulkUseCaseForm
+                                    onSubmit={handleBulkSubmitUseCases}
+                                    onSuccess={() => setShowAddUseCase(false)}
+                                />
+                            )}
                         </div>
                     </div>
                 </div>

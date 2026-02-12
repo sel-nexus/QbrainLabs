@@ -515,21 +515,6 @@
           ]
         },
         {
-          "id": "it-aaa69a",
-          "title": "Test Use Case Automated Verification",
-          "description": "This is a test use case added by the verification script.",
-          "category": "Process Automation",
-          "complexity": "Low",
-          "data_requirements": "To be defined",
-          "typical_roi": "100%",
-          "implementation_time": "1 month",
-          "technologies": [
-            "Python",
-            "API"
-          ],
-          "kpis": []
-        },
-        {
           "id": "it-976e89",
           "title": "AI Agents for IT Operations and Automation",
           "description": "AI agents autonomously optimize IT networks, handle complex IT operations, and execute multi-step workflows, moving beyond simple automation to proactive management. This addresses top enterprise use cases like IT operations identified in 2024 polls, with scaling reported by 23% of organizations in 2025 surveys. High-value for IT by reducing manual intervention and improving efficiency.",
@@ -565,6 +550,57 @@
           "complexity": "Medium",
           "data_requirements": "To be defined",
           "typical_roi": "30-50% reduction in IT operational costs",
+          "implementation_time": "3-6 months",
+          "technologies": [],
+          "kpis": []
+        },
+        {
+          "id": "it-119612",
+          "title": "Test Use Case from Script",
+          "description": "This is a test use case to reproduce the failure.",
+          "category": "Process Automation",
+          "complexity": "Low",
+          "data_requirements": "To be defined",
+          "typical_roi": "10-20%",
+          "implementation_time": "1-2 months",
+          "technologies": [
+            "Python",
+            "FastAPI"
+          ],
+          "kpis": []
+        },
+        {
+          "id": "it-43fa42",
+          "title": "Agentic AI for Autonomous Booking and Transaction",
+          "description": "AI agents autonomously evaluate travel options, apply user preferences, and complete bookings across multiple suppliers without human intervention. By 2026, these agents mediate discovery, comparison, and booking decisions, with IDC projecting 30% of travel bookings will be executed by AI agents by 2030. Integration with digital identity wallets enables one-click, agent-driven transactions across airlines, hotels, and restaurants.",
+          "category": "Agentic AI",
+          "complexity": "High",
+          "data_requirements": "To be defined",
+          "typical_roi": "25-30% increase in direct bookings and profitability; reduced customer acquisition costs through disintermediation",
+          "implementation_time": "3-6 months",
+          "technologies": [],
+          "kpis": []
+        },
+        {
+          "id": "it-9126c0",
+          "title": "Real-Time Contextual Travel Companion (Vision + Speech + Reasoning)",
+          "description": "AI assistants like ChatGPT and Gemini combine reasoning, speech, and vision capabilities to provide real-time, contextual guidance through phones and smart glasses. Travelers receive instant translation, context, and suggestions by asking what they see, creating ambient, always-available travel support. This transforms in-destination experiences and reduces reliance on traditional guidebooks and customer service.",
+          "category": "Generative AI",
+          "complexity": "Medium",
+          "data_requirements": "To be defined",
+          "typical_roi": "10-15% reduction in customer support costs; increased ancillary spending through real-time recommendations",
+          "implementation_time": "3-6 months",
+          "technologies": [],
+          "kpis": []
+        },
+        {
+          "id": "it-701fd1",
+          "title": "Zero-Touch Corporate Travel Automation with AI Expense Management",
+          "description": "AI agents automate corporate travel booking by reading employee calendars and handling reservations with minimal human intervention, while simultaneously auditing receipts and approving or rejecting expense claims in real-time. Over half of business travelers already use AI for travel planning and rebooking. This transforms corporate travel from manual processes to autonomous systems with parallel digital reviewers.",
+          "category": "Agentic AI + Automation",
+          "complexity": "Medium",
+          "data_requirements": "To be defined",
+          "typical_roi": "25-35% reduction in travel administration costs; improved compliance and faster reimbursement cycles",
           "implementation_time": "3-6 months",
           "technologies": [],
           "kpis": []

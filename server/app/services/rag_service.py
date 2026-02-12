@@ -1,7 +1,7 @@
 import os
 import json
 import random
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from app.core.config import settings
 from app.utils.llm_tracking import track_llm_usage, get_usage_from_response
 

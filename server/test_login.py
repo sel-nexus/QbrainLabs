@@ -15,7 +15,7 @@ async def reset_password():
     from sqlalchemy import text
     from app.core.security import hash_password
     
-    new_password = "Admin123!"
+    new_password = "Tcs@$2026"
     new_hash = hash_password(new_password)
     
     async with engine.begin() as conn:

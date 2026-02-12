@@ -52,24 +52,7 @@ export function FacilitatorDashboard() {
   };
 
   const handleUseCasesClick = () => {
-    if (workshops.length === 0) {
-      toast.info(t('dashboard.facilitator.noWorkshops'));
-      return;
-    }
-
-    if (workshops.length === 1) {
-      navigate(`/workshop/${workshops[0].id}`);
-      return;
-    }
-
-    const el = document.getElementById('my-workshops');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      toast.info(t('dashboard.facilitator.selectWorkshop'));
-      return;
-    }
-
-    toast.info(t('dashboard.facilitator.selectWorkshop'));
+    navigate('/facilitator/usecases');
   };
 
   const fetchWorkshops = useCallback(async () => {

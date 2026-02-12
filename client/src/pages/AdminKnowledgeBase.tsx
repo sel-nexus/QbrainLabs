@@ -15,7 +15,9 @@ import {
     CheckCircle,
     AlertCircle,
     Plus,
-    Sparkles
+    Sparkles,
+    ArrowRightLeft,
+    Move
 } from 'lucide-react';
 import { AdminLayout } from '../components/AdminLayout';
 import { ConfirmationModal } from '../components/ConfirmationModal';
@@ -108,6 +110,12 @@ export function AdminKnowledgeBase() {
     const [researchLoading, setResearchLoading] = useState(false);
     const [researchResults, setResearchResults] = useState<SearchResult[]>([]);
     const [customScope, setCustomScope] = useState('');
+    const [showMoveModal, setShowMoveModal] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [targetIndustry, setTargetIndustry] = useState('');
+    const [isNewIndustry, setIsNewIndustry] = useState(false);
+    const [newIndustryName, setNewIndustryName] = useState('');
+    const [usecaseToDelete, setUsecaseToDelete] = useState<UseCaseTemplate | null>(null);
     const isLight = theme === 'light';
 
     useEffect(() => {
@@ -305,13 +313,87 @@ export function AdminKnowledgeBase() {
                 })
             });
 
-            if (!response.ok) throw new Error('Failed to add use case');
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                const errorMessage = errorData.detail || 'Failed to add use case';
+                throw new Error(errorMessage);
+            }
             toast.success('Use case added to library');
             setResearchResults(prev => prev.filter(r => r.id !== result.id));
             fetchOverview(); // Refresh stats
         } catch (error) {
             console.error('Error:', error);
-            toast.error('Failed to add use case to library');
+            toast.error(error instanceof Error ? error.message : 'Failed to add use case to library');
+        }
+    };
+
+    const handleMoveUseCase = async () => {
+        if (!selectedUseCase) return;
+        if (isNewIndustry && !newIndustryName) return;
+        if (!isNewIndustry && !targetIndustry) return;
+
+        try {
+            const authToken = localStorage.getItem('hm_auth_token');
+            const response = await fetch(`${API_BASE}/api/knowledge-base/move`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    usecase_id: selectedUseCase.id,
+                    target_industry_id: isNewIndustry ? newIndustryName : targetIndustry,
+                    create_industry: isNewIndustry
+                })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.detail || 'Failed to move use case');
+            }
+
+            const data = await response.json();
+            toast.success(data.message || 'Use case moved successfully');
+            setShowMoveModal(false);
+            setTargetIndustry('');
+            setIsNewIndustry(false);
+            setNewIndustryName('');
+            setSelectedUseCase(null);
+            setSelectedIndustry(null);
+            fetchOverview(); // Refresh to show updated industries
+        } catch (error) {
+            console.error('Error:', error);
+            toast.error(error instanceof Error ? error.message : 'Failed to move use case');
+        }
+    };
+
+    const handleDeleteUseCase = async () => {
+        if (!usecaseToDelete) return;
+
+        try {
+            const authToken = localStorage.getItem('hm_auth_token');
+            const response = await fetch(`${API_BASE}/api/knowledge-base/usecases/${usecaseToDelete.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.detail || 'Failed to delete use case');
+            }
+
+            const data = await response.json();
+            toast.success(data.message || 'Use case deleted successfully');
+            setShowDeleteModal(false);
+            setUsecaseToDelete(null);
+            setSelectedUseCase(null);
+            setSelectedIndustry(null);
+            fetchOverview(); // Refresh to show updated industries
+        } catch (error) {
+            console.error('Error:', error);
+            toast.error(error instanceof Error ? error.message : 'Failed to delete use case');
         }
     };
 
@@ -344,6 +426,39 @@ export function AdminKnowledgeBase() {
                             <span className={`px-3 py-1 rounded-full text-sm ${getComplexityColor(selectedUseCase.complexity)}`}>
                                 {selectedUseCase.complexity} {t('admin.knowledgeBase.complexity', 'Complexity')}
                             </span>
+                        </div>
+                        <div className="flex gap-2">
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    console.log('Move button clicked', {selectedUseCase, showMoveModal});
+                                    setShowMoveModal(true);
+                                    console.log('setShowMoveModal(true) called');
+                                }}
+                                className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition ${isLight ? 'border-gray-200 hover:bg-gray-50 text-gray-700' : 'border-white/10 hover:bg-white/5 text-gray-300'}`}
+                                title="Move to another industry"
+                                type="button"
+                            >
+                                <ArrowRightLeft className="w-4 h-4" />
+                                Move
+                            </button>
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    console.log('Delete button clicked', {selectedUseCase, showDeleteModal});
+                                    setUsecaseToDelete(selectedUseCase);
+                                    setShowDeleteModal(true);
+                                    console.log('setShowDeleteModal(true) called');
+                                }}
+                                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-red-500/20 hover:bg-red-500/10 text-red-500 transition"
+                                title="Delete use case"
+                                type="button"
+                            >
+                                <Trash2 className="w-4 h-4" />
+                                Delete
+                            </button>
                         </div>
                     </div>
 
@@ -395,6 +510,116 @@ export function AdminKnowledgeBase() {
                         </div>
                     )}
                 </div>
+
+                {/* Move Use Case Modal */}
+                {(() => {
+                    console.log('Modal render check:', {showMoveModal, selectedUseCase: !!selectedUseCase});
+                    return showMoveModal && selectedUseCase;
+                })() && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                        <div className={`relative w-full max-w-md p-6 rounded-2xl shadow-xl ${isLight ? 'bg-white' : 'bg-surface-800 border border-white/10'}`}>
+                            <button
+                                onClick={() => {
+                                    setShowMoveModal(false);
+                                    setTargetIndustry('');
+                                    setIsNewIndustry(false);
+                                    setNewIndustryName('');
+                                }}
+                                className={`absolute top-4 right-4 p-1 rounded-full hover:bg-black/5 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}
+                            >
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+
+                            <h3 className={`text-xl font-bold mb-4 ${isLight ? 'text-gray-900' : 'text-white'}`}>Move Use Case</h3>
+                            <p className={`mb-6 text-sm ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
+                                Move "{selectedUseCase?.title}" to a different industry. You can select an existing industry or enter a new industry name to create it.
+                            </p>
+
+                            <div className="mb-6">
+                                <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
+                                    Target Industry
+                                </label>
+                                <select
+                                    value={isNewIndustry ? 'new' : targetIndustry}
+                                    onChange={(e) => {
+                                        if (e.target.value === 'new') {
+                                            setIsNewIndustry(true);
+                                            setTargetIndustry('');
+                                        } else {
+                                            setIsNewIndustry(false);
+                                            setTargetIndustry(e.target.value);
+                                            setNewIndustryName('');
+                                        }
+                                    }}
+                                    className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500 ${isLight ? 'bg-white border-gray-200 text-gray-900' : 'bg-surface-700 border-white/5 text-white'}`}
+                                >
+                                    <option value="">Select an industry...</option>
+                                    {overview?.industries.map((industry) => (
+                                        <option key={industry.id} value={industry.id}>
+                                            {industry.name}
+                                        </option>
+                                    ))}
+                                    <option value="new">+ Create New Industry</option>
+                                </select>
+                            </div>
+
+                            {isNewIndustry && (
+                                <div className="mb-6">
+                                    <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
+                                        New Industry Name
+                                    </label>
+                                    <input
+                                        type="text"
+                                        value={newIndustryName}
+                                        onChange={(e) => setNewIndustryName(e.target.value)}
+                                        placeholder="Enter new industry name"
+                                        className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500 ${isLight ? 'bg-white border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-surface-700 border-white/5 text-white placeholder-gray-500'}`}
+                                    />
+                                </div>
+                            )}
+
+                            <div className="flex justify-end gap-3">
+                                <button
+                                    onClick={() => {
+                                        setShowMoveModal(false);
+                                        setTargetIndustry('');
+                                        setIsNewIndustry(false);
+                                        setNewIndustryName('');
+                                    }}
+                                    className={`px-4 py-2 rounded-lg text-sm font-medium ${isLight ? 'text-gray-700 hover:bg-gray-100' : 'text-gray-300 hover:bg-white/5'}`}
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={handleMoveUseCase}
+                                    disabled={isNewIndustry ? !newIndustryName : !targetIndustry}
+                                    className={`px-4 py-2 rounded-lg text-sm font-medium text-white flex items-center gap-2 ${(isNewIndustry ? !newIndustryName : !targetIndustry)
+                                        ? 'bg-gray-400 cursor-not-allowed'
+                                        : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90'
+                                    }`}
+                                >
+                                    <Move className="w-4 h-4" />
+                                    Move Use Case
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Delete Confirmation Modal */}
+                <ConfirmationModal
+                    isOpen={showDeleteModal}
+                    onClose={() => {
+                        setShowDeleteModal(false);
+                        setUsecaseToDelete(null);
+                    }}
+                    onConfirm={handleDeleteUseCase}
+                    title="Delete Use Case"
+                    message={`Are you sure you want to delete "${usecaseToDelete?.title}"? This action cannot be undone.`}
+                    confirmText="Delete"
+                    cancelText="Cancel"
+                    variant="danger"
+                />
             </AdminLayout>
         );
     }
@@ -541,7 +766,9 @@ export function AdminKnowledgeBase() {
                                         </div>
                                         <div className="flex-1">
                                             <h4 className={`text-lg font-semibold ${isLight ? 'text-gray-900' : 'text-white'}`}>{industry.name}</h4>
-                                            <p className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.showingKeyAIUseCases')}</p>
+                                            <p className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                                                {industry.use_case_count} {industry.use_case_count === 1 ? 'use case' : 'use cases'}
+                                            </p>
                                         </div>
                                         <ChevronRight className="w-5 h-5 text-gray-400" />
                                     </div>
@@ -876,6 +1103,85 @@ export function AdminKnowledgeBase() {
                     </div>
                 </div>
             )}
+
+            {/* Move Use Case Modal */}
+            {(() => {
+                console.log('Modal render check:', {showMoveModal, selectedUseCase: !!selectedUseCase});
+                return showMoveModal && selectedUseCase;
+            })() && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+                    <div className={`relative w-full max-w-md p-6 rounded-2xl shadow-xl ${isLight ? 'bg-white' : 'bg-surface-800 border border-white/10'}`}>
+                        <button
+                            onClick={() => {
+                                setShowMoveModal(false);
+                                setTargetIndustry('');
+                            }}
+                            className={`absolute top-4 right-4 p-1 rounded-full hover:bg-black/5 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}
+                        >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
+
+                        <h3 className={`text-xl font-bold mb-4 ${isLight ? 'text-gray-900' : 'text-white'}`}>Move Use Case</h3>
+                        <p className={`mb-6 text-sm ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
+                            Move "{selectedUseCase?.title}" to a different industry. You can select an existing industry or enter a new industry name to create it.
+                        </p>
+
+                        <div className="mb-6">
+                            <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
+                                Target Industry
+                            </label>
+                            <input
+                                type="text"
+                                value={targetIndustry}
+                                onChange={(e) => setTargetIndustry(e.target.value)}
+                                placeholder="Enter industry name or ID"
+                                className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500 ${isLight ? 'bg-white border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-surface-700 border-white/5 text-white placeholder-gray-500'}`}
+                            />
+                            <p className={`mt-2 text-xs ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                                Available industries: {overview?.industries.map(i => i.name).join(', ')}
+                            </p>
+                        </div>
+
+                        <div className="flex justify-end gap-3">
+                            <button
+                                onClick={() => {
+                                    setShowMoveModal(false);
+                                    setTargetIndustry('');
+                                }}
+                                className={`px-4 py-2 rounded-lg text-sm font-medium ${isLight ? 'text-gray-700 hover:bg-gray-100' : 'text-gray-300 hover:bg-white/5'}`}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleMoveUseCase}
+                                disabled={!targetIndustry}
+                                className={`px-4 py-2 rounded-lg text-sm font-medium text-white flex items-center gap-2 ${!targetIndustry
+                                    ? 'bg-gray-400 cursor-not-allowed'
+                                    : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90'
+                                }`}
+                            >
+                                <Move className="w-4 h-4" />
+                                Move Use Case
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Delete Confirmation Modal */}
+            <ConfirmationModal
+                isOpen={showDeleteModal}
+                onClose={() => {
+                    setShowDeleteModal(false);
+                    setUsecaseToDelete(null);
+                }}
+                onConfirm={handleDeleteUseCase}
+                title="Delete Use Case"
+                message={`Are you sure you want to delete "${usecaseToDelete?.title}"? This action cannot be undone.`}
+                confirmText="Delete"
+                cancelText="Cancel"
+                variant="danger"
+            />
         </AdminLayout>
     );
 }

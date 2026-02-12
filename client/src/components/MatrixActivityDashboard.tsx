@@ -65,20 +65,12 @@ export function MatrixActivityDashboard({
         // Check connection status
         setIsConnected(socket.connected);
 
-        // Ensure socket is connected
-        if (!socket.connected) {
-            socket.connect();
-        }
-
         // Handle connection events
         const onConnect = () => {
             console.log('MatrixActivityDashboard: Socket connected, joining workshop room:', workshopId);
             setIsConnected(true);
-            // Small delay to ensure socket is fully ready
-            setTimeout(() => {
-                socket.emit('join_workshop', { workshop_id: workshopId });
-                console.log('MatrixActivityDashboard: Joined workshop room:', workshopId);
-            }, 100);
+            socket.emit('join_workshop', { workshop_id: workshopId });
+            console.log('MatrixActivityDashboard: Joined workshop room:', workshopId);
         };
 
         const onDisconnect = () => {

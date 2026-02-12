@@ -83,6 +83,79 @@ async def submit_use_case(
     
     return use_case
 
+@router.get("/all/list", response_model=List[dict])
+async def get_all_use_cases(
+    authenticated_user: Optional[User] = Depends(get_current_user_optional),
+    db: AsyncSession = Depends(get_db)
+):
+    """Get all use cases with their workshop information
+    - Admins see all use cases
+    - Facilitators only see use cases from workshops they own or are assigned to
+    """
+    if not authenticated_user:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    
+    # Admins can see all use cases
+    if authenticated_user.is_admin_user:
+        result = await db.execute(
+            select(UseCase, Workshop)
+            .join(Workshop, UseCase.workshop_id == Workshop.id)
+            .order_by(UseCase.created_at.desc())
+        )
+    else:
+        # Facilitators only see use cases from their workshops
+        from app.models.models import WorkshopFacilitator
+        
+        # Get workshops owned by the facilitator
+        owned_workshops_result = await db.execute(
+            select(Workshop.id).where(Workshop.facilitator_id == authenticated_user.id)
+        )
+        owned_workshop_ids = [str(w[0]) for w in owned_workshops_result.all()]
+        
+        # Get workshops assigned to the facilitator
+        assigned_workshops_result = await db.execute(
+            select(WorkshopFacilitator.workshop_id)
+            .where(WorkshopFacilitator.facilitator_id == authenticated_user.id)
+        )
+        assigned_workshop_ids = [str(w[0]) for w in assigned_workshops_result.all()]
+        
+        # Combine both lists
+        all_workshop_ids = list(set(owned_workshop_ids + assigned_workshop_ids))
+        
+        if not all_workshop_ids:
+            # Facilitator has no workshops, return empty list
+            return []
+        
+        # Get use cases only from facilitator's workshops
+        result = await db.execute(
+            select(UseCase, Workshop)
+            .join(Workshop, UseCase.workshop_id == Workshop.id)
+            .where(UseCase.workshop_id.in_(all_workshop_ids))
+            .order_by(UseCase.created_at.desc())
+        )
+    
+    use_cases_data = []
+    for use_case, workshop in result.all():
+        use_cases_data.append({
+            "id": str(use_case.id),
+            "title": use_case.title,
+            "description": use_case.description,
+            "proposed_solution": use_case.proposed_solution,
+            "kpi": use_case.kpi,
+            "target_user": use_case.target_user,
+            "category": use_case.category,
+            "status": use_case.status,
+            "created_at": use_case.created_at.isoformat() if use_case.created_at else None,
+            "workshop": {
+                "id": str(workshop.id),
+                "title": workshop.title,
+                "status": workshop.status,
+                "current_phase": workshop.current_phase
+            }
+        })
+    
+    return use_cases_data
+
 @router.get("/{workshop_id}", response_model=List[UseCaseResponse])
 async def get_workshop_use_cases(workshop_id: str, db: AsyncSession = Depends(get_db)):
     result = await db.execute(

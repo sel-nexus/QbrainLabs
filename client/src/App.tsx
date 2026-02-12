@@ -29,6 +29,7 @@ import { ParticipantDashboard } from './pages/ParticipantDashboard';
 import { ParticipantMatrix } from './pages/ParticipantMatrix';
 import { IntakePhase } from './pages/IntakePhase';
 import { ScoringPhase } from './pages/ScoringPhase';
+import { AllUseCases } from './pages/AllUseCases';
 
 // Route Guards
 const PrivateRoute = ({ children, requireAdmin = false }: { children: ReactElement, requireAdmin?: boolean }) => {
@@ -112,6 +113,7 @@ function App() {
           <Route path="/facilitator/create" element={<AuthenticatedRoute requireAdmin title="Create Workshop"><CreateWorkshop /></AuthenticatedRoute>} />
           <Route path="/facilitator/analytics" element={<AuthenticatedRoute title="Analytics"><AnalyticsDashboard /></AuthenticatedRoute>} />
           <Route path="/facilitator/knowledge-base" element={<AuthenticatedRoute title="Knowledge Base"><KnowledgeBase /></AuthenticatedRoute>} />
+          <Route path="/facilitator/usecases" element={<AuthenticatedRoute title="All Use Cases"><AllUseCases /></AuthenticatedRoute>} />
 
           {/* Admin Routes (Admin Only) */}
           <Route path="/admin" element={<PrivateRoute requireAdmin><AdminPanelLayout title="Dashboard"><AdminPanel /></AdminPanelLayout></PrivateRoute>} />

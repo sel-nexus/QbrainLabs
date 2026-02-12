@@ -116,7 +116,7 @@ async def check_and_award_badges(
     await db.commit()
     return newly_earned
 
-@router.post("/points", response_model=PointEarnedResponse, status_code=status.HTTP_201_CREATED)
+
 async def service_award_points(
     participant_id: str,
     workshop_id: str,

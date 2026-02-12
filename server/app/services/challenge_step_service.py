@@ -5,8 +5,9 @@ Service for generating prompts and summaries for the six-step process
 
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.models.challenge import ChallengeCard
-from typing import Optional
+from typing import Optional, List, Dict, Any
 from datetime import datetime
+import json
 
 
 class ChallengeStepService:

@@ -38,11 +38,6 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
                     setSession(parsedSession);
                     sessionRef.current = parsedSession;
 
-                    // Re-establish socket connection if needed
-                    if (!socket.connected) {
-                        socket.connect();
-                    }
-
                     // Emit join immediately if connected, or the connect listener will handle it
                     if (socket.connected) {
                         socket.emit('join_workshop', { workshop_id: parsedSession.workshopId });
@@ -84,8 +79,9 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     const login = (newSession: Session) => {
         localStorage.setItem('hm_session', JSON.stringify(newSession));
         setSession(newSession);
-        if (!socket.connected) socket.connect();
-        socket.emit('join_workshop', { workshop_id: newSession.workshopId });
+        if (socket.connected) {
+            socket.emit('join_workshop', { workshop_id: newSession.workshopId });
+        }
     };
 
     const logout = () => {
