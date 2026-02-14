@@ -553,57 +553,6 @@
           "implementation_time": "3-6 months",
           "technologies": [],
           "kpis": []
-        },
-        {
-          "id": "it-119612",
-          "title": "Test Use Case from Script",
-          "description": "This is a test use case to reproduce the failure.",
-          "category": "Process Automation",
-          "complexity": "Low",
-          "data_requirements": "To be defined",
-          "typical_roi": "10-20%",
-          "implementation_time": "1-2 months",
-          "technologies": [
-            "Python",
-            "FastAPI"
-          ],
-          "kpis": []
-        },
-        {
-          "id": "it-43fa42",
-          "title": "Agentic AI for Autonomous Booking and Transaction",
-          "description": "AI agents autonomously evaluate travel options, apply user preferences, and complete bookings across multiple suppliers without human intervention. By 2026, these agents mediate discovery, comparison, and booking decisions, with IDC projecting 30% of travel bookings will be executed by AI agents by 2030. Integration with digital identity wallets enables one-click, agent-driven transactions across airlines, hotels, and restaurants.",
-          "category": "Agentic AI",
-          "complexity": "High",
-          "data_requirements": "To be defined",
-          "typical_roi": "25-30% increase in direct bookings and profitability; reduced customer acquisition costs through disintermediation",
-          "implementation_time": "3-6 months",
-          "technologies": [],
-          "kpis": []
-        },
-        {
-          "id": "it-9126c0",
-          "title": "Real-Time Contextual Travel Companion (Vision + Speech + Reasoning)",
-          "description": "AI assistants like ChatGPT and Gemini combine reasoning, speech, and vision capabilities to provide real-time, contextual guidance through phones and smart glasses. Travelers receive instant translation, context, and suggestions by asking what they see, creating ambient, always-available travel support. This transforms in-destination experiences and reduces reliance on traditional guidebooks and customer service.",
-          "category": "Generative AI",
-          "complexity": "Medium",
-          "data_requirements": "To be defined",
-          "typical_roi": "10-15% reduction in customer support costs; increased ancillary spending through real-time recommendations",
-          "implementation_time": "3-6 months",
-          "technologies": [],
-          "kpis": []
-        },
-        {
-          "id": "it-701fd1",
-          "title": "Zero-Touch Corporate Travel Automation with AI Expense Management",
-          "description": "AI agents automate corporate travel booking by reading employee calendars and handling reservations with minimal human intervention, while simultaneously auditing receipts and approving or rejecting expense claims in real-time. Over half of business travelers already use AI for travel planning and rebooking. This transforms corporate travel from manual processes to autonomous systems with parallel digital reviewers.",
-          "category": "Agentic AI + Automation",
-          "complexity": "Medium",
-          "data_requirements": "To be defined",
-          "typical_roi": "25-35% reduction in travel administration costs; improved compliance and faster reimbursement cycles",
-          "implementation_time": "3-6 months",
-          "technologies": [],
-          "kpis": []
         }
       ]
     },
@@ -5211,6 +5160,122 @@
             "Development patterns",
             "Capital efficiency"
           ]
+        }
+      ]
+    },
+    {
+      "id": "general",
+      "name": "General",
+      "icon": "brain",
+      "use_cases": [
+        {
+          "id": "general-af7990",
+          "title": "Hyper-Personalized Guest Experiences",
+          "description": "AI analyzes guest data including preferences, behaviors, and history to tailor room recommendations, dining options, spa services, and promotions. This creates seamless, memorable stays that boost loyalty and satisfaction. Leading chains like Marriott and Hilton use it to unify data across systems for real-time personalization.[1][3][2]",
+          "category": "Predictive Analytics",
+          "complexity": "Medium",
+          "data_requirements": "To be defined",
+          "typical_roi": "25% increase in guest satisfaction and higher loyalty bookings",
+          "implementation_time": "3-6 months",
+          "technologies": [],
+          "kpis": []
+        },
+        {
+          "id": "general-aa74f2",
+          "title": "Conversational AI Chatbots and Upselling",
+          "description": "AI-powered chatbots handle bookings, 24/7 support, and contextual upsells via messaging or websites, reducing staff workload. They provide tailored offers based on guest history, as seen in Port Hotels and Hilton implementations. This drives direct bookings and revenue without human intervention.[1][3][4]",
+          "category": "Generative AI",
+          "complexity": "Low",
+          "data_requirements": "To be defined",
+          "typical_roi": "15-25% increase in upsell revenue and 30% cost savings in support",
+          "implementation_time": "3-6 months",
+          "technologies": [],
+          "kpis": []
+        },
+        {
+          "id": "general-2119dd",
+          "title": "Labor and Operational Optimization",
+          "description": "AI forecasts staffing needs, optimizes schedules, housekeeping, and inventory to cut costs and improve efficiency. Boom AI and Altek AI achieve high resolution rates by automating routine tasks, freeing staff for high-value service. Hilton's energy management has saved over $1B.[1][3][4]",
+          "category": "Predictive Analytics",
+          "complexity": "Medium",
+          "data_requirements": "To be defined",
+          "typical_roi": "20% cost reduction in labor and operations",
+          "implementation_time": "3-6 months",
+          "technologies": [],
+          "kpis": []
+        },
+        {
+          "id": "general-169e40",
+          "title": "Agentic AI for Booking and Discovery",
+          "description": "Autonomous AI agents mediate guest journeys by evaluating options, applying preferences, and executing bookings by 2026. This shifts from channel optimization to agent-mediated interactions, increasing direct bookings. IDC predicts 30% of travel bookings via agents by 2030.[2]",
+          "category": "Agentic AI",
+          "complexity": "High",
+          "data_requirements": "To be defined",
+          "typical_roi": "30% increase in direct bookings and profitability",
+          "implementation_time": "3-6 months",
+          "technologies": [],
+          "kpis": []
+        },
+        {
+          "id": "general-49cf86",
+          "title": "Dynamic Pricing and Revenue Optimization",
+          "description": "AI forecasts demand, optimizes pricing, and automates budget allocation based on real-time data and trends. Tools like Hilton's OnQ and Jumeirah's Predictive Budget system deliver automated optimizations for key KPIs. This maximizes revenue while adapting to market fluctuations.[1][3][4]",
+          "category": "Predictive Analytics",
+          "complexity": "Medium",
+          "data_requirements": "To be defined",
+          "typical_roi": "20-30% revenue uplift from optimized pricing",
+          "implementation_time": "3-6 months",
+          "technologies": [],
+          "kpis": []
+        }
+      ]
+    },
+    {
+      "id": "ai-for-travel,-transportation-and-hospitality",
+      "name": "AI for Travel, Transportation and Hospitality",
+      "icon": "brain",
+      "use_cases": []
+    },
+    {
+      "id": "travel,-transportation,-and-hospitality",
+      "name": "Travel, Transportation, and Hospitality",
+      "icon": "brain",
+      "use_cases": [
+        {
+          "id": "it-43fa42",
+          "title": "Agentic AI for Autonomous Booking and Transaction",
+          "description": "AI agents autonomously evaluate travel options, apply user preferences, and complete bookings across multiple suppliers without human intervention. By 2026, these agents mediate discovery, comparison, and booking decisions, with IDC projecting 30% of travel bookings will be executed by AI agents by 2030. Integration with digital identity wallets enables one-click, agent-driven transactions across airlines, hotels, and restaurants.",
+          "category": "Agentic AI",
+          "complexity": "High",
+          "data_requirements": "To be defined",
+          "typical_roi": "25-30% increase in direct bookings and profitability; reduced customer acquisition costs through disintermediation",
+          "implementation_time": "3-6 months",
+          "technologies": [],
+          "kpis": []
+        },
+        {
+          "id": "it-9126c0",
+          "title": "Real-Time Contextual Travel Companion (Vision + Speech + Reasoning)",
+          "description": "AI assistants like ChatGPT and Gemini combine reasoning, speech, and vision capabilities to provide real-time, contextual guidance through phones and smart glasses. Travelers receive instant translation, context, and suggestions by asking what they see, creating ambient, always-available travel support. This transforms in-destination experiences and reduces reliance on traditional guidebooks and customer service.",
+          "category": "Generative AI",
+          "complexity": "Medium",
+          "data_requirements": "To be defined",
+          "typical_roi": "10-15% reduction in customer support costs; increased ancillary spending through real-time recommendations",
+          "implementation_time": "3-6 months",
+          "technologies": [],
+          "kpis": []
+        },
+        {
+          "id": "it-701fd1",
+          "title": "Zero-Touch Corporate Travel Automation with AI Expense Management",
+          "description": "AI agents automate corporate travel booking by reading employee calendars and handling reservations with minimal human intervention, while simultaneously auditing receipts and approving or rejecting expense claims in real-time. Over half of business travelers already use AI for travel planning and rebooking. This transforms corporate travel from manual processes to autonomous systems with parallel digital reviewers.",
+          "category": "Agentic AI + Automation",
+          "complexity": "Medium",
+          "data_requirements": "To be defined",
+          "typical_roi": "25-35% reduction in travel administration costs; improved compliance and faster reimbursement cycles",
+          "implementation_time": "3-6 months",
+          "technologies": [],
+          "kpis": []
         }
       ]
     }

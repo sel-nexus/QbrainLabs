@@ -104,7 +104,7 @@ async def get_all_use_cases(
         )
     else:
         # Facilitators only see use cases from their workshops
-        from app.models.models import WorkshopFacilitator
+        from app.models.rbac import WorkshopFacilitator
         
         # Get workshops owned by the facilitator
         owned_workshops_result = await db.execute(

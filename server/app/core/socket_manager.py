@@ -31,7 +31,15 @@ else:
 
 sio = socketio.AsyncServer(
     async_mode='asgi',
-    cors_allowed_origins=cors_origins if cors_origins else "*"  # Allow all if empty (for development)
+    cors_allowed_origins=cors_origins if cors_origins else "*",  # Allow all if empty (for development)
+    # Proxy/Zscaler compatibility settings
+    ping_timeout=60,  # Increased for proxy environments
+    ping_interval=25,  # Keep connection alive through proxies
+    max_http_buffer_size=1000000,  # 1MB buffer for proxy environments
+    allow_upgrades=True,  # Allow transport upgrades
+    http_compression=True,  # Enable compression for better proxy performance
+    engineio_logger=False,  # Disable verbose logging
+    logger=False
 )
 
 socket_app = socketio.ASGIApp(sio, socketio_path='socket.io')
