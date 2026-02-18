@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
-import { FileText, Calendar, Tag, ArrowRight, Search, Filter } from 'lucide-react';
+import { FileText, Calendar, Tag, ArrowRight, Search, Filter, ClipboardCheck } from 'lucide-react';
 import { API_BASE_URL } from '../lib/config';
+import { UseCaseApprovalModal } from '../components/usecases/UseCaseApprovalModal';
 
 const API_BASE = API_BASE_URL;
 
@@ -38,6 +39,7 @@ export function AllUseCases() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedWorkshop, setSelectedWorkshop] = useState<string>('all');
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
+  const [reviewingUseCase, setReviewingUseCase] = useState<UseCase | null>(null);
 
   useEffect(() => {
     fetchAllUseCases();
@@ -140,8 +142,14 @@ export function AllUseCases() {
     });
   };
 
-  const handleUseCaseClick = (workshopId: string) => {
-    navigate(`/workshop/${workshopId}`);
+  const handleUseCaseClick = (useCase: UseCase) => {
+    setReviewingUseCase(useCase);
+  };
+
+  const handleStatusChange = (id: string, newStatus: string) => {
+    setUseCases(prev =>
+      prev.map(uc => uc.id === id ? { ...uc, status: newStatus } : uc)
+    );
   };
 
   if (isLoading) {
@@ -155,6 +163,7 @@ export function AllUseCases() {
   const uniqueWorkshops = getUniqueWorkshops();
 
   return (
+    <>
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
@@ -235,7 +244,7 @@ export function AllUseCases() {
               <div
                 key={useCase.id}
                 className="bg-white dark:bg-gray-800 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer"
-                onClick={() => handleUseCaseClick(useCase.workshop.id)}
+                onClick={() => handleUseCaseClick(useCase)}
               >
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-4">
@@ -247,26 +256,24 @@ export function AllUseCases() {
                         {useCase.description}
                       </p>
                     </div>
-                    <span
-                      className={`ml-4 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getStatusBadgeClass(
-                        useCase.status
-                      )}`}
-                    >
-                      {useCase.status}
-                    </span>
+                    <div className="ml-4 flex items-center gap-2 shrink-0">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${getStatusBadgeClass(
+                          useCase.status
+                        )}`}
+                      >
+                        {useCase.status}
+                      </span>
+                      {useCase.status === 'PENDING' && (
+                        <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300 whitespace-nowrap flex items-center gap-1">
+                          <ClipboardCheck className="w-3 h-3" />
+                          Review
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    {useCase.proposed_solution && (
-                      <div>
-                        <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                          {t('useCases.proposedSolution', 'Proposed Solution')}
-                        </p>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          {useCase.proposed_solution}
-                        </p>
-                      </div>
-                    )}
                     {useCase.kpi && (
                       <div>
                         <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -314,7 +321,10 @@ export function AllUseCases() {
                         </div>
                       )}
                     </div>
-                    <button className="flex items-center text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 text-sm font-medium">
+                    <button
+                      className="flex items-center text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 text-sm font-medium"
+                      onClick={e => { e.stopPropagation(); navigate(`/workshop/${useCase.workshop.id}`); }}
+                    >
                       {t('common.viewWorkshop', 'View Workshop')}
                       <ArrowRight className="ml-1 h-4 w-4" />
                     </button>
@@ -326,5 +336,16 @@ export function AllUseCases() {
         )}
       </div>
     </div>
+
+    {reviewingUseCase && token && (
+      <UseCaseApprovalModal
+        useCase={reviewingUseCase}
+        allUseCases={useCases}
+        token={token}
+        onClose={() => setReviewingUseCase(null)}
+        onStatusChange={handleStatusChange}
+      />
+    )}
+    </>
   );
 }

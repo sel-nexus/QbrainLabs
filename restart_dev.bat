@@ -192,21 +192,12 @@ if errorlevel 1 (
     echo [OK] Database initialized successfully
 )
 
-REM Start Backend
-echo [OK] Backend starting on %BACKEND_HOST%:%BACKEND_PORT%...
-REM Use the venv Python executable directly for better compatibility
+REM Start Backend with --reload so file changes are picked up automatically
+echo [OK] Backend starting on %BACKEND_HOST%:%BACKEND_PORT% (reload enabled)...
 if exist ".venv\Scripts\python.exe" (
-    REM Windows-native venv
-    echo    [INFO] Starting Backend with %PROTOCOL%...
-    start "Backend Server" /min cmd /c "cd /d %CD% && .venv\Scripts\python.exe -m app.run > ..\server.log 2>&1"
-) else if exist ".venv\bin\python" (
-    REM Cross-platform/WSL venv detected
-    echo    [INFO] Starting Backend with %PROTOCOL%...
-    start "Backend Server" /min cmd /c "cd /d %CD% && %PYTHON_CMD% -m app.run > ..\server.log 2>&1"
+    start "Backend Server" /min cmd /c "cd /d %CD% && .venv\Scripts\python.exe -m uvicorn app.main:app --reload --host %BACKEND_HOST% --port %BACKEND_PORT% >> ..\server.log 2>&1"
 ) else (
-    REM Fallback to system Python
-    echo    [INFO] Starting Backend with %PROTOCOL%...
-    start "Backend Server" /min cmd /c "cd /d %CD% && %PYTHON_CMD% -m app.run > ..\server.log 2>&1"
+    start "Backend Server" /min cmd /c "cd /d %CD% && %PYTHON_CMD% -m uvicorn app.main:app --reload --host %BACKEND_HOST% --port %BACKEND_PORT% >> ..\server.log 2>&1"
 )
 
 cd ..

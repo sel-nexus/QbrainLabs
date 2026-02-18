@@ -860,7 +860,7 @@ export function WorkshopDetail() {
             {/* Q&A Modal/Sidebar */}
             <Modal isOpen={showQA} onClose={() => setShowQA(false)} title="Q&A & Discussion">
                 <div className="h-[60vh]">
-                    <QAPanel />
+                    <QAPanel workshopId={id} />
                 </div>
             </Modal>
 

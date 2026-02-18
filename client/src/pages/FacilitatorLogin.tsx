@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../lib/config';
@@ -32,22 +32,10 @@ export function FacilitatorLogin() {
         e.preventDefault();
         setLoading(true);
 
-        const logData = {
-            isLogin,
-            email: formData.email, // Safe to log email
-            hasPassword: !!formData.password, // Don't log password
-            passwordLength: formData.password.length
-        };
-        console.log('[FacilitatorLogin] Submitting form:', logData);
-
         try {
-
-
             if (isLogin) {
                 // Use AuthContext login for proper state management
-                console.log('[FacilitatorLogin] Attempting login via AuthContext...');
                 await login(formData.email, formData.password);
-                console.log('[FacilitatorLogin] Login successful');
                 toast.success('Welcome back!');
                 // Navigation will be handled by the useEffect above when isAuthenticated changes
             } else {
@@ -58,7 +46,6 @@ export function FacilitatorLogin() {
                     return;
                 }
                 // Handle signup separately
-                console.log('[FacilitatorLogin] Attempting signup...');
                 const response = await fetch(`${API_BASE_URL}/api/auth/signup`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -70,15 +57,12 @@ export function FacilitatorLogin() {
                     }),
                 });
 
-                console.log('[FacilitatorLogin] Signup response status:', response.status);
-
                 if (!response.ok) {
                     const error = await response.json();
                     console.error('[FacilitatorLogin] Signup failed:', error);
                     throw new Error(error.detail || 'Signup failed');
                 }
 
-                console.log('[FacilitatorLogin] Signup successful');
                 // After signup, switch to login
                 toast.success('Account created! Your registration is pending admin approval. You\'ll receive an email when your account is activated.');
                 setIsLogin(true);
@@ -206,18 +190,30 @@ export function FacilitatorLogin() {
                         </button>
                     </form>
 
-                    {/* Toggle Login/Signup */}
+                    {/* Toggle Login/Register */}
                     <div className="mt-6 text-center">
-                        <button
-                            type="button"
-                            onClick={() => {
-                                setIsLogin(!isLogin);
-                                setFormData({ email: '', password: '', full_name: '', organization: '', confirm_password: '' });
-                            }}
-                            className="text-sm transition text-brand-violet hover:text-brand-violet/80"
-                        >
-                            {isLogin ? "Don't have an account? Sign up" : 'Already have an account? Sign in'}
-                        </button>
+                        {isLogin ? (
+                            <p className="text-sm theme-text-secondary">
+                                Don't have an account?{' '}
+                                <Link
+                                    to="/facilitator-register"
+                                    className="text-brand-violet hover:text-brand-violet/80 font-medium transition"
+                                >
+                                    Request access
+                                </Link>
+                            </p>
+                        ) : (
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setIsLogin(true);
+                                    setFormData({ email: '', password: '', full_name: '', organization: '', confirm_password: '' });
+                                }}
+                                className="text-sm transition text-brand-violet hover:text-brand-violet/80"
+                            >
+                                Already have an account? Sign in
+                            </button>
+                        )}
                     </div>
                 </div>
 

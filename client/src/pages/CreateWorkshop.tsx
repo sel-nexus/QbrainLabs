@@ -7,6 +7,7 @@ import { useTheme } from '../context/ThemeContext';
 import { Plus, Trash2, Loader2, X } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { TemplateSelector } from '../components/templates/TemplateSelector';
+import { toast } from 'sonner';
 
 interface Criterion {
     name: string;
@@ -47,9 +48,8 @@ export function CreateWorkshop() {
         }
     };
 
-    const handleTemplateChange = (tmplKey: string) => {
+    const handleTemplateChange = (tmplKey: keyof typeof TEMPLATES) => {
         setTemplate(tmplKey);
-        // @ts-ignore
         setCriteria([...TEMPLATES[tmplKey].criteria]);
     };
 
@@ -87,7 +87,7 @@ export function CreateWorkshop() {
             navigate('/admin/my-workshops');
         } catch (error) {
             console.error("Failed to create workshop", error);
-            alert("Failed to create workshop. Check console.");
+            toast.error("Failed to create workshop. Please try again.");
         } finally {
             setLoading(false);
         }
@@ -154,7 +154,7 @@ export function CreateWorkshop() {
                                 <button
                                     key={key}
                                     type="button"
-                                    onClick={() => handleTemplateChange(key)}
+                                    onClick={() => handleTemplateChange(key as keyof typeof TEMPLATES)}
                                     className={`p-4 rounded-xl border text-sm font-medium transition-all ${template === key
                                             ? 'bg-brand-violet/20 border-brand-violet text-brand-violet'
                                             : theme === 'light'

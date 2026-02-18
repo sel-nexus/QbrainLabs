@@ -426,3 +426,43 @@ async def get_usecase_feedback(
         "created_at": feedback.created_at,
         "updated_at": feedback.updated_at
     }
+
+
+class UseCaseStatusUpdate(BaseModel):
+    status: str  # "APPROVED" or "REJECTED"
+
+
+@router.patch("/{usecase_id}/status")
+async def update_use_case_status(
+    usecase_id: str,
+    status_update: UseCaseStatusUpdate,
+    authenticated_user: Optional[User] = Depends(get_current_user_optional),
+    db: AsyncSession = Depends(get_db)
+):
+    """Approve or reject a use case (facilitator/admin only)"""
+    if status_update.status not in ("APPROVED", "REJECTED", "PENDING"):
+        raise HTTPException(status_code=400, detail="Status must be APPROVED, REJECTED, or PENDING")
+
+    if not authenticated_user:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
+    result = await db.execute(select(UseCase).where(UseCase.id == usecase_id))
+    use_case = result.scalar_one_or_none()
+
+    if not use_case:
+        raise HTTPException(status_code=404, detail="Use case not found")
+
+    if not await verify_workshop_access(use_case.workshop_id, authenticated_user, db):
+        raise HTTPException(status_code=403, detail="Not authorized to change the status of this use case")
+
+    use_case.status = status_update.status
+    await db.commit()
+    await db.refresh(use_case)
+
+    await sio.emit(
+        'use_case_status_changed',
+        {'id': str(use_case.id), 'status': use_case.status},
+        room=str(use_case.workshop_id)
+    )
+
+    return {"id": str(use_case.id), "status": use_case.status}

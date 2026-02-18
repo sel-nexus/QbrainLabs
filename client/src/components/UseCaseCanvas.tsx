@@ -38,7 +38,8 @@ export function UseCaseCanvas({ session, onSuccess }: UseCaseCanvasProps) {
             console.error('Failed to award points:', pointsError);
         }
 
-        // Parent onSuccess call handles closing modal etc if needed
+        // Show confirmation and close modal
+        toast.success('Use case submitted successfully!');
         if (onSuccess) {
             setTimeout(() => onSuccess(), 1500);
         }

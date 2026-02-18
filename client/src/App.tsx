@@ -4,6 +4,7 @@ import { Toaster } from 'sonner';
 
 // Actions
 import { useAuth } from './context/AuthContext';
+import { useSession } from './context/SessionContext';
 import { ChangePasswordDialog } from './components/ChangePasswordDialog';
 import { Landing } from './pages/Landing';
 import { CreateWorkshop } from './pages/CreateWorkshop';
@@ -30,6 +31,7 @@ import { ParticipantMatrix } from './pages/ParticipantMatrix';
 import { IntakePhase } from './pages/IntakePhase';
 import { ScoringPhase } from './pages/ScoringPhase';
 import { AllUseCases } from './pages/AllUseCases';
+import { FacilitatorRegister } from './pages/FacilitatorRegister';
 
 // Route Guards
 const PrivateRoute = ({ children, requireAdmin = false }: { children: ReactElement, requireAdmin?: boolean }) => {
@@ -67,6 +69,14 @@ const AuthenticatedRoute = ({
   </PrivateRoute>
 );
 
+// Route guard for participant-only routes (require active SessionContext session)
+const ParticipantRoute = ({ children }: { children: ReactElement }) => {
+  const { session, isLoading } = useSession();
+  if (isLoading) return <div>Loading...</div>;
+  if (!session) return <Navigate to="/join" />;
+  return children;
+};
+
 // Layout Wrappers
 const AdminPanelLayout = ({ children, title }: { children: ReactElement, title: string }) => (
   <AdminLayout title={title}>{children}</AdminLayout>
@@ -95,20 +105,20 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<Landing />} />
           <Route path="/facilitator-login" element={<PublicWithHeaderLayout showBackButton={true} showHomeButton={true}><FacilitatorLogin /></PublicWithHeaderLayout>} />
+          <Route path="/facilitator-register" element={<PublicWithHeaderLayout showBackButton={true} showHomeButton={true}><FacilitatorRegister /></PublicWithHeaderLayout>} />
           <Route path="/join" element={<PublicWithHeaderLayout><JoinWorkshop /></PublicWithHeaderLayout>} />
 
           {/* Workshop Routes (Mixed Access) - Shows header for any user */}
           <Route path="/workshop/:id" element={<PublicWithHeaderLayout><WorkshopDetail /></PublicWithHeaderLayout>} />
 
-          {/* Participant Routes - Accessible to participants with session */}
-          <Route path="/lobby" element={<WaitingRoom />} />
-          <Route path="/participant-dashboard" element={<ParticipantDashboard />} />
-          <Route path="/participant-matrix" element={<ParticipantMatrix />} />
-          <Route path="/intake" element={<IntakePhase />} />
-          <Route path="/scoring" element={<ScoringPhase />} />
+          {/* Participant Routes - Require active SessionContext session */}
+          <Route path="/lobby" element={<ParticipantRoute><WaitingRoom /></ParticipantRoute>} />
+          <Route path="/participant-dashboard" element={<ParticipantRoute><ParticipantDashboard /></ParticipantRoute>} />
+          <Route path="/participant-matrix" element={<ParticipantRoute><ParticipantMatrix /></ParticipantRoute>} />
+          <Route path="/intake" element={<ParticipantRoute><IntakePhase /></ParticipantRoute>} />
+          <Route path="/scoring" element={<ParticipantRoute><ScoringPhase /></ParticipantRoute>} />
 
           {/* Facilitator Routes (Protected) - All wrapped with AuthenticatedLayout for consistent header */}
-          <Route path="/facilitator" element={<AuthenticatedRoute showBackButton={false}><FacilitatorDashboard /></AuthenticatedRoute>} />
           <Route path="/facilitator/dashboard" element={<AuthenticatedRoute showBackButton={false}><FacilitatorDashboard /></AuthenticatedRoute>} />
           <Route path="/facilitator/create" element={<AuthenticatedRoute requireAdmin title="Create Workshop"><CreateWorkshop /></AuthenticatedRoute>} />
           <Route path="/facilitator/analytics" element={<AuthenticatedRoute title="Analytics"><AnalyticsDashboard /></AuthenticatedRoute>} />

@@ -19,8 +19,7 @@ if __name__ == "__main__":
         "app": "app.main:app",
         "host": host,
         "port": port,
-        "reload": False,
-        "workers": int(os.getenv("WORKERS", "1")) if not True else None  # reload implies 1 worker
+        "reload": True,  # auto-reload on file changes
     }
     
     # Add SSL configuration if enabled

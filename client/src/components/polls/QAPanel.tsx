@@ -10,16 +10,19 @@ import { toast } from 'sonner';
 
 interface QAPanelProps {
     className?: string;
+    workshopId?: string;
 }
 
-export function QAPanel({ className }: QAPanelProps) {
+export function QAPanel({ className, workshopId: workshopIdProp }: QAPanelProps) {
     const { session } = useSession();
     const [questions, setQuestions] = useState<Question[]>([]);
     const [newQuestion, setNewQuestion] = useState('');
     const [isAnonymous, setIsAnonymous] = useState(false);
 
+    const workshopId = workshopIdProp || session?.workshopId;
+
     useEffect(() => {
-        if (!session?.workshopId) return;
+        if (!workshopId) return;
         loadQuestions();
 
         const onQuestionSubmitted = (q: Question) => {
@@ -41,12 +44,12 @@ export function QAPanel({ className }: QAPanelProps) {
             socket.off('question:upvoted', onQuestionUpvoted);
             socket.off('question:updated', onQuestionUpdated);
         };
-    }, [session?.workshopId]);
+    }, [workshopId]);
 
     const loadQuestions = async () => {
-        if (!session?.workshopId) return;
+        if (!workshopId) return;
         try {
-            const data = await PollService.getQuestions(session.workshopId, session.participantId);
+            const data = await PollService.getQuestions(workshopId, session?.participantId);
             setQuestions(data);
         } catch (err) {
             console.error(err);
@@ -55,10 +58,10 @@ export function QAPanel({ className }: QAPanelProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!newQuestion.trim() || !session?.participantId) return;
+        if (!newQuestion.trim() || !session?.participantId || !workshopId) return;
 
         try {
-            await PollService.submitQuestion(session.workshopId, session.participantId, newQuestion, isAnonymous);
+            await PollService.submitQuestion(workshopId, session.participantId, newQuestion, isAnonymous);
             setNewQuestion('');
             toast.success("Question submitted");
         } catch (err) {

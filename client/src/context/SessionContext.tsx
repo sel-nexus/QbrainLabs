@@ -57,7 +57,6 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         const onConnect = () => {
             const currentSession = sessionRef.current;
             if (currentSession) {
-                console.log('Socket connected, joining workshop:', currentSession.workshopId);
                 socket.emit('join_workshop', { workshop_id: currentSession.workshopId });
             }
         };

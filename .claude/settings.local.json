@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C c:/Users/azvmuser1/windsurf-wrkspace/QbrainLabs ls-tree:*)",
+      "Bash(dir:*)",
+      "Bash(git -C /c/Users/azvmuser1/windsurf-wrkspace/QbrainLabs ls-tree:*)",
+      "Read(//c/Users/azvmuser1/windsurf-wrkspace//**)",
+      "Bash(test:*)",
+      "Bash(bash -c \"pwd\")",
+      "Bash(npm run test:run:*)"
+    ]
+  }
+}

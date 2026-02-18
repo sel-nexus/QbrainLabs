@@ -440,7 +440,7 @@ export function ParticipantDashboard() {
                         >
                             <X className="w-5 h-5" />
                         </button>
-                        <UseCaseCanvas session={session} />
+                        <UseCaseCanvas session={session} onSuccess={handleModalClose} />
                     </div>
                 </div>
             )}
