@@ -202,9 +202,10 @@ class Participant(Base):
     workshop_id = Column(GUID(), ForeignKey("workshops.id"), nullable=False)
     display_name = Column(String, nullable=False)
     role = Column(String, default=ParticipantRole.PARTICIPANT)
+    joined_at = Column(DateTime, nullable=True, default=datetime.utcnow)
     # Simple logic: if they rejoin with same session storage, we trust them in MVP.
     # In prod, issue a signed JWT.
-    
+
     workshop = relationship("Workshop", back_populates="participants")
     use_cases = relationship("UseCase", back_populates="participant")
 
@@ -215,6 +216,7 @@ class UseCase(Base):
     workshop_id = Column(GUID(), ForeignKey("workshops.id"), nullable=False)
     participant_id = Column(GUID(), ForeignKey("participants.id"), nullable=True)  # Nullable for facilitator-added use cases
     added_by_facilitator = Column(Boolean, default=False)  # Flag for facilitator submissions
+    facilitator_group_id = Column(GUID(), nullable=True)  # Groups facilitator-added use cases created across multiple workshops
     
     title = Column(Text, nullable=False)
     description = Column(Text, nullable=False) # Problem Statement (per US03)

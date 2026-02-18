@@ -54,7 +54,7 @@ class ParticipantResponse(BaseModel):
     id: UUID
     display_name: str
     role: str
-    joined_at: datetime
+    joined_at: Optional[datetime] = None
 
     class Config:
         from_attributes = True

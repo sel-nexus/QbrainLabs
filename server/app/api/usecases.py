@@ -5,7 +5,7 @@ from sqlalchemy import and_
 from app.core.database import get_db
 from app.models.models import UseCase, Participant, Workshop, UseCaseFeedback, User
 from app.api.auth import get_current_user_optional
-from app.schemas.usecase import UseCaseCreate, UseCaseResponse, UseCaseUpdate
+from app.schemas.usecase import UseCaseCreate, UseCaseFacilitatorCreate, UseCaseResponse, UseCaseUpdate
 from app.core.socket_manager import sio # Import socket server
 from typing import List, Optional
 from pydantic import BaseModel
@@ -14,18 +14,32 @@ from datetime import datetime
 
 router = APIRouter()
 
-# Helper to verify workshop ownership for facilitators
+# Helper to verify workshop ownership/assignment for facilitators
 async def verify_workshop_access(workshop_id: uuid.UUID, user: User, db: AsyncSession) -> bool:
     if user.is_admin_user:
         return True
-    
-    # Check if user is the facilitator of the workshop
+
+    workshop_id_str = str(workshop_id)
+
+    # 1. Check if user is the primary owner of the workshop
     result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
     workshop = result.scalars().first()
-    
     if workshop and str(workshop.facilitator_id) == str(user.id):
         return True
-        
+
+    # 2. Check if user is an assigned facilitator via WorkshopFacilitator table
+    from app.models.rbac import WorkshopFacilitator
+    assigned = await db.execute(
+        select(WorkshopFacilitator).where(
+            and_(
+                WorkshopFacilitator.workshop_id == workshop_id_str,
+                WorkshopFacilitator.facilitator_id == str(user.id),
+            )
+        )
+    )
+    if assigned.scalars().first():
+        return True
+
     return False
 
 @router.post("/", response_model=UseCaseResponse, status_code=status.HTTP_201_CREATED)
@@ -134,27 +148,128 @@ async def get_all_use_cases(
             .order_by(UseCase.created_at.desc())
         )
     
-    use_cases_data = []
+    # Build response: group facilitator use cases by facilitator_group_id so that
+    # a single "use case" shows all the workshops it was attached to.
+    groups: dict = {}        # facilitator_group_id -> aggregated entry
+    standalone: list = []   # non-grouped use cases
+
     for use_case, workshop in result.all():
-        use_cases_data.append({
-            "id": str(use_case.id),
-            "title": use_case.title,
-            "description": use_case.description,
-            "proposed_solution": use_case.proposed_solution,
-            "kpi": use_case.kpi,
-            "target_user": use_case.target_user,
-            "category": use_case.category,
-            "status": use_case.status,
-            "created_at": use_case.created_at.isoformat() if use_case.created_at else None,
-            "workshop": {
-                "id": str(workshop.id),
-                "title": workshop.title,
-                "status": workshop.status,
-                "current_phase": workshop.current_phase
-            }
-        })
-    
+        workshop_info = {
+            "id": str(workshop.id),
+            "title": workshop.title,
+            "status": workshop.status,
+            "current_phase": workshop.current_phase,
+        }
+
+        if use_case.added_by_facilitator and use_case.facilitator_group_id:
+            gid = str(use_case.facilitator_group_id)
+            if gid not in groups:
+                groups[gid] = {
+                    "id": str(use_case.id),
+                    "title": use_case.title,
+                    "description": use_case.description,
+                    "proposed_solution": use_case.proposed_solution,
+                    "kpi": use_case.kpi,
+                    "target_user": use_case.target_user,
+                    "category": use_case.category,
+                    "status": use_case.status,
+                    "created_at": use_case.created_at.isoformat() if use_case.created_at else None,
+                    "added_by_facilitator": True,
+                    "facilitator_group_id": gid,
+                    "workshops": [],
+                    # Keep legacy single-workshop field pointing to first workshop for compat
+                    "workshop": workshop_info,
+                }
+            groups[gid]["workshops"].append(workshop_info)
+        else:
+            standalone.append({
+                "id": str(use_case.id),
+                "title": use_case.title,
+                "description": use_case.description,
+                "proposed_solution": use_case.proposed_solution,
+                "kpi": use_case.kpi,
+                "target_user": use_case.target_user,
+                "category": use_case.category,
+                "status": use_case.status,
+                "created_at": use_case.created_at.isoformat() if use_case.created_at else None,
+                "added_by_facilitator": use_case.added_by_facilitator or False,
+                "facilitator_group_id": None,
+                "workshops": [workshop_info],
+                "workshop": workshop_info,
+            })
+
+    use_cases_data = standalone + list(groups.values())
     return use_cases_data
+
+@router.post("/facilitator", status_code=status.HTTP_201_CREATED)
+async def facilitator_submit_use_case(
+    uc_in: UseCaseFacilitatorCreate,
+    authenticated_user: User = Depends(get_current_user_optional),
+    db: AsyncSession = Depends(get_db),
+):
+    """Facilitator adds a use case to one or more workshops.
+
+    Creates one UseCase record per workshop, linked by a shared facilitator_group_id
+    so the UI can display all attached workshops against the single use case entry.
+    """
+    if not authenticated_user:
+        raise HTTPException(status_code=401, detail="Authentication required")
+
+    if not uc_in.workshop_ids:
+        raise HTTPException(status_code=400, detail="At least one workshop must be selected")
+
+    # Verify all workshops exist and the user has access
+    for workshop_id in uc_in.workshop_ids:
+        workshop_result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
+        workshop = workshop_result.scalars().first()
+        if not workshop:
+            raise HTTPException(status_code=404, detail=f"Workshop {workshop_id} not found")
+        if not await verify_workshop_access(workshop_id, authenticated_user, db):
+            raise HTTPException(
+                status_code=403,
+                detail=f"Not authorized to add use cases to workshop {workshop_id}",
+            )
+
+    group_id = uuid.uuid4()
+    created = []
+
+    for workshop_id in uc_in.workshop_ids:
+        use_case = UseCase(
+            title=uc_in.title,
+            description=uc_in.description,
+            proposed_solution=uc_in.proposed_solution,
+            kpi=uc_in.kpi,
+            target_user=uc_in.target_user,
+            category=uc_in.category,
+            participant_id=None,
+            workshop_id=workshop_id,
+            added_by_facilitator=True,
+            facilitator_group_id=group_id,
+        )
+        db.add(use_case)
+        created.append(use_case)
+
+    await db.commit()
+
+    # Broadcast to each workshop room
+    for use_case in created:
+        await db.refresh(use_case)
+        await sio.emit(
+            "new_submission",
+            {
+                "id": str(use_case.id),
+                "title": use_case.title,
+                "description": use_case.description,
+            },
+            room=str(use_case.workshop_id),
+        )
+
+    return {
+        "facilitator_group_id": str(group_id),
+        "count": len(created),
+        "ids": [str(uc.id) for uc in created],
+    }
+
 
 @router.get("/{workshop_id}", response_model=List[UseCaseResponse])
 async def get_workshop_use_cases(workshop_id: str, db: AsyncSession = Depends(get_db)):

@@ -103,11 +103,12 @@ if is_supabase_or_pgbouncer():
         },
     )
 else:
-    # Add query timeout for production safety
+    # Add query timeout and disable prepared statement cache for production safety
     engine_kwargs = get_engine_kwargs()
     engine_kwargs.setdefault("connect_args", {})
     engine_kwargs["connect_args"]["command_timeout"] = 30  # 30 second query timeout
-    
+    engine_kwargs["connect_args"]["statement_cache_size"] = 0  # Disable prepared statement cache to prevent stale schema errors
+
     engine = create_async_engine(
         SQLALCHEMY_DATABASE_URL,
         **engine_kwargs

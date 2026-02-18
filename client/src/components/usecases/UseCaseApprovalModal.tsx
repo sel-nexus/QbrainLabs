@@ -140,13 +140,16 @@ export function UseCaseApprovalModal({ useCase, allUseCases, token, onClose, onS
                 },
                 body: JSON.stringify({ status: newStatus }),
             });
-            if (!res.ok) throw new Error('Request failed');
+            if (!res.ok) {
+                const errBody = await res.json().catch(() => ({}));
+                throw new Error(errBody?.detail || `Server error ${res.status}`);
+            }
             const label = newStatus === 'APPROVED' ? 'approved' : 'rejected';
             toast.success(`Use case ${label} successfully`);
             onStatusChange(useCase.id, newStatus);
             onClose();
-        } catch {
-            toast.error('Failed to update status. Please try again.');
+        } catch (err: any) {
+            toast.error(err?.message || 'Failed to update status. Please try again.');
         } finally {
             setSubmitting(false);
         }
