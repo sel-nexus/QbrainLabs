@@ -14066,3 +14066,573 @@ DETAIL:  Failing row contains (d1ac2a48-107e-40cc-acbe-60e84fdb97b6, 373dac36-77
 {"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 56.09, "client_ip": "127.0.0.1:52417", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T01:54:13.581954Z"}
 {"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 27.98, "client_ip": "127.0.0.1:52417", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T01:54:13.642709Z"}
 {"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 30.35, "client_ip": "127.0.0.1:52417", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T01:54:13.649765Z"}
+{"method": "POST", "path": "/api/auth/logout", "status_code": 200, "duration_ms": 13.33, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:00:41.540542Z"}
+INFO:     ('127.0.0.1:49229', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:57685', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:58536', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:54377', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:57133', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"event": "Login attempt for user: vsr***outlook.com", "level": "info", "timestamp": "2026-02-19T02:02:13.070925Z"}
+{"event": "User found: vsr***outlook.com (ID: ef47c2ab-77c9-42ec-8720-02abbdb24472)", "level": "info", "timestamp": "2026-02-19T02:02:13.075926Z"}
+{"event": "Password verified for vsr***outlook.com", "level": "info", "timestamp": "2026-02-19T02:02:13.384687Z"}
+{"event": "Login successful for vsr***outlook.com. Token generated.", "level": "info", "timestamp": "2026-02-19T02:02:13.394715Z"}
+{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 331.88, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:13.395716Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 18.44, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:13.549512Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 25.15, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:13.589707Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 28.17, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:13.683847Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 38.86, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:13.697102Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 33.3, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:13.747635Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 50.48, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:13.788103Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 53.93, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:13.791102Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 57.96, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:13.805128Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 58.65, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:13.857134Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 60.71, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:13.894858Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 56.7, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:13.902890Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 50.01, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:13.906885Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 27.89, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:14.013303Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 34.74, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:14.014302Z"}
+INFO:     ('127.0.0.1:49915', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 18.3, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:16.014889Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 19.06, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:16.050033Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 26.2, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:27.841972Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 16.74, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:27.892411Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 29.99, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:27.990618Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 26.92, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:27.991612Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 37.49, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:28.062789Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 61.48, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:28.094854Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 64.06, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:28.111396Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 66.67, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:28.113932Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 83.19, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:28.208704Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 99.49, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:28.265192Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 69.82, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:28.274211Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 72.29, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:28.281225Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 27.1, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:28.345514Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 26.96, "client_ip": "127.0.0.1:49278", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T02:02:28.351062Z"}
+{"method": "POST", "path": "/api", "status_code": 404, "duration_ms": 3.09, "client_ip": "217.216.73.243:38430", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T02:29:37.321029Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/../../../../../../etc/passwd", "status_code": 404, "duration_ms": 2.65, "client_ip": "5.181.190.188", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T03:00:11.349361Z"}
+INFO:     ('127.0.0.1:59046', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 181.85, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:20.483295Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 231.23, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:20.744882Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 204.93, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:21.157995Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 248.25, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:21.427886Z"}
+INFO:     ('127.0.0.1:63197', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 437.68, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:21.657467Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 430.26, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:21.658465Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 465.9, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:22.221597Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 497.48, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:22.226600Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 535.32, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:22.228598Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 547.54, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:22.233468Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 46.52, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:22.317765Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 41.9, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:22.319799Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 32.05, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:22.387970Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 26.69, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:22.398111Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 32.9, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:22.440428Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 30.31, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:22.461240Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 17.64, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:23.196459Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 18.44, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:23.238817Z"}
+INFO:     ('127.0.0.1:57049', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:53373', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:60016', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:54452', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/api/knowledge-base/search", "status_code": 200, "duration_ms": 153.21, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:53.934476Z"}
+{"method": "GET", "path": "/api/knowledge-base/search", "status_code": 200, "duration_ms": 170.36, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:20:54.123054Z"}
+{"method": "GET", "path": "/api/knowledge-base/search", "status_code": 200, "duration_ms": 126.89, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:21:02.624763Z"}
+{"method": "GET", "path": "/api/knowledge-base/search", "status_code": 200, "duration_ms": 157.41, "client_ip": "127.0.0.1:62473", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:21:02.797101Z"}
+{"method": "GET", "path": "/api/knowledge-base/search", "status_code": 200, "duration_ms": 208.89, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:21:13.342416Z"}
+{"method": "GET", "path": "/api/knowledge-base/search", "status_code": 200, "duration_ms": 213.42, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:21:13.570388Z"}
+{"method": "GET", "path": "/api/knowledge-base/search", "status_code": 200, "duration_ms": 216.56, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:21:21.154104Z"}
+{"method": "GET", "path": "/api/knowledge-base/search", "status_code": 200, "duration_ms": 201.07, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:21:21.371469Z"}
+{"method": "PATCH", "path": "/api/usecases/701eb2df-9ada-4244-8c19-1f0f432e0687/status", "status_code": 200, "duration_ms": 29.25, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:21:24.410594Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 27.7, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:20.414447Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 24.85, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:20.590159Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 21.41, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:20.637369Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 18.67, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:20.685252Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 23.76, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:20.781970Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 26.24, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:20.807773Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 46.87, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:20.849172Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 51.74, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:20.861995Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 60.78, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:20.912866Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 32.03, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:20.994517Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 33.62, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:21.001516Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 28.67, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:21.027467Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 24.42, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:21.126445Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 23.32, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:21.175616Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 17.98, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:28.060047Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 16.45, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:28.116955Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 19.75, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:44.143661Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 23.03, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:44.186959Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 30.1, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:44.244325Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 29.26, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:44.247370Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 18.87, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:44.281961Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 46.61, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:44.343071Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 43.57, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:44.346067Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 45.93, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:44.349068Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 39.94, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:44.362644Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 32.36, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:44.426923Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 45.31, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:44.428931Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 32.97, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:44.430915Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 20.03, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:44.487501Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 20.13, "client_ip": "127.0.0.1:61923", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T03:22:44.500530Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 219.54, "client_ip": "127.0.0.1:50155", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T04:04:30.316941Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 190.78, "client_ip": "127.0.0.1:50155", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T04:04:30.529556Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 200.66, "client_ip": "127.0.0.1:59520", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T04:07:14.722084Z"}
+INFO:     ('127.0.0.1:64110', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 162.86, "client_ip": "127.0.0.1:59520", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T04:08:18.646269Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 159.65, "client_ip": "127.0.0.1:59520", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T04:08:18.821924Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 204.69, "client_ip": "127.0.0.1:59520", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T04:08:19.223136Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 217.55, "client_ip": "127.0.0.1:59520", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T04:08:19.458297Z"}
+INFO:     ('127.0.0.1:49534', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:64910', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:58346', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:49356', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:53570', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:50086', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 172.28, "client_ip": "127.0.0.1:52607", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T04:12:35.710074Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 159.45, "client_ip": "127.0.0.1:52607", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T04:12:35.884929Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 191.55, "client_ip": "127.0.0.1:52607", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T04:12:36.313139Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 13.29, "client_ip": "127.0.0.1:52607", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T04:12:36.344367Z"}
+INFO:     ('127.0.0.1:58610', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:58065', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:49893', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:56412', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:64640', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/appsettings.json", "status_code": 404, "duration_ms": 2.29, "client_ip": "81.168.83.103", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T04:14:48.383815Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 23.68, "client_ip": "127.0.0.1:49574", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T04:17:09.290415Z"}
+{"method": "POST", "path": "/api", "status_code": 404, "duration_ms": 2.83, "client_ip": "116.118.47.173:41922", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T04:18:14.222579Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 5.55, "client_ip": "205.210.31.136", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T05:04:01.619655Z"}
+{"method": "POST", "path": "/api", "status_code": 404, "duration_ms": 2.32, "client_ip": "103.118.252.3:45910", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:11:29.968100Z"}
+{"method": "POST", "path": "/api", "status_code": 404, "duration_ms": 1.96, "client_ip": "149.88.82.32:60906", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:11:33.274420Z"}
+{"method": "GET", "path": "/.e4997", "status_code": 404, "duration_ms": 4.08, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:09.049623Z"}
+{"method": "GET", "path": "/.env", "status_code": 404, "duration_ms": 2.32, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:09.310967Z"}
+{"method": "GET", "path": "/.env.local", "status_code": 404, "duration_ms": 2.3, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:09.564538Z"}
+{"method": "GET", "path": "/.env.production", "status_code": 404, "duration_ms": 2.9, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:09.825861Z"}
+{"method": "GET", "path": "/.env.development", "status_code": 404, "duration_ms": 5.78, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:10.069156Z"}
+{"method": "GET", "path": "/.env.dev", "status_code": 404, "duration_ms": 3.55, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:10.298827Z"}
+{"method": "GET", "path": "/.env.prod", "status_code": 404, "duration_ms": 3.17, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:10.541240Z"}
+{"method": "GET", "path": "/.env.test", "status_code": 404, "duration_ms": 2.95, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:10.789525Z"}
+{"method": "GET", "path": "/.env.staging", "status_code": 404, "duration_ms": 2.62, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:11.051032Z"}
+{"method": "GET", "path": "/.env.backup", "status_code": 404, "duration_ms": 3.11, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:11.310206Z"}
+{"method": "GET", "path": "/.env.save", "status_code": 404, "duration_ms": 3.68, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:11.554612Z"}
+{"method": "GET", "path": "/.env.old", "status_code": 404, "duration_ms": 2.34, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:11.796534Z"}
+{"method": "GET", "path": "/.env.bak", "status_code": 404, "duration_ms": 3.69, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:12.057154Z"}
+{"method": "GET", "path": "/.env.tmp", "status_code": 404, "duration_ms": 2.27, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:12.320891Z"}
+{"method": "GET", "path": "/.env.swp", "status_code": 404, "duration_ms": 3.63, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:12.560726Z"}
+{"method": "GET", "path": "/.env~", "status_code": 404, "duration_ms": 5.64, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:12.811277Z"}
+{"method": "GET", "path": "/env", "status_code": 404, "duration_ms": 2.91, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:13.054292Z"}
+{"method": "GET", "path": "/env.js", "status_code": 404, "duration_ms": 3.02, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:13.297453Z"}
+{"method": "GET", "path": "/env.json", "status_code": 404, "duration_ms": 2.02, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:13.537521Z"}
+{"method": "GET", "path": "/app/.env", "status_code": 404, "duration_ms": 2.94, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:13.781320Z"}
+{"method": "GET", "path": "/src/.env", "status_code": 404, "duration_ms": 3.5, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:14.029161Z"}
+{"method": "GET", "path": "/config/.env", "status_code": 404, "duration_ms": 3.72, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:14.257988Z"}
+{"method": "GET", "path": "/backend/.env", "status_code": 404, "duration_ms": 3.42, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:14.495534Z"}
+{"method": "GET", "path": "/frontend/.env", "status_code": 404, "duration_ms": 3.57, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:14.741147Z"}
+{"method": "GET", "path": "/api/.env", "status_code": 404, "duration_ms": 3.56, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:14.984030Z"}
+{"method": "GET", "path": "/server/.env", "status_code": 404, "duration_ms": 3.52, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:15.238110Z"}
+{"method": "GET", "path": "/client/.env", "status_code": 404, "duration_ms": 3.07, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:15.499882Z"}
+{"method": "GET", "path": "/web/.env", "status_code": 404, "duration_ms": 2.85, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:15.748963Z"}
+{"method": "GET", "path": "/public/.env", "status_code": 404, "duration_ms": 2.53, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:15.977243Z"}
+{"method": "GET", "path": "/private/.env", "status_code": 404, "duration_ms": 3.78, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:16.218798Z"}
+{"method": "GET", "path": "/var/.env", "status_code": 404, "duration_ms": 3.93, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:16.469129Z"}
+{"method": "GET", "path": "/docker-compose.yml", "status_code": 404, "duration_ms": 3.59, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:16.716900Z"}
+{"method": "GET", "path": "/docker-compose.yaml", "status_code": 404, "duration_ms": 3.5, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:16.959231Z"}
+{"method": "GET", "path": "/docker-compose.override.yml", "status_code": 404, "duration_ms": 4.03, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:17.201157Z"}
+{"method": "GET", "path": "/docker-compose.dev.yml", "status_code": 404, "duration_ms": 3.81, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:17.443189Z"}
+{"method": "GET", "path": "/docker-compose.prod.yml", "status_code": 404, "duration_ms": 3.45, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:17.684161Z"}
+{"method": "GET", "path": "/config.js", "status_code": 404, "duration_ms": 2.93, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:17.947412Z"}
+{"method": "GET", "path": "/config.json", "status_code": 404, "duration_ms": 3.18, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:18.197493Z"}
+{"method": "GET", "path": "/settings.js", "status_code": 404, "duration_ms": 3.03, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:18.425145Z"}
+{"method": "GET", "path": "/settings.json", "status_code": 404, "duration_ms": 3.09, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:18.667605Z"}
+{"method": "GET", "path": "/secrets.json", "status_code": 404, "duration_ms": 3.45, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:18.924757Z"}
+{"method": "GET", "path": "/credentials.json", "status_code": 404, "duration_ms": 3.24, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:19.171658Z"}
+{"method": "GET", "path": "/app.js", "status_code": 404, "duration_ms": 3.41, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:19.402512Z"}
+{"method": "GET", "path": "/main.js", "status_code": 404, "duration_ms": 3.37, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:19.657813Z"}
+{"method": "GET", "path": "/index.js", "status_code": 404, "duration_ms": 3.44, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:19.906228Z"}
+{"method": "GET", "path": "/server.js", "status_code": 404, "duration_ms": 3.43, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:20.150783Z"}
+{"method": "GET", "path": "/bundle.js", "status_code": 404, "duration_ms": 2.95, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:20.396721Z"}
+{"method": "GET", "path": "/app.bundle.js", "status_code": 404, "duration_ms": 3.14, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:20.643408Z"}
+{"method": "GET", "path": "/main.bundle.js", "status_code": 404, "duration_ms": 3.01, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:20.895622Z"}
+{"method": "GET", "path": "/vendor.js", "status_code": 404, "duration_ms": 3.12, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:21.152448Z"}
+{"method": "GET", "path": "/chunk.js", "status_code": 404, "duration_ms": 3.54, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:21.409590Z"}
+{"method": "GET", "path": "/static/js/main.js", "status_code": 404, "duration_ms": 4.61, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:21.656953Z"}
+{"method": "GET", "path": "/static/js/app.js", "status_code": 404, "duration_ms": 3.54, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:21.892728Z"}
+{"method": "GET", "path": "/static/js/bundle.js", "status_code": 404, "duration_ms": 3.37, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:22.135272Z"}
+{"method": "GET", "path": "/dist/main.js", "status_code": 404, "duration_ms": 3.57, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:22.396722Z"}
+{"method": "GET", "path": "/dist/app.js", "status_code": 404, "duration_ms": 2.97, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:22.654152Z"}
+{"method": "GET", "path": "/dist/bundle.js", "status_code": 404, "duration_ms": 2.04, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:22.898493Z"}
+{"method": "GET", "path": "/build/static/js/main.js", "status_code": 404, "duration_ms": 2.06, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:23.138340Z"}
+{"method": "GET", "path": "/assets/index.js", "status_code": 404, "duration_ms": 3.12, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:23.397916Z"}
+{"method": "GET", "path": "/assets/app.js", "status_code": 404, "duration_ms": 2.25, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:23.653018Z"}
+{"method": "GET", "path": "/_next/static/chunks/main.js", "status_code": 404, "duration_ms": 2.46, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:23.893113Z"}
+{"method": "GET", "path": "/_next/static/chunks/app.js", "status_code": 404, "duration_ms": 3.54, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:24.167716Z"}
+{"method": "GET", "path": "/js/app.js", "status_code": 404, "duration_ms": 2.26, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:24.407399Z"}
+{"method": "GET", "path": "/js/main.js", "status_code": 404, "duration_ms": 2.24, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:24.651535Z"}
+{"method": "GET", "path": "/settings.py", "status_code": 404, "duration_ms": 2.33, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:24.904974Z"}
+{"method": "GET", "path": "/config.py", "status_code": 404, "duration_ms": 1.87, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:25.145316Z"}
+{"method": "GET", "path": "/secrets.py", "status_code": 404, "duration_ms": 1.9, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:25.384075Z"}
+{"method": "GET", "path": "/config/secrets.yml", "status_code": 404, "duration_ms": 1.78, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:25.638118Z"}
+{"method": "GET", "path": "/config/master.key", "status_code": 404, "duration_ms": 2.32, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:25.878368Z"}
+{"method": "GET", "path": "/wp-config.php.bak", "status_code": 404, "duration_ms": 4.02, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:26.129709Z"}
+{"method": "GET", "path": "/wp-config.php.old", "status_code": 404, "duration_ms": 3.53, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:26.369529Z"}
+{"method": "GET", "path": "/wp-config.php.save", "status_code": 404, "duration_ms": 2.32, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:26.594429Z"}
+{"method": "GET", "path": "/wp-config.php.txt", "status_code": 404, "duration_ms": 2.55, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:26.828225Z"}
+{"method": "GET", "path": "/wp-config.php~", "status_code": 404, "duration_ms": 2.99, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:27.054570Z"}
+{"method": "GET", "path": "/config/app.php", "status_code": 404, "duration_ms": 2.3, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:27.281974Z"}
+{"method": "GET", "path": "/application.properties", "status_code": 404, "duration_ms": 2.38, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:27.522373Z"}
+{"method": "GET", "path": "/application.yml", "status_code": 404, "duration_ms": 2.93, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:27.777972Z"}
+{"method": "GET", "path": "/application.yaml", "status_code": 404, "duration_ms": 2.05, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:28.033380Z"}
+{"method": "GET", "path": "/application-dev.properties", "status_code": 404, "duration_ms": 2.06, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:28.293456Z"}
+{"method": "GET", "path": "/application-prod.properties", "status_code": 404, "duration_ms": 2.97, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:28.537111Z"}
+{"method": "GET", "path": "/appsettings.json", "status_code": 404, "duration_ms": 3.67, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:28.786930Z"}
+{"method": "GET", "path": "/appsettings.Development.json", "status_code": 404, "duration_ms": 2.68, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:29.040987Z"}
+{"method": "GET", "path": "/appsettings.Production.json", "status_code": 404, "duration_ms": 3.63, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:29.283418Z"}
+{"method": "GET", "path": "/config.yaml", "status_code": 404, "duration_ms": 2.27, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:29.514729Z"}
+{"method": "GET", "path": "/config.yml", "status_code": 404, "duration_ms": 2.28, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:29.761599Z"}
+{"method": "GET", "path": "/config.toml", "status_code": 404, "duration_ms": 2.08, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:30.021786Z"}
+{"method": "GET", "path": "/serverless.yml", "status_code": 404, "duration_ms": 1.8, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:30.258739Z"}
+{"method": "GET", "path": "/serverless.yaml", "status_code": 404, "duration_ms": 1.87, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:30.491357Z"}
+{"method": "GET", "path": "/config/production.json", "status_code": 404, "duration_ms": 1.9, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:30.715019Z"}
+{"method": "GET", "path": "/config/development.json", "status_code": 404, "duration_ms": 2.43, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:30.947789Z"}
+{"method": "GET", "path": "/config/default.json", "status_code": 404, "duration_ms": 2.62, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:31.195740Z"}
+{"method": "GET", "path": "/config/local.json", "status_code": 404, "duration_ms": 3.52, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:31.457607Z"}
+{"method": "GET", "path": "/conf/settings.json", "status_code": 404, "duration_ms": 2.55, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:31.699243Z"}
+{"method": "GET", "path": "/data/config.json", "status_code": 404, "duration_ms": 2.28, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:31.940063Z"}
+{"method": "GET", "path": "/actuator/env", "status_code": 404, "duration_ms": 2.72, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:32.181928Z"}
+{"method": "GET", "path": "/actuator/configprops", "status_code": 404, "duration_ms": 2.94, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:32.430896Z"}
+{"method": "GET", "path": "/api/config", "status_code": 404, "duration_ms": 1.89, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:32.687010Z"}
+{"method": "GET", "path": "/api/settings", "status_code": 404, "duration_ms": 1.95, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:32.946014Z"}
+{"method": "GET", "path": "/api/env", "status_code": 404, "duration_ms": 2.87, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:33.185457Z"}
+{"method": "GET", "path": "/backup/.env", "status_code": 404, "duration_ms": 2.37, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:33.457067Z"}
+{"method": "GET", "path": "/backups/.env", "status_code": 404, "duration_ms": 2.9, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:33.704578Z"}
+{"method": "GET", "path": "/old/.env", "status_code": 404, "duration_ms": 3.6, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:33.953402Z"}
+{"method": "GET", "path": "/temp/.env", "status_code": 404, "duration_ms": 3.47, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:34.204952Z"}
+{"method": "GET", "path": "/tmp/.env", "status_code": 404, "duration_ms": 2.62, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:34.443682Z"}
+{"method": "GET", "path": "/.streamlit/secrets.toml", "status_code": 404, "duration_ms": 2.28, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:34.684273Z"}
+{"method": "GET", "path": "/root/.streamlit/secrets.toml", "status_code": 404, "duration_ms": 2.24, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:34.937665Z"}
+{"method": "GET", "path": "/root/.aws/credentials", "status_code": 404, "duration_ms": 2.21, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:35.199093Z"}
+{"method": "GET", "path": "/home/ubuntu/.aws/credentials", "status_code": 404, "duration_ms": 2.19, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:35.445832Z"}
+{"method": "GET", "path": "/home/ec2-user/.aws/credentials", "status_code": 404, "duration_ms": 1.9, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:35.671225Z"}
+{"method": "GET", "path": "/home/node/.aws/credentials", "status_code": 404, "duration_ms": 2.26, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:35.900655Z"}
+{"method": "GET", "path": "/terraform.tfvars", "status_code": 404, "duration_ms": 2.45, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:36.125822Z"}
+{"method": "GET", "path": "/terraform.tfstate", "status_code": 404, "duration_ms": 2.55, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:36.367145Z"}
+{"method": "GET", "path": "/ecosystem.config.js", "status_code": 404, "duration_ms": 3.34, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:36.607191Z"}
+{"method": "GET", "path": "/secrets.yaml", "status_code": 404, "duration_ms": 3.54, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:36.847387Z"}
+{"method": "GET", "path": "/secrets.yml", "status_code": 404, "duration_ms": 2.26, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:37.101469Z"}
+{"method": "GET", "path": "/.secrets", "status_code": 404, "duration_ms": 1.91, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:37.342452Z"}
+{"method": "GET", "path": "/.env.vault", "status_code": 404, "duration_ms": 1.79, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:37.592304Z"}
+{"method": "GET", "path": "/storage/framework/.env", "status_code": 404, "duration_ms": 1.93, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:37.834398Z"}
+{"method": "GET", "path": "/laravel/.env", "status_code": 404, "duration_ms": 2.59, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:38.060967Z"}
+{"method": "GET", "path": "/.git/logs/HEAD", "status_code": 404, "duration_ms": 2.34, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:38.305003Z"}
+{"method": "GET", "path": "/.git/config", "status_code": 404, "duration_ms": 2.58, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:38.544844Z"}
+{"method": "GET", "path": "/@fs/app/.env", "status_code": 404, "duration_ms": 3.74, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:38.789829Z"}
+{"method": "GET", "path": "/@fs/root/.env", "status_code": 404, "duration_ms": 2.19, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:39.045144Z"}
+{"method": "GET", "path": "/@fs/proc/self/environ", "status_code": 404, "duration_ms": 2.85, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:39.291545Z"}
+{"method": "GET", "path": "/@fs/.env", "status_code": 404, "duration_ms": 3.75, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:39.515792Z"}
+{"method": "GET", "path": "/@fs/../../../../../root/.env", "status_code": 404, "duration_ms": 1.81, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:39.753398Z"}
+{"method": "GET", "path": "/@fs/../../../../../proc/self/environ", "status_code": 404, "duration_ms": 3.12, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:39.999261Z"}
+{"method": "GET", "path": "/@fs/../../../../../app/.env", "status_code": 404, "duration_ms": 1.95, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:40.230421Z"}
+{"method": "GET", "path": "/@fs/..%2f..%2f..%2f..%2f..%2froot/.env", "status_code": 404, "duration_ms": 2.08, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:40.462477Z"}
+{"method": "GET", "path": "/@fs/..%2f..%2f..%2f..%2f..%2fproc/self/environ", "status_code": 404, "duration_ms": 3.33, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:40.691834Z"}
+{"method": "GET", "path": "/@fs/root/.aws/credentials", "status_code": 404, "duration_ms": 2.26, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:40.934704Z"}
+{"method": "GET", "path": "/@fs/home/ubuntu/.aws/credentials", "status_code": 404, "duration_ms": 3.24, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:41.179242Z"}
+{"method": "GET", "path": "/@fs/home/node/.aws/credentials", "status_code": 404, "duration_ms": 2.22, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:41.406028Z"}
+{"method": "GET", "path": "/@fs/app/.env.local", "status_code": 404, "duration_ms": 2.32, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:41.652724Z"}
+{"method": "GET", "path": "/@fs/app/.env.production", "status_code": 404, "duration_ms": 2.29, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:41.908263Z"}
+{"method": "GET", "path": "/@fs/src/.env", "status_code": 404, "duration_ms": 1.95, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:42.167805Z"}
+{"method": "GET", "path": "/../../../../../../proc/self/environ", "status_code": 404, "duration_ms": 2.29, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:42.433747Z"}
+{"method": "GET", "path": "/../../../../../../../proc/self/environ", "status_code": 404, "duration_ms": 2.85, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:42.680918Z"}
+{"method": "GET", "path": "/../../../../../../../app/.env", "status_code": 404, "duration_ms": 1.92, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:42.910400Z"}
+{"method": "GET", "path": "/../../../../../../../root/.env", "status_code": 404, "duration_ms": 3.09, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:43.138972Z"}
+{"method": "GET", "path": "/../../../../../../../root/.aws/credentials", "status_code": 404, "duration_ms": 2.42, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:43.378662Z"}
+{"method": "GET", "path": "/../../../../../../../home/ubuntu/.aws/credentials", "status_code": 404, "duration_ms": 2.31, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:43.621830Z"}
+{"method": "GET", "path": "/../../../../../../../home/node/.aws/credentials", "status_code": 404, "duration_ms": 2.58, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:43.846288Z"}
+{"method": "GET", "path": "/../../../../../../root/.aws/credentials", "status_code": 404, "duration_ms": 3.5, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:44.080365Z"}
+{"method": "GET", "path": "/../../../../../../home/ubuntu/.aws/credentials", "status_code": 404, "duration_ms": 2.38, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T05:27:44.309517Z"}
+{"method": "POST", "path": "/api", "status_code": 404, "duration_ms": 2.27, "client_ip": "3.8.226.156:44164", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T06:02:38.505403Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.81, "client_ip": "16.58.56.214", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T06:07:52.163609Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.45, "client_ip": "16.58.56.214", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T06:09:05.441679Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/.aider.chat.history.md", "status_code": 404, "duration_ms": 2.84, "client_ip": "81.168.83.103", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T10:06:59.393024Z"}
+{"method": "POST", "path": "/api", "status_code": 404, "duration_ms": 3.0, "client_ip": "47.86.163.246:54706", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T11:40:27.083879Z"}
+INFO:     ('165.225.37.9:30449', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:30451', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:30457', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:30453', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:30452', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:30454', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('20.244.46.127:50592', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('20.244.46.127:2125', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('20.244.46.127:62161', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('20.244.46.127:56422', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"event": "Login attempt for user: adm***qbrainlabs.com", "level": "info", "timestamp": "2026-02-19T13:07:38.122714Z"}
+{"event": "User found: adm***qbrainlabs.com (ID: 48e54d46-a245-4044-bd1b-c9b1eb244049)", "level": "info", "timestamp": "2026-02-19T13:07:38.267586Z"}
+{"event": "Password verified for adm***qbrainlabs.com", "level": "info", "timestamp": "2026-02-19T13:07:38.572275Z"}
+INFO:     ('20.244.46.127:58623', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"event": "Login successful for adm***qbrainlabs.com. Token generated.", "level": "info", "timestamp": "2026-02-19T13:07:38.696681Z"}
+{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 579.07, "client_ip": "20.244.46.127:58849", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:07:38.698705Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 124.52, "client_ip": "20.244.46.127:58849", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:07:39.105519Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 122.82, "client_ip": "20.244.46.127:58849", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:07:39.553403Z"}
+INFO:     ('20.244.46.127:49453', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 189.39, "client_ip": "20.244.46.127:58849", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:07:49.127417Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 205.25, "client_ip": "20.244.46.127:58849", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:07:49.137312Z"}
+{"method": "GET", "path": "/api/admin/workshops", "status_code": 200, "duration_ms": 189.54, "client_ip": "20.244.46.127:58849", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:07:49.576535Z"}
+{"method": "GET", "path": "/api/admin/facilitators", "status_code": 200, "duration_ms": 200.8, "client_ip": "20.244.46.127:58849", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:07:49.592475Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 195.42, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:43.479142Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 117.23, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:43.673807Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 115.79, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:43.676807Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 201.93, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:43.694648Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 105.39, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:43.821645Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 117.23, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:43.822628Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 99.98, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:43.828634Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 110.58, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:43.832639Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 55.94, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:43.965836Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 57.68, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:43.973374Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 65.5, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:44.001000Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 78.32, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:44.005999Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 27.66, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:44.203064Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 30.14, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:44.216836Z"}
+{"method": "GET", "path": "/api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 21.8, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:57.345730Z"}
+{"method": "GET", "path": "/api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 11.28, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:57.373335Z"}
+{"method": "GET", "path": "/api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 12.89, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:57.402886Z"}
+{"method": "GET", "path": "/api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 7.85, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:57.446201Z"}
+{"method": "GET", "path": "/api/participants/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 10.58, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:57.488525Z"}
+{"method": "GET", "path": "/api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 10.78, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:57.538359Z"}
+{"method": "GET", "path": "/api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 30.52, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:57.581625Z"}
+{"method": "GET", "path": "/api/participants/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 8.34, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:57.637365Z"}
+{"method": "GET", "path": "/api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 20.68, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:57.683073Z"}
+{"method": "GET", "path": "/api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 6.97, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:57.701079Z"}
+{"method": "GET", "path": "/api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 17.56, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:57.750270Z"}
+{"method": "GET", "path": "/api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 18.35, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:57.793269Z"}
+{"method": "GET", "path": "/api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 16.18, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:10:57.840022Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 16.47, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:11:05.438198Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 17.05, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:11:05.487553Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 19.18, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:11:05.533782Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 20.32, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:11:05.568415Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 26.66, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:11:05.596888Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 33.24, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:11:05.641231Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 56.9, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:11:05.678014Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 54.94, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:11:05.684832Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 49.52, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:11:05.685835Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 61.48, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:11:05.756648Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 42.38, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:11:05.767824Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 39.52, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:11:05.789013Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 30.48, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:11:05.838043Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 23.7, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:11:05.839033Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 15.02, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:11:06.665431Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 16.03, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:11:06.693891Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 17.82, "client_ip": "127.0.0.1:58733", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:11:09.592859Z"}
+INFO:     ('165.225.37.9:3067', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:3068', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:3065', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:3066', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:3070', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:3071', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:44452', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:44454', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:44451', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:44448', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:44453', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:44449', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 24.48, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:56.523020Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 28.1, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:56.579359Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 28.01, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:56.642066Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 39.33, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:56.656611Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 28.12, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:56.745041Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 27.76, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:56.749634Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 47.37, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:56.802949Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 53.37, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:56.805506Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 58.8, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:56.851016Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 75.14, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:56.873085Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 49.43, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:56.909579Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 53.3, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:56.920052Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 17.05, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:56.967042Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 17.71, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:56.995727Z"}
+{"method": "GET", "path": "/api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 8.04, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:59.704131Z"}
+{"method": "GET", "path": "/api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 7.45, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:59.729606Z"}
+{"method": "GET", "path": "/api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 7.2, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:59.750909Z"}
+{"method": "GET", "path": "/api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 8.94, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:59.779088Z"}
+{"method": "GET", "path": "/api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 22.47, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:59.818479Z"}
+{"method": "GET", "path": "/api/participants/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 21.65, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:59.820509Z"}
+{"method": "GET", "path": "/api/workshops/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 17.47, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:59.826600Z"}
+{"method": "GET", "path": "/api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 11.93, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:59.894037Z"}
+{"method": "GET", "path": "/api/participants/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 10.46, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:59.905953Z"}
+{"method": "GET", "path": "/api/usecases/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 10.19, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:59.935196Z"}
+{"method": "GET", "path": "/api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 19.66, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:13:59.949146Z"}
+{"method": "GET", "path": "/api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 18.81, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:14:00.014018Z"}
+{"method": "GET", "path": "/api/results/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 15.89, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:14:00.101665Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 8.53, "client_ip": "20.244.46.127:58849", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:15:36.393709Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 6.57, "client_ip": "20.244.46.127:58849", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:15:36.649104Z"}
+{"method": "POST", "path": "/api/auth/logout", "status_code": 200, "duration_ms": 49.88, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:15:51.601629Z"}
+{"event": "Login attempt for user: adm***qbrainlabs.com", "level": "info", "timestamp": "2026-02-19T13:16:02.332163Z"}
+{"event": "User found: adm***qbrainlabs.com (ID: 48e54d46-a245-4044-bd1b-c9b1eb244049)", "level": "info", "timestamp": "2026-02-19T13:16:02.336679Z"}
+{"event": "Password verified for adm***qbrainlabs.com", "level": "info", "timestamp": "2026-02-19T13:16:02.644974Z"}
+{"event": "Login successful for adm***qbrainlabs.com. Token generated.", "level": "info", "timestamp": "2026-02-19T13:16:02.655203Z"}
+{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 325.37, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:16:02.656213Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 20.32, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:16:02.780782Z"}
+{"method": "GET", "path": "/api/admin/stats", "status_code": 200, "duration_ms": 18.46, "client_ip": "127.0.0.1:57810", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:16:02.839165Z"}
+INFO:     ('165.225.37.9:18751', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:48573', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:48571', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:48570', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:48572', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.9:38519', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('172.11.133.232:32927', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('172.11.133.232:50482', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('172.11.133.232:52366', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('172.11.133.232:1889', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('172.11.133.232:41993', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('172.11.133.232:51264', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.27:32115', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 9.65, "client_ip": "165.225.37.27:32117", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:34:00.830269Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 8.36, "client_ip": "165.225.37.27:32112", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:34:00.830269Z"}
+INFO:     ('165.225.37.27:32113', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 27.39, "client_ip": "165.225.37.27:32112", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:34:03.053625Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 32.09, "client_ip": "165.225.37.27:32117", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:34:03.065530Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 34.74, "client_ip": "165.225.37.27:32117", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:34:03.148913Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 38.16, "client_ip": "165.225.37.27:32112", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:34:03.160133Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 43.52, "client_ip": "165.225.37.27:32116", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:34:03.162164Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 41.99, "client_ip": "165.225.37.27:32118", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:34:03.166708Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 37.48, "client_ip": "165.225.37.27:59581", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:34:03.201661Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 38.23, "client_ip": "165.225.37.27:59580", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:34:03.203681Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 47.7, "client_ip": "165.225.37.27:32112", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:34:03.273782Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 54.6, "client_ip": "165.225.37.27:32116", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:34:03.288995Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 56.45, "client_ip": "165.225.37.27:32118", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:34:03.293033Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 57.66, "client_ip": "165.225.37.27:32117", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:34:03.297083Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 41.11, "client_ip": "165.225.37.27:59581", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:34:03.333916Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 38.04, "client_ip": "165.225.37.27:59580", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:34:03.334935Z"}
+INFO:     ('165.225.37.27:59580', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('165.225.37.27:59581', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 5.24, "client_ip": "147.185.132.240", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T13:42:07.805192Z"}
