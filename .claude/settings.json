@@ -6,7 +6,7 @@
       "Bash(python:*)",
       "Bash(ls:*)",
       "Bash(powershell -Command:*)",
-      "Bash(PGPASSWORD='Ilmnps@$2026' psql:*)",
+      "Bash(psql:*)",
       "Read(//c//**)",
       "Read(//c/Program Files/PostgreSQL//**)",
       "Bash(Get-Content \"c:\\\\Users\\\\azvmuser1\\\\windsurf-wrkspace\\\\QbrainLabs\\\\server.log\" -Tail 30)",
@@ -14,7 +14,6 @@
       "Bash(python3:*)",
       "Bash(curl.exe:*)",
       "Bash(findstr:*)",
-      "Bash(TOKEN=\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhZG1pbkBxYnJhaW5sYWJzLmNvbSIsInJvbGUiOiJhZG1pbiIsInN0YXR1cyI6ImFjdGl2ZSIsInVzZXJfaWQiOiI0OGU1NGQ0Ni1hMjQ1LTQwNDQtYmQxYi1jOWIxZWIyNDQwNDkiLCJpc19hZG1pbiI6dHJ1ZSwiZXhwIjoxNzc0MDE0ODU3LCJpYXQiOjE3NzE0MjI4NTd9.fi9iph_A1c2YpdpzcQ4Ga7yvkpS8nwqE_B4rJ2X8IUs\")",
       "Bash(.venv/Scripts/python.exe:*)"
     ]
   }
