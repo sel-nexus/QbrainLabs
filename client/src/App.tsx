@@ -19,6 +19,7 @@ import { AdminUsers } from './pages/AdminUsers';
 import { AdminKnowledgeBase } from './pages/AdminKnowledgeBase';
 import { AdminMyWorkshops } from './pages/AdminMyWorkshops';
 import { AdminLLMUsage } from './pages/AdminLLMUsage';
+import { AdminUseCases } from './pages/AdminUseCases';
 import { FacilitatorManagement } from './pages/FacilitatorManagement';
 import { KnowledgeBase } from './pages/KnowledgeBase';
 import { AdminLayout } from './components/AdminLayout';
@@ -131,6 +132,7 @@ function App() {
           <Route path="/admin/workshops" element={<PrivateRoute requireAdmin><AdminWorkshops /></PrivateRoute>} />
           <Route path="/admin/users" element={<PrivateRoute requireAdmin><AdminUsers /></PrivateRoute>} />
           <Route path="/admin/facilitators" element={<PrivateRoute requireAdmin><FacilitatorManagement /></PrivateRoute>} />
+          <Route path="/admin/usecases" element={<PrivateRoute requireAdmin><AdminUseCases /></PrivateRoute>} />
           <Route path="/admin/knowledge-base" element={<PrivateRoute requireAdmin><AdminKnowledgeBase /></PrivateRoute>} />
           <Route path="/admin/llm-usage" element={<PrivateRoute requireAdmin><AdminLLMUsage /></PrivateRoute>} />
           <Route path="/admin/my-workshops" element={<PrivateRoute requireAdmin><AdminMyWorkshops /></PrivateRoute>} />

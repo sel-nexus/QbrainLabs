@@ -6,7 +6,8 @@ import {
     FolderKanban,
     Settings,
     Brain,
-    Activity
+    Activity,
+    Lightbulb
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { Header } from './Header';
@@ -30,6 +31,7 @@ export function AdminLayout({ children, title, actions }: AdminLayoutProps) {
     const navItems = [
         { path: '/admin', label: t('admin.statistics'), icon: LayoutDashboard },
         { path: '/admin/workshops', label: t('admin.workshops'), icon: FolderKanban },
+        { path: '/admin/usecases', label: 'AI Use Cases', icon: Lightbulb },
         { path: '/admin/users', label: t('admin.users'), icon: Users },
         { path: '/admin/facilitators', label: t('admin.facilitators'), icon: Users },
         { path: '/admin/knowledge-base', label: t('admin.knowledgeBase.title'), icon: Brain },

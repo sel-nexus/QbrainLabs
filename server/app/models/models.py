@@ -213,7 +213,7 @@ class UseCase(Base):
     __tablename__ = "use_cases"
 
     id = Column(GUID(), primary_key=True, default=uuid.uuid4)
-    workshop_id = Column(GUID(), ForeignKey("workshops.id"), nullable=False)
+    workshop_id = Column(GUID(), ForeignKey("workshops.id"), nullable=True)   # Nullable for admin-imported standalone use cases
     participant_id = Column(GUID(), ForeignKey("participants.id"), nullable=True)  # Nullable for facilitator-added use cases
     added_by_facilitator = Column(Boolean, default=False)  # Flag for facilitator submissions
     facilitator_group_id = Column(GUID(), nullable=True)  # Groups facilitator-added use cases created across multiple workshops

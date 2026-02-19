@@ -2,14 +2,15 @@
 Admin API endpoints
 Requires admin authentication for all routes
 """
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import func, and_
-from typing import List
+from typing import List, Optional, Any, Dict
 from datetime import datetime, timedelta
 import secrets
 import string
+import uuid
 
 from app.core.database import get_db
 from app.middleware.admin_auth import require_admin
@@ -730,4 +731,210 @@ async def get_llm_usage_by_user(
         )
         for row in rows
     ]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Use Case Import Endpoints
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Industry/domain keyword classification (mirrors frontend INDUSTRIES constant)
+_INDUSTRY_KEYWORDS: Dict[str, List[str]] = {
+    "AI for HR":                 ["hr", "human resources", "recruitment", "payroll", "employee", "talent", "workforce", "onboarding"],
+    "AI for IT":                 ["it ", "information technology", "software", "deployment", "infrastructure", "helpdesk", "help desk", "ticket", "service desk", "desktop", "support automation"],
+    "AI for Finance":            ["finance", "financial", "invoice", "billing", "payment", "accounting", "accounts payable", "accounts receivable", "spend", "budget", "tax", "audit"],
+    "AI for Healthcare":         ["health", "medical", "clinical", "patient", "hospital", "pharma", "diagnosis", "care", "drug", "nurse"],
+    "AI for Legal & Compliance": ["legal", "compliance", "regulatory", "contract", "gdpr", "privacy", "policy", "litigation"],
+    "AI for Customer Service":   ["customer", "cx ", "service", "support", "response time", "client", "satisfaction", "nps", "churn"],
+    "AI for Data & Analytics":   ["data", "analytics", "extract", "etl", "reporting", "dashboard", "insight", "forecast", "prediction", "rag", "knowledge"],
+    "AI for Operations":         ["operation", "process", "workflow", "maintenance", "grid", "supply", "logistics", "procurement", "inventory", "plant", "manufacturing"],
+    "AI for Marketing & Sales":  ["marketing", "sales", "campaign", "acquisition", "lead", "content", "seo"],
+}
+
+
+def _classify_industry(title: str, description: str, kpi: str = "") -> str:
+    haystack = f"{title} {description} {kpi}".lower()
+    for industry, keywords in _INDUSTRY_KEYWORDS.items():
+        if any(kw in haystack for kw in keywords):
+            return industry
+    return "General AI"
+
+
+@router.post("/usecases/import/preview", response_model=List[Dict[str, Any]])
+async def preview_import_use_cases(
+    file: UploadFile = File(...),
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Upload an Excel (.xlsx), Word (.docx), or PDF file containing use cases.
+    Returns AI-enhanced previews with duplicate detection — nothing is saved yet.
+    """
+    from app.services.file_service import file_service
+    from app.services.rag_service import rag_service
+
+    # 1. Extract content from file
+    try:
+        extracted = await file_service.extract_text_from_file(file)
+    except (ValueError, ImportError) as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+
+    # 2. Build a flat list of raw candidates
+    raw_candidates: List[Dict[str, str]] = []
+
+    if isinstance(extracted, dict) and extracted.get("type") == "tabular":
+        # Excel: each row is already a structured dict
+        for row in extracted.get("rows", []):
+            raw_candidates.append({
+                "title":             row.get("title", ""),
+                "description":       row.get("description", ""),
+                "proposed_solution": row.get("proposed_solution", ""),
+                "kpi":               row.get("kpi", ""),
+                "target_user":       row.get("target_user", ""),
+                "category":          row.get("category", ""),
+            })
+    else:
+        # Narrative (Word/PDF): use RAG to extract challenge cards
+        narrative_text = extracted if isinstance(extracted, str) else ""
+        if not narrative_text:
+            raise HTTPException(status_code=400, detail="Could not extract text from file")
+        challenge_cards = await rag_service.analyze_document_context(narrative_text)
+        for card in challenge_cards:
+            raw_candidates.append({
+                "title":             card.get("title", ""),
+                "description":       card.get("challenge_description", card.get("description", "")),
+                "proposed_solution": "",
+                "kpi":               "; ".join(card.get("success_criteria", [])),
+                "target_user":       "",
+                "category":          "",
+            })
+
+    if not raw_candidates:
+        raise HTTPException(status_code=422, detail="No use cases could be extracted from the file")
+
+    # 3. Fetch existing use cases once for duplicate checking
+    result = await db.execute(select(UseCase.id, UseCase.title, UseCase.description))
+    existing = [
+        {"id": str(row[0]), "title": row[1] or "", "description": row[2] or ""}
+        for row in result.all()
+    ]
+
+    # 4. Process each candidate
+    preview_items: List[Dict[str, Any]] = []
+
+    for candidate in raw_candidates:
+        temp_id = str(uuid.uuid4())
+        title = candidate.get("title", "")
+        description = candidate.get("description", "")
+
+        # Enhance via LLM
+        try:
+            enhanced = await rag_service.enhance_use_case(f"{title}\n\n{description}")
+        except Exception:
+            enhanced = {}
+
+        refined_title       = enhanced.get("title",       enhanced.get("refined_title",       title))
+        refined_description = enhanced.get("description", enhanced.get("refined_description", description))
+        suggested_solution  = enhanced.get("solution",    enhanced.get("suggested_solution",  candidate.get("proposed_solution", "")))
+        refined_kpi         = enhanced.get("kpi",         candidate.get("kpi", ""))
+
+        # Auto-classify industry
+        auto_industry = _classify_industry(refined_title, refined_description, refined_kpi)
+
+        # Keep user-supplied category or let it be set by admin in review
+        auto_category = candidate.get("category", "")
+
+        # Duplicate check
+        is_duplicate = False
+        duplicate_of_title = None
+        similarity_score = 0.0
+        try:
+            dup_result = await rag_service.check_duplicates(
+                workshop_id=None,
+                title=refined_title,
+                description=refined_description,
+                existing_use_cases=existing,
+            )
+            is_duplicate      = dup_result.get("is_duplicate", False)
+            similarity_score  = dup_result.get("similarity_score", 0.0)
+            dup_id            = dup_result.get("similar_to_id")
+            if dup_id:
+                match = next((e for e in existing if e["id"] == dup_id), None)
+                duplicate_of_title = match["title"] if match else dup_result.get("similar_to_title")
+        except Exception:
+            pass
+
+        preview_items.append({
+            "temp_id": temp_id,
+            "original": {
+                "title":       title,
+                "description": description,
+            },
+            "enhanced": {
+                "title":             refined_title,
+                "description":       refined_description,
+                "proposed_solution": suggested_solution,
+                "kpi":               refined_kpi,
+                "target_user":       candidate.get("target_user", ""),
+                "category":          auto_category,
+            },
+            "auto_industry":    auto_industry,
+            "auto_category":    auto_category,
+            "is_duplicate":     is_duplicate,
+            "duplicate_of":     duplicate_of_title,
+            "similarity_score": round(float(similarity_score), 2),
+        })
+
+    return preview_items
+
+
+from pydantic import BaseModel
+
+class ImportUseCaseItem(BaseModel):
+    title: str
+    description: str
+    proposed_solution: Optional[str] = ""
+    kpi: Optional[str] = ""
+    target_user: Optional[str] = ""
+    category: Optional[str] = ""
+
+class ImportConfirmRequest(BaseModel):
+    use_cases: List[ImportUseCaseItem]
+
+
+@router.post("/usecases/import/confirm")
+async def confirm_import_use_cases(
+    data: ImportConfirmRequest,
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Save the admin-reviewed import batch.
+    Use cases are created as standalone (no workshop), auto-approved, marked as facilitator-added.
+    """
+    if not data.use_cases:
+        raise HTTPException(status_code=400, detail="No use cases provided")
+
+    group_id = uuid.uuid4()
+    new_records = [
+        UseCase(
+            id=uuid.uuid4(),
+            workshop_id=None,
+            participant_id=None,
+            added_by_facilitator=True,
+            facilitator_group_id=group_id,
+            title=uc.title,
+            description=uc.description,
+            proposed_solution=uc.proposed_solution or "",
+            kpi=uc.kpi or "",
+            target_user=uc.target_user or "",
+            category=uc.category or "",
+            status="APPROVED",
+        )
+        for uc in data.use_cases
+    ]
+
+    db.add_all(new_records)
+    await db.commit()
+
+    return {"imported": len(new_records), "group_id": str(group_id)}
 
