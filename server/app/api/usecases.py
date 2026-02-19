@@ -161,7 +161,9 @@ async def get_all_use_cases(
             "current_phase": workshop.current_phase,
         } if workshop is not None else None
 
-        if use_case.added_by_facilitator and use_case.facilitator_group_id:
+        # Only group by facilitator_group_id when the use case actually belongs to a workshop.
+        # Standalone imported use cases (workshop_id=None) must always be individual cards.
+        if use_case.added_by_facilitator and use_case.facilitator_group_id and use_case.workshop_id is not None:
             gid = str(use_case.facilitator_group_id)
             if gid not in groups:
                 groups[gid] = {

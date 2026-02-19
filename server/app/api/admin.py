@@ -38,7 +38,10 @@ from app.schemas.admin import (
     LLMUsageSummary,
     LLMUsageByFeature,
     LLMUsageByWorkshop,
-    LLMUsageByUser
+    LLMUsageByUser,
+    LLMUsageByModel,
+    LLMUsageByDay,
+    LLMRecentLog,
 )
 from app.api.auth import hash_password
 from sqlalchemy import update, delete
@@ -567,6 +570,15 @@ async def deactivate_user(
 # LLM Usage Tracking Endpoints
 # ============================================================================
 
+def _apply_date_filter(query, start_date, end_date):
+    """Helper to apply optional date range filters."""
+    if start_date:
+        query = query.where(LLMUsageLog.created_at >= start_date)
+    if end_date:
+        query = query.where(LLMUsageLog.created_at <= end_date)
+    return query
+
+
 @router.get("/llm-usage/summary", response_model=LLMUsageSummary)
 async def get_llm_usage_summary(
     admin: User = Depends(require_admin),
@@ -574,28 +586,32 @@ async def get_llm_usage_summary(
     start_date: datetime = None,
     end_date: datetime = None
 ):
-    """
-    Get overall LLM usage statistics.
-    Optional date range filtering with start_date and end_date query params.
-    """
-    query = select(
+    """Get overall LLM usage statistics with optional date range filtering."""
+    base = select(
         func.count(LLMUsageLog.id).label('total_calls'),
         func.coalesce(func.sum(LLMUsageLog.prompt_tokens), 0).label('total_prompt_tokens'),
         func.coalesce(func.sum(LLMUsageLog.completion_tokens), 0).label('total_completion_tokens'),
         func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
         func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents'),
         func.count(func.distinct(LLMUsageLog.user_id)).label('unique_users'),
-        func.count(func.distinct(LLMUsageLog.workshop_id)).label('unique_workshops')
+        func.count(func.distinct(LLMUsageLog.workshop_id)).label('unique_workshops'),
     )
-    
-    if start_date:
-        query = query.where(LLMUsageLog.created_at >= start_date)
-    if end_date:
-        query = query.where(LLMUsageLog.created_at <= end_date)
-    
+    query = _apply_date_filter(base, start_date, end_date)
     result = await db.execute(query)
     row = result.first()
-    
+
+    # Count successes / errors in a second cheap query
+    sc_query = _apply_date_filter(
+        select(func.count(LLMUsageLog.id)).where(LLMUsageLog.success == 'true'),
+        start_date, end_date
+    )
+    ec_query = _apply_date_filter(
+        select(func.count(LLMUsageLog.id)).where(LLMUsageLog.success != 'true'),
+        start_date, end_date
+    )
+    sc_result = await db.execute(sc_query)
+    ec_result = await db.execute(ec_query)
+
     return LLMUsageSummary(
         total_calls=row.total_calls or 0,
         total_prompt_tokens=row.total_prompt_tokens or 0,
@@ -603,7 +619,9 @@ async def get_llm_usage_summary(
         total_tokens=row.total_tokens or 0,
         estimated_cost_cents=row.estimated_cost_cents or 0,
         unique_users=row.unique_users or 0,
-        unique_workshops=row.unique_workshops or 0
+        unique_workshops=row.unique_workshops or 0,
+        success_count=sc_result.scalar() or 0,
+        error_count=ec_result.scalar() or 0,
     )
 
 
@@ -614,30 +632,29 @@ async def get_llm_usage_by_feature(
     start_date: datetime = None,
     end_date: datetime = None
 ):
-    """
-    Get LLM usage grouped by feature.
-    """
-    query = select(
-        LLMUsageLog.feature,
-        func.count(LLMUsageLog.id).label('call_count'),
-        func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
-        func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents')
-    ).group_by(LLMUsageLog.feature).order_by(func.sum(LLMUsageLog.total_tokens).desc())
-    
-    if start_date:
-        query = query.where(LLMUsageLog.created_at >= start_date)
-    if end_date:
-        query = query.where(LLMUsageLog.created_at <= end_date)
-    
+    """Get LLM usage grouped by feature."""
+    query = _apply_date_filter(
+        select(
+            LLMUsageLog.feature,
+            func.count(LLMUsageLog.id).label('call_count'),
+            func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
+            func.coalesce(func.sum(LLMUsageLog.prompt_tokens), 0).label('total_prompt_tokens'),
+            func.coalesce(func.sum(LLMUsageLog.completion_tokens), 0).label('total_completion_tokens'),
+            func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents'),
+        ).group_by(LLMUsageLog.feature
+        ).order_by(func.count(LLMUsageLog.id).desc()),
+        start_date, end_date
+    )
     result = await db.execute(query)
     rows = result.all()
-    
     return [
         LLMUsageByFeature(
             feature=row.feature,
             call_count=row.call_count,
             total_tokens=row.total_tokens or 0,
-            estimated_cost_cents=row.estimated_cost_cents or 0
+            total_prompt_tokens=row.total_prompt_tokens or 0,
+            total_completion_tokens=row.total_completion_tokens or 0,
+            estimated_cost_cents=row.estimated_cost_cents or 0,
         )
         for row in rows
     ]
@@ -651,30 +668,23 @@ async def get_llm_usage_by_workshop(
     end_date: datetime = None,
     limit: int = 20
 ):
-    """
-    Get LLM usage grouped by workshop.
-    Returns top workshops by token usage.
-    """
-    query = select(
-        LLMUsageLog.workshop_id,
-        Workshop.title.label('workshop_title'),
-        func.count(LLMUsageLog.id).label('call_count'),
-        func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
-        func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents')
-    ).outerjoin(Workshop, LLMUsageLog.workshop_id == Workshop.id
-    ).where(LLMUsageLog.workshop_id.isnot(None)
-    ).group_by(LLMUsageLog.workshop_id, Workshop.title
-    ).order_by(func.sum(LLMUsageLog.total_tokens).desc()
-    ).limit(limit)
-    
-    if start_date:
-        query = query.where(LLMUsageLog.created_at >= start_date)
-    if end_date:
-        query = query.where(LLMUsageLog.created_at <= end_date)
-    
+    """Get LLM usage grouped by workshop, ordered by call count."""
+    query = _apply_date_filter(
+        select(
+            LLMUsageLog.workshop_id,
+            Workshop.title.label('workshop_title'),
+            func.count(LLMUsageLog.id).label('call_count'),
+            func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
+            func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents')
+        ).outerjoin(Workshop, LLMUsageLog.workshop_id == Workshop.id
+        ).where(LLMUsageLog.workshop_id.isnot(None)
+        ).group_by(LLMUsageLog.workshop_id, Workshop.title
+        ).order_by(func.count(LLMUsageLog.id).desc()
+        ).limit(limit),
+        start_date, end_date
+    )
     result = await db.execute(query)
     rows = result.all()
-    
     return [
         LLMUsageByWorkshop(
             workshop_id=str(row.workshop_id) if row.workshop_id else "",
@@ -695,31 +705,24 @@ async def get_llm_usage_by_user(
     end_date: datetime = None,
     limit: int = 20
 ):
-    """
-    Get LLM usage grouped by user.
-    Returns top users by token usage.
-    """
-    query = select(
-        LLMUsageLog.user_id,
-        User.email.label('user_email'),
-        User.full_name.label('user_name'),
-        func.count(LLMUsageLog.id).label('call_count'),
-        func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
-        func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents')
-    ).outerjoin(User, LLMUsageLog.user_id == User.id
-    ).where(LLMUsageLog.user_id.isnot(None)
-    ).group_by(LLMUsageLog.user_id, User.email, User.full_name
-    ).order_by(func.sum(LLMUsageLog.total_tokens).desc()
-    ).limit(limit)
-    
-    if start_date:
-        query = query.where(LLMUsageLog.created_at >= start_date)
-    if end_date:
-        query = query.where(LLMUsageLog.created_at <= end_date)
-    
+    """Get LLM usage grouped by user, ordered by call count."""
+    query = _apply_date_filter(
+        select(
+            LLMUsageLog.user_id,
+            User.email.label('user_email'),
+            User.full_name.label('user_name'),
+            func.count(LLMUsageLog.id).label('call_count'),
+            func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
+            func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents')
+        ).outerjoin(User, LLMUsageLog.user_id == User.id
+        ).where(LLMUsageLog.user_id.isnot(None)
+        ).group_by(LLMUsageLog.user_id, User.email, User.full_name
+        ).order_by(func.count(LLMUsageLog.id).desc()
+        ).limit(limit),
+        start_date, end_date
+    )
     result = await db.execute(query)
     rows = result.all()
-    
     return [
         LLMUsageByUser(
             user_id=str(row.user_id) if row.user_id else "",
@@ -728,6 +731,107 @@ async def get_llm_usage_by_user(
             call_count=row.call_count,
             total_tokens=row.total_tokens or 0,
             estimated_cost_cents=row.estimated_cost_cents or 0
+        )
+        for row in rows
+    ]
+
+
+@router.get("/llm-usage/by-model", response_model=List[LLMUsageByModel])
+async def get_llm_usage_by_model(
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+    start_date: datetime = None,
+    end_date: datetime = None
+):
+    """Get LLM usage grouped by model name."""
+    query = _apply_date_filter(
+        select(
+            func.coalesce(LLMUsageLog.model_name, 'unknown').label('model_name'),
+            func.count(LLMUsageLog.id).label('call_count'),
+            func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
+            func.coalesce(func.sum(LLMUsageLog.prompt_tokens), 0).label('total_prompt_tokens'),
+            func.coalesce(func.sum(LLMUsageLog.completion_tokens), 0).label('total_completion_tokens'),
+            func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents'),
+        ).group_by(func.coalesce(LLMUsageLog.model_name, 'unknown')
+        ).order_by(func.count(LLMUsageLog.id).desc()),
+        start_date, end_date
+    )
+    result = await db.execute(query)
+    rows = result.all()
+    return [
+        LLMUsageByModel(
+            model_name=row.model_name,
+            call_count=row.call_count,
+            total_tokens=row.total_tokens or 0,
+            total_prompt_tokens=row.total_prompt_tokens or 0,
+            total_completion_tokens=row.total_completion_tokens or 0,
+            estimated_cost_cents=row.estimated_cost_cents or 0,
+        )
+        for row in rows
+    ]
+
+
+@router.get("/llm-usage/by-day", response_model=List[LLMUsageByDay])
+async def get_llm_usage_by_day(
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+    start_date: datetime = None,
+    end_date: datetime = None,
+    days: int = 30
+):
+    """Get daily LLM usage trend. Defaults to last 30 days."""
+    if not start_date:
+        start_date = datetime.utcnow() - timedelta(days=days)
+    query = _apply_date_filter(
+        select(
+            func.date(LLMUsageLog.created_at).label('date'),
+            func.count(LLMUsageLog.id).label('call_count'),
+            func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
+            func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents'),
+        ).group_by(func.date(LLMUsageLog.created_at)
+        ).order_by(func.date(LLMUsageLog.created_at).asc()),
+        start_date, end_date
+    )
+    result = await db.execute(query)
+    rows = result.all()
+    return [
+        LLMUsageByDay(
+            date=str(row.date),
+            call_count=row.call_count,
+            total_tokens=row.total_tokens or 0,
+            estimated_cost_cents=row.estimated_cost_cents or 0,
+        )
+        for row in rows
+    ]
+
+
+@router.get("/llm-usage/recent", response_model=List[LLMRecentLog])
+async def get_llm_usage_recent(
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+    limit: int = 50,
+    offset: int = 0,
+    feature: Optional[str] = None,
+):
+    """Get recent individual LLM usage log entries with optional feature filter."""
+    query = select(LLMUsageLog).order_by(LLMUsageLog.created_at.desc()).limit(limit).offset(offset)
+    if feature:
+        query = query.where(LLMUsageLog.feature == feature)
+    result = await db.execute(query)
+    rows = result.scalars().all()
+    return [
+        LLMRecentLog(
+            id=str(row.id),
+            feature=row.feature,
+            model_name=row.model_name,
+            prompt_tokens=row.prompt_tokens or 0,
+            completion_tokens=row.completion_tokens or 0,
+            total_tokens=row.total_tokens or 0,
+            estimated_cost_cents=row.estimated_cost_cents or 0,
+            success=row.success,
+            workshop_id=str(row.workshop_id) if row.workshop_id else None,
+            user_id=str(row.user_id) if row.user_id else None,
+            created_at=row.created_at,
         )
         for row in rows
     ]
@@ -913,14 +1017,27 @@ async def confirm_import_use_cases(
     if not data.use_cases:
         raise HTTPException(status_code=400, detail="No use cases provided")
 
-    group_id = uuid.uuid4()
+    # One-time fix: clear any stale shared facilitator_group_id from previously imported
+    # standalone use cases so they each appear as individual cards in the UI.
+    from sqlalchemy import update as sa_update
+    await db.execute(
+        sa_update(UseCase)
+        .where(
+            UseCase.workshop_id == None,
+            UseCase.added_by_facilitator == True,
+            UseCase.facilitator_group_id != None,
+        )
+        .values(facilitator_group_id=None)
+    )
+    await db.flush()
+
     new_records = [
         UseCase(
             id=uuid.uuid4(),
             workshop_id=None,
             participant_id=None,
             added_by_facilitator=True,
-            facilitator_group_id=group_id,
+            facilitator_group_id=None,  # standalone — no cross-workshop grouping needed
             title=uc.title,
             description=uc.description,
             proposed_solution=uc.proposed_solution or "",
@@ -935,5 +1052,179 @@ async def confirm_import_use_cases(
     db.add_all(new_records)
     await db.commit()
 
-    return {"imported": len(new_records), "group_id": str(group_id)}
+    return {"imported": len(new_records)}
 
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Knowledge Base → Use Cases Migration
+# ─────────────────────────────────────────────────────────────────────────────
+
+@router.get("/knowledge-base/pending-migration")
+async def get_pending_migration_count(
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Return pending KB use case count.
+    Uses a count heuristic: if standalone imported use cases (no workshop)
+    already cover the KB total, migration is considered complete.
+    """
+    from app.models.knowledge_base import KBUseCase
+
+    kb_count_result = await db.execute(
+        select(func.count(KBUseCase.id)).where(KBUseCase.is_active == True)
+    )
+    kb_total = kb_count_result.scalar() or 0
+
+    if kb_total == 0:
+        return {"kb_total": 0}
+
+    # Count standalone (admin-imported, no workshop) use cases already in main table
+    standalone_result = await db.execute(
+        select(func.count(UseCase.id)).where(
+            UseCase.workshop_id == None,
+            UseCase.added_by_facilitator == True,
+        )
+    )
+    standalone_count = standalone_result.scalar() or 0
+
+    # If standalone count >= KB count, migration is done
+    pending = max(0, kb_total - standalone_count)
+    return {"kb_total": pending}
+
+
+@router.post("/knowledge-base/migrate-usecases")
+async def migrate_kb_usecases_to_usecases(
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Migrate all active KBUseCase records into the main use_cases table.
+    Each record is enhanced via LLM, auto-classified by industry, and inserted
+    as a standalone (no workshop) approved use case.
+    Already-migrated titles are skipped to avoid duplicates.
+    """
+    from app.models.knowledge_base import KBUseCase, KBIndustry
+    from app.services.rag_service import rag_service
+
+    kb_result = await db.execute(
+        select(KBUseCase, KBIndustry)
+        .join(KBIndustry, KBUseCase.industry_id == KBIndustry.id)
+        .where(KBUseCase.is_active == True)
+        .order_by(KBUseCase.created_at)
+    )
+    kb_rows = kb_result.all()
+
+    if not kb_rows:
+        return {"migrated": 0, "skipped": 0, "message": "No KB use cases found"}
+
+    existing_result = await db.execute(select(UseCase.title))
+    existing_titles = {row[0].lower().strip() for row in existing_result.all() if row[0]}
+
+    # Also add all original KB titles so re-runs skip them even if LLM changed the title
+    for kb_uc, _ in kb_rows:
+        if kb_uc.title:
+            existing_titles.add(kb_uc.title.lower().strip())
+
+    # Re-build without KB titles so we can check properly below
+    # (We snapshot KB titles separately for the skip check)
+    kb_original_titles = {(kb_uc.title or "").lower().strip() for kb_uc, _ in kb_rows}
+
+    # Standalone use cases already imported (count-based guard)
+    standalone_result = await db.execute(
+        select(func.count(UseCase.id)).where(
+            UseCase.workshop_id == None,
+            UseCase.added_by_facilitator == True,
+        )
+    )
+    standalone_count = standalone_result.scalar() or 0
+
+    # Fix any previously-migrated records that share a facilitator_group_id
+    # (old bug: all records got the same group_id causing them to collapse into one card).
+    from sqlalchemy import update as sa_update
+    await db.execute(
+        sa_update(UseCase)
+        .where(
+            UseCase.workshop_id == None,
+            UseCase.added_by_facilitator == True,
+            UseCase.facilitator_group_id != None,
+        )
+        .values(facilitator_group_id=None)
+    )
+    await db.commit()
+
+    if standalone_count >= len(kb_rows):
+        return {
+            "migrated": 0,
+            "skipped": len(kb_rows),
+            "message": f"All {len(kb_rows)} KB use cases already migrated. Nothing to do.",
+        }
+
+    migrated, skipped = 0, 0
+    new_records: List[UseCase] = []
+
+    for kb_uc, kb_industry in kb_rows:
+        title = kb_uc.title or ""
+        description = kb_uc.description or ""
+
+        # Skip if original KB title is already in use_cases (either as-is or LLM-enhanced)
+        if title.lower().strip() in existing_titles:
+            skipped += 1
+            continue
+
+        kpi_text = "; ".join(kb_uc.example_kpis or [])
+        combined = f"{title}\n\n{description}"
+        if kpi_text:
+            combined += f"\n\nKPIs: {kpi_text}"
+
+        try:
+            enhanced = await rag_service.enhance_use_case(combined)
+        except Exception:
+            enhanced = {}
+
+        refined_title       = enhanced.get("title",       enhanced.get("refined_title",       title))
+        refined_description = enhanced.get("description", enhanced.get("refined_description", description))
+        suggested_solution  = enhanced.get("solution",    enhanced.get("suggested_solution",  ""))
+        refined_kpi         = enhanced.get("kpi",         kpi_text)
+
+        kb_industry_name = kb_industry.name if kb_industry else ""
+        auto_industry = _classify_industry(refined_title, refined_description, refined_kpi)
+        if kb_industry_name:
+            match = next(
+                (ind for ind in _INDUSTRY_KEYWORDS
+                 if kb_industry_name.lower() in ind.lower() or ind.lower() in kb_industry_name.lower()),
+                None,
+            )
+            if match:
+                auto_industry = match
+
+        kb_category = kb_uc.category or (", ".join(kb_uc.technologies or [])[:100] or "")
+
+        new_records.append(UseCase(
+            id=uuid.uuid4(),
+            workshop_id=None,
+            participant_id=None,
+            added_by_facilitator=True,
+            facilitator_group_id=None,
+            title=refined_title or title or "Untitled",
+            description=refined_description or description or "No description",
+            proposed_solution=suggested_solution or "",
+            kpi=refined_kpi or "",
+            target_user="",
+            category=kb_category or "",
+            status="APPROVED",
+        ))
+        existing_titles.add(refined_title.lower().strip())
+        migrated += 1
+
+    if new_records:
+        db.add_all(new_records)
+        await db.commit()
+
+    return {
+        "migrated": migrated,
+        "skipped": skipped,
+        "group_id": str(group_id),
+        "message": f"Migrated {migrated} use cases from Knowledge Base. Skipped {skipped} duplicates.",
+    }

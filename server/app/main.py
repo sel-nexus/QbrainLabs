@@ -138,7 +138,7 @@ app.include_router(analytics_dashboard.router, prefix="/api/analytics", tags=["a
 app.include_router(polls.router, prefix="/api", tags=["polls"])
 app.include_router(gamification.router, prefix="/api/gamification", tags=["gamification"])
 
-from app.api import roi, templates, breakout, roadmap, challenge, copilot, knowledge_validation, notifications
+from app.api import roi, templates, breakout, roadmap, challenge, copilot, knowledge_validation, notifications, data_sources
 app.include_router(roi.router, tags=["roi"])
 app.include_router(templates.router, prefix="/api/templates", tags=["templates"])
 app.include_router(breakout.router, prefix="/api", tags=["breakout-rooms"])
@@ -147,6 +147,7 @@ app.include_router(challenge.router, tags=["challenges"])
 app.include_router(copilot.router, tags=["ai-copilot"])
 app.include_router(knowledge_validation.router, tags=["knowledge-validation"])
 app.include_router(notifications.router, tags=["notifications"])
+app.include_router(data_sources.router, tags=["data-sources"])
 
 
 @app.get("/")

@@ -100,6 +100,8 @@ from .analytics import (
     IndustryBenchmark
 )
 
+from .data_source import DataSourceConnector
+
 from .poll import (
     Poll,
     PollType,

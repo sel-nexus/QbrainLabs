@@ -1,1187 +1,1111 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { toast } from 'sonner';
-import { useTranslation } from 'react-i18next';
 import {
-    Brain,
-    Search,
-    Building2,
-    Cpu,
-    TrendingUp,
-    ChevronRight,
-    ArrowLeft,
-    BookOpen,
-    Trash2,
-    Clock,
-    CheckCircle,
-    AlertCircle,
-    Plus,
-    Sparkles,
-    ArrowRightLeft,
-    Move
+    Brain, Upload, FileText, Database, Trash2, RefreshCw,
+    CheckCircle, AlertCircle, Clock, Link2, Globe, Github,
+    Layers, BookOpen, ArrowRight, Plus, X, Eye,
+    Play, Zap, Settings
 } from 'lucide-react';
 import { AdminLayout } from '../components/AdminLayout';
-import { ConfirmationModal } from '../components/ConfirmationModal';
-import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
+import { API_BASE_URL } from '../lib/config';
 
-interface Industry {
-    id: string;
-    name: string;
-    icon: string;
-    use_case_count: number;
-}
+const API = API_BASE_URL;
 
-interface KnowledgeBaseOverview {
-    total_industries: number;
-    total_use_cases: number;
-    total_categories: number;
-    total_technologies: number;
-    industries: Industry[];
-}
+// ── Types ─────────────────────────────────────────────────────────────────────
 
-interface UseCaseTemplate {
-    id: string;
-    title: string;
-    description: string;
-    category: string;
-    complexity: string;
-    data_requirements: string;
-    typical_roi: string;
-    implementation_time: string;
-    technologies: string[];
-    kpis: string[];
-}
-
-interface SearchResult {
-    id: string;
-    title: string;
-    description: string;
-    industry: string;
-    industry_name: string;
-    category: string;
-    complexity: string;
-    typical_roi: string;
-    relevance_score: number;
-    is_new?: boolean;
-    is_refinable?: boolean;
-    existing_usecase_id?: string;
-    refinement_suggestions?: string;
-}
-
-interface IndustryDetail {
-    id: string;
-    name: string;
-    icon: string;
-    use_cases: UseCaseTemplate[];
+interface RAGDoc {
+    id: string; title: string; category: string; source: string;
+    version: number; retrieval_count: number; is_active: boolean; created_at: string;
 }
 
 interface KnowledgeArticle {
-    id: string;
-    title: string;
-    source_type: string;
-    source_filename?: string;
-    source_url?: string;
-    validation_status: string;
-    validation_score?: number;
-    imported_at: string;
-    linked_usecases_count: number;
+    id: string; title: string; content?: string; summary?: string;
+    source_type: string; source_filename?: string; source_url?: string;
+    validation_status: string; validation_score?: number; validation_notes?: string;
+    imported_at: string; linked_usecases_count: number;
 }
 
-import { API_BASE_URL } from '../lib/config';
+interface RAGStatus {
+    is_active: boolean; mode: string; vector_store_enabled: boolean;
+    embeddings_enabled: boolean; reference_data_count: number;
+}
 
-const API_BASE = API_BASE_URL;
+interface DataConnector {
+    id: string; name: string; connector_type: string; description?: string;
+    config: Record<string, unknown>; status: string; last_synced?: string;
+    last_error?: string; docs_synced: number; is_active: boolean; created_at: string;
+}
 
-export function AdminKnowledgeBase() {
-    const { theme } = useTheme();
-    const { t } = useTranslation();
-    const [overview, setOverview] = useState<KnowledgeBaseOverview | null>(null);
-    const [loading, setLoading] = useState(true);
-    const [activeTab, setActiveTab] = useState<'overview' | 'articles'>('overview');
-    const [articles, setArticles] = useState<KnowledgeArticle[]>([]);
-    const [loadingArticles, setLoadingArticles] = useState(false);
-    const [articleToDelete, setArticleToDelete] = useState<string | null>(null);
-    const [searchQuery, setSearchQuery] = useState('');
-    const [selectedIndustry, setSelectedIndustry] = useState<IndustryDetail | null>(null);
-    const [selectedUseCase, setSelectedUseCase] = useState<UseCaseTemplate | null>(null);
-    const [showUploadModal, setShowUploadModal] = useState(false);
-    const [uploading, setUploading] = useState(false);
-    const [uploadFile, setUploadFile] = useState<File | null>(null);
-    const [showResearchModal, setShowResearchModal] = useState(false);
-    const [researchProvider, setResearchProvider] = useState<'perplexity' | 'google'>('perplexity');
-    const [researchLoading, setResearchLoading] = useState(false);
-    const [researchResults, setResearchResults] = useState<SearchResult[]>([]);
-    const [customScope, setCustomScope] = useState('');
-    const [showMoveModal, setShowMoveModal] = useState(false);
-    const [showDeleteModal, setShowDeleteModal] = useState(false);
-    const [targetIndustry, setTargetIndustry] = useState('');
-    const [isNewIndustry, setIsNewIndustry] = useState(false);
-    const [newIndustryName, setNewIndustryName] = useState('');
-    const [usecaseToDelete, setUsecaseToDelete] = useState<UseCaseTemplate | null>(null);
-    const isLight = theme === 'light';
+type Tab = 'documents' | 'articles' | 'sources';
+type ConnectorType = 'web_crawler' | 'github' | 'sharepoint' | 'confluence' | 'rest_api' | 'ontology';
+type ArticleFilter = 'all' | 'validated' | 'pending' | 'rejected';
 
-    useEffect(() => {
-        fetchOverview();
-    }, []);
+// ── Static Metadata ────────────────────────────────────────────────────────────
 
-    const fetchOverview = async () => {
-        try {
-            const authToken = localStorage.getItem('hm_auth_token');
-            const response = await fetch(`${API_BASE}/api/knowledge-base/overview`, {
-                headers: { 'Authorization': `Bearer ${authToken}` }
-            });
+const CONNECTOR_META: Record<ConnectorType, { label: string; desc: string; icon: React.ReactNode; color: string }> = {
+    web_crawler:  { label: 'Web Crawler',      desc: 'Scrape public URLs recursively',    icon: <Globe size={22} />,     color: '#3b82f6' },
+    github:       { label: 'GitHub',           desc: 'Ingest repo docs & markdown files', icon: <Github size={22} />,    color: '#111827' },
+    sharepoint:   { label: 'SharePoint',       desc: 'Microsoft 365 document libraries',  icon: <FileText size={22} />,  color: '#e11d48' },
+    confluence:   { label: 'Confluence',       desc: 'Atlassian wiki spaces',             icon: <Link2 size={22} />,     color: '#0ea5e9' },
+    rest_api:     { label: 'REST / SQL API',   desc: 'Generic HTTP data feeds',           icon: <Database size={22} />,  color: '#10b981' },
+    ontology:     { label: 'Ontology Builder', desc: 'Define custom knowledge graph',     icon: <Layers size={22} />,    color: '#8b5cf6' },
+};
 
-            if (!response.ok) throw new Error('Failed to fetch overview');
-            const data = await response.json();
-            setOverview(data);
-        } catch (error) {
-            console.error('Error:', error);
-            toast.error(t('admin.knowledgeBase.failedLoad', 'Failed to load Knowledge Base'));
-        } finally {
-            setLoading(false);
-        }
+const CONNECTOR_DEFAULTS: Record<ConnectorType, Record<string, unknown>> = {
+    web_crawler:  { url: '', depth: 2, include_links: true },
+    github:       { repo: '', token: '', branch: 'main', path_filter: '' },
+    sharepoint:   { site_url: '', tenant_id: '', client_id: '', client_secret: '', folder_path: '' },
+    confluence:   { site_url: '', email: '', api_token: '', space_key: '' },
+    rest_api:     { url: '', method: 'GET', headers: '{}', params: '{}', body: '', title_field: 'title', content_field: 'content', response_path: 'results' },
+    ontology:     { entities: '[]', relationships: '[]' },
+};
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function statusBadge(status: string) {
+    const map: Record<string, { bg: string; color: string; label: string }> = {
+        validated:   { bg: '#dcfce7', color: '#16a34a', label: 'Validated' },
+        pending:     { bg: '#fef3c7', color: '#d97706', label: 'Pending' },
+        rejected:    { bg: '#fee2e2', color: '#dc2626', label: 'Rejected' },
+        unvalidated: { bg: '#f3f4f6', color: '#6b7280', label: 'Unvalidated' },
+    };
+    const s = map[status?.toLowerCase()] ?? map.unvalidated;
+    return <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 12, background: s.bg, color: s.color, fontWeight: 600 }}>{s.label}</span>;
+}
+
+function connectorStatusBadge(status: string) {
+    const map: Record<string, { bg: string; color: string; icon: React.ReactNode }> = {
+        active:   { bg: '#dcfce7', color: '#16a34a', icon: <CheckCircle size={10} /> },
+        syncing:  { bg: '#dbeafe', color: '#2563eb', icon: <RefreshCw size={10} style={{ animation: 'spin 1s linear infinite' }} /> },
+        error:    { bg: '#fee2e2', color: '#dc2626', icon: <AlertCircle size={10} /> },
+        inactive: { bg: '#f3f4f6', color: '#6b7280', icon: <Clock size={10} /> },
+    };
+    const s = map[status?.toLowerCase()] ?? map.inactive;
+    return (
+        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, fontSize: 11, padding: '2px 8px', borderRadius: 12, background: s.bg, color: s.color, fontWeight: 600 }}>
+            {s.icon} {status || 'inactive'}
+        </span>
+    );
+}
+
+function fmtDate(iso?: string) {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function fmtDateTime(iso?: string) {
+    if (!iso) return '—';
+    return new Date(iso).toLocaleString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+}
+
+// ── Connector Config Form ─────────────────────────────────────────────────────
+
+function ConnectorConfigForm({
+    type, config, onChange,
+}: { type: ConnectorType; config: Record<string, unknown>; onChange: (key: string, val: unknown) => void }) {
+    const inp = (key: string, label: string, placeholder = '', isPassword = false) => (
+        <div key={key} style={{ marginBottom: 10 }}>
+            <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--theme-text-primary, #374151)', display: 'block', marginBottom: 3 }}>{label}</label>
+            <input
+                type={isPassword ? 'password' : 'text'}
+                placeholder={placeholder}
+                value={String(config[key] ?? '')}
+                onChange={e => onChange(key, e.target.value)}
+                style={{ width: '100%', padding: '7px 10px', borderRadius: 6, border: '1px solid var(--theme-border-color, #d1d5db)', fontSize: 13, background: 'var(--theme-card-bg, #fff)', color: 'var(--theme-text-primary, #111827)', boxSizing: 'border-box' }}
+            />
+        </div>
+    );
+    const textarea = (key: string, label: string, placeholder = '') => (
+        <div key={key} style={{ marginBottom: 10 }}>
+            <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--theme-text-primary, #374151)', display: 'block', marginBottom: 3 }}>{label}</label>
+            <textarea
+                rows={3}
+                placeholder={placeholder}
+                value={String(config[key] ?? '')}
+                onChange={e => onChange(key, e.target.value)}
+                style={{ width: '100%', padding: '7px 10px', borderRadius: 6, border: '1px solid var(--theme-border-color, #d1d5db)', fontSize: 12, fontFamily: 'monospace', background: 'var(--theme-card-bg, #fff)', color: 'var(--theme-text-primary, #111827)', resize: 'vertical', boxSizing: 'border-box' }}
+            />
+        </div>
+    );
+
+    if (type === 'web_crawler') return (<>
+        {inp('url', 'Start URL', 'https://docs.example.com')}
+        <div style={{ marginBottom: 10 }}>
+            <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--theme-text-primary, #374151)', display: 'block', marginBottom: 3 }}>Crawl Depth</label>
+            <input type="number" min={1} max={5} value={Number(config.depth ?? 2)}
+                onChange={e => onChange('depth', Number(e.target.value))}
+                style={{ width: 80, padding: '7px 10px', borderRadius: 6, border: '1px solid var(--theme-border-color, #d1d5db)', fontSize: 13, background: 'var(--theme-card-bg, #fff)', color: 'var(--theme-text-primary, #111827)' }} />
+        </div>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontSize: 13, color: 'var(--theme-text-primary, #374151)', cursor: 'pointer' }}>
+            <input type="checkbox" checked={Boolean(config.include_links)} onChange={e => onChange('include_links', e.target.checked)} />
+            Follow internal links
+        </label>
+    </>);
+
+    if (type === 'github') return (<>
+        {inp('repo', 'Repository (owner/repo)', 'myorg/my-docs')}
+        {inp('token', 'GitHub Token (for private repos)', 'ghp_...', true)}
+        {inp('branch', 'Branch', 'main')}
+        {inp('path_filter', 'Path Filter (optional)', 'docs/')}
+    </>);
+
+    if (type === 'sharepoint') return (<>
+        {inp('site_url', 'SharePoint Site URL', 'https://company.sharepoint.com/sites/MyTeam')}
+        {inp('tenant_id', 'Azure Tenant ID', '')}
+        {inp('client_id', 'App Client ID', '')}
+        {inp('client_secret', 'App Client Secret', '', true)}
+        {inp('folder_path', 'Document Library Path', 'Shared Documents/AI')}
+    </>);
+
+    if (type === 'confluence') return (<>
+        {inp('site_url', 'Confluence Site URL', 'https://mycompany.atlassian.net/wiki')}
+        {inp('email', 'Atlassian Email', 'user@company.com')}
+        {inp('api_token', 'API Token', '', true)}
+        {inp('space_key', 'Space Key', 'AI')}
+    </>);
+
+    if (type === 'rest_api') return (<>
+        {inp('url', 'Endpoint URL', 'https://api.example.com/articles')}
+        <div style={{ marginBottom: 10 }}>
+            <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--theme-text-primary, #374151)', display: 'block', marginBottom: 3 }}>HTTP Method</label>
+            <select value={String(config.method ?? 'GET')} onChange={e => onChange('method', e.target.value)}
+                style={{ padding: '7px 10px', borderRadius: 6, border: '1px solid var(--theme-border-color, #d1d5db)', fontSize: 13, background: 'var(--theme-card-bg, #fff)', color: 'var(--theme-text-primary, #111827)' }}>
+                <option>GET</option><option>POST</option>
+            </select>
+        </div>
+        {textarea('headers', 'Headers (JSON)', '{"Authorization": "Bearer token"}')}
+        {inp('response_path', 'Response Path (dot-notation)', 'data.results')}
+        {inp('title_field', 'Title Field', 'title')}
+        {inp('content_field', 'Content Field', 'content')}
+    </>);
+
+    if (type === 'ontology') return (<>
+        <p style={{ fontSize: 12, color: 'var(--theme-text-muted, #6b7280)', marginTop: 0 }}>
+            Define your knowledge graph schema as JSON arrays of entities and relationships.
+        </p>
+        {textarea('entities', 'Entities (JSON array)', '[{"name":"AI Model","properties":["accuracy","latency"]}]')}
+        {textarea('relationships', 'Relationships (JSON array)', '[{"from":"AI Model","to":"Dataset","type":"trained_on"}]')}
+    </>);
+
+    return null;
+}
+
+// ── Add / Edit Connector Modal ────────────────────────────────────────────────
+
+function ConnectorModal({
+    existing, onClose, onSaved, token,
+}: {
+    existing?: DataConnector | null;
+    onClose: () => void;
+    onSaved: () => void;
+    token: string | null;
+}) {
+    const [step, setStep]               = useState<1 | 2>(existing ? 2 : 1);
+    const [selectedType, setSelectedType] = useState<ConnectorType | null>((existing?.connector_type as ConnectorType) ?? null);
+    const [name, setName]               = useState(existing?.name ?? '');
+    const [description, setDescription] = useState(existing?.description ?? '');
+    const [config, setConfig]           = useState<Record<string, unknown>>(
+        existing ? { ...existing.config } : {}
+    );
+    const [saving, setSaving]           = useState(false);
+
+    const h = { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' };
+
+    const pickType = (t: ConnectorType) => {
+        setSelectedType(t);
+        if (!existing) setConfig({ ...CONNECTOR_DEFAULTS[t] });
+        setStep(2);
     };
 
-    const fetchIndustry = async (industryId: string) => {
-        try {
-            const authToken = localStorage.getItem('hm_auth_token');
-            const response = await fetch(
-                `${API_BASE}/api/knowledge-base/industries/${industryId}`,
-                { headers: { 'Authorization': `Bearer ${authToken}` } }
-            );
-
-            if (!response.ok) throw new Error('Failed to fetch industry');
-            const data = await response.json();
-            setSelectedIndustry(data);
-        } catch (error) {
-            console.error('Error:', error);
-            toast.error(t('admin.knowledgeBase.failedLoadIndustry', 'Failed to load industry details'));
-        }
+    const handleConfigChange = (key: string, val: unknown) => {
+        setConfig(prev => ({ ...prev, [key]: val }));
     };
 
-    const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            setUploadFile(e.target.files[0]);
-        }
-    };
-
-    const handleUpload = async () => {
-        if (!uploadFile) return;
-
-        setUploading(true);
-        const formData = new FormData();
-        formData.append('file', uploadFile);
-
+    const save = async () => {
+        if (!name.trim() || !selectedType) { toast.error('Name and type are required'); return; }
+        setSaving(true);
         try {
-            const authToken = localStorage.getItem('hm_auth_token');
-            const response = await fetch(`${API_BASE}/api/knowledge-base/documents/upload`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                },
-                body: formData
-            });
-
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.detail || 'Upload failed');
+            const url  = existing ? `${API}/api/admin/data-sources/${existing.id}` : `${API}/api/admin/data-sources`;
+            const method = existing ? 'PUT' : 'POST';
+            const body = JSON.stringify({ name: name.trim(), connector_type: selectedType, description, config });
+            const res  = await fetch(url, { method, headers: h, body });
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.detail ?? 'Save failed');
             }
-
-            toast.success(t('admin.knowledgeBase.importSuccess', { name: uploadFile.name }));
-            setUploadFile(null);
-            setShowUploadModal(false);
-            fetchOverview(); // Refresh stats
-            fetchArticles(); // Refresh list
-            setActiveTab('articles'); // Switch to articles view
-        } catch (error) {
-            console.error('Upload error:', error);
-            toast.error(error instanceof Error ? error.message : t('common.error', 'Error occurred'));
+            toast.success(existing ? 'Connector updated' : 'Connector created');
+            onSaved();
+            onClose();
+        } catch (e: unknown) {
+            toast.error((e as Error).message || 'Save failed');
         } finally {
-            setUploading(false);
+            setSaving(false);
         }
     };
 
-    useEffect(() => {
-        if (activeTab === 'articles') {
-            fetchArticles();
-        }
-    }, [activeTab]);
-
-    const fetchArticles = async () => {
-        setLoadingArticles(true);
-        try {
-            const authToken = localStorage.getItem('hm_auth_token');
-            const response = await fetch(`${API_BASE}/api/knowledge/articles`, {
-                headers: { 'Authorization': `Bearer ${authToken}` }
-            });
-            if (!response.ok) throw new Error('Failed to fetch articles');
-            const data = await response.json();
-            setArticles(data);
-        } catch (error) {
-            console.error('Error fetching articles:', error);
-            toast.error(t('admin.knowledgeBase.failedLoadArticles', 'Failed to load articles'));
-        } finally {
-            setLoadingArticles(false);
-        }
-    };
-
-    const handleDeleteArticle = async () => {
-        if (!articleToDelete) return;
-
-        try {
-            const authToken = localStorage.getItem('hm_auth_token');
-            const response = await fetch(`${API_BASE}/api/knowledge/articles/${articleToDelete}`, {
-                method: 'DELETE',
-                headers: { 'Authorization': `Bearer ${authToken}` }
-            });
-
-            if (!response.ok) throw new Error('Failed to delete article');
-
-            toast.success(t('admin.knowledgeBase.deleteSuccess', 'Article deleted successfully'));
-            fetchArticles(); // Refresh list
-            setArticleToDelete(null);
-        } catch (error) {
-            console.error('Error deleting article:', error);
-            toast.error(t('admin.knowledgeBase.failedDelete', 'Failed to delete article'));
-        }
-    };
-
-    const getComplexityColor = (complexity: string) => {
-        switch (complexity.toLowerCase()) {
-            case 'low': return 'bg-green-500/20 text-green-400';
-            case 'medium': return 'bg-yellow-500/20 text-yellow-400';
-            case 'high': return 'bg-red-500/20 text-red-400';
-            default: return 'bg-gray-500/20 text-gray-400';
-        }
-    };
-
-    const getIndustryIcon = (iconName: string) => {
-        switch (iconName) {
-            case 'building': return Building2;
-            case 'cpu': return Cpu;
-            case 'trending-up': return TrendingUp;
-            default: return Brain;
-        }
-    };
-
-    const handleResearch = async () => {
-        setResearchLoading(true);
-        setResearchResults([]);
-        try {
-            const authToken = localStorage.getItem('hm_auth_token');
-            const response = await fetch(`${API_BASE}/api/knowledge-base/refresh`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${authToken}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    provider: researchProvider,
-                    industry_id: selectedIndustry?.id || null,
-                    custom_scope: customScope || null
-                })
-            });
-
-            if (!response.ok) throw new Error('Research failed');
-            const data = await response.json();
-            setResearchResults(data);
-            if (data.length === 0) toast.info('No new or refinable use cases found');
-        } catch (error) {
-            console.error('Error:', error);
-            toast.error('Failed to research use cases');
-        } finally {
-            setResearchLoading(false);
-        }
-    };
-
-    const handleAddResearchItem = async (result: SearchResult) => {
-        try {
-            const authToken = localStorage.getItem('hm_auth_token');
-            const response = await fetch(`${API_BASE}/api/knowledge-base/add`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${authToken}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    title: result.title,
-                    description: result.description,
-                    industry_id: result.industry,
-                    category: result.category,
-                    complexity: result.complexity,
-                    typical_roi: result.typical_roi,
-                    implementation_time: "3-6 months",
-                    technologies: []
-                })
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                const errorMessage = errorData.detail || 'Failed to add use case';
-                throw new Error(errorMessage);
-            }
-            toast.success('Use case added to library');
-            setResearchResults(prev => prev.filter(r => r.id !== result.id));
-            fetchOverview(); // Refresh stats
-        } catch (error) {
-            console.error('Error:', error);
-            toast.error(error instanceof Error ? error.message : 'Failed to add use case to library');
-        }
-    };
-
-    const handleMoveUseCase = async () => {
-        if (!selectedUseCase) return;
-        if (isNewIndustry && !newIndustryName) return;
-        if (!isNewIndustry && !targetIndustry) return;
-
-        try {
-            const authToken = localStorage.getItem('hm_auth_token');
-            const response = await fetch(`${API_BASE}/api/knowledge-base/move`, {
-                method: 'POST',
-                headers: {
-                    'Authorization': `Bearer ${authToken}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    usecase_id: selectedUseCase.id,
-                    target_industry_id: isNewIndustry ? newIndustryName : targetIndustry,
-                    create_industry: isNewIndustry
-                })
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.detail || 'Failed to move use case');
-            }
-
-            const data = await response.json();
-            toast.success(data.message || 'Use case moved successfully');
-            setShowMoveModal(false);
-            setTargetIndustry('');
-            setIsNewIndustry(false);
-            setNewIndustryName('');
-            setSelectedUseCase(null);
-            setSelectedIndustry(null);
-            fetchOverview(); // Refresh to show updated industries
-        } catch (error) {
-            console.error('Error:', error);
-            toast.error(error instanceof Error ? error.message : 'Failed to move use case');
-        }
-    };
-
-    const handleDeleteUseCase = async () => {
-        if (!usecaseToDelete) return;
-
-        try {
-            const authToken = localStorage.getItem('hm_auth_token');
-            const response = await fetch(`${API_BASE}/api/knowledge-base/usecases/${usecaseToDelete.id}`, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${authToken}`
-                }
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json().catch(() => ({}));
-                throw new Error(errorData.detail || 'Failed to delete use case');
-            }
-
-            const data = await response.json();
-            toast.success(data.message || 'Use case deleted successfully');
-            setShowDeleteModal(false);
-            setUsecaseToDelete(null);
-            setSelectedUseCase(null);
-            setSelectedIndustry(null);
-            fetchOverview(); // Refresh to show updated industries
-        } catch (error) {
-            console.error('Error:', error);
-            toast.error(error instanceof Error ? error.message : 'Failed to delete use case');
-        }
-    };
-
-    if (loading) {
-        return (
-            <AdminLayout title={t('admin.knowledgeBase.title', 'AI Knowledge Base')}>
-                <div className="flex items-center justify-center py-20">
-                    <div className={isLight ? 'text-gray-500' : 'text-gray-400'}>{t('common.loading')}</div>
-                </div>
-            </AdminLayout>
-        );
-    }
-
-    // Show use case detail
-    if (selectedUseCase) {
-        return (
-            <AdminLayout title={t('admin.knowledgeBase.title', 'AI Knowledge Base')}>
-                <button
-                    onClick={() => setSelectedUseCase(null)}
-                    className={`flex items-center gap-2 mb-6 ${isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'}`}
-                >
-                    <ArrowLeft className="w-4 h-4" />
-                    {t('admin.knowledgeBase.backTo', { name: selectedIndustry?.name || 'Industry' })}
+    return (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
+            <div style={{ background: 'var(--theme-card-bg, #fff)', borderRadius: 14, width: '100%', maxWidth: 560, maxHeight: '90vh', overflow: 'auto', padding: 28, position: 'relative' }}>
+                <button onClick={onClose} style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--theme-text-muted, #9ca3af)' }}>
+                    <X size={18} />
                 </button>
 
-                <div className={`rounded-xl border p-8 ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
-                    <div className="flex items-start justify-between mb-6">
-                        <div>
-                            <h3 className={`text-2xl font-bold mb-2 ${isLight ? 'text-gray-900' : 'text-white'}`}>{selectedUseCase.title}</h3>
-                            <span className={`px-3 py-1 rounded-full text-sm ${getComplexityColor(selectedUseCase.complexity)}`}>
-                                {selectedUseCase.complexity} {t('admin.knowledgeBase.complexity', 'Complexity')}
-                            </span>
-                        </div>
-                        <div className="flex gap-2">
+                <h2 style={{ fontSize: 17, fontWeight: 700, color: 'var(--theme-text-primary, #111827)', marginTop: 0, marginBottom: 20 }}>
+                    {existing ? 'Edit Connector' : step === 1 ? 'Choose Connector Type' : `Configure ${selectedType ? CONNECTOR_META[selectedType].label : ''}`}
+                </h2>
+
+                {/* Step 1: pick type */}
+                {step === 1 && (
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                        {(Object.entries(CONNECTOR_META) as [ConnectorType, typeof CONNECTOR_META[ConnectorType]][]).map(([type, meta]) => (
                             <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    console.log('Move button clicked', {selectedUseCase, showMoveModal});
-                                    setShowMoveModal(true);
-                                    console.log('setShowMoveModal(true) called');
+                                key={type}
+                                onClick={() => pickType(type)}
+                                style={{
+                                    display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px',
+                                    borderRadius: 10, border: '1.5px solid var(--theme-border-color, #e5e7eb)',
+                                    background: 'var(--theme-card-bg, #fff)', cursor: 'pointer', textAlign: 'left',
+                                    transition: 'border-color 0.15s, box-shadow 0.15s',
                                 }}
-                                className={`flex items-center gap-2 px-4 py-2 rounded-lg border transition ${isLight ? 'border-gray-200 hover:bg-gray-50 text-gray-700' : 'border-white/10 hover:bg-white/5 text-gray-300'}`}
-                                title="Move to another industry"
-                                type="button"
+                                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = meta.color; (e.currentTarget as HTMLElement).style.boxShadow = `0 0 0 3px ${meta.color}20`; }}
+                                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = 'var(--theme-border-color, #e5e7eb)'; (e.currentTarget as HTMLElement).style.boxShadow = 'none'; }}
                             >
-                                <ArrowRightLeft className="w-4 h-4" />
-                                Move
+                                <span style={{ color: meta.color }}>{meta.icon}</span>
+                                <div>
+                                    <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--theme-text-primary, #111827)' }}>{meta.label}</div>
+                                    <div style={{ fontSize: 11, color: 'var(--theme-text-muted, #9ca3af)', marginTop: 1 }}>{meta.desc}</div>
+                                </div>
                             </button>
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    console.log('Delete button clicked', {selectedUseCase, showDeleteModal});
-                                    setUsecaseToDelete(selectedUseCase);
-                                    setShowDeleteModal(true);
-                                    console.log('setShowDeleteModal(true) called');
-                                }}
-                                className="flex items-center gap-2 px-4 py-2 rounded-lg border border-red-500/20 hover:bg-red-500/10 text-red-500 transition"
-                                title="Delete use case"
-                                type="button"
-                            >
-                                <Trash2 className="w-4 h-4" />
-                                Delete
+                        ))}
+                    </div>
+                )}
+
+                {/* Step 2: configure */}
+                {step === 2 && selectedType && (
+                    <>
+                        {!existing && (
+                            <button onClick={() => setStep(1)} style={{ fontSize: 12, color: '#6366f1', background: 'none', border: 'none', cursor: 'pointer', marginBottom: 16, padding: 0 }}>
+                                ← Change type
+                            </button>
+                        )}
+
+                        <div style={{ marginBottom: 10 }}>
+                            <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--theme-text-primary, #374151)', display: 'block', marginBottom: 3 }}>Connector Name *</label>
+                            <input value={name} onChange={e => setName(e.target.value)} placeholder="My Web Crawler"
+                                style={{ width: '100%', padding: '7px 10px', borderRadius: 6, border: '1px solid var(--theme-border-color, #d1d5db)', fontSize: 13, background: 'var(--theme-card-bg, #fff)', color: 'var(--theme-text-primary, #111827)', boxSizing: 'border-box' }} />
+                        </div>
+                        <div style={{ marginBottom: 16 }}>
+                            <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--theme-text-primary, #374151)', display: 'block', marginBottom: 3 }}>Description (optional)</label>
+                            <input value={description} onChange={e => setDescription(e.target.value)} placeholder="Short description"
+                                style={{ width: '100%', padding: '7px 10px', borderRadius: 6, border: '1px solid var(--theme-border-color, #d1d5db)', fontSize: 13, background: 'var(--theme-card-bg, #fff)', color: 'var(--theme-text-primary, #111827)', boxSizing: 'border-box' }} />
+                        </div>
+
+                        <div style={{ borderTop: '1px solid var(--theme-border-color, #e5e7eb)', paddingTop: 16, marginBottom: 20 }}>
+                            <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--theme-text-muted, #6b7280)', marginTop: 0, marginBottom: 14, textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                                {CONNECTOR_META[selectedType].label} Configuration
+                            </p>
+                            <ConnectorConfigForm type={selectedType} config={config} onChange={handleConfigChange} />
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+                            <button onClick={onClose} style={{ padding: '8px 18px', borderRadius: 8, border: '1px solid var(--theme-border-color, #e5e7eb)', background: 'transparent', cursor: 'pointer', fontSize: 13, color: 'var(--theme-text-muted, #6b7280)' }}>
+                                Cancel
+                            </button>
+                            <button onClick={save} disabled={saving} style={{ padding: '8px 20px', borderRadius: 8, border: 'none', background: '#6366f1', color: '#fff', fontWeight: 600, fontSize: 13, cursor: saving ? 'not-allowed' : 'pointer', opacity: saving ? 0.7 : 1 }}>
+                                {saving ? 'Saving…' : existing ? 'Save Changes' : 'Create Connector'}
                             </button>
                         </div>
-                    </div>
+                    </>
+                )}
+            </div>
+        </div>
+    );
+}
 
-                    <p className={`mb-8 ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>{selectedUseCase.description}</p>
+// ── View Article Modal ────────────────────────────────────────────────────────
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                        <div className={`rounded-lg p-4 ${isLight ? 'bg-gray-50' : 'bg-white/5'}`}>
-                            <div className={`text-sm mb-1 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.categories', 'Category')}</div>
-                            <div className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>{selectedUseCase.category}</div>
-                        </div>
-                        <div className={`rounded-lg p-4 ${isLight ? 'bg-gray-50' : 'bg-white/5'}`}>
-                            <div className={`text-sm mb-1 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.typicalRoi', 'Typical ROI')}</div>
-                            <div className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>{selectedUseCase.typical_roi}</div>
-                        </div>
-                        <div className={`rounded-lg p-4 ${isLight ? 'bg-gray-50' : 'bg-white/5'}`}>
-                            <div className={`text-sm mb-1 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.implementationTime', 'Implementation Time')}</div>
-                            <div className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>{selectedUseCase.implementation_time}</div>
-                        </div>
-                        <div className={`rounded-lg p-4 ${isLight ? 'bg-gray-50' : 'bg-white/5'}`}>
-                            <div className={`text-sm mb-1 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.dataRequirements', 'Data Requirements')}</div>
-                            <div className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>{selectedUseCase.data_requirements}</div>
-                        </div>
-                    </div>
+function ViewArticleModal({
+    article, onClose, onRevalidate,
+}: {
+    article: KnowledgeArticle;
+    onClose: () => void;
+    onRevalidate: (id: string) => void;
+}) {
+    return (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
+            <div style={{ background: 'var(--theme-card-bg, #fff)', borderRadius: 14, width: '100%', maxWidth: 680, maxHeight: '88vh', overflow: 'auto', padding: 28, position: 'relative' }}>
+                <button onClick={onClose} style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--theme-text-muted, #9ca3af)' }}>
+                    <X size={18} />
+                </button>
 
-                    {selectedUseCase.technologies?.length > 0 && (
-                        <div className="mb-6">
-                            <h4 className={`text-lg font-semibold mb-3 ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.knowledgeBase.technologies', 'Technologies')}</h4>
-                            <div className="flex flex-wrap gap-2">
-                                {selectedUseCase.technologies.map((tech, i) => (
-                                    <span key={i} className="px-3 py-1 bg-purple-500/20 text-purple-600 rounded-full text-sm">
-                                        {tech}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {selectedUseCase.kpis?.length > 0 && (
-                        <div>
-                            <h4 className={`text-lg font-semibold mb-3 ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.knowledgeBase.kpis', 'Key Performance Indicators')}</h4>
-                            <ul className="space-y-2">
-                                {selectedUseCase.kpis.map((kpi, i) => (
-                                    <li key={i} className={`flex items-center gap-2 ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
-                                        <TrendingUp className="w-4 h-4 text-green-500" />
-                                        {kpi}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
+                    <BookOpen size={18} color="#8b5cf6" />
+                    <h2 style={{ fontSize: 17, fontWeight: 700, color: 'var(--theme-text-primary, #111827)', margin: 0, flex: 1 }}>{article.title}</h2>
+                    {statusBadge(article.validation_status)}
                 </div>
 
-                {/* Move Use Case Modal */}
-                {(() => {
-                    console.log('Modal render check:', {showMoveModal, selectedUseCase: !!selectedUseCase});
-                    return showMoveModal && selectedUseCase;
-                })() && (
-                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-                        <div className={`relative w-full max-w-md p-6 rounded-2xl shadow-xl ${isLight ? 'bg-white' : 'bg-surface-800 border border-white/10'}`}>
-                            <button
-                                onClick={() => {
-                                    setShowMoveModal(false);
-                                    setTargetIndustry('');
-                                    setIsNewIndustry(false);
-                                    setNewIndustryName('');
-                                }}
-                                className={`absolute top-4 right-4 p-1 rounded-full hover:bg-black/5 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}
-                            >
-                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                            </button>
+                <div style={{ fontSize: 12, color: 'var(--theme-text-muted, #9ca3af)', marginBottom: 16 }}>
+                    {article.source_type} · {article.source_filename || article.source_url || '—'} · Imported {fmtDate(article.imported_at)}
+                    {article.validation_score != null && ` · Score: ${Math.round(article.validation_score)}%`}
+                    {article.linked_usecases_count > 0 && ` · ${article.linked_usecases_count} linked use cases`}
+                </div>
 
-                            <h3 className={`text-xl font-bold mb-4 ${isLight ? 'text-gray-900' : 'text-white'}`}>Move Use Case</h3>
-                            <p className={`mb-6 text-sm ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
-                                Move "{selectedUseCase?.title}" to a different industry. You can select an existing industry or enter a new industry name to create it.
-                            </p>
+                {article.summary && (
+                    <div style={{ background: 'var(--theme-hover-bg, #f9fafb)', borderRadius: 8, padding: '12px 14px', marginBottom: 16 }}>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--theme-text-muted, #6b7280)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Summary</div>
+                        <p style={{ fontSize: 13, color: 'var(--theme-text-primary, #374151)', margin: 0 }}>{article.summary}</p>
+                    </div>
+                )}
 
-                            <div className="mb-6">
-                                <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
-                                    Target Industry
-                                </label>
-                                <select
-                                    value={isNewIndustry ? 'new' : targetIndustry}
-                                    onChange={(e) => {
-                                        if (e.target.value === 'new') {
-                                            setIsNewIndustry(true);
-                                            setTargetIndustry('');
-                                        } else {
-                                            setIsNewIndustry(false);
-                                            setTargetIndustry(e.target.value);
-                                            setNewIndustryName('');
-                                        }
-                                    }}
-                                    className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500 ${isLight ? 'bg-white border-gray-200 text-gray-900' : 'bg-surface-700 border-white/5 text-white'}`}
-                                >
-                                    <option value="">Select an industry...</option>
-                                    {overview?.industries.map((industry) => (
-                                        <option key={industry.id} value={industry.id}>
-                                            {industry.name}
-                                        </option>
-                                    ))}
-                                    <option value="new">+ Create New Industry</option>
-                                </select>
-                            </div>
+                {article.validation_notes && (
+                    <div style={{ background: '#fef3c7', borderRadius: 8, padding: '10px 14px', marginBottom: 16 }}>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: '#92400e', marginBottom: 4 }}>Validation Notes</div>
+                        <p style={{ fontSize: 12, color: '#78350f', margin: 0 }}>{article.validation_notes}</p>
+                    </div>
+                )}
 
-                            {isNewIndustry && (
-                                <div className="mb-6">
-                                    <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
-                                        New Industry Name
-                                    </label>
-                                    <input
-                                        type="text"
-                                        value={newIndustryName}
-                                        onChange={(e) => setNewIndustryName(e.target.value)}
-                                        placeholder="Enter new industry name"
-                                        className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500 ${isLight ? 'bg-white border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-surface-700 border-white/5 text-white placeholder-gray-500'}`}
-                                    />
-                                </div>
-                            )}
-
-                            <div className="flex justify-end gap-3">
-                                <button
-                                    onClick={() => {
-                                        setShowMoveModal(false);
-                                        setTargetIndustry('');
-                                        setIsNewIndustry(false);
-                                        setNewIndustryName('');
-                                    }}
-                                    className={`px-4 py-2 rounded-lg text-sm font-medium ${isLight ? 'text-gray-700 hover:bg-gray-100' : 'text-gray-300 hover:bg-white/5'}`}
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    onClick={handleMoveUseCase}
-                                    disabled={isNewIndustry ? !newIndustryName : !targetIndustry}
-                                    className={`px-4 py-2 rounded-lg text-sm font-medium text-white flex items-center gap-2 ${(isNewIndustry ? !newIndustryName : !targetIndustry)
-                                        ? 'bg-gray-400 cursor-not-allowed'
-                                        : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90'
-                                    }`}
-                                >
-                                    <Move className="w-4 h-4" />
-                                    Move Use Case
-                                </button>
-                            </div>
+                {article.content && (
+                    <div>
+                        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--theme-text-muted, #6b7280)', marginBottom: 6, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Content</div>
+                        <div style={{ maxHeight: 320, overflow: 'auto', padding: '12px 14px', borderRadius: 8, border: '1px solid var(--theme-border-color, #e5e7eb)', fontSize: 13, color: 'var(--theme-text-primary, #374151)', lineHeight: 1.6, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                            {article.content}
                         </div>
                     </div>
                 )}
 
-                {/* Delete Confirmation Modal */}
-                <ConfirmationModal
-                    isOpen={showDeleteModal}
-                    onClose={() => {
-                        setShowDeleteModal(false);
-                        setUsecaseToDelete(null);
-                    }}
-                    onConfirm={handleDeleteUseCase}
-                    title="Delete Use Case"
-                    message={`Are you sure you want to delete "${usecaseToDelete?.title}"? This action cannot be undone.`}
-                    confirmText="Delete"
-                    cancelText="Cancel"
-                    variant="danger"
-                />
-            </AdminLayout>
-        );
-    }
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10, marginTop: 20 }}>
+                    <button
+                        onClick={() => { onRevalidate(article.id); onClose(); }}
+                        style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 8, border: '1px solid #d1d5db', background: 'transparent', cursor: 'pointer', fontSize: 13, color: 'var(--theme-text-primary, #374151)', fontWeight: 600 }}
+                    >
+                        <Zap size={14} /> Re-validate
+                    </button>
+                    <button onClick={onClose} style={{ padding: '8px 18px', borderRadius: 8, border: 'none', background: '#6366f1', color: '#fff', fontWeight: 600, fontSize: 13, cursor: 'pointer' }}>
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
 
-    // Show industry detail
-    if (selectedIndustry) {
-        return (
-            <AdminLayout title={t('admin.knowledgeBase.title', 'AI Knowledge Base')}>
-                <button
-                    onClick={() => setSelectedIndustry(null)}
-                    className={`flex items-center gap-2 mb-6 ${isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'}`}
-                >
-                    <ArrowLeft className="w-4 h-4" />
-                    {t('admin.knowledgeBase.backToIndustries', 'Back to Industries')}
+// ── Import URL Modal ──────────────────────────────────────────────────────────
+
+function ImportURLModal({
+    onClose, onImported, token,
+}: { onClose: () => void; onImported: () => void; token: string | null }) {
+    const [url, setUrl]       = useState('');
+    const [title, setTitle]   = useState('');
+    const [importing, setImporting] = useState(false);
+
+    const submit = async () => {
+        if (!url.trim()) { toast.error('URL is required'); return; }
+        setImporting(true);
+        try {
+            const res = await fetch(`${API}/api/knowledge/import-url`, {
+                method: 'POST',
+                headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url: url.trim(), title: title.trim() || undefined }),
+            });
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                // API can return err.detail (FastAPI) or err.error.message (our error handler)
+                const detail = err.detail ?? err.error?.message;
+                const msg = typeof detail === 'string'
+                    ? detail
+                    : Array.isArray(detail)
+                        ? detail.map((d: { msg?: string }) => d.msg || JSON.stringify(d)).join('; ')
+                        : detail?.message ?? 'Import failed';
+                throw new Error(msg || 'Import failed');
+            }
+            const data = await res.json();
+            toast.success(`"${data.title}" imported (${data.validation_status})`);
+            onImported();
+            onClose();
+        } catch (e: unknown) {
+            toast.error((e as Error).message || 'Import failed');
+        } finally {
+            setImporting(false);
+        }
+    };
+
+    return (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
+            <div style={{ background: 'var(--theme-card-bg, #fff)', borderRadius: 14, width: '100%', maxWidth: 480, padding: 28, position: 'relative' }}>
+                <button onClick={onClose} style={{ position: 'absolute', top: 16, right: 16, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--theme-text-muted, #9ca3af)' }}>
+                    <X size={18} />
                 </button>
-
-                <div className="flex items-center gap-4 mb-8">
-                    <div className="w-16 h-16 rounded-xl bg-gradient-to-tr from-purple-500 to-pink-500 flex items-center justify-center">
-                        <BookOpen className="w-8 h-8 text-white" />
-                    </div>
-                    <div>
-                        <h3 className={`text-2xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{selectedIndustry.name}</h3>
-                        <p className={isLight ? 'text-gray-500' : 'text-gray-400'}>{t('admin.knowledgeBase.showingKeyAIUseCases')}</p>
-                    </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 20 }}>
+                    <Globe size={18} color="#3b82f6" />
+                    <h2 style={{ fontSize: 17, fontWeight: 700, color: 'var(--theme-text-primary, #111827)', margin: 0 }}>Import from URL</h2>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {selectedIndustry.use_cases?.map((useCase) => (
-                        <div
-                            key={useCase.id}
-                            onClick={() => setSelectedUseCase(useCase)}
-                            className={`rounded-xl border p-6 cursor-pointer transition ${isLight ? 'bg-white border-gray-200 shadow-sm hover:border-purple-400' : 'bg-surface-800 border-white/10 hover:border-purple-500/50'}`}
-                        >
-                            <div className="flex justify-between items-start mb-3">
-                                <h4 className={`text-lg font-semibold ${isLight ? 'text-gray-900' : 'text-white'}`}>{useCase.title}</h4>
-                                <ChevronRight className="w-5 h-5 text-gray-400" />
-                            </div>
-                            <p className={`text-sm mb-4 line-clamp-2 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{useCase.description}</p>
-                            <div className="flex gap-2">
-                                <span className={`px-2 py-1 rounded text-xs ${getComplexityColor(useCase.complexity)}`}>
-                                    {useCase.complexity}
+                <div style={{ marginBottom: 12 }}>
+                    <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--theme-text-primary, #374151)', display: 'block', marginBottom: 4 }}>URL *</label>
+                    <input
+                        type="url" value={url} onChange={e => setUrl(e.target.value)}
+                        placeholder="https://docs.example.com/article"
+                        style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid var(--theme-border-color, #d1d5db)', fontSize: 13, background: 'var(--theme-card-bg, #fff)', color: 'var(--theme-text-primary, #111827)', boxSizing: 'border-box' }}
+                    />
+                </div>
+                <div style={{ marginBottom: 20 }}>
+                    <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--theme-text-primary, #374151)', display: 'block', marginBottom: 4 }}>Title (optional — auto-detected if blank)</label>
+                    <input
+                        value={title} onChange={e => setTitle(e.target.value)}
+                        placeholder="My Article Title"
+                        style={{ width: '100%', padding: '8px 12px', borderRadius: 8, border: '1px solid var(--theme-border-color, #d1d5db)', fontSize: 13, background: 'var(--theme-card-bg, #fff)', color: 'var(--theme-text-primary, #111827)', boxSizing: 'border-box' }}
+                    />
+                </div>
+
+                <p style={{ fontSize: 12, color: 'var(--theme-text-muted, #9ca3af)', marginBottom: 20 }}>
+                    The page content will be fetched, ingested into the RAG knowledge base, validated with AI, and linked to relevant use cases automatically.
+                </p>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 10 }}>
+                    <button onClick={onClose} style={{ padding: '8px 16px', borderRadius: 8, border: '1px solid var(--theme-border-color, #e5e7eb)', background: 'transparent', cursor: 'pointer', fontSize: 13, color: 'var(--theme-text-muted, #6b7280)' }}>
+                        Cancel
+                    </button>
+                    <button onClick={submit} disabled={importing}
+                        style={{ padding: '8px 20px', borderRadius: 8, border: 'none', background: '#3b82f6', color: '#fff', fontWeight: 600, fontSize: 13, cursor: importing ? 'not-allowed' : 'pointer', opacity: importing ? 0.7 : 1 }}>
+                        {importing ? 'Importing…' : 'Import'}
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+// ── Main Component ────────────────────────────────────────────────────────────
+
+export function AdminKnowledgeBase() {
+    const { token } = useAuth();
+    const h = useCallback(() => ({ Authorization: `Bearer ${token}` }), [token]);
+
+    const [tab, setTab]             = useState<Tab>('documents');
+    const [ragStatus, setRagStatus] = useState<RAGStatus | null>(null);
+    const [docs, setDocs]           = useState<RAGDoc[]>([]);
+    const [articles, setArticles]   = useState<KnowledgeArticle[]>([]);
+    const [connectors, setConnectors] = useState<DataConnector[]>([]);
+    const [loadingDocs, setLoadingDocs]       = useState(false);
+    const [loadingArticles, setLoadingArticles] = useState(false);
+    const [loadingConnectors, setLoadingConnectors] = useState(false);
+
+    // Upload state
+    const [isDragging, setIsDragging]         = useState(false);
+    const [uploading, setUploading]           = useState(false);
+    const [uploadCategory, setUploadCategory] = useState('');
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    // Articles state
+    const [articleFilter, setArticleFilter]   = useState<ArticleFilter>('all');
+    const [viewArticle, setViewArticle]       = useState<KnowledgeArticle | null>(null);
+    const [showURLModal, setShowURLModal]     = useState(false);
+    const [revalidatingId, setRevalidatingId] = useState<string | null>(null);
+    const artFileInputRef = useRef<HTMLInputElement>(null);
+
+    // Sources state
+    const [showConnectorModal, setShowConnectorModal] = useState(false);
+    const [editConnector, setEditConnector]   = useState<DataConnector | null>(null);
+    const [syncingId, setSyncingId]           = useState<string | null>(null);
+    const [testingId, setTestingId]           = useState<string | null>(null);
+
+    // Migration state
+    const [kbTotal, setKbTotal]             = useState<number | null>(null);
+    const [migrating, setMigrating]         = useState(false);
+    const [migrationDone, setMigrationDone] = useState(
+        () => localStorage.getItem('kb_migration_done') === 'true'
+    );
+    const [showMigrateConfirm, setShowMigrateConfirm] = useState(false);
+
+    // ── Load ───────────────────────────────────────────────────────────────
+
+    useEffect(() => {
+        fetchStatus();
+        fetchKbPending();
+    }, []);
+
+    useEffect(() => {
+        if (tab === 'documents') fetchDocs();
+        if (tab === 'articles')  fetchArticles(articleFilter);
+        if (tab === 'sources')   fetchConnectors();
+    }, [tab]);
+
+    useEffect(() => {
+        if (tab === 'articles') fetchArticles(articleFilter);
+    }, [articleFilter]);
+
+    const fetchStatus = async () => {
+        try {
+            const res = await fetch(`${API}/api/knowledge-base/status`, { headers: h() });
+            if (res.ok) setRagStatus(await res.json());
+        } catch { /* non-critical */ }
+    };
+
+    const fetchKbPending = async () => {
+        try {
+            const res = await fetch(`${API}/api/admin/knowledge-base/pending-migration`, { headers: h() });
+            if (res.ok) { const d = await res.json(); setKbTotal(d.kb_total ?? 0); }
+        } catch { /* non-critical */ }
+    };
+
+    const fetchDocs = async () => {
+        setLoadingDocs(true);
+        try {
+            const res = await fetch(`${API}/api/knowledge-base/documents`, { headers: h() });
+            if (!res.ok) throw new Error();
+            const d = await res.json();
+            setDocs(d.documents ?? []);
+        } catch { toast.error('Failed to load RAG documents'); }
+        finally { setLoadingDocs(false); }
+    };
+
+    const fetchArticles = async (filter: ArticleFilter = 'all') => {
+        setLoadingArticles(true);
+        try {
+            const qs = filter !== 'all' ? `?validation_status=${filter}` : '';
+            const res = await fetch(`${API}/api/knowledge/articles${qs}`, { headers: h() });
+            if (!res.ok) throw new Error();
+            setArticles(await res.json());
+        } catch { toast.error('Failed to load knowledge articles'); }
+        finally { setLoadingArticles(false); }
+    };
+
+    const fetchConnectors = async () => {
+        setLoadingConnectors(true);
+        try {
+            const res = await fetch(`${API}/api/admin/data-sources`, { headers: h() });
+            if (!res.ok) throw new Error();
+            setConnectors(await res.json());
+        } catch { toast.error('Failed to load data connectors'); }
+        finally { setLoadingConnectors(false); }
+    };
+
+    // ── Upload ─────────────────────────────────────────────────────────────
+
+    const handleUpload = useCallback(async (file: File) => {
+        setUploading(true);
+        const fd = new FormData();
+        fd.append('file', file);
+        if (uploadCategory) fd.append('category', uploadCategory);
+        try {
+            const res = await fetch(`${API}/api/knowledge-base/documents/upload`, { method: 'POST', headers: h(), body: fd });
+            if (!res.ok) { const err = await res.json().catch(() => ({})); throw new Error(err.detail ?? 'Upload failed'); }
+            toast.success(`"${file.name}" ingested into RAG`);
+            setUploadCategory('');
+            fetchDocs();
+        } catch (e: unknown) { toast.error((e as Error).message || 'Upload failed'); }
+        finally { setUploading(false); }
+    }, [token, uploadCategory]);
+
+    const handleArticleFile = useCallback(async (file: File) => {
+        const fd = new FormData();
+        fd.append('file', file);
+        try {
+            const res = await fetch(`${API}/api/knowledge/import`, { method: 'POST', headers: h(), body: fd });
+            if (!res.ok) { const err = await res.json().catch(() => ({})); throw new Error(err.detail ?? 'Import failed'); }
+            const data = await res.json();
+            toast.success(`"${data.title}" imported`);
+            fetchArticles(articleFilter);
+        } catch (e: unknown) { toast.error((e as Error).message || 'Import failed'); }
+    }, [token, articleFilter]);
+
+    const revalidateArticle = async (id: string) => {
+        setRevalidatingId(id);
+        try {
+            const res = await fetch(`${API}/api/knowledge/articles/${id}/revalidate`, { method: 'POST', headers: h() });
+            if (!res.ok) throw new Error();
+            const d = await res.json();
+            toast.success(`Re-validated: ${d.validation_status} (${Math.round(d.validation_score ?? 0)}%)`);
+            fetchArticles(articleFilter);
+        } catch { toast.error('Re-validation failed'); }
+        finally { setRevalidatingId(null); }
+    };
+
+    const deleteDoc = async (id: string) => {
+        try {
+            const res = await fetch(`${API}/api/knowledge-base/documents/${id}`, { method: 'DELETE', headers: h() });
+            if (!res.ok) throw new Error();
+            toast.success('Document removed');
+            fetchDocs();
+        } catch { toast.error('Failed to remove document'); }
+    };
+
+    const deleteArticle = async (id: string) => {
+        try {
+            const res = await fetch(`${API}/api/knowledge/articles/${id}`, { method: 'DELETE', headers: h() });
+            if (!res.ok) throw new Error();
+            toast.success('Article deleted');
+            fetchArticles(articleFilter);
+        } catch { toast.error('Failed to delete article'); }
+    };
+
+    // ── Connector actions ──────────────────────────────────────────────────
+
+    const testConnector = async (id: string) => {
+        setTestingId(id);
+        try {
+            const res = await fetch(`${API}/api/admin/data-sources/${id}/test`, { method: 'POST', headers: h() });
+            const d = await res.json();
+            if (d.success) toast.success(d.message || 'Connection successful');
+            else toast.error(d.message || 'Connection failed');
+        } catch { toast.error('Test failed'); }
+        finally { setTestingId(null); }
+    };
+
+    const syncConnector = async (id: string) => {
+        setSyncingId(id);
+        try {
+            const res = await fetch(`${API}/api/admin/data-sources/${id}/sync`, { method: 'POST', headers: h() });
+            if (!res.ok) throw new Error();
+            toast.success('Sync started — running in background');
+            setConnectors(prev => prev.map(c => c.id === id ? { ...c, status: 'syncing' } : c));
+        } catch { toast.error('Failed to start sync'); }
+        finally { setSyncingId(null); }
+    };
+
+    const deleteConnector = async (id: string) => {
+        try {
+            const res = await fetch(`${API}/api/admin/data-sources/${id}`, { method: 'DELETE', headers: h() });
+            if (!res.ok) throw new Error();
+            toast.success('Connector deleted');
+            setConnectors(prev => prev.filter(c => c.id !== id));
+        } catch { toast.error('Failed to delete connector'); }
+    };
+
+    // ── Migration ──────────────────────────────────────────────────────────
+
+    const runMigration = async () => {
+        setShowMigrateConfirm(false);
+        setMigrating(true);
+        try {
+            const res = await fetch(`${API}/api/admin/knowledge-base/migrate-usecases`, { method: 'POST', headers: h() });
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.error?.message ?? err.detail ?? `Server error ${res.status}`);
+            }
+            const result = await res.json();
+            toast.success(result.message ?? `Migrated ${result.migrated} use cases`);
+            localStorage.setItem('kb_migration_done', 'true');
+            setMigrationDone(true);
+            setKbTotal(0);
+        } catch (e: unknown) {
+            toast.error((e as Error).message || 'Migration failed');
+        } finally { setMigrating(false); }
+    };
+
+    // ── Article stats ──────────────────────────────────────────────────────
+
+    const artStats = {
+        total:     articles.length,
+        validated: articles.filter(a => a.validation_status === 'validated').length,
+        pending:   articles.filter(a => a.validation_status === 'pending').length,
+        linked:    articles.filter(a => a.linked_usecases_count > 0).length,
+    };
+
+    // ── Render ─────────────────────────────────────────────────────────────
+
+    return (
+        <AdminLayout>
+            <style>{`
+                .kb-card { background: var(--theme-card-bg,#fff); border: 1px solid var(--theme-border-color,#e5e7eb); border-radius: 10px; padding: 16px; }
+                .kb-tab { padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer; font-size: 13px; font-weight: 600; transition: background 0.15s, color 0.15s; }
+                .kb-tab.active { background: #6366f1; color: #fff; }
+                .kb-tab:not(.active) { background: transparent; color: var(--theme-text-muted,#6b7280); }
+                .kb-tab:not(.active):hover { background: var(--theme-border-color,#e5e7eb); color: var(--theme-text-primary,#111827); }
+                .kb-drop-zone { border: 2px dashed var(--theme-border-color,#d1d5db); border-radius: 12px; padding: 36px; text-align: center; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+                .kb-drop-zone.dragging { border-color: #6366f1; background: rgba(99,102,241,0.04); }
+                .kb-row { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--theme-border-color,#e5e7eb); font-size: 13px; }
+                .kb-row:last-child { border-bottom: none; }
+                .kb-row:hover { background: var(--theme-hover-bg,#f9fafb); }
+                .art-filter-btn { padding: 5px 14px; border-radius: 20px; border: 1px solid var(--theme-border-color,#e5e7eb); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+                .art-filter-btn.active { background: #6366f1; color: #fff; border-color: #6366f1; }
+                .art-filter-btn:not(.active) { background: transparent; color: var(--theme-text-muted,#6b7280); }
+                .connector-card { background: var(--theme-card-bg,#fff); border: 1px solid var(--theme-border-color,#e5e7eb); border-radius: 12px; padding: 18px; transition: box-shadow 0.15s; }
+                .connector-card:hover { box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+                .icon-btn { background: none; border: 1px solid var(--theme-border-color,#e5e7eb); border-radius: 6px; cursor: pointer; padding: 5px 8px; display: inline-flex; align-items: center; gap: 4px; font-size: 12px; font-weight: 600; transition: all 0.15s; }
+                .icon-btn:hover { background: var(--theme-hover-bg,#f3f4f6); }
+                @keyframes spin { to { transform: rotate(360deg); } }
+            `}</style>
+
+            <div style={{ maxWidth: 1100, margin: '0 auto', padding: '24px 16px' }}>
+
+                {/* ── Header ── */}
+                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 24 }}>
+                    <div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
+                            <Brain size={22} color="#6366f1" />
+                            <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--theme-text-primary,#111827)', margin: 0 }}>AI Knowledge Base</h1>
+                            {ragStatus && (
+                                <span style={{ fontSize: 11, padding: '2px 10px', borderRadius: 12, fontWeight: 600, background: ragStatus.is_active ? '#dcfce7' : '#fef3c7', color: ragStatus.is_active ? '#16a34a' : '#d97706' }}>
+                                    {ragStatus.is_active ? 'RAG Active' : 'Mock Mode'}
                                 </span>
-                                <span className="px-2 py-1 bg-blue-500/20 text-blue-600 rounded text-xs">
-                                    {useCase.category}
-                                </span>
-                            </div>
+                            )}
                         </div>
+                        <p style={{ fontSize: 13, color: 'var(--theme-text-muted,#6b7280)', margin: 0 }}>
+                            Upload documents, connect data sources, and manage the RAG knowledge graph and ontology.
+                        </p>
+                    </div>
+                    <button
+                        onClick={() => { fetchStatus(); if (tab === 'documents') fetchDocs(); if (tab === 'articles') fetchArticles(articleFilter); if (tab === 'sources') fetchConnectors(); }}
+                        style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 8, border: '1px solid var(--theme-border-color,#e5e7eb)', background: 'transparent', cursor: 'pointer', fontSize: 13, color: 'var(--theme-text-muted,#6b7280)' }}
+                    >
+                        <RefreshCw size={14} /> Refresh
+                    </button>
+                </div>
+
+                {/* ── RAG Stats ── */}
+                {ragStatus && (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 12, marginBottom: 24 }}>
+                        {[
+                            { label: 'Vector Store', value: ragStatus.vector_store_enabled ? 'Enabled' : 'Disabled', icon: <Database size={16} color="#6366f1" />, ok: ragStatus.vector_store_enabled },
+                            { label: 'Embeddings',   value: ragStatus.embeddings_enabled ? 'Enabled' : 'Disabled',   icon: <Layers size={16} color="#8b5cf6" />,   ok: ragStatus.embeddings_enabled },
+                            { label: 'Reference Docs', value: ragStatus.reference_data_count,                         icon: <BookOpen size={16} color="#10b981" />, ok: true },
+                            { label: 'Mode',         value: ragStatus.mode === 'real' ? 'Live AI' : 'Mock',          icon: <Brain size={16} color="#f59e0b" />,   ok: ragStatus.mode === 'real' },
+                        ].map(t => (
+                            <div key={t.label} className="kb-card" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                <div style={{ padding: 8, borderRadius: 8, background: 'var(--theme-hover-bg,#f3f4f6)' }}>{t.icon}</div>
+                                <div>
+                                    <div style={{ fontSize: 11, color: 'var(--theme-text-muted,#9ca3af)', marginBottom: 1 }}>{t.label}</div>
+                                    <div style={{ fontSize: 14, fontWeight: 700, color: t.ok ? 'var(--theme-text-primary,#111827)' : '#f59e0b' }}>{t.value}</div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                {/* ── Migration banner ── */}
+                {!migrationDone && kbTotal !== null && kbTotal > 0 && (
+                    <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 10, padding: '14px 20px', marginBottom: 24 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16 }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                                <ArrowRight size={18} color="#3b82f6" />
+                                <div>
+                                    <div style={{ fontSize: 14, fontWeight: 700, color: '#1d4ed8' }}>{kbTotal} use cases found in AI Knowledge Base</div>
+                                    <div style={{ fontSize: 12, color: '#3b82f6', marginTop: 2 }}>Migrate them to AI Use Cases with LLM enhancement and auto-classification.</div>
+                                </div>
+                            </div>
+                            {!showMigrateConfirm && !migrating && (
+                                <button onClick={() => setShowMigrateConfirm(true)}
+                                    style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '9px 18px', borderRadius: 8, border: 'none', cursor: 'pointer', background: '#3b82f6', color: '#fff', fontWeight: 600, fontSize: 13, whiteSpace: 'nowrap' }}>
+                                    <ArrowRight size={14} /> Migrate Now
+                                </button>
+                            )}
+                            {migrating && <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, color: '#3b82f6', fontWeight: 600 }}><RefreshCw size={14} style={{ animation: 'spin 1s linear infinite' }} /> Migrating…</span>}
+                        </div>
+                        {showMigrateConfirm && !migrating && (
+                            <div style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid #bfdbfe', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
+                                <span style={{ fontSize: 13, color: '#1d4ed8' }}>This will enhance and import all {kbTotal} use cases. This may take a minute. Confirm?</span>
+                                <div style={{ display: 'flex', gap: 8 }}>
+                                    <button onClick={() => setShowMigrateConfirm(false)} style={{ padding: '7px 14px', borderRadius: 8, border: '1px solid #bfdbfe', background: '#fff', color: '#3b82f6', fontWeight: 600, fontSize: 12, cursor: 'pointer' }}>Cancel</button>
+                                    <button onClick={runMigration} style={{ padding: '7px 16px', borderRadius: 8, border: 'none', background: '#1d4ed8', color: '#fff', fontWeight: 600, fontSize: 12, cursor: 'pointer' }}>Yes, Migrate</button>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                )}
+                {migrationDone && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: '#dcfce7', border: '1px solid #bbf7d0', borderRadius: 10, padding: '12px 20px', marginBottom: 24 }}>
+                        <CheckCircle size={16} color="#16a34a" />
+                        <span style={{ fontSize: 13, color: '#15803d', fontWeight: 600 }}>Migration complete — use cases are now in the AI Use Cases section.</span>
+                    </div>
+                )}
+
+                {/* ── Tabs ── */}
+                <div style={{ display: 'flex', gap: 6, marginBottom: 20 }}>
+                    {(['documents', 'articles', 'sources'] as Tab[]).map(t => (
+                        <button key={t} className={`kb-tab${tab === t ? ' active' : ''}`} onClick={() => setTab(t)}>
+                            {t === 'documents' ? 'RAG Documents' : t === 'articles' ? 'Knowledge Articles' : 'Data Sources'}
+                        </button>
                     ))}
                 </div>
-            </AdminLayout>
-        );
-    }
 
-    // Show overview
-    return (
-        <AdminLayout title={t('admin.knowledgeBase.title', 'AI Knowledge Base')} actions={
-            <div className="flex gap-3">
-                <button
-                    onClick={() => setShowResearchModal(true)}
-                    className="px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg flex items-center gap-2 hover:opacity-90 transition"
-                >
-                    <Sparkles className="w-4 h-4" />
-                    {t('admin.knowledgeBase.researchUseCases', 'Research Use Cases')}
-                </button>
-                <button
-                    onClick={() => setShowUploadModal(true)}
-                    className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-lg flex items-center gap-2 hover:opacity-90 transition"
-                >
-                    <BookOpen className="w-4 h-4" />
-                    {t('admin.knowledgeBase.importKnowledge', 'Import Knowledge')}
-                </button>
-            </div>
-        }>
-            {/* Tabs */}
-            <div className="flex items-center gap-4 mb-8 border-b border-gray-200 dark:border-white/10">
-                <button
-                    onClick={() => setActiveTab('overview')}
-                    className={`pb-3 text-sm font-medium transition ${activeTab === 'overview'
-                        ? 'text-purple-500 border-b-2 border-purple-500'
-                        : isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'
-                        }`}
-                >
-                    {t('admin.knowledgeBase.overview', 'Overview')}
-                </button>
-                <button
-                    onClick={() => setActiveTab('articles')}
-                    className={`pb-3 text-sm font-medium transition ${activeTab === 'articles'
-                        ? 'text-purple-500 border-b-2 border-purple-500'
-                        : isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'
-                        }`}
-                >
-                    {t('admin.knowledgeBase.manageArticles', 'Manage Articles')}
-                </button>
-            </div>
-
-            {activeTab === 'overview' && (
-                <>
-                    {/* Search */}
-                    <div className="relative mb-8">
-                        <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-                        <input
-                            type="text"
-                            placeholder={t('admin.knowledgeBase.searchPlaceholder') as string}
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            className={`w-full pl-12 pr-4 py-3 rounded-xl border focus:outline-none focus:border-purple-500/50 ${isLight ? 'bg-white border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-surface-800 border-white/10 text-white placeholder-gray-400'}`}
-                        />
-                    </div>
-
-                    {/* Stats */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                        <div className={`rounded-xl p-4 border ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
-                            <div className={`text-2xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{overview?.total_industries || 0}</div>
-                            <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.industries', 'Industries')}</div>
-                        </div>
-                        <div className={`rounded-xl p-4 border ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
-                            <div className="text-2xl font-bold text-purple-500">{overview?.total_use_cases || 0}</div>
-                            <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.useCases', 'Use Cases')}</div>
-                        </div>
-                        <div className={`rounded-xl p-4 border ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
-                            <div className="text-2xl font-bold text-blue-500">{overview?.total_categories || 0}</div>
-                            <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.categories', 'Categories')}</div>
-                        </div>
-                        <div className={`rounded-xl p-4 border ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
-                            <div className="text-2xl font-bold text-green-500">{overview?.total_technologies || 0}</div>
-                            <div className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.technologies', 'Technologies')}</div>
-                        </div>
-                    </div>
-
-                    {/* Industries Grid */}
-                    <h3 className={`text-xl font-bold mb-4 ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.knowledgeBase.browseByIndustry', 'Browse by Industry')}</h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {overview?.industries.map((industry) => {
-                            const Icon = getIndustryIcon(industry.icon);
-                            return (
-                                <div
-                                    key={industry.id}
-                                    onClick={() => fetchIndustry(industry.id)}
-                                    className={`rounded-xl border p-6 cursor-pointer transition ${isLight ? 'bg-white border-gray-200 shadow-sm hover:border-purple-400' : 'bg-surface-800 border-white/10 hover:border-purple-500/50'}`}
-                                >
-                                    <div className="flex items-center gap-4">
-                                        <div className="w-12 h-12 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                                            <Icon className="w-6 h-6 text-purple-500" />
-                                        </div>
-                                        <div className="flex-1">
-                                            <h4 className={`text-lg font-semibold ${isLight ? 'text-gray-900' : 'text-white'}`}>{industry.name}</h4>
-                                            <p className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
-                                                {industry.use_case_count} {industry.use_case_count === 1 ? 'use case' : 'use cases'}
-                                            </p>
-                                        </div>
-                                        <ChevronRight className="w-5 h-5 text-gray-400" />
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </>
-            )}
-
-            {activeTab === 'articles' && (
-                <div className="space-y-6">
-                    {loadingArticles ? (
-                        <div className="flex justify-center py-12">
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-500"></div>
-                        </div>
-                    ) : articles.length === 0 ? (
-                        <div className={`text-center py-12 ${isLight ? 'bg-gray-50' : 'bg-surface-800'} rounded-xl border ${isLight ? 'border-gray-200' : 'border-white/10'}`}>
-                            <BookOpen className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-                            <h3 className={`text-lg font-medium mb-2 ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.knowledgeBase.noArticles', 'No articles found')}</h3>
-                            <p className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
-                                {t('admin.knowledgeBase.importPrompt', 'Import a document to get started.')}
-                            </p>
-                        </div>
-                    ) : (
-                        <div className={`rounded-xl border overflow-hidden ${isLight ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/10'}`}>
-                            <div className="overflow-x-auto">
-                                <table className="w-full">
-                                    <thead className={`border-b ${isLight ? 'bg-gray-50 border-gray-200' : 'bg-white/5 border-white/10'}`}>
-                                        <tr>
-                                            <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
-                                                {t('common.title')}
-                                            </th>
-                                            <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
-                                                {t('admin.knowledgeBase.source', 'Source')}
-                                            </th>
-                                            <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
-                                                {t('admin.knowledgeBase.validation', 'Validation')}
-                                            </th>
-                                            <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
-                                                {t('admin.knowledgeBase.linkages', 'Linkages')}
-                                            </th>
-                                            <th className={`px-6 py-3 text-left text-xs font-medium uppercase tracking-wider ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
-                                                {t('common.date')}
-                                            </th>
-                                            <th className={`px-6 py-3 text-right text-xs font-medium uppercase tracking-wider ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
-                                                {t('common.actions')}
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody className={`divide-y ${isLight ? 'divide-gray-200' : 'divide-white/10'}`}>
-                                        {articles.map((article) => (
-                                            <tr key={article.id} className={`transition-colors ${isLight ? 'hover:bg-gray-50' : 'hover:bg-white/5'}`}>
-                                                <td className="px-6 py-4">
-                                                    <div className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>
-                                                        {article.title}
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <div className="flex items-center gap-2">
-                                                        <span className={`px-2 py-1 text-xs rounded uppercase font-medium ${isLight ? 'bg-gray-100 text-gray-600' : 'bg-white/10 text-gray-300'
-                                                            }`}>
-                                                            {article.source_type}
-                                                        </span>
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <div className="flex items-center gap-2">
-                                                        {article.validation_status === 'validated' ? (
-                                                            <span className="flex items-center gap-1.5 px-2 py-1 bg-green-500/10 text-green-500 rounded text-xs">
-                                                                <CheckCircle className="w-3.5 h-3.5" />
-                                                                {article.validation_score}/100
-                                                            </span>
-                                                        ) : (
-                                                            <span className="flex items-center gap-1.5 px-2 py-1 bg-yellow-500/10 text-yellow-500 rounded text-xs">
-                                                                <AlertCircle className="w-3.5 h-3.5" />
-                                                                {t('common.pending')}
-                                                            </span>
-                                                        )}
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <div className={`text-sm ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
-                                                        {article.linked_usecases_count} Use Cases
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <div className={`text-sm flex items-center gap-2 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
-                                                        <Clock className="w-3.5 h-3.5" />
-                                                        {new Date(article.imported_at).toLocaleDateString()}
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4 text-right">
-                                                    <button
-                                                        onClick={() => setArticleToDelete(article.id)}
-                                                        className="p-2 text-red-500 hover:bg-red-500/10 rounded-lg transition-colors"
-                                                        title={t('common.delete')}
-                                                    >
-                                                        <Trash2 className="w-4 h-4" />
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    )}
-                </div>
-            )}
-
-            {/* Upload Modal */}
-            {showUploadModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-                    <div className={`relative w-full max-w-lg p-6 rounded-2xl shadow-xl ${isLight ? 'bg-white' : 'bg-surface-800 border border-white/10'}`}>
-                        <button
-                            onClick={() => setShowUploadModal(false)}
-                            className={`absolute top-4 right-4 p-1 rounded-full hover:bg-black/5 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}
+                {/* ═══════════════════════════════════════════════════════════
+                    TAB: Documents
+                ═══════════════════════════════════════════════════════════ */}
+                {tab === 'documents' && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                        <div
+                            className={`kb-drop-zone${isDragging ? ' dragging' : ''}`}
+                            onDragOver={e => { e.preventDefault(); setIsDragging(true); }}
+                            onDragLeave={() => setIsDragging(false)}
+                            onDrop={e => { e.preventDefault(); setIsDragging(false); const f = e.dataTransfer.files[0]; if (f) handleUpload(f); }}
+                            onClick={() => fileInputRef.current?.click()}
                         >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button>
-
-                        <h3 className={`text-xl font-bold mb-4 ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.knowledgeBase.importKnowledge', 'Import Knowledge')}</h3>
-                        <p className={`mb-6 text-sm ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
-                            {t('admin.knowledgeBase.uploadHelp')}
-                        </p>
-
-                        <div className={`border-2 border-dashed rounded-xl p-8 mb-6 flex flex-col items-center justify-center text-center transition-colors ${uploadFile ? 'border-purple-500 bg-purple-50/10' :
-                            isLight ? 'border-gray-300 hover:border-purple-400' : 'border-white/10 hover:border-purple-500/50'
-                            }`}>
-                            <input
-                                type="file"
-                                id="file-upload"
-                                className="hidden"
-                                onChange={handleFileSelect}
-                                accept=".pdf,.docx,.doc,.pptx,.ppt,.txt,.md,.jpg,.jpeg,.png"
-                            />
-
-                            {uploadFile ? (
-                                <div className="flex flex-col items-center">
-                                    <div className="w-12 h-12 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center mb-3">
-                                        <BookOpen className="w-6 h-6" />
-                                    </div>
-                                    <p className={`font-medium mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>{uploadFile.name}</p>
-                                    <p className={`text-xs ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{(uploadFile.size / 1024 / 1024).toFixed(2)} MB</p>
-                                    <button
-                                        onClick={() => setUploadFile(null)}
-                                        className="mt-3 text-xs text-red-500 hover:underline"
-                                    >
-                                        {t('admin.knowledgeBase.removeFile', 'Remove file')}
-                                    </button>
+                            <input ref={fileInputRef} type="file" accept=".pdf,.docx,.pptx,.txt,.md,.csv,.xlsx,.json" style={{ display: 'none' }} onChange={e => { const f = e.target.files?.[0]; if (f) handleUpload(f); e.target.value = ''; }} />
+                            {uploading ? (
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                                    <RefreshCw size={28} color="#6366f1" style={{ animation: 'spin 1s linear infinite' }} />
+                                    <span style={{ fontSize: 13, color: '#6366f1', fontWeight: 600 }}>Ingesting into RAG…</span>
                                 </div>
                             ) : (
-                                <label htmlFor="file-upload" className="flex flex-col items-center cursor-pointer w-full h-full">
-                                    <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-3 ${isLight ? 'bg-gray-100 text-gray-500' : 'bg-white/5 text-gray-400'}`}>
-                                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" /></svg>
+                                <>
+                                    <Upload size={28} color="var(--theme-text-muted,#9ca3af)" style={{ marginBottom: 8 }} />
+                                    <div style={{ fontSize: 14, fontWeight: 600, color: 'var(--theme-text-primary,#374151)', marginBottom: 4 }}>Drop a document or click to upload</div>
+                                    <div style={{ fontSize: 12, color: 'var(--theme-text-muted,#9ca3af)' }}>PDF · DOCX · PPTX · TXT · MD · CSV · XLSX · JSON</div>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 14 }} onClick={e => e.stopPropagation()}>
+                                        <input placeholder="Category (optional)" value={uploadCategory} onChange={e => setUploadCategory(e.target.value)}
+                                            style={{ padding: '6px 12px', borderRadius: 6, border: '1px solid var(--theme-border-color,#e5e7eb)', fontSize: 12, width: 180, background: 'var(--theme-card-bg,#fff)', color: 'var(--theme-text-primary,#111827)' }} />
                                     </div>
-                                    <p className={`font-medium mb-1 ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.knowledgeBase.uploadPrompt')}</p>
-                                    <p className={`text-xs ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.uploadNote')}</p>
-                                </label>
+                                </>
                             )}
                         </div>
 
-                        <div className="flex justify-end gap-3">
-                            <button
-                                onClick={() => setShowUploadModal(false)}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium ${isLight ? 'text-gray-700 hover:bg-gray-100' : 'text-gray-300 hover:bg-white/5'}`}
-                            >
-                                {t('common.cancel')}
-                            </button>
-                            <button
-                                onClick={handleUpload}
-                                disabled={!uploadFile || uploading}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium text-white flex items-center gap-2 ${!uploadFile || uploading
-                                    ? 'bg-gray-400 cursor-not-allowed'
-                                    : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90'
-                                    }`}
-                            >
-                                {uploading ? (
-                                    <>
-                                        <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                                        {t('admin.knowledgeBase.processing', 'Processing...')}
-                                    </>
-                                ) : (
-                                    t('admin.knowledgeBase.importDocument', 'Import Document')
-                                )}
-                            </button>
+                        <div className="kb-card" style={{ padding: 0, overflow: 'hidden' }}>
+                            <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--theme-border-color,#e5e7eb)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--theme-text-primary,#111827)' }}>RAG Document Library ({docs.length})</span>
+                                <button onClick={fetchDocs} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--theme-text-muted,#9ca3af)' }}><RefreshCw size={14} /></button>
+                            </div>
+                            {loadingDocs ? (
+                                <div style={{ padding: 32, textAlign: 'center', color: 'var(--theme-text-muted,#9ca3af)', fontSize: 13 }}>Loading…</div>
+                            ) : docs.length === 0 ? (
+                                <div style={{ padding: 32, textAlign: 'center', color: 'var(--theme-text-muted,#9ca3af)', fontSize: 13 }}>No documents yet. Upload one above.</div>
+                            ) : docs.map(doc => (
+                                <div key={doc.id} className="kb-row">
+                                    <FileText size={15} color="#6366f1" style={{ flexShrink: 0 }} />
+                                    <div style={{ flex: 1, minWidth: 0 }}>
+                                        <div style={{ fontWeight: 600, color: 'var(--theme-text-primary,#111827)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{doc.title}</div>
+                                        <div style={{ fontSize: 11, color: 'var(--theme-text-muted,#9ca3af)', marginTop: 1 }}>{doc.category} · v{doc.version} · {doc.retrieval_count} retrievals · {fmtDate(doc.created_at)}</div>
+                                    </div>
+                                    <span style={{ fontSize: 11, padding: '2px 8px', borderRadius: 12, background: doc.is_active ? '#dcfce7' : '#fee2e2', color: doc.is_active ? '#16a34a' : '#dc2626', fontWeight: 600 }}>{doc.is_active ? 'Active' : 'Inactive'}</span>
+                                    <button onClick={() => deleteDoc(doc.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#ef4444', padding: 4 }} title="Remove from RAG"><Trash2 size={14} /></button>
+                                </div>
+                            ))}
                         </div>
                     </div>
-                </div>
-            )}
+                )}
 
-            <ConfirmationModal
-                isOpen={!!articleToDelete}
-                onClose={() => setArticleToDelete(null)}
-                onConfirm={handleDeleteArticle}
-                title={t('admin.knowledgeBase.deleteConfirmTitle', 'Delete Knowledge Article')}
-                message={t('admin.knowledgeBase.deleteConfirmMessage', 'Are you sure you want to delete this knowledge article? This will remove all associated use case linkages and cannot be undone.')}
-                confirmText={t('common.delete')}
-                cancelText={t('common.cancel')}
-                variant="danger"
-            />
+                {/* ═══════════════════════════════════════════════════════════
+                    TAB: Knowledge Articles
+                ═══════════════════════════════════════════════════════════ */}
+                {tab === 'articles' && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
 
-            {/* Research Modal */}
-            {showResearchModal && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-                    <div className={`relative w-full max-w-4xl max-h-[90vh] overflow-y-auto p-6 rounded-2xl shadow-xl ${isLight ? 'bg-white' : 'bg-surface-800 border border-white/10'}`}>
-                        <button
-                            onClick={() => setShowResearchModal(false)}
-                            className={`absolute top-4 right-4 p-1 rounded-full hover:bg-black/5 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}
-                        >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button>
-
-                        <h2 className={`text-xl font-bold mb-2 ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.knowledgeBase.publicResearchRefresh', 'Public Research Refresh')}</h2>
-                        <p className={`text-sm mb-6 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.discoverTrendingDesc', 'Discover trending use cases from the web')}</p>
-
-                        <div className="space-y-6">
-                            <div>
-                                <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>{t('admin.knowledgeBase.researchProvider', 'Research Provider')}</label>
-                                <div className="flex gap-3">
-                                    <button
-                                        onClick={() => setResearchProvider('perplexity')}
-                                        className={`flex-1 p-3 rounded-lg border-2 transition ${researchProvider === 'perplexity'
-                                            ? 'border-purple-500 bg-purple-500/10'
-                                            : isLight ? 'border-gray-200 hover:border-gray-300' : 'border-white/10 hover:border-white/20'
-                                            }`}
-                                    >
-                                        <div className={`font-medium ${researchProvider === 'perplexity' ? 'text-purple-500' : isLight ? 'text-gray-900' : 'text-white'}`}>Perplexity AI</div>
-                                        <div className={`text-xs ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Real-time web research</div>
-                                    </button>
-                                    <button
-                                        onClick={() => setResearchProvider('google')}
-                                        className={`flex-1 p-3 rounded-lg border-2 transition ${researchProvider === 'google'
-                                            ? 'border-blue-500 bg-blue-500/10'
-                                            : isLight ? 'border-gray-200 hover:border-gray-300' : 'border-white/10 hover:border-white/20'
-                                            }`}
-                                    >
-                                        <div className={`font-medium ${researchProvider === 'google' ? 'text-blue-500' : isLight ? 'text-gray-900' : 'text-white'}`}>Google Search</div>
-                                        <div className={`text-xs ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>Comprehensive search</div>
-                                    </button>
+                        {/* Stats row */}
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12 }}>
+                            {[
+                                { label: 'Total Articles', value: artStats.total, color: '#6366f1' },
+                                { label: 'Validated',      value: artStats.validated, color: '#16a34a' },
+                                { label: 'Pending',        value: artStats.pending, color: '#d97706' },
+                                { label: 'Linked to Use Cases', value: artStats.linked, color: '#3b82f6' },
+                            ].map(s => (
+                                <div key={s.label} className="kb-card" style={{ textAlign: 'center', padding: '14px 10px' }}>
+                                    <div style={{ fontSize: 24, fontWeight: 800, color: s.color }}>{s.value}</div>
+                                    <div style={{ fontSize: 11, color: 'var(--theme-text-muted,#9ca3af)', marginTop: 2 }}>{s.label}</div>
                                 </div>
-                            </div>
+                            ))}
+                        </div>
 
-                            <div>
-                                <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>{t('admin.knowledgeBase.scope', 'Scope')}</label>
-                                <textarea
-                                    value={customScope}
-                                    onChange={(e) => setCustomScope(e.target.value)}
-                                    placeholder="Enter custom search scope or use the default..."
-                                    maxLength={500}
-                                    rows={3}
-                                    className={`w-full p-3 rounded-lg border resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 ${isLight ? 'bg-white border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-surface-700 border-white/5 text-white placeholder-gray-500'}`}
-                                />
-                                <div className={`text-xs mt-1 text-right ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
-                                    {customScope.length}/500 characters
+                        {/* Filter + actions bar */}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', gap: 6 }}>
+                                {(['all', 'validated', 'pending', 'rejected'] as ArticleFilter[]).map(f => (
+                                    <button key={f} className={`art-filter-btn${articleFilter === f ? ' active' : ''}`} onClick={() => setArticleFilter(f)}>
+                                        {f === 'all' ? 'All' : f.charAt(0).toUpperCase() + f.slice(1)}
+                                    </button>
+                                ))}
+                            </div>
+                            <div style={{ display: 'flex', gap: 8 }}>
+                                <input ref={artFileInputRef} type="file" accept=".pdf,.docx,.txt,.md" style={{ display: 'none' }} onChange={e => { const f = e.target.files?.[0]; if (f) handleArticleFile(f); e.target.value = ''; }} />
+                                <button onClick={() => artFileInputRef.current?.click()}
+                                    style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 8, border: '1px solid var(--theme-border-color,#e5e7eb)', background: 'transparent', cursor: 'pointer', fontSize: 13, color: 'var(--theme-text-primary,#374151)', fontWeight: 600 }}>
+                                    <Upload size={14} /> Import File
+                                </button>
+                                <button onClick={() => setShowURLModal(true)}
+                                    style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '7px 14px', borderRadius: 8, border: 'none', background: '#3b82f6', color: '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 600 }}>
+                                    <Globe size={14} /> Import from URL
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Articles list */}
+                        <div className="kb-card" style={{ padding: 0, overflow: 'hidden' }}>
+                            <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--theme-border-color,#e5e7eb)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--theme-text-primary,#111827)' }}>Knowledge Articles ({articles.length})</span>
+                                <button onClick={() => fetchArticles(articleFilter)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--theme-text-muted,#9ca3af)' }}><RefreshCw size={14} /></button>
+                            </div>
+                            {loadingArticles ? (
+                                <div style={{ padding: 32, textAlign: 'center', color: 'var(--theme-text-muted,#9ca3af)', fontSize: 13 }}>Loading…</div>
+                            ) : articles.length === 0 ? (
+                                <div style={{ padding: 32, textAlign: 'center', color: 'var(--theme-text-muted,#9ca3af)', fontSize: 13 }}>
+                                    No articles found. Import a document or URL to get started.
                                 </div>
-                            </div>
-
-                            <button
-                                onClick={handleResearch}
-                                disabled={researchLoading}
-                                className={`w-full py-3 rounded-lg text-white font-medium flex items-center justify-center gap-2 ${researchLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90'}`}
-                            >
-                                {researchLoading ? (
-                                    <>
-                                        <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                                        {t('admin.knowledgeBase.processing', 'Researching...')}
-                                    </>
-                                ) : (
-                                    <>
-                                        <Sparkles className="w-5 h-5" />
-                                        {t('admin.knowledgeBase.startDiscovery', 'Start Discovery')}
-                                    </>
-                                )}
-                            </button>
-
-                            {researchResults.length > 0 && (
-                                <div className="space-y-3 max-h-96 overflow-y-auto">
-                                    <h3 className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>Research Results ({researchResults.length})</h3>
-                                    {researchResults.map((result) => (
-                                        <div key={result.id} className={`rounded-lg p-4 border flex gap-4 ${isLight ? 'bg-gray-50 border-gray-200' : 'bg-surface-700 border-white/5'}`}>
-                                            <div className="w-10 h-10 rounded-lg bg-green-500/10 flex-shrink-0 flex items-center justify-center">
-                                                <TrendingUp className="w-5 h-5 text-green-400" />
-                                            </div>
-                                            <div className="flex-1">
-                                                <div className="flex justify-between items-start">
-                                                    <div className="flex-1">
-                                                        <div className="flex items-center gap-2 mb-1">
-                                                            <h4 className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>{result.title}</h4>
-                                                            {result.is_new && (
-                                                                <span className="text-xs bg-green-500/20 text-green-400 px-2 py-0.5 rounded font-medium">
-                                                                    NEW
-                                                                </span>
-                                                            )}
-                                                            {result.is_refinable && (
-                                                                <span className="text-xs bg-blue-500/20 text-blue-400 px-2 py-0.5 rounded font-medium">
-                                                                    REFINABLE
-                                                                </span>
-                                                            )}
-                                                        </div>
-                                                        <span className="text-xs text-blue-400 bg-blue-500/10 px-2 py-0.5 rounded inline-block">
-                                                            {result.industry_name}
-                                                        </span>
-                                                    </div>
-                                                    <span className="text-xs text-gray-500 uppercase">{researchProvider}</span>
-                                                </div>
-                                                <p className={`text-sm mt-2 mb-3 ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>{result.description}</p>
-                                                {result.is_refinable && result.refinement_suggestions && (
-                                                    <div className={`text-xs p-2 rounded mb-2 ${isLight ? 'bg-blue-50 text-blue-700' : 'bg-blue-500/10 text-blue-300'}`}>
-                                                        <strong>Refinements:</strong> {result.refinement_suggestions}
-                                                    </div>
-                                                )}
-                                                <div className="flex items-center gap-4 text-xs text-gray-500">
-                                                    <span>ROI: <span className="text-green-400">{result.typical_roi}</span></span>
-                                                    <span>•</span>
-                                                    <span>{result.category}</span>
-                                                </div>
-                                            </div>
-                                            <button
-                                                onClick={() => handleAddResearchItem(result)}
-                                                className={`self-center p-2 rounded-lg transition ${isLight ? 'bg-gray-200 hover:bg-purple-100 hover:text-purple-600 text-gray-500' : 'bg-surface-600 hover:bg-purple-600 hover:text-white text-gray-400'}`}
-                                                title={result.is_refinable ? "Update Existing Use Case" : "Add to Library"}
-                                            >
-                                                <Plus className="w-5 h-5" />
-                                            </button>
+                            ) : articles.map(art => (
+                                <div key={art.id} className="kb-row">
+                                    <BookOpen size={15} color="#8b5cf6" style={{ flexShrink: 0 }} />
+                                    <div style={{ flex: 1, minWidth: 0 }}>
+                                        <div style={{ fontWeight: 600, color: 'var(--theme-text-primary,#111827)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{art.title}</div>
+                                        <div style={{ fontSize: 11, color: 'var(--theme-text-muted,#9ca3af)', marginTop: 1 }}>
+                                            {art.source_type} · {art.source_filename || art.source_url || '—'} · {fmtDate(art.imported_at)}
+                                            {art.linked_usecases_count > 0 && ` · ${art.linked_usecases_count} linked use cases`}
                                         </div>
-                                    ))}
+                                    </div>
+                                    {statusBadge(art.validation_status)}
+                                    {art.validation_score != null && (
+                                        <span style={{ fontSize: 11, color: 'var(--theme-text-muted,#9ca3af)', minWidth: 32, textAlign: 'right' }}>{Math.round(art.validation_score)}%</span>
+                                    )}
+                                    <button onClick={() => setViewArticle(art)} className="icon-btn" title="View article"><Eye size={13} /></button>
+                                    <button
+                                        onClick={() => revalidateArticle(art.id)}
+                                        disabled={revalidatingId === art.id}
+                                        className="icon-btn" title="Re-validate with AI"
+                                        style={{ color: '#8b5cf6' }}
+                                    >
+                                        {revalidatingId === art.id
+                                            ? <RefreshCw size={13} style={{ animation: 'spin 1s linear infinite' }} />
+                                            : <Zap size={13} />}
+                                    </button>
+                                    <button onClick={() => deleteArticle(art.id)} className="icon-btn" title="Delete" style={{ color: '#ef4444' }}><Trash2 size={13} /></button>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
+
+                {/* ═══════════════════════════════════════════════════════════
+                    TAB: Data Sources
+                ═══════════════════════════════════════════════════════════ */}
+                {tab === 'sources' && (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+
+                        {/* Section header */}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <div>
+                                <p style={{ fontSize: 13, color: 'var(--theme-text-muted,#6b7280)', margin: 0 }}>
+                                    Connect external sources to automatically sync content into the RAG knowledge base.
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => { setEditConnector(null); setShowConnectorModal(true); }}
+                                style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '8px 16px', borderRadius: 8, border: 'none', background: '#6366f1', color: '#fff', cursor: 'pointer', fontSize: 13, fontWeight: 600 }}>
+                                <Plus size={14} /> Add Connector
+                            </button>
+                        </div>
+
+                        {/* Connector type reference cards */}
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gap: 10 }}>
+                            {(Object.entries(CONNECTOR_META) as [ConnectorType, typeof CONNECTOR_META[ConnectorType]][]).map(([type, meta]) => {
+                                const count = connectors.filter(c => c.connector_type === type).length;
+                                return (
+                                    <div key={type} style={{ background: 'var(--theme-card-bg,#fff)', border: '1px solid var(--theme-border-color,#e5e7eb)', borderRadius: 10, padding: '12px 14px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: 6 }}>
+                                        <span style={{ color: meta.color }}>{meta.icon}</span>
+                                        <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--theme-text-primary,#374151)' }}>{meta.label}</div>
+                                        <div style={{ fontSize: 11, color: 'var(--theme-text-muted,#9ca3af)' }}>{meta.desc}</div>
+                                        {count > 0 && <span style={{ fontSize: 11, padding: '1px 8px', borderRadius: 12, background: '#ede9fe', color: '#7c3aed', fontWeight: 600 }}>{count} configured</span>}
+                                    </div>
+                                );
+                            })}
+                        </div>
+
+                        {/* Configured connectors list */}
+                        <div>
+                            <h3 style={{ fontSize: 14, fontWeight: 700, color: 'var(--theme-text-primary,#111827)', marginTop: 0, marginBottom: 12 }}>
+                                Configured Connectors ({connectors.length})
+                            </h3>
+                            {loadingConnectors ? (
+                                <div style={{ textAlign: 'center', padding: 32, color: 'var(--theme-text-muted,#9ca3af)', fontSize: 13 }}>Loading connectors…</div>
+                            ) : connectors.length === 0 ? (
+                                <div className="kb-card" style={{ textAlign: 'center', padding: 36, color: 'var(--theme-text-muted,#9ca3af)', fontSize: 13 }}>
+                                    No connectors configured yet. Click <strong>Add Connector</strong> above to get started.
+                                </div>
+                            ) : (
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                                    {connectors.map(conn => {
+                                        const meta = CONNECTOR_META[conn.connector_type as ConnectorType];
+                                        return (
+                                            <div key={conn.id} className="connector-card">
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
+                                                    <span style={{ color: meta?.color ?? '#6b7280', flexShrink: 0 }}>{meta?.icon ?? <Database size={22} />}</span>
+                                                    <div style={{ flex: 1, minWidth: 0 }}>
+                                                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 2 }}>
+                                                            <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--theme-text-primary,#111827)' }}>{conn.name}</span>
+                                                            {connectorStatusBadge(conn.status)}
+                                                        </div>
+                                                        <div style={{ fontSize: 12, color: 'var(--theme-text-muted,#9ca3af)' }}>
+                                                            {meta?.label ?? conn.connector_type}
+                                                            {conn.description && ` · ${conn.description}`}
+                                                            {' · '}{conn.docs_synced} docs synced
+                                                            {conn.last_synced && ` · Last sync: ${fmtDateTime(conn.last_synced)}`}
+                                                        </div>
+                                                        {conn.last_error && (
+                                                            <div style={{ fontSize: 11, color: '#dc2626', marginTop: 3, display: 'flex', alignItems: 'center', gap: 4 }}>
+                                                                <AlertCircle size={11} /> {conn.last_error.slice(0, 120)}{conn.last_error.length > 120 ? '…' : ''}
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                    <div style={{ display: 'flex', gap: 6, flexShrink: 0, flexWrap: 'wrap' }}>
+                                                        <button
+                                                            onClick={() => testConnector(conn.id)}
+                                                            disabled={testingId === conn.id}
+                                                            className="icon-btn"
+                                                            style={{ color: '#10b981' }}
+                                                            title="Test connection"
+                                                        >
+                                                            {testingId === conn.id
+                                                                ? <RefreshCw size={13} style={{ animation: 'spin 1s linear infinite' }} />
+                                                                : <Play size={13} />}
+                                                            Test
+                                                        </button>
+                                                        <button
+                                                            onClick={() => syncConnector(conn.id)}
+                                                            disabled={syncingId === conn.id || conn.status === 'syncing'}
+                                                            className="icon-btn"
+                                                            style={{ color: '#3b82f6' }}
+                                                            title="Start sync"
+                                                        >
+                                                            <RefreshCw size={13} style={conn.status === 'syncing' ? { animation: 'spin 1s linear infinite' } : undefined} />
+                                                            {conn.status === 'syncing' ? 'Syncing…' : 'Sync'}
+                                                        </button>
+                                                        <button
+                                                            onClick={() => { setEditConnector(conn); setShowConnectorModal(true); }}
+                                                            className="icon-btn"
+                                                            title="Edit connector"
+                                                        >
+                                                            <Settings size={13} /> Edit
+                                                        </button>
+                                                        <button
+                                                            onClick={() => deleteConnector(conn.id)}
+                                                            className="icon-btn"
+                                                            style={{ color: '#ef4444' }}
+                                                            title="Delete connector"
+                                                        >
+                                                            <Trash2 size={13} />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
                                 </div>
                             )}
                         </div>
                     </div>
-                </div>
+                )}
+            </div>
+
+            {/* ── Modals ── */}
+            {showConnectorModal && (
+                <ConnectorModal
+                    existing={editConnector}
+                    onClose={() => { setShowConnectorModal(false); setEditConnector(null); }}
+                    onSaved={fetchConnectors}
+                    token={token}
+                />
             )}
-
-            {/* Move Use Case Modal */}
-            {(() => {
-                console.log('Modal render check:', {showMoveModal, selectedUseCase: !!selectedUseCase});
-                return showMoveModal && selectedUseCase;
-            })() && (
-                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-                    <div className={`relative w-full max-w-md p-6 rounded-2xl shadow-xl ${isLight ? 'bg-white' : 'bg-surface-800 border border-white/10'}`}>
-                        <button
-                            onClick={() => {
-                                setShowMoveModal(false);
-                                setTargetIndustry('');
-                            }}
-                            className={`absolute top-4 right-4 p-1 rounded-full hover:bg-black/5 ${isLight ? 'text-gray-500' : 'text-gray-400'}`}
-                        >
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                        </button>
-
-                        <h3 className={`text-xl font-bold mb-4 ${isLight ? 'text-gray-900' : 'text-white'}`}>Move Use Case</h3>
-                        <p className={`mb-6 text-sm ${isLight ? 'text-gray-600' : 'text-gray-400'}`}>
-                            Move "{selectedUseCase?.title}" to a different industry. You can select an existing industry or enter a new industry name to create it.
-                        </p>
-
-                        <div className="mb-6">
-                            <label className={`block text-sm font-medium mb-2 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
-                                Target Industry
-                            </label>
-                            <input
-                                type="text"
-                                value={targetIndustry}
-                                onChange={(e) => setTargetIndustry(e.target.value)}
-                                placeholder="Enter industry name or ID"
-                                className={`w-full px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-purple-500 ${isLight ? 'bg-white border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-surface-700 border-white/5 text-white placeholder-gray-500'}`}
-                            />
-                            <p className={`mt-2 text-xs ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
-                                Available industries: {overview?.industries.map(i => i.name).join(', ')}
-                            </p>
-                        </div>
-
-                        <div className="flex justify-end gap-3">
-                            <button
-                                onClick={() => {
-                                    setShowMoveModal(false);
-                                    setTargetIndustry('');
-                                }}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium ${isLight ? 'text-gray-700 hover:bg-gray-100' : 'text-gray-300 hover:bg-white/5'}`}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                onClick={handleMoveUseCase}
-                                disabled={!targetIndustry}
-                                className={`px-4 py-2 rounded-lg text-sm font-medium text-white flex items-center gap-2 ${!targetIndustry
-                                    ? 'bg-gray-400 cursor-not-allowed'
-                                    : 'bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90'
-                                }`}
-                            >
-                                <Move className="w-4 h-4" />
-                                Move Use Case
-                            </button>
-                        </div>
-                    </div>
-                </div>
+            {viewArticle && (
+                <ViewArticleModal
+                    article={viewArticle}
+                    onClose={() => setViewArticle(null)}
+                    onRevalidate={revalidateArticle}
+                />
             )}
-
-            {/* Delete Confirmation Modal */}
-            <ConfirmationModal
-                isOpen={showDeleteModal}
-                onClose={() => {
-                    setShowDeleteModal(false);
-                    setUsecaseToDelete(null);
-                }}
-                onConfirm={handleDeleteUseCase}
-                title="Delete Use Case"
-                message={`Are you sure you want to delete "${usecaseToDelete?.title}"? This action cannot be undone.`}
-                confirmText="Delete"
-                cancelText="Cancel"
-                variant="danger"
-            />
+            {showURLModal && (
+                <ImportURLModal
+                    onClose={() => setShowURLModal(false)}
+                    onImported={() => fetchArticles(articleFilter)}
+                    token={token}
+                />
+            )}
         </AdminLayout>
     );
 }

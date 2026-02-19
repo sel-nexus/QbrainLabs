@@ -609,9 +609,18 @@ Return ONLY valid JSON in this exact format:
             
             message = HumanMessage(content=prompt_text)
             response = await self.llm.ainvoke([message])
-            
+
+            # Track usage
+            usage = get_usage_from_response(response)
+            await track_llm_usage(
+                feature="business_value",
+                model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
+                prompt_tokens=usage["prompt"],
+                completion_tokens=usage["completion"],
+            )
+
             response_content = response.content if hasattr(response, 'content') else str(response)
-            
+
             # Try to extract JSON from the response
             import re
             json_match = re.search(r'\{[\s\S]*\}', response_content, re.DOTALL)
@@ -700,9 +709,18 @@ Return valid JSON:
             
             message = HumanMessage(content=prompt_text)
             response = await self.llm.ainvoke([message])
-            
+
+            # Track usage
+            usage = get_usage_from_response(response)
+            await track_llm_usage(
+                feature="technical",
+                model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
+                prompt_tokens=usage["prompt"],
+                completion_tokens=usage["completion"],
+            )
+
             response_content = response.content if hasattr(response, 'content') else str(response)
-            
+
             # Try to extract JSON from the response
             import re
             json_match = re.search(r'\{[\s\S]*\}', response_content, re.DOTALL)
@@ -886,9 +904,14 @@ Provide a concise summary:"""
             )
             
             # Generate embedding and store in vector database
+            # Chroma uses a sync SQLAlchemy engine internally; run it in a thread
+            # executor so it doesn't block the async event loop (prevents greenlet error).
             if self.vector_store and self.embeddings:
-                # Add to existing vector store
-                embedding_ids = self.vector_store.add_documents([doc])
+                import asyncio
+                loop = asyncio.get_event_loop()
+                embedding_ids = await loop.run_in_executor(
+                    None, self.vector_store.add_documents, [doc]
+                )
                 embedding_id = embedding_ids[0] if embedding_ids else None
             else:
                 embedding_id = None
@@ -919,8 +942,11 @@ Provide a concise summary:"""
             
         try:
             if self.vector_store:
-                # Chroma deletion by ID
-                self.vector_store.delete([embedding_id])
+                import asyncio
+                loop = asyncio.get_event_loop()
+                await loop.run_in_executor(
+                    None, self.vector_store.delete, [embedding_id]
+                )
                 print(f"[RAG] Deleted embedding {embedding_id} from vector store")
             return True
         except Exception as e:
@@ -1310,8 +1336,18 @@ If not relevant, return: {{"relevance_score": 0, "impact_type": "none", "suggest
                 
                 message = HumanMessage(content=analysis_prompt)
                 response = await self.llm.ainvoke([message])
+
+                # Track usage per invocation
+                _usage = get_usage_from_response(response)
+                await track_llm_usage(
+                    feature="knowledge_impact",
+                    model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
+                    prompt_tokens=_usage["prompt"],
+                    completion_tokens=_usage["completion"],
+                )
+
                 response_content = response.content if hasattr(response, 'content') else str(response)
-                
+
                 # Parse JSON response
                 import re
                 json_match = re.search(r'\{[\s\S]*\}', response_content, re.DOTALL)
@@ -1319,7 +1355,7 @@ If not relevant, return: {{"relevance_score": 0, "impact_type": "none", "suggest
                     result = json.loads(json_match.group())
                 else:
                     result = json.loads(response_content)
-                
+
                 # Only include if relevance is above threshold
                 if result.get("relevance_score", 0) >= 50 and result.get("impact_type") != "none":
                     affected_usecases.append({

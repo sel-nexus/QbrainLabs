@@ -89,6 +89,8 @@ class LLMUsageSummary(BaseModel):
     estimated_cost_cents: int
     unique_users: int
     unique_workshops: int
+    success_count: int = 0
+    error_count: int = 0
 
 
 class LLMUsageByFeature(BaseModel):
@@ -96,7 +98,11 @@ class LLMUsageByFeature(BaseModel):
     feature: str
     call_count: int
     total_tokens: int
+    total_prompt_tokens: int = 0
+    total_completion_tokens: int = 0
     estimated_cost_cents: int
+    success_count: int = 0
+    error_count: int = 0
 
 
 class LLMUsageByWorkshop(BaseModel):
@@ -116,3 +122,38 @@ class LLMUsageByUser(BaseModel):
     call_count: int
     total_tokens: int
     estimated_cost_cents: int
+
+
+class LLMUsageByModel(BaseModel):
+    """LLM usage grouped by model name"""
+    model_name: str
+    call_count: int
+    total_tokens: int
+    total_prompt_tokens: int = 0
+    total_completion_tokens: int = 0
+    estimated_cost_cents: int
+    success_count: int = 0
+    error_count: int = 0
+
+
+class LLMUsageByDay(BaseModel):
+    """LLM usage aggregated by day"""
+    date: str  # YYYY-MM-DD
+    call_count: int
+    total_tokens: int
+    estimated_cost_cents: int
+
+
+class LLMRecentLog(BaseModel):
+    """Individual LLM usage log entry"""
+    id: str
+    feature: str
+    model_name: Optional[str] = None
+    prompt_tokens: int
+    completion_tokens: int
+    total_tokens: int
+    estimated_cost_cents: int
+    success: str
+    workshop_id: Optional[str] = None
+    user_id: Optional[str] = None
+    created_at: datetime
