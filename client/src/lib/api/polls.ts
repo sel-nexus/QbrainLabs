@@ -72,8 +72,8 @@ export const PollService = {
     submitQuestion: (workshopId: string, participantId: string, content: string, isAnonymous: boolean) =>
         api.post(`/polls/workshop/${workshopId}/questions`, { content, is_anonymous: isAnonymous }, { params: { participant_id: participantId } }).then(res => res.data),
 
-    getQuestions: (workshopId: string, participantId?: string) =>
-        api.get(`/polls/workshop/${workshopId}/questions`, { params: { participant_id: participantId } }).then(res => res.data),
+    getQuestions: (workshopId: string, participantId?: string, ownOnly?: boolean) =>
+        api.get(`/polls/workshop/${workshopId}/questions`, { params: { participant_id: participantId, own_only: ownOnly } }).then(res => res.data),
 
     upvoteQuestion: (questionId: string, participantId: string) =>
         api.post(`/polls/questions/${questionId}/upvote`, {}, { params: { participant_id: participantId } }).then(res => res.data),

@@ -4,6 +4,8 @@ import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 import { ActionTile } from '../components/ui/ActionTile';
+import { InitiateSurveyModal } from '../components/survey/InitiateSurveyModal';
+import { SurveyMonitorPanel } from '../components/survey/SurveyMonitorPanel';
 import {
   LayoutDashboard,
   Users,
@@ -16,7 +18,8 @@ import {
   PauseCircle,
   ArrowRight,
   AlertCircle,
-  Mail
+  Mail,
+  Rocket
 } from 'lucide-react';
 
 import { API_BASE_URL } from '../lib/config';
@@ -42,6 +45,7 @@ export function FacilitatorDashboard() {
   const { token, user } = useAuth();
   const [workshops, setWorkshops] = useState<Workshop[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [showSurveyModal, setShowSurveyModal] = useState(false);
 
   const statusConfig: Record<string, { label: string; color: string; barColor: string; icon: React.ElementType }> = {
     DRAFT: { label: t('dashboard.status.draft'), color: 'theme-badge-neutral', barColor: 'theme-bg-tertiary', icon: Clock },
@@ -201,7 +205,7 @@ export function FacilitatorDashboard() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <ActionTile
             icon={<FileText className="w-7 h-7" />}
             title="Use Cases"
@@ -223,6 +227,13 @@ export function FacilitatorDashboard() {
             description="Browse AI knowledge base"
             badgeVariant="default"
             onClick={() => navigate('/facilitator/knowledge-base')}
+          />
+          <ActionTile
+            icon={<Rocket className="w-7 h-7" />}
+            title="Launch Survey"
+            description="Send a survey to your workshops"
+            badgeVariant="default"
+            onClick={() => setShowSurveyModal(true)}
           />
         </div>
 
@@ -273,6 +284,11 @@ export function FacilitatorDashboard() {
             </div>
           </div>
         </div>
+
+        {/* Survey Results Monitor */}
+        {!isLoading && workshops.length > 0 && token && (
+          <SurveyMonitorPanel workshops={workshops} token={token} />
+        )}
 
         {/* My Workshops */}
         <div className="mb-8" id="my-workshops">
@@ -429,6 +445,22 @@ export function FacilitatorDashboard() {
           </div>
         )}
       </div>
+
+      {/* Launch Survey Modal */}
+      {showSurveyModal && token && (
+        <InitiateSurveyModal
+          workshops={workshops}
+          token={token}
+          onClose={() => setShowSurveyModal(false)}
+          onSuccess={(workshopIds) => {
+            setShowSurveyModal(false);
+            // Navigate to the first selected workshop's survey tab
+            if (workshopIds.length === 1) {
+              navigate(`/workshop/${workshopIds[0]}?tab=surveys`);
+            }
+          }}
+        />
+      )}
     </div>
   );
 }

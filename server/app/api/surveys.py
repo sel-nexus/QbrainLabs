@@ -14,6 +14,7 @@ from app.models import (
     SurveyResponse, SurveyAnswer, SurveyTemplate,
     Workshop, Participant, User
 )
+from app.models.rbac import WorkshopFacilitator
 from app.schemas.survey import (
     SurveyCreate, SurveyUpdate, SurveyResponse as SurveyResponseSchema,
     SurveyListResponse, SurveyListItem,
@@ -26,6 +27,12 @@ from app.schemas.survey import (
     ActivateSurveyRequest, PauseSurveyRequest
 )
 from app.api.auth import get_current_user
+from app.core.socket_manager import (
+    emit_survey_response_submitted,
+    emit_survey_participant_started,
+    emit_survey_participant_completed,
+    emit_survey_status_changed,
+)
 
 router = APIRouter(prefix="/surveys", tags=["surveys"])
 
@@ -36,19 +43,35 @@ async def verify_facilitator_access(
     user: User,
     db: AsyncSession
 ) -> Workshop:
-    """Verify user has facilitator access to the workshop"""
+    """Verify user has facilitator access to the workshop (owner, assigned facilitator, or admin)"""
     result = await db.execute(
         select(Workshop).where(Workshop.id == workshop_id)
     )
     workshop = result.scalar_one_or_none()
-    
+
     if not workshop:
         raise HTTPException(status_code=404, detail="Workshop not found")
-    
-    if str(workshop.facilitator_id) != str(user.id) and not user.is_admin:
-        raise HTTPException(status_code=403, detail="Not authorized to manage this workshop's surveys")
-    
-    return workshop
+
+    if user.is_admin:
+        return workshop
+
+    # Allow the workshop owner
+    if str(workshop.facilitator_id) == str(user.id):
+        return workshop
+
+    # Allow facilitators assigned to this workshop via WorkshopFacilitator
+    assigned = await db.execute(
+        select(WorkshopFacilitator).where(
+            and_(
+                WorkshopFacilitator.workshop_id == workshop_id,
+                WorkshopFacilitator.facilitator_id == user.id
+            )
+        )
+    )
+    if assigned.scalar_one_or_none():
+        return workshop
+
+    raise HTTPException(status_code=403, detail="Not authorized to manage this workshop's surveys")
 
 
 # ==================== Survey CRUD ====================
@@ -200,23 +223,29 @@ async def delete_survey(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
-    """Delete a draft survey"""
+    """Delete a survey that is not currently active (DRAFT, PAUSED, or CLOSED)"""
     result = await db.execute(
         select(Survey).where(Survey.id == survey_id)
     )
     survey = result.scalar_one_or_none()
-    
+
     if not survey:
         raise HTTPException(status_code=404, detail="Survey not found")
-    
+
     await verify_facilitator_access(str(survey.workshop_id), current_user, db)
-    
-    if survey.status != SurveyStatus.DRAFT:
-        raise HTTPException(status_code=400, detail="Only draft surveys can be deleted")
-    
+
+    if survey.status == SurveyStatus.ACTIVE:
+        raise HTTPException(
+            status_code=400,
+            detail="Cannot delete an active survey. Pause or close it first."
+        )
+
+    if survey.status == SurveyStatus.ARCHIVED:
+        raise HTTPException(status_code=400, detail="Archived surveys cannot be deleted")
+
     await db.delete(survey)
     await db.commit()
-    
+
     return {"success": True, "message": "Survey deleted"}
 
 
@@ -413,11 +442,14 @@ async def activate_survey(
     if len(survey.questions) == 0:
         raise HTTPException(status_code=400, detail="Cannot activate survey with no questions")
     
+    old_status = survey.status
     survey.status = SurveyStatus.ACTIVE
     survey.activated_at = datetime.utcnow()
     survey.updated_at = datetime.utcnow()
     await db.commit()
-    
+
+    await emit_survey_status_changed(str(survey.id), old_status, SurveyStatus.ACTIVE)
+
     return {"success": True, "activated_at": survey.activated_at}
 
 
@@ -446,7 +478,9 @@ async def pause_survey(
     survey.paused_at = datetime.utcnow()
     survey.updated_at = datetime.utcnow()
     await db.commit()
-    
+
+    await emit_survey_status_changed(str(survey.id), SurveyStatus.ACTIVE, SurveyStatus.PAUSED)
+
     return {"success": True, "paused_at": survey.paused_at}
 
 
@@ -473,7 +507,9 @@ async def resume_survey(
     survey.status = SurveyStatus.ACTIVE
     survey.updated_at = datetime.utcnow()
     await db.commit()
-    
+
+    await emit_survey_status_changed(str(survey.id), SurveyStatus.PAUSED, SurveyStatus.ACTIVE)
+
     return {"success": True, "resumed_at": datetime.utcnow()}
 
 
@@ -497,11 +533,14 @@ async def close_survey(
     if survey.status in [SurveyStatus.CLOSED, SurveyStatus.ARCHIVED]:
         raise HTTPException(status_code=400, detail="Survey is already closed")
     
+    old_status = survey.status
     survey.status = SurveyStatus.CLOSED
     survey.closed_at = datetime.utcnow()
     survey.updated_at = datetime.utcnow()
     await db.commit()
-    
+
+    await emit_survey_status_changed(str(survey.id), old_status, SurveyStatus.CLOSED)
+
     return {"success": True, "closed_at": survey.closed_at}
 
 
@@ -689,11 +728,25 @@ async def submit_survey_response(
                 db.add(answer)
     
     # Mark as completed
+    is_new_completion = response.status != "completed"
     response.status = "completed"
     response.completed_at = datetime.utcnow()
-    
+
     await db.commit()
-    
+
+    # Real-time notifications
+    await emit_survey_response_submitted(str(survey.id), {
+        "survey_id": str(survey.id),
+        "participant_id": str(participant_id),
+        "response_id": str(response.id),
+    })
+    if is_new_completion:
+        await emit_survey_participant_completed(str(survey.id), {
+            "survey_id": str(survey.id),
+            "participant_id": str(participant_id),
+            "completed_at": response.completed_at.isoformat(),
+        })
+
     return {
         "success": True,
         "response_id": str(response.id),
@@ -729,6 +782,7 @@ async def save_survey_progress(
     )
     response = result.scalar_one_or_none()
     
+    is_new_response = response is None
     if not response:
         response = SurveyResponse(
             id=uuid.uuid4(),
@@ -739,11 +793,11 @@ async def save_survey_progress(
         )
         db.add(response)
         await db.flush()
-    
+
     # Update current question
     if current_question is not None:
         response.current_question = current_question
-    
+
     # Save answer if provided
     if answer:
         result = await db.execute(
@@ -755,7 +809,7 @@ async def save_survey_progress(
             )
         )
         existing_answer = result.scalar_one_or_none()
-        
+
         if existing_answer:
             existing_answer.value = answer.value
             existing_answer.updated_at = datetime.utcnow()
@@ -767,9 +821,17 @@ async def save_survey_progress(
                 value=answer.value
             )
             db.add(new_answer)
-    
+
     await db.commit()
-    
+
+    # Notify facilitator when a participant first starts the survey
+    if is_new_response:
+        await emit_survey_participant_started(str(survey.id), {
+            "survey_id": str(survey.id),
+            "participant_id": str(participant_id),
+            "started_at": response.started_at.isoformat(),
+        })
+
     return {"success": True, "response_id": str(response.id)}
 
 

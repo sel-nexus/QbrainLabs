@@ -344,15 +344,20 @@ async def submit_question(
 async def list_questions(
     workshop_id: str,
     participant_id: Optional[str] = None,
+    own_only: bool = False,
     db: AsyncSession = Depends(get_db)
 ):
-    # Get all questions
-    result = await db.execute(
+    # Build query - optionally filter to own questions for participant view
+    query = (
         select(Question)
         .options(selectinload(Question.participant)) # to get display name
         .where(Question.workshop_id == workshop_id)
-        .order_by(Question.created_at.desc())
     )
+    if own_only and participant_id:
+        query = query.where(Question.participant_id == participant_id)
+    query = query.order_by(Question.created_at.desc())
+
+    result = await db.execute(query)
     questions = result.scalars().all()
     
     # Get upvotes

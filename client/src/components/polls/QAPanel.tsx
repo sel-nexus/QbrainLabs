@@ -21,12 +21,17 @@ export function QAPanel({ className, workshopId: workshopIdProp }: QAPanelProps)
 
     const workshopId = workshopIdProp || session?.workshopId;
 
+    const isFacilitator = session?.role === 'FACILITATOR' || session?.role === 'ADMIN';
+
     useEffect(() => {
         if (!workshopId) return;
         loadQuestions();
 
         const onQuestionSubmitted = (q: Question) => {
-            setQuestions(prev => [q, ...prev]);
+            // Participants only see their own questions; facilitators see all
+            if (isFacilitator || q.participant_id === session?.participantId) {
+                setQuestions(prev => [q, ...prev]);
+            }
         };
         const onQuestionUpvoted = (data: { question_id: string, votes: number }) => {
             setQuestions(prev => prev.map(q => q.id === data.question_id ? { ...q, upvote_count: data.votes } : q));
@@ -49,7 +54,8 @@ export function QAPanel({ className, workshopId: workshopIdProp }: QAPanelProps)
     const loadQuestions = async () => {
         if (!workshopId) return;
         try {
-            const data = await PollService.getQuestions(workshopId, session?.participantId);
+            // Participants only fetch their own questions; facilitators fetch all
+            const data = await PollService.getQuestions(workshopId, session?.participantId, !isFacilitator);
             setQuestions(data);
         } catch (err) {
             console.error(err);
@@ -106,8 +112,6 @@ export function QAPanel({ className, workshopId: workshopIdProp }: QAPanelProps)
         // Then by votes
         return b.upvote_count - a.upvote_count;
     });
-
-    const isFacilitator = session?.role === 'FACILITATOR' || session?.role === 'ADMIN';
 
     return (
         <div className={`flex flex-col h-full theme-bg-primary ${className}`}>
