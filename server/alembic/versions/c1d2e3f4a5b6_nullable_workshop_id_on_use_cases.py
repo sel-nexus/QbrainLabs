@@ -17,9 +17,9 @@ depends_on = None
 
 
 def upgrade() -> None:
-    op.alter_column('use_cases', 'workshop_id', existing_type=sa.CHAR(36), nullable=True)
+    op.alter_column('use_cases', 'workshop_id', existing_type=sa.String(), nullable=True)
 
 
 def downgrade() -> None:
     # NOTE: downgrade will fail if any rows have workshop_id = NULL
-    op.alter_column('use_cases', 'workshop_id', existing_type=sa.CHAR(36), nullable=False)
+    op.alter_column('use_cases', 'workshop_id', existing_type=sa.String(), nullable=False)

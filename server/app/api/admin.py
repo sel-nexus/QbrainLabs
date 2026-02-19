@@ -775,8 +775,8 @@ async def preview_import_use_cases(
     # 1. Extract content from file
     try:
         extracted = await file_service.extract_text_from_file(file)
-    except (ValueError, ImportError) as exc:
-        raise HTTPException(status_code=400, detail=str(exc))
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"File parsing failed: {exc}")
 
     # 2. Build a flat list of raw candidates
     raw_candidates: List[Dict[str, str]] = []
@@ -849,10 +849,9 @@ async def preview_import_use_cases(
         similarity_score = 0.0
         try:
             dup_result = await rag_service.check_duplicates(
-                workshop_id=None,
-                title=refined_title,
-                description=refined_description,
-                existing_use_cases=existing,
+                candidate_title=refined_title,
+                candidate_desc=refined_description,
+                existing_items=existing,
             )
             is_duplicate      = dup_result.get("is_duplicate", False)
             similarity_score  = dup_result.get("similarity_score", 0.0)

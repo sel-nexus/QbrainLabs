@@ -14817,3 +14817,462 @@ INFO:     connection closed
 INFO:     ('127.0.0.1:61960', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
 INFO:     connection open
 INFO:     connection closed
+WARNING:  WatchFiles detected changes in 'app\services\file_service.py'. Reloading...
+INFO:     ('127.0.0.1:58439', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 9.57, "client_ip": "127.0.0.1:53059", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T15:28:52.818623Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 6.56, "client_ip": "127.0.0.1:53059", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T15:28:52.840222Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 16.82, "client_ip": "127.0.0.1:53059", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T15:28:53.376914Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 15.58, "client_ip": "127.0.0.1:53059", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T15:28:53.422005Z"}
+INFO:     ('127.0.0.1:58612', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:53691', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:51056', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "POST", "path": "/api/admin/usecases/import/preview", "status_code": 400, "duration_ms": 12.19, "client_ip": "127.0.0.1:53059", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-19T15:29:03.863911Z"}
+INFO:     ('127.0.0.1:53976', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:62463', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+{"event": "Shutting down application...", "level": "info", "timestamp": "2026-02-19T15:30:28.815761Z"}
+INFO:     Application shutdown complete.
+INFO:     Finished server process [235644]
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-02-19T15:30:34.172249Z"}
+============================================================
+RAGService Initialization Starting...
+============================================================
+OpenAI API Key: NOT SET
+Azure OpenAI API Key: SET
+Azure OpenAI Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+AI Mock Mode Setting: False
+
+[RAG] Service Mode: REAL AI
+[OK] Loaded 5 reference use cases
+
+[RAG] Initializing REAL AI components...
+   [INFO] Importing LangChain modules...
+   [OK] LangChain modules imported successfully
+
+   [AZURE] Initializing Azure OpenAI Client...
+      Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+      Deployment: gpt-4.1
+      Model: gpt-4.1
+      API Version: 2024-12-01-preview
+   [OK] Azure OpenAI Chat client initialized
+
+   [AZURE] Initializing Azure OpenAI Embeddings...
+      Deployment: text-embedding-3-large
+      Model: text-embedding-3-large
+   [OK] Azure OpenAI Embeddings initialized
+
+   [VECTOR] Initializing Vector Store with 5 documents...
+2026-02-19 15:30:40,308 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-19 15:30:40,325 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_info" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+INFO:     Started server process [184224]
+INFO:     Waiting for application startup.
+   [OK] Vector store initialized successfully
+
+   [OK] Real AI components initialization complete
+============================================================
+RAGService Initialization Complete - Mode: REAL
+============================================================
+
+RoadmapService running in MOCK MODE (No API Key found)
+CopilotService running in MOCK MODE (No API Key found)
+{"event": "Starting application...", "level": "info", "timestamp": "2026-02-19T15:30:45.288950Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-02-19T15:30:45.475740Z"}
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app\api\admin.py'. Reloading...
+INFO:     ('127.0.0.1:53802', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     Shutting down
+INFO:     Waiting for connections to close. (CTRL+C to force quit)
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-02-19T15:39:01.409728Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 660.83, "client_ip": "127.0.0.1:53059", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T15:39:02.071806Z"}
+INFO:     Waiting for application shutdown.
+{"event": "Shutting down application...", "level": "info", "timestamp": "2026-02-19T15:39:02.162952Z"}
+INFO:     Application shutdown complete.
+INFO:     Finished server process [184224]
+WARNING:  WatchFiles detected changes in 'app\api\admin.py', 'app\services\file_service.py'. Reloading...
+Process SpawnProcess-7:
+Traceback (most recent call last):
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\_subprocess.py", line 73, in subprocess_started
+    config.configure_logging()
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\config.py", line 393, in configure_logging
+    logging.config.dictConfig(self.log_config)
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\logging\config.py", line 823, in dictConfig
+    dictConfigClass(config).configure()
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\logging\config.py", line 546, in configure
+    _clearExistingHandlers()
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\logging\config.py", line 285, in _clearExistingHandlers
+    logging.shutdown(logging._handlerList[:])
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\logging\__init__.py", line 2186, in shutdown
+    h.close()
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\logging\__init__.py", line 998, in close
+    def close(self):
+    
+KeyboardInterrupt
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-02-19T15:39:08.008451Z"}
+============================================================
+RAGService Initialization Starting...
+============================================================
+OpenAI API Key: NOT SET
+Azure OpenAI API Key: SET
+Azure OpenAI Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+AI Mock Mode Setting: False
+
+[RAG] Service Mode: REAL AI
+[OK] Loaded 5 reference use cases
+
+[RAG] Initializing REAL AI components...
+   [INFO] Importing LangChain modules...
+   [OK] LangChain modules imported successfully
+
+   [AZURE] Initializing Azure OpenAI Client...
+      Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+      Deployment: gpt-4.1
+      Model: gpt-4.1
+      API Version: 2024-12-01-preview
+   [OK] Azure OpenAI Chat client initialized
+
+   [AZURE] Initializing Azure OpenAI Embeddings...
+      Deployment: text-embedding-3-large
+      Model: text-embedding-3-large
+   [OK] Azure OpenAI Embeddings initialized
+
+   [VECTOR] Initializing Vector Store with 5 documents...
+2026-02-19 15:39:13,744 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-19 15:39:13,758 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_info" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+INFO:     Started server process [103240]
+INFO:     Waiting for application startup.
+   [OK] Vector store initialized successfully
+
+   [OK] Real AI components initialization complete
+============================================================
+RAGService Initialization Complete - Mode: REAL
+============================================================
+
+RoadmapService running in MOCK MODE (No API Key found)
+CopilotService running in MOCK MODE (No API Key found)
+{"event": "Starting application...", "level": "info", "timestamp": "2026-02-19T15:39:18.618104Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-02-19T15:39:18.800361Z"}
+INFO:     Application startup complete.
+INFO:     ('127.0.0.1:54270', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:55134', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-02-19T15:39:20.817436Z"}
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-02-19T15:39:20.817436Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 656.29, "client_ip": "127.0.0.1:53059", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T15:39:21.474670Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 660.13, "client_ip": "127.0.0.1:53059", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T15:39:21.478698Z"}
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-02-19T15:39:21.894206Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 11.02, "client_ip": "127.0.0.1:53059", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T15:39:21.906318Z"}
+INFO:     ('127.0.0.1:55567', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:51542', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:60005', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+2026-02-19 15:39:38,333 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event CollectionQueryEvent: capture() takes 1 positional argument but 3 were given
+{"method": "POST", "path": "/api/admin/usecases/import/preview", "status_code": 200, "duration_ms": 39827.8, "client_ip": "127.0.0.1:53059", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T15:40:16.810145Z"}
+2026-02-19 15:40:40,039 - qbrainlabs - ERROR - Database error: (sqlalchemy.dialects.postgresql.asyncpg.IntegrityError) <class 'asyncpg.exceptions.NotNullViolationError'>: null value in column "workshop_id" of relation "use_cases" violates not-null constraint
+DETAIL:  Failing row contains (5910bbd7-5b1c-45be-9193-d5f0f6952682, null, null, Intelligent AI-Powered IT Service Management Automation, IT departments frequently encounter high volumes of repetitive s..., Implement an AI-driven ITSM platform utilizing a Retrieval-Augme..., Mean-time-to-resolution (MTTR) reduction percentage, IT Operations / Service Desk Engineers / CIOs, Generative AI, Agentic AI, RAG (Retrieval-Augmented Generation), APPROVED, t, 2026-02-19 15:40:40.010549, 2026-02-19 15:40:40.010549, 45c67dca-4f78-473f-8c36-6b08d83c5acd).
+[SQL: INSERT INTO use_cases (id, workshop_id, participant_id, added_by_facilitator, facilitator_group_id, title, description, proposed_solution, kpi, target_user, category, status, created_at, updated_at) VALUES ($1::VARCHAR, $2::VARCHAR, $3::VARCHAR, $4::BOOLEAN, $5::VARCHAR, $6::VARCHAR, $7::VARCHAR, $8::VARCHAR, $9::VARCHAR, $10::VARCHAR, $11::VARCHAR, $12::VARCHAR, $13::TIMESTAMP WITHOUT TIME ZONE, $14::TIMESTAMP WITHOUT TIME ZONE)]
+[parameters: [('5910bbd7-5b1c-45be-9193-d5f0f6952682', None, None, True, '45c67dca-4f78-473f-8c36-6b08d83c5acd', 'Intelligent AI-Powered IT Service Management Automation', 'IT departments frequently encounter high volumes of repetitive service desk tickets, prolonged mean-time-to-resolution (MTTR), and inefficient manual ... (157 characters truncated) ... t classification, accelerate resolution workflows, and enhance service delivery by minimizing manual intervention and optimizing resource allocation.', 'Implement an AI-driven ITSM platform utilizing a Retrieval-Augmented Generation (RAG) model for automated ticket triage and resolution. The solution  ... (431 characters truncated) ... , Docker, and Kubernetes for scalable deployment; APIs connect to existing ITSM tools (e.g., ServiceNow, Jira Service Desk) for seamless integration.', 'Mean-time-to-resolution (MTTR) reduction percentage', 'IT Operations / Service Desk Engineers / CIOs', 'Generative AI, Agentic AI, RAG (Retrieval-Augmented Generation)', 'APPROVED', datetime.datetime(2026, 2, 19, 15, 40, 40, 10549), datetime.datetime(2026, 2, 19, 15, 40, 40, 10549)), ('35ede359-3456-4e09-b98b-97587be1e49f', None, None, True, '45c67dca-4f78-473f-8c36-6b08d83c5acd', 'AI-Powered Developer Productivity Platform', 'Software development teams face significant productivity challenges due to manual tasks such as boilerplate code creation, documentation, debugging,  ... (176 characters truncated) ... els can automate these tasks, streamline workflows, and enhance code quality, delivering measurable efficiency gains and accelerating time-to-market.', 'Implement an intelligent developer productivity platform utilizing large language models (LLMs) and modern AI tools. The platform integrates with IDE ... (428 characters truncated) ... g., Pinecone) for context retrieval and codebase search, and (5) monitoring dashboards built with Streamlit or Grafana to track productivity metrics.', 'Reduction in average time spent on manual coding tasks per developer (measured in hours/week).', 'Software Engineers / DevOps / Platform Engineering Teams', 'Generative AI, Large Language Models (LLMs), Agentic AI', 'APPROVED', datetime.datetime(2026, 2, 19, 15, 40, 40, 10549), datetime.datetime(2026, 2, 19, 15, 40, 40, 10549)), ('5a8a3b29-ada4-4961-94bb-00289f2d9a0b', None, None, True, '45c67dca-4f78-473f-8c36-6b08d83c5acd', 'AI-Powered Enterprise Knowledge Management & Employee Copilot', 'Employees frequently spend 2–3 hours daily searching for information across disconnected document repositories, intranet portals, and SOP databases,  ... (193 characters truncated) ... m can unify disparate data sources, enable semantic search, and deliver contextual answers, ensuring employees access accurate information instantly.', 'Implement a Retrieval-Augmented Generation (RAG) pipeline using a combination of vector databases (e.g., Pinecone, Weaviate) and large language model ... (265 characters truncated) ...  in real-time, generates concise answers, and learns from feedback. Use enterprise-grade authentication (SSO, RBAC) and audit logging for compliance.', 'Reduction in average employee information retrieval time (hours per day)', 'Knowledge Workers / HR / Operations / Customer Service Agents', 'Generative AI, RAG, Vector Databases, LLMs', 'APPROVED', datetime.datetime(2026, 2, 19, 15, 40, 40, 10549), datetime.datetime(2026, 2, 19, 15, 40, 40, 10549)), ('ce901fdc-0b00-44e4-b4a2-30101fd6440e', None, None, True, '45c67dca-4f78-473f-8c36-6b08d83c5acd', 'AI-Powered Drug Discovery and Molecular Design Platform', 'Pharmaceutical R&D faces lengthy cycles and high costs, largely due to inefficiencies in target identification and lead compound screening. Leveragin ... (164 characters truncated) ... s and optimize molecular structures. This accelerates candidate selection, reduces attrition rates, and enhances the probability of clinical success.', 'Implement an end-to-end AI solution using the modern stack: Python, PyTorch/TensorFlow for deep learning, RDKit for cheminformatics, and Hugging Face ... (286 characters truncated) ...  via scalable cloud infrastructure (AWS/GCP/Azure) and provide interactive dashboards (Streamlit/Plotly Dash) for visualization and decision support.', 'Reduction in lead compound screening time (measured in weeks/months) per project', 'Drug Discovery Scientists / Computational Chemists / R&D Leaders', 'Generative AI, Scientific AI, Foundation Models, Reinforcement Learning, Agentic AI', 'APPROVED', datetime.datetime(2026, 2, 19, 15, 40, 40, 10549), datetime.datetime(2026, 2, 19, 15, 40, 40, 10549)), ('601b20a2-9da8-4ff3-8636-1606a0ef00ed', None, None, True, '45c67dca-4f78-473f-8c36-6b08d83c5acd', 'AI-Driven Clinical Trial Operations Optimization Platform', 'Leverage advanced AI and machine learning to streamline clinical trial workflows by automating patient recruitment, optimizing protocol adherence, re ... (171 characters truncated) ...  modeling to support decision-making, minimize operational inefficiencies, and maximize R&D productivity for life sciences and MedTech organizations.', 'Deploy a modular AI platform built on cloud infrastructure (e.g., AWS/GCP/Azure) utilizing LLMs (e.g., GPT-4 or MedPaLM) for intelligent patient matc ... (328 characters truncated) ... ng NLP pipelines for automated query detection and resolution. Establish dashboards with PowerBI or Tableau for operational visibility and reporting.', 'Median time from first patient enrolled to database lock (days)', 'Clinical Data Managers / CRAs / Biostatisticians / Regulatory Affairs Teams', 'Generative AI, Agentic AI, NLP, Machine Learning, LLMs', 'APPROVED', datetime.datetime(2026, 2, 19, 15, 40, 40, 10549), datetime.datetime(2026, 2, 19, 15, 40, 40, 10549)), ('8f7de809-d816-4765-95bc-ab8fbb5752bb', None, None, True, '45c67dca-4f78-473f-8c36-6b08d83c5acd', 'AI-Powered Medical Imaging Diagnostics Platform', 'Deploy advanced AI models to automate and augment diagnostic workflows in radiology and pathology, addressing global clinician shortages. The system  ... (146 characters truncated) ... d. Integration with hospital PACS and EHRs ensures seamless workflow adoption and improves patient outcomes through faster, more precise diagnostics.', 'Utilize a modern AI stack comprising Python, TensorFlow/PyTorch for model development, and Kubernetes for scalable deployment. Implement convolutiona ... (355 characters truncated) ... n-premises environments, with a user interface built using React and integration with authentication/authorization systems for HIPAA/GDPR compliance.', 'Percentage reduction in diagnostic turnaround time per case', 'Radiologists / Pathologists / Hospital Systems / MedTech Vendors', 'Computer Vision, Multimodal AI, Generative AI, Deep Learning (CNNs)', 'APPROVED', datetime.datetime(2026, 2, 19, 15, 40, 40, 10549), datetime.datetime(2026, 2, 19, 15, 40, 40, 10549)), ('9ffb5e36-900d-4bfc-99b7-114d5ae4272f', None, None, True, '45c67dca-4f78-473f-8c36-6b08d83c5acd', 'AI-Driven Ambient Clinical Documentation Solution for Healthcare Providers', 'Healthcare professionals face significant productivity challenges due to manual EHR documentation, which consumes an estimated 34-55% of their workin ... (223 characters truncated) ... structured data into EHR systems. The approach enhances physician efficiency, enables more patient-centric care, and reduces administrative overhead.', 'Deploy a cloud-based AI stack combining real-time speech-to-text (e.g., AWS Transcribe, Azure Speech), a domain-adapted Large Language Model (LLM) fo ... (290 characters truncated) ... ecure data handling. Utilize edge devices for in-room ambient listening, with post-processing pipelines for accuracy validation and physician review.', 'Reduction in average clinician documentation time per patient encounter (minutes per encounter)', 'Physicians / Nurses / Hospital Administrators / Revenue Cycle Teams', 'Generative AI, NLP, Automatic Speech Recognition (ASR), LLMs', 'APPROVED', datetime.datetime(2026, 2, 19, 15, 40, 40, 10549), datetime.datetime(2026, 2, 19, 15, 40, 40, 10549)), ('97348f1d-7606-422a-8bb0-57c2e81424f7', None, None, True, '45c67dca-4f78-473f-8c36-6b08d83c5acd', 'AI-Driven Grid Stability and Energy Demand Forecasting Solution', 'Utilities face critical challenges in maintaining grid stability due to the unpredictable nature of renewable energy sources, suboptimal load forecas ... (250 characters truncated) ... orecasting, and proactive maintenance strategies, resulting in improved reliability, optimized resource allocation, and reduced operational expenses.', 'Deploy an integrated AI solution utilizing time-series forecasting models (such as LSTM or Transformer-based architectures) for accurate energy deman ... (501 characters truncated) ...  gateways and real-time streaming (e.g., Apache Kafka), with model retraining and deployment managed via ML Ops frameworks (e.g., MLflow, SageMaker).', 'Reduction in unplanned outages (%)', 'Grid Operations Engineers / Asset Managers / Utility CIOs / Energy Traders', 'Machine Learning, Digital Twins, Agentic AI, Time-Series Forecasting, Predictive Analytics', 'APPROVED', datetime.datetime(2026, 2, 19, 15, 40, 40, 10549), datetime.datetime(2026, 2, 19, 15, 40, 40, 10549)), ('49797ef8-fd71-466e-818f-185cc95102ae', None, None, True, '45c67dca-4f78-473f-8c36-6b08d83c5acd', 'AI-Driven Asset Optimization and Predictive Analytics for Upstream Oil & Gas Operations', 'Oil & gas operators contend with escalating exploration expenses, diminishing reservoir yields, and heightened safety risks stemming from manual over ... (150 characters truncated) ... ation of wells, pipelines, and compressors, resulting in reduced downtime, improved resource allocation, enhanced safety, and maximized productivity.', 'Deploy an integrated AI platform utilizing IoT sensor networks and edge computing to collect real-time operational data from upstream assets. Apply m ... (288 characters truncated) ... re/AWS/GCP) for scalable data storage and model training, and integrate results with existing ERP (SAP) and asset management systems via secure APIs.', 'Reduction in unplanned equipment downtime (%)', 'Reservoir Engineers / Asset Integrity Teams / Operations Managers / HSE Officers', 'Machine Learning, Computer Vision, Agentic AI, IoT Analytics, Generative AI', 'APPROVED', datetime.datetime(2026, 2, 19, 15, 40, 40, 10549), datetime.datetime(2026, 2, 19, 15, 40, 40, 10549)), ('58f36168-d3ea-4ac1-81aa-dc447a17cc8a', None, None, True, '45c67dca-4f78-473f-8c36-6b08d83c5acd', 'AI-Powered Regulatory Intelligence & Compliance Automation Platform', 'Enterprises in regulated sectors such as Life Sciences, Energy, and Healthcare face significant operational challenges in tracking regulatory updates ... (154 characters truncated) ... s. Leveraging advanced AI and automation technologies can streamline regulatory intelligence, ensure timely compliance, and reduce operational costs.', 'Deploy a multi-component AI solution utilizing a modern stack: (1) Regulatory Document Ingestion via OCR and NLP pipelines to extract structured data ... (410 characters truncated) ...  using cloud-native services (e.g., AWS/GCP/Azure), open-source LLMs (e.g., Llama, Mistral), and orchestration frameworks (e.g., LangChain, Airflow).', 'Reduction in manual compliance processing time (hours) per regulatory submission', 'Regulatory Affairs Managers / Compliance Officers / Legal Teams / Quality Assurance Leads', 'Generative AI, RAG, Agentic AI, NLP, LLMs, Knowledge Graphs', 'APPROVED', datetime.datetime(2026, 2, 19, 15, 40, 40, 10549), datetime.datetime(2026, 2, 19, 15, 40, 40, 10549))]]
+(Background on this error at: https://sqlalche.me/e/20/gkpj)
+{"method": "POST", "path": "/api/admin/usecases/import/confirm", "status_code": 500, "duration_ms": 43.59, "client_ip": "127.0.0.1:53059", "event": "HTTP Request", "level": "error", "timestamp": "2026-02-19T15:40:40.041925Z"}
+WARNING:  WatchFiles detected changes in 'alembic\versions\c1d2e3f4a5b6_nullable_workshop_id_on_use_cases.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+{"event": "Shutting down application...", "level": "info", "timestamp": "2026-02-19T15:49:04.688622Z"}
+INFO:     Application shutdown complete.
+INFO:     Finished server process [103240]
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-02-19T15:49:09.704285Z"}
+============================================================
+RAGService Initialization Starting...
+============================================================
+OpenAI API Key: NOT SET
+Azure OpenAI API Key: SET
+Azure OpenAI Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+AI Mock Mode Setting: False
+
+[RAG] Service Mode: REAL AI
+[OK] Loaded 5 reference use cases
+
+[RAG] Initializing REAL AI components...
+   [INFO] Importing LangChain modules...
+   [OK] LangChain modules imported successfully
+
+   [AZURE] Initializing Azure OpenAI Client...
+      Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+      Deployment: gpt-4.1
+      Model: gpt-4.1
+      API Version: 2024-12-01-preview
+   [OK] Azure OpenAI Chat client initialized
+
+   [AZURE] Initializing Azure OpenAI Embeddings...
+      Deployment: text-embedding-3-large
+      Model: text-embedding-3-large
+   [OK] Azure OpenAI Embeddings initialized
+
+   [VECTOR] Initializing Vector Store with 5 documents...
+2026-02-19 15:49:15,046 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-19 15:49:15,060 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_info" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+INFO:     Started server process [10316]
+INFO:     Waiting for application startup.
+   [OK] Vector store initialized successfully
+
+   [OK] Real AI components initialization complete
+============================================================
+RAGService Initialization Complete - Mode: REAL
+============================================================
+
+RoadmapService running in MOCK MODE (No API Key found)
+CopilotService running in MOCK MODE (No API Key found)
+{"event": "Starting application...", "level": "info", "timestamp": "2026-02-19T15:49:19.924168Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-02-19T15:49:20.096837Z"}
+INFO:     Application startup complete.
+^CINFO:     Will watch for changes in these directories: ['C:\\Users\\azvmuser1\\windsurf-wrkspace\\QbrainLabs\\server']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [201984] using WatchFiles
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-02-19T16:02:03.414044Z"}
+============================================================
+RAGService Initialization Starting...
+============================================================
+OpenAI API Key: NOT SET
+Azure OpenAI API Key: SET
+Azure OpenAI Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+AI Mock Mode Setting: False
+
+[RAG] Service Mode: REAL AI
+[OK] Loaded 5 reference use cases
+
+[RAG] Initializing REAL AI components...
+   [INFO] Importing LangChain modules...
+   [OK] LangChain modules imported successfully
+
+   [AZURE] Initializing Azure OpenAI Client...
+      Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+      Deployment: gpt-4.1
+      Model: gpt-4.1
+      API Version: 2024-12-01-preview
+   [OK] Azure OpenAI Chat client initialized
+
+   [AZURE] Initializing Azure OpenAI Embeddings...
+      Deployment: text-embedding-3-large
+      Model: text-embedding-3-large
+   [OK] Azure OpenAI Embeddings initialized
+
+   [VECTOR] Initializing Vector Store with 5 documents...
+2026-02-19 16:02:09,479 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-19 16:02:09,494 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_info" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+INFO:     Started server process [184100]
+INFO:     Waiting for application startup.
+   [OK] Vector store initialized successfully
+
+   [OK] Real AI components initialization complete
+============================================================
+RAGService Initialization Complete - Mode: REAL
+============================================================
+
+RoadmapService running in MOCK MODE (No API Key found)
+CopilotService running in MOCK MODE (No API Key found)
+{"event": "Starting application...", "level": "info", "timestamp": "2026-02-19T16:02:16.953917Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-02-19T16:02:17.715769Z"}
+INFO:     Application startup complete.
+INFO:     ('127.0.0.1:59620', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:50812', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-02-19T16:02:23.139679Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 375.49, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:02:23.516322Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 7.82, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:02:23.546936Z"}
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-02-19T16:02:23.725957Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 29.46, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:02:23.756399Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 15.19, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:02:23.789453Z"}
+INFO:     ('127.0.0.1:61063', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:52328', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+2026-02-19 16:02:33,564 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event CollectionQueryEvent: capture() takes 1 positional argument but 3 were given
+INFO:     ('127.0.0.1:57342', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:56321', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "POST", "path": "/api/admin/usecases/import/preview", "status_code": 200, "duration_ms": 39813.71, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:03:12.381278Z"}
+{"method": "POST", "path": "/api/admin/usecases/import/confirm", "status_code": 200, "duration_ms": 22.56, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:03:17.525202Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 13.2, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:03:17.575964Z"}
+INFO:     ('127.0.0.1:50275', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 7.05, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:03:25.687972Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 6.42, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:03:25.714943Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 21.85, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:03:25.923572Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 13.19, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:03:26.018275Z"}
+INFO:     ('127.0.0.1:62113', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:52569', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:65146', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 7.52, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:03:37.889665Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 6.89, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:03:37.916077Z"}
+INFO:     ('127.0.0.1:52255', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 12.94, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:03:41.624833Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 11.81, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:03:41.661173Z"}
+INFO:     ('127.0.0.1:55653', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+WARNING:  WatchFiles detected changes in 'app\api\usecases.py'. Reloading...
+INFO:     ('127.0.0.1:60078', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 7.13, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:06:54.884215Z"}
+{"method": "GET", "path": "/api/auth/me", "status_code": 200, "duration_ms": 6.59, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:06:54.911973Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 17.04, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:06:55.392361Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 20.13, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:06:55.446038Z"}
+INFO:     ('127.0.0.1:54768', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+{"event": "Shutting down application...", "level": "info", "timestamp": "2026-02-19T16:06:58.439442Z"}
+INFO:     Application shutdown complete.
+INFO:     Finished server process [184100]
+WARNING:  WatchFiles detected changes in 'app\api\usecases.py'. Reloading...
+Process SpawnProcess-2:
+Traceback (most recent call last):
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\_subprocess.py", line 73, in subprocess_started
+    config.configure_logging()
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\config.py", line 393, in configure_logging
+    logging.config.dictConfig(self.log_config)
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\logging\config.py", line 823, in dictConfig
+    dictConfigClass(config).configure()
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\logging\config.py", line 546, in configure
+    _clearExistingHandlers()
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\logging\config.py", line 285, in _clearExistingHandlers
+    logging.shutdown(logging._handlerList[:])
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\logging\__init__.py", line 2170, in shutdown
+    def shutdown(handlerList=_handlerList):
+    
+KeyboardInterrupt
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-02-19T16:07:04.733825Z"}
+============================================================
+RAGService Initialization Starting...
+============================================================
+OpenAI API Key: NOT SET
+Azure OpenAI API Key: SET
+Azure OpenAI Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+AI Mock Mode Setting: False
+
+[RAG] Service Mode: REAL AI
+[OK] Loaded 5 reference use cases
+
+[RAG] Initializing REAL AI components...
+   [INFO] Importing LangChain modules...
+   [OK] LangChain modules imported successfully
+
+   [AZURE] Initializing Azure OpenAI Client...
+      Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+      Deployment: gpt-4.1
+      Model: gpt-4.1
+      API Version: 2024-12-01-preview
+   [OK] Azure OpenAI Chat client initialized
+
+   [AZURE] Initializing Azure OpenAI Embeddings...
+      Deployment: text-embedding-3-large
+      Model: text-embedding-3-large
+   [OK] Azure OpenAI Embeddings initialized
+
+   [VECTOR] Initializing Vector Store with 5 documents...
+2026-02-19 16:07:10,104 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-19 16:07:10,119 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_info" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+INFO:     Started server process [160340]
+INFO:     Waiting for application startup.
+   [OK] Vector store initialized successfully
+
+   [OK] Real AI components initialization complete
+============================================================
+RAGService Initialization Complete - Mode: REAL
+============================================================
+
+RoadmapService running in MOCK MODE (No API Key found)
+CopilotService running in MOCK MODE (No API Key found)
+{"event": "Starting application...", "level": "info", "timestamp": "2026-02-19T16:07:16.906791Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-02-19T16:07:17.463369Z"}
+INFO:     Application startup complete.
+INFO:     ('127.0.0.1:65032', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-02-19T16:07:19.490247Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 523.07, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:07:20.013298Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 6.72, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:07:20.038854Z"}
+INFO:     ('127.0.0.1:53169', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1:62820', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 30.64, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:07:25.510420Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 13.45, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:07:25.561438Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 8.17, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:07:27.729679Z"}
+{"method": "GET", "path": "/api/knowledge-base/overview", "status_code": 200, "duration_ms": 7.29, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:07:27.763448Z"}
+INFO:     ('127.0.0.1:54543', 0) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 13.64, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:07:44.326562Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 10.49, "client_ip": "127.0.0.1:51177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-19T16:07:44.359478Z"}

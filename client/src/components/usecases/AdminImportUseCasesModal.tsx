@@ -47,9 +47,19 @@ interface Props {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-const ACCEPTED = '.xlsx,.docx,.pdf';
+const ACCEPTED = '.xlsx,.csv,.json,.docx,.pdf,.txt,.md,.jsx,.jpg,.jpeg,.png';
 
 const TEMPLATE_HEADERS = ['Title', 'Problem Statement', 'Proposed Solution', 'KPI', 'Target User', 'AI Technique'];
+
+// Human-friendly label for an uploaded file's format
+function formatLabel(filename: string): string {
+  const ext = filename.split('.').pop()?.toLowerCase() ?? '';
+  const map: Record<string, string> = {
+    xlsx: 'Excel', csv: 'CSV', json: 'JSON', docx: 'Word', pdf: 'PDF',
+    txt: 'Text', md: 'Markdown', jsx: 'JSX', jpg: 'Image', jpeg: 'Image', png: 'Image',
+  };
+  return map[ext] ?? ext.toUpperCase();
+}
 
 function downloadTemplate() {
   // Build a minimal CSV as a download (no xlsx dependency on frontend)
@@ -91,10 +101,12 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
 
   // ── File handling ─────────────────────────────────────────────────────────
 
+  const ALLOWED_EXTS = ['xlsx', 'csv', 'json', 'docx', 'pdf', 'txt', 'md', 'jsx', 'jpg', 'jpeg', 'png'];
+
   const acceptFile = (f: File) => {
     const ext = f.name.split('.').pop()?.toLowerCase();
-    if (!['xlsx', 'docx', 'pdf'].includes(ext ?? '')) {
-      toast.error('Only .xlsx, .docx, and .pdf files are supported');
+    if (!ALLOWED_EXTS.includes(ext ?? '')) {
+      toast.error(`Unsupported file type. Allowed: ${ALLOWED_EXTS.map(e => '.' + e).join(', ')}`);
       return;
     }
     setFile(f);
@@ -125,7 +137,7 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        throw new Error(err.detail ?? 'Processing failed');
+        throw new Error(err.error?.message ?? err.detail ?? 'Processing failed');
       }
 
       const items: PreviewItem[] = await res.json();
@@ -175,14 +187,17 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
           })),
         }),
       });
-      if (!res.ok) throw new Error('Import failed');
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error?.message ?? err.detail ?? 'Import failed');
+      }
       const result = await res.json();
       setImportedCount(result.imported ?? selected.length);
       setStep('done');
       onSuccess();
       toast.success(`${result.imported} use cases imported successfully`);
-    } catch {
-      toast.error('Failed to import use cases');
+    } catch (e: unknown) {
+      toast.error((e as Error).message || 'Failed to import use cases');
     } finally {
       setIsSubmitting(false);
     }
@@ -362,7 +377,12 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
                   <div style={{ fontSize: 40, marginBottom: 12 }}>📂</div>
                   {file ? (
                     <div>
-                      <div style={{ fontSize: 15, fontWeight: 700, color: '#f59e0b', marginBottom: 4 }}>{file.name}</div>
+                      <div style={{ fontSize: 15, fontWeight: 700, color: '#f59e0b', marginBottom: 4 }}>
+                        {file.name}
+                        <span style={{ marginLeft: 8, fontSize: 11, background: '#fef3c7', border: '1px solid #fcd34d', color: '#92400e', borderRadius: 4, padding: '2px 7px', verticalAlign: 'middle' }}>
+                          {formatLabel(file.name)}
+                        </span>
+                      </div>
                       <div style={{ fontSize: 12, color: '#9ca3af' }}>{(file.size / 1024).toFixed(1)} KB — click to change</div>
                     </div>
                   ) : (
@@ -371,7 +391,7 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
                         Drop a file here, or click to browse
                       </div>
                       <div style={{ fontSize: 12, color: '#9ca3af' }}>
-                        Supports <strong>.xlsx</strong> (Excel), <strong>.docx</strong> (Word), <strong>.pdf</strong>
+                        Excel · CSV · JSON · Word · PDF · Text · Markdown · JSX · Images (JPG / PNG)
                       </div>
                     </div>
                   )}
@@ -385,28 +405,48 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
                 </div>
 
                 {/* Format guide */}
-                <div style={{ marginTop: 24, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
-                  <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 10, padding: '14px 16px' }}>
-                    <div style={{ fontSize: 12, fontWeight: 700, color: '#16a34a', marginBottom: 8 }}>📊 Excel Template</div>
-                    <div style={{ fontSize: 11, color: '#4b5563', lineHeight: 1.6 }}>
-                      Use one row per use case. Expected columns:<br />
-                      <code style={{ fontSize: 10, background: '#dcfce7', padding: '1px 4px', borderRadius: 3 }}>
-                        Title | Problem Statement | Proposed Solution | KPI | Target User | AI Technique
-                      </code>
-                    </div>
-                    <button
-                      onClick={e => { e.stopPropagation(); downloadTemplate(); }}
-                      style={{ marginTop: 10, fontSize: 11, fontWeight: 600, color: '#16a34a', background: 'none', border: '1px solid #86efac', borderRadius: 6, padding: '4px 10px', cursor: 'pointer' }}
-                    >
-                      ⬇ Download Template
-                    </button>
+                <div style={{ marginTop: 24 }}>
+                  <div style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#9ca3af', marginBottom: 12 }}>
+                    Supported Formats
                   </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
 
-                  <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 10, padding: '14px 16px' }}>
-                    <div style={{ fontSize: 12, fontWeight: 700, color: '#2563eb', marginBottom: 8 }}>📄 Word / PDF</div>
-                    <div style={{ fontSize: 11, color: '#4b5563', lineHeight: 1.6 }}>
-                      Upload any document describing AI challenges or use cases. The AI will extract, enhance, and classify them automatically — no specific format required.
+                    {/* Tabular */}
+                    <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: 10, padding: '12px 14px' }}>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: '#16a34a', marginBottom: 6 }}>📊 Tabular (structured)</div>
+                      <div style={{ fontSize: 11, color: '#4b5563', lineHeight: 1.6, marginBottom: 8 }}>
+                        <strong>.xlsx</strong> · <strong>.csv</strong> · <strong>.json</strong><br />
+                        One row/item per use case. Columns:<br />
+                        <code style={{ fontSize: 10, background: '#dcfce7', padding: '1px 4px', borderRadius: 3 }}>
+                          Title | Problem Statement | KPI | AI Technique …
+                        </code>
+                      </div>
+                      <button
+                        onClick={e => { e.stopPropagation(); downloadTemplate(); }}
+                        style={{ fontSize: 11, fontWeight: 600, color: '#16a34a', background: 'none', border: '1px solid #86efac', borderRadius: 6, padding: '4px 10px', cursor: 'pointer' }}
+                      >
+                        ⬇ Download CSV Template
+                      </button>
                     </div>
+
+                    {/* Narrative docs */}
+                    <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: 10, padding: '12px 14px' }}>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: '#2563eb', marginBottom: 6 }}>📄 Documents (narrative)</div>
+                      <div style={{ fontSize: 11, color: '#4b5563', lineHeight: 1.6 }}>
+                        <strong>.docx</strong> · <strong>.pdf</strong> · <strong>.txt</strong> · <strong>.md</strong> · <strong>.jsx</strong><br />
+                        Any document describing AI challenges. The AI will read the text, extract use cases, and structure them automatically.
+                      </div>
+                    </div>
+
+                    {/* Images */}
+                    <div style={{ background: '#fdf4ff', border: '1px solid #e9d5ff', borderRadius: 10, padding: '12px 14px' }}>
+                      <div style={{ fontSize: 12, fontWeight: 700, color: '#9333ea', marginBottom: 6 }}>🖼 Images (AI Vision)</div>
+                      <div style={{ fontSize: 11, color: '#4b5563', lineHeight: 1.6 }}>
+                        <strong>.jpg</strong> · <strong>.jpeg</strong> · <strong>.png</strong><br />
+                        Screenshots, whiteboards, slides, or any image containing use case content. Claude Vision will extract and structure the text.
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>
@@ -432,8 +472,14 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
               <div style={{ fontSize: 17, fontWeight: 700, color: 'var(--theme-text-primary, #111827)', marginBottom: 8 }}>
                 Reviewing with AI…
               </div>
-              <div style={{ fontSize: 13, color: '#9ca3af', textAlign: 'center', maxWidth: 340 }}>
-                Extracting, enhancing, and checking for duplicates. This may take 15–30 seconds.
+              <div style={{ fontSize: 13, color: '#9ca3af', textAlign: 'center', maxWidth: 380 }}>
+                {file && ['jpg','jpeg','png'].includes(file.name.split('.').pop()?.toLowerCase() ?? '')
+                  ? 'Running AI Vision to extract content from the image, then enhancing use cases…'
+                  : file && ['json','csv','xlsx'].includes(file.name.split('.').pop()?.toLowerCase() ?? '')
+                    ? 'Parsing structured data, enhancing with AI, and checking for duplicates…'
+                    : 'Reading document, extracting use cases with AI, and checking for duplicates…'
+                }
+                {' '}This may take 15–30 seconds.
               </div>
             </div>
           )}

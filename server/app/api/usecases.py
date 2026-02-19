@@ -109,11 +109,11 @@ async def get_all_use_cases(
     if not authenticated_user:
         raise HTTPException(status_code=401, detail="Authentication required")
     
-    # Admins can see all use cases
+    # Admins can see all use cases (including standalone imported ones with no workshop)
     if authenticated_user.is_admin_user:
         result = await db.execute(
             select(UseCase, Workshop)
-            .join(Workshop, UseCase.workshop_id == Workshop.id)
+            .outerjoin(Workshop, UseCase.workshop_id == Workshop.id)
             .order_by(UseCase.created_at.desc())
         )
     else:
@@ -159,7 +159,7 @@ async def get_all_use_cases(
             "title": workshop.title,
             "status": workshop.status,
             "current_phase": workshop.current_phase,
-        }
+        } if workshop is not None else None
 
         if use_case.added_by_facilitator and use_case.facilitator_group_id:
             gid = str(use_case.facilitator_group_id)
@@ -177,10 +177,10 @@ async def get_all_use_cases(
                     "added_by_facilitator": True,
                     "facilitator_group_id": gid,
                     "workshops": [],
-                    # Keep legacy single-workshop field pointing to first workshop for compat
                     "workshop": workshop_info,
                 }
-            groups[gid]["workshops"].append(workshop_info)
+            if workshop_info is not None:
+                groups[gid]["workshops"].append(workshop_info)
         else:
             standalone.append({
                 "id": str(use_case.id),
@@ -194,7 +194,7 @@ async def get_all_use_cases(
                 "created_at": use_case.created_at.isoformat() if use_case.created_at else None,
                 "added_by_facilitator": use_case.added_by_facilitator or False,
                 "facilitator_group_id": None,
-                "workshops": [workshop_info],
+                "workshops": [workshop_info] if workshop_info else [],
                 "workshop": workshop_info,
             })
 
