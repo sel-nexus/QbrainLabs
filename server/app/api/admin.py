@@ -514,10 +514,11 @@ async def deactivate_user(
             (GeneratedReport, 'created_by')
         ]
 
+        user_id_str = str(user.id)
         for model, field in tables_to_nullify:
             await db.execute(
                 update(model)
-                .where(getattr(model, field) == user.id)
+                .where(getattr(model, field) == user_id_str)
                 .values({field: None})
             )
 
