@@ -28,9 +28,19 @@ except ImportError:
 # ── Column-header → canonical field mapping (shared by Excel + CSV parsers) ──
 _HEADER_MAP = {
     "title":             "title",
+    "name":              "title",
+    "use case":          "title",
+    "use case name":     "title",
+    "use case title":    "title",
+    "usecase":           "title",
+    "use cases":         "title",
     "problem statement": "description",
-    "description":       "description",
+    "description":      "description",
     "problem":           "description",
+    "summary":           "description",
+    "overview":          "description",
+    "details":           "description",
+    "challenge":         "description",
     "proposed solution": "proposed_solution",
     "solution":          "proposed_solution",
     "kpi":               "kpi",
@@ -40,8 +50,10 @@ _HEADER_MAP = {
     "target_user":       "target_user",
     "user":              "target_user",
     "ai technique":      "category",
+    "at technique":      "category",
     "category":          "category",
     "technique":         "category",
+    "sector":            "category",
     "industry":          "industry",
     "domain":            "industry",
 }
@@ -135,16 +147,25 @@ class FileAnalysisService:
             try:
                 text_content = content.decode("utf-8")
             except UnicodeDecodeError:
-                text_content = content.decode("latin-1")
+                try:
+                    text_content = content.decode("latin-1")
+                except Exception:
+                    text_content = content.decode("utf-8", errors="replace")
             reader = csv.reader(io.StringIO(text_content))
             raw_rows = list(reader)
             if not raw_rows:
                 return {"type": "tabular", "rows": []}
-            headers = raw_rows[0]
+            headers = [str(h).strip() if h else "" for h in raw_rows[0]]
             col_map = _map_tabular_headers(headers)
-            # csv rows are already lists of strings
             raw_data = [[cell if cell else None for cell in row] for row in raw_rows[1:]]
-            return {"type": "tabular", "rows": _tabular_rows_to_dicts(col_map, raw_data)}
+            rows = _tabular_rows_to_dicts(col_map, raw_data)
+            # Fallback: if no rows extracted (e.g. non-standard headers), use first col = title, second = description
+            if not rows and raw_data and len(raw_rows[0]) >= 2:
+                fallback_map = {"title": 0, "description": 1}
+                if len(raw_rows[0]) >= 3:
+                    fallback_map["category"] = 2
+                rows = _tabular_rows_to_dicts(fallback_map, raw_data)
+            return {"type": "tabular", "rows": rows}
 
         # ── JSON ─────────────────────────────────────────────────────────────
         if filename.endswith(".json"):

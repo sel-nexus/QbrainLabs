@@ -1,8 +1,8 @@
 # User Stories Index
 
-**Last Updated:** January 29, 2026  
+**Last Updated:** February 21, 2026  
 **Total User Stories:** 44  
-**Status:** Organized by logical feature groups
+**Status:** Organized by logical feature groups; specification aligned with current implementation.
 
 ---
 
@@ -13,19 +13,21 @@
 - [Status Legend](#status-legend)
 - [Dependencies Map](#dependencies-map)
 - [Quick Reference](#quick-reference)
+- [Implementation Reference](#implementation-reference)
+- [Backlog Pending](#backlog-pending)
 
 ---
 
 ## Overview
 
-User stories are organized into 11 logical groups based on feature domains. Each group represents a cohesive set of related functionality.
+User stories are organized into 11 logical groups based on feature domains. Each group represents a cohesive set of related functionality. Specifications and status have been updated to reflect the current codebase (client, server, APIs).
 
 ### Story Status Distribution
 
-- ✅ **Implemented:** 13 stories
-- 📋 **Backlog/Planned:** 28 stories
+- ✅ **Implemented:** 32 stories (core platform, enterprise, advanced features)
+- 📋 **Backlog/Planned:** 12 stories
 - ⚠️ **Superseded:** 1 story (US00)
-- 🔄 **In Progress:** 2 stories
+- 🔄 **In Progress:** 0 (documentation/backlog refinement)
 
 ---
 
@@ -40,11 +42,11 @@ User stories are organized into 11 logical groups based on feature domains. Each
 |----|-------|--------|--------|------|
 | US00 | Infrastructure MongoDB | ⚠️ Superseded | 8 | [US00_Infrastructure_MongoDB.md](./00-foundation/US00_Infrastructure_MongoDB.md) |
 | US29 | Supabase MCP Integration | ✅ Implemented | 8 | [US29_supabase_mcp_integration.md](./00-foundation/US29_supabase_mcp_integration.md) |
-| US33 | Database-Driven Configuration | 📋 Planned | 13 | [US33_Database_Driven_Configuration.md](./00-foundation/US33_Database_Driven_Configuration.md) |
+| US33 | Database-Driven Configuration | ✅ Implemented | 13 | [US33_Database_Driven_Configuration.md](./00-foundation/US33_Database_Driven_Configuration.md) |
 
 **Notes:**
 - US00 describes MongoDB setup but system migrated to PostgreSQL/Supabase (see US29)
-- US33 enables dynamic configuration management without code deployments
+- US33 enables dynamic configuration management (system settings, feature flags, subscription tiers) via `/api/admin/settings` and subscription API
 
 ---
 
@@ -75,9 +77,9 @@ User stories are organized into 11 logical groups based on feature domains. Each
 |----|-------|--------|--------|------|
 | US01 | Workshop Initialization | ✅ Implemented | 8 | [US01_Workshop_Initialization.md](./02-workshop-management/US01_Workshop_Initialization.md) |
 | US10 | Prioritization Matrix Criteria | ✅ Implemented | 8 | [US10_Prioritization_Matrix_Criteria.md](./02-workshop-management/US10_Prioritization_Matrix_Criteria.md) |
-| US22 | Workshop Templates & Industry Packages | 📋 Backlog | 13 | [US22_workshop_templates_industry.md](./02-workshop-management/US22_workshop_templates_industry.md) |
+| US22 | Workshop Templates & Industry Packages | ✅ Implemented | 13 | [US22_workshop_templates_industry.md](./02-workshop-management/US22_workshop_templates_industry.md) |
 | US28 | Home Page Tile Carousel | 📋 Backlog | 13 | [US28_home_page_tile_carousel.md](./02-workshop-management/US28_home_page_tile_carousel.md) |
-| US34 | Challenge Cards for Workshops | 📋 Backlog | 13 | [US34_Challenge_Cards.md](./02-workshop-management/US34_Challenge_Cards.md) |
+| US34 | Challenge Cards for Workshops | 🔄 Partial (API done) | 13 | [US34_Challenge_Cards.md](./02-workshop-management/US34_Challenge_Cards.md) |
 | US44 | Workshop Deletion Not Working for Admin | ✅ Implemented | 5 | [US44_workshop_deletion_admin_fix.md](./02-workshop-management/US44_workshop_deletion_admin_fix.md) |
 
 **Notes:**
@@ -118,7 +120,7 @@ User stories are organized into 11 logical groups based on feature domains. Each
 | ID | Title | Status | Points | File |
 |----|-------|--------|--------|------|
 | US07 | AI Intelligence RAG | ✅ Implemented | 13 | [US07_AI_Intelligence_RAG.md](./04-ai-intelligence/US07_AI_Intelligence_RAG.md) |
-| US16 | AI Copilot Assistant | 📋 Backlog | 34 | [US16_ai_copilot_assistant.md](./04-ai-intelligence/US16_ai_copilot_assistant.md) |
+| US16 | AI Copilot Assistant | ✅ Implemented | 34 | [US16_ai_copilot_assistant.md](./04-ai-intelligence/US16_ai_copilot_assistant.md) |
 | US19 | AI Demo Sandbox | 📋 Backlog | 34 | [US19_ai_demo_sandbox.md](./04-ai-intelligence/US19_ai_demo_sandbox.md) |
 | US26 | Knowledge Base Research Refresh | ✅ Implemented | 8 | [US26_knowledge_base_research_refresh.md](./04-ai-intelligence/US26_knowledge_base_research_refresh.md) |
 
@@ -139,9 +141,9 @@ User stories are organized into 11 logical groups based on feature domains. Each
 
 | ID | Title | Status | Points | File |
 |----|-------|--------|--------|------|
-| US15 | Gamification & Engagement | 📋 Backlog | 21 | [US15_gamification_engagement.md](./05-engagement/US15_gamification_engagement.md) |
-| US18 | Breakout Rooms & Collaboration | 📋 Backlog | 21 | [US18_breakout_rooms_collaboration.md](./05-engagement/US18_breakout_rooms_collaboration.md) |
-| US21 | Live Polling & Reactions | 📋 Backlog | 13 | [US21_live_polling_reactions.md](./05-engagement/US21_live_polling_reactions.md) |
+| US15 | Gamification & Engagement | ✅ Implemented | 21 | [US15_gamification_engagement.md](./05-engagement/US15_gamification_engagement.md) |
+| US18 | Breakout Rooms & Collaboration | ✅ Implemented | 21 | [US18_breakout_rooms_collaboration.md](./05-engagement/US18_breakout_rooms_collaboration.md) |
+| US21 | Live Polling & Reactions | ✅ Implemented | 13 | [US21_live_polling_reactions.md](./05-engagement/US21_live_polling_reactions.md) |
 | US37 | Poll Popup Theme Fix and Error Handling | 📋 Backlog | 5 | [US37_poll_popup_theme_fix.md](./05-engagement/US37_poll_popup_theme_fix.md) |
 | US42 | Enhanced Q&A Chat with Historic Conversations | 📋 Backlog | 21 | [US42_enhanced_qa_chat.md](./05-engagement/US42_enhanced_qa_chat.md) |
 
@@ -160,8 +162,8 @@ User stories are organized into 11 logical groups based on feature domains. Each
 
 | ID | Title | Status | Points | File |
 |----|-------|--------|--------|------|
-| US17 | ROI Calculator & Business Case | 📋 Backlog | 21 | [US17_roi_calculator_business_case.md](./06-business-intelligence/US17_roi_calculator_business_case.md) |
-| US20 | Implementation Roadmap Generator | 📋 Backlog | 21 | [US20_implementation_roadmap_generator.md](./06-business-intelligence/US20_implementation_roadmap_generator.md) |
+| US17 | ROI Calculator & Business Case | ✅ Implemented | 21 | [US17_roi_calculator_business_case.md](./06-business-intelligence/US17_roi_calculator_business_case.md) |
+| US20 | Implementation Roadmap Generator | ✅ Implemented | 21 | [US20_implementation_roadmap_generator.md](./06-business-intelligence/US20_implementation_roadmap_generator.md) |
 | US25 | Advanced Analytics & Insights | ✅ Implemented | 21 | [US25_analytics_insights_dashboard.md](./06-business-intelligence/US25_analytics_insights_dashboard.md) |
 | US41 | Participant Feedback System with Admin Management | 📋 Backlog | 13 | [US41_participant_feedback_system.md](./06-business-intelligence/US41_participant_feedback_system.md) |
 | US43 | Enhanced Live Matrix Activity Dashboard | 📋 Backlog | 13 | [US43_enhanced_matrix_dashboard.md](./06-business-intelligence/US43_enhanced_matrix_dashboard.md) |
@@ -184,7 +186,7 @@ User stories are organized into 11 logical groups based on feature domains. Each
 | US11 | Platform Enhancements | ✅ Implemented | 8 | [US11_Enhancements.md](./07-ui-ux/US11_Enhancements.md) |
 | US12 | Participant Dashboard & Survey Management | ✅ Implemented | 13 | [US12_users_enhancements.md](./07-ui-ux/US12_users_enhancements.md) |
 | US13 | Facilitator Survey Management | ✅ Implemented | 21 | [US13_facilitator_enhancements.md](./07-ui-ux/US13_facilitator_enhancements.md) |
-| US14 | Theme Switching | 📋 Backlog | 5 | [US14_theme_switching.md](./07-ui-ux/US14_theme_switching.md) |
+| US14 | Theme Switching | ✅ Implemented | 5 | [US14_theme_switching.md](./07-ui-ux/US14_theme_switching.md) |
 | US27 | Application Icon & Branding | ✅ Implemented | 2 | [US27_application_icon_branding.md](./07-ui-ux/US27_application_icon_branding.md) |
 | US35 | Participant Theme Consistency for Use Case Creation | 📋 Backlog | 3 | [US35_participant_theme_consistency.md](./07-ui-ux/US35_participant_theme_consistency.md) |
 | US39 | Remove Redundant Leave Button for Participants | 📋 Backlog | 2 | [US39_remove_redundant_leave_button.md](./07-ui-ux/US39_remove_redundant_leave_button.md) |
@@ -304,15 +306,50 @@ Business Intelligence (US17, US20, US25)
 
 ---
 
+## Implementation Reference
+
+- **EPICs and feature specs:** [EPICS_AND_FEATURES.md](../EPICS_AND_FEATURES.md) – EPIC breakdown and feature specification aligned with current implementation (APIs, routes, components).
+- **Implementation status:** [IMPLEMENTATION_STATUS.md](../IMPLEMENTATION_STATUS.md) – Sprint completion and production readiness.
+- **Product roadmap:** [PRODUCT_ROADMAP.md](../PRODUCT_ROADMAP.md) – Phases and completed features.
+- **Tech stack:** [techspec/techspec.md](../techspec/techspec.md) – Technology and API overview.
+
+---
+
+## Backlog Pending
+
+Stories not yet fully implemented and recommended for future sprints:
+
+| ID | Title | Group | Priority |
+|----|--------|--------|----------|
+| US19 | AI Demo Sandbox | 04-AI-Intelligence | Low |
+| US23 | Video Recording & Replay | 09-Content | Low |
+| US28 | Home Page Tile Carousel | 02-Workshop-Management | Medium |
+| US34 | Challenge Cards (full UX) | 02-Workshop-Management | Medium (API done) |
+| US35 | Participant Theme Consistency | 07-UI-UX | Low |
+| US36 | Survey Answer Persistence | 03-Participant-Workflow | Medium |
+| US37 | Poll Popup Theme Fix | 05-Engagement | Low |
+| US38 | Participant Language Selection | 08-Globalization | Medium |
+| US39 | Remove Redundant Leave Button | 07-UI-UX | Low |
+| US40 | Use Case Detail Popup with Feedback | 03-Participant-Workflow | Medium |
+| US41 | Participant Feedback System + Admin | 06-Business-Intelligence | High |
+| US42 | Enhanced Q&A Chat with History | 05-Engagement | High |
+| US43 | Enhanced Matrix Activity Dashboard | 06-Business-Intelligence | High |
+
+Functional issues (FUN-001–FUN-030) are tracked in [FUNCTIONAL_ISSUES_BACKLOG.md](../project_management/FUNCTIONAL_ISSUES_BACKLOG.md); implement in sequential order where applicable.
+
+---
+
 ## Quick Reference
 
 ### By Status
 
-**Implemented (13):**
-- US02, US06, US07, US08, US11, US12, US13, US25, US26, US27, US29, US30, US31, US32, US44
+**Implemented (32):**
+- US01, US02, US03, US04, US05, US06, US07, US08, US09, US10, US11, US12, US13, US14, US15, US16, US17, US18, US20, US21, US22, US24 (Phase 1), US25, US26, US27, US29, US30, US31, US32, US33, US44
 
-**Backlog/Planned (28):**
-- US09, US10, US14, US15, US16, US17, US18, US19, US20, US21, US22, US23, US24 (Phase 2+), US28, US33, US34, US35, US36, US37, US38, US39, US40, US41, US42, US43
+**Backlog/Planned (12):**
+- US19, US23, US28, US34 (full UX), US35, US36, US37, US38, US39, US40, US41, US42, US43
+
+**Partial:** US34 (backend/API implemented; full challenge-card UX in backlog)
 
 **Superseded (1):**
 - US00
@@ -326,7 +363,7 @@ Business Intelligence (US17, US20, US25)
 - US10, US15, US16, US17, US18, US20, US21, US22, US25, US26, US28, US33, US34, US35, US36, US37, US38, US40, US41, US42, US43
 
 **Low Priority:**
-- US09, US14, US19, US23, US24 (Phase 2+), US39
+- US19, US23, US35, US37, US39
 
 ### By Story Points
 
@@ -343,16 +380,24 @@ Business Intelligence (US17, US20, US25)
 
 ## Related Documentation
 
+- [EPICs and Feature Specification](../EPICS_AND_FEATURES.md) – EPIC-level scope and feature specs from current implementation
 - [Epic Overview](./archive/epic_01.md) (archived)
 - [Advanced Features Backlog](./archive/BACKLOG_ADVANCED_FEATURES.md) (archived)
-- [Sprint Progress](../../project_management/sprint_progress.md)
-- [Product Roadmap](../../PRODUCT_ROADMAP.md)
+- [Sprint Progress](../project_management/sprint_progress.md)
+- [Product Roadmap](../PRODUCT_ROADMAP.md)
+- [Functional Issues Backlog](../project_management/FUNCTIONAL_ISSUES_BACKLOG.md)
+- [Technical Specification](../techspec/techspec.md)
 
 ---
 
 ## Maintenance Notes
 
-### Recent Changes (January 29, 2026)
+### Recent Changes (February 21, 2026)
+
+1. **Documentation alignment with implementation** – Status and counts updated to match codebase. EPICs and feature specification added in [EPICS_AND_FEATURES.md](../EPICS_AND_FEATURES.md). Backlog reduced to 12 pending stories; 31 stories marked implemented.
+2. **Implementation reference** – Added links to EPICs, implementation status, roadmap, tech spec, and functional backlog.
+
+### Previous Changes (January 29, 2026)
 
 1. **Implemented user story US44** - Workshop Deletion Not Working for Admin (bug fix)
    - Fixed root cause: Missing DELETED status in WorkshopStatus enum
@@ -393,5 +438,5 @@ Business Intelligence (US17, US20, US25)
 ---
 
 **Document Owner:** Product Team  
-**Last Review:** January 29, 2026  
-**Next Review:** February 3, 2026
+**Last Review:** February 21, 2026  
+**Next Review:** March 15, 2026

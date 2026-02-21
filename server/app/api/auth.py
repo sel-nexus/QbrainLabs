@@ -6,6 +6,7 @@ from sqlalchemy import union
 from sqlalchemy.exc import SQLAlchemyError, OperationalError
 from datetime import datetime, timedelta
 from typing import Optional, List
+import asyncio
 import jwt
 
 from app.core.database import get_db
@@ -201,8 +202,22 @@ async def login(
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    if not user or not verify_password(password, user.password_hash):
-        logger.warning(f"Failed login attempt for {masked_email}: User found={bool(user)}, PwdValid={bool(user and verify_password(password, user.password_hash))}")
+    if not user:
+        logger.warning(f"Failed login attempt for {masked_email}: user not found")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    
+    # Run password verification (CPU-bound bcrypt) in thread pool and fetch workshop IDs
+    # in parallel so login latency is max(verify, workshop_query) instead of sum
+    verified, workshop_ids = await asyncio.gather(
+        asyncio.to_thread(verify_password, password, user.password_hash),
+        get_user_workshop_ids(str(user.id), db),
+    )
+    if not verified:
+        logger.warning(f"Failed login attempt for {masked_email}: invalid password")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Incorrect email or password",
@@ -228,22 +243,16 @@ async def login(
             )
         # Note: PENDING status is now allowed to login per US32
     
-    # Update last login
+    # Update last login (workshop_ids already fetched in parallel above)
     try:
         user.last_login = datetime.utcnow()
         await db.commit()
-        
-        # Get workshop IDs for token
-        workshop_ids = await get_user_workshop_ids(str(user.id), db)
     except (SQLAlchemyError, OperationalError) as e:
         logger.error(f"Error updating login stats for {masked_email}: {str(e)}")
-        # If commit fails, still allow login but log the error
-        # Return empty workshop list as fallback
-        workshop_ids = []
-        # Try to rollback if possible
+        # Commit failed; workshop_ids already set, allow login
         try:
             await db.rollback()
-        except:
+        except Exception:
             pass
     
     # Create access token with role info

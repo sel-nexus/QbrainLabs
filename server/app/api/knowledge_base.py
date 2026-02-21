@@ -80,6 +80,30 @@ def load_knowledge_base():
 KB_DATA = load_knowledge_base()
 
 
+def _industries_for_user(industries_data: list, user: User) -> list:
+    """
+    For admins: return all industries with all use cases.
+    For facilitators: return only industries that have at least one use case created by this user,
+    and only include those use cases (created_by == user.id).
+    Use cases without created_by are treated as system/admin-only (facilitators don't see them).
+    """
+    if getattr(user, "is_admin_user", None):
+        return list(industries_data) if industries_data else []
+
+    user_id = str(user.id)
+    out = []
+    for ind in industries_data or []:
+        use_cases = ind.get("use_cases") or []
+        filtered_ucs = [uc for uc in use_cases if uc.get("created_by") == user_id]
+        if not filtered_ucs:
+            continue
+        out.append({
+            **ind,
+            "use_cases": filtered_ucs,
+        })
+    return out
+
+
 # Save knowledge base data
 def save_knowledge_base(data):
     try:
@@ -99,26 +123,40 @@ async def get_knowledge_base_overview(
     current_user: User = Depends(get_current_user)
 ):
     """
-    Get overview of the AI Knowledge Base
-    Available to all authenticated users (admin and facilitators)
+    Get overview of the AI Knowledge Base.
+    Admins see all use cases; facilitators see only use cases they created.
     """
-    total_use_cases = sum(len(ind.get("use_cases", [])) for ind in KB_DATA.get("industries", []))
-    
+    global KB_DATA
+    KB_DATA = load_knowledge_base()
+    industries_filtered = _industries_for_user(KB_DATA.get("industries", []), current_user)
+    total_use_cases = sum(len(ind.get("use_cases", [])) for ind in industries_filtered)
     industries_summary = [
         {
             "id": ind["id"],
             "name": ind["name"],
-            "icon": ind["icon"],
+            "icon": ind.get("icon", "building"),
             "use_case_count": len(ind.get("use_cases", []))
         }
-        for ind in KB_DATA.get("industries", [])
+        for ind in industries_filtered
     ]
-    
+    # Categories/technologies: admins see global lists; facilitators see unique from their use cases only
+    if getattr(current_user, "is_admin_user", None):
+        all_cats = set(KB_DATA.get("categories", []))
+        all_techs = set(KB_DATA.get("technologies", []))
+    else:
+        all_cats = set()
+        all_techs = set()
+        for ind in industries_filtered:
+            for uc in ind.get("use_cases", []):
+                if uc.get("category"):
+                    all_cats.add(uc["category"])
+                for t in uc.get("technologies") or []:
+                    all_techs.add(t)
     return KnowledgeBaseOverview(
-        total_industries=len(KB_DATA.get("industries", [])),
+        total_industries=len(industries_filtered),
         total_use_cases=total_use_cases,
-        total_categories=len(KB_DATA.get("categories", [])),
-        total_technologies=len(KB_DATA.get("technologies", [])),
+        total_categories=len(all_cats),
+        total_technologies=len(all_techs),
         industries=industries_summary
     )
 
@@ -128,9 +166,13 @@ async def get_industries(
     current_user: User = Depends(get_current_user)
 ):
     """
-    Get all industries with their use case templates
+    Get all industries with their use case templates.
+    Admins see all; facilitators see only industries that contain use cases they created.
     """
-    return [Industry(**ind) for ind in KB_DATA.get("industries", [])]
+    global KB_DATA
+    KB_DATA = load_knowledge_base()
+    industries_filtered = _industries_for_user(KB_DATA.get("industries", []), current_user)
+    return [Industry(**ind) for ind in industries_filtered]
 
 
 @router.get("/industries/{industry_id}", response_model=Industry)
@@ -139,9 +181,13 @@ async def get_industry(
     current_user: User = Depends(get_current_user)
 ):
     """
-    Get a specific industry with its use cases
+    Get a specific industry with its use cases.
+    Admins see all use cases; facilitators see only use cases they created.
     """
-    for ind in KB_DATA.get("industries", []):
+    global KB_DATA
+    KB_DATA = load_knowledge_base()
+    industries_filtered = _industries_for_user(KB_DATA.get("industries", []), current_user)
+    for ind in industries_filtered:
         if ind["id"] == industry_id:
             return Industry(**ind)
     raise HTTPException(status_code=404, detail="Industry not found")
@@ -176,54 +222,44 @@ async def search_use_cases(
     current_user: User = Depends(get_current_user)
 ):
     """
-    Search the knowledge base for relevant use case templates
-    Uses fuzzy matching for relevance scoring
+    Search the knowledge base for relevant use case templates.
+    Admins search all; facilitators search only within use cases they created.
+    Uses fuzzy matching for relevance scoring.
     """
+    global KB_DATA
+    KB_DATA = load_knowledge_base()
+    industries_filtered = _industries_for_user(KB_DATA.get("industries", []), current_user)
     results = []
     query_lower = query.lower()
-    
-    for ind in KB_DATA.get("industries", []):
-        # Apply industry filter
+
+    for ind in industries_filtered:
         if industry and ind["id"] != industry:
             continue
-            
         for uc in ind.get("use_cases", []):
-            # Apply category filter
-            if category and uc["category"].lower() != category.lower():
+            if category and (uc.get("category") or "").lower() != category.lower():
                 continue
-            
-            # Apply complexity filter
-            if complexity and uc["complexity"].lower() != complexity.lower():
+            if complexity and (uc.get("complexity") or "").lower() != complexity.lower():
                 continue
-            
-            # Calculate relevance score using fuzzy matching
-            title_score = difflib.SequenceMatcher(None, query_lower, uc["title"].lower()).ratio()
-            desc_score = difflib.SequenceMatcher(None, query_lower, uc["description"].lower()).ratio()
-            cat_score = difflib.SequenceMatcher(None, query_lower, uc["category"].lower()).ratio()
-            
-            # Weighted score
+            title_score = difflib.SequenceMatcher(None, query_lower, (uc.get("title") or "").lower()).ratio()
+            desc_score = difflib.SequenceMatcher(None, query_lower, (uc.get("description") or "").lower()).ratio()
+            cat_score = difflib.SequenceMatcher(None, query_lower, (uc.get("category") or "").lower()).ratio()
             relevance = (title_score * 0.5) + (desc_score * 0.3) + (cat_score * 0.2)
-            
-            # Also check for keyword matches
-            if query_lower in uc["title"].lower() or query_lower in uc["description"].lower():
+            if query_lower in (uc.get("title") or "").lower() or query_lower in (uc.get("description") or "").lower():
                 relevance = max(relevance, 0.8)
-            
-            if relevance > 0.2:  # Threshold
+            if relevance > 0.2:
                 results.append(UseCaseSearchResult(
                     id=uc["id"],
                     title=uc["title"],
                     description=uc["description"],
                     industry=ind["id"],
                     industry_name=ind["name"],
-                    category=uc["category"],
-                    complexity=uc["complexity"],
-                    typical_roi=uc["typical_roi"],
+                    category=uc.get("category", ""),
+                    complexity=uc.get("complexity", "Medium"),
+                    typical_roi=uc.get("typical_roi", "TBD"),
                     relevance_score=round(relevance, 2)
                 ))
-    
-    # Sort by relevance
     results.sort(key=lambda x: x.relevance_score, reverse=True)
-    return results[:20]  # Top 20 results
+    return results[:20]
 
 
 @router.post("/refresh", response_model=List[UseCaseSearchResult])
@@ -236,6 +272,7 @@ async def refresh_use_cases(
     US26 Enhancement: Supports custom scope and filters results against knowledge base.
     Returns only new or refinable use cases.
     """
+    global KB_DATA
     results = []
     
     # Determine industry name
@@ -253,9 +290,11 @@ async def refresh_use_cases(
         custom_scope=request.custom_scope
     )
     
-    # Build list of existing use cases for comparison
+    # Build list of existing use cases for comparison (facilitators: only their own)
+    KB_DATA = load_knowledge_base()
+    industries_for_refresh = _industries_for_user(KB_DATA.get("industries", []), current_user)
     existing_use_cases = []
-    for ind in KB_DATA.get("industries", []):
+    for ind in industries_for_refresh:
         for uc in ind.get("use_cases", []):
             existing_use_cases.append({
                 "id": uc["id"],
@@ -399,9 +438,8 @@ async def add_use_case(
         KB_DATA["industries"].append(new_industry)
         print(f"[KB] Created new industry: {industry_name} (ID: {target_industry_id})")
     
-    # Create new use case object
+    # Create new use case object (created_by so facilitators only see their own in Knowledge Base)
     new_id = f"{target_industry_id}-{uuid.uuid4().hex[:6]}"
-    
     new_use_case = {
         "id": new_id,
         "title": request.title,
@@ -412,7 +450,8 @@ async def add_use_case(
         "typical_roi": request.typical_roi,
         "implementation_time": request.implementation_time,
         "technologies": request.technologies,
-        "kpis": []
+        "kpis": [],
+        "created_by": str(current_user.id),
     }
     
     # Add use case to the industry

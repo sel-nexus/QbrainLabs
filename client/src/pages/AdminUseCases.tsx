@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'sonner';
+import { Trash2 } from 'lucide-react';
 import { API_BASE_URL } from '../lib/config';
 import { AdminLayout } from '../components/AdminLayout';
 import { UseCaseApprovalModal } from '../components/usecases/UseCaseApprovalModal';
@@ -132,6 +133,25 @@ export function AdminUseCases() {
 
   const handleStatusChange = (id: string, newStatus: string) =>
     setUseCases(prev => prev.map(uc => uc.id === id ? { ...uc, status: newStatus } : uc));
+
+  // ── Delete rejected use case ───────────────────────────────────────────────
+
+  const handleDeleteUseCase = async (id: string, title?: string) => {
+    if (!window.confirm(`Delete this use case from the repository?\n\n"${title ?? id}"`)) return;
+    if (!token) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/usecases/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error('Delete failed');
+      setUseCases(prev => prev.filter(uc => uc.id !== id));
+      if (selectedUC?.id === id) setSelectedUC(null);
+      toast.success('Use case deleted');
+    } catch {
+      toast.error('Failed to delete use case');
+    }
+  };
 
   // ── Derived data ──────────────────────────────────────────────────────────
 
@@ -564,6 +584,28 @@ export function AdminUseCases() {
                         </button>
                       </div>
                     )}
+                    {uc.status === 'REJECTED' && (
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteUseCase(uc.id, uc.title)}
+                        title="Delete from repository"
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          width: 32,
+                          height: 32,
+                          padding: 0,
+                          background: 'transparent',
+                          border: '1px solid #ef4444',
+                          borderRadius: 6,
+                          color: '#ef4444',
+                          cursor: 'pointer',
+                        }}
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    )}
                   </div>
                 </div>
               );
@@ -648,13 +690,23 @@ export function AdminUseCases() {
                 </button>
               )}
               {selectedUC.status === 'REJECTED' && (
-                <button
-                  className="auc-action-btn"
-                  style={{ borderColor: '#22c55e', color: '#22c55e' }}
-                  onClick={() => handleQuickStatus(selectedUC.id, 'APPROVED')}
-                >
-                  Re-Approve
-                </button>
+                <>
+                  <button
+                    className="auc-action-btn"
+                    style={{ borderColor: '#ef4444', color: '#ef4444', display: 'flex', alignItems: 'center', gap: 6 }}
+                    onClick={() => { handleDeleteUseCase(selectedUC.id, selectedUC.title); setSelectedUC(null); }}
+                  >
+                    <Trash2 size={14} />
+                    Delete from repository
+                  </button>
+                  <button
+                    className="auc-action-btn"
+                    style={{ borderColor: '#22c55e', color: '#22c55e' }}
+                    onClick={() => handleQuickStatus(selectedUC.id, 'APPROVED')}
+                  >
+                    Re-Approve
+                  </button>
+                </>
               )}
               {selectedUC.status === 'PENDING' && (
                 <>

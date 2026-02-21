@@ -402,23 +402,36 @@ Create a compelling narrative suitable for a 2-3 minute executive presentation, 
     def __init__(self, db: AsyncSession):
         self.db = db
         self.api_key = settings.OPENAI_API_KEY
-        self.mock_mode = settings.AI_MOCK_MODE or not self.api_key
+        self.azure_key = settings.AZURE_OPENAI_API_KEY
+        self.azure_endpoint = settings.AZURE_OPENAI_ENDPOINT
+        has_llm = self.api_key or (self.azure_key and self.azure_endpoint)
+        self.mock_mode = settings.AI_MOCK_MODE or not has_llm
         self.llm = None
-        
+
         if not self.mock_mode:
             self._initialize_ai_components()
         else:
             print("ChallengeStepService running in MOCK MODE (No API Key found)")
-            
+
     def _initialize_ai_components(self):
-        """Initialize LangChain/OpenAI components."""
+        """Initialize LangChain/OpenAI components (Azure OpenAI or standard OpenAI)."""
         try:
-            from langchain_openai import ChatOpenAI
-            self.llm = ChatOpenAI(
-                temperature=0.3, # low temp for summarization
-                model=settings.OPENAI_MODEL,
-                api_key=self.api_key
-            )
+            from langchain_openai import ChatOpenAI, AzureChatOpenAI
+            if self.azure_key and self.azure_endpoint:
+                self.llm = AzureChatOpenAI(
+                    azure_endpoint=self.azure_endpoint,
+                    azure_deployment=settings.AZURE_OPENAI_DEPLOYMENT,
+                    api_key=self.azure_key,
+                    api_version=settings.AZURE_OPENAI_API_VERSION,
+                    temperature=0.3,
+                    model=settings.AZURE_OPENAI_MODEL_NAME or settings.AZURE_OPENAI_DEPLOYMENT,
+                )
+            else:
+                self.llm = ChatOpenAI(
+                    temperature=0.3,
+                    model=settings.OPENAI_MODEL,
+                    api_key=self.api_key
+                )
         except ImportError:
             print("LangChain dependencies missing. Reverting to Mock Mode.")
             self.mock_mode = True

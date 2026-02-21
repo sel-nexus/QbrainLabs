@@ -19,8 +19,11 @@ from app.core.config import settings
 class RoadmapService:
     def __init__(self):
         self.api_key = settings.OPENAI_API_KEY
-        self.mock_mode = settings.AI_MOCK_MODE or not self.api_key
-        
+        self.azure_key = settings.AZURE_OPENAI_API_KEY
+        self.azure_endpoint = settings.AZURE_OPENAI_ENDPOINT
+        has_llm = self.api_key or (self.azure_key and self.azure_endpoint)
+        self.mock_mode = settings.AI_MOCK_MODE or not has_llm
+
         if not self.mock_mode:
             self._initialize_ai_components()
         else:
@@ -28,12 +31,22 @@ class RoadmapService:
 
     def _initialize_ai_components(self):
         try:
-            from langchain_openai import ChatOpenAI
-            self.llm = ChatOpenAI(
-                temperature=0.3,
-                model=settings.OPENAI_MODEL,
-                api_key=self.api_key
-            )
+            from langchain_openai import ChatOpenAI, AzureChatOpenAI
+            if self.azure_key and self.azure_endpoint:
+                self.llm = AzureChatOpenAI(
+                    azure_endpoint=self.azure_endpoint,
+                    azure_deployment=settings.AZURE_OPENAI_DEPLOYMENT,
+                    api_key=self.azure_key,
+                    api_version=settings.AZURE_OPENAI_API_VERSION,
+                    temperature=0.3,
+                    model=settings.AZURE_OPENAI_MODEL_NAME or settings.AZURE_OPENAI_DEPLOYMENT,
+                )
+            else:
+                self.llm = ChatOpenAI(
+                    temperature=0.3,
+                    model=settings.OPENAI_MODEL,
+                    api_key=self.api_key
+                )
         except ImportError:
             print("LangChain dependencies missing. Reverting to Mock Mode.")
             self.mock_mode = True

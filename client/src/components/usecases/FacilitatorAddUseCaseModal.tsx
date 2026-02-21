@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { X, Loader2, Plus, Check } from 'lucide-react';
+import { X, Loader2, Plus, Check, Sparkles, AlertTriangle } from 'lucide-react';
 import { toast } from 'sonner';
 import { useAuth } from '../../context/AuthContext';
 import { API_BASE_URL } from '../../lib/config';
+import { api } from '../../lib/api';
 
 const API_BASE = API_BASE_URL;
 
@@ -46,12 +47,17 @@ export function FacilitatorAddUseCaseModal({
   const [loadingWorkshops, setLoadingWorkshops] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({ ...EMPTY_FORM });
+  const [enhancing, setEnhancing] = useState(false);
+  const [checkingFeasibility, setCheckingFeasibility] = useState(false);
+  const [enhancingBusinessValue, setEnhancingBusinessValue] = useState(false);
+  const [feasibilityData, setFeasibilityData] = useState<{ score: string; reason: string } | null>(null);
 
   useEffect(() => {
     if (isOpen) {
       fetchWorkshops();
       setFormData({ ...EMPTY_FORM });
       setSelectedWorkshopIds(new Set());
+      setFeasibilityData(null);
     }
   }, [isOpen]);
 
@@ -86,6 +92,76 @@ export function FacilitatorAddUseCaseModal({
 
   const handleChange = (field: keyof typeof EMPTY_FORM, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    if (field === 'description' || field === 'proposed_solution') setFeasibilityData(null);
+  };
+
+  const handleEnhance = async () => {
+    if (!formData.description?.trim()) {
+      toast.error('Please enter a Problem Statement first.');
+      return;
+    }
+    setEnhancing(true);
+    try {
+      const { data } = await api.post('ai/enhance', {
+        text: [formData.description, formData.proposed_solution].filter(Boolean).join(' '),
+      });
+      toast.success('AI enhanced the content.');
+      setFormData((prev) => ({
+        ...prev,
+        title: (data.refined_title || prev.title || (data as any).title) ?? prev.title,
+        description: data.refined_description ?? prev.description,
+        proposed_solution: (data.suggested_solution ?? (data as any).solution) ?? prev.proposed_solution,
+        kpi: data.kpi ?? prev.kpi,
+      }));
+    } catch (e: any) {
+      toast.error(e.response?.data?.detail || 'AI enhancement failed.');
+    } finally {
+      setEnhancing(false);
+    }
+  };
+
+  const handleFeasibility = async () => {
+    if (!formData.proposed_solution?.trim()) {
+      toast.error('Please enter a Proposed Solution first.');
+      return;
+    }
+    setCheckingFeasibility(true);
+    setFeasibilityData(null);
+    try {
+      const { data } = await api.post('ai/feasibility', { solution: formData.proposed_solution });
+      setFeasibilityData({ score: data.score, reason: data.reason });
+      toast.success('Feasibility check complete.');
+    } catch (e: any) {
+      toast.error(e.response?.data?.detail || 'Feasibility check failed.');
+    } finally {
+      setCheckingFeasibility(false);
+    }
+  };
+
+  const handleEnhanceBusinessValue = async () => {
+    if (!formData.title?.trim() || !formData.description?.trim()) {
+      toast.error('Please enter Title and Problem Statement first.');
+      return;
+    }
+    setEnhancingBusinessValue(true);
+    try {
+      const { data } = await api.post('ai/business-value', {
+        title: formData.title,
+        description: formData.description,
+        category: formData.category,
+        current_kpi: formData.kpi,
+      });
+      if (data.enhanced_kpi) {
+        setFormData((prev) => ({ ...prev, kpi: data.enhanced_kpi }));
+        toast.success('Business value enhanced with AI.');
+      } else {
+        toast.success('Analysis complete.');
+      }
+    } catch (e: any) {
+      toast.error(e.response?.data?.detail || 'Business value enhancement failed.');
+    } finally {
+      setEnhancingBusinessValue(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -253,9 +329,20 @@ export function FacilitatorAddUseCaseModal({
 
           {/* Problem Statement */}
           <div className="space-y-1.5">
-            <label className="text-sm theme-text-secondary pl-1">
-              Problem Statement <span className="text-brand-violet">*</span>
-            </label>
+            <div className="flex justify-between items-end">
+              <label className="text-sm theme-text-secondary pl-1">
+                Problem Statement <span className="text-brand-violet">*</span>
+              </label>
+              <button
+                type="button"
+                onClick={handleEnhance}
+                disabled={enhancing}
+                className="h-7 text-xs py-0 px-2 flex items-center gap-1 rounded border bg-brand-violet/10 text-brand-violet border-brand-violet/20 hover:bg-brand-violet/20 theme-border transition-colors disabled:opacity-50"
+              >
+                {enhancing ? <Loader2 className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
+                AI Enhance
+              </button>
+            </div>
             <textarea
               required
               rows={3}
@@ -268,7 +355,18 @@ export function FacilitatorAddUseCaseModal({
 
           {/* Proposed Solution */}
           <div className="space-y-1.5">
-            <label className="text-sm theme-text-secondary pl-1">Proposed Solution</label>
+            <div className="flex justify-between items-end">
+              <label className="text-sm theme-text-secondary pl-1">Proposed Solution</label>
+              <button
+                type="button"
+                onClick={handleFeasibility}
+                disabled={checkingFeasibility}
+                className="h-7 text-xs py-0 px-2 flex items-center gap-1 rounded border theme-bg-tertiary theme-border hover:opacity-90 transition-colors disabled:opacity-50"
+              >
+                {checkingFeasibility ? <Loader2 className="w-3 h-3 animate-spin" /> : <AlertTriangle className="w-3 h-3" />}
+                Check Feasibility
+              </button>
+            </div>
             <textarea
               rows={3}
               placeholder="How does AI solve it?"
@@ -276,13 +374,37 @@ export function FacilitatorAddUseCaseModal({
               onChange={(e) => handleChange('proposed_solution', e.target.value)}
               className="w-full theme-input-bg theme-border border-b-2 px-4 py-3 rounded-t-md theme-text-primary placeholder:theme-text-secondary focus:outline-none focus:border-brand-violet transition-colors resize-none"
             />
+            {feasibilityData && (
+              <div
+                className={`text-sm p-3 rounded border ${
+                  feasibilityData.score === 'High'
+                    ? 'bg-green-500/10 border-green-500/30 text-green-600 dark:text-green-400'
+                    : feasibilityData.score === 'Medium'
+                    ? 'bg-yellow-500/10 border-yellow-500/30 text-yellow-600 dark:text-yellow-400'
+                    : 'bg-red-500/10 border-red-500/30 text-red-600 dark:text-red-400'
+                }`}
+              >
+                <span className="font-bold">Feasibility: {feasibilityData.score}</span> — {feasibilityData.reason}
+              </div>
+            )}
           </div>
 
           {/* KPI */}
           <div className="space-y-1.5">
-            <label className="text-sm theme-text-secondary pl-1">
-              Expected Benefit (KPI) <span className="text-brand-violet">*</span>
-            </label>
+            <div className="flex justify-between items-end">
+              <label className="text-sm theme-text-secondary pl-1">
+                Expected Benefit (KPI) <span className="text-brand-violet">*</span>
+              </label>
+              <button
+                type="button"
+                onClick={handleEnhanceBusinessValue}
+                disabled={enhancingBusinessValue}
+                className="h-7 text-xs py-0 px-2 flex items-center gap-1 rounded border bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20 hover:bg-blue-500/20 theme-border transition-colors disabled:opacity-50"
+              >
+                {enhancingBusinessValue ? <Loader2 className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
+                Enhance KPI
+              </button>
+            </div>
             <input
               type="text"
               required

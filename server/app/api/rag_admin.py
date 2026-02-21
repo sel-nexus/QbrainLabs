@@ -263,20 +263,47 @@ async def upload_document(
     current_user = Depends(get_current_user)
 ):
     """
-    Upload and ingest a document file (PDF, DOCX, PPTX, Images).
+    Upload and ingest a document file (PDF, DOCX, PPTX, CSV, XLSX, JSON, Images).
+    Tabular files (CSV, XLSX, JSON) are converted to text before ingestion.
     """
     try:
         from app.services.file_service import file_service
-        
-        # Extract text content
-        content = await file_service.extract_text_from_file(file)
-        
-        if not content:
+
+        # Extract content (string for narrative docs, dict for tabular)
+        extracted = await file_service.extract_text_from_file(file)
+
+        if not extracted:
             raise HTTPException(
                 status_code=400,
                 detail="Could not extract text from file or file is empty"
             )
-            
+
+        # Normalize to string: ingest_document expects content: str
+        if isinstance(extracted, dict) and extracted.get("type") == "tabular":
+            rows = extracted.get("rows") or []
+            if not rows:
+                raise HTTPException(
+                    status_code=400,
+                    detail="No rows could be extracted from the file (check headers/format)"
+                )
+            # Convert each row to readable text for RAG
+            parts = []
+            for i, row in enumerate(rows, 1):
+                block = [f"Record {i}:"]
+                for key, val in (row or {}).items():
+                    if val and str(val).strip():
+                        block.append(f"  {key}: {str(val).strip()}")
+                parts.append("\n".join(block))
+            content = "\n\n".join(parts)
+        else:
+            content = extracted if isinstance(extracted, str) else str(extracted)
+
+        if not (content and content.strip()):
+            raise HTTPException(
+                status_code=400,
+                detail="No text content to ingest"
+            )
+
         # Ingest into Knowledge Base
         doc = await kb_manager.ingest_document(
             db=db,

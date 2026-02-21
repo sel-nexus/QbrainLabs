@@ -202,11 +202,35 @@ export function AdminLLMUsage() {
                 fetch(`${API_BASE}/api/admin/llm-usage/recent`, { headers: h }),
             ]);
 
-            if (!sRes.ok) throw new Error('Failed to load LLM usage summary');
+            if (!sRes.ok) {
+                const errBody = await sRes.json().catch(() => ({}));
+                let msg = 'Failed to load LLM usage summary';
+                const d = errBody?.detail;
+                if (typeof d === 'string') msg = d;
+                else if (Array.isArray(d) && d.length > 0) {
+                    const first = d[0];
+                    msg = typeof first?.msg === 'string' ? first.msg : (typeof first === 'string' ? first : msg);
+                } else if (d && typeof d === 'object' && typeof (d as { msg?: string }).msg === 'string') msg = (d as { msg: string }).msg;
+                else if (typeof errBody?.error === 'string') msg = errBody.error;
+                else if (typeof errBody?.details === 'string') msg = errBody.details;
+                else if (typeof errBody?.message === 'string') msg = errBody.message;
+                if (msg === 'Failed to load LLM usage summary' && sRes.status === 401) msg = 'Please sign in to view LLM usage.';
+                if (msg === 'Failed to load LLM usage summary' && sRes.status === 403) msg = 'Administrator access required to view LLM usage.';
+                throw new Error(msg);
+            }
 
-            const [s, f, w, u, m, d, l] = await Promise.all([
-                sRes.json(), fRes.json(), wRes.json(), uRes.json(),
-                mRes.json(), dRes.json(), lRes.json(),
+            const s = await sRes.json();
+            const safeJson = async (r: Response, fallback: unknown) => {
+                if (!r.ok) return fallback;
+                return r.json().catch(() => fallback);
+            };
+            const [f, w, u, m, d, l] = await Promise.all([
+                safeJson(fRes, []),
+                safeJson(wRes, []),
+                safeJson(uRes, []),
+                safeJson(mRes, []),
+                safeJson(dRes, []),
+                safeJson(lRes, []),
             ]);
 
             setSummary(s);

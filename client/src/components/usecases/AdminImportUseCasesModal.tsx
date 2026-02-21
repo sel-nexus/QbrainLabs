@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { toast } from 'sonner';
 import { useAuth } from '../../context/AuthContext';
 import { API_BASE_URL } from '../../lib/config';
@@ -136,11 +137,50 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
       });
 
       if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.error?.message ?? err.detail ?? 'Processing failed');
+        const raw = await res.text();
+        const isHtmlError =
+          typeof raw === 'string' &&
+          (raw.trimStart().toLowerCase().startsWith('<!') || raw.trimStart().toLowerCase().startsWith('<html'));
+        const is502 =
+          res.status === 502 ||
+          (typeof raw === 'string' && (raw.includes('502') || raw.includes('Bad Gateway')));
+        if (is502 || isHtmlError) {
+          throw new Error(
+            'Request timed out (502 Bad Gateway). The file has many rows — try a smaller file (e.g. under 20 rows) or split the CSV and import in batches.'
+          );
+        }
+        let err: Record<string, unknown> = {};
+        try {
+          err = raw ? JSON.parse(raw) : {};
+        } catch {
+          err = { message: raw || `Request failed (${res.status})` };
+        }
+        const detail =
+          (err.error as { message?: string })?.message ??
+          (typeof err.detail === 'string' ? err.detail : null) ??
+          (typeof err.message === 'string' ? err.message : null);
+        const msg =
+          typeof detail === 'string'
+            ? detail
+            : Array.isArray(err.detail)
+              ? (err.detail as { msg?: string }[]).map((d) => d.msg || String(d)).join('; ')
+              : `Request failed (${res.status}). Try again or check server logs.`;
+        throw new Error(msg);
       }
 
       const items: PreviewItem[] = await res.json();
+      const totalExtracted = res.headers.get('X-Total-Extracted');
+      const previewLimit = res.headers.get('X-Preview-Limit');
+      if (
+        totalExtracted != null &&
+        previewLimit != null &&
+        parseInt(totalExtracted, 10) > parseInt(previewLimit, 10)
+      ) {
+        toast.info(
+          `Preview shows first ${previewLimit} of ${totalExtracted} rows. Import the rest by splitting the file or run import again with a smaller CSV.`,
+          { duration: 6000 }
+        );
+      }
 
       setRows(items.map(item => ({
         temp_id:          item.temp_id,
@@ -188,8 +228,24 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
         }),
       });
       if (!res.ok) {
-        const err = await res.json().catch(() => ({}));
-        throw new Error(err.error?.message ?? err.detail ?? 'Import failed');
+        const raw = await res.text();
+        let err: Record<string, unknown> = {};
+        try {
+          err = raw ? JSON.parse(raw) : {};
+        } catch {
+          err = { message: raw || `Request failed (${res.status})` };
+        }
+        const detail =
+          (err.error as { message?: string })?.message ??
+          (typeof err.detail === 'string' ? err.detail : null) ??
+          (typeof err.message === 'string' ? err.message : null);
+        const msg =
+          typeof detail === 'string'
+            ? detail
+            : Array.isArray(err.detail)
+              ? (err.detail as { msg?: string }[]).map((d) => d.msg || String(d)).join('; ')
+              : `Import failed (${res.status}). Try again or check server logs.`;
+        throw new Error(msg);
       }
       const result = await res.json();
       setImportedCount(result.imported ?? selected.length);
@@ -212,15 +268,15 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
 
   if (!isOpen) return null;
 
-  // ── Render ────────────────────────────────────────────────────────────────
+  // ── Render (portal so modal is always on top, above header/sidebar) ────────
 
-  return (
+  return createPortal(
     <>
       <style>{`
         .aim-overlay {
           position: fixed; inset: 0;
           background: rgba(0,0,0,0.6);
-          z-index: 300;
+          z-index: 9999;
           display: flex; align-items: center; justify-content: center;
           backdrop-filter: blur(4px);
         }
@@ -505,11 +561,11 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
                     style={{ padding: '5px 12px', fontSize: 11 }}
                     onClick={() => setRows(r => r.map(x => ({ ...x, selected: !x.is_duplicate })))}
                   >
-                    Deselect Duplicates
+                    Deselect existing
                   </button>
                   {rows.some(r => r.is_duplicate) && (
                     <span style={{ fontSize: 11, background: '#fffbeb', border: '1px solid #fcd34d', borderRadius: 6, padding: '3px 8px', color: '#92400e' }}>
-                      ⚠ {rows.filter(r => r.is_duplicate).length} possible duplicate(s)
+                      ⚠ {rows.filter(r => r.is_duplicate).length} use case(s) already exist in the repo
                     </span>
                   )}
                 </div>
@@ -589,14 +645,16 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
                             />
                           </td>
 
-                          {/* Duplicate flag */}
+                          {/* Status: already in repo vs new */}
                           <td>
                             {row.is_duplicate ? (
                               <span
-                                title={`${Math.round(row.similarity_score * 100)}% similar to: ${row.duplicate_of}`}
+                                title={row.duplicate_of
+                                  ? `This use case already exists in the repo. Matching: ${row.duplicate_of}`
+                                  : 'This use case already exists in the repo.'}
                                 style={{ fontSize: 10, background: '#fffbeb', border: '1px solid #fcd34d', color: '#92400e', borderRadius: 5, padding: '3px 7px', cursor: 'help', display: 'inline-block' }}
                               >
-                                ⚠ Duplicate
+                                Already in repo
                               </span>
                             ) : (
                               <span style={{ fontSize: 10, background: '#f0fdf4', border: '1px solid #bbf7d0', color: '#15803d', borderRadius: 5, padding: '3px 7px', display: 'inline-block' }}>
@@ -645,6 +703,7 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
 
         </div>
       </div>
-    </>
+    </>,
+    document.body
   );
 }

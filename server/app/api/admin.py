@@ -2,12 +2,14 @@
 Admin API endpoints
 Requires admin authentication for all routes
 """
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Form, Query
+from fastapi.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import func, and_
 from typing import List, Optional, Any, Dict
 from datetime import datetime, timedelta
+import logging
 import secrets
 import string
 import uuid
@@ -45,6 +47,7 @@ from app.schemas.admin import (
 )
 from app.api.auth import hash_password
 from sqlalchemy import update, delete
+from sqlalchemy.exc import ProgrammingError, OperationalError
 
 router = APIRouter(prefix="/api/admin", tags=["admin"])
 
@@ -583,46 +586,78 @@ def _apply_date_filter(query, start_date, end_date):
 async def get_llm_usage_summary(
     admin: User = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
-    start_date: datetime = None,
-    end_date: datetime = None
+    start_date: Optional[datetime] = Query(None, description="Filter logs from this date"),
+    end_date: Optional[datetime] = Query(None, description="Filter logs until this date"),
 ):
     """Get overall LLM usage statistics with optional date range filtering."""
-    base = select(
-        func.count(LLMUsageLog.id).label('total_calls'),
-        func.coalesce(func.sum(LLMUsageLog.prompt_tokens), 0).label('total_prompt_tokens'),
-        func.coalesce(func.sum(LLMUsageLog.completion_tokens), 0).label('total_completion_tokens'),
-        func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
-        func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents'),
-        func.count(func.distinct(LLMUsageLog.user_id)).label('unique_users'),
-        func.count(func.distinct(LLMUsageLog.workshop_id)).label('unique_workshops'),
+    empty = LLMUsageSummary(
+        total_calls=0,
+        total_prompt_tokens=0,
+        total_completion_tokens=0,
+        total_tokens=0,
+        estimated_cost_cents=0,
+        unique_users=0,
+        unique_workshops=0,
+        success_count=0,
+        error_count=0,
     )
-    query = _apply_date_filter(base, start_date, end_date)
-    result = await db.execute(query)
-    row = result.first()
+    try:
+        base = select(
+            func.count(LLMUsageLog.id).label('total_calls'),
+            func.coalesce(func.sum(LLMUsageLog.prompt_tokens), 0).label('total_prompt_tokens'),
+            func.coalesce(func.sum(LLMUsageLog.completion_tokens), 0).label('total_completion_tokens'),
+            func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
+            func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents'),
+            func.count(func.distinct(LLMUsageLog.user_id)).label('unique_users'),
+            func.count(func.distinct(LLMUsageLog.workshop_id)).label('unique_workshops'),
+        ).select_from(LLMUsageLog)
+        query = _apply_date_filter(base, start_date, end_date)
+        result = await db.execute(query)
+        row = result.first()
 
-    # Count successes / errors in a second cheap query
-    sc_query = _apply_date_filter(
-        select(func.count(LLMUsageLog.id)).where(LLMUsageLog.success == 'true'),
-        start_date, end_date
-    )
-    ec_query = _apply_date_filter(
-        select(func.count(LLMUsageLog.id)).where(LLMUsageLog.success != 'true'),
-        start_date, end_date
-    )
-    sc_result = await db.execute(sc_query)
-    ec_result = await db.execute(ec_query)
+        # When no rows match (or empty table), aggregates can still return one row; guard against None
+        if row is None:
+            return empty
 
-    return LLMUsageSummary(
-        total_calls=row.total_calls or 0,
-        total_prompt_tokens=row.total_prompt_tokens or 0,
-        total_completion_tokens=row.total_completion_tokens or 0,
-        total_tokens=row.total_tokens or 0,
-        estimated_cost_cents=row.estimated_cost_cents or 0,
-        unique_users=row.unique_users or 0,
-        unique_workshops=row.unique_workshops or 0,
-        success_count=sc_result.scalar() or 0,
-        error_count=ec_result.scalar() or 0,
-    )
+        # Count successes / errors in a second cheap query
+        sc_query = _apply_date_filter(
+            select(func.count(LLMUsageLog.id)).where(LLMUsageLog.success == 'true'),
+            start_date, end_date
+        )
+        ec_query = _apply_date_filter(
+            select(func.count(LLMUsageLog.id)).where(LLMUsageLog.success != 'true'),
+            start_date, end_date
+        )
+        sc_result = await db.execute(sc_query)
+        ec_result = await db.execute(ec_query)
+
+        # Coerce to int (DB may return Decimal/long); ensures JSON-safe response
+        def _int(v):
+            if v is None:
+                return 0
+            try:
+                return int(v)
+            except (TypeError, ValueError):
+                return 0
+
+        return LLMUsageSummary(
+            total_calls=_int(row.total_calls),
+            total_prompt_tokens=_int(row.total_prompt_tokens),
+            total_completion_tokens=_int(row.total_completion_tokens),
+            total_tokens=_int(row.total_tokens),
+            estimated_cost_cents=_int(row.estimated_cost_cents),
+            unique_users=_int(row.unique_users),
+            unique_workshops=_int(row.unique_workshops),
+            success_count=_int(sc_result.scalar()),
+            error_count=_int(ec_result.scalar()),
+        )
+    except (ProgrammingError, OperationalError) as e:
+        # Table may not exist yet (migration not run); return empty summary so page loads
+        return empty
+    except Exception as e:
+        # Any other error (e.g. missing table on some drivers): return empty so page loads
+        logging.getLogger(__name__).warning("LLM usage summary failed, returning empty: %s", e)
+        return empty
 
 
 @router.get("/llm-usage/by-feature", response_model=List[LLMUsageByFeature])
@@ -863,6 +898,10 @@ def _classify_industry(title: str, description: str, kpi: str = "") -> str:
     return "General AI"
 
 
+# Max rows to process in one preview request to avoid gateway timeouts (e.g. IIS 502.3)
+PREVIEW_MAX_ROWS = 20
+
+
 @router.post("/usecases/import/preview", response_model=List[Dict[str, Any]])
 async def preview_import_use_cases(
     file: UploadFile = File(...),
@@ -872,10 +911,30 @@ async def preview_import_use_cases(
     """
     Upload an Excel (.xlsx), Word (.docx), or PDF file containing use cases.
     Returns AI-enhanced previews with duplicate detection — nothing is saved yet.
+    Limited to PREVIEW_MAX_ROWS per request to avoid proxy/gateway timeouts.
     """
+    import logging
     from app.services.file_service import file_service
     from app.services.rag_service import rag_service
 
+    logger = logging.getLogger(__name__)
+    try:
+        items, total_extracted = await _preview_import_use_cases_impl(
+            file, db, file_service, rag_service, max_rows=PREVIEW_MAX_ROWS
+        )
+        headers = {
+            "X-Total-Extracted": str(total_extracted),
+            "X-Preview-Limit": str(PREVIEW_MAX_ROWS),
+        }
+        return JSONResponse(content=items, headers=headers)
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.exception("Use case import preview failed")
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+async def _preview_import_use_cases_impl(file, db, file_service, rag_service, max_rows: int = 20):
     # 1. Extract content from file
     try:
         extracted = await file_service.extract_text_from_file(file)
@@ -886,7 +945,7 @@ async def preview_import_use_cases(
     raw_candidates: List[Dict[str, str]] = []
 
     if isinstance(extracted, dict) and extracted.get("type") == "tabular":
-        # Excel: each row is already a structured dict
+        # Excel/CSV: each row is already a structured dict
         for row in extracted.get("rows", []):
             raw_candidates.append({
                 "title":             row.get("title", ""),
@@ -915,8 +974,14 @@ async def preview_import_use_cases(
     if not raw_candidates:
         raise HTTPException(status_code=422, detail="No use cases could be extracted from the file")
 
-    # 3. Fetch existing use cases once for duplicate checking
-    result = await db.execute(select(UseCase.id, UseCase.title, UseCase.description))
+    total_extracted = len(raw_candidates)
+    raw_candidates = raw_candidates[:max_rows]
+
+    # 3. Fetch existing use cases (only id, title, description to avoid missing columns e.g. facilitator_group_id)
+    use_cases_table = UseCase.__table__
+    result = await db.execute(
+        select(use_cases_table.c.id, use_cases_table.c.title, use_cases_table.c.description)
+    )
     existing = [
         {"id": str(row[0]), "title": row[1] or "", "description": row[2] or ""}
         for row in result.all()
@@ -987,7 +1052,7 @@ async def preview_import_use_cases(
             "similarity_score": round(float(similarity_score), 2),
         })
 
-    return preview_items
+    return preview_items, total_extracted
 
 
 from pydantic import BaseModel

@@ -20,6 +20,7 @@ import {
     Plus
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/Button';
 import { API_BASE_URL as API_BASE } from '../lib/config';
 
@@ -74,7 +75,9 @@ export function KnowledgeBase() {
     const navigate = useNavigate();
     const { theme } = useTheme();
     const { t } = useTranslation();
+    const { user, hasRole } = useAuth();
     const isLight = theme === 'light';
+    const isFacilitatorOnly = !!user && !hasRole('admin');
     const [overview, setOverview] = useState<KnowledgeBaseOverview | null>(null);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
@@ -271,7 +274,11 @@ export function KnowledgeBase() {
                         </div>
                         <div>
                             <h1 className={`text-xl font-bold ${isLight ? 'text-gray-900' : 'text-white'}`}>{t('admin.knowledgeBase.title', 'AI Knowledge Base')}</h1>
-                            <p className={`text-xs ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.aiKnowledgeBaseDesc', 'Industry Use Case Library')}</p>
+                            <p className={`text-xs ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                                {isFacilitatorOnly
+                                    ? t('admin.knowledgeBase.facilitatorSubtitle', 'Use cases you created')
+                                    : t('admin.aiKnowledgeBaseDesc', 'Browse industry use cases.')}
+                            </p>
                         </div>
                     </div>
                     <div className="flex items-center gap-4">

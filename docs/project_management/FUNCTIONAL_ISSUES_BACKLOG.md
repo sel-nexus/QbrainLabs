@@ -2,7 +2,15 @@
 
 **Purpose:** Capture all functional issues for Admin, Facilitator, and Participant flows for sequential implementation.  
 **Source:** Codebase review, CODE_REVIEW_REPORT, TESTING_REPORT, FUNCTIONAL_TEST_CASES, and known bugs.  
-**Last Updated:** January 29, 2026
+**Last Updated:** February 21, 2026
+
+---
+
+## Pending for Implementation
+
+This backlog is **ordered for sequential implementation** (FUN-001 → FUN-030). Items are not yet closed; complete "Steps to verify" after each fix and mark done.
+
+**User-story backlog** (feature work not covered by FUN-xxx): see [User Stories Index – Backlog Pending](../userstories/README.md#backlog-pending) and [EPICs and Features – Backlog Summary](../EPICS_AND_FEATURES.md#4-backlog-summary-pending-implementation). High-priority story work: US41 (Participant Feedback + Admin), US42 (Enhanced Q&A Chat), US43 (Enhanced Matrix Dashboard).
 
 ---
 
@@ -377,4 +385,5 @@
 
 | Date       | Change |
 |------------|--------|
+| 2026-02-21 | Added "Pending for Implementation" section; linked to user-story backlog and EPICs/Features. Document purpose and ordering clarified. |
 | 2026-01-29 | Initial backlog created from codebase review, CODE_REVIEW_REPORT, TESTING_REPORT, FUNCTIONAL_TEST_CASES, and known bugs. Ordered for sequential implementation. |

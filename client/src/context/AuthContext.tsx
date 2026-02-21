@@ -159,14 +159,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     formData.append('username', email);
     formData.append('password', password);
 
-    const response = await fetch(`${API_BASE}/api/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Accept': 'application/json',
-      },
-      body: formData,
-    });
+    let response: Response;
+    try {
+      response = await fetch(`${API_BASE}/api/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept': 'application/json',
+        },
+        body: formData,
+      });
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      const isNetwork = /failed to fetch|network error|load failed|connection refused/i.test(msg) || (err as { cause?: unknown })?.cause != null;
+      throw new Error(
+        isNetwork
+          ? 'Backend not running. In a new terminal: cd server, then run .venv\\Scripts\\python.exe -m uvicorn app.main:app --reload --port 8000'
+          : msg || 'Login request failed.'
+      );
+    }
 
     const contentType = response.headers.get('content-type');
     if (contentType && contentType.includes('text/html')) {
@@ -177,7 +188,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const isBlocked = text.includes('myhomenetwork.att.com') || text.includes('phishing');
       const message = isBlocked
         ? 'Login blocked by network security (ISP/Firewall). Please whitelist this site in your AT&T Smart Home Manager or check your internet filter settings.'
-        : 'Server returned HTML response. This usually means the API is unreachable.';
+        : 'API unreachable (got HTML instead of JSON). Ensure the backend is running (e.g. port 8000). In .env you can set VITE_API_URL=http://localhost:8000 and restart the client to call the API directly.';
 
       throw new Error(message);
     }
@@ -222,7 +233,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (contentType && contentType.includes('text/html')) {
       const text = await response.text();
       console.error('[Auth] Received HTML response instead of JSON (register):', text.substring(0, 500));
-      throw new Error('Server returned HTML. API unreachable.');
+      throw new Error('API unreachable (got HTML). Ensure the backend is running. Set VITE_API_URL=http://localhost:8000 in .env and restart the client if needed.');
     }
 
     if (!response.ok) {

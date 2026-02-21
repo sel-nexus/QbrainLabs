@@ -18,7 +18,7 @@ async def require_admin(current_user: User = Depends(get_current_user)) -> User:
             # Only admins can access this
             pass
     """
-    if not current_user.is_admin:
+    if not current_user.is_admin_user:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Administrator access required. You do not have permission to access this resource."

@@ -590,7 +590,12 @@ export function AdminKnowledgeBase() {
         if (uploadCategory) fd.append('category', uploadCategory);
         try {
             const res = await fetch(`${API}/api/knowledge-base/documents/upload`, { method: 'POST', headers: h(), body: fd });
-            if (!res.ok) { const err = await res.json().catch(() => ({})); throw new Error(err.detail ?? 'Upload failed'); }
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                const detail = err.detail ?? err.error?.message;
+                const msg = typeof detail === 'string' ? detail : Array.isArray(detail) ? detail.map((d: { msg?: string }) => d.msg || String(d)).join('; ') : 'Upload failed';
+                throw new Error(msg || 'Upload failed');
+            }
             toast.success(`"${file.name}" ingested into RAG`);
             setUploadCategory('');
             fetchDocs();

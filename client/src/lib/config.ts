@@ -1,12 +1,12 @@
 
 // Auto-detect API URL based on current hostname for network access
 export const getApiBaseUrl = () => {
-    // Allow overriding via environment variable
-    // Note: Disabling this to force Proxy usage for Public IP fix
-    /* if (import.meta.env.VITE_API_URL) {
-        console.log('[Config] Using configured API URL:', import.meta.env.VITE_API_URL);
-        return import.meta.env.VITE_API_URL;
-    } */
+    // Allow overriding via environment variable (e.g. when proxy is unavailable or API unreachable)
+    const envUrl = import.meta.env.VITE_API_URL;
+    if (envUrl && typeof envUrl === 'string' && envUrl.trim() !== '') {
+        console.log('[Config] Using configured API URL:', envUrl);
+        return envUrl.replace(/\/$/, ''); // strip trailing slash
+    }
 
     // If accessing via IP, use relative path to leverage Vite proxy
     // This supports accessing the app from other devices on the network via the frontend port (5173)

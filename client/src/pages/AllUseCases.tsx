@@ -10,6 +10,8 @@ import { FacilitatorAddUseCaseModal } from '../components/usecases/FacilitatorAd
 
 const API_BASE = API_BASE_URL;
 
+const SHORTLIST_STORAGE_KEY_PREFIX = 'qbrain_usecase_shortlist_';
+
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 interface WorkshopInfo {
@@ -61,10 +63,31 @@ const formatDate = (d: string | null) =>
 
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
+function getShortlistIds(userId: string | undefined): Set<string> {
+  try {
+    const key = `${SHORTLIST_STORAGE_KEY_PREFIX}${userId ?? 'anonymous'}`;
+    const raw = localStorage.getItem(key);
+    if (!raw) return new Set();
+    const arr = JSON.parse(raw) as unknown;
+    return new Set(Array.isArray(arr) ? arr.filter((x): x is string => typeof x === 'string') : []);
+  } catch {
+    return new Set();
+  }
+}
+
+function saveShortlistIds(userId: string | undefined, ids: string[]) {
+  try {
+    const key = `${SHORTLIST_STORAGE_KEY_PREFIX}${userId ?? 'anonymous'}`;
+    localStorage.setItem(key, JSON.stringify(ids));
+  } catch {
+    // ignore
+  }
+}
+
 export function AllUseCases() {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { token } = useAuth();
+  const { token, user } = useAuth();
 
   const [useCases, setUseCases]         = useState<UseCase[]>([]);
   const [isLoading, setIsLoading]       = useState(true);
@@ -85,7 +108,7 @@ export function AllUseCases() {
 
   // ── Fetch ────────────────────────────────────────────────────────────────────
 
-  useEffect(() => { fetchAllUseCases(); }, [token]);
+  useEffect(() => { fetchAllUseCases(); }, [token, user?.id]);
 
   const fetchAllUseCases = async () => {
     if (!token) { navigate('/facilitator-login'); return; }
@@ -99,7 +122,8 @@ export function AllUseCases() {
         throw new Error('Failed to fetch use cases');
       }
       const data: UseCase[] = await res.json();
-      setUseCases(data.map(uc => ({ ...uc, shortlisted: false })));
+      const shortlistIds = getShortlistIds(user?.id);
+      setUseCases(data.map(uc => ({ ...uc, shortlisted: shortlistIds.has(uc.id) })));
     } catch (e) {
       toast.error(t('common.error'));
       console.error(e);
@@ -158,8 +182,14 @@ export function AllUseCases() {
 
   // ── Mutations ─────────────────────────────────────────────────────────────────
 
-  const toggleShortlist = (id: string) =>
-    setUseCases(prev => prev.map(uc => uc.id === id ? { ...uc, shortlisted: !uc.shortlisted } : uc));
+  const toggleShortlist = (id: string) => {
+    setUseCases(prev => {
+      const next = prev.map(uc => uc.id === id ? { ...uc, shortlisted: !uc.shortlisted } : uc);
+      const newShortlistIds = next.filter(uc => uc.shortlisted).map(uc => uc.id);
+      saveShortlistIds(user?.id, newShortlistIds);
+      return next;
+    });
+  };
 
   const handleStatusChange = (id: string, newStatus: string) =>
     setUseCases(prev => prev.map(uc => uc.id === id ? { ...uc, status: newStatus } : uc));
