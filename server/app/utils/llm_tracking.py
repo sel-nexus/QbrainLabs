@@ -11,6 +11,9 @@ logger = logging.getLogger(__name__)
 
 # Cost rates in cents per 1k tokens (prompt / completion)
 COST_RATES: Dict[str, Dict[str, float]] = {
+    "gpt-4.1":       {"prompt": 2.0,   "completion": 8.0},
+    "gpt-4.1-mini":  {"prompt": 0.4,   "completion": 1.6},
+    "gpt-4.1-nano":  {"prompt": 0.1,   "completion": 0.4},
     "gpt-4o":        {"prompt": 0.5,   "completion": 1.5},
     "gpt-4o-mini":   {"prompt": 0.015, "completion": 0.06},
     "gpt-4":         {"prompt": 3.0,   "completion": 6.0},
@@ -19,8 +22,22 @@ COST_RATES: Dict[str, Dict[str, float]] = {
     "default":       {"prompt": 1.0,   "completion": 2.0},
 }
 
+_tiktoken_encoder = None
 
-def get_usage_from_response(response: Any) -> Dict[str, int]:
+
+def _estimate_tokens(text: str) -> int:
+    """Estimate token count using tiktoken (cl100k_base, used by GPT-4 family)."""
+    global _tiktoken_encoder
+    try:
+        if _tiktoken_encoder is None:
+            import tiktoken
+            _tiktoken_encoder = tiktoken.get_encoding("cl100k_base")
+        return len(_tiktoken_encoder.encode(text))
+    except Exception:
+        return max(1, len(text) // 4)
+
+
+def get_usage_from_response(response: Any, prompt_text: str = "") -> Dict[str, int]:
     """
     Extract token counts from a LangChain / OpenAI response object.
 
@@ -29,6 +46,7 @@ def get_usage_from_response(response: Any) -> Dict[str, int]:
       - AIMessage.response_metadata["token_usage"]  (older LangChain)
       - raw OpenAI response dict with "usage" key
       - AzureChatOpenAI response_metadata["usage"]
+      - tiktoken estimation fallback when metadata is unavailable
     """
     try:
         # 1. Newer LangChain: usage_metadata attribute
@@ -43,7 +61,6 @@ def get_usage_from_response(response: Any) -> Dict[str, int]:
         # 2. response_metadata (LangChain generic / Azure)
         if hasattr(response, 'response_metadata') and response.response_metadata:
             rm = response.response_metadata
-            # OpenAI / Azure style
             tu = rm.get("token_usage") or rm.get("usage") or {}
             prompt = tu.get("prompt_tokens", 0) or tu.get("input_tokens", 0)
             completion = tu.get("completion_tokens", 0) or tu.get("output_tokens", 0)
@@ -58,6 +75,22 @@ def get_usage_from_response(response: Any) -> Dict[str, int]:
             completion = usage.get("completion_tokens", 0) or usage.get("output_tokens", 0)
             if prompt or completion:
                 return {"prompt": prompt, "completion": completion}
+
+        # 4. Fallback: estimate tokens via tiktoken when LangChain doesn't provide usage
+        content = ""
+        if hasattr(response, 'content'):
+            content = response.content or ""
+        elif isinstance(response, str):
+            content = response
+
+        if content or prompt_text:
+            est_prompt = _estimate_tokens(prompt_text) if prompt_text else 0
+            est_completion = _estimate_tokens(content) if content else 0
+            if est_prompt or est_completion:
+                logger.debug(
+                    f"[LLM Tracking] tiktoken estimate: prompt~{est_prompt} completion~{est_completion}"
+                )
+                return {"prompt": est_prompt, "completion": est_completion}
 
         logger.debug("[LLM Tracking] No token usage found in response object")
         return {"prompt": 0, "completion": 0}

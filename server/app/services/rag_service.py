@@ -194,7 +194,7 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
             response = await self.llm.ainvoke([message])
             
             # Track Usage
-            usage = get_usage_from_response(response)
+            usage = get_usage_from_response(response, prompt_text=prompt_text)
             await track_llm_usage(
                 feature="enhance",
                 model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
@@ -255,7 +255,7 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
         response = await chain.ainvoke({"solution": solution_text})
         
         # Track Usage
-        usage = get_usage_from_response(response)
+        usage = get_usage_from_response(response, prompt_text=solution_text)
         await track_llm_usage(
             feature="feasibility",
             model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
@@ -391,7 +391,7 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
         })
         
         # Track Usage
-        usage = get_usage_from_response(est_res)
+        usage = get_usage_from_response(est_res, prompt_text=use_case_title)
         await track_llm_usage(
             feature="roi_robust",
             model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
@@ -481,7 +481,7 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
         })
         
         # Track Usage
-        usage = get_usage_from_response(response)
+        usage = get_usage_from_response(response, prompt_text=str(use_case_data.get("title", "")))
         await track_llm_usage(
             feature="business_case_full",
             model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
@@ -611,7 +611,7 @@ Return ONLY valid JSON in this exact format:
             response = await self.llm.ainvoke([message])
 
             # Track usage
-            usage = get_usage_from_response(response)
+            usage = get_usage_from_response(response, prompt_text=prompt_text)
             await track_llm_usage(
                 feature="business_value",
                 model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
@@ -711,7 +711,7 @@ Return valid JSON:
             response = await self.llm.ainvoke([message])
 
             # Track usage
-            usage = get_usage_from_response(response)
+            usage = get_usage_from_response(response, prompt_text=prompt_text)
             await track_llm_usage(
                 feature="technical",
                 model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
@@ -1338,7 +1338,7 @@ If not relevant, return: {{"relevance_score": 0, "impact_type": "none", "suggest
                 response = await self.llm.ainvoke([message])
 
                 # Track usage per invocation
-                _usage = get_usage_from_response(response)
+                _usage = get_usage_from_response(response, prompt_text=analysis_prompt)
                 await track_llm_usage(
                     feature="knowledge_impact",
                     model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),

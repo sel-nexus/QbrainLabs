@@ -574,12 +574,41 @@ async def deactivate_user(
 # ============================================================================
 
 def _apply_date_filter(query, start_date, end_date):
-    """Helper to apply optional date range filters."""
+    """Helper to apply optional date range filters.
+    Strips timezone info to avoid offset-naive vs offset-aware mismatch
+    when the DB column is TIMESTAMP WITHOUT TIME ZONE."""
     if start_date:
+        if start_date.tzinfo is not None:
+            start_date = start_date.replace(tzinfo=None)
         query = query.where(LLMUsageLog.created_at >= start_date)
     if end_date:
+        if end_date.tzinfo is not None:
+            end_date = end_date.replace(tzinfo=None)
         query = query.where(LLMUsageLog.created_at <= end_date)
     return query
+
+
+def _int(v):
+    """Coerce to int for JSON-safe response (DB may return Decimal/long)."""
+    if v is None:
+        return 0
+    try:
+        return int(v)
+    except (TypeError, ValueError):
+        return 0
+
+
+_EMPTY_LLM_SUMMARY = LLMUsageSummary(
+    total_calls=0,
+    total_prompt_tokens=0,
+    total_completion_tokens=0,
+    total_tokens=0,
+    estimated_cost_cents=0,
+    unique_users=0,
+    unique_workshops=0,
+    success_count=0,
+    error_count=0,
+)
 
 
 @router.get("/llm-usage/summary", response_model=LLMUsageSummary)
@@ -590,17 +619,6 @@ async def get_llm_usage_summary(
     end_date: Optional[datetime] = Query(None, description="Filter logs until this date"),
 ):
     """Get overall LLM usage statistics with optional date range filtering."""
-    empty = LLMUsageSummary(
-        total_calls=0,
-        total_prompt_tokens=0,
-        total_completion_tokens=0,
-        total_tokens=0,
-        estimated_cost_cents=0,
-        unique_users=0,
-        unique_workshops=0,
-        success_count=0,
-        error_count=0,
-    )
     try:
         base = select(
             func.count(LLMUsageLog.id).label('total_calls'),
@@ -617,7 +635,7 @@ async def get_llm_usage_summary(
 
         # When no rows match (or empty table), aggregates can still return one row; guard against None
         if row is None:
-            return empty
+            return _EMPTY_LLM_SUMMARY
 
         # Count successes / errors in a second cheap query
         sc_query = _apply_date_filter(
@@ -631,15 +649,6 @@ async def get_llm_usage_summary(
         sc_result = await db.execute(sc_query)
         ec_result = await db.execute(ec_query)
 
-        # Coerce to int (DB may return Decimal/long); ensures JSON-safe response
-        def _int(v):
-            if v is None:
-                return 0
-            try:
-                return int(v)
-            except (TypeError, ValueError):
-                return 0
-
         return LLMUsageSummary(
             total_calls=_int(row.total_calls),
             total_prompt_tokens=_int(row.total_prompt_tokens),
@@ -651,193 +660,234 @@ async def get_llm_usage_summary(
             success_count=_int(sc_result.scalar()),
             error_count=_int(ec_result.scalar()),
         )
-    except (ProgrammingError, OperationalError) as e:
-        # Table may not exist yet (migration not run); return empty summary so page loads
-        return empty
+    except (ProgrammingError, OperationalError):
+        return _EMPTY_LLM_SUMMARY
     except Exception as e:
-        # Any other error (e.g. missing table on some drivers): return empty so page loads
         logging.getLogger(__name__).warning("LLM usage summary failed, returning empty: %s", e)
-        return empty
+        return _EMPTY_LLM_SUMMARY
+    except BaseException as e:
+        logging.getLogger(__name__).warning("LLM usage summary unexpected error, returning empty: %s", e)
+        return _EMPTY_LLM_SUMMARY
 
 
 @router.get("/llm-usage/by-feature", response_model=List[LLMUsageByFeature])
 async def get_llm_usage_by_feature(
     admin: User = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
-    start_date: datetime = None,
-    end_date: datetime = None
+    start_date: Optional[datetime] = Query(None),
+    end_date: Optional[datetime] = Query(None),
 ):
     """Get LLM usage grouped by feature."""
-    query = _apply_date_filter(
-        select(
-            LLMUsageLog.feature,
-            func.count(LLMUsageLog.id).label('call_count'),
-            func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
-            func.coalesce(func.sum(LLMUsageLog.prompt_tokens), 0).label('total_prompt_tokens'),
-            func.coalesce(func.sum(LLMUsageLog.completion_tokens), 0).label('total_completion_tokens'),
-            func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents'),
-        ).group_by(LLMUsageLog.feature
-        ).order_by(func.count(LLMUsageLog.id).desc()),
-        start_date, end_date
-    )
-    result = await db.execute(query)
-    rows = result.all()
-    return [
-        LLMUsageByFeature(
-            feature=row.feature,
-            call_count=row.call_count,
-            total_tokens=row.total_tokens or 0,
-            total_prompt_tokens=row.total_prompt_tokens or 0,
-            total_completion_tokens=row.total_completion_tokens or 0,
-            estimated_cost_cents=row.estimated_cost_cents or 0,
+    try:
+        query = _apply_date_filter(
+            select(
+                LLMUsageLog.feature,
+                func.count(LLMUsageLog.id).label('call_count'),
+                func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
+                func.coalesce(func.sum(LLMUsageLog.prompt_tokens), 0).label('total_prompt_tokens'),
+                func.coalesce(func.sum(LLMUsageLog.completion_tokens), 0).label('total_completion_tokens'),
+                func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents'),
+            ).group_by(LLMUsageLog.feature
+            ).order_by(func.count(LLMUsageLog.id).desc()),
+            start_date, end_date
         )
-        for row in rows
-    ]
+        result = await db.execute(query)
+        rows = result.all()
+        return [
+            LLMUsageByFeature(
+                feature=str(row.feature) if row.feature else "unknown",
+                call_count=_int(row.call_count),
+                total_tokens=_int(row.total_tokens),
+                total_prompt_tokens=_int(row.total_prompt_tokens),
+                total_completion_tokens=_int(row.total_completion_tokens),
+                estimated_cost_cents=_int(row.estimated_cost_cents),
+            )
+            for row in rows
+        ]
+    except Exception as e:
+        logging.getLogger(__name__).warning("LLM usage by-feature failed: %s", e)
+        return []
 
 
 @router.get("/llm-usage/by-workshop", response_model=List[LLMUsageByWorkshop])
 async def get_llm_usage_by_workshop(
     admin: User = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
-    start_date: datetime = None,
-    end_date: datetime = None,
+    start_date: Optional[datetime] = Query(None),
+    end_date: Optional[datetime] = Query(None),
     limit: int = 20
 ):
     """Get LLM usage grouped by workshop, ordered by call count."""
-    query = _apply_date_filter(
-        select(
-            LLMUsageLog.workshop_id,
-            Workshop.title.label('workshop_title'),
-            func.count(LLMUsageLog.id).label('call_count'),
-            func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
-            func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents')
-        ).outerjoin(Workshop, LLMUsageLog.workshop_id == Workshop.id
-        ).where(LLMUsageLog.workshop_id.isnot(None)
-        ).group_by(LLMUsageLog.workshop_id, Workshop.title
-        ).order_by(func.count(LLMUsageLog.id).desc()
-        ).limit(limit),
-        start_date, end_date
-    )
-    result = await db.execute(query)
-    rows = result.all()
-    return [
-        LLMUsageByWorkshop(
-            workshop_id=str(row.workshop_id) if row.workshop_id else "",
-            workshop_title=row.workshop_title,
-            call_count=row.call_count,
-            total_tokens=row.total_tokens or 0,
-            estimated_cost_cents=row.estimated_cost_cents or 0
+    try:
+        query = _apply_date_filter(
+            select(
+                LLMUsageLog.workshop_id,
+                Workshop.title.label('workshop_title'),
+                func.count(LLMUsageLog.id).label('call_count'),
+                func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
+                func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents')
+            ).outerjoin(Workshop, LLMUsageLog.workshop_id == Workshop.id
+            ).where(LLMUsageLog.workshop_id.isnot(None)
+            ).group_by(LLMUsageLog.workshop_id, Workshop.title
+            ).order_by(func.count(LLMUsageLog.id).desc()
+            ).limit(limit),
+            start_date, end_date
         )
-        for row in rows
-    ]
+        result = await db.execute(query)
+        rows = result.all()
+        return [
+            LLMUsageByWorkshop(
+                workshop_id=str(row.workshop_id) if row.workshop_id else "",
+                workshop_title=row.workshop_title,
+                call_count=_int(row.call_count),
+                total_tokens=_int(row.total_tokens),
+                estimated_cost_cents=_int(row.estimated_cost_cents)
+            )
+            for row in rows
+        ]
+    except Exception as e:
+        logging.getLogger(__name__).warning("LLM usage by-workshop failed: %s", e)
+        return []
 
 
 @router.get("/llm-usage/by-user", response_model=List[LLMUsageByUser])
 async def get_llm_usage_by_user(
     admin: User = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
-    start_date: datetime = None,
-    end_date: datetime = None,
+    start_date: Optional[datetime] = Query(None),
+    end_date: Optional[datetime] = Query(None),
     limit: int = 20
 ):
     """Get LLM usage grouped by user, ordered by call count."""
-    query = _apply_date_filter(
-        select(
-            LLMUsageLog.user_id,
-            User.email.label('user_email'),
-            User.full_name.label('user_name'),
-            func.count(LLMUsageLog.id).label('call_count'),
-            func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
-            func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents')
-        ).outerjoin(User, LLMUsageLog.user_id == User.id
-        ).where(LLMUsageLog.user_id.isnot(None)
-        ).group_by(LLMUsageLog.user_id, User.email, User.full_name
-        ).order_by(func.count(LLMUsageLog.id).desc()
-        ).limit(limit),
-        start_date, end_date
-    )
-    result = await db.execute(query)
-    rows = result.all()
-    return [
-        LLMUsageByUser(
-            user_id=str(row.user_id) if row.user_id else "",
-            user_email=row.user_email,
-            user_name=row.user_name,
-            call_count=row.call_count,
-            total_tokens=row.total_tokens or 0,
-            estimated_cost_cents=row.estimated_cost_cents or 0
+    try:
+        query = _apply_date_filter(
+            select(
+                LLMUsageLog.user_id,
+                User.email.label('user_email'),
+                User.full_name.label('user_name'),
+                func.count(LLMUsageLog.id).label('call_count'),
+                func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
+                func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents')
+            ).outerjoin(User, LLMUsageLog.user_id == User.id
+            ).where(LLMUsageLog.user_id.isnot(None)
+            ).group_by(LLMUsageLog.user_id, User.email, User.full_name
+            ).order_by(func.count(LLMUsageLog.id).desc()
+            ).limit(limit),
+            start_date, end_date
         )
-        for row in rows
-    ]
+        result = await db.execute(query)
+        rows = result.all()
+        return [
+            LLMUsageByUser(
+                user_id=str(row.user_id) if row.user_id else "",
+                user_email=row.user_email,
+                user_name=row.user_name,
+                call_count=_int(row.call_count),
+                total_tokens=_int(row.total_tokens),
+                estimated_cost_cents=_int(row.estimated_cost_cents)
+            )
+            for row in rows
+        ]
+    except Exception as e:
+        logging.getLogger(__name__).warning("LLM usage by-user failed: %s", e)
+        return []
 
 
 @router.get("/llm-usage/by-model", response_model=List[LLMUsageByModel])
 async def get_llm_usage_by_model(
     admin: User = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
-    start_date: datetime = None,
-    end_date: datetime = None
+    start_date: Optional[datetime] = Query(None),
+    end_date: Optional[datetime] = Query(None),
 ):
     """Get LLM usage grouped by model name."""
-    query = _apply_date_filter(
-        select(
-            func.coalesce(LLMUsageLog.model_name, 'unknown').label('model_name'),
-            func.count(LLMUsageLog.id).label('call_count'),
-            func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
-            func.coalesce(func.sum(LLMUsageLog.prompt_tokens), 0).label('total_prompt_tokens'),
-            func.coalesce(func.sum(LLMUsageLog.completion_tokens), 0).label('total_completion_tokens'),
-            func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents'),
-        ).group_by(func.coalesce(LLMUsageLog.model_name, 'unknown')
-        ).order_by(func.count(LLMUsageLog.id).desc()),
-        start_date, end_date
-    )
-    result = await db.execute(query)
-    rows = result.all()
-    return [
-        LLMUsageByModel(
-            model_name=row.model_name,
-            call_count=row.call_count,
-            total_tokens=row.total_tokens or 0,
-            total_prompt_tokens=row.total_prompt_tokens or 0,
-            total_completion_tokens=row.total_completion_tokens or 0,
-            estimated_cost_cents=row.estimated_cost_cents or 0,
-        )
-        for row in rows
-    ]
+    try:
+        from sqlalchemy import text as sa_text
+
+        date_clause = ""
+        params: dict = {}
+        if start_date:
+            if start_date.tzinfo is not None:
+                start_date = start_date.replace(tzinfo=None)
+            date_clause += " WHERE created_at >= :start_date"
+            params["start_date"] = start_date
+        if end_date:
+            if end_date.tzinfo is not None:
+                end_date = end_date.replace(tzinfo=None)
+            joiner = " AND" if date_clause else " WHERE"
+            date_clause += f"{joiner} created_at <= :end_date"
+            params["end_date"] = end_date
+
+        sql = sa_text(f"""
+            SELECT
+                COALESCE(model_name, 'unknown') AS model_name,
+                COUNT(id) AS call_count,
+                COALESCE(SUM(total_tokens), 0) AS total_tokens,
+                COALESCE(SUM(prompt_tokens), 0) AS total_prompt_tokens,
+                COALESCE(SUM(completion_tokens), 0) AS total_completion_tokens,
+                COALESCE(SUM(estimated_cost_cents), 0) AS estimated_cost_cents
+            FROM llm_usage_logs
+            {date_clause}
+            GROUP BY COALESCE(model_name, 'unknown')
+            ORDER BY call_count DESC
+        """)
+        result = await db.execute(sql, params)
+        rows = result.all()
+        return [
+            LLMUsageByModel(
+                model_name=str(row.model_name) if row.model_name else "unknown",
+                call_count=_int(row.call_count),
+                total_tokens=_int(row.total_tokens),
+                total_prompt_tokens=_int(row.total_prompt_tokens),
+                total_completion_tokens=_int(row.total_completion_tokens),
+                estimated_cost_cents=_int(row.estimated_cost_cents),
+            )
+            for row in rows
+        ]
+    except (ProgrammingError, OperationalError) as e:
+        logging.getLogger(__name__).warning("LLM usage by-model DB error: %s", e)
+        return []
+    except Exception as e:
+        logging.getLogger(__name__).warning("LLM usage by-model failed: %s", e)
+        return []
 
 
 @router.get("/llm-usage/by-day", response_model=List[LLMUsageByDay])
 async def get_llm_usage_by_day(
     admin: User = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
-    start_date: datetime = None,
-    end_date: datetime = None,
+    start_date: Optional[datetime] = Query(None),
+    end_date: Optional[datetime] = Query(None),
     days: int = 30
 ):
     """Get daily LLM usage trend. Defaults to last 30 days."""
-    if not start_date:
-        start_date = datetime.utcnow() - timedelta(days=days)
-    query = _apply_date_filter(
-        select(
-            func.date(LLMUsageLog.created_at).label('date'),
-            func.count(LLMUsageLog.id).label('call_count'),
-            func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
-            func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents'),
-        ).group_by(func.date(LLMUsageLog.created_at)
-        ).order_by(func.date(LLMUsageLog.created_at).asc()),
-        start_date, end_date
-    )
-    result = await db.execute(query)
-    rows = result.all()
-    return [
-        LLMUsageByDay(
-            date=str(row.date),
-            call_count=row.call_count,
-            total_tokens=row.total_tokens or 0,
-            estimated_cost_cents=row.estimated_cost_cents or 0,
+    try:
+        if not start_date:
+            start_date = datetime.utcnow() - timedelta(days=days)
+        query = _apply_date_filter(
+            select(
+                func.date(LLMUsageLog.created_at).label('date'),
+                func.count(LLMUsageLog.id).label('call_count'),
+                func.coalesce(func.sum(LLMUsageLog.total_tokens), 0).label('total_tokens'),
+                func.coalesce(func.sum(LLMUsageLog.estimated_cost_cents), 0).label('estimated_cost_cents'),
+            ).group_by(func.date(LLMUsageLog.created_at)
+            ).order_by(func.date(LLMUsageLog.created_at).asc()),
+            start_date, end_date
         )
-        for row in rows
-    ]
+        result = await db.execute(query)
+        rows = result.all()
+        return [
+            LLMUsageByDay(
+                date=str(row.date) if row.date is not None else "",
+                call_count=_int(row.call_count),
+                total_tokens=_int(row.total_tokens),
+                estimated_cost_cents=_int(row.estimated_cost_cents),
+            )
+            for row in rows
+        ]
+    except Exception as e:
+        logging.getLogger(__name__).warning("LLM usage by-day failed: %s", e)
+        return []
 
 
 @router.get("/llm-usage/recent", response_model=List[LLMRecentLog])
@@ -849,27 +899,31 @@ async def get_llm_usage_recent(
     feature: Optional[str] = None,
 ):
     """Get recent individual LLM usage log entries with optional feature filter."""
-    query = select(LLMUsageLog).order_by(LLMUsageLog.created_at.desc()).limit(limit).offset(offset)
-    if feature:
-        query = query.where(LLMUsageLog.feature == feature)
-    result = await db.execute(query)
-    rows = result.scalars().all()
-    return [
-        LLMRecentLog(
-            id=str(row.id),
-            feature=row.feature,
-            model_name=row.model_name,
-            prompt_tokens=row.prompt_tokens or 0,
-            completion_tokens=row.completion_tokens or 0,
-            total_tokens=row.total_tokens or 0,
-            estimated_cost_cents=row.estimated_cost_cents or 0,
-            success=row.success,
-            workshop_id=str(row.workshop_id) if row.workshop_id else None,
-            user_id=str(row.user_id) if row.user_id else None,
-            created_at=row.created_at,
-        )
-        for row in rows
-    ]
+    try:
+        query = select(LLMUsageLog).order_by(LLMUsageLog.created_at.desc()).limit(limit).offset(offset)
+        if feature:
+            query = query.where(LLMUsageLog.feature == feature)
+        result = await db.execute(query)
+        rows = result.scalars().all()
+        return [
+            LLMRecentLog(
+                id=str(row.id),
+                feature=str(row.feature) if row.feature else "",
+                model_name=row.model_name,
+                prompt_tokens=_int(row.prompt_tokens),
+                completion_tokens=_int(row.completion_tokens),
+                total_tokens=_int(row.total_tokens),
+                estimated_cost_cents=_int(row.estimated_cost_cents),
+                success=str(row.success) if row.success else "true",
+                workshop_id=str(row.workshop_id) if row.workshop_id else None,
+                user_id=str(row.user_id) if row.user_id else None,
+                created_at=row.created_at,
+            )
+            for row in rows
+        ]
+    except Exception as e:
+        logging.getLogger(__name__).warning("LLM usage recent failed: %s", e)
+        return []
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -905,6 +959,7 @@ PREVIEW_MAX_ROWS = 20
 @router.post("/usecases/import/preview", response_model=List[Dict[str, Any]])
 async def preview_import_use_cases(
     file: UploadFile = File(...),
+    offset: int = Query(0, ge=0),
     admin: User = Depends(require_admin),
     db: AsyncSession = Depends(get_db),
 ):
@@ -912,6 +967,7 @@ async def preview_import_use_cases(
     Upload an Excel (.xlsx), Word (.docx), or PDF file containing use cases.
     Returns AI-enhanced previews with duplicate detection — nothing is saved yet.
     Limited to PREVIEW_MAX_ROWS per request to avoid proxy/gateway timeouts.
+    Accepts an `offset` query param to paginate through large files in batches.
     """
     import logging
     from app.services.file_service import file_service
@@ -920,11 +976,12 @@ async def preview_import_use_cases(
     logger = logging.getLogger(__name__)
     try:
         items, total_extracted = await _preview_import_use_cases_impl(
-            file, db, file_service, rag_service, max_rows=PREVIEW_MAX_ROWS
+            file, db, file_service, rag_service, max_rows=PREVIEW_MAX_ROWS, offset=offset
         )
         headers = {
             "X-Total-Extracted": str(total_extracted),
             "X-Preview-Limit": str(PREVIEW_MAX_ROWS),
+            "X-Batch-Offset": str(offset),
         }
         return JSONResponse(content=items, headers=headers)
     except HTTPException:
@@ -934,7 +991,7 @@ async def preview_import_use_cases(
         raise HTTPException(status_code=500, detail=str(exc))
 
 
-async def _preview_import_use_cases_impl(file, db, file_service, rag_service, max_rows: int = 20):
+async def _preview_import_use_cases_impl(file, db, file_service, rag_service, max_rows: int = 20, offset: int = 0):
     # 1. Extract content from file
     try:
         extracted = await file_service.extract_text_from_file(file)
@@ -975,7 +1032,7 @@ async def _preview_import_use_cases_impl(file, db, file_service, rag_service, ma
         raise HTTPException(status_code=422, detail="No use cases could be extracted from the file")
 
     total_extracted = len(raw_candidates)
-    raw_candidates = raw_candidates[:max_rows]
+    raw_candidates = raw_candidates[offset:offset + max_rows]
 
     # 3. Fetch existing use cases (only id, title, description to avoid missing columns e.g. facilitator_group_id)
     use_cases_table = UseCase.__table__

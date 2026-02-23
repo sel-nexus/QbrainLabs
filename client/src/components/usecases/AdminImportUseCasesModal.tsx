@@ -87,7 +87,17 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
   const [importedCount, setImportedCount] = useState(0);
   const [isSubmitting, setIsSubmitting]   = useState(false);
 
+  const [batchOffset, setBatchOffset]       = useState(0);
+  const [totalExtracted, setTotalExtracted] = useState(0);
+  const [totalImported, setTotalImported]   = useState(0);
+
+  const BATCH_SIZE = 20;
+
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const currentBatch = Math.floor(batchOffset / BATCH_SIZE) + 1;
+  const totalBatches = totalExtracted > 0 ? Math.ceil(totalExtracted / BATCH_SIZE) : 1;
+  const hasMoreBatches = totalExtracted > 0 && (batchOffset + BATCH_SIZE) < totalExtracted;
 
   // ── Reset when closed ─────────────────────────────────────────────────────
 
@@ -97,6 +107,9 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
     setRows([]);
     setIsDragging(false);
     setIsSubmitting(false);
+    setBatchOffset(0);
+    setTotalExtracted(0);
+    setTotalImported(0);
     onClose();
   };
 
@@ -122,7 +135,7 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
 
   // ── Step 1 → 2: Upload & Process ─────────────────────────────────────────
 
-  const processFile = async () => {
+  const processFile = async (offset = 0) => {
     if (!file || !token) return;
     setStep('processing');
 
@@ -130,7 +143,7 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
     formData.append('file', file);
 
     try {
-      const res = await fetch(`${API_BASE}/api/admin/usecases/import/preview`, {
+      const res = await fetch(`${API_BASE}/api/admin/usecases/import/preview?offset=${offset}`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: formData,
@@ -169,18 +182,12 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
       }
 
       const items: PreviewItem[] = await res.json();
-      const totalExtracted = res.headers.get('X-Total-Extracted');
-      const previewLimit = res.headers.get('X-Preview-Limit');
-      if (
-        totalExtracted != null &&
-        previewLimit != null &&
-        parseInt(totalExtracted, 10) > parseInt(previewLimit, 10)
-      ) {
-        toast.info(
-          `Preview shows first ${previewLimit} of ${totalExtracted} rows. Import the rest by splitting the file or run import again with a smaller CSV.`,
-          { duration: 6000 }
-        );
+      const headerTotal = res.headers.get('X-Total-Extracted');
+      if (headerTotal != null) {
+        setTotalExtracted(parseInt(headerTotal, 10));
       }
+
+      setBatchOffset(offset);
 
       setRows(items.map(item => ({
         temp_id:          item.temp_id,
@@ -194,13 +201,13 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
         is_duplicate:     item.is_duplicate,
         duplicate_of:     item.duplicate_of,
         similarity_score: item.similarity_score,
-        selected:         !item.is_duplicate,   // Pre-deselect duplicates
+        selected:         !item.is_duplicate,
       })));
 
       setStep('review');
     } catch (e: unknown) {
       toast.error((e as Error).message || 'Failed to process file');
-      setStep('upload');
+      setStep(offset === 0 ? 'upload' : 'review');
     }
   };
 
@@ -248,10 +255,22 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
         throw new Error(msg);
       }
       const result = await res.json();
-      setImportedCount(result.imported ?? selected.length);
-      setStep('done');
+      const batchImported = result.imported ?? selected.length;
+      const newTotalImported = totalImported + batchImported;
+      setTotalImported(newTotalImported);
+      setImportedCount(batchImported);
       onSuccess();
-      toast.success(`${result.imported} use cases imported successfully`);
+
+      const nextOffset = batchOffset + BATCH_SIZE;
+      if (nextOffset < totalExtracted) {
+        toast.success(`Batch ${currentBatch} complete — ${batchImported} use cases imported. Loading next batch…`);
+        setIsSubmitting(false);
+        processFile(nextOffset);
+      } else {
+        setImportedCount(newTotalImported);
+        setStep('done');
+        toast.success(`All ${newTotalImported} use cases imported successfully`);
+      }
     } catch (e: unknown) {
       toast.error((e as Error).message || 'Failed to import use cases');
     } finally {
@@ -526,7 +545,10 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
               <div style={{ width: 56, height: 56, borderRadius: '50%', border: '4px solid #f3f4f6', borderTopColor: '#f59e0b', animation: 'spin 0.9s linear infinite', marginBottom: 24 }} />
               <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
               <div style={{ fontSize: 17, fontWeight: 700, color: 'var(--theme-text-primary, #111827)', marginBottom: 8 }}>
-                Reviewing with AI…
+                {batchOffset > 0
+                  ? `Processing Batch ${Math.floor(batchOffset / BATCH_SIZE) + 1} of ${totalBatches}…`
+                  : 'Reviewing with AI…'
+                }
               </div>
               <div style={{ fontSize: 13, color: '#9ca3af', textAlign: 'center', maxWidth: 380 }}>
                 {file && ['jpg','jpeg','png'].includes(file.name.split('.').pop()?.toLowerCase() ?? '')
@@ -544,10 +566,36 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
           {step === 'review' && (
             <>
               <div className="aim-body" style={{ padding: '16px 28px' }}>
+                {/* Batch progress bar */}
+                {totalBatches > 1 && (
+                  <div style={{ marginBottom: 16 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+                      <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--theme-text-primary, #111827)' }}>
+                        Batch {currentBatch} of {totalBatches}
+                      </span>
+                      <span style={{ fontSize: 12, color: '#9ca3af' }}>
+                        {totalImported} of {totalExtracted} total use cases imported
+                      </span>
+                    </div>
+                    <div style={{ width: '100%', height: 6, background: '#f3f4f6', borderRadius: 3, overflow: 'hidden' }}>
+                      <div style={{
+                        width: `${((totalImported + rows.filter(r => r.selected).length) / totalExtracted) * 100}%`,
+                        height: '100%',
+                        background: 'linear-gradient(90deg, #22c55e, #f59e0b)',
+                        borderRadius: 3,
+                        transition: 'width 0.3s ease',
+                      }} />
+                    </div>
+                    <div style={{ fontSize: 11, color: '#9ca3af', marginTop: 4 }}>
+                      Showing rows {batchOffset + 1}–{Math.min(batchOffset + BATCH_SIZE, totalExtracted)} of {totalExtracted}
+                    </div>
+                  </div>
+                )}
+
                 {/* Toolbar */}
                 <div style={{ display: 'flex', gap: 10, alignItems: 'center', marginBottom: 14, flexWrap: 'wrap' }}>
                   <span style={{ fontSize: 13, color: '#9ca3af' }}>
-                    {rows.length} use cases extracted · {selectedCount} selected
+                    {rows.length} use cases in this batch · {selectedCount} selected
                   </span>
                   <button
                     className="aim-btn aim-btn-secondary"
@@ -670,13 +718,29 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
               </div>
 
               <div className="aim-footer">
-                <button className="aim-btn aim-btn-secondary" onClick={() => setStep('upload')}>← Back</button>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button className="aim-btn aim-btn-secondary" onClick={() => { setBatchOffset(0); setTotalExtracted(0); setStep('upload'); }}>← Back</button>
+                  {hasMoreBatches && (
+                    <button
+                      className="aim-btn aim-btn-secondary"
+                      disabled={isSubmitting}
+                      onClick={() => processFile(batchOffset + BATCH_SIZE)}
+                    >
+                      Skip Batch →
+                    </button>
+                  )}
+                </div>
                 <button
                   className="aim-btn aim-btn-success"
                   disabled={selectedCount === 0 || isSubmitting}
                   onClick={confirmImport}
                 >
-                  {isSubmitting ? 'Importing…' : `Import ${selectedCount} Use Case${selectedCount !== 1 ? 's' : ''}`}
+                  {isSubmitting
+                    ? 'Importing…'
+                    : hasMoreBatches
+                      ? `Import ${selectedCount} & Load Next Batch →`
+                      : `Import ${selectedCount} Use Case${selectedCount !== 1 ? 's' : ''}`
+                  }
                 </button>
               </div>
             </>
@@ -694,6 +758,11 @@ export function AdminImportUseCasesModal({ isOpen, onClose, onSuccess }: Props) 
                   <strong style={{ color: '#22c55e' }}>{importedCount}</strong> use cases have been imported and auto-approved.
                   They are now visible in the AI Use Cases grid.
                 </div>
+                {totalBatches > 1 && (
+                  <div style={{ fontSize: 12, color: '#9ca3af', marginTop: 8 }}>
+                    Completed in {totalBatches} batches from {totalExtracted} total extracted rows.
+                  </div>
+                )}
               </div>
               <div className="aim-footer" style={{ justifyContent: 'flex-end' }}>
                 <button className="aim-btn aim-btn-primary" onClick={handleClose}>Close</button>

@@ -183,57 +183,59 @@ export function AdminLLMUsage() {
         return `?start_date=${d.toISOString()}`;
     }, [selectedPreset]);
 
+    const emptySummary: LLMUsageSummary = {
+        total_calls: 0,
+        total_prompt_tokens: 0,
+        total_completion_tokens: 0,
+        total_tokens: 0,
+        estimated_cost_cents: 0,
+        unique_users: 0,
+        unique_workshops: 0,
+        success_count: 0,
+        error_count: 0,
+    };
+
     const fetchAll = useCallback(async (silent = false) => {
         if (!silent) setLoading(true);
         else setRefreshing(true);
+
+        const safeJson = async (r: Response | null, fallback: unknown) => {
+            if (!r || !r.ok) return fallback;
+            return r.json().catch(() => fallback);
+        };
 
         try {
             const token = localStorage.getItem(TOKEN_KEY);
             const h = { Authorization: `Bearer ${token}` };
             const qs = buildDateParams();
+            const base = `${API_BASE}/api/admin/llm-usage`;
 
-            const [sRes, fRes, wRes, uRes, mRes, dRes, lRes] = await Promise.all([
-                fetch(`${API_BASE}/api/admin/llm-usage/summary${qs}`, { headers: h }),
-                fetch(`${API_BASE}/api/admin/llm-usage/by-feature${qs}`, { headers: h }),
-                fetch(`${API_BASE}/api/admin/llm-usage/by-workshop${qs}`, { headers: h }),
-                fetch(`${API_BASE}/api/admin/llm-usage/by-user${qs}`, { headers: h }),
-                fetch(`${API_BASE}/api/admin/llm-usage/by-model${qs}`, { headers: h }),
-                fetch(`${API_BASE}/api/admin/llm-usage/by-day${qs}`, { headers: h }),
-                fetch(`${API_BASE}/api/admin/llm-usage/recent`, { headers: h }),
+            const [sRes, fRes, wRes, uRes, mRes, dRes, lRes] = await Promise.allSettled([
+                fetch(`${base}/summary${qs}`, { headers: h }),
+                fetch(`${base}/by-feature${qs}`, { headers: h }),
+                fetch(`${base}/by-workshop${qs}`, { headers: h }),
+                fetch(`${base}/by-user${qs}`, { headers: h }),
+                fetch(`${base}/by-model${qs}`, { headers: h }),
+                fetch(`${base}/by-day${qs}`, { headers: h }),
+                fetch(`${base}/recent`, { headers: h }),
             ]);
 
-            if (!sRes.ok) {
-                const errBody = await sRes.json().catch(() => ({}));
-                let msg = 'Failed to load LLM usage summary';
-                const d = errBody?.detail;
-                if (typeof d === 'string') msg = d;
-                else if (Array.isArray(d) && d.length > 0) {
-                    const first = d[0];
-                    msg = typeof first?.msg === 'string' ? first.msg : (typeof first === 'string' ? first : msg);
-                } else if (d && typeof d === 'object' && typeof (d as { msg?: string }).msg === 'string') msg = (d as { msg: string }).msg;
-                else if (typeof errBody?.error === 'string') msg = errBody.error;
-                else if (typeof errBody?.details === 'string') msg = errBody.details;
-                else if (typeof errBody?.message === 'string') msg = errBody.message;
-                if (msg === 'Failed to load LLM usage summary' && sRes.status === 401) msg = 'Please sign in to view LLM usage.';
-                if (msg === 'Failed to load LLM usage summary' && sRes.status === 403) msg = 'Administrator access required to view LLM usage.';
-                throw new Error(msg);
-            }
-
-            const s = await sRes.json();
-            const safeJson = async (r: Response, fallback: unknown) => {
-                if (!r.ok) return fallback;
-                return r.json().catch(() => fallback);
-            };
-            const [f, w, u, m, d, l] = await Promise.all([
-                safeJson(fRes, []),
-                safeJson(wRes, []),
-                safeJson(uRes, []),
-                safeJson(mRes, []),
-                safeJson(dRes, []),
-                safeJson(lRes, []),
+            const res = (r: PromiseSettledResult<Response>) => (r.status === 'fulfilled' ? r.value : null);
+            const [s, f, w, u, m, d, l] = await Promise.all([
+                safeJson(res(sRes), emptySummary),
+                safeJson(res(fRes), []),
+                safeJson(res(wRes), []),
+                safeJson(res(uRes), []),
+                safeJson(res(mRes), []),
+                safeJson(res(dRes), []),
+                safeJson(res(lRes), []),
             ]);
 
-            setSummary(s);
+            const summaryData = s && typeof s === 'object' && 'total_calls' in s
+                ? s as LLMUsageSummary
+                : emptySummary;
+
+            setSummary(summaryData);
             setByFeature(Array.isArray(f) ? f : []);
             setByWorkshop(Array.isArray(w) ? w : []);
             setByUser(Array.isArray(u) ? u : []);
@@ -241,8 +243,33 @@ export function AdminLLMUsage() {
             setByDay(Array.isArray(d) ? d : []);
             setRecentLogs(Array.isArray(l) ? l : []);
             setLastUpdated(new Date());
-        } catch (err: any) {
-            toast.error(err.message || 'Failed to load LLM usage data');
+
+            const summaryResponse = res(sRes);
+            if (summaryResponse && !summaryResponse.ok) {
+                const errBody = await summaryResponse.json().catch(() => ({}));
+                let msg = 'LLM usage data is temporarily unavailable. Showing empty view.';
+                const d = errBody?.detail;
+                if (typeof d === 'string') msg = d;
+                else if (summaryResponse.status === 401) msg = 'Please sign in to view LLM usage.';
+                else if (summaryResponse.status === 403) msg = 'Administrator access required to view LLM usage.';
+                toast.error(msg);
+            }
+        } catch (err: unknown) {
+            setSummary(emptySummary);
+            setByFeature([]);
+            setByWorkshop([]);
+            setByUser([]);
+            setByModel([]);
+            setByDay([]);
+            setRecentLogs([]);
+            setLastUpdated(new Date());
+            const msg = err instanceof Error ? err.message : '';
+            const isNetworkError = /failed to fetch|network error|load failed|networkrequestfailed/i.test(msg || '');
+            toast.error(
+                isNetworkError
+                    ? 'Cannot reach the server. Ensure the backend is running (e.g. port 8000) and try again. Showing empty view.'
+                    : (msg || 'Failed to load LLM usage data')
+            );
         } finally {
             setLoading(false);
             setRefreshing(false);

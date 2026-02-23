@@ -1,4 +1,4 @@
-import { useNavigate, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
     LayoutDashboard,
@@ -19,14 +19,10 @@ interface AdminLayoutProps {
 }
 
 export function AdminLayout({ children, title, actions }: AdminLayoutProps) {
-    const navigate = useNavigate();
-    const location = useLocation();
     const { t } = useTranslation();
     const { theme } = useTheme();
     const isLight = theme === 'light';
     // Auth check is handled by AdminGuard wrapper in routes
-
-    const isActive = (path: string) => location.pathname === path;
 
     const navItems = [
         { path: '/admin', label: t('admin.statistics'), icon: LayoutDashboard },
@@ -49,25 +45,29 @@ export function AdminLayout({ children, title, actions }: AdminLayoutProps) {
             {/* Content area with top padding for fixed header */}
             <div className="flex pt-16">
                 {/* Sidebar */}
-                <aside className={`w-64 min-h-screen border-r p-4 ${isLight ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/10'}`}>
-                    <nav className="space-y-2">
+                <aside className={`w-64 min-w-64 flex-shrink-0 min-h-screen border-r p-4 ${isLight ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/10'}`}>
+                    <nav className="space-y-2 min-w-0">
                         {navItems.map((item) => {
                             const Icon = item.icon;
-                            const active = isActive(item.path);
+                            // end=true so "Statistics" (/admin) is only active at /admin, not at /admin/usecases etc.
+                            const end = item.path === '/admin';
                             return (
-                                <button
+                                <NavLink
                                     key={item.path}
-                                    onClick={() => navigate(item.path)}
-                                    className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition ${active
-                                        ? 'bg-amber-500/10 text-amber-600 hover:bg-amber-500/20'
-                                        : isLight
-                                            ? 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                                            : 'text-gray-400 hover:bg-white/5 hover:text-white'
-                                        }`}
+                                    to={item.path}
+                                    end={end}
+                                    className={({ isActive }) =>
+                                        `w-full flex items-center gap-3 px-4 py-3 rounded-lg transition min-w-0 ${isActive
+                                            ? 'bg-amber-500/10 text-amber-600 hover:bg-amber-500/20'
+                                            : isLight
+                                                ? 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                                                : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                                        }`
+                                    }
                                 >
-                                    <Icon className="w-5 h-5" />
-                                    <span className="font-medium">{item.label}</span>
-                                </button>
+                                    <Icon className="w-5 h-5 flex-shrink-0" />
+                                    <span className="font-medium truncate min-w-0">{item.label}</span>
+                                </NavLink>
                             );
                         })}
                     </nav>
