@@ -238,10 +238,6 @@ async def import_knowledge(
     Automatically validates and finds affected use cases.
     Creates notifications for admins to approve changes.
     """
-    # Only admins can import knowledge
-    if not current_user.is_admin:
-        raise HTTPException(status_code=403, detail="Only administrators can import knowledge")
-    
     # Parse document
     try:
         title, content = await parse_document(file)
@@ -416,9 +412,6 @@ async def validate_article(
     """
     Manually trigger validation for a knowledge article.
     """
-    if not current_user.is_admin:
-        raise HTTPException(status_code=403, detail="Only administrators can validate articles")
-    
     result = await db.execute(
         select(KnowledgeArticle).where(KnowledgeArticle.id == article_id)
     )
@@ -463,9 +456,6 @@ async def import_knowledge_from_url(
     Fetch a URL and import its content as a knowledge article.
     Automatically validates and finds affected use cases.
     """
-    if not current_user.is_admin:
-        raise HTTPException(status_code=403, detail="Only administrators can import knowledge")
-
     # Fetch URL content
     try:
         async with httpx.AsyncClient(timeout=15, follow_redirects=True) as client:
@@ -591,9 +581,6 @@ async def revalidate_article(
     """
     Re-run validation AND re-discover affected use cases for an existing article.
     """
-    if not current_user.is_admin:
-        raise HTTPException(status_code=403, detail="Only administrators can revalidate articles")
-
     result = await db.execute(
         select(KnowledgeArticle).where(KnowledgeArticle.id == article_id)
     )
@@ -672,9 +659,6 @@ async def delete_knowledge_article_endpoint(
     """
     Delete a knowledge article and its embeddings.
     """
-    if not current_user.is_admin:
-        raise HTTPException(status_code=403, detail="Only administrators can delete articles")
-    
     result = await db.execute(
         select(KnowledgeArticle).where(KnowledgeArticle.id == article_id)
     )
@@ -682,6 +666,9 @@ async def delete_knowledge_article_endpoint(
     
     if not article:
         raise HTTPException(status_code=404, detail="Knowledge article not found")
+
+    if not current_user.is_admin and str(article.imported_by) != str(current_user.id):
+        raise HTTPException(status_code=403, detail="You can only delete articles you imported")
         
     # Remove from RAG
     if article.embedding_id:
