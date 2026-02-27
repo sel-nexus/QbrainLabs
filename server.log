@@ -27081,3 +27081,631 @@ WARNING:  Invalid HTTP request received.
 WARNING:  Invalid HTTP request received.
 WARNING:  Invalid HTTP request received.
 {"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.8, "client_ip": "205.210.31.145", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-23T09:47:26.795232Z"}
+^CINFO:     Will watch for changes in these directories: ['C:\\Users\\azvmuser1\\windsurf-wrkspace\\QbrainLabs\\server']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [8576] using WatchFiles
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-02-23T12:24:14.069407Z"}
+============================================================
+RAGService Initialization Starting...
+============================================================
+OpenAI API Key: NOT SET
+Azure OpenAI API Key: SET
+Azure OpenAI Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+AI Mock Mode Setting: False
+
+[RAG] Service Mode: REAL AI
+[OK] Loaded 5 reference use cases
+
+[RAG] Initializing REAL AI components...
+   [INFO] Importing LangChain modules...
+   [OK] LangChain modules imported successfully
+
+   [AZURE] Initializing Azure OpenAI Client...
+      Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+      Deployment: gpt-4.1
+      Model: gpt-4.1
+      API Version: 2024-12-01-preview
+   [OK] Azure OpenAI Chat client initialized
+
+   [AZURE] Initializing Azure OpenAI Embeddings...
+      Deployment: text-embedding-3-large
+      Model: text-embedding-3-large
+   [OK] Azure OpenAI Embeddings initialized
+
+   [VECTOR] Initializing Vector Store with 5 documents...
+2026-02-23 12:24:22,229 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-23 12:24:22,246 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_name" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_info" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+INFO:     Started server process [15724]
+INFO:     Waiting for application startup.
+   [OK] Vector store initialized successfully
+
+   [OK] Real AI components initialization complete
+============================================================
+RAGService Initialization Complete - Mode: REAL
+============================================================
+
+{"event": "Starting application...", "level": "info", "timestamp": "2026-02-23T12:24:30.342445Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-02-23T12:24:30.499336Z"}
+INFO:     Application startup complete.
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-02-23T12:47:45.098552Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.85, "client_ip": "98.142.240.4", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-23T12:47:45.103578Z"}
+{"method": "GET", "path": "/nobody/favicon.ico", "status_code": 404, "duration_ms": 1.98, "client_ip": "98.142.240.4", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T12:47:45.198333Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.01, "client_ip": "98.142.240.4", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T12:47:45.314656Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.19, "client_ip": "98.142.240.4", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T12:47:45.480781Z"}
+{"method": "GET", "path": "/skin/default_1/images/logo.png", "status_code": 404, "duration_ms": 2.24, "client_ip": "98.142.240.4", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T12:47:45.590072Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.26, "client_ip": "98.142.240.4", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T12:47:45.674454Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 1.85, "client_ip": "98.142.240.4", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T12:47:45.774129Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 1.98, "client_ip": "98.142.240.4", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T12:47:45.857365Z"}
+{"method": "GET", "path": "/image/lgbg.jpg", "status_code": 404, "duration_ms": 2.34, "client_ip": "98.142.240.4", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T12:47:46.018869Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.25, "client_ip": "98.142.240.4", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T12:47:46.114181Z"}
+{"method": "GET", "path": "/login.rsp", "status_code": 404, "duration_ms": 3.74, "client_ip": "98.142.240.4", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T12:47:46.209140Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.31, "client_ip": "98.142.240.4", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T12:47:46.411129Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 1.9, "client_ip": "98.142.240.4", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T12:47:46.514943Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.45, "client_ip": "205.210.31.140", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-23T13:36:35.474943Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.66, "client_ip": "161.35.194.236", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-23T15:46:07.322998Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.95, "client_ip": "66.132.153.142", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-23T18:42:34.101508Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.39, "client_ip": "66.132.153.142", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-23T18:42:37.748591Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 3.48, "client_ip": "66.132.153.142", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T18:42:39.709629Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/robots.txt", "status_code": 404, "duration_ms": 1.92, "client_ip": "66.132.153.142", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T18:42:43.431006Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.92, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-23T18:45:29.290407Z"}
+{"method": "GET", "path": "/bins/", "status_code": 404, "duration_ms": 2.22, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T18:55:35.582093Z"}
+{"method": "GET", "path": "/bin/", "status_code": 404, "duration_ms": 2.2, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T19:04:40.594794Z"}
+{"method": "GET", "path": "/backup/", "status_code": 404, "duration_ms": 2.35, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T19:17:41.770505Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.86, "client_ip": "209.38.197.197", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-23T19:19:54.371410Z"}
+{"method": "GET", "path": "/.cursorrules", "status_code": 404, "duration_ms": 2.85, "client_ip": "81.168.83.103", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T19:25:03.344183Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.9, "client_ip": "176.65.139.8", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-23T20:54:19.678104Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.0, "client_ip": "147.185.132.120", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-23T21:26:37.559131Z"}
+{"method": "GET", "path": "/phpinfo.php", "status_code": 404, "duration_ms": 2.52, "client_ip": "81.168.83.103", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-23T23:45:36.468850Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.93, "client_ip": "64.62.197.2", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T00:32:32.589798Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 3.26, "client_ip": "64.62.197.14", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T00:33:42.271271Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.6, "client_ip": "64.62.197.5", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T00:34:23.822873Z"}
+WARNING:  Unsupported upgrade request.
+WARNING:  No supported WebSocket library detected. Please use "pip install 'uvicorn[standard]'", or install 'websockets' or 'wsproto' manually.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.92, "client_ip": "20.64.104.177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T00:38:39.163142Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.61, "client_ip": "128.24.225.143", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T01:25:57.573231Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.43, "client_ip": "205.210.31.151", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T01:44:08.044660Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.42, "client_ip": "167.99.150.99", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T02:47:21.609878Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.42, "client_ip": "86.54.31.38", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T02:55:31.958378Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 1.93, "client_ip": "86.54.31.38", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T02:55:32.739052Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.47, "client_ip": "198.235.24.224", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T06:39:44.252176Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/.env", "status_code": 404, "duration_ms": 2.76, "client_ip": "81.168.83.103", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T07:57:24.748653Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/../../../../../../etc/passwd", "status_code": 404, "duration_ms": 3.47, "client_ip": "5.181.190.188", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T08:11:14.483244Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/wp-login.php", "status_code": 404, "duration_ms": 2.33, "client_ip": "5.181.190.188", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T08:11:16.241942Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.77, "client_ip": "16.58.56.214", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T08:29:12.825124Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.61, "client_ip": "16.58.56.214", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T08:30:36.527011Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.83, "client_ip": "205.210.31.156", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T10:43:36.932331Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 6.3, "client_ip": "165.225.37.34", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T12:23:14.843537Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 3.88, "client_ip": "165.225.37.34", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T12:23:15.034610Z"}
+INFO:     ('165.225.37.34', 6206) - "WebSocket /socket.io/?EIO=4&transport=websocket" [accepted]
+INFO:     connection open
+INFO:     connection closed
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+Client connected: s2K32TvoDcHK053QAAAB (unauthenticated - participant access)
+Client disconnected: s2K32TvoDcHK053QAAAB
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.43, "client_ip": "165.225.37.34", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T12:24:25.423666Z"}
+INFO:     Will watch for changes in these directories: ['C:\\Users\\azvmuser1\\windsurf-wrkspace\\QbrainLabs\\server']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [11560] using WatchFiles
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-02-24T12:25:24.917139Z"}
+============================================================
+RAGService Initialization Starting...
+============================================================
+OpenAI API Key: NOT SET
+Azure OpenAI API Key: SET
+Azure OpenAI Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+AI Mock Mode Setting: False
+
+[RAG] Service Mode: REAL AI
+[OK] Loaded 5 reference use cases
+
+[RAG] Initializing REAL AI components...
+   [INFO] Importing LangChain modules...
+   [OK] LangChain modules imported successfully
+
+   [AZURE] Initializing Azure OpenAI Client...
+      Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+      Deployment: gpt-4.1
+      Model: gpt-4.1
+      API Version: 2024-12-01-preview
+   [OK] Azure OpenAI Chat client initialized
+
+   [AZURE] Initializing Azure OpenAI Embeddings...
+      Deployment: text-embedding-3-large
+      Model: text-embedding-3-large
+   [OK] Azure OpenAI Embeddings initialized
+
+   [VECTOR] Initializing Vector Store with 5 documents...
+2026-02-24 12:25:45,588 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-24 12:25:45,617 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_name" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_info" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+INFO:     Started server process [7172]
+INFO:     Waiting for application startup.
+   [OK] Vector store initialized successfully
+
+   [OK] Real AI components initialization complete
+============================================================
+RAGService Initialization Complete - Mode: REAL
+============================================================
+
+{"event": "Starting application...", "level": "info", "timestamp": "2026-02-24T12:25:56.600136Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-02-24T12:25:56.804898Z"}
+INFO:     Application startup complete.
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-02-24T13:36:12.396125Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 4.15, "client_ip": "198.235.24.243", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T13:36:12.400162Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.51, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T17:27:50.028243Z"}
+{"method": "GET", "path": "/bins/", "status_code": 404, "duration_ms": 3.8, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T17:39:00.515505Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.93, "client_ip": "40.118.250.183", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T17:44:55.061783Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.47, "client_ip": "40.118.250.183", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T17:44:55.143681Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.29, "client_ip": "40.118.250.183", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T17:44:55.268300Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/bin/", "status_code": 404, "duration_ms": 2.55, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T17:47:47.111191Z"}
+{"method": "GET", "path": "/.e2803", "status_code": 404, "duration_ms": 4.13, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:12.964087Z"}
+{"method": "GET", "path": "/.env", "status_code": 404, "duration_ms": 2.77, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:13.315701Z"}
+{"method": "GET", "path": "/.env.local", "status_code": 404, "duration_ms": 2.02, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:13.658792Z"}
+{"method": "GET", "path": "/.env.production", "status_code": 404, "duration_ms": 1.84, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:13.969894Z"}
+{"method": "GET", "path": "/.env.development", "status_code": 404, "duration_ms": 2.22, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:14.303136Z"}
+{"method": "GET", "path": "/.env.dev", "status_code": 404, "duration_ms": 2.27, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:14.658557Z"}
+{"method": "GET", "path": "/.env.prod", "status_code": 404, "duration_ms": 2.22, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:14.977039Z"}
+{"method": "GET", "path": "/.env.test", "status_code": 404, "duration_ms": 1.89, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:15.337706Z"}
+{"method": "GET", "path": "/.env.staging", "status_code": 404, "duration_ms": 2.44, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:15.673235Z"}
+{"method": "GET", "path": "/.env.backup", "status_code": 404, "duration_ms": 2.13, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:15.999238Z"}
+{"method": "GET", "path": "/.env.save", "status_code": 404, "duration_ms": 3.34, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:16.353006Z"}
+{"method": "GET", "path": "/.env.old", "status_code": 404, "duration_ms": 2.44, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:16.699376Z"}
+{"method": "GET", "path": "/.env.bak", "status_code": 404, "duration_ms": 2.13, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:17.042590Z"}
+{"method": "GET", "path": "/.env.tmp", "status_code": 404, "duration_ms": 3.87, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:17.407891Z"}
+{"method": "GET", "path": "/.env.swp", "status_code": 404, "duration_ms": 2.02, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:17.750485Z"}
+{"method": "GET", "path": "/.env~", "status_code": 404, "duration_ms": 1.84, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:18.069677Z"}
+{"method": "GET", "path": "/env", "status_code": 404, "duration_ms": 1.91, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:18.389544Z"}
+{"method": "GET", "path": "/env.js", "status_code": 404, "duration_ms": 1.88, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:18.715910Z"}
+{"method": "GET", "path": "/env.json", "status_code": 404, "duration_ms": 2.18, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:19.041297Z"}
+{"method": "GET", "path": "/app/.env", "status_code": 404, "duration_ms": 2.15, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:19.387010Z"}
+{"method": "GET", "path": "/src/.env", "status_code": 404, "duration_ms": 2.14, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:19.702843Z"}
+{"method": "GET", "path": "/config/.env", "status_code": 404, "duration_ms": 2.96, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:20.037022Z"}
+{"method": "GET", "path": "/backend/.env", "status_code": 404, "duration_ms": 2.25, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:20.391758Z"}
+{"method": "GET", "path": "/frontend/.env", "status_code": 404, "duration_ms": 2.23, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:20.745450Z"}
+{"method": "GET", "path": "/api/.env", "status_code": 404, "duration_ms": 1.95, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:21.091755Z"}
+{"method": "GET", "path": "/server/.env", "status_code": 404, "duration_ms": 1.87, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:21.425391Z"}
+{"method": "GET", "path": "/client/.env", "status_code": 404, "duration_ms": 2.02, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:21.778022Z"}
+{"method": "GET", "path": "/web/.env", "status_code": 404, "duration_ms": 1.93, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:22.130464Z"}
+{"method": "GET", "path": "/public/.env", "status_code": 404, "duration_ms": 2.34, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:22.482197Z"}
+{"method": "GET", "path": "/private/.env", "status_code": 404, "duration_ms": 2.66, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:22.840451Z"}
+{"method": "GET", "path": "/var/.env", "status_code": 404, "duration_ms": 2.24, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:23.182736Z"}
+{"method": "GET", "path": "/docker-compose.yml", "status_code": 404, "duration_ms": 2.21, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:23.505892Z"}
+{"method": "GET", "path": "/docker-compose.yaml", "status_code": 404, "duration_ms": 4.69, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:23.840953Z"}
+{"method": "GET", "path": "/docker-compose.override.yml", "status_code": 404, "duration_ms": 1.91, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:24.163949Z"}
+{"method": "GET", "path": "/docker-compose.dev.yml", "status_code": 404, "duration_ms": 1.95, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:24.486041Z"}
+{"method": "GET", "path": "/docker-compose.prod.yml", "status_code": 404, "duration_ms": 1.95, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:24.816774Z"}
+{"method": "GET", "path": "/config.js", "status_code": 404, "duration_ms": 1.9, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:25.144408Z"}
+{"method": "GET", "path": "/config.json", "status_code": 404, "duration_ms": 2.57, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:25.466288Z"}
+{"method": "GET", "path": "/settings.js", "status_code": 404, "duration_ms": 2.53, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:25.786605Z"}
+{"method": "GET", "path": "/settings.json", "status_code": 404, "duration_ms": 2.46, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:26.105151Z"}
+{"method": "GET", "path": "/secrets.json", "status_code": 404, "duration_ms": 2.18, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:26.430572Z"}
+{"method": "GET", "path": "/credentials.json", "status_code": 404, "duration_ms": 5.02, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:26.779687Z"}
+{"method": "GET", "path": "/app.js", "status_code": 404, "duration_ms": 2.51, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:27.142522Z"}
+{"method": "GET", "path": "/main.js", "status_code": 404, "duration_ms": 1.91, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:27.492227Z"}
+{"method": "GET", "path": "/index.js", "status_code": 404, "duration_ms": 2.57, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:27.828834Z"}
+{"method": "GET", "path": "/server.js", "status_code": 404, "duration_ms": 2.03, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:28.169100Z"}
+{"method": "GET", "path": "/bundle.js", "status_code": 404, "duration_ms": 1.76, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:28.548548Z"}
+{"method": "GET", "path": "/app.bundle.js", "status_code": 404, "duration_ms": 2.25, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:28.913949Z"}
+{"method": "GET", "path": "/main.bundle.js", "status_code": 404, "duration_ms": 2.59, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:29.270394Z"}
+{"method": "GET", "path": "/vendor.js", "status_code": 404, "duration_ms": 2.22, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:29.633703Z"}
+{"method": "GET", "path": "/chunk.js", "status_code": 404, "duration_ms": 2.28, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:29.969097Z"}
+{"method": "GET", "path": "/static/js/main.js", "status_code": 404, "duration_ms": 5.69, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:30.321101Z"}
+{"method": "GET", "path": "/static/js/app.js", "status_code": 404, "duration_ms": 2.57, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:30.679945Z"}
+{"method": "GET", "path": "/static/js/bundle.js", "status_code": 404, "duration_ms": 2.26, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:31.030458Z"}
+{"method": "GET", "path": "/dist/main.js", "status_code": 404, "duration_ms": 1.95, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:31.393448Z"}
+{"method": "GET", "path": "/dist/app.js", "status_code": 404, "duration_ms": 1.93, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:31.755402Z"}
+{"method": "GET", "path": "/dist/bundle.js", "status_code": 404, "duration_ms": 1.74, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:32.109431Z"}
+{"method": "GET", "path": "/build/static/js/main.js", "status_code": 404, "duration_ms": 2.82, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:32.466295Z"}
+{"method": "GET", "path": "/assets/index.js", "status_code": 404, "duration_ms": 3.0, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:32.821031Z"}
+{"method": "GET", "path": "/assets/app.js", "status_code": 404, "duration_ms": 2.27, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:33.182764Z"}
+{"method": "GET", "path": "/_next/static/chunks/main.js", "status_code": 404, "duration_ms": 2.21, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:33.541146Z"}
+{"method": "GET", "path": "/_next/static/chunks/app.js", "status_code": 404, "duration_ms": 2.63, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:33.892345Z"}
+{"method": "GET", "path": "/js/app.js", "status_code": 404, "duration_ms": 2.36, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:34.249765Z"}
+{"method": "GET", "path": "/js/main.js", "status_code": 404, "duration_ms": 2.92, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:34.598199Z"}
+{"method": "GET", "path": "/settings.py", "status_code": 404, "duration_ms": 2.14, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:34.920840Z"}
+{"method": "GET", "path": "/config.py", "status_code": 404, "duration_ms": 2.43, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:35.249644Z"}
+{"method": "GET", "path": "/secrets.py", "status_code": 404, "duration_ms": 2.14, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:35.583396Z"}
+{"method": "GET", "path": "/config/secrets.yml", "status_code": 404, "duration_ms": 2.43, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:35.918179Z"}
+{"method": "GET", "path": "/config/master.key", "status_code": 404, "duration_ms": 2.16, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:36.249563Z"}
+{"method": "GET", "path": "/wp-config.php.bak", "status_code": 404, "duration_ms": 2.19, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:36.576838Z"}
+{"method": "GET", "path": "/wp-config.php.old", "status_code": 404, "duration_ms": 2.36, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:36.905275Z"}
+{"method": "GET", "path": "/wp-config.php.save", "status_code": 404, "duration_ms": 2.56, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:37.235359Z"}
+{"method": "GET", "path": "/wp-config.php.txt", "status_code": 404, "duration_ms": 2.27, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:37.555733Z"}
+{"method": "GET", "path": "/wp-config.php~", "status_code": 404, "duration_ms": 1.87, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:37.881737Z"}
+{"method": "GET", "path": "/config/app.php", "status_code": 404, "duration_ms": 1.85, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:38.213105Z"}
+{"method": "GET", "path": "/application.properties", "status_code": 404, "duration_ms": 1.94, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:38.533606Z"}
+{"method": "GET", "path": "/application.yml", "status_code": 404, "duration_ms": 2.27, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:38.863611Z"}
+{"method": "GET", "path": "/application.yaml", "status_code": 404, "duration_ms": 2.24, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:39.183308Z"}
+{"method": "GET", "path": "/application-dev.properties", "status_code": 404, "duration_ms": 2.52, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:39.511022Z"}
+{"method": "GET", "path": "/application-prod.properties", "status_code": 404, "duration_ms": 2.26, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:39.837014Z"}
+{"method": "GET", "path": "/appsettings.json", "status_code": 404, "duration_ms": 2.21, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:40.168623Z"}
+{"method": "GET", "path": "/appsettings.Development.json", "status_code": 404, "duration_ms": 2.28, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:40.506719Z"}
+{"method": "GET", "path": "/appsettings.Production.json", "status_code": 404, "duration_ms": 2.25, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:40.854190Z"}
+{"method": "GET", "path": "/config.yaml", "status_code": 404, "duration_ms": 1.99, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:41.211053Z"}
+{"method": "GET", "path": "/config.yml", "status_code": 404, "duration_ms": 1.74, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:41.535039Z"}
+{"method": "GET", "path": "/config.toml", "status_code": 404, "duration_ms": 1.94, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:41.854941Z"}
+{"method": "GET", "path": "/serverless.yml", "status_code": 404, "duration_ms": 3.42, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:42.200777Z"}
+{"method": "GET", "path": "/serverless.yaml", "status_code": 404, "duration_ms": 3.0, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:42.531446Z"}
+{"method": "GET", "path": "/config/production.json", "status_code": 404, "duration_ms": 2.34, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:42.866611Z"}
+{"method": "GET", "path": "/config/development.json", "status_code": 404, "duration_ms": 2.2, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:43.209332Z"}
+{"method": "GET", "path": "/config/default.json", "status_code": 404, "duration_ms": 2.22, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:43.570576Z"}
+{"method": "GET", "path": "/config/local.json", "status_code": 404, "duration_ms": 3.14, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:43.937355Z"}
+{"method": "GET", "path": "/conf/settings.json", "status_code": 404, "duration_ms": 2.86, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:44.285336Z"}
+{"method": "GET", "path": "/data/config.json", "status_code": 404, "duration_ms": 1.72, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:44.609382Z"}
+{"method": "GET", "path": "/actuator/env", "status_code": 404, "duration_ms": 1.76, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:44.953152Z"}
+{"method": "GET", "path": "/backup/", "status_code": 404, "duration_ms": 2.05, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:45.278936Z"}
+{"method": "GET", "path": "/actuator/configprops", "status_code": 404, "duration_ms": 3.44, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:45.313595Z"}
+{"method": "GET", "path": "/api/config", "status_code": 404, "duration_ms": 2.93, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:45.677531Z"}
+{"method": "GET", "path": "/api/settings", "status_code": 404, "duration_ms": 2.69, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:46.012790Z"}
+{"method": "GET", "path": "/api/env", "status_code": 404, "duration_ms": 2.45, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:46.343690Z"}
+{"method": "GET", "path": "/backup/.env", "status_code": 404, "duration_ms": 1.82, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:46.689374Z"}
+{"method": "GET", "path": "/backups/.env", "status_code": 404, "duration_ms": 1.79, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:47.041159Z"}
+{"method": "GET", "path": "/old/.env", "status_code": 404, "duration_ms": 1.85, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:47.406062Z"}
+{"method": "GET", "path": "/temp/.env", "status_code": 404, "duration_ms": 1.92, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:47.753395Z"}
+{"method": "GET", "path": "/tmp/.env", "status_code": 404, "duration_ms": 2.16, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:48.069837Z"}
+{"method": "GET", "path": "/.streamlit/secrets.toml", "status_code": 404, "duration_ms": 2.75, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:48.391659Z"}
+{"method": "GET", "path": "/root/.streamlit/secrets.toml", "status_code": 404, "duration_ms": 2.28, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:48.726411Z"}
+{"method": "GET", "path": "/root/.aws/credentials", "status_code": 404, "duration_ms": 2.39, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:49.044935Z"}
+{"method": "GET", "path": "/home/ubuntu/.aws/credentials", "status_code": 404, "duration_ms": 1.95, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:49.353932Z"}
+{"method": "GET", "path": "/home/ec2-user/.aws/credentials", "status_code": 404, "duration_ms": 2.16, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:49.669531Z"}
+{"method": "GET", "path": "/home/node/.aws/credentials", "status_code": 404, "duration_ms": 2.9, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:49.995610Z"}
+{"method": "GET", "path": "/terraform.tfvars", "status_code": 404, "duration_ms": 1.98, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:50.330330Z"}
+{"method": "GET", "path": "/terraform.tfstate", "status_code": 404, "duration_ms": 2.28, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:50.660963Z"}
+{"method": "GET", "path": "/ecosystem.config.js", "status_code": 404, "duration_ms": 2.22, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:50.992033Z"}
+{"method": "GET", "path": "/secrets.yaml", "status_code": 404, "duration_ms": 2.21, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:51.319299Z"}
+{"method": "GET", "path": "/secrets.yml", "status_code": 404, "duration_ms": 2.28, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:51.644920Z"}
+{"method": "GET", "path": "/.secrets", "status_code": 404, "duration_ms": 2.27, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:51.971665Z"}
+{"method": "GET", "path": "/.env.vault", "status_code": 404, "duration_ms": 3.64, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:52.291410Z"}
+{"method": "GET", "path": "/storage/framework/.env", "status_code": 404, "duration_ms": 2.13, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:52.610980Z"}
+{"method": "GET", "path": "/laravel/.env", "status_code": 404, "duration_ms": 2.64, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:52.938407Z"}
+{"method": "GET", "path": "/.git/logs/HEAD", "status_code": 404, "duration_ms": 3.14, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:53.260333Z"}
+{"method": "GET", "path": "/.git/config", "status_code": 404, "duration_ms": 2.03, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:53.585545Z"}
+{"method": "GET", "path": "/@fs/app/.env", "status_code": 404, "duration_ms": 2.18, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:53.912890Z"}
+{"method": "GET", "path": "/@fs/root/.env", "status_code": 404, "duration_ms": 3.03, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:54.234107Z"}
+{"method": "GET", "path": "/@fs/proc/self/environ", "status_code": 404, "duration_ms": 2.25, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:54.557172Z"}
+{"method": "GET", "path": "/@fs/.env", "status_code": 404, "duration_ms": 2.15, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:54.886514Z"}
+{"method": "GET", "path": "/@fs/../../../../../root/.env", "status_code": 404, "duration_ms": 2.57, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:55.216641Z"}
+{"method": "GET", "path": "/@fs/../../../../../proc/self/environ", "status_code": 404, "duration_ms": 2.25, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:55.520037Z"}
+{"method": "GET", "path": "/@fs/../../../../../app/.env", "status_code": 404, "duration_ms": 3.21, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:55.833681Z"}
+{"method": "GET", "path": "/@fs/..%2f..%2f..%2f..%2f..%2froot/.env", "status_code": 404, "duration_ms": 1.9, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:56.154557Z"}
+{"method": "GET", "path": "/@fs/..%2f..%2f..%2f..%2f..%2fproc/self/environ", "status_code": 404, "duration_ms": 3.18, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:56.486259Z"}
+{"method": "GET", "path": "/@fs/root/.aws/credentials", "status_code": 404, "duration_ms": 2.01, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:56.808184Z"}
+{"method": "GET", "path": "/@fs/home/ubuntu/.aws/credentials", "status_code": 404, "duration_ms": 2.45, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:57.141335Z"}
+{"method": "GET", "path": "/@fs/home/node/.aws/credentials", "status_code": 404, "duration_ms": 2.31, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:57.497519Z"}
+{"method": "GET", "path": "/@fs/app/.env.local", "status_code": 404, "duration_ms": 2.28, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:57.844122Z"}
+{"method": "GET", "path": "/@fs/app/.env.production", "status_code": 404, "duration_ms": 2.24, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:58.181644Z"}
+{"method": "GET", "path": "/@fs/src/.env", "status_code": 404, "duration_ms": 2.27, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:58.531046Z"}
+{"method": "GET", "path": "/../../../../../../proc/self/environ", "status_code": 404, "duration_ms": 2.29, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:58.943163Z"}
+{"method": "GET", "path": "/../../../../../../../proc/self/environ", "status_code": 404, "duration_ms": 1.94, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:59.291895Z"}
+{"method": "GET", "path": "/../../../../../../../app/.env", "status_code": 404, "duration_ms": 1.92, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:59.634154Z"}
+{"method": "GET", "path": "/../../../../../../../root/.env", "status_code": 404, "duration_ms": 1.87, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:01:59.992231Z"}
+{"method": "GET", "path": "/../../../../../../../root/.aws/credentials", "status_code": 404, "duration_ms": 2.54, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:02:00.342544Z"}
+{"method": "GET", "path": "/../../../../../../../home/ubuntu/.aws/credentials", "status_code": 404, "duration_ms": 2.2, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:02:00.711594Z"}
+{"method": "GET", "path": "/../../../../../../../home/node/.aws/credentials", "status_code": 404, "duration_ms": 2.39, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:02:01.061838Z"}
+{"method": "GET", "path": "/../../../../../../root/.aws/credentials", "status_code": 404, "duration_ms": 2.47, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:02:01.415171Z"}
+{"method": "GET", "path": "/../../../../../../home/ubuntu/.aws/credentials", "status_code": 404, "duration_ms": 2.26, "client_ip": "204.76.203.210", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:02:01.773407Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.06, "client_ip": "134.209.47.251", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T18:33:08.714207Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.24, "client_ip": "134.209.47.251", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T18:33:09.019341Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.43, "client_ip": "206.168.34.46", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T19:00:53.438058Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.63, "client_ip": "206.168.34.46", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T19:00:58.082657Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/robots.txt", "status_code": 404, "duration_ms": 1.9, "client_ip": "206.168.34.46", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-24T19:01:12.804762Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.47, "client_ip": "198.235.24.133", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T19:14:15.487367Z"}
+WARNING:  Unsupported upgrade request.
+WARNING:  No supported WebSocket library detected. Please use "pip install 'uvicorn[standard]'", or install 'websockets' or 'wsproto' manually.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.4, "client_ip": "4.172.77.199", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-24T22:53:43.125245Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/404/search_children.js", "status_code": 404, "duration_ms": 2.66, "client_ip": "101.44.162.177", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-25T00:11:30.105800Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/../../../../../../etc/passwd", "status_code": 404, "duration_ms": 2.66, "client_ip": "5.181.190.188", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-25T00:31:48.762249Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.4, "client_ip": "205.210.31.166", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T01:22:53.260163Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.59, "client_ip": "198.235.24.105", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T01:37:13.932413Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.84, "client_ip": "64.62.197.167", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T02:53:23.346629Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.68, "client_ip": "64.62.197.168", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-25T02:54:10.708747Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.82, "client_ip": "64.62.197.177", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T02:54:30.986880Z"}
+WARNING:  Unsupported upgrade request.
+WARNING:  No supported WebSocket library detected. Please use "pip install 'uvicorn[standard]'", or install 'websockets' or 'wsproto' manually.
+WARNING:  Invalid HTTP request received.
+INFO:     Will watch for changes in these directories: ['C:\\Users\\azvmuser1\\windsurf-wrkspace\\QbrainLabs\\server']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [10516] using WatchFiles
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-02-25T03:27:07.748508Z"}
+============================================================
+RAGService Initialization Starting...
+============================================================
+OpenAI API Key: NOT SET
+Azure OpenAI API Key: SET
+Azure OpenAI Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+AI Mock Mode Setting: False
+
+[RAG] Service Mode: REAL AI
+[OK] Loaded 5 reference use cases
+
+[RAG] Initializing REAL AI components...
+   [INFO] Importing LangChain modules...
+   [OK] LangChain modules imported successfully
+
+   [AZURE] Initializing Azure OpenAI Client...
+      Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+      Deployment: gpt-4.1
+      Model: gpt-4.1
+      API Version: 2024-12-01-preview
+   [OK] Azure OpenAI Chat client initialized
+
+   [AZURE] Initializing Azure OpenAI Embeddings...
+      Deployment: text-embedding-3-large
+      Model: text-embedding-3-large
+   [OK] Azure OpenAI Embeddings initialized
+
+   [VECTOR] Initializing Vector Store with 5 documents...
+2026-02-25 03:27:15,095 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-25 03:27:15,110 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_name" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_info" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+INFO:     Started server process [16868]
+INFO:     Waiting for application startup.
+   [OK] Vector store initialized successfully
+
+   [OK] Real AI components initialization complete
+============================================================
+RAGService Initialization Complete - Mode: REAL
+============================================================
+
+{"event": "Starting application...", "level": "info", "timestamp": "2026-02-25T03:27:22.280883Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-02-25T03:27:22.438848Z"}
+INFO:     Application startup complete.
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-02-25T04:08:36.871121Z"}
+{"method": "GET", "path": "/.env.bak", "status_code": 404, "duration_ms": 2.86, "client_ip": "81.168.83.103", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-25T04:08:36.875120Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.48, "client_ip": "94.231.206.201", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T06:29:16.096903Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.54, "client_ip": "94.231.206.201", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-25T06:31:33.140463Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.04, "client_ip": "205.210.31.81", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T06:46:48.056043Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.09, "client_ip": "162.142.125.199", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T08:00:30.968616Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.51, "client_ip": "162.142.125.199", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T08:00:39.781472Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.26, "client_ip": "162.142.125.199", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-25T08:00:40.053159Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/.well-known/security.txt", "status_code": 404, "duration_ms": 2.74, "client_ip": "162.142.125.199", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-25T08:01:00.974386Z"}
+WARNING:  Unsupported upgrade request.
+WARNING:  No supported WebSocket library detected. Please use "pip install 'uvicorn[standard]'", or install 'websockets' or 'wsproto' manually.
+WARNING:  Invalid HTTP request received.
+WARNING:  Unsupported upgrade request.
+WARNING:  No supported WebSocket library detected. Please use "pip install 'uvicorn[standard]'", or install 'websockets' or 'wsproto' manually.
+WARNING:  Invalid HTTP request received.
+WARNING:  Unsupported upgrade request.
+WARNING:  No supported WebSocket library detected. Please use "pip install 'uvicorn[standard]'", or install 'websockets' or 'wsproto' manually.
+WARNING:  Invalid HTTP request received.
+WARNING:  Unsupported upgrade request.
+WARNING:  No supported WebSocket library detected. Please use "pip install 'uvicorn[standard]'", or install 'websockets' or 'wsproto' manually.
+WARNING:  Invalid HTTP request received.
+WARNING:  Unsupported upgrade request.
+WARNING:  No supported WebSocket library detected. Please use "pip install 'uvicorn[standard]'", or install 'websockets' or 'wsproto' manually.
+WARNING:  Invalid HTTP request received.
+WARNING:  Unsupported upgrade request.
+WARNING:  No supported WebSocket library detected. Please use "pip install 'uvicorn[standard]'", or install 'websockets' or 'wsproto' manually.
+WARNING:  Invalid HTTP request received.
+WARNING:  Unsupported upgrade request.
+WARNING:  No supported WebSocket library detected. Please use "pip install 'uvicorn[standard]'", or install 'websockets' or 'wsproto' manually.
+WARNING:  Invalid HTTP request received.
+WARNING:  Unsupported upgrade request.
+WARNING:  No supported WebSocket library detected. Please use "pip install 'uvicorn[standard]'", or install 'websockets' or 'wsproto' manually.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.57, "client_ip": "3.129.187.38", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T08:11:16.978779Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.88, "client_ip": "3.129.187.38", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T08:13:02.601034Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.64, "client_ip": "34.38.45.85", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T08:57:53.652307Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.81, "client_ip": "205.210.31.141", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T13:38:09.207850Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/../../../../../../etc/passwd", "status_code": 404, "duration_ms": 3.22, "client_ip": "204.76.203.215", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-25T14:14:45.467977Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.8, "client_ip": "20.253.230.106", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T17:34:51.111579Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.93, "client_ip": "20.253.230.106", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T17:34:51.193784Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.32, "client_ip": "20.253.230.106", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T17:34:51.326674Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.85, "client_ip": "192.155.92.41", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T17:55:30.642763Z"}
+{"method": "GET", "path": "/login", "status_code": 404, "duration_ms": 3.48, "client_ip": "192.155.92.41", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-25T17:55:30.746258Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.57, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T19:18:03.954839Z"}
+{"method": "GET", "path": "/bins/", "status_code": 404, "duration_ms": 2.2, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-25T19:27:07.493852Z"}
+{"method": "GET", "path": "/bin/", "status_code": 404, "duration_ms": 2.34, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-25T19:39:13.425878Z"}
+{"method": "GET", "path": "/backup/", "status_code": 404, "duration_ms": 2.31, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-25T19:46:28.000591Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.8, "client_ip": "198.235.24.198", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T21:12:32.946888Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.92, "client_ip": "198.235.24.153", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T22:04:15.726141Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/../../../../../../etc/passwd", "status_code": 404, "duration_ms": 2.99, "client_ip": "5.181.190.188", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-25T22:25:42.243770Z"}
+{"method": "GET", "path": "/..\\..\\..\\..\\..\\..\\etc\\passwd", "status_code": 404, "duration_ms": 1.98, "client_ip": "5.181.190.188", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-25T22:25:42.253760Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.87, "client_ip": "45.153.34.68", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T22:37:08.917608Z"}
+{"method": "POST", "path": "/", "status_code": 405, "duration_ms": 1.77, "client_ip": "45.153.34.68", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-25T22:37:09.174763Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.03, "client_ip": "172.170.192.21", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-25T23:25:18.244007Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.41, "client_ip": "185.247.137.47", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T00:12:43.595378Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.42, "client_ip": "64.62.156.66", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T00:34:51.988907Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.52, "client_ip": "64.62.156.66", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T00:36:00.838621Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.97, "client_ip": "64.62.156.67", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T00:36:29.132888Z"}
+WARNING:  Unsupported upgrade request.
+WARNING:  No supported WebSocket library detected. Please use "pip install 'uvicorn[standard]'", or install 'websockets' or 'wsproto' manually.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/.env.test", "status_code": 404, "duration_ms": 2.66, "client_ip": "81.168.83.103", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T01:16:13.943270Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.85, "client_ip": "198.235.24.195", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T01:39:54.765711Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.24, "client_ip": "167.94.138.195", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T02:49:04.522618Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.49, "client_ip": "167.94.138.195", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T02:49:07.665783Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.52, "client_ip": "167.94.138.195", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T02:49:07.836652Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/sitemap.xml", "status_code": 404, "duration_ms": 2.82, "client_ip": "167.94.138.195", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T02:49:11.031408Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/client_secret.json", "status_code": 404, "duration_ms": 3.48, "client_ip": "81.168.83.103", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T05:15:21.755586Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.42, "client_ip": "16.58.56.214", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T08:04:11.257964Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.0, "client_ip": "16.58.56.214", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T08:04:11.396147Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "POST", "path": "/v1/chat/completions", "status_code": 404, "duration_ms": 2.33, "client_ip": "193.34.212.9", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T09:34:48.899493Z"}
+{"method": "POST", "path": "/v1/messages", "status_code": 404, "duration_ms": 1.97, "client_ip": "193.34.212.9", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T09:34:49.168882Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.01, "client_ip": "18.97.5.97", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T11:56:37.764613Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.96, "client_ip": "45.156.129.188", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T12:04:55.879154Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.82, "client_ip": "198.235.24.42", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T13:43:10.012983Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.87, "client_ip": "3.101.53.14", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T14:48:25.333007Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.88, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T15:00:21.428444Z"}
+{"method": "GET", "path": "/bins/", "status_code": 404, "duration_ms": 2.96, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T15:17:30.131652Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.8, "client_ip": "143.198.66.145", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T15:23:42.250996Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 3.49, "client_ip": "143.198.66.145", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T15:23:42.378401Z"}
+{"method": "GET", "path": "/bin/", "status_code": 404, "duration_ms": 2.66, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T15:30:12.219973Z"}
+{"method": "GET", "path": "/backup/", "status_code": 404, "duration_ms": 2.05, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T15:30:40.066293Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.38, "client_ip": "172.184.140.132", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T17:06:15.249520Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.03, "client_ip": "172.184.140.132", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T17:06:15.331459Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.0, "client_ip": "172.184.140.132", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T17:06:15.456360Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.43, "client_ip": "198.235.24.125", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T17:39:00.223802Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.88, "client_ip": "89.248.167.131", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T18:21:53.105271Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.7, "client_ip": "89.248.167.131", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T18:21:53.864659Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/../../../../../../etc/passwd", "status_code": 404, "duration_ms": 2.81, "client_ip": "5.181.190.188", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T18:53:50.756305Z"}
+{"method": "GET", "path": "/..\\..\\..\\..\\..\\..\\etc\\passwd", "status_code": 404, "duration_ms": 2.48, "client_ip": "5.181.190.188", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T18:53:50.789224Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.94, "client_ip": "20.41.162.78", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T22:44:04.627500Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.26, "client_ip": "91.231.89.47", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T23:06:30.280001Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.41, "client_ip": "185.226.197.34", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T23:06:49.536216Z"}
+{"method": "POST", "path": "/mcp", "status_code": 404, "duration_ms": 3.71, "client_ip": "185.226.197.32", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T23:06:51.190212Z"}
+{"method": "GET", "path": "/sse", "status_code": 404, "duration_ms": 2.0, "client_ip": "185.226.197.32", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T23:06:51.432096Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 1.93, "client_ip": "185.226.197.32", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T23:06:51.797374Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.73, "client_ip": "91.231.89.84", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T23:08:35.033472Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.52, "client_ip": "45.156.128.126", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T23:10:35.172377Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.91, "client_ip": "167.94.146.52", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T23:26:29.304883Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.55, "client_ip": "167.94.146.52", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-26T23:26:33.046362Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.29, "client_ip": "167.94.146.52", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T23:26:34.863188Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/robots.txt", "status_code": 404, "duration_ms": 3.34, "client_ip": "167.94.146.52", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-26T23:26:38.675836Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.07, "client_ip": "65.49.1.202", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-27T00:38:37.084890Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.52, "client_ip": "65.49.1.206", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-27T00:39:50.473369Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.57, "client_ip": "65.49.1.202", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-27T00:40:25.523670Z"}
+WARNING:  Unsupported upgrade request.
+WARNING:  No supported WebSocket library detected. Please use "pip install 'uvicorn[standard]'", or install 'websockets' or 'wsproto' manually.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.15, "client_ip": "198.235.24.201", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-27T01:38:52.533067Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.05, "client_ip": "45.156.87.19", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-27T03:36:18.649771Z"}
+{"method": "POST", "path": "/", "status_code": 405, "duration_ms": 1.86, "client_ip": "45.156.87.19", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-27T03:36:18.902823Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/constants.py", "status_code": 404, "duration_ms": 2.22, "client_ip": "81.168.83.103", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-27T05:02:45.048579Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.59, "client_ip": "205.210.31.86", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-27T06:05:42.121822Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.54, "client_ip": "185.242.226.87", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-27T06:09:28.613138Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.09, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-27T06:57:50.738672Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/bins/", "status_code": 404, "duration_ms": 2.32, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-27T07:09:35.289738Z"}
+{"method": "GET", "path": "/bin/", "status_code": 404, "duration_ms": 3.75, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-27T07:17:04.806186Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.84, "client_ip": "16.58.56.214", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-27T07:20:18.976145Z"}
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.06, "client_ip": "16.58.56.214", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-27T07:22:48.566869Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/backup/", "status_code": 404, "duration_ms": 2.75, "client_ip": "204.76.203.18", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-27T07:36:00.312202Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.89, "client_ip": "205.210.31.139", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-27T08:28:40.762134Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.94, "client_ip": "118.194.252.40", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-27T09:34:14.132583Z"}
+{"method": "GET", "path": "/favicon.ico", "status_code": 404, "duration_ms": 2.34, "client_ip": "118.194.252.40", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-27T09:34:19.548269Z"}
+{"method": "GET", "path": "/robots.txt", "status_code": 404, "duration_ms": 2.33, "client_ip": "118.194.252.40", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-27T09:34:19.944257Z"}
+INFO:     Will watch for changes in these directories: ['C:\\Users\\azvmuser1\\windsurf-wrkspace\\QbrainLabs\\server']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [17244] using WatchFiles
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-02-27T11:54:16.609537Z"}
+============================================================
+RAGService Initialization Starting...
+============================================================
+OpenAI API Key: NOT SET
+Azure OpenAI API Key: SET
+Azure OpenAI Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+AI Mock Mode Setting: False
+
+[RAG] Service Mode: REAL AI
+[OK] Loaded 5 reference use cases
+
+[RAG] Initializing REAL AI components...
+   [INFO] Importing LangChain modules...
+   [OK] LangChain modules imported successfully
+
+   [AZURE] Initializing Azure OpenAI Client...
+      Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+      Deployment: gpt-4.1
+      Model: gpt-4.1
+      API Version: 2024-12-01-preview
+   [OK] Azure OpenAI Chat client initialized
+
+   [AZURE] Initializing Azure OpenAI Embeddings...
+      Deployment: text-embedding-3-large
+      Model: text-embedding-3-large
+   [OK] Azure OpenAI Embeddings initialized
+
+   [VECTOR] Initializing Vector Store with 5 documents...
+2026-02-27 11:54:22,987 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-27 11:54:23,002 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given

@@ -40,13 +40,21 @@ api.interceptors.request.use((config) => {
 
 api.interceptors.response.use(
     (response) => {
-        // Check if response is HTML (when we expect JSON)
         const contentType = response.headers['content-type'];
         if (contentType && (contentType.includes('text/html') || contentType.includes('application/x-javascript'))) {
-            // If we got HTML, it's likely the SPA fallback
-            console.error('[API] Received HTML response:', response.data?.substring?.(0, 200));
-            // Return a rejected promise with a clear error
-            return Promise.reject(new Error('API returned HTML instead of JSON. Check proxy configuration.'));
+            const body = typeof response.data === 'string' ? response.data : '';
+            console.error('[API] Received HTML response:', body.substring(0, 500));
+
+            const lower = body.toLowerCase();
+            let message: string;
+            if (lower.includes('zscaler') || lower.includes('gateway.zscaler')) {
+                message = 'Request intercepted by Zscaler. Comment out VITE_API_URL in .env and restart the client.';
+            } else if (lower.includes('proxy') || lower.includes('firewall') || lower.includes('blocked') || lower.includes('access denied')) {
+                message = 'Request intercepted by corporate proxy/firewall (got HTML instead of JSON). Comment out VITE_API_URL in .env and restart the client.';
+            } else {
+                message = 'API returned HTML instead of JSON — likely intercepted by a proxy. Check VITE_API_URL in .env or verify the backend is running.';
+            }
+            return Promise.reject(new Error(message));
         }
         return response;
     },

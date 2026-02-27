@@ -64,6 +64,43 @@ const TOKEN_KEY = 'hm_auth_token';
 const USER_KEY = 'hm_user';
 const MEMBER_SESSION_KEY = 'hm_member_session';
 
+function detectProxyBlockMessage(html: string): string {
+  const lower = html.toLowerCase();
+
+  if (lower.includes('zscaler') || lower.includes('gateway.zscaler') || lower.includes('zscalerassistant')) {
+    return 'Request blocked by Zscaler corporate proxy. The API URL points to an external IP that Zscaler is intercepting. ' +
+      'Comment out VITE_API_URL in .env and restart the client so requests go through the local Vite proxy instead.';
+  }
+
+  if (lower.includes('myhomenetwork.att.com') || lower.includes('phishing')) {
+    return 'Login blocked by network security (ISP/Firewall). Please whitelist this site in your AT&T Smart Home Manager or check your internet filter settings.';
+  }
+
+  if (lower.includes('fortiguard') || lower.includes('fortigate')) {
+    return 'Request blocked by FortiGuard corporate firewall. Comment out VITE_API_URL in .env and restart the client to route API calls through the local proxy.';
+  }
+
+  if (lower.includes('bluecoat') || lower.includes('symantec') || lower.includes('broadcom')) {
+    return 'Request blocked by corporate web gateway (Symantec/Broadcom). Comment out VITE_API_URL in .env and restart the client.';
+  }
+
+  if (lower.includes('palo alto') || lower.includes('panw') || lower.includes('globalprotect')) {
+    return 'Request blocked by Palo Alto corporate proxy. Comment out VITE_API_URL in .env and restart the client.';
+  }
+
+  if (lower.includes('websense') || lower.includes('forcepoint')) {
+    return 'Request blocked by Forcepoint/Websense corporate proxy. Comment out VITE_API_URL in .env and restart the client.';
+  }
+
+  if (lower.includes('proxy') || lower.includes('firewall') || lower.includes('blocked') || lower.includes('access denied') || lower.includes('security')) {
+    return 'Request intercepted by a corporate proxy or firewall (got HTML instead of JSON). ' +
+      'Comment out VITE_API_URL in .env and restart the client so requests go through the local Vite proxy.';
+  }
+
+  return 'API unreachable (got HTML instead of JSON). This often happens when a corporate proxy (e.g. Zscaler) intercepts requests to external IPs. ' +
+    'Comment out VITE_API_URL in .env and restart the client, or ensure the backend is running on port 8000.';
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [state, setState] = useState<AuthState>({
     user: null,
@@ -184,12 +221,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const text = await response.text();
       console.error('[Auth] Received HTML response instead of JSON:', text.substring(0, 500));
 
-      // Check if the HTML response indicates a network-level block (e.g. AT&T ActiveArmor)
-      const isBlocked = text.includes('myhomenetwork.att.com') || text.includes('phishing');
-      const message = isBlocked
-        ? 'Login blocked by network security (ISP/Firewall). Please whitelist this site in your AT&T Smart Home Manager or check your internet filter settings.'
-        : 'API unreachable (got HTML instead of JSON). Ensure the backend is running (e.g. port 8000). In .env you can set VITE_API_URL=http://localhost:8000 and restart the client to call the API directly.';
-
+      const message = detectProxyBlockMessage(text);
       throw new Error(message);
     }
 
@@ -233,7 +265,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (contentType && contentType.includes('text/html')) {
       const text = await response.text();
       console.error('[Auth] Received HTML response instead of JSON (register):', text.substring(0, 500));
-      throw new Error('API unreachable (got HTML). Ensure the backend is running. Set VITE_API_URL=http://localhost:8000 in .env and restart the client if needed.');
+      throw new Error(detectProxyBlockMessage(text));
     }
 
     if (!response.ok) {

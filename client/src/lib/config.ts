@@ -1,23 +1,47 @@
 
 // Auto-detect API URL based on current hostname for network access
 export const getApiBaseUrl = () => {
-    // Allow overriding via environment variable (e.g. when proxy is unavailable or API unreachable)
+    const hostname = window.location.hostname;
     const envUrl = import.meta.env.VITE_API_URL;
+
+    // When VITE_API_URL is set, only use it if it points to the same host we're
+    // browsing from OR to localhost/127.0.0.1.  If the env var points to an
+    // external/public IP but the user is on localhost, skip it — the Vite dev
+    // proxy will forward /api to the backend safely without going through
+    // corporate proxies (Zscaler, etc.) that would intercept the request.
     if (envUrl && typeof envUrl === 'string' && envUrl.trim() !== '') {
-        console.log('[Config] Using configured API URL:', envUrl);
-        return envUrl.replace(/\/$/, ''); // strip trailing slash
+        try {
+            const envHost = new URL(envUrl).hostname;
+            const isEnvLocal = envHost === 'localhost' || envHost === '127.0.0.1';
+            const isBrowserLocal = hostname === 'localhost' || hostname === '127.0.0.1';
+            const envMatchesBrowser = envHost === hostname;
+
+            if (isEnvLocal || envMatchesBrowser) {
+                console.log('[Config] Using configured API URL:', envUrl);
+                return envUrl.replace(/\/$/, '');
+            }
+
+            if (isBrowserLocal) {
+                console.log(
+                    `[Config] VITE_API_URL points to external host (${envHost}) but ` +
+                    `browsing from localhost — using relative path via Vite proxy to ` +
+                    `avoid corporate proxy / Zscaler interception.`
+                );
+                return '';
+            }
+
+            // Non-localhost browser accessing non-matching VITE_API_URL — honour it
+            console.log('[Config] Using configured API URL:', envUrl);
+            return envUrl.replace(/\/$/, '');
+        } catch {
+            console.warn('[Config] Invalid VITE_API_URL, falling back to proxy:', envUrl);
+        }
     }
 
-    // If accessing via IP, use relative path to leverage Vite proxy
-    // This supports accessing the app from other devices on the network via the frontend port (5173)
-    // The Vite proxy will forward /api requests to the backend port (8000)
-    const hostname = window.location.hostname;
-
-    // US32 FIX: Explicitly handle the public IP case
-    // We revert to using the proxy (relative path) because port 8000 might be firewall blocked.
-    // The Vite proxy at port 5173 IS accessible (since the page loads), so we must rely on it.
-    if (hostname == '48.214.144.154' || hostname === 'qbrainlabs.com' || hostname === 'qbitzai.com' || hostname === 'www.qbrainlabs.com' || hostname === 'www.qbitzai.com') {
-        console.log(`[Config] Public Domain/IP detected (${hostname}). Using relative path to leverage Vite proxy.`);
+    // No VITE_API_URL set (or it was invalid) — use relative path so the Vite
+    // dev proxy (or nginx in production) forwards /api to the backend.
+    if (hostname === '48.214.144.154' || hostname === 'qbrainlabs.com' || hostname === 'qbitzai.com' || hostname === 'www.qbrainlabs.com' || hostname === 'www.qbitzai.com') {
+        console.log(`[Config] Public Domain/IP detected (${hostname}). Using relative path to leverage proxy.`);
         return '';
     }
 
@@ -26,9 +50,6 @@ export const getApiBaseUrl = () => {
         return '';
     }
 
-    // Default to localhost for development
-    // return 'http://localhost:8000';
-    // Use relative path for localhost too to ensure consistent proxy usage
     console.log('[Config] Localhost access detected. Using relative API path.');
     return '';
 };
