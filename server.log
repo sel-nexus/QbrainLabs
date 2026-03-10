@@ -27709,3 +27709,206 @@ AI Mock Mode Setting: False
    [VECTOR] Initializing Vector Store with 5 documents...
 2026-02-27 11:54:22,987 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
 2026-02-27 11:54:23,002 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_name" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_info" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+INFO:     Started server process [13904]
+INFO:     Waiting for application startup.
+   [OK] Vector store initialized successfully
+
+   [OK] Real AI components initialization complete
+============================================================
+RAGService Initialization Complete - Mode: REAL
+============================================================
+
+{"event": "Starting application...", "level": "info", "timestamp": "2026-02-27T11:54:40.473189Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-02-27T11:54:40.756199Z"}
+INFO:     Application startup complete.
+WARNING:  WatchFiles detected changes in 'app\api\auth.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+{"event": "Shutting down application...", "level": "info", "timestamp": "2026-02-27T12:12:15.277188Z"}
+INFO:     Application shutdown complete.
+INFO:     Finished server process [13904]
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-02-27T12:12:22.142552Z"}
+============================================================
+RAGService Initialization Starting...
+============================================================
+OpenAI API Key: NOT SET
+Azure OpenAI API Key: SET
+Azure OpenAI Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+AI Mock Mode Setting: False
+
+[RAG] Service Mode: REAL AI
+[OK] Loaded 5 reference use cases
+
+[RAG] Initializing REAL AI components...
+   [INFO] Importing LangChain modules...
+   [OK] LangChain modules imported successfully
+
+   [AZURE] Initializing Azure OpenAI Client...
+      Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+      Deployment: gpt-4.1
+      Model: gpt-4.1
+      API Version: 2024-12-01-preview
+   [OK] Azure OpenAI Chat client initialized
+
+   [AZURE] Initializing Azure OpenAI Embeddings...
+      Deployment: text-embedding-3-large
+      Model: text-embedding-3-large
+   [OK] Azure OpenAI Embeddings initialized
+
+   [VECTOR] Initializing Vector Store with 5 documents...
+2026-02-27 12:12:28,520 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-02-27 12:12:28,534 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_name" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_info" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+INFO:     Started server process [16636]
+INFO:     Waiting for application startup.
+   [OK] Vector store initialized successfully
+
+   [OK] Real AI components initialization complete
+============================================================
+RAGService Initialization Complete - Mode: REAL
+============================================================
+
+{"event": "Starting application...", "level": "info", "timestamp": "2026-02-27T12:12:40.061196Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-02-27T12:12:40.469340Z"}
+INFO:     Application startup complete.
+WARNING:  Invalid HTTP request received.
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-02-27T13:50:19.875250Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 3.97, "client_ip": "34.78.140.118", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-27T13:50:19.880269Z"}
+{"method": "GET", "path": "/", "status_code": 200, "duration_ms": 2.41, "client_ip": "176.65.132.3", "event": "HTTP Request", "level": "info", "timestamp": "2026-02-27T13:52:39.893069Z"}
+{"method": "POST", "path": "/", "status_code": 405, "duration_ms": 1.56, "client_ip": "176.65.132.3", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-27T13:52:40.147708Z"}
+{"method": "GET", "path": "/.git/config", "status_code": 404, "duration_ms": 2.52, "client_ip": "45.148.10.23", "event": "HTTP Request", "level": "warning", "timestamp": "2026-02-27T13:54:18.125614Z"}
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+WARNING:  Invalid HTTP request received.
+. v e n v \ S c r i p t s \ p y t h o n . e x e   :   I N F O :           W i l l   w a t c h   f o r   c h a n g e s   i n   t h e s e   d i r e c t o r i e s :    
+ [ ' C : \ \ U s e r s \ \ a z v m u s e r 1 \ \ w i n d s u r f - w r k s p a c e \ \ Q b r a i n L a b s \ \ s e r v e r ' ]  
+ A t   C : \ U s e r s \ a z v m u s e r 1 \ A p p D a t a \ L o c a l \ T e m p \ p s - s c r i p t - f a a 7 2 7 d d - 1 2 d 9 - 4 d a 0 - 9 6 7 5 - 7 f 0 b b 1 c 7 c 9 a 7 . p s 1 : 7 6   c h a r : 1  
+ +   . v e n v \ S c r i p t s \ p y t h o n . e x e   - m   u v i c o r n   a p p . m a i n : a p p   - - r e l o a d   - - h o s t   0 . 0 .   . . .  
+ +   ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~  
+         +   C a t e g o r y I n f o                     :   N o t S p e c i f i e d :   ( I N F O :           W i l l   . . . n L a b s \ \ s e r v e r ' ] : S t r i n g )   [ ] ,   R e m o t e E x c e p t i o n  
+         +   F u l l y Q u a l i f i e d E r r o r I d   :   N a t i v e C o m m a n d E r r o r  
+    
+ I N F O :           U v i c o r n   r u n n i n g   o n   h t t p : / / 0 . 0 . 0 . 0 : 8 0 0 0   ( P r e s s   C T R L + C   t o   q u i t )  
+ I N F O :           S t a r t e d   r e l o a d e r   p r o c e s s   [ 1 6 6 4 4 ]   u s i n g   W a t c h F i l e s  
+ { " e v e n t " :   " U s i n g   d y n a m i c   C O R S   m i d d l e w a r e   -   a c c e p t s   o r i g i n s   m a t c h i n g   s e r v e r   I P   a d d r e s s e s " ,   " l e v e l " :   " i n f o " ,   " t i m e s t a m p " :   " 2 0 2 6 - 0 2 - 2 7 T 1 6 : 0 8 : 2 5 . 0 6 1 8 4 0 Z " }  
+ = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =  
+ R A G S e r v i c e   I n i t i a l i z a t i o n   S t a r t i n g . . .  
+ = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =  
+ O p e n A I   A P I   K e y :   N O T   S E T  
+ A z u r e   O p e n A I   A P I   K e y :   S E T  
+ A z u r e   O p e n A I   E n d p o i n t :   h t t p s : / / a i - l s h c e r u p o d . c o g n i t i v e s e r v i c e s . a z u r e . c o m /  
+ A I   M o c k   M o d e   S e t t i n g :   F a l s e  
+  
+ [ R A G ]   S e r v i c e   M o d e :   R E A L   A I  
+ [ O K ]   L o a d e d   5   r e f e r e n c e   u s e   c a s e s  
+  
+ [ R A G ]   I n i t i a l i z i n g   R E A L   A I   c o m p o n e n t s . . .  
+       [ I N F O ]   I m p o r t i n g   L a n g C h a i n   m o d u l e s . . .  
+       [ O K ]   L a n g C h a i n   m o d u l e s   i m p o r t e d   s u c c e s s f u l l y  
+  
+       [ A Z U R E ]   I n i t i a l i z i n g   A z u r e   O p e n A I   C l i e n t . . .  
+             E n d p o i n t :   h t t p s : / / a i - l s h c e r u p o d . c o g n i t i v e s e r v i c e s . a z u r e . c o m /  
+             D e p l o y m e n t :   g p t - 4 . 1  
+             M o d e l :   g p t - 4 . 1  
+             A P I   V e r s i o n :   2 0 2 4 - 1 2 - 0 1 - p r e v i e w  
+       [ O K ]   A z u r e   O p e n A I   C h a t   c l i e n t   i n i t i a l i z e d  
+  
+       [ A Z U R E ]   I n i t i a l i z i n g   A z u r e   O p e n A I   E m b e d d i n g s . . .  
+             D e p l o y m e n t :   t e x t - e m b e d d i n g - 3 - l a r g e  
+             M o d e l :   t e x t - e m b e d d i n g - 3 - l a r g e  
+       [ O K ]   A z u r e   O p e n A I   E m b e d d i n g s   i n i t i a l i z e d  
+  
+       [ V E C T O R ]   I n i t i a l i z i n g   V e c t o r   S t o r e   w i t h   5   d o c u m e n t s . . .  
+ 2 0 2 6 - 0 2 - 2 7   1 6 : 0 8 : 3 2 , 1 7 0   -   c h r o m a d b . t e l e m e t r y . p r o d u c t . p o s t h o g   -   E R R O R   -   F a i l e d   t o   s e n d   t e l e m e t r y   e v e n t   C l i e n t S t a r t E v e n t :   c a p t u r e ( )   t a k e s   1   p o s i t i o n a l   a r g u m e n t   b u t   3   w e r e   g i v e n  
+ 2 0 2 6 - 0 2 - 2 7   1 6 : 0 8 : 3 2 , 2 0 1   -   c h r o m a d b . t e l e m e t r y . p r o d u c t . p o s t h o g   -   E R R O R   -   F a i l e d   t o   s e n d   t e l e m e t r y   e v e n t   C l i e n t C r e a t e C o l l e c t i o n E v e n t :   c a p t u r e ( )   t a k e s   1   p o s i t i o n a l   a r g u m e n t   b u t   3   w e r e   g i v e n  
+ C : \ U s e r s \ a z v m u s e r 1 \ w i n d s u r f - w r k s p a c e \ Q b r a i n L a b s \ s e r v e r \ . v e n v \ L i b \ s i t e - p a c k a g e s \ p y d a n t i c \ _ i n t e r n a l \ _ f i e l d s . p y : 1 4 9 :    
+ U s e r W a r n i n g :   F i e l d   " m o d e l _ n a m e "   h a s   c o n f l i c t   w i t h   p r o t e c t e d   n a m e s p a c e   " m o d e l _ " .  
+  
+ Y o u   m a y   b e   a b l e   t o   r e s o l v e   t h i s   w a r n i n g   b y   s e t t i n g   ` m o d e l _ c o n f i g [ ' p r o t e c t e d _ n a m e s p a c e s ' ]   =   ( ) ` .  
+     w a r n i n g s . w a r n (  
+ C : \ U s e r s \ a z v m u s e r 1 \ w i n d s u r f - w r k s p a c e \ Q b r a i n L a b s \ s e r v e r \ . v e n v \ L i b \ s i t e - p a c k a g e s \ p y d a n t i c \ _ i n t e r n a l \ _ f i e l d s . p y : 1 4 9 :    
+ U s e r W a r n i n g :   F i e l d   " m o d e l _ i n f o "   h a s   c o n f l i c t   w i t h   p r o t e c t e d   n a m e s p a c e   " m o d e l _ " .  
+  
+ Y o u   m a y   b e   a b l e   t o   r e s o l v e   t h i s   w a r n i n g   b y   s e t t i n g   ` m o d e l _ c o n f i g [ ' p r o t e c t e d _ n a m e s p a c e s ' ]   =   ( ) ` .  
+     w a r n i n g s . w a r n (  
+ I N F O :           S t a r t e d   s e r v e r   p r o c e s s   [ 1 5 0 0 ]  
+ I N F O :           W a i t i n g   f o r   a p p l i c a t i o n   s t a r t u p .  
+       [ O K ]   V e c t o r   s t o r e   i n i t i a l i z e d   s u c c e s s f u l l y  
+  
+       [ O K ]   R e a l   A I   c o m p o n e n t s   i n i t i a l i z a t i o n   c o m p l e t e  
+ = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =  
+ R A G S e r v i c e   I n i t i a l i z a t i o n   C o m p l e t e   -   M o d e :   R E A L  
+ = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =  
+  
+ { " e v e n t " :   " S t a r t i n g   a p p l i c a t i o n . . . " ,   " l e v e l " :   " i n f o " ,   " t i m e s t a m p " :   " 2 0 2 6 - 0 2 - 2 7 T 1 6 : 0 8 : 4 3 . 3 2 0 0 6 4 Z " }  
+ { " e v e n t " :   " D a t a b a s e   t a b l e s   c r e a t e d " ,   " l e v e l " :   " i n f o " ,   " t i m e s t a m p " :   " 2 0 2 6 - 0 2 - 2 7 T 1 6 : 0 8 : 4 3 . 5 2 9 5 9 8 Z " }  
+ I N F O :           A p p l i c a t i o n   s t a r t u p   c o m p l e t e .  
+ INFO:     Will watch for changes in these directories: ['C:\\Users\\azvmuser1\\windsurf-wrkspace\\QbrainLabs\\server']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [16144] using WatchFiles
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-03-04T18:45:45.290586Z"}
+============================================================
+RAGService Initialization Starting...
+============================================================
+OpenAI API Key: NOT SET
+Azure OpenAI API Key: SET
+Azure OpenAI Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+AI Mock Mode Setting: False
+
+[RAG] Service Mode: REAL AI
+[OK] Loaded 5 reference use cases
+
+[RAG] Initializing REAL AI components...
+   [INFO] Importing LangChain modules...
+   [OK] LangChain modules imported successfully
+
+   [AZURE] Initializing Azure OpenAI Client...
+      Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+      Deployment: gpt-4.1
+      Model: gpt-4.1
+      API Version: 2024-12-01-preview
+   [OK] Azure OpenAI Chat client initialized
+
+   [AZURE] Initializing Azure OpenAI Embeddings...
+      Deployment: text-embedding-3-large
+      Model: text-embedding-3-large
+   [OK] Azure OpenAI Embeddings initialized
+
+   [VECTOR] Initializing Vector Store with 5 documents...
+2026-03-04 18:45:53,481 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-03-04 18:45:53,496 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_name" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\pydantic\_internal\_fields.py:149: UserWarning: Field "model_info" has conflict with protected namespace "model_".
+
+You may be able to resolve this warning by setting `model_config['protected_namespaces'] = ()`.
+  warnings.warn(
+INFO:     Started server process [8412]
+INFO:     Waiting for application startup.
+   [OK] Vector store initialized successfully
+
+   [OK] Real AI components initialization complete
+============================================================
+RAGService Initialization Complete - Mode: REAL
+============================================================
+
+{"event": "Starting application...", "level": "info", "timestamp": "2026-03-04T18:46:02.107606Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-03-04T18:46:02.258283Z"}
+INFO:     Application startup complete.

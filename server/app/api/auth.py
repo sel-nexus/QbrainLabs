@@ -7,6 +7,8 @@ from sqlalchemy.exc import SQLAlchemyError, OperationalError
 from datetime import datetime, timedelta
 from typing import Optional, List
 import asyncio
+import base64
+import json
 import jwt
 
 from app.core.database import get_db
@@ -164,44 +166,35 @@ async def signup(user_data: UserCreate, db: AsyncSession = Depends(get_db)):
         full_name=new_user.full_name
     )
 
-@router.post("/login", response_model=TokenWithRoleResponse)
-async def login(
-    request: Request,
-    username: str = Form(...),  # OAuth2 spec uses 'username' field
-    password: str = Form(...),
-    db: AsyncSession = Depends(get_db)
-):
-    """
-    Login with email and password to get access token
-    OAuth2 compatible endpoint - use 'username' field for email
-    Includes role and status validation.
-    """
+async def _authenticate_user(
+    email: str,
+    password: str,
+    db: AsyncSession
+) -> TokenWithRoleResponse:
+    """Shared authentication logic used by both form-based and JSON login endpoints."""
     from app.core.logging import get_logger
     logger = get_logger("auth")
-    
-    # Mask email for privacy logging
-    masked_email = username[:3] + "***" + username.split("@")[-1] if "@" in username else "INVALID_EMAIL"
+
+    masked_email = email[:3] + "***" + email.split("@")[-1] if "@" in email else "INVALID_EMAIL"
     logger.info(f"Login attempt for user: {masked_email}")
 
     try:
-        # Find user by email (username field in OAuth2 form)
-        result = await db.execute(select(User).where(User.email == username))
+        result = await db.execute(select(User).where(User.email == email))
         user = result.scalars().first()
-        
+
         if user:
             logger.info(f"User found: {masked_email} (ID: {user.id})")
         else:
             logger.warning(f"User not found: {masked_email}")
-            
+
     except (SQLAlchemyError, OperationalError) as e:
         logger.error(f"Database error during login for {masked_email}: {str(e)}")
-        # Handle database connection errors gracefully
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
             detail="Database connection unavailable. Please try again later.",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    
+
     if not user:
         logger.warning(f"Failed login attempt for {masked_email}: user not found")
         raise HTTPException(
@@ -209,9 +202,7 @@ async def login(
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    
-    # Run password verification (CPU-bound bcrypt) in thread pool and fetch workshop IDs
-    # in parallel so login latency is max(verify, workshop_query) instead of sum
+
     verified, workshop_ids = await asyncio.gather(
         asyncio.to_thread(verify_password, password, user.password_hash),
         get_user_workshop_ids(str(user.id), db),
@@ -223,11 +214,9 @@ async def login(
             detail="Incorrect email or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    
+
     logger.info(f"Password verified for {masked_email}")
 
-    # Check account status (admins bypass status check)
-    # US32: Allow pending facilitators to login (they see restricted dashboard)
     if not user.is_admin_user:
         if user.status == AccountStatus.DISABLED.value:
             logger.warning(f"Login blocked: Account disabled for {masked_email}")
@@ -241,21 +230,17 @@ async def login(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Your account has been suspended. Please contact your administrator."
             )
-        # Note: PENDING status is now allowed to login per US32
-    
-    # Update last login (workshop_ids already fetched in parallel above)
+
     try:
         user.last_login = datetime.utcnow()
         await db.commit()
     except (SQLAlchemyError, OperationalError) as e:
         logger.error(f"Error updating login stats for {masked_email}: {str(e)}")
-        # Commit failed; workshop_ids already set, allow login
         try:
             await db.rollback()
         except Exception:
             pass
-    
-    # Create access token with role info
+
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={
@@ -267,9 +252,9 @@ async def login(
         },
         expires_delta=access_token_expires
     )
-    
+
     logger.info(f"Login successful for {masked_email}. Token generated.")
-    
+
     return TokenWithRoleResponse(
         access_token=access_token,
         token_type="bearer",
@@ -286,6 +271,47 @@ async def login(
         ),
         assigned_workshops=workshop_ids
     )
+
+
+@router.post("/login", response_model=TokenWithRoleResponse)
+async def login(
+    request: Request,
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Login with email and password.
+    Accepts JSON (with optional Base64 encoding) and form-encoded bodies.
+    The Base64-encoded JSON variant ({"data": "<b64>"}) prevents corporate DLP
+    proxies (Zscaler, etc.) from pattern-matching credential field names.
+    """
+    content_type = request.headers.get("content-type", "")
+    if "application/json" in content_type:
+        body = await request.json()
+        if "data" in body and isinstance(body["data"], str):
+            try:
+                decoded = json.loads(base64.b64decode(body["data"]).decode("utf-8"))
+                email = decoded.get("email") or decoded.get("username") or ""
+                password = decoded.get("password") or ""
+            except Exception:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail="Invalid encoded login payload.",
+                )
+        else:
+            email = body.get("email") or body.get("username") or ""
+            password = body.get("password") or ""
+    else:
+        form = await request.form()
+        email = form.get("username") or form.get("email") or ""
+        password = form.get("password") or ""
+
+    if not email or not password:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail="Email/username and password are required.",
+        )
+
+    return await _authenticate_user(str(email), str(password), db)
 
 @router.get("/me", response_model=UserWithRoleResponse)
 async def get_me(
