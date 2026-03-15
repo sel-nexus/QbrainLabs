@@ -19,7 +19,8 @@ import {
   ArrowRight,
   AlertCircle,
   Mail,
-  Rocket
+  Rocket,
+  Lightbulb
 } from 'lucide-react';
 
 import { API_BASE_URL } from '../lib/config';
@@ -234,6 +235,13 @@ export function FacilitatorDashboard() {
             description="Send a survey to your workshops"
             badgeVariant="default"
             onClick={() => setShowSurveyModal(true)}
+          />
+          <ActionTile
+            icon={<Lightbulb className="w-7 h-7" />}
+            title="Challenge Planner"
+            description="Plan your six-stage business challenge"
+            badgeVariant="default"
+            onClick={() => navigate('/facilitator/challenge-planner')}
           />
         </div>
 

@@ -23,11 +23,58 @@ from app.schemas.challenge import (
     GenerateAllStepsRequest,
     GenerateAllStepsResponse
 )
+from pydantic import BaseModel
 from app.services.challenge_step_service import ChallengeStepService
+
+
 from app.api.auth import get_current_user
 from app.middleware.rbac import require_facilitator, WorkshopAccessChecker
 
+
+class StandalonePromptRequest(BaseModel):
+    customer_name: str = ""
+    customer_about: str = ""
+    challenge_description: str
+
 router = APIRouter(prefix="/api/challenges", tags=["challenges"])
+
+
+@router.post("/standalone/generate-prompts")
+async def generate_standalone_prompts(
+    request_data: StandalonePromptRequest,
+    current_user: User = Depends(require_facilitator),
+    db: AsyncSession = Depends(get_db)
+):
+    """Generate prompts for all six steps from a plain challenge description (no stored card required)"""
+    from uuid import uuid4
+
+    virtual_card = ChallengeCard.__new__(ChallengeCard)
+    virtual_card.id = uuid4()
+    virtual_card.title = request_data.customer_name or "Business Challenge"
+    virtual_card.challenge_description = request_data.challenge_description
+    virtual_card.success_criteria = []
+    virtual_card.workshop_id = None
+
+    service = ChallengeStepService(db)
+    steps = []
+    for step_number in range(1, 7):
+        content = await service.generate_step_prompt(
+            challenge_card=virtual_card,
+            step_number=step_number,
+            include_workshop_context=False,
+            include_previous_steps=False,
+            customer_name=request_data.customer_name,
+            customer_about=request_data.customer_about,
+        )
+        steps.append({
+            "step_number": step_number,
+            "step_name": service.get_step_name(step_number),
+            "content": content,
+            "generated_at": datetime.utcnow().isoformat(),
+            "format": "text"
+        })
+
+    return {"steps": steps}
 
 
 @router.post("/workshops/{workshop_id}/challenges", response_model=ChallengeCardResponse, status_code=status.HTTP_201_CREATED)

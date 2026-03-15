@@ -27912,3 +27912,512 @@ RAGService Initialization Complete - Mode: REAL
 {"event": "Starting application...", "level": "info", "timestamp": "2026-03-04T18:46:02.107606Z"}
 {"event": "Database tables created", "level": "info", "timestamp": "2026-03-04T18:46:02.258283Z"}
 INFO:     Application startup complete.
+INFO:     Will watch for changes in these directories: ['C:\\Users\\azvmuser1\\windsurf-wrkspace\\QbrainLabs\\server']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [5000] using WatchFiles
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-03-15T13:07:37.016630Z"}
+============================================================
+RAGService Initialization Starting...
+============================================================
+OpenAI API Key: NOT SET
+Azure OpenAI API Key: SET
+Azure OpenAI Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+AI Mock Mode Setting: False
+
+[RAG] Service Mode: REAL AI
+[OK] Loaded 5 reference use cases
+
+[RAG] Initializing REAL AI components...
+   [INFO] Importing LangChain modules...
+   [OK] LangChain modules imported successfully
+
+   [AZURE] Initializing Azure OpenAI Client...
+      Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+      Deployment: gpt-4.1
+      Model: gpt-4.1
+      API Version: 2024-12-01-preview
+   [OK] Azure OpenAI Chat client initialized
+
+   [AZURE] Initializing Azure OpenAI Embeddings...
+      Deployment: text-embedding-3-large
+      Model: text-embedding-3-large
+   [OK] Azure OpenAI Embeddings initialized
+
+   [VECTOR] Initializing Vector Store with 5 documents...
+2026-03-15 13:07:46,765 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-03-15 13:07:46,783 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+INFO:     Started server process [14416]
+INFO:     Waiting for application startup.
+   [OK] Vector store initialized successfully
+
+   [OK] Real AI components initialization complete
+============================================================
+RAGService Initialization Complete - Mode: REAL
+============================================================
+
+{"event": "Starting application...", "level": "info", "timestamp": "2026-03-15T13:08:00.438560Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-03-15T13:08:00.719902Z"}
+INFO:     Application startup complete.
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\protocols\websockets\websockets_impl.py", line 244, in run_asgi
+    result = await self.app(self.scope, self.asgi_receive, self.asgi_send)  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\applications.py", line 1134, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+    await self.app(scope, receive, send)
+  [Previous line repeated 3 more times]
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 462, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\engineio\async_drivers\asgi.py", line 77, in __call__
+    await self.not_found(receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\engineio\async_drivers\asgi.py", line 125, in not_found
+    await send({'type': 'http.response.start',
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\protocols\websockets\websockets_impl.py", line 321, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Expected ASGI message 'websocket.accept', 'websocket.close', or 'websocket.http.response.start' but got 'http.response.start'.
+INFO:     connection open
+INFO:     connection closed
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\protocols\websockets\websockets_impl.py", line 244, in run_asgi
+    result = await self.app(self.scope, self.asgi_receive, self.asgi_send)  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\applications.py", line 1134, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+    await self.app(scope, receive, send)
+  [Previous line repeated 3 more times]
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 462, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\engineio\async_drivers\asgi.py", line 77, in __call__
+    await self.not_found(receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\engineio\async_drivers\asgi.py", line 125, in not_found
+    await send({'type': 'http.response.start',
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\protocols\websockets\websockets_impl.py", line 321, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Expected ASGI message 'websocket.accept', 'websocket.close', or 'websocket.http.response.start' but got 'http.response.start'.
+INFO:     connection open
+INFO:     connection closed
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\protocols\websockets\websockets_impl.py", line 244, in run_asgi
+    result = await self.app(self.scope, self.asgi_receive, self.asgi_send)  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\applications.py", line 1134, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+    await self.app(scope, receive, send)
+  [Previous line repeated 3 more times]
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 462, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\engineio\async_drivers\asgi.py", line 77, in __call__
+    await self.not_found(receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\engineio\async_drivers\asgi.py", line 125, in not_found
+    await send({'type': 'http.response.start',
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\protocols\websockets\websockets_impl.py", line 321, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Expected ASGI message 'websocket.accept', 'websocket.close', or 'websocket.http.response.start' but got 'http.response.start'.
+INFO:     connection open
+INFO:     connection closed
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\protocols\websockets\websockets_impl.py", line 244, in run_asgi
+    result = await self.app(self.scope, self.asgi_receive, self.asgi_send)  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\applications.py", line 1134, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+    await self.app(scope, receive, send)
+  [Previous line repeated 3 more times]
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 462, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\engineio\async_drivers\asgi.py", line 77, in __call__
+    await self.not_found(receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\engineio\async_drivers\asgi.py", line 125, in not_found
+    await send({'type': 'http.response.start',
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\protocols\websockets\websockets_impl.py", line 321, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Expected ASGI message 'websocket.accept', 'websocket.close', or 'websocket.http.response.start' but got 'http.response.start'.
+INFO:     connection open
+INFO:     connection closed
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-03-15T13:08:13.546707Z"}
+{"event": "Login attempt for user: adm***qbrainlabs.com", "level": "info", "timestamp": "2026-03-15T13:08:13.552711Z"}
+{"event": "User found: adm***qbrainlabs.com (ID: 48e54d46-a245-4044-bd1b-c9b1eb244049)", "level": "info", "timestamp": "2026-03-15T13:08:13.888350Z"}
+{"event": "Failed login attempt for adm***qbrainlabs.com: invalid password", "level": "warning", "timestamp": "2026-03-15T13:08:14.290070Z"}
+{"method": "POST", "path": "/api/auth/login", "status_code": 401, "duration_ms": 744.78, "client_ip": "127.0.0.1:52641", "event": "HTTP Request", "level": "warning", "timestamp": "2026-03-15T13:08:14.292081Z"}
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\protocols\websockets\websockets_impl.py", line 244, in run_asgi
+    result = await self.app(self.scope, self.asgi_receive, self.asgi_send)  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\applications.py", line 1134, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+    await self.app(scope, receive, send)
+  [Previous line repeated 3 more times]
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 462, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\engineio\async_drivers\asgi.py", line 77, in __call__
+    await self.not_found(receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\engineio\async_drivers\asgi.py", line 125, in not_found
+    await send({'type': 'http.response.start',
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\protocols\websockets\websockets_impl.py", line 321, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Expected ASGI message 'websocket.accept', 'websocket.close', or 'websocket.http.response.start' but got 'http.response.start'.
+INFO:     connection open
+INFO:     connection closed
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\protocols\websockets\websockets_impl.py", line 244, in run_asgi
+    result = await self.app(self.scope, self.asgi_receive, self.asgi_send)  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\applications.py", line 1134, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\base.py", line 103, in __call__
+    await self.app(scope, receive, send)
+  [Previous line repeated 3 more times]
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\middleware\exceptions.py", line 63, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 736, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\routing.py", line 462, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\engineio\async_drivers\asgi.py", line 77, in __call__
+    await self.not_found(receive, send)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\engineio\async_drivers\asgi.py", line 125, in not_found
+    await send({'type': 'http.response.start',
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\starlette\_exception_handler.py", line 39, in sender
+    await send(message)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\protocols\websockets\websockets_impl.py", line 321, in asgi_send
+    raise RuntimeError(msg % message_type)
+RuntimeError: Expected ASGI message 'websocket.accept', 'websocket.close', or 'websocket.http.response.start' but got 'http.response.start'.
+INFO:     connection open
+INFO:     connection closed
+{"event": "Login attempt for user: adm***qbrainlabs.com", "level": "info", "timestamp": "2026-03-15T13:09:08.835509Z"}
+{"event": "User found: adm***qbrainlabs.com (ID: 48e54d46-a245-4044-bd1b-c9b1eb244049)", "level": "info", "timestamp": "2026-03-15T13:09:08.839513Z"}
+{"event": "Failed login attempt for adm***qbrainlabs.com: invalid password", "level": "warning", "timestamp": "2026-03-15T13:09:09.153705Z"}
+{"method": "POST", "path": "/api/auth/login", "status_code": 401, "duration_ms": 323.18, "client_ip": "127.0.0.1:52641", "event": "HTTP Request", "level": "warning", "timestamp": "2026-03-15T13:09:09.155714Z"}
+{"event": "Login attempt for user: adm***qbrainlabs.com", "level": "info", "timestamp": "2026-03-15T13:09:16.144754Z"}
+{"event": "User found: adm***qbrainlabs.com (ID: 48e54d46-a245-4044-bd1b-c9b1eb244049)", "level": "info", "timestamp": "2026-03-15T13:09:16.148747Z"}
+{"event": "Failed login attempt for adm***qbrainlabs.com: invalid password", "level": "warning", "timestamp": "2026-03-15T13:09:16.468737Z"}
+{"method": "POST", "path": "/api/auth/login", "status_code": 401, "duration_ms": 330.34, "client_ip": "127.0.0.1:52641", "event": "HTTP Request", "level": "warning", "timestamp": "2026-03-15T13:09:16.469739Z"}
+{"event": "Login attempt for user: vsr***outlook.com", "level": "info", "timestamp": "2026-03-15T13:10:42.787802Z"}
+{"event": "User found: vsr***outlook.com (ID: ef47c2ab-77c9-42ec-8720-02abbdb24472)", "level": "info", "timestamp": "2026-03-15T13:10:42.792802Z"}
+{"event": "Password verified for vsr***outlook.com", "level": "info", "timestamp": "2026-03-15T13:10:43.130665Z"}
+{"event": "Login successful for vsr***outlook.com. Token generated.", "level": "info", "timestamp": "2026-03-15T13:10:43.148096Z"}
+{"method": "POST", "path": "/api/auth/login", "status_code": 200, "duration_ms": 366.09, "client_ip": "127.0.0.1:52641", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:10:43.149120Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 151.15, "client_ip": "127.0.0.1:52641", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:10:43.454232Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 21.07, "client_ip": "127.0.0.1:52641", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:10:43.501644Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 68.23, "client_ip": "127.0.0.1:52641", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:10:43.685499Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 74.79, "client_ip": "127.0.0.1:52641", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:10:43.775821Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 18.07, "client_ip": "127.0.0.1:52641", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:10:43.806662Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 194.16, "client_ip": "127.0.0.1:52641", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:10:43.820257Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 29.06, "client_ip": "127.0.0.1:52641", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:10:43.865590Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 41.55, "client_ip": "127.0.0.1:52641", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:10:43.887172Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 21.38, "client_ip": "127.0.0.1:52641", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:10:43.929638Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 19.47, "client_ip": "127.0.0.1:52641", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:10:43.960291Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 30.68, "client_ip": "127.0.0.1:52641", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:10:44.244606Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 414.74, "client_ip": "127.0.0.1:52641", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:10:44.265508Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 18.2, "client_ip": "127.0.0.1:52641", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:10:44.300794Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 21.67, "client_ip": "127.0.0.1:52641", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:10:44.339712Z"}
+WARNING:  WatchFiles detected changes in 'scripts\reset_admin_password.py'. Reloading...
+ INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+{"event": "Shutting down application...", "level": "info", "timestamp": "2026-03-15T13:17:30.129047Z"}
+INFO:     Application shutdown complete.
+INFO:     Finished server process [14416]
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-03-15T13:17:34.749077Z"}
+============================================================
+RAGService Initialization Starting...
+============================================================
+OpenAI API Key: NOT SET
+Azure OpenAI API Key: SET
+Azure OpenAI Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+AI Mock Mode Setting: False
+
+[RAG] Service Mode: REAL AI
+[OK] Loaded 5 reference use cases
+
+[RAG] Initializing REAL AI components...
+   [INFO] Importing LangChain modules...
+   [OK] LangChain modules imported successfully
+
+   [AZURE] Initializing Azure OpenAI Client...
+      Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+      Deployment: gpt-4.1
+      Model: gpt-4.1
+      API Version: 2024-12-01-preview
+   [OK] Azure OpenAI Chat client initialized
+
+   [AZURE] Initializing Azure OpenAI Embeddings...
+      Deployment: text-embedding-3-large
+      Model: text-embedding-3-large
+   [OK] Azure OpenAI Embeddings initialized
+
+   [VECTOR] Initializing Vector Store with 5 documents...
+2026-03-15 13:17:40,718 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-03-15 13:17:40,733 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+INFO:     Started server process [972]
+INFO:     Waiting for application startup.
+   [OK] Vector store initialized successfully
+
+   [OK] Real AI components initialization complete
+============================================================
+RAGService Initialization Complete - Mode: REAL
+============================================================
+
+{"event": "Starting application...", "level": "info", "timestamp": "2026-03-15T13:17:46.932322Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-03-15T13:17:47.113428Z"}
+INFO:     Application startup complete.
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-03-15T13:28:43.884221Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 466.84, "client_ip": "127.0.0.1:62642", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:28:44.352119Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 18.13, "client_ip": "127.0.0.1:62642", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:28:44.385422Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 58.29, "client_ip": "127.0.0.1:62642", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:28:44.488558Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 120.26, "client_ip": "127.0.0.1:62642", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:28:44.629044Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 268.72, "client_ip": "127.0.0.1:62642", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:28:44.707925Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 22.19, "client_ip": "127.0.0.1:62642", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:28:44.788756Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 43.82, "client_ip": "127.0.0.1:62642", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:28:44.823525Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 108.35, "client_ip": "127.0.0.1:62642", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:28:44.903860Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 62.01, "client_ip": "127.0.0.1:62642", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:28:45.219255Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 57.97, "client_ip": "127.0.0.1:62642", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:28:45.220261Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 439.72, "client_ip": "127.0.0.1:62642", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:28:45.252584Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 26.14, "client_ip": "127.0.0.1:62642", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:28:45.362054Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 31.12, "client_ip": "127.0.0.1:62642", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:28:45.374176Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 17.33, "client_ip": "127.0.0.1:62642", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:28:45.498572Z"}
+WARNING:  WatchFiles detected changes in 'app\api\challenge.py'. Reloading...
+ {"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 25.73, "client_ip": "127.0.0.1:51265", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:43:11.325776Z"}
+{"method": "GET", "path": "/api/facilitator/workshops", "status_code": 200, "duration_ms": 25.21, "client_ip": "127.0.0.1:51265", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:43:11.398223Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 34.2, "client_ip": "127.0.0.1:51265", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:43:11.546071Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 44.99, "client_ip": "127.0.0.1:51265", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:43:11.551404Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 64.92, "client_ip": "127.0.0.1:51265", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:43:11.663918Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 64.64, "client_ip": "127.0.0.1:51265", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:43:11.670704Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 61.06, "client_ip": "127.0.0.1:51265", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:43:11.671700Z"}
+INFO:     Shutting down
+INFO:     Waiting for connections to close. (CTRL+C to force quit)
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 373.47, "client_ip": "127.0.0.1:51265", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:43:11.995495Z"}
+INFO:     Waiting for application shutdown.
+{"event": "Shutting down application...", "level": "info", "timestamp": "2026-03-15T13:43:12.037070Z"}
+INFO:     Application shutdown complete.
+INFO:     Finished server process [972]
+WARNING:  WatchFiles detected changes in 'app\services\challenge_step_service.py'. Reloading...
+ Process SpawnProcess-3:
+Traceback (most recent call last):
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\_subprocess.py", line 76, in subprocess_started
+    config.configure_logging()
+  File "C:\Users\azvmuser1\windsurf-wrkspace\QbrainLabs\server\.venv\Lib\site-packages\uvicorn\config.py", line 366, in configure_logging
+    logging.config.dictConfig(self.log_config)
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\logging\config.py", line 823, in dictConfig
+    dictConfigClass(config).configure()
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\logging\config.py", line 546, in configure
+    _clearExistingHandlers()
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\logging\config.py", line 285, in _clearExistingHandlers
+    logging.shutdown(logging._handlerList[:])
+  File "C:\Users\azvmuser1\AppData\Local\Programs\Python\Python311\Lib\logging\__init__.py", line 2170, in shutdown
+    def shutdown(handlerList=_handlerList):
+    
+KeyboardInterrupt
+{"event": "Using dynamic CORS middleware - accepts origins matching server IP addresses", "level": "info", "timestamp": "2026-03-15T13:43:24.621809Z"}
+============================================================
+RAGService Initialization Starting...
+============================================================
+OpenAI API Key: NOT SET
+Azure OpenAI API Key: SET
+Azure OpenAI Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+AI Mock Mode Setting: False
+
+[RAG] Service Mode: REAL AI
+[OK] Loaded 5 reference use cases
+
+[RAG] Initializing REAL AI components...
+   [INFO] Importing LangChain modules...
+   [OK] LangChain modules imported successfully
+
+   [AZURE] Initializing Azure OpenAI Client...
+      Endpoint: https://ai-lshcerupod.cognitiveservices.azure.com/
+      Deployment: gpt-4.1
+      Model: gpt-4.1
+      API Version: 2024-12-01-preview
+   [OK] Azure OpenAI Chat client initialized
+
+   [AZURE] Initializing Azure OpenAI Embeddings...
+      Deployment: text-embedding-3-large
+      Model: text-embedding-3-large
+   [OK] Azure OpenAI Embeddings initialized
+
+   [VECTOR] Initializing Vector Store with 5 documents...
+2026-03-15 13:43:45,470 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2026-03-15 13:43:45,524 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
+INFO:     Started server process [7100]
+INFO:     Waiting for application startup.
+   [OK] Vector store initialized successfully
+
+   [OK] Real AI components initialization complete
+============================================================
+RAGService Initialization Complete - Mode: REAL
+============================================================
+
+{"event": "Starting application...", "level": "info", "timestamp": "2026-03-15T13:43:56.765559Z"}
+{"event": "Database tables created", "level": "info", "timestamp": "2026-03-15T13:43:57.037870Z"}
+INFO:     Application startup complete.
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-03-15T13:43:59.075606Z"}
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-03-15T13:43:59.077620Z"}
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-03-15T13:43:59.077620Z"}
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-03-15T13:43:59.077620Z"}
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-03-15T13:43:59.077620Z"}
+{"event": "Redis not available (Timeout connecting to server...), using in-memory rate limiting. To enable Redis, install and start Redis server or set REDIS_URL to a valid Redis instance.", "level": "info", "timestamp": "2026-03-15T13:43:59.079640Z"}
+{"method": "GET", "path": "/api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1", "status_code": 200, "duration_ms": 1758.45, "client_ip": "127.0.0.1:51265", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:44:00.838486Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 1784.73, "client_ip": "127.0.0.1:51265", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:44:00.864914Z"}
+{"method": "GET", "path": "/api/usecases/all/list", "status_code": 200, "duration_ms": 1792.62, "client_ip": "127.0.0.1:51265", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:44:00.874553Z"}
+{"method": "GET", "path": "/api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d", "status_code": 200, "duration_ms": 1814.7, "client_ip": "127.0.0.1:51265", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:44:00.895706Z"}
+{"method": "GET", "path": "/api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress", "status_code": 200, "duration_ms": 1820.84, "client_ip": "127.0.0.1:51265", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:44:00.901529Z"}
+{"method": "GET", "path": "/api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress", "status_code": 200, "duration_ms": 1822.88, "client_ip": "127.0.0.1:51265", "event": "HTTP Request", "level": "info", "timestamp": "2026-03-15T13:44:00.903557Z"}

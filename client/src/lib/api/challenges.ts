@@ -152,6 +152,22 @@ export const challengesApi = {
   },
 
   /**
+   * Generate prompts for all six steps from a plain challenge description (no stored card needed)
+   */
+  generateStandalonePrompts: async (
+    challengeDescription: string,
+    customerName?: string,
+    customerAbout?: string,
+  ): Promise<StepGenerationResponse[]> => {
+    const response = await api.post('challenges/standalone/generate-prompts', {
+      challenge_description: challengeDescription,
+      customer_name: customerName ?? '',
+      customer_about: customerAbout ?? '',
+    });
+    return response.data.steps as StepGenerationResponse[];
+  },
+
+  /**
    * Upload and analyze a file to generate challenge cards
    */
   analyzeFile: async (file: File): Promise<ChallengeCardCreate[]> => {

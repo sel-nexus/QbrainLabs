@@ -200,8 +200,8 @@ class KnowledgeBaseManager:
             return
         
         try:
-            from langchain.vectorstores import Chroma
-            from langchain.schema import Document
+            from langchain_community.vectorstores import Chroma
+            from langchain_core.documents import Document
             
             # Get all active documents from reference data
             reference_data = await self.load_reference_data()

@@ -12,59 +12,201 @@ import json
 
 class ChallengeStepService:
     """Service for generating prompts and summaries for the six-step process"""
-    
+
+    # Ideation-exercise prompt templates — placeholders: {company}, {domain}, {challenge}
+    IDEATION_PROMPTS = {
+        1: """\
+You are a research aide for a technology innovation workshop.
+
+**Company:** {company}
+
+**Company Domain:** {domain}
+
+**Business Challenge:** {challenge}
+
+Deliver the following in structured format:
+
+1. **Key Personas** — List 4–6 personas (role, seniority, department) most affected by this challenge. Include BOTH internal staff AND external stakeholders (customers, partners, suppliers).
+
+2. **Top Pains** — Rank the top 5 pain points these personas experience today, with:
+   - Severity (High / Medium / Low)
+   - Frequency (Daily / Weekly / Monthly)
+   - Who feels it most (which persona)
+
+3. **Current Workarounds** — For each pain point, describe the manual or semi-manual workaround currently in use.
+
+4. **Success Metrics** — Define 4–6 measurable KPIs that would indicate the challenge is solved. Include current estimated baselines and target values.
+
+5. **3 Insights** — Non-obvious, data-informed insights specific to this industry and challenge domain.
+
+6. **1 Key Risk** — The single biggest risk to solving this challenge (regulatory, technical, organisational, or data-related). Explain why and how it could derail the solution.
+
+Format with clear headers and tables where appropriate.\
+""",
+        2: """\
+You are conducting a root-cause analysis for {company}.
+
+Using the top 3 pain points (by severity and frequency) from the Research & Discovery output:
+
+1. **Five Whys Drill-Down** — Run a Five Whys analysis for each to uncover the root cause. Show each "Why?" step clearly.
+
+2. **3 Root-Cause Hypotheses** per pain (9 total). For each hypothesis, specify:
+   - **Hypothesis statement** — A clear, testable claim
+   - **Disproof evidence** — What data or observation would INVALIDATE this hypothesis?
+   - **Minimum data cut** — The smallest dataset needed to test it
+   - **Data owner(s)** — Who at {company} (or their partners) holds this data?
+
+3. **Root-Cause Map** — A structured text diagram linking:
+   Pain Points → Why Chains → Root Causes
+   Show how multiple pains may share common root causes.
+
+4. **Test Plan** — A table with columns:
+   | Hypothesis | Test Method | Data Required | Owner | Timeline | Priority |
+
+5. **Privacy & Regulatory Constraints** — Identify any privacy laws, industry regulations, or contractual constraints that apply to the data involved. Flag anything that could limit data collection or sharing.
+
+Format with clear headers. Use tables for the test plan.\
+""",
+        3: """\
+You are an AI product strategist generating solution ideas for {company}.
+
+**Context:** {domain}
+
+Use the root causes from Stage 2 and the key insights from Stage 1 (already in this conversation) to generate AI-driven solution ideas clustered into three categories:
+
+### CLUSTER 1: Computer Vision (CV)
+Ideas leveraging image recognition, document parsing, OCR, visual monitoring, or anomaly detection.
+- Generate **3–5 concrete ideas** with a one-line description
+- Score each: Impact (1–5), Feasibility (1–5), Speed-to-Pilot (1–5)
+- **Star (★)** the single highest-priority idea
+
+### CLUSTER 2: RAG / Co-Pilot
+Ideas using retrieval-augmented generation, conversational AI, knowledge assistants, or intelligent Q&A.
+- Generate **3–5 concrete ideas**
+- Score and star as above
+
+### CLUSTER 3: Tasking & Automation
+Ideas for workflow automation, intelligent scheduling, auto-notifications, trigger-based actions, or predictive systems.
+- Generate **3–5 concrete ideas**
+- Score and star as above
+
+### SCORING GUIDE
+- **Impact (1–5):** How much does this solve the core challenge?
+- **Feasibility (1–5):** Can {company} build/buy this with existing data and tech?
+- **Speed-to-Pilot (1–5):** Can a working prototype be delivered in <4 weeks?
+
+### OUTPUT
+1. A scored table for each cluster
+2. The ★ top idea per cluster (with brief justification)
+3. **Final Recommendation:** The single best idea overall to take to pilot, with a 3-sentence justification.
+
+Be specific to {company}'s domain — no generic "AI dashboard" ideas.\
+""",
+        4: """\
+You are an AI product strategist creating a pilot brief for {company}.
+
+Using the recommended idea from Stage 3 and root causes from Stage 2, produce a **one-page pilot brief** with these sections:
+
+### 1. Pilot Title & One-Line Summary
+A memorable name and a single sentence describing what will be built and for whom.
+
+### 2. Target Users
+- Primary persona(s) from Stage 1
+- Number of users in pilot
+- Location / business unit
+
+### 3. Problem Statement (2–3 sentences)
+Specific pain being solved. Why now? What is the cost of inaction?
+
+### 4. Proposed Solution
+- What it does (functional description)
+- Key AI capability used (CV / RAG / Automation / Other)
+- Platform or tool to build it on
+
+### 5. User Flow (5–7 steps)
+Step-by-step journey from trigger to outcome, in plain English.
+
+### 6. Key Screens / Interfaces
+List 4–6 screens or UI components with a one-sentence description each.
+
+### 7. Sample Data Requirements
+| Data Element | Source | Format | Owner | Privacy Flag |
+
+### 8. Success Metrics for Pilot
+| Metric | Baseline | Target | Measurement Method |
+
+### 9. Constraints & Assumptions
+- Time: 4-week pilot
+- Budget: [specify]
+- Integrations needed
+- Known data gaps
+
+Format as a clean, structured brief ready to hand to a developer or AI builder.\
+""",
+        5: """\
+You are a senior full-stack developer building a prototype for {company}.
+
+Using the pilot brief from Stage 4 (already in this conversation), build a **fully functional, single-page web application** with these constraints:
+
+### TECHNICAL
+- Single file: HTML5, CSS3, vanilla JavaScript in one .html file
+- No external dependencies except Google Fonts (Inter or DM Sans)
+- Responsive: desktop-first, mobile-friendly
+
+### BRANDING — {company}
+- Research {company}'s brand colours and visual identity
+- Use their actual brand palette (primary, secondary, accent colours)
+- If uncertain, use professional colours appropriate for the {domain_short} industry
+- Typography: Clean, modern, trustworthy
+- Tone: Professional and appropriate for the target users
+
+### FUNCTIONALITY
+- Ingest and display sample data from pilot brief
+- Implement complete key flow (5–7 steps) as interactive UI
+- Data visualisation: charts, progress indicators, breakdowns as appropriate
+- Notification/communication preview component
+- AI Q&A component (simulated responses)
+- Export/summary generation
+- Clear status indicators with colour coding
+
+### DESIGN QUALITY
+- Production-grade — will be shown to {company} executives
+- No generic AI aesthetics
+- Think: a real product {company} would proudly show their stakeholders
+- Subtle animations, clear hierarchy, accessible contrast
+
+Output the complete HTML file only.\
+""",
+        6: """\
+I have a single-file HTML5 prototype built for {company} based on the pilot brief. I want to test it with a group of 5–6 users who represent the personas from Stage 1. The users will be a mix of internal staff and external stakeholders. I will ask them to perform the key flow from the pilot brief and observe their interactions.
+
+Based on the feedback, produce a **one-page executive summary** with the following sections:
+
+1. **Executive Summary** — 3–4 sentences on what was tested, key findings, and recommendation
+2. **User Feedback Highlights** — Top 3 positive themes and top 3 areas for improvement
+3. **Success Metrics Update** — How the prototype performed against KPIs
+4. **Key Insights** — 2–3 non-obvious learnings from testing
+5. **Risks & Mitigations** — Any new risks discovered
+6. **Next Steps** — Clear recommendations for next steps
+
+Also provide:
+
+1. **Deployment Note** (3–5 sentences): what was built, the core value proposition, and how it can be deployed in a real environment.
+2. **Presentation Note** (3–5 sentences): how to present this prototype to stakeholders at {company}.
+3. **Known Limitations** of the prototype (be honest and critical):
+   - What data connections are real and what are simulated
+   - What integrations are real and what are simulated
+   - What AI responses are real and what are simulated
+   - What workflows are real and what are simulated
+   - What UI components are real and what are simulated
+4. **3 Questions to ask {company}** that would validate whether this solution addresses their real needs.\
+""",
+    }
+
     STEP_DEFINITIONS = {
         1: {
             "name": "Widen",
             "description": "Rapidly surface personas, pains, workarounds, metrics, insights, risks related to the challenge",
-            "prompt_template": """# Step 1: Widen - Discovery and Context Building
-
-## Challenge Context
-**Challenge Title:** {title}
-**Challenge Description:** {description}
-**Success Criteria:** {success_criteria}
-
-## Your Task
-Rapidly surface and document the following elements related to this challenge:
-
-### 1. Personas
-Identify and describe the key user personas affected by this challenge:
-- Who are the primary stakeholders?
-- What are their roles and responsibilities?
-- How are they impacted by this challenge?
-
-### 2. Pain Points
-Document the specific pain points experienced:
-- What problems do users face?
-- What frustrations exist?
-- What inefficiencies are present?
-
-### 3. Workarounds
-Identify existing temporary solutions or workarounds:
-- What manual processes are in place?
-- What tools or methods are currently used?
-- How do people cope with the challenge today?
-
-### 4. Metrics
-Identify relevant metrics and KPIs:
-- What quantitative measures relate to this challenge?
-- What data points can be tracked?
-- What baseline metrics exist?
-
-### 5. Insights
-Document key insights from analysis:
-- What patterns have been observed?
-- What correlations exist?
-- What learnings have been gathered?
-
-### 6. Risks
-Identify potential risks and challenges:
-- What could go wrong?
-- What dependencies exist?
-- What constraints must be considered?
-
-## Output Format
-Please structure your findings using the sections above, providing specific, actionable information for each category.""",
             "summary_template": """# Step 1: Widen - Discovery Summary
 
 ## Challenge: {title}
@@ -84,50 +226,6 @@ Please structure your findings using the sections above, providing specific, act
         2: {
             "name": "Diagnose",
             "description": "Drill into chosen pain using five Whys, hypotheses, disproof evidence, and quick tests for validation",
-            "prompt_template": """# Step 2: Diagnose - Root Cause Analysis
-
-## Challenge Context
-**Challenge Title:** {title}
-**Challenge Description:** {description}
-**Success Criteria:** {success_criteria}
-
-## Your Task
-Drill deep into the chosen pain point using systematic diagnostic techniques:
-
-### 1. Five Whys Analysis
-Apply the "Five Whys" technique to identify the root cause:
-- Why is this pain occurring? (Why 1)
-- Why is that happening? (Why 2)
-- Why does that occur? (Why 3)
-- Why is that the case? (Why 4)
-- Why is that the root cause? (Why 5)
-
-### 2. Hypothesis Formation
-Formulate hypotheses about the root cause:
-- What are potential explanations?
-- What assumptions are being made?
-- What theories could explain the pain?
-
-### 3. Disproof Evidence
-Seek evidence that contradicts your assumptions:
-- What data challenges your hypotheses?
-- What evidence suggests alternative causes?
-- What assumptions might be wrong?
-
-### 4. Quick Tests for Validation
-Design quick tests to validate findings:
-- What experiments can be run?
-- What data can be collected?
-- How can hypotheses be tested quickly?
-
-### 5. Validated Root Cause
-Document the validated root cause:
-- What is the confirmed root cause?
-- What evidence supports this conclusion?
-- What tests validated this finding?
-
-## Output Format
-Document your diagnostic process, findings, and validated root cause using the structure above.""",
             "summary_template": """# Step 2: Diagnose - Root Cause Analysis Summary
 
 ## Challenge: {title}
@@ -147,48 +245,6 @@ Document your diagnostic process, findings, and validated root cause using the s
         3: {
             "name": "Converge",
             "description": "Cluster ideas into three options, score impact and do-ability, recommend one with metrics for leadership",
-            "prompt_template": """# Step 3: Converge - Solution Evaluation and Selection
-
-## Challenge Context
-**Challenge Title:** {title}
-**Challenge Description:** {description}
-**Success Criteria:** {success_criteria}
-
-## Your Task
-Cluster ideas, evaluate options, and recommend a solution:
-
-### 1. Idea Clustering
-Group related ideas and solutions:
-- What themes emerge from the ideas?
-- How can ideas be grouped?
-- What patterns exist?
-
-### 2. Top Three Options
-Identify the top three solution options:
-- Option A: [Description]
-- Option B: [Description]
-- Option C: [Description]
-
-### 3. Impact and Do-ability Scoring
-Score each option:
-- **Impact:** High / Medium / Low
-- **Do-ability:** Easy / Medium / Hard
-- **Rationale:** Why this score?
-
-### 4. Recommendation
-Select and justify the recommended option:
-- Which option is recommended?
-- Why is this the best choice?
-- What makes it superior?
-
-### 5. Metrics for Leadership
-Prepare metrics and data to support the recommendation:
-- What quantitative benefits can be shown?
-- What ROI or business impact metrics exist?
-- What success metrics will be tracked?
-
-## Output Format
-Present your three options, scores, recommendation, and supporting metrics in a format suitable for leadership review.""",
             "summary_template": """# Step 3: Converge - Solution Selection Summary
 
 ## Challenge: {title}
@@ -209,54 +265,6 @@ Present your three options, scores, recommendation, and supporting metrics in a 
         4: {
             "name": "Brief",
             "description": "Create one-page brief with users, problem, flow, screens, sample copy, and data, enabling rapid prototyping",
-            "prompt_template": """# Step 4: Brief - Prototype Specification
-
-## Challenge Context
-**Challenge Title:** {title}
-**Challenge Description:** {description}
-**Success Criteria:** {success_criteria}
-
-## Your Task
-Create a comprehensive one-page brief for rapid prototyping:
-
-### 1. Users
-Define target users:
-- Who are the primary users?
-- What are their characteristics?
-- What are their needs?
-
-### 2. Problem
-Clearly state the problem:
-- What specific problem are we solving?
-- Why is this problem important?
-- What happens if we don't solve it?
-
-### 3. Flow
-Document the user flow:
-- What are the key steps?
-- What is the user journey?
-- What interactions occur?
-
-### 4. Screens
-Describe screen mockups or wireframes:
-- What screens are needed?
-- What is the layout?
-- What elements are present?
-
-### 5. Sample Copy
-Provide example text content:
-- What are the key messages?
-- What is the tone?
-- What copy is needed?
-
-### 6. Data
-Specify data requirements:
-- What data is needed?
-- Where does it come from?
-- How is it structured?
-
-## Output Format
-Create a concise one-page brief covering all elements above, formatted for easy reference during prototyping.""",
             "summary_template": """# Step 4: Brief - Prototype Specification Summary
 
 ## Challenge: {title}
@@ -279,48 +287,6 @@ Create a concise one-page brief covering all elements above, formatted for easy 
         5: {
             "name": "Build",
             "description": "Generate platform-specific builder prompt from brief, including flows, components, data, metrics, constraints for first-cut prototype creation",
-            "prompt_template": """# Step 5: Build - Prototype Implementation Guide
-
-## Challenge Context
-**Challenge Title:** {title}
-**Challenge Description:** {description}
-**Success Criteria:** {success_criteria}
-
-## Your Task
-Generate a platform-specific builder prompt for creating the first-cut prototype:
-
-### 1. User Flows and Navigation
-- Define the complete user flow
-- Specify navigation structure
-- Document user interactions
-
-### 2. Components and Structure
-- List required UI components
-- Define component hierarchy
-- Specify component interactions
-
-### 3. Data Models and Requirements
-- Define data structures
-- Specify API requirements
-- Document data relationships
-
-### 4. Key Metrics to Track
-- Identify success metrics
-- Define tracking points
-- Specify measurement methods
-
-### 5. Technical Constraints
-- Platform requirements
-- Performance considerations
-- Integration constraints
-
-### 6. Implementation Details
-- Technology stack recommendations
-- Architecture patterns
-- Development approach
-
-## Output Format
-Create a detailed builder prompt that a developer or AI can use to build the prototype, including all technical specifications and requirements.""",
             "summary_template": """# Step 5: Build - Implementation Summary
 
 ## Challenge: {title}
@@ -340,44 +306,6 @@ Create a detailed builder prompt that a developer or AI can use to build the pro
         6: {
             "name": "Share-back",
             "description": "Generate a 2-3 min executive sales pitch style storyline highlighting what has been done so far and what's next",
-            "prompt_template": """# Step 6: Share-back - Executive Summary
-
-## Challenge Context
-**Challenge Title:** {title}
-**Challenge Description:** {description}
-**Success Criteria:** {success_criteria}
-
-## Your Task
-Create a 2-3 minute executive sales pitch style storyline:
-
-### 1. Executive Summary
-- High-level overview of progress
-- Key achievements
-- Current status
-
-### 2. What Has Been Done
-- Milestones completed
-- Key learnings
-- Validated findings
-- Prototype status
-
-### 3. Current Status
-- Where we are now
-- What's working
-- What needs attention
-
-### 4. What's Next
-- Next steps and roadmap
-- Upcoming milestones
-- Resource needs
-
-### 5. Value Proposition
-- Business impact
-- ROI potential
-- Strategic value
-
-## Output Format
-Create a compelling narrative suitable for a 2-3 minute executive presentation, highlighting progress, value, and next steps.""",
             "summary_template": """# Step 6: Share-back - Executive Summary
 
 ## Challenge: {title}
@@ -448,33 +376,31 @@ Create a compelling narrative suitable for a 2-3 minute executive presentation, 
         challenge_card: ChallengeCard,
         step_number: int,
         include_workshop_context: bool = False,
-        include_previous_steps: bool = False
+        include_previous_steps: bool = False,
+        customer_name: str = "",
+        customer_about: str = "",
     ) -> str:
-        """Generate a prompt for a specific step"""
+        """Generate a prompt for a specific step using ideation-exercise templates."""
         step_def = self.STEP_DEFINITIONS.get(step_number)
         if not step_def:
             raise ValueError(f"Invalid step number: {step_number}")
-        
-        # Prepare context
-        success_criteria_str = "\n".join([f"- {c}" for c in challenge_card.success_criteria])
-        context = {
-            "title": challenge_card.title,
-            "description": challenge_card.challenge_description,
-            "success_criteria": success_criteria_str
-        }
-        
-        # Add workshop context if requested
-        if include_workshop_context:
-            context["workshop_context"] = "\n\n**Note:** Workshop context and use case data can be included here."
-        
-        # Add previous steps context if requested
-        if include_previous_steps:
-            context["previous_steps_context"] = "\n\n**Note:** Context from previous steps can be included here."
-        
-        # Generate prompt using template
-        prompt = step_def["prompt_template"].format(**context)
-        
-        return prompt
+
+        template = self.IDEATION_PROMPTS.get(step_number, "")
+        if not template:
+            return f"Prompt template not found for step {step_number}."
+
+        company = customer_name.strip() or challenge_card.title or "the company"
+        domain = customer_about.strip() or "the company's domain and offerings"
+        # A short one-word/phrase domain label used in the Build prompt
+        domain_words = domain.split()
+        domain_short = " ".join(domain_words[:6]) if len(domain_words) > 6 else domain
+
+        return template.format(
+            company=company,
+            domain=domain,
+            domain_short=domain_short,
+            challenge=challenge_card.challenge_description or "",
+        )
     
     async def generate_step_summary(
         self,
@@ -493,7 +419,7 @@ Create a compelling narrative suitable for a 2-3 minute executive presentation, 
             
         # Use AI to generate summary
         try:
-            from langchain.schema import HumanMessage
+            from langchain_core.messages import HumanMessage
             
             prompt = f"""
             Synthesize the following output from the '{step_def['name']}' step of an AI challenge workshop into a concise, executive-level summary slide.
