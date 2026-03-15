@@ -61,7 +61,7 @@ if errorlevel 1 (
 )
 
 echo ================================================
-echo AI Hotspot Matrix: Developer Environment Setup
+echo Qbrain Labs: Developer Environment Setup
 echo ================================================
 
 REM 1. Environment Verification

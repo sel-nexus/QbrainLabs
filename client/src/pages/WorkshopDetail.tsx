@@ -24,7 +24,7 @@ import { MessageSquare, Calculator, Users } from 'lucide-react';
 import { ROICalculatorModal, ROIComparisonView } from '../components/roi';
 import { BreakoutManager } from '../components/breakout';
 import { RoadmapGenerator } from '../components/roadmap';
-import { ChallengeManager } from '../components/challenges';
+import { ChallengeManager, WorkshopPlannerPanel } from '../components/challenges';
 import { CopilotPanel } from '../components/ai-copilot';
 import { useAuth } from '../context/AuthContext';
 import { MatrixActivityDashboard } from '../components/MatrixActivityDashboard';
@@ -771,10 +771,16 @@ export function WorkshopDetail() {
 
                         {/* Challenges Tab */}
                         {activeTab === 'challenges' && id && (
-                            <ChallengeManager
-                                workshopId={id}
-                                isFacilitator={hasRole(['admin', 'facilitator'])}
-                            />
+                            <div className="space-y-8">
+                                <ChallengeManager
+                                    workshopId={id}
+                                    isFacilitator={hasRole(['admin', 'facilitator'])}
+                                />
+                                {/* Planner Prompts — sessions from the Business Challenge Planner linked to this workshop */}
+                                <div className={`rounded-xl border p-6 ${theme === 'light' ? 'bg-white border-gray-200' : 'theme-bg-secondary theme-border'}`}>
+                                    <WorkshopPlannerPanel workshopId={id} />
+                                </div>
+                            </div>
                         )}
 
                         {/* Rooms & Surveys Tab */}

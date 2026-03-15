@@ -339,3 +339,1917 @@ Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f
 Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
 [2m1:44:33 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/BusinessChallengePlanner.tsx, /src/index.css[22m
 [2m1:45:03 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/BusinessChallengePlanner.tsx, /src/index.css[22m
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /facilitator/dashboard
+[Vite Request] GET /@vite/client
+[Vite Request] GET /src/main.tsx?t=1773582303555
+[Vite Request] GET /@react-refresh
+[Vite Request] GET /manifest.json
+[Vite Request] GET /src/index.css?t=1773582303555
+[Vite Request] GET /src/App.tsx?t=1773582303555
+[Vite Request] GET /src/context/AuthContext.tsx
+[Vite Request] GET /src/i18n.ts
+[Vite Request] GET /node_modules/vite/dist/client/env.mjs
+[Vite Request] GET /src/context/SessionContext.tsx
+[Vite Request] GET /src/context/ThemeContext.tsx
+[Vite Request] GET /src/pages/WorkshopDetail.tsx?t=1773582179464
+[Vite Request] GET /src/components/ChangePasswordDialog.tsx
+[Vite Request] GET /src/pages/Landing.tsx
+[Vite Request] GET /src/pages/JoinWorkshop.tsx
+[Vite Request] GET /src/pages/FacilitatorLogin.tsx
+[Vite Request] GET /src/pages/FacilitatorDashboard.tsx
+[Vite Request] GET /src/pages/AdminSettings.tsx
+[Vite Request] GET /src/pages/AdminWorkshops.tsx
+[Vite Request] GET /src/pages/BusinessChallengePlanner.tsx?t=1773582303555
+[Vite Request] GET /src/pages/AdminUsers.tsx
+[Vite Request] GET /src/pages/AdminPanel.tsx
+[Vite Request] GET /src/pages/AdminMyWorkshops.tsx
+[Vite Request] GET /src/pages/AdminUseCases.tsx
+[Vite Request] GET /src/pages/AdminKnowledgeBase.tsx
+[Vite Request] GET /src/pages/FacilitatorManagement.tsx
+[Vite Request] GET /src/pages/AdminLLMUsage.tsx
+[Vite Request] GET /src/components/AdminLayout.tsx
+[Vite Request] GET /src/components/AuthenticatedLayout.tsx
+[Vite Request] GET /src/components/feedback/FeedbackWidget.tsx
+[Vite Request] GET /src/pages/AnalyticsDashboard.tsx
+[Vite Request] GET /src/pages/KnowledgeBase.tsx
+[Vite Request] GET /src/pages/ParticipantDashboard.tsx
+[Vite Request] GET /src/pages/WaitingRoom.tsx
+[Vite Request] GET /src/pages/IntakePhase.tsx
+[Vite Request] GET /src/pages/ScoringPhase.tsx
+[Vite Request] GET /src/pages/AllUseCases.tsx
+[Vite Request] GET /src/pages/FacilitatorRegister.tsx
+[Vite Request] GET /src/pages/ParticipantMatrix.tsx
+[Vite Request] GET /src/components/BulkUseCaseForm.tsx
+[Vite Request] GET /src/lib/api.ts
+[Vite Request] GET /src/components/ui/Button.tsx
+[Vite Request] GET /src/components/ResultsChart.tsx
+[Vite Request] GET /src/components/UseCaseForm.tsx
+[Vite Request] GET /src/components/survey/index.ts
+[Vite Request] GET /src/lib/socket.ts
+[Vite Request] GET /src/pages/CreateWorkshop.tsx
+[Vite Request] GET /src/lib/config.ts
+[Vite Request] GET /src/components/WorkshopInsights.tsx
+[Vite Request] GET /src/components/polls/PollManager.tsx
+[Vite Request] GET /src/components/polls/ReactionOverlay.tsx
+[Vite Request] GET /src/components/AnalyticsDashboard.tsx
+[Vite Request] GET /src/components/ui/Modal.tsx
+[Vite Request] GET /src/components/WorkshopSettingsModal.tsx
+[Vite Request] GET /src/components/roadmap/index.ts
+[Vite Request] GET /src/components/breakout/index.ts
+[Vite Request] GET /src/components/ai-copilot/index.ts
+[Vite Request] GET /src/components/challenges/index.ts?t=1773582179464
+[Vite Request] GET /src/components/polls/QAPanel.tsx
+[Vite Request] GET /src/components/MatrixActivityDashboard.tsx
+[Vite Request] GET /src/components/roi/index.ts
+[Vite Request] GET /src/components/ParticipantAuth.tsx
+[Vite Request] GET /src/components/TileCarousel/index.ts
+[Vite Request] GET /src/components/HomeTiles/index.ts
+[Vite Request] GET /src/components/Header.tsx
+[Vite Request] GET /src/components/ui/ActionTile.tsx
+[Vite Request] GET /src/components/survey/InitiateSurveyModal.tsx
+[Vite Request] GET /src/components/survey/SurveyMonitorPanel.tsx
+[Vite Request] GET /src/components/usecases/UseCaseApprovalModal.tsx
+[Vite Request] GET /src/components/usecases/AdminImportUseCasesModal.tsx
+[Vite Request] GET /src/components/prioritization/PrioritizationScale.tsx
+[Vite Request] GET /src/components/ui/Input.tsx
+[Vite Request] GET /src/lib/api/challenges.ts?t=1773582179464
+[Vite Request] GET /src/components/ConfirmationModal.tsx
+[Vite Request] GET /src/lib/api/analytics.ts
+[Vite Request] GET /src/lib/api/feedback.ts
+[Vite Request] GET /src/components/UseCaseCanvas.tsx
+[Vite Request] GET /src/components/survey/SurveyParticipant.tsx
+[Vite Request] GET /src/components/polls/ReactionBar.tsx
+[Vite Request] GET /src/components/polls/PollResponder.tsx
+[Vite Request] GET /src/components/gamification/PointsDisplay.tsx
+[Vite Request] GET /src/components/gamification/AchievementToast.tsx
+[Vite Request] GET /src/components/gamification/Leaderboard.tsx
+[Vite Request] GET /src/components/usecases/UseCaseDetailModal.tsx
+[Vite Request] GET /src/components/gamification/BadgeGrid.tsx
+[Vite Request] GET /src/components/ScoringCard.tsx
+[Vite Request] GET /src/components/usecases/FacilitatorAddUseCaseModal.tsx
+[Vite Request] GET /src/components/survey/SurveyBuilder.tsx
+[Vite Request] GET /src/components/survey/SurveyResults.tsx
+[Vite Request] GET /src/components/templates/TemplateSelector.tsx
+[Vite Request] GET /src/components/survey/SurveyList.tsx
+[Vite Request] GET /src/components/breakout/BreakoutRoom.tsx
+[Vite Request] GET /src/components/roi/ROICalculator.tsx
+[Vite Request] GET /src/components/roi/CostBenefitForms.tsx
+[Vite Request] GET /src/components/roi/ROIResultsDisplay.tsx
+[Vite Request] GET /src/components/VotingHeatmap.tsx
+[Vite Request] GET /src/components/roi/ROICalculatorModal.tsx
+[Vite Request] GET /src/lib/api/polls.ts
+[Vite Request] GET /src/components/roi/ScenarioModeler.tsx
+[Vite Request] GET /src/components/breakout/BreakoutManager.tsx
+[Vite Request] GET /src/components/roi/SensitivityAnalysis.tsx
+[Vite Request] GET /src/components/roi/BenchmarkPanel.tsx
+[Vite Request] GET /src/components/challenges/ChallengeForm.tsx?t=1773582179464
+[Vite Request] GET /src/components/challenges/ChallengeCardDetail.tsx?t=1773582179464
+[Vite Request] GET /src/components/roi/ROIComparisonView.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotToggle.tsx
+[Vite Request] GET /src/components/challenges/ChallengeManager.tsx?t=1773582179464
+[Vite Request] GET /src/components/ai-copilot/CopilotPanel.tsx
+[Vite Request] GET /src/components/challenges/ChallengeCard.tsx
+[Vite Request] GET /src/components/ai-copilot/SuggestionCard.tsx
+[Vite Request] GET /src/components/ai-copilot/EngagementMonitor.tsx
+[Vite Request] GET /src/components/ai-copilot/DiscussionPrompts.tsx
+[Vite Request] GET /src/components/ai-copilot/SummaryGenerator.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotSettings.tsx
+[Vite Request] GET /src/components/roadmap/RoadmapGenerator.tsx
+[Vite Request] GET /src/components/ai-copilot/InsightsPanel.tsx
+[Vite Request] GET /src/components/ai-copilot/AlertBanner.tsx
+[Vite Request] GET /src/components/roi/BusinessCaseGenerator.tsx
+[Vite Request] GET /src/components/roadmap/GanttChart.tsx
+[Vite Request] GET /src/components/roadmap/MilestoneTracker.tsx
+[Vite Request] GET /src/components/roadmap/ResourcePlanner.tsx
+[Vite Request] GET /src/components/TileCarousel/TileCarousel.tsx
+[Vite Request] GET /src/components/TileCarousel/TileNavigation.tsx
+[Vite Request] GET /src/components/HomeTiles/HeroTile.tsx
+[Vite Request] GET /src/components/HomeTiles/HowItWorksTile.tsx
+[Vite Request] GET /src/components/HomeTiles/BenefitsTile.tsx
+[Vite Request] GET /src/components/HomeTiles/CTATile.tsx
+[Vite Request] GET /src/components/ui/ThemeToggle.tsx
+[Vite Request] GET /src/components/common/LanguageSwitcher.tsx
+[Vite Request] GET /src/components/NotificationDetailModal.tsx
+[Vite Request] GET /src/components/NotificationIcon.tsx
+[Vite Request] GET /src/components/HomeTiles/FeaturesTile.tsx
+[Vite Request] GET /src/components/gamification/PointsAnimation.tsx
+[Vite Request] GET /src/components/gamification/BadgeCard.tsx
+[Vite Request] GET /src/lib/api/gamification.ts
+[Vite Request] GET /src/types/roi.ts
+[Vite Request] GET /src/lib/api/copilot.ts
+[Vite Request] GET /src/hooks/useTileCarousel.ts
+[Vite Request] GET /api/auth/me
+[Proxy] Rewriting path: /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+[Vite Request] GET /api/auth/me
+[Proxy] Rewriting path: /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+[Vite Request] GET /vite.svg
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /vite.svg
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /
+[Vite Request] POST /api/challenges/standalone/generate-prompts
+[Proxy] Rewriting path: /api/challenges/standalone/generate-prompts
+Sending Request to the Target: POST /api/challenges/standalone/generate-prompts
+Received Response from the Target: 500 /api/challenges/standalone/generate-prompts
+[Vite Request] POST /api/challenges/standalone/generate-prompts
+[Proxy] Rewriting path: /api/challenges/standalone/generate-prompts
+Sending Request to the Target: POST /api/challenges/standalone/generate-prompts
+Received Response from the Target: 500 /api/challenges/standalone/generate-prompts
+[Vite Request] GET /facilitator/challenge-planner
+[Vite Request] GET /@vite/client
+[Vite Request] GET /@react-refresh
+[Vite Request] GET /src/main.tsx?t=1773582303555
+[Vite Request] GET /manifest.json
+[Vite Request] GET /node_modules/vite/dist/client/env.mjs
+[Vite Request] GET /src/i18n.ts
+[Vite Request] GET /src/App.tsx?t=1773582303555
+[Vite Request] GET /src/context/SessionContext.tsx
+[Vite Request] GET /src/index.css?t=1773582303555
+[Vite Request] GET /src/context/ThemeContext.tsx
+[Vite Request] GET /src/context/AuthContext.tsx
+[Vite Request] GET /src/components/ChangePasswordDialog.tsx
+[Vite Request] GET /src/pages/CreateWorkshop.tsx
+[Vite Request] GET /src/pages/Landing.tsx
+[Vite Request] GET /src/pages/WorkshopDetail.tsx?t=1773582179464
+[Vite Request] GET /src/pages/FacilitatorLogin.tsx
+[Vite Request] GET /src/pages/FacilitatorDashboard.tsx
+[Vite Request] GET /src/pages/JoinWorkshop.tsx
+[Vite Request] GET /src/pages/AdminUsers.tsx
+[Vite Request] GET /src/pages/AdminPanel.tsx
+[Vite Request] GET /src/pages/AdminKnowledgeBase.tsx
+[Vite Request] GET /src/pages/AdminSettings.tsx
+[Vite Request] GET /src/pages/AdminUseCases.tsx
+[Vite Request] GET /src/pages/FacilitatorManagement.tsx
+[Vite Request] GET /src/pages/AdminMyWorkshops.tsx
+[Vite Request] GET /src/pages/KnowledgeBase.tsx
+[Vite Request] GET /src/components/AuthenticatedLayout.tsx
+[Vite Request] GET /src/components/feedback/FeedbackWidget.tsx
+[Vite Request] GET /src/pages/AnalyticsDashboard.tsx
+[Vite Request] GET /src/pages/WaitingRoom.tsx
+[Vite Request] GET /src/pages/ParticipantDashboard.tsx
+[Vite Request] GET /src/pages/AdminLLMUsage.tsx
+[Vite Request] GET /src/components/AdminLayout.tsx
+[Vite Request] GET /src/pages/IntakePhase.tsx
+[Vite Request] GET /src/pages/ParticipantMatrix.tsx
+[Vite Request] GET /src/pages/FacilitatorRegister.tsx
+[Vite Request] GET /src/pages/AllUseCases.tsx
+[Vite Request] GET /src/pages/BusinessChallengePlanner.tsx?t=1773582303555
+[Vite Request] GET /src/lib/socket.ts
+[Vite Request] GET /src/lib/config.ts
+[Vite Request] GET /src/pages/AdminWorkshops.tsx
+[Vite Request] GET /src/pages/ScoringPhase.tsx
+[Vite Request] GET /src/components/ui/Button.tsx
+[Vite Request] GET /src/components/ui/Input.tsx
+[Vite Request] GET /src/lib/api.ts
+[Vite Request] GET /src/components/TileCarousel/index.ts
+[Vite Request] GET /src/components/templates/TemplateSelector.tsx
+[Vite Request] GET /src/components/HomeTiles/index.ts
+[Vite Request] GET /src/components/Header.tsx
+[Vite Request] GET /src/components/UseCaseForm.tsx
+[Vite Request] GET /src/components/BulkUseCaseForm.tsx
+[Vite Request] GET /src/components/ResultsChart.tsx
+[Vite Request] GET /src/components/AnalyticsDashboard.tsx
+[Vite Request] GET /src/components/WorkshopInsights.tsx
+[Vite Request] GET /src/components/survey/index.ts
+[Vite Request] GET /src/components/WorkshopSettingsModal.tsx
+[Vite Request] GET /src/components/ui/Modal.tsx
+[Vite Request] GET /src/components/polls/PollManager.tsx
+[Vite Request] GET /src/components/polls/ReactionOverlay.tsx
+[Vite Request] GET /src/components/polls/QAPanel.tsx
+[Vite Request] GET /src/components/roi/index.ts
+[Vite Request] GET /src/components/breakout/index.ts
+[Vite Request] GET /src/components/roadmap/index.ts
+[Vite Request] GET /src/components/challenges/index.ts?t=1773582179464
+[Vite Request] GET /src/components/ai-copilot/index.ts
+[Vite Request] GET /src/components/MatrixActivityDashboard.tsx
+[Vite Request] GET /src/components/prioritization/PrioritizationScale.tsx
+[Vite Request] GET /src/components/ui/ActionTile.tsx
+[Vite Request] GET /src/components/survey/InitiateSurveyModal.tsx
+[Vite Request] GET /src/components/survey/SurveyMonitorPanel.tsx
+[Vite Request] GET /src/components/ConfirmationModal.tsx
+[Vite Request] GET /src/components/ParticipantAuth.tsx
+[Vite Request] GET /src/lib/api/feedback.ts
+[Vite Request] GET /src/lib/api/analytics.ts
+[Vite Request] GET /src/components/survey/SurveyParticipant.tsx
+[Vite Request] GET /src/components/usecases/UseCaseApprovalModal.tsx
+[Vite Request] GET /src/components/usecases/AdminImportUseCasesModal.tsx
+[Vite Request] GET /src/components/UseCaseCanvas.tsx
+[Vite Request] GET /src/components/polls/PollResponder.tsx
+[Vite Request] GET /src/components/polls/ReactionBar.tsx
+[Vite Request] GET /src/components/gamification/AchievementToast.tsx
+[Vite Request] GET /src/components/gamification/Leaderboard.tsx
+[Vite Request] GET /src/components/gamification/PointsDisplay.tsx
+[Vite Request] GET /src/components/gamification/BadgeGrid.tsx
+[Vite Request] GET /src/components/usecases/UseCaseDetailModal.tsx
+[Vite Request] GET /src/components/usecases/FacilitatorAddUseCaseModal.tsx
+[Vite Request] GET /src/components/ScoringCard.tsx
+[Vite Request] GET /src/lib/api/challenges.ts?t=1773582179464
+[Vite Request] GET /src/components/TileCarousel/TileCarousel.tsx
+[Vite Request] GET /src/components/HomeTiles/HeroTile.tsx
+[Vite Request] GET /src/components/HomeTiles/FeaturesTile.tsx
+[Vite Request] GET /src/components/TileCarousel/TileNavigation.tsx
+[Vite Request] GET /src/components/HomeTiles/HowItWorksTile.tsx
+[Vite Request] GET /src/components/HomeTiles/BenefitsTile.tsx
+[Vite Request] GET /src/components/HomeTiles/CTATile.tsx
+[Vite Request] GET /src/components/ui/ThemeToggle.tsx
+[Vite Request] GET /src/components/common/LanguageSwitcher.tsx
+[Vite Request] GET /src/components/NotificationDetailModal.tsx
+[Vite Request] GET /src/components/NotificationIcon.tsx
+[Vite Request] GET /src/components/survey/SurveyBuilder.tsx
+[Vite Request] GET /src/components/survey/SurveyList.tsx
+[Vite Request] GET /src/lib/api/polls.ts
+[Vite Request] GET /src/components/survey/SurveyResults.tsx
+[Vite Request] GET /src/components/VotingHeatmap.tsx
+[Vite Request] GET /src/components/roi/ROICalculator.tsx
+[Vite Request] GET /src/components/roi/CostBenefitForms.tsx
+[Vite Request] GET /src/components/roi/ROIResultsDisplay.tsx
+[Vite Request] GET /src/components/roi/ROICalculatorModal.tsx
+[Vite Request] GET /src/components/roi/ROIComparisonView.tsx
+[Vite Request] GET /src/components/roi/ScenarioModeler.tsx
+[Vite Request] GET /src/components/roi/SensitivityAnalysis.tsx
+[Vite Request] GET /src/components/roi/BenchmarkPanel.tsx
+[Vite Request] GET /src/components/roi/BusinessCaseGenerator.tsx
+[Vite Request] GET /src/components/breakout/BreakoutRoom.tsx
+[Vite Request] GET /src/components/breakout/BreakoutManager.tsx
+[Vite Request] GET /src/components/roadmap/RoadmapGenerator.tsx
+[Vite Request] GET /src/components/roadmap/ResourcePlanner.tsx
+[Vite Request] GET /src/components/roadmap/MilestoneTracker.tsx
+[Vite Request] GET /src/components/roadmap/GanttChart.tsx
+[Vite Request] GET /src/components/ai-copilot/SuggestionCard.tsx
+[Vite Request] GET /src/components/challenges/ChallengeCardDetail.tsx?t=1773582179464
+[Vite Request] GET /src/components/ai-copilot/AlertBanner.tsx
+[Vite Request] GET /src/components/challenges/ChallengeCard.tsx
+[Vite Request] GET /src/components/challenges/ChallengeForm.tsx?t=1773582179464
+[Vite Request] GET /src/components/ai-copilot/CopilotToggle.tsx
+[Vite Request] GET /src/components/ai-copilot/EngagementMonitor.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotPanel.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotSettings.tsx
+[Vite Request] GET /src/components/challenges/ChallengeManager.tsx?t=1773582179464
+[Vite Request] GET /src/components/ai-copilot/InsightsPanel.tsx
+[Vite Request] GET /src/lib/api/gamification.ts
+[Vite Request] GET /src/components/gamification/BadgeCard.tsx
+[Vite Request] GET /src/components/ai-copilot/DiscussionPrompts.tsx
+[Vite Request] GET /src/components/ai-copilot/SummaryGenerator.tsx
+[Vite Request] GET /src/components/gamification/PointsAnimation.tsx
+[Vite Request] GET /src/hooks/useTileCarousel.ts
+[Vite Request] GET /src/types/roi.ts
+[Vite Request] GET /src/lib/api/copilot.ts
+[Vite Request] GET /api/auth/me
+[Proxy] Rewriting path: /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+[Vite Request] GET /vite.svg
+[Vite Request] GET /vite.svg
+Received Response from the Target: 200 /api/auth/me
+[Vite Request] GET /api/auth/me
+[Proxy] Rewriting path: /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+[Vite Request] POST /api/challenges/standalone/generate-prompts
+[Proxy] Rewriting path: /api/challenges/standalone/generate-prompts
+Sending Request to the Target: POST /api/challenges/standalone/generate-prompts
+Received Response from the Target: 500 /api/challenges/standalone/generate-prompts
+[Vite Request] GET /
+[Vite Request] GET /@vite/client
+[Vite Request] GET /src/main.tsx?t=1773582303555
+[Vite Request] GET /@react-refresh
+[Vite Request] GET /node_modules/.vite/deps/react_jsx-dev-runtime.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/react.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/react-dom_client.js?v=8489571b
+[Vite Request] GET /src/index.css?t=1773582303555
+[Vite Request] GET /src/i18n.ts
+[Vite Request] GET /src/App.tsx?t=1773582303555
+[Vite Request] GET /src/context/ThemeContext.tsx
+[Vite Request] GET /src/context/AuthContext.tsx
+[Vite Request] GET /src/context/SessionContext.tsx
+[Vite Request] GET /node_modules/vite/dist/client/env.mjs
+[Vite Request] GET /node_modules/.vite/deps/chunk-WUR7D6NS.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/chunk-G3PMV62Z.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/i18next.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/react-i18next.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/i18next-browser-languagedetector.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/i18next-http-backend.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/react-router-dom.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/sonner.js?v=8489571b
+[Vite Request] GET /src/components/ChangePasswordDialog.tsx
+[Vite Request] GET /src/pages/CreateWorkshop.tsx
+[Vite Request] GET /src/pages/Landing.tsx
+[Vite Request] GET /src/pages/WorkshopDetail.tsx?t=1773582179464
+[Vite Request] GET /src/pages/JoinWorkshop.tsx
+[Vite Request] GET /src/pages/FacilitatorLogin.tsx
+[Vite Request] GET /src/pages/FacilitatorDashboard.tsx
+[Vite Request] GET /src/pages/AdminPanel.tsx
+[Vite Request] GET /src/pages/AdminSettings.tsx
+[Vite Request] GET /src/pages/AdminWorkshops.tsx
+[Vite Request] GET /src/pages/AdminUsers.tsx
+[Vite Request] GET /src/pages/AdminKnowledgeBase.tsx
+[Vite Request] GET /src/pages/AdminMyWorkshops.tsx
+[Vite Request] GET /src/pages/AdminLLMUsage.tsx
+[Vite Request] GET /src/pages/AdminUseCases.tsx
+[Vite Request] GET /src/pages/FacilitatorManagement.tsx
+[Vite Request] GET /src/pages/KnowledgeBase.tsx
+[Vite Request] GET /src/components/AdminLayout.tsx
+[Vite Request] GET /src/components/AuthenticatedLayout.tsx
+[Vite Request] GET /src/components/feedback/FeedbackWidget.tsx
+[Vite Request] GET /src/pages/AnalyticsDashboard.tsx
+[Vite Request] GET /src/pages/WaitingRoom.tsx
+[Vite Request] GET /src/pages/ParticipantDashboard.tsx
+[Vite Request] GET /src/pages/ParticipantMatrix.tsx
+[Vite Request] GET /src/pages/IntakePhase.tsx
+[Vite Request] GET /src/pages/ScoringPhase.tsx
+[Vite Request] GET /src/pages/AllUseCases.tsx
+[Vite Request] GET /src/pages/FacilitatorRegister.tsx
+[Vite Request] GET /src/pages/BusinessChallengePlanner.tsx?t=1773582303555
+[Vite Request] GET /src/lib/config.ts
+[Vite Request] GET /node_modules/.vite/deps/chunk-YF4B4G2L.js?v=8489571b
+[Vite Request] GET /src/lib/socket.ts
+[Vite Request] GET /node_modules/.vite/deps/chunk-DS5EPX4M.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/chunk-TXHHHGR3.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/lucide-react.js?v=8489571b
+[Vite Request] GET /src/components/TileCarousel/index.ts
+[Vite Request] GET /src/components/HomeTiles/index.ts
+[Vite Request] GET /src/components/Header.tsx
+[Vite Request] GET /src/components/ui/Button.tsx
+[Vite Request] GET /src/lib/api.ts
+[Vite Request] GET /src/components/ui/Input.tsx
+[Vite Request] GET /node_modules/.vite/deps/framer-motion.js?v=8489571b
+[Vite Request] GET /src/components/templates/TemplateSelector.tsx
+[Vite Request] GET /src/components/UseCaseForm.tsx
+[Vite Request] GET /src/components/BulkUseCaseForm.tsx
+[Vite Request] GET /src/components/ResultsChart.tsx
+[Vite Request] GET /src/components/WorkshopInsights.tsx
+[Vite Request] GET /src/components/AnalyticsDashboard.tsx
+[Vite Request] GET /src/components/survey/index.ts
+[Vite Request] GET /node_modules/.vite/deps/qrcode__react.js?v=8489571b
+[Vite Request] GET /src/components/ui/Modal.tsx
+[Vite Request] GET /src/components/WorkshopSettingsModal.tsx
+[Vite Request] GET /src/components/polls/PollManager.tsx
+[Vite Request] GET /src/components/polls/ReactionOverlay.tsx
+[Vite Request] GET /src/components/polls/QAPanel.tsx
+[Vite Request] GET /src/components/roi/index.ts
+[Vite Request] GET /src/components/breakout/index.ts
+[Vite Request] GET /src/components/challenges/index.ts?t=1773582179464
+[Vite Request] GET /src/components/roadmap/index.ts
+[Vite Request] GET /src/components/ai-copilot/index.ts
+[Vite Request] GET /src/components/MatrixActivityDashboard.tsx
+[Vite Request] GET /src/components/prioritization/PrioritizationScale.tsx
+[Vite Request] GET /src/components/ParticipantAuth.tsx
+[Vite Request] GET /src/components/ui/ActionTile.tsx
+[Vite Request] GET /src/components/survey/InitiateSurveyModal.tsx
+[Vite Request] GET /src/components/survey/SurveyMonitorPanel.tsx
+[Vite Request] GET /src/components/ConfirmationModal.tsx
+[Vite Request] GET /src/components/usecases/UseCaseApprovalModal.tsx
+[Vite Request] GET /src/components/usecases/AdminImportUseCasesModal.tsx
+[Vite Request] GET /src/lib/api/feedback.ts
+[Vite Request] GET /node_modules/.vite/deps/recharts.js?v=8489571b
+[Vite Request] GET /src/lib/api/analytics.ts
+[Vite Request] GET /src/components/survey/SurveyParticipant.tsx
+[Vite Request] GET /src/components/UseCaseCanvas.tsx
+[Vite Request] GET /src/components/polls/PollResponder.tsx
+[Vite Request] GET /src/components/polls/ReactionBar.tsx
+[Vite Request] GET /src/components/gamification/PointsDisplay.tsx
+[Vite Request] GET /src/components/gamification/AchievementToast.tsx
+[Vite Request] GET /src/components/gamification/Leaderboard.tsx
+[Vite Request] GET /src/components/gamification/BadgeGrid.tsx
+[Vite Request] GET /src/components/usecases/UseCaseDetailModal.tsx
+[Vite Request] GET /src/components/ScoringCard.tsx
+[Vite Request] GET /src/components/usecases/FacilitatorAddUseCaseModal.tsx
+[Vite Request] GET /src/lib/api/challenges.ts?t=1773582179464
+[Vite Request] GET /node_modules/.vite/deps/socket__io-client.js?v=8489571b
+[Vite Request] GET /src/components/TileCarousel/TileCarousel.tsx
+[Vite Request] GET /src/components/TileCarousel/TileNavigation.tsx
+[Vite Request] GET /src/components/HomeTiles/HeroTile.tsx
+[Vite Request] GET /src/components/HomeTiles/FeaturesTile.tsx
+[Vite Request] GET /src/components/HomeTiles/HowItWorksTile.tsx
+[Vite Request] GET /src/components/HomeTiles/BenefitsTile.tsx
+[Vite Request] GET /src/components/HomeTiles/CTATile.tsx
+[Vite Request] GET /node_modules/.vite/deps/clsx.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/tailwind-merge.js?v=8489571b
+[Vite Request] GET /src/components/ui/ThemeToggle.tsx
+[Vite Request] GET /src/components/common/LanguageSwitcher.tsx
+[Vite Request] GET /src/components/NotificationIcon.tsx
+[Vite Request] GET /src/components/NotificationDetailModal.tsx
+[Vite Request] GET /node_modules/.vite/deps/axios.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/chunk-2YVA4HRZ.js?v=8489571b
+[Vite Request] GET /node_modules/.vite/deps/d3.js?v=8489571b
+[Vite Request] GET /src/components/survey/SurveyBuilder.tsx
+[Vite Request] GET /src/components/survey/SurveyList.tsx
+[Vite Request] GET /src/components/survey/SurveyResults.tsx
+[Vite Request] GET /src/components/VotingHeatmap.tsx
+[Vite Request] GET /src/lib/api/polls.ts
+[Vite Request] GET /src/components/roi/ROICalculator.tsx
+[Vite Request] GET /src/components/roi/CostBenefitForms.tsx
+[Vite Request] GET /src/components/roi/ROIResultsDisplay.tsx
+[Vite Request] GET /src/components/roi/ROICalculatorModal.tsx
+[Vite Request] GET /src/components/roi/ROIComparisonView.tsx
+[Vite Request] GET /src/components/roi/SensitivityAnalysis.tsx
+[Vite Request] GET /src/components/roi/ScenarioModeler.tsx
+[Vite Request] GET /src/components/roi/BusinessCaseGenerator.tsx
+[Vite Request] GET /src/components/breakout/BreakoutManager.tsx
+[Vite Request] GET /src/components/breakout/BreakoutRoom.tsx
+[Vite Request] GET /src/components/challenges/ChallengeCard.tsx
+[Vite Request] GET /src/components/challenges/ChallengeForm.tsx?t=1773582179464
+[Vite Request] GET /src/components/challenges/ChallengeCardDetail.tsx?t=1773582179464
+[Vite Request] GET /src/components/roi/BenchmarkPanel.tsx
+[Vite Request] GET /src/components/roadmap/GanttChart.tsx
+[Vite Request] GET /src/components/roadmap/RoadmapGenerator.tsx
+[Vite Request] GET /src/components/challenges/ChallengeManager.tsx?t=1773582179464
+[Vite Request] GET /src/components/roadmap/ResourcePlanner.tsx
+[Vite Request] GET /src/components/roadmap/MilestoneTracker.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotToggle.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotPanel.tsx
+[Vite Request] GET /src/components/ai-copilot/SuggestionCard.tsx
+[Vite Request] GET /src/components/ai-copilot/DiscussionPrompts.tsx
+[Vite Request] GET /src/components/ai-copilot/AlertBanner.tsx
+[Vite Request] GET /src/components/ai-copilot/EngagementMonitor.tsx
+[Vite Request] GET /src/components/ai-copilot/InsightsPanel.tsx
+[Vite Request] GET /src/components/ai-copilot/SummaryGenerator.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotSettings.tsx
+[Vite Request] GET /src/lib/api/gamification.ts
+[Vite Request] GET /node_modules/.vite/deps/react-dom.js?v=8489571b
+[Vite Request] GET /src/components/gamification/PointsAnimation.tsx
+[Vite Request] GET /src/components/gamification/BadgeCard.tsx
+[Vite Request] GET /src/hooks/useTileCarousel.ts
+[Vite Request] GET /node_modules/.vite/deps/chunk-U7P2NEEE.js?v=8489571b
+[Vite Request] GET /src/types/roi.ts
+[Vite Request] GET /node_modules/.vite/deps/chunk-YZQ63ACW.js?v=8489571b
+[Vite Request] GET /src/lib/api/copilot.ts
+[Vite Request] GET /vite.svg
+[Vite Request] GET /vite.svg
+[Vite Request] POST /api/auth/login
+[Proxy] Rewriting path: /api/auth/login
+Sending Request to the Target: POST /api/auth/login
+Received Response from the Target: 200 /api/auth/login
+[Vite Request] GET /vite.svg
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /vite.svg
+[Vite Request] POST /api/challenges/standalone/generate-prompts
+[Proxy] Rewriting path: /api/challenges/standalone/generate-prompts
+Sending Request to the Target: POST /api/challenges/standalone/generate-prompts
+Received Response from the Target: 500 /api/challenges/standalone/generate-prompts
+[Vite Request] POST /api/challenges/standalone/generate-prompts
+[Proxy] Rewriting path: /api/challenges/standalone/generate-prompts
+Sending Request to the Target: POST /api/challenges/standalone/generate-prompts
+Received Response from the Target: 500 /api/challenges/standalone/generate-prompts
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+[Vite Request] GET /vite.svg
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /vite.svg
+[Vite Request] POST /api/challenges/standalone/generate-prompts
+[Proxy] Rewriting path: /api/challenges/standalone/generate-prompts
+Sending Request to the Target: POST /api/challenges/standalone/generate-prompts
+Received Response from the Target: 500 /api/challenges/standalone/generate-prompts
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+[Vite Request] GET /vite.svg
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] POST /api/auth/logout
+[Proxy] Rewriting path: /api/auth/logout
+Sending Request to the Target: POST /api/auth/logout
+Received Response from the Target: 200 /api/auth/logout
+[Vite Request] GET /vite.svg
+[Vite Request] POST /api/auth/login
+[Proxy] Rewriting path: /api/auth/login
+Sending Request to the Target: POST /api/auth/login
+Received Response from the Target: 200 /api/auth/login
+[Vite Request] GET /vite.svg
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /api/admin/stats
+[Proxy] Rewriting path: /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /api/admin/stats
+[Proxy] Rewriting path: /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+[Vite Request] GET /vite.svg
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /api/admin/workshops
+[Proxy] Rewriting path: /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+[Vite Request] GET /notifications/stats
+Received Response from the Target: 200 /api/admin/workshops
+[Vite Request] GET /api/admin/workshops
+[Proxy] Rewriting path: /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/workshops
+[Vite Request] GET /vite.svg
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /api/usecases/all/list
+[Proxy] Rewriting path: /api/usecases/all/list
+Sending Request to the Target: GET /api/usecases/all/list
+[Vite Request] GET /notifications/stats
+Received Response from the Target: 200 /api/usecases/all/list
+[Vite Request] GET /api/usecases/all/list
+[Proxy] Rewriting path: /api/usecases/all/list
+Sending Request to the Target: GET /api/usecases/all/list
+Received Response from the Target: 200 /api/usecases/all/list
+[Vite Request] GET /vite.svg
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /api/admin/facilitators?
+[Proxy] Rewriting path: /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+[Vite Request] GET /notifications/stats
+Received Response from the Target: 200 /api/admin/facilitators?
+[Vite Request] GET /api/admin/facilitators?
+[Proxy] Rewriting path: /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/facilitators?
+[Vite Request] GET /vite.svg
+[Vite Request] GET /api/admin/facilitators?
+[Proxy] Rewriting path: /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /api/admin/workshops
+[Proxy] Rewriting path: /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+[Vite Request] GET /notifications/stats
+Received Response from the Target: 200 /api/admin/workshops
+[Vite Request] GET /api/admin/workshops
+[Proxy] Rewriting path: /api/admin/workshops
+Sending Request to the Target: GET /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+[Vite Request] GET /api/admin/facilitators?
+[Proxy] Rewriting path: /api/admin/facilitators?
+Sending Request to the Target: GET /api/admin/facilitators?
+Received Response from the Target: 200 /api/admin/workshops
+Received Response from the Target: 200 /api/admin/facilitators?
+[Vite Request] GET /api/admin/facilitators/d83f29d4-1aa7-43a2-b247-cae4b0e03388/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/d83f29d4-1aa7-43a2-b247-cae4b0e03388/workshops
+Sending Request to the Target: GET /api/admin/facilitators/d83f29d4-1aa7-43a2-b247-cae4b0e03388/workshops
+[Vite Request] GET /api/admin/facilitators/72bb1b93-9208-4b62-9b69-8baa9c5dae41/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/72bb1b93-9208-4b62-9b69-8baa9c5dae41/workshops
+Sending Request to the Target: GET /api/admin/facilitators/72bb1b93-9208-4b62-9b69-8baa9c5dae41/workshops
+[Vite Request] GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+[Vite Request] GET /api/admin/facilitators/b1c44bde-4528-415f-b0f4-35b9b756a34e/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/b1c44bde-4528-415f-b0f4-35b9b756a34e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/b1c44bde-4528-415f-b0f4-35b9b756a34e/workshops
+[Vite Request] GET /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+[Vite Request] GET /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+Sending Request to the Target: GET /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+[Vite Request] GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/d83f29d4-1aa7-43a2-b247-cae4b0e03388/workshops
+Received Response from the Target: 200 /api/admin/facilitators/72bb1b93-9208-4b62-9b69-8baa9c5dae41/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/b1c44bde-4528-415f-b0f4-35b9b756a34e/workshops
+[Vite Request] GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+[Vite Request] GET /api/admin/facilitators/d83f29d4-1aa7-43a2-b247-cae4b0e03388/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/d83f29d4-1aa7-43a2-b247-cae4b0e03388/workshops
+Sending Request to the Target: GET /api/admin/facilitators/d83f29d4-1aa7-43a2-b247-cae4b0e03388/workshops
+[Vite Request] GET /api/admin/facilitators/b1c44bde-4528-415f-b0f4-35b9b756a34e/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/b1c44bde-4528-415f-b0f4-35b9b756a34e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/b1c44bde-4528-415f-b0f4-35b9b756a34e/workshops
+[Vite Request] GET /api/admin/facilitators/72bb1b93-9208-4b62-9b69-8baa9c5dae41/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/72bb1b93-9208-4b62-9b69-8baa9c5dae41/workshops
+Sending Request to the Target: GET /api/admin/facilitators/72bb1b93-9208-4b62-9b69-8baa9c5dae41/workshops
+Received Response from the Target: 200 /api/admin/facilitators/72bb1b93-9208-4b62-9b69-8baa9c5dae41/workshops
+Received Response from the Target: 200 /api/admin/facilitators/d83f29d4-1aa7-43a2-b247-cae4b0e03388/workshops
+Received Response from the Target: 200 /api/admin/facilitators/b1c44bde-4528-415f-b0f4-35b9b756a34e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+[Vite Request] GET /api/admin/facilitators/72bb1b93-9208-4b62-9b69-8baa9c5dae41/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/72bb1b93-9208-4b62-9b69-8baa9c5dae41/workshops
+Sending Request to the Target: GET /api/admin/facilitators/72bb1b93-9208-4b62-9b69-8baa9c5dae41/workshops
+[Vite Request] GET /api/admin/facilitators/b1c44bde-4528-415f-b0f4-35b9b756a34e/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/b1c44bde-4528-415f-b0f4-35b9b756a34e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/b1c44bde-4528-415f-b0f4-35b9b756a34e/workshops
+[Vite Request] GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Sending Request to the Target: GET /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+[Vite Request] GET /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+[Vite Request] GET /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+Sending Request to the Target: GET /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+[Vite Request] GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/b1c44bde-4528-415f-b0f4-35b9b756a34e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/72bb1b93-9208-4b62-9b69-8baa9c5dae41/workshops
+Received Response from the Target: 200 /api/admin/facilitators/e40a1a4f-2923-4493-bd79-0d339206453e/workshops
+Received Response from the Target: 200 /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+[Vite Request] GET /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+[Vite Request] GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+[Vite Request] GET /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+Sending Request to the Target: GET /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+Received Response from the Target: 200 /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+[Vite Request] GET /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+[Vite Request] GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+[Vite Request] GET /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+Sending Request to the Target: GET /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+[Vite Request] GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+[Vite Request] GET /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+Sending Request to the Target: GET /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+Received Response from the Target: 200 /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+[Vite Request] GET /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+[Vite Request] GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Sending Request to the Target: GET /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+[Vite Request] GET /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+Sending Request to the Target: GET /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+[Vite Request] GET /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+[Proxy] Rewriting path: /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+Sending Request to the Target: GET /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+Received Response from the Target: 200 /api/admin/facilitators/ef47c2ab-77c9-42ec-8720-02abbdb24472/workshops
+Received Response from the Target: 200 /api/admin/facilitators/6681bf20-893b-45c4-8907-d537c8003cc8/workshops
+Received Response from the Target: 200 /api/admin/facilitators/3b015083-ec88-467c-b8ba-a2d8c8979ed4/workshops
+[Vite Request] GET /vite.svg
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /api/admin/knowledge-base/pending-migration
+[Proxy] Rewriting path: /api/admin/knowledge-base/pending-migration
+Sending Request to the Target: GET /api/admin/knowledge-base/pending-migration
+[Vite Request] GET /api/knowledge-base/status
+[Proxy] Rewriting path: /api/knowledge-base/status
+Sending Request to the Target: GET /api/knowledge-base/status
+[Vite Request] GET /api/knowledge-base/documents
+[Proxy] Rewriting path: /api/knowledge-base/documents
+Sending Request to the Target: GET /api/knowledge-base/documents
+Received Response from the Target: 200 /api/knowledge-base/status
+Received Response from the Target: 200 /api/admin/knowledge-base/pending-migration
+Received Response from the Target: 200 /api/knowledge-base/documents
+[Vite Request] GET /api/knowledge-base/status
+[Proxy] Rewriting path: /api/knowledge-base/status
+Sending Request to the Target: GET /api/knowledge-base/status
+Received Response from the Target: 200 /api/knowledge-base/status
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /api/knowledge-base/documents
+[Proxy] Rewriting path: /api/knowledge-base/documents
+Sending Request to the Target: GET /api/knowledge-base/documents
+[Vite Request] GET /api/admin/knowledge-base/pending-migration
+[Proxy] Rewriting path: /api/admin/knowledge-base/pending-migration
+Sending Request to the Target: GET /api/admin/knowledge-base/pending-migration
+Received Response from the Target: 200 /api/knowledge-base/documents
+Received Response from the Target: 200 /api/admin/knowledge-base/pending-migration
+[Vite Request] GET /vite.svg
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /api/admin/llm-usage/by-user?start_date=2026-02-13T13:57:04.074Z
+[Proxy] Rewriting path: /api/admin/llm-usage/by-user?start_date=2026-02-13T13:57:04.074Z
+Sending Request to the Target: GET /api/admin/llm-usage/by-user?start_date=2026-02-13T13:57:04.074Z
+[Vite Request] GET /api/admin/llm-usage/by-feature?start_date=2026-02-13T13:57:04.074Z
+[Proxy] Rewriting path: /api/admin/llm-usage/by-feature?start_date=2026-02-13T13:57:04.074Z
+Sending Request to the Target: GET /api/admin/llm-usage/by-feature?start_date=2026-02-13T13:57:04.074Z
+[Vite Request] GET /api/admin/llm-usage/summary?start_date=2026-02-13T13:57:04.074Z
+[Proxy] Rewriting path: /api/admin/llm-usage/summary?start_date=2026-02-13T13:57:04.074Z
+Sending Request to the Target: GET /api/admin/llm-usage/summary?start_date=2026-02-13T13:57:04.074Z
+[Vite Request] GET /api/admin/llm-usage/by-workshop?start_date=2026-02-13T13:57:04.074Z
+[Proxy] Rewriting path: /api/admin/llm-usage/by-workshop?start_date=2026-02-13T13:57:04.074Z
+Sending Request to the Target: GET /api/admin/llm-usage/by-workshop?start_date=2026-02-13T13:57:04.074Z
+[Vite Request] GET /api/admin/llm-usage/by-day?start_date=2026-02-13T13:57:04.074Z
+[Proxy] Rewriting path: /api/admin/llm-usage/by-day?start_date=2026-02-13T13:57:04.074Z
+Sending Request to the Target: GET /api/admin/llm-usage/by-day?start_date=2026-02-13T13:57:04.074Z
+[Vite Request] GET /api/admin/llm-usage/by-model?start_date=2026-02-13T13:57:04.074Z
+[Proxy] Rewriting path: /api/admin/llm-usage/by-model?start_date=2026-02-13T13:57:04.074Z
+Sending Request to the Target: GET /api/admin/llm-usage/by-model?start_date=2026-02-13T13:57:04.074Z
+[Vite Request] GET /api/admin/llm-usage/recent
+[Proxy] Rewriting path: /api/admin/llm-usage/recent
+Sending Request to the Target: GET /api/admin/llm-usage/recent
+[Vite Request] GET /api/admin/llm-usage/by-workshop?start_date=2026-02-13T13:57:04.080Z
+[Proxy] Rewriting path: /api/admin/llm-usage/by-workshop?start_date=2026-02-13T13:57:04.080Z
+Sending Request to the Target: GET /api/admin/llm-usage/by-workshop?start_date=2026-02-13T13:57:04.080Z
+[Vite Request] GET /api/admin/llm-usage/summary?start_date=2026-02-13T13:57:04.080Z
+[Proxy] Rewriting path: /api/admin/llm-usage/summary?start_date=2026-02-13T13:57:04.080Z
+Sending Request to the Target: GET /api/admin/llm-usage/summary?start_date=2026-02-13T13:57:04.080Z
+[Vite Request] GET /api/admin/llm-usage/by-feature?start_date=2026-02-13T13:57:04.080Z
+[Proxy] Rewriting path: /api/admin/llm-usage/by-feature?start_date=2026-02-13T13:57:04.080Z
+Sending Request to the Target: GET /api/admin/llm-usage/by-feature?start_date=2026-02-13T13:57:04.080Z
+Received Response from the Target: 200 /api/admin/llm-usage/by-user?start_date=2026-02-13T13:57:04.074Z
+Received Response from the Target: 200 /api/admin/llm-usage/by-feature?start_date=2026-02-13T13:57:04.074Z
+[Vite Request] GET /api/admin/llm-usage/by-user?start_date=2026-02-13T13:57:04.080Z
+[Proxy] Rewriting path: /api/admin/llm-usage/by-user?start_date=2026-02-13T13:57:04.080Z
+Sending Request to the Target: GET /api/admin/llm-usage/by-user?start_date=2026-02-13T13:57:04.080Z
+[Vite Request] GET /api/admin/llm-usage/by-model?start_date=2026-02-13T13:57:04.080Z
+[Proxy] Rewriting path: /api/admin/llm-usage/by-model?start_date=2026-02-13T13:57:04.080Z
+Sending Request to the Target: GET /api/admin/llm-usage/by-model?start_date=2026-02-13T13:57:04.080Z
+Received Response from the Target: 200 /api/admin/llm-usage/by-workshop?start_date=2026-02-13T13:57:04.074Z
+Received Response from the Target: 200 /api/admin/llm-usage/by-day?start_date=2026-02-13T13:57:04.074Z
+Received Response from the Target: 200 /api/admin/llm-usage/recent
+Received Response from the Target: 200 /api/admin/llm-usage/by-model?start_date=2026-02-13T13:57:04.074Z
+[Vite Request] GET /api/admin/llm-usage/by-day?start_date=2026-02-13T13:57:04.080Z
+[Proxy] Rewriting path: /api/admin/llm-usage/by-day?start_date=2026-02-13T13:57:04.080Z
+Sending Request to the Target: GET /api/admin/llm-usage/by-day?start_date=2026-02-13T13:57:04.080Z
+[Vite Request] GET /notifications/stats
+Received Response from the Target: 200 /api/admin/llm-usage/summary?start_date=2026-02-13T13:57:04.074Z
+[Vite Request] GET /api/admin/llm-usage/recent
+[Proxy] Rewriting path: /api/admin/llm-usage/recent
+Sending Request to the Target: GET /api/admin/llm-usage/recent
+Received Response from the Target: 200 /api/admin/llm-usage/by-workshop?start_date=2026-02-13T13:57:04.080Z
+Received Response from the Target: 200 /api/admin/llm-usage/by-model?start_date=2026-02-13T13:57:04.080Z
+Received Response from the Target: 200 /api/admin/llm-usage/by-user?start_date=2026-02-13T13:57:04.080Z
+Received Response from the Target: 200 /api/admin/llm-usage/summary?start_date=2026-02-13T13:57:04.080Z
+Received Response from the Target: 200 /api/admin/llm-usage/by-day?start_date=2026-02-13T13:57:04.080Z
+Received Response from the Target: 200 /api/admin/llm-usage/by-feature?start_date=2026-02-13T13:57:04.080Z
+Received Response from the Target: 200 /api/admin/llm-usage/recent
+[Vite Request] GET /vite.svg
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /api/admin/settings
+[Proxy] Rewriting path: /api/admin/settings
+Sending Request to the Target: GET /api/admin/settings
+[Vite Request] GET /notifications/stats
+Received Response from the Target: 200 /api/admin/settings
+[Vite Request] GET /api/admin/settings
+[Proxy] Rewriting path: /api/admin/settings
+Sending Request to the Target: GET /api/admin/settings
+Received Response from the Target: 200 /api/admin/settings
+[Vite Request] GET /vite.svg
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+[Vite Request] GET /notifications/stats
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /vite.svg
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /api/admin/stats
+[Proxy] Rewriting path: /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+[Vite Request] GET /notifications/stats
+Received Response from the Target: 200 /api/admin/stats
+[Vite Request] GET /api/admin/stats
+[Proxy] Rewriting path: /api/admin/stats
+Sending Request to the Target: GET /api/admin/stats
+Received Response from the Target: 200 /api/admin/stats
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /notifications/stats
+[Vite Request] GET /notifications/stats
+[Vite Request] POST /api/auth/logout
+[Proxy] Rewriting path: /api/auth/logout
+Sending Request to the Target: POST /api/auth/logout
+Received Response from the Target: 200 /api/auth/logout
+[Vite Request] GET /vite.svg
+[Vite Request] POST /api/auth/login
+[Proxy] Rewriting path: /api/auth/login
+Sending Request to the Target: POST /api/auth/login
+Received Response from the Target: 200 /api/auth/login
+[Vite Request] GET /vite.svg
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /vite.svg
+[Vite Request] POST /api/challenges/standalone/generate-prompts
+[Proxy] Rewriting path: /api/challenges/standalone/generate-prompts
+Sending Request to the Target: POST /api/challenges/standalone/generate-prompts
+Received Response from the Target: 200 /api/challenges/standalone/generate-prompts
+[2m2:06:01 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/BusinessChallengePlanner.tsx, /src/components/challenges/ChallengeCardDetail.tsx, /src/components/challenges/ChallengeManager.tsx, /src/components/challenges/ChallengeForm.tsx[22m
+[2m2:06:09 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/BusinessChallengePlanner.tsx, /src/components/challenges/ChallengeCardDetail.tsx, /src/components/challenges/ChallengeManager.tsx, /src/components/challenges/ChallengeForm.tsx[22m
+[2m2:08:16 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/BusinessChallengePlanner.tsx, /src/index.css[22m
+[Vite Request] POST /api/challenges/standalone/generate-prompts
+[Proxy] Rewriting path: /api/challenges/standalone/generate-prompts
+Sending Request to the Target: POST /api/challenges/standalone/generate-prompts
+Received Response from the Target: 200 /api/challenges/standalone/generate-prompts
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+[Vite Request] GET /vite.svg
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /facilitator/dashboard
+[Vite Request] GET /src/main.tsx?t=1773583696333
+[Vite Request] GET /@vite/client
+[Vite Request] GET /@react-refresh
+[Vite Request] GET /src/index.css?t=1773583696333
+[Vite Request] GET /src/context/AuthContext.tsx
+[Vite Request] GET /src/context/SessionContext.tsx
+[Vite Request] GET /node_modules/vite/dist/client/env.mjs
+[Vite Request] GET /src/App.tsx?t=1773583696333
+[Vite Request] GET /src/i18n.ts
+[Vite Request] GET /src/context/ThemeContext.tsx
+[Vite Request] GET /src/lib/socket.ts
+[Vite Request] GET /src/lib/config.ts
+[Vite Request] GET /src/components/ChangePasswordDialog.tsx
+[Vite Request] GET /src/pages/Landing.tsx
+[Vite Request] GET /src/pages/CreateWorkshop.tsx
+[Vite Request] GET /src/pages/WorkshopDetail.tsx?t=1773583569830
+[Vite Request] GET /src/pages/FacilitatorLogin.tsx
+[Vite Request] GET /src/pages/AdminSettings.tsx
+[Vite Request] GET /src/pages/AdminWorkshops.tsx
+[Vite Request] GET /src/pages/AdminPanel.tsx
+[Vite Request] GET /src/pages/JoinWorkshop.tsx
+[Vite Request] GET /src/pages/FacilitatorDashboard.tsx
+[Vite Request] GET /src/pages/AdminUsers.tsx
+[Vite Request] GET /src/pages/AdminKnowledgeBase.tsx
+[Vite Request] GET /src/pages/AdminMyWorkshops.tsx
+[Vite Request] GET /src/pages/AdminLLMUsage.tsx
+[Vite Request] GET /src/pages/FacilitatorManagement.tsx
+[Vite Request] GET /src/pages/AdminUseCases.tsx
+[Vite Request] GET /src/pages/KnowledgeBase.tsx
+[Vite Request] GET /src/components/AdminLayout.tsx
+[Vite Request] GET /src/components/AuthenticatedLayout.tsx
+[Vite Request] GET /src/pages/AnalyticsDashboard.tsx
+[Vite Request] GET /src/pages/WaitingRoom.tsx
+[Vite Request] GET /src/pages/ParticipantDashboard.tsx
+[Vite Request] GET /src/pages/ParticipantMatrix.tsx
+[Vite Request] GET /src/pages/IntakePhase.tsx
+[Vite Request] GET /src/pages/BusinessChallengePlanner.tsx?t=1773583696333
+[Vite Request] GET /src/pages/AllUseCases.tsx
+[Vite Request] GET /src/pages/FacilitatorRegister.tsx
+[Vite Request] GET /src/components/HomeTiles/index.ts
+[Vite Request] GET /src/components/Header.tsx
+[Vite Request] GET /src/components/TileCarousel/index.ts
+[Vite Request] GET /src/components/feedback/FeedbackWidget.tsx
+[Vite Request] GET /src/pages/ScoringPhase.tsx
+[Vite Request] GET /src/components/ui/Button.tsx
+[Vite Request] GET /src/lib/api.ts
+[Vite Request] GET /src/components/ui/Input.tsx
+[Vite Request] GET /src/components/templates/TemplateSelector.tsx
+[Vite Request] GET /src/components/ui/ActionTile.tsx
+[Vite Request] GET /src/components/survey/InitiateSurveyModal.tsx
+[Vite Request] GET /src/components/survey/SurveyMonitorPanel.tsx
+[Vite Request] GET /src/components/ParticipantAuth.tsx
+[Vite Request] GET /src/components/UseCaseForm.tsx
+[Vite Request] GET /src/components/BulkUseCaseForm.tsx
+[Vite Request] GET /src/components/ResultsChart.tsx
+[Vite Request] GET /src/components/WorkshopInsights.tsx
+[Vite Request] GET /src/components/AnalyticsDashboard.tsx
+[Vite Request] GET /src/components/survey/index.ts
+[Vite Request] GET /src/components/breakout/index.ts
+[Vite Request] GET /src/components/roadmap/index.ts
+[Vite Request] GET /src/components/roi/index.ts
+[Vite Request] GET /src/components/polls/ReactionOverlay.tsx
+[Vite Request] GET /src/components/challenges/index.ts?t=1773583569830
+[Vite Request] GET /src/components/polls/QAPanel.tsx
+[Vite Request] GET /src/components/ai-copilot/index.ts
+[Vite Request] GET /src/components/WorkshopSettingsModal.tsx
+[Vite Request] GET /src/components/ui/Modal.tsx
+[Vite Request] GET /src/components/polls/PollManager.tsx
+[Vite Request] GET /src/components/prioritization/PrioritizationScale.tsx
+[Vite Request] GET /src/components/ConfirmationModal.tsx
+[Vite Request] GET /src/components/usecases/AdminImportUseCasesModal.tsx
+[Vite Request] GET /src/lib/api/analytics.ts
+[Vite Request] GET /src/components/usecases/UseCaseApprovalModal.tsx
+[Vite Request] GET /src/components/MatrixActivityDashboard.tsx
+[Vite Request] GET /src/components/survey/SurveyParticipant.tsx
+[Vite Request] GET /src/components/polls/PollResponder.tsx
+[Vite Request] GET /src/components/polls/ReactionBar.tsx
+[Vite Request] GET /src/components/gamification/PointsDisplay.tsx
+[Vite Request] GET /src/components/gamification/Leaderboard.tsx
+[Vite Request] GET /src/components/gamification/BadgeGrid.tsx
+[Vite Request] GET /src/components/gamification/AchievementToast.tsx
+[Vite Request] GET /src/lib/api/challenges.ts?t=1773583569830
+[Vite Request] GET /src/components/HomeTiles/HeroTile.tsx
+[Vite Request] GET /src/components/HomeTiles/HowItWorksTile.tsx
+[Vite Request] GET /src/components/UseCaseCanvas.tsx
+[Vite Request] GET /src/components/HomeTiles/CTATile.tsx
+[Vite Request] GET /src/components/usecases/UseCaseDetailModal.tsx
+[Vite Request] GET /src/components/HomeTiles/FeaturesTile.tsx
+[Vite Request] GET /src/components/TileCarousel/TileNavigation.tsx
+[Vite Request] GET /src/components/TileCarousel/TileCarousel.tsx
+[Vite Request] GET /src/components/HomeTiles/BenefitsTile.tsx
+[Vite Request] GET /src/components/ui/ThemeToggle.tsx
+[Vite Request] GET /src/components/NotificationIcon.tsx
+[Vite Request] GET /src/components/ScoringCard.tsx
+[Vite Request] GET /src/lib/api/feedback.ts
+[Vite Request] GET /src/components/common/LanguageSwitcher.tsx
+[Vite Request] GET /src/components/NotificationDetailModal.tsx
+[Vite Request] GET /src/components/usecases/FacilitatorAddUseCaseModal.tsx
+[Vite Request] GET /src/components/survey/SurveyResults.tsx
+[Vite Request] GET /src/components/survey/SurveyList.tsx
+[Vite Request] GET /src/components/VotingHeatmap.tsx
+[Vite Request] GET /src/components/survey/SurveyBuilder.tsx
+[Vite Request] GET /src/components/breakout/BreakoutManager.tsx
+[Vite Request] GET /src/components/breakout/BreakoutRoom.tsx
+[Vite Request] GET /src/components/roadmap/RoadmapGenerator.tsx
+[Vite Request] GET /src/lib/api/polls.ts
+[Vite Request] GET /src/components/challenges/ChallengeManager.tsx?t=1773583569830
+[Vite Request] GET /src/components/challenges/ChallengeCardDetail.tsx?t=1773583569830
+[Vite Request] GET /src/components/challenges/ChallengeForm.tsx?t=1773583569830
+[Vite Request] GET /src/components/roadmap/ResourcePlanner.tsx
+[Vite Request] GET /src/components/roadmap/GanttChart.tsx
+[Vite Request] GET /src/components/challenges/ChallengeCard.tsx
+[Vite Request] GET /src/components/roi/ROICalculator.tsx
+[Vite Request] GET /src/components/roi/CostBenefitForms.tsx
+[Vite Request] GET /src/components/roadmap/MilestoneTracker.tsx
+[Vite Request] GET /src/components/roi/ROIResultsDisplay.tsx
+[Vite Request] GET /src/components/roi/ROIComparisonView.tsx
+[Vite Request] GET /src/components/roi/ScenarioModeler.tsx
+[Vite Request] GET /src/components/roi/SensitivityAnalysis.tsx
+[Vite Request] GET /src/components/roi/BenchmarkPanel.tsx
+[Vite Request] GET /src/components/roi/BusinessCaseGenerator.tsx
+[Vite Request] GET /src/components/roi/ROICalculatorModal.tsx
+[Vite Request] GET /src/components/ai-copilot/SuggestionCard.tsx
+[Vite Request] GET /src/components/ai-copilot/AlertBanner.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotToggle.tsx
+[Vite Request] GET /src/components/ai-copilot/DiscussionPrompts.tsx
+[Vite Request] GET /src/components/ai-copilot/EngagementMonitor.tsx
+[Vite Request] GET /src/components/ai-copilot/InsightsPanel.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotPanel.tsx
+[Vite Request] GET /src/components/ai-copilot/SummaryGenerator.tsx
+[Vite Request] GET /src/components/gamification/BadgeCard.tsx
+[Vite Request] GET /src/hooks/useTileCarousel.ts
+[Vite Request] GET /src/components/gamification/PointsAnimation.tsx
+[Vite Request] GET /src/lib/api/gamification.ts
+[Vite Request] GET /src/components/ai-copilot/CopilotSettings.tsx
+[Vite Request] GET /src/types/roi.ts
+[Vite Request] GET /src/lib/api/copilot.ts
+[Vite Request] GET /api/auth/me
+[Proxy] Rewriting path: /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+[Vite Request] GET /api/auth/me
+[Proxy] Rewriting path: /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+[Vite Request] GET /vite.svg
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /vite.svg
+[Vite Request] GET /api/challenges/planner/sessions
+[Proxy] Rewriting path: /api/challenges/planner/sessions
+Sending Request to the Target: GET /api/challenges/planner/sessions
+Received Response from the Target: 200 /api/challenges/planner/sessions
+[Vite Request] GET /api/challenges/planner/sessions/92241cc5-973a-473b-bdc9-534bb4179b2c
+[Proxy] Rewriting path: /api/challenges/planner/sessions/92241cc5-973a-473b-bdc9-534bb4179b2c
+Sending Request to the Target: GET /api/challenges/planner/sessions/92241cc5-973a-473b-bdc9-534bb4179b2c
+Received Response from the Target: 200 /api/challenges/planner/sessions/92241cc5-973a-473b-bdc9-534bb4179b2c
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+[Vite Request] GET /vite.svg
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /vite.svg
+[Vite Request] GET /
+[Vite Request] GET /vite.svg
+[Vite Request] GET /vite.svg
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[2m2:21:52 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/BusinessChallengePlanner.tsx, /src/components/challenges/ChallengeCardDetail.tsx, /src/components/challenges/ChallengeManager.tsx, /src/components/challenges/ChallengeForm.tsx[22m
+[2m2:21:57 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/BusinessChallengePlanner.tsx, /src/components/challenges/ChallengeCardDetail.tsx, /src/components/challenges/ChallengeManager.tsx, /src/components/challenges/ChallengeForm.tsx[22m
+[2m2:22:01 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/BusinessChallengePlanner.tsx, /src/components/challenges/ChallengeCardDetail.tsx, /src/components/challenges/ChallengeManager.tsx, /src/components/challenges/ChallengeForm.tsx[22m
+[2m2:22:11 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/BusinessChallengePlanner.tsx, /src/index.css[22m
+[2m2:22:20 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/BusinessChallengePlanner.tsx, /src/index.css[22m
+[2m2:22:27 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/BusinessChallengePlanner.tsx, /src/index.css[22m
+[2m2:22:34 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/BusinessChallengePlanner.tsx, /src/index.css[22m
+[2m2:22:38 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/BusinessChallengePlanner.tsx, /src/index.css[22m
+[2m2:22:44 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/BusinessChallengePlanner.tsx, /src/index.css[22m
+[2m2:22:55 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/BusinessChallengePlanner.tsx, /src/index.css[22m
+[2m2:23:04 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/BusinessChallengePlanner.tsx, /src/index.css[22m
+[2m2:23:11 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/BusinessChallengePlanner.tsx, /src/index.css[22m
+[2m2:24:06 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/index.css, /src/pages/WorkshopDetail.tsx[22m
+[2m2:24:09 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/WorkshopDetail.tsx, /src/index.css[22m
+[2m2:24:15 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/WorkshopDetail.tsx, /src/index.css[22m
+[Vite Request] GET /
+[Vite Request] GET /@vite/client
+[Vite Request] GET /src/main.tsx?t=1773584655672
+[Vite Request] GET /@react-refresh
+[Vite Request] GET /src/index.css?t=1773584655672
+[Vite Request] GET /src/i18n.ts
+[Vite Request] GET /src/App.tsx?t=1773584655672
+[Vite Request] GET /src/context/ThemeContext.tsx
+[Vite Request] GET /src/context/AuthContext.tsx
+[Vite Request] GET /src/context/SessionContext.tsx
+[Vite Request] GET /node_modules/vite/dist/client/env.mjs
+[Vite Request] GET /src/components/ChangePasswordDialog.tsx
+[Vite Request] GET /src/pages/Landing.tsx
+[Vite Request] GET /src/pages/CreateWorkshop.tsx
+[Vite Request] GET /src/pages/JoinWorkshop.tsx
+[Vite Request] GET /src/pages/WorkshopDetail.tsx?t=1773584655672
+[Vite Request] GET /src/pages/FacilitatorLogin.tsx
+[Vite Request] GET /src/pages/BusinessChallengePlanner.tsx?t=1773584591311
+[Vite Request] GET /src/pages/FacilitatorDashboard.tsx
+[Vite Request] GET /src/components/challenges/index.ts?t=1773584646652
+[Vite Request] GET /src/pages/AdminUsers.tsx
+[Vite Request] GET /src/pages/AdminKnowledgeBase.tsx
+[Vite Request] GET /src/pages/AdminPanel.tsx
+[Vite Request] GET /src/pages/AdminUseCases.tsx
+[Vite Request] GET /src/pages/AdminMyWorkshops.tsx
+[Vite Request] GET /src/pages/AdminSettings.tsx
+[Vite Request] GET /src/pages/AdminWorkshops.tsx
+[Vite Request] GET /src/pages/FacilitatorManagement.tsx
+[Vite Request] GET /src/components/AdminLayout.tsx
+[Vite Request] GET /src/components/feedback/FeedbackWidget.tsx
+[Vite Request] GET /src/pages/AnalyticsDashboard.tsx
+[Vite Request] GET /src/pages/WaitingRoom.tsx
+[Vite Request] GET /src/pages/AdminLLMUsage.tsx
+[Vite Request] GET /src/pages/ParticipantDashboard.tsx
+[Vite Request] GET /src/pages/KnowledgeBase.tsx
+[Vite Request] GET /src/components/AuthenticatedLayout.tsx
+[Vite Request] GET /src/pages/ParticipantMatrix.tsx
+[Vite Request] GET /src/pages/ScoringPhase.tsx
+[Vite Request] GET /src/pages/AllUseCases.tsx
+[Vite Request] GET /src/lib/socket.ts
+[Vite Request] GET /src/lib/config.ts
+[Vite Request] GET /src/pages/FacilitatorRegister.tsx
+[Vite Request] GET /src/components/TileCarousel/index.ts
+[Vite Request] GET /src/components/HomeTiles/index.ts
+[Vite Request] GET /src/components/ui/Button.tsx
+[Vite Request] GET /src/components/ui/Input.tsx
+[Vite Request] GET /src/components/templates/TemplateSelector.tsx
+[Vite Request] GET /src/pages/IntakePhase.tsx
+[Vite Request] GET /src/components/BulkUseCaseForm.tsx
+[Vite Request] GET /src/components/Header.tsx
+[Vite Request] GET /src/components/WorkshopInsights.tsx
+[Vite Request] GET /src/lib/api.ts
+[Vite Request] GET /src/components/ui/Modal.tsx
+[Vite Request] GET /src/components/UseCaseForm.tsx
+[Vite Request] GET /src/components/AnalyticsDashboard.tsx
+[Vite Request] GET /src/components/WorkshopSettingsModal.tsx
+[Vite Request] GET /src/components/polls/PollManager.tsx
+[Vite Request] GET /src/components/ResultsChart.tsx
+[Vite Request] GET /src/components/survey/index.ts
+[Vite Request] GET /src/components/polls/ReactionOverlay.tsx
+[Vite Request] GET /src/components/polls/QAPanel.tsx
+[Vite Request] GET /src/components/ai-copilot/index.ts
+[Vite Request] GET /src/components/roadmap/index.ts
+[Vite Request] GET /src/components/roi/index.ts
+[Vite Request] GET /src/components/MatrixActivityDashboard.tsx
+[Vite Request] GET /src/components/ParticipantAuth.tsx
+[Vite Request] GET /src/components/prioritization/PrioritizationScale.tsx
+[Vite Request] GET /src/components/breakout/index.ts
+[Vite Request] GET /src/components/challenges/ChallengeCard.tsx
+[Vite Request] GET /src/components/challenges/ChallengeForm.tsx?t=1773584521713
+[Vite Request] GET /src/components/challenges/WorkshopPlannerPanel.tsx
+[Vite Request] GET /src/components/challenges/ChallengeCardDetail.tsx?t=1773584521713
+[Vite Request] GET /src/components/challenges/ChallengeManager.tsx?t=1773584521713
+[Vite Request] GET /src/components/ConfirmationModal.tsx
+[Vite Request] GET /manifest.json
+[Vite Request] GET /src/components/ui/ActionTile.tsx
+[Vite Request] GET /src/components/survey/InitiateSurveyModal.tsx
+[Vite Request] GET /src/components/survey/SurveyMonitorPanel.tsx
+[Vite Request] GET /src/components/usecases/UseCaseApprovalModal.tsx
+[Vite Request] GET /src/lib/api/challenges.ts?t=1773584521713
+[Vite Request] GET /src/components/usecases/AdminImportUseCasesModal.tsx
+[Vite Request] GET /src/lib/api/analytics.ts
+[Vite Request] GET /src/lib/api/feedback.ts
+[Vite Request] GET /src/components/ScoringCard.tsx
+[Vite Request] GET /src/components/usecases/FacilitatorAddUseCaseModal.tsx
+[Vite Request] GET /src/components/HomeTiles/HeroTile.tsx
+[Vite Request] GET /src/components/HomeTiles/FeaturesTile.tsx
+[Vite Request] GET /src/components/HomeTiles/BenefitsTile.tsx
+[Vite Request] GET /src/components/HomeTiles/CTATile.tsx
+[Vite Request] GET /src/components/UseCaseCanvas.tsx
+[Vite Request] GET /src/components/HomeTiles/HowItWorksTile.tsx
+[Vite Request] GET /src/components/polls/PollResponder.tsx
+[Vite Request] GET /src/components/polls/ReactionBar.tsx
+[Vite Request] GET /src/components/survey/SurveyParticipant.tsx
+[Vite Request] GET /src/components/gamification/PointsDisplay.tsx
+[Vite Request] GET /src/components/gamification/AchievementToast.tsx
+[Vite Request] GET /src/components/gamification/Leaderboard.tsx
+[Vite Request] GET /src/components/gamification/BadgeGrid.tsx
+[Vite Request] GET /src/components/usecases/UseCaseDetailModal.tsx
+[Vite Request] GET /src/components/TileCarousel/TileCarousel.tsx
+[Vite Request] GET /src/components/TileCarousel/TileNavigation.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotPanel.tsx
+[Vite Request] GET /src/components/NotificationDetailModal.tsx
+[Vite Request] GET /src/components/ui/ThemeToggle.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotToggle.tsx
+[Vite Request] GET /src/components/common/LanguageSwitcher.tsx
+[Vite Request] GET /src/components/VotingHeatmap.tsx
+[Vite Request] GET /src/components/ai-copilot/AlertBanner.tsx
+[Vite Request] GET /src/components/ai-copilot/EngagementMonitor.tsx
+[Vite Request] GET /src/components/ai-copilot/DiscussionPrompts.tsx
+[Vite Request] GET /src/components/NotificationIcon.tsx
+[Vite Request] GET /src/components/ai-copilot/SummaryGenerator.tsx
+[Vite Request] GET /src/components/ai-copilot/SuggestionCard.tsx
+[Vite Request] GET /src/components/ai-copilot/CopilotSettings.tsx
+[Vite Request] GET /src/lib/api/polls.ts
+[Vite Request] GET /src/components/roadmap/RoadmapGenerator.tsx
+[Vite Request] GET /src/components/roadmap/GanttChart.tsx
+[Vite Request] GET /src/components/roadmap/MilestoneTracker.tsx
+[Vite Request] GET /src/components/ai-copilot/InsightsPanel.tsx
+[Vite Request] GET /src/components/roi/ROICalculator.tsx
+[Vite Request] GET /src/components/roadmap/ResourcePlanner.tsx
+[Vite Request] GET /src/components/roi/ROICalculatorModal.tsx
+[Vite Request] GET /src/components/roi/ROIResultsDisplay.tsx
+[Vite Request] GET /src/components/roi/ROIComparisonView.tsx
+[Vite Request] GET /src/components/roi/ScenarioModeler.tsx
+[Vite Request] GET /src/components/roi/SensitivityAnalysis.tsx
+[Vite Request] GET /src/components/roi/CostBenefitForms.tsx
+[Vite Request] GET /src/components/roi/BusinessCaseGenerator.tsx
+[Vite Request] GET /src/components/roi/BenchmarkPanel.tsx
+[Vite Request] GET /src/components/survey/SurveyResults.tsx
+[Vite Request] GET /src/components/breakout/BreakoutRoom.tsx
+[Vite Request] GET /src/lib/api/gamification.ts
+[Vite Request] GET /src/components/survey/SurveyList.tsx
+[Vite Request] GET /src/components/survey/SurveyBuilder.tsx
+[Vite Request] GET /src/hooks/useTileCarousel.ts
+[Vite Request] GET /src/components/breakout/BreakoutManager.tsx
+[Vite Request] GET /src/components/gamification/PointsAnimation.tsx
+[Vite Request] GET /src/lib/api/copilot.ts
+[Vite Request] GET /src/components/gamification/BadgeCard.tsx
+[Vite Request] GET /src/types/roi.ts
+[Vite Request] GET /api/auth/me
+[Proxy] Rewriting path: /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+[Vite Request] GET /api/auth/me
+[Proxy] Rewriting path: /api/auth/me
+Sending Request to the Target: GET /api/auth/me
+Received Response from the Target: 200 /api/auth/me
+[Vite Request] GET /vite.svg
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 401 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 401 /api/facilitator/workshops
+[Vite Request] GET /api/challenges/planner/sessions
+[Proxy] Rewriting path: /api/challenges/planner/sessions
+Sending Request to the Target: GET /api/challenges/planner/sessions
+Received Response from the Target: 200 /api/challenges/planner/sessions
+[Vite Request] GET /api/challenges/planner/sessions/92241cc5-973a-473b-bdc9-534bb4179b2c
+[Proxy] Rewriting path: /api/challenges/planner/sessions/92241cc5-973a-473b-bdc9-534bb4179b2c
+Sending Request to the Target: GET /api/challenges/planner/sessions/92241cc5-973a-473b-bdc9-534bb4179b2c
+Received Response from the Target: 200 /api/challenges/planner/sessions/92241cc5-973a-473b-bdc9-534bb4179b2c
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 200 /api/facilitator/workshops
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Vite Request] GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+[Proxy] Rewriting path: /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Sending Request to the Target: GET /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Vite Request] GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+[Proxy] Rewriting path: /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Sending Request to the Target: GET /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/workshop/0c943ee7-5293-426b-a8a0-1d1819a9bbc1
+Received Response from the Target: 200 /api/surveys/workshop/35394bd1-9e26-458f-84a4-0b34025d250d
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Proxy] Rewriting path: /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Sending Request to the Target: GET /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+[Vite Request] GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Proxy] Rewriting path: /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Sending Request to the Target: GET /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+Received Response from the Target: 200 /api/surveys/391a5ecf-0c9c-4d93-aac5-072f7d5cbb8a/progress
+Received Response from the Target: 200 /api/surveys/985ec3be-20b2-4570-9c29-58cd21cca534/progress
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 401 /api/facilitator/workshops
+[Vite Request] GET /api/facilitator/workshops
+[Proxy] Rewriting path: /api/facilitator/workshops
+Sending Request to the Target: GET /api/facilitator/workshops
+Received Response from the Target: 401 /api/facilitator/workshops
+[2m2:28:41 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/BusinessChallengePlanner.tsx, /src/index.css[22m
+[2m2:28:48 PM[22m [36m[1m[vite][22m[39m [90m[2m(client)[22m[39m [32mhmr update [39m[2m/src/pages/BusinessChallengePlanner.tsx, /src/index.css[22m
