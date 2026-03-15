@@ -136,7 +136,7 @@ class CopilotService:
         phase: str
     ) -> List[Dict[str, Any]]:
         """Generate high-level facilitation advice using LLM."""
-        from langchain.schema import HumanMessage
+        from langchain_core.messages import HumanMessage
         
         # Prepare context context
         active_participant_count = len([p for p in participants if p.role == "PARTICIPANT"])
@@ -676,7 +676,7 @@ class CopilotService:
         Analyzes voting patterns for unusual uniformity and systematic biases.
         """
         try:
-            from langchain.schema import HumanMessage
+            from langchain_core.messages import HumanMessage
             
             # Prepare voting data for analysis
             voting_patterns = []
@@ -843,7 +843,7 @@ If no significant anomalies, return empty array []."""
             return []
         
         try:
-            from langchain.schema import HumanMessage
+            from langchain_core.messages import HumanMessage
             
             # Prepare use case data for analysis
             use_case_data = []
@@ -972,7 +972,7 @@ If no significant duplicates found, return empty array []."""
         
         # Use AI to generate contextual prompts
         try:
-            from langchain.schema import HumanMessage
+            from langchain_core.messages import HumanMessage
             
             variance_context = ""
             if variance_data and variance_data.get('std_dev', 0) > 2:
@@ -1034,7 +1034,7 @@ If no significant duplicates found, return empty array []."""
         
         # Use AI to generate summary
         try:
-            from langchain.schema import HumanMessage
+            from langchain_core.messages import HumanMessage
             
             top_cases = scored_use_cases[:5] if scored_use_cases else []
             top_cases_summary = [{"title": uc.get("title"), "score": uc.get("avg_score")} for uc in top_cases]

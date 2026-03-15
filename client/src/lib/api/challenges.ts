@@ -36,6 +36,29 @@ export interface StepGenerationRequest {
   format?: 'markdown' | 'text' | 'pdf';
 }
 
+export interface PlannerSessionSummary {
+  id: string;
+  customer_name: string | null;
+  customer_about: string | null;
+  challenge_description: string;
+  step_count: number;
+  created_by_email: string;
+  created_at: string;
+  workshop_id: string | null;
+  workshop_title: string | null;
+}
+
+export interface PlannerSessionDetail {
+  id: string;
+  customer_name: string | null;
+  customer_about: string | null;
+  challenge_description: string;
+  steps: StepGenerationResponse[];
+  created_at: string;
+  workshop_id: string | null;
+  workshop_title: string | null;
+}
+
 export interface StepGenerationResponse {
   step_number: number;
   step_name: string;
@@ -149,6 +172,48 @@ export const challengesApi = {
       options
     );
     return response.data;
+  },
+
+  /**
+   * Generate prompts for all six steps from a plain challenge description (no stored card needed).
+   * Returns the generated steps AND the persisted session_id.
+   */
+  generateStandalonePrompts: async (
+    challengeDescription: string,
+    customerName?: string,
+    customerAbout?: string,
+    workshopId?: string | null,
+  ): Promise<{ steps: StepGenerationResponse[]; session_id: string; workshop_id: string | null }> => {
+    const response = await api.post('challenges/standalone/generate-prompts', {
+      challenge_description: challengeDescription,
+      customer_name: customerName ?? '',
+      customer_about: customerAbout ?? '',
+      workshop_id: workshopId ?? null,
+    });
+    return {
+      steps: response.data.steps as StepGenerationResponse[],
+      session_id: response.data.session_id as string,
+      workshop_id: response.data.workshop_id as string | null,
+    };
+  },
+
+  listPlannerSessions: async (): Promise<PlannerSessionSummary[]> => {
+    const response = await api.get('challenges/planner/sessions');
+    return response.data.sessions as PlannerSessionSummary[];
+  },
+
+  getPlannerSession: async (sessionId: string): Promise<PlannerSessionDetail> => {
+    const response = await api.get(`challenges/planner/sessions/${sessionId}`);
+    return response.data as PlannerSessionDetail;
+  },
+
+  deletePlannerSession: async (sessionId: string): Promise<void> => {
+    await api.delete(`challenges/planner/sessions/${sessionId}`);
+  },
+
+  getWorkshopPlannerSessions: async (workshopId: string): Promise<{ sessions: PlannerSessionDetail[]; workshop_title: string }> => {
+    const response = await api.get(`challenges/planner/workshops/${workshopId}/sessions`);
+    return response.data as { sessions: PlannerSessionDetail[]; workshop_title: string };
   },
 
   /**

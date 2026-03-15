@@ -119,7 +119,7 @@ Return ONLY a JSON object with this exact structure:
 }}"""
         
         try:
-            from langchain.schema import HumanMessage
+            from langchain_core.messages import HumanMessage
             response = await self.llm.ainvoke([HumanMessage(content=prompt)])
             
             content = response.content
@@ -250,7 +250,7 @@ Return ONLY a JSON object with this exact structure:
         Generate timeline using AI analysis of use case types.
         Creates custom phases and tasks specific to the AI project type.
         """
-        from langchain.schema import HumanMessage
+        from langchain_core.messages import HumanMessage
         
         # Detect use case types for better timeline customization
         use_case_types = await self._detect_use_case_types(use_cases)
@@ -374,7 +374,7 @@ Return ONLY a JSON object with this structure:
             return {str(uc.id): "General AI" for uc in use_cases}
         
         try:
-            from langchain.schema import HumanMessage
+            from langchain_core.messages import HumanMessage
             
             use_case_summaries = []
             for uc in use_cases:
@@ -626,7 +626,7 @@ Return JSON mapping use_case_id to category:
         Use AI to recommend resources based on technical requirements of use cases.
         Analyzes proposed solutions for technology keywords and maps to skill requirements.
         """
-        from langchain.schema import HumanMessage
+        from langchain_core.messages import HumanMessage
         
         # Extract technical information from use cases
         use_case_tech = []

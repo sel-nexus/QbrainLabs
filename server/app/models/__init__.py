@@ -162,6 +162,10 @@ from .challenge import (
     ChallengeCard
 )
 
+from .planner_session import (
+    ChallengePlannerSession
+)
+
 from .llm_usage import (
     LLMUsageLog
 )

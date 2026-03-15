@@ -51,8 +51,8 @@ class RAGService:
         try:
             print("   [INFO] Importing LangChain modules...")
             from langchain_openai import ChatOpenAI, OpenAIEmbeddings, AzureChatOpenAI, AzureOpenAIEmbeddings
-            from langchain.vectorstores import Chroma
-            from langchain.schema import Document
+            from langchain_community.vectorstores import Chroma
+            from langchain_core.documents import Document
             print("   [OK] LangChain modules imported successfully")
             
             # Check for Azure Configuration first
@@ -324,7 +324,7 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
                 "is_mock": True
             }
 
-        from langchain.prompts import ChatPromptTemplate
+        from langchain_core.prompts import ChatPromptTemplate
         
         # Step 1: Analyze Cost Drivers & Benefit Levers
         analysis_prompt = ChatPromptTemplate.from_template("""
@@ -437,7 +437,7 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
                 "is_mock": True
             }
 
-        from langchain.prompts import ChatPromptTemplate
+        from langchain_core.prompts import ChatPromptTemplate
         
         # Prepare financial context
         estimates = roi_results.get("estimates", {})
@@ -520,7 +520,7 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
                 "is_mock": True
             }
 
-        from langchain.prompts import ChatPromptTemplate
+        from langchain_core.prompts import ChatPromptTemplate
         prompt = ChatPromptTemplate.from_template("""
         Create an Executive AI Strategy Presentation summary for these top use cases:
         {cases_json}
@@ -876,7 +876,7 @@ Return valid JSON as a list of objects:
             }
         
         try:
-            from langchain.schema import Document
+            from langchain_core.documents import Document
             from langchain_core.messages import HumanMessage
             
             # Generate summary using LLM
