@@ -130,6 +130,7 @@ overrides==7.7.0
 packaging==23.2
 passlib==1.7.4
 perplexityai==0.27.0
+filetype==1.2.0
 pillow==12.1.1
 plotly==6.5.2
 pluggy==1.6.0

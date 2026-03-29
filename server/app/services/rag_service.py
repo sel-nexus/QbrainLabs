@@ -1,68 +1,68 @@
 import os
 import json
 import random
+import structlog
 from typing import List, Dict, Any, Optional
 from app.core.config import settings
+
+logger = structlog.get_logger(__name__)
 from app.utils.llm_tracking import track_llm_usage, get_usage_from_response
 
 class RAGService:
     def __init__(self):
-        print("="*60)
-        print("RAGService Initialization Starting...")
-        print("="*60)
-        
+        logger.info("rag_service_init_start")
+
         self.api_key = settings.OPENAI_API_KEY
         self.azure_api_key = settings.AZURE_OPENAI_API_KEY
         self.azure_endpoint = settings.AZURE_OPENAI_ENDPOINT
-        
-        print(f"OpenAI API Key: {'SET' if self.api_key else 'NOT SET'}")
-        print(f"Azure OpenAI API Key: {'SET' if self.azure_api_key else 'NOT SET'}")
-        print(f"Azure OpenAI Endpoint: {self.azure_endpoint if self.azure_endpoint else 'NOT SET'}")
-        print(f"AI Mock Mode Setting: {settings.AI_MOCK_MODE}")
-        
+
+        logger.info(
+            "rag_service_api_keys",
+            openai_key_set=bool(self.api_key),
+            azure_key_set=bool(self.azure_api_key),
+            azure_endpoint_set=bool(self.azure_endpoint),
+            ai_mock_mode=settings.AI_MOCK_MODE,
+        )
+
         self.mock_mode = settings.AI_MOCK_MODE or (not self.api_key and not self.azure_api_key)
         self.vector_store = None
         self.llm = None
         self.embeddings = None
-        
-        print(f"\n[RAG] Service Mode: {'MOCK' if self.mock_mode else 'REAL AI'}")
-        
+
+        logger.info("rag_service_mode", mode="mock" if self.mock_mode else "real")
+
         # Load Reference Data
         try:
             with open("app/data/ai_use_cases.json", "r") as f:
                 self.reference_data = json.load(f)
-            print(f"[OK] Loaded {len(self.reference_data)} reference use cases")
+            logger.info("rag_reference_data_loaded", count=len(self.reference_data))
         except Exception as e:
-            print(f"[WARN] Error loading reference data: {e}")
+            logger.warning("rag_reference_data_load_failed", error=str(e))
             self.reference_data = []
 
         if not self.mock_mode:
-            print("\n[RAG] Initializing REAL AI components...")
+            logger.info("rag_service_initializing_real_components")
             self._initialize_real_components()
         else:
-            print("\n[WARN] RAGService running in MOCK MODE")
-            print("   Reason: No API keys configured or AI_MOCK_MODE=true")
-        
-        print("="*60)
-        print(f"RAGService Initialization Complete - Mode: {'MOCK' if self.mock_mode else 'REAL'}")
-        print("="*60 + "\n")
+            logger.warning("rag_service_mock_mode", reason="No API keys configured or AI_MOCK_MODE=true")
+
+        logger.info("rag_service_init_complete", mode="mock" if self.mock_mode else "real")
 
     def _initialize_real_components(self):
         try:
-            print("   [INFO] Importing LangChain modules...")
+            logger.info("rag_langchain_import_start")
             from langchain_openai import ChatOpenAI, OpenAIEmbeddings, AzureChatOpenAI, AzureOpenAIEmbeddings
             from langchain_community.vectorstores import Chroma
             from langchain_core.documents import Document
-            print("   [OK] LangChain modules imported successfully")
-            
+            logger.info("rag_langchain_import_complete")
+
             # Check for Azure Configuration first
             if self.azure_api_key and settings.AZURE_OPENAI_ENDPOINT:
-                print("\n   [AZURE] Initializing Azure OpenAI Client...")
-                print(f"      Endpoint: {settings.AZURE_OPENAI_ENDPOINT}")
-                print(f"      Deployment: {settings.AZURE_OPENAI_DEPLOYMENT}")
-                print(f"      Model: {settings.AZURE_OPENAI_MODEL_NAME or settings.AZURE_OPENAI_DEPLOYMENT}")
-                print(f"      API Version: {settings.AZURE_OPENAI_API_VERSION}")
-                
+                logger.info(
+                    "rag_azure_openai_init",
+                    endpoint=settings.AZURE_OPENAI_ENDPOINT,
+                    deployment=settings.AZURE_OPENAI_DEPLOYMENT,
+                )
                 try:
                     self.llm = AzureChatOpenAI(
                         azure_endpoint=settings.AZURE_OPENAI_ENDPOINT,
@@ -72,17 +72,17 @@ class RAGService:
                         temperature=settings.OPENAI_TEMPERATURE,
                         model=settings.AZURE_OPENAI_MODEL_NAME or settings.AZURE_OPENAI_DEPLOYMENT
                     )
-                    print("   [OK] Azure OpenAI Chat client initialized")
+                    logger.info("rag_azure_chat_client_initialized")
                 except Exception as e:
-                    print(f"   [ERROR] Failed to initialize Azure OpenAI Chat: {e}")
+                    logger.error("rag_azure_chat_client_failed", error=str(e))
                     raise
-                
+
                 # Use Azure Embeddings if configured
                 if settings.AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME:
-                    print(f"\n   [AZURE] Initializing Azure OpenAI Embeddings...")
-                    print(f"      Deployment: {settings.AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME}")
-                    print(f"      Model: {settings.AZURE_OPENAI_EMBEDDING_MODEL}")
-                    
+                    logger.info(
+                        "rag_azure_embeddings_init",
+                        deployment=settings.AZURE_OPENAI_EMBEDDING_DEPLOYMENT_NAME,
+                    )
                     try:
                         self.embeddings = AzureOpenAIEmbeddings(
                             azure_endpoint=settings.AZURE_OPENAI_ENDPOINT,
@@ -91,56 +91,51 @@ class RAGService:
                             api_version=settings.AZURE_OPENAI_EMBEDDING_API_VERSION,
                             model=settings.AZURE_OPENAI_EMBEDDING_MODEL,
                         )
-                        print("   [OK] Azure OpenAI Embeddings initialized")
+                        logger.info("rag_azure_embeddings_initialized")
                     except Exception as e:
-                        print(f"   [ERROR] Failed to initialize Azure OpenAI Embeddings: {e}")
-                        print("   [WARN] Falling back to standard OpenAI embeddings...")
+                        logger.warning("rag_azure_embeddings_failed_fallback_openai", error=str(e))
                         self.embeddings = OpenAIEmbeddings(api_key=self.api_key) if self.api_key else None
                 else:
-                    print("   [WARN] Azure embedding deployment not configured")
+                    logger.warning("rag_azure_embedding_deployment_not_configured")
                     self.embeddings = OpenAIEmbeddings(api_key=self.api_key) if self.api_key else None
-            
+
             # Fallback to Standard OpenAI
             elif self.api_key:
-                print("\n   [OPENAI] Initializing Standard OpenAI Client...")
-                print(f"      Model: {settings.OPENAI_MODEL}")
-                
+                logger.info("rag_openai_init", model=settings.OPENAI_MODEL)
                 self.llm = ChatOpenAI(
                     temperature=settings.OPENAI_TEMPERATURE,
                     model=settings.OPENAI_MODEL,
                     api_key=self.api_key
                 )
                 self.embeddings = OpenAIEmbeddings(api_key=self.api_key)
-                print("   [OK] Standard OpenAI client initialized")
-            
+                logger.info("rag_openai_client_initialized")
+
             # Initialize Vector Store
             if self.embeddings and len(self.reference_data) > 0:
-                print(f"\n   [VECTOR] Initializing Vector Store with {len(self.reference_data)} documents...")
+                logger.info("rag_vector_store_init", doc_count=len(self.reference_data))
                 try:
                     documents = [
                         Document(page_content=f"{item['title']}: {item['description']}", metadata=item)
                         for item in self.reference_data
                     ]
                     self.vector_store = Chroma.from_documents(documents, self.embeddings)
-                    print("   [OK] Vector store initialized successfully")
+                    logger.info("rag_vector_store_initialized")
                 except Exception as e:
-                    print(f"   [ERROR] Failed to initialize vector store: {e}")
-                    print("   [WARN] RAG will work without vector search")
+                    logger.warning("rag_vector_store_failed", error=str(e))
             else:
                 if not self.embeddings:
-                    print("   [WARN] No embeddings configured. RAG features will be limited.")
+                    logger.warning("rag_no_embeddings_configured")
                 if len(self.reference_data) == 0:
-                    print("   [WARN] No reference data loaded. Vector store not created.")
-            
-            print("\n   [OK] Real AI components initialization complete")
-            
+                    logger.warning("rag_no_reference_data")
+
+            logger.info("rag_real_components_init_complete")
+
         except ImportError as e:
-            print(f"   [ERROR] LangChain dependencies missing: {e}")
-            print("   [WARN] Reverting to Mock Mode")
+            logger.error("rag_langchain_missing", error=str(e))
             self.mock_mode = True
         except Exception as e:
-            print(f"   [ERROR] Failed to init RAG components: {e}")
-            print("   [WARN] Reverting to Mock Mode")
+            logger.error("rag_init_failed", error=str(e))
+            self.mock_mode = True
             import traceback
             traceback.print_exc()
             self.mock_mode = True
@@ -153,7 +148,13 @@ class RAGService:
             # Mock Logic: Pick a random reference template that matches keywords or just random
             # For "invoice" -> match invoice
             lower_text = text.lower()
-            match = next((item for item in self.reference_data if item['category'].lower() in lower_text or "invoice" in lower_text and "invoice" in item['title'].lower()), self.reference_data[0])
+            match = next(
+                (item for item in self.reference_data
+                 if item['category'].lower() in lower_text or ("invoice" in lower_text and "invoice" in item['title'].lower())),
+                self.reference_data[0] if self.reference_data else None
+            )
+            if match is None:
+                return {"refined_title": text, "refined_description": text, "suggested_solution": "", "kpi": "", "is_mock": True}
             
             return {
                 "refined_title": f"Smart {match['title']}",
@@ -207,13 +208,15 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
             
             # Try to extract JSON from the response
             import re
-            json_match = re.search(r'\{[^{}]*\}', response_content, re.DOTALL)
-            if json_match:
-                return json.loads(json_match.group())
-            else:
+            try:
                 return json.loads(response_content)
+            except json.JSONDecodeError:
+                json_match = re.search(r'\{.*\}', response_content, re.DOTALL)
+                if json_match:
+                    return json.loads(json_match.group())
+                raise
         except json.JSONDecodeError as e:
-            print(f"[RAG] JSON parse error: {e}")
+            logger.warning("rag_enhance_use_case_json_parse_error", error=str(e))
             return {
                 "title": "AI-Enhanced Use Case",
                 "description": text,
@@ -223,9 +226,7 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
                 "parse_error": str(e)
             }
         except Exception as e:
-            print(f"[RAG] Error in enhance_use_case: {e}")
-            import traceback
-            traceback.print_exc()
+            logger.error("rag_enhance_use_case_failed", error=str(e))
             raise
 
     async def check_feasibility(self, solution_text: str) -> Dict[str, Any]:
@@ -265,7 +266,8 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
         
         try:
             return json.loads(response.content)
-        except:
+        except (json.JSONDecodeError, AttributeError) as e:
+            logger.warning("feasibility_response_parse_failed", error=str(e))
             return {"score": "Unknown", "reason": "Parse error"}
 
     async def check_duplicates(self, candidate_title: str, candidate_desc: str, existing_items: List[Dict[str, Any]]) -> Dict[str, Any]:
@@ -357,7 +359,8 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
                 content = content.split("```")[1].split("```")[0].strip()
             
             analysis_data = json.loads(content)
-        except:
+        except (json.JSONDecodeError, AttributeError) as e:
+            logger.warning("roi_analysis_parse_failed", error=str(e))
             analysis_data = {"cost_drivers": [], "benefit_levers": [], "assumptions": []}
 
         # Step 2: quantitative Estimation
@@ -420,7 +423,8 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
                 "assumptions": analysis_data.get("assumptions"),
                 "is_mock": False
             }
-        except:
+        except (json.JSONDecodeError, AttributeError, KeyError) as e:
+            logger.warning("estimate_effort_parse_failed", error=str(e))
             return {"error": "Failed to parse estimate", "is_mock": False}
 
     async def generate_business_case(self, use_case_data: Dict, roi_results: Dict) -> Dict[str, Any]:
@@ -499,7 +503,8 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
             res = json.loads(content)
             res["is_mock"] = False
             return res
-        except:
+        except (json.JSONDecodeError, AttributeError, KeyError) as e:
+            logger.warning("business_case_parse_failed", error=str(e))
             return {"error": "Failed to generate business case", "is_mock": False}
 
     async def generate_executive_presentation(self, top_use_cases: List[Dict]) -> Dict[str, Any]:
@@ -537,7 +542,8 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
             res = json.loads(response.content)
             res["is_mock"] = False
             return res
-        except:
+        except (json.JSONDecodeError, AttributeError, KeyError) as e:
+            logger.warning("executive_presentation_parse_failed", error=str(e))
             return {"error": "Failed to generate presentation"}
 
     async def enhance_business_value(self, title: str, description: str, category: str = "Generative AI", current_kpi: str = None) -> Dict[str, Any]:
@@ -631,7 +637,7 @@ Return ONLY valid JSON in this exact format:
             result["is_mock"] = False
             return result
         except json.JSONDecodeError as e:
-            print(f"Failed to parse LLM response: {e}")
+            logger.warning("rag_enhance_business_value_parse_error", error=str(e))
             # Fallback to mock on parse error
             return {
                 "enhanced_kpi": current_kpi or "Improve operational efficiency by 40% within 6 months",
@@ -644,9 +650,7 @@ Return ONLY valid JSON in this exact format:
                 "parse_error": str(e)
             }
         except Exception as e:
-            print(f"Error in enhance_business_value: {e}")
-            import traceback
-            traceback.print_exc()
+            logger.error("rag_enhance_business_value_failed", error=str(e))
             raise
 
     async def analyze_technical_feasibility(self, title: str, description: str, proposed_solution: str) -> Dict[str, Any]:
@@ -731,7 +735,7 @@ Return valid JSON:
             result["is_mock"] = False
             return result
         except json.JSONDecodeError as e:
-            print(f"Failed to parse LLM response: {e}")
+            logger.warning("rag_technical_feasibility_parse_error", error=str(e))
             return {
                 "architecture_overview": "Standard Web App with AI Integration (Fallback)",
                 "recommended_stack": [],
@@ -742,9 +746,7 @@ Return valid JSON:
                 "parse_error": str(e)
             }
         except Exception as e:
-            print(f"Error in analyze_technical_feasibility: {e}")
-            import traceback
-            traceback.print_exc()
+            logger.error("rag_technical_feasibility_failed", error=str(e))
             raise
 
     async def analyze_document_context(self, text: str) -> List[Dict[str, Any]]:
@@ -805,7 +807,7 @@ Return valid JSON as a list of objects:
                 result = [result]
             return result
         except Exception as e:
-            print(f"Failed to parse LLM response for document analysis: {e}")
+            logger.warning("rag_document_analysis_parse_error", error=str(e))
             return []
 
 
@@ -842,7 +844,7 @@ Return valid JSON as a list of objects:
             return response.content
             
         except Exception as e:
-            print(f"Error extracting info from image: {e}")
+            logger.error("rag_image_extraction_failed", error=str(e))
             return f"[ERROR] Failed to analyze image: {str(e)}"
 
 
@@ -923,9 +925,7 @@ Provide a concise summary:"""
             }
             
         except Exception as e:
-            print(f"[RAG] Error importing knowledge article: {e}")
-            import traceback
-            traceback.print_exc()
+            logger.error("rag_import_knowledge_article_failed", error=str(e))
             raise
 
 
@@ -947,10 +947,10 @@ Provide a concise summary:"""
                 await loop.run_in_executor(
                     None, self.vector_store.delete, [embedding_id]
                 )
-                print(f"[RAG] Deleted embedding {embedding_id} from vector store")
+                logger.info("rag_embedding_deleted", embedding_id=embedding_id)
             return True
         except Exception as e:
-            print(f"[RAG] Error deleting embedding {embedding_id}: {e}")
+            logger.error("rag_embedding_delete_failed", embedding_id=embedding_id, error=str(e))
             return False
 
     async def validate_against_research(self, article_title: str, article_content: str, provider: str = "llm_only") -> Dict[str, Any]:
@@ -974,7 +974,7 @@ Provide a concise summary:"""
                 perplexity_api_key = os.getenv("PERPLEXITY_API_KEY", "").strip('"')
                 
                 if not perplexity_api_key:
-                    print("[RAG] Perplexity API key not configured, falling back to LLM-only mode")
+                    logger.warning("rag_perplexity_key_missing_fallback_llm")
                     provider = "llm_only"
                 else:
                     # Call Perplexity API to search for related research
@@ -1020,13 +1020,15 @@ Return your response in JSON format:
                         "max_tokens": 1000
                     }
                     
-                    response = requests.post(
-                        "https://api.perplexity.ai/chat/completions",
-                        headers=headers,
-                        json=payload,
-                        timeout=30
-                    )
-                    
+                    import httpx
+                    async with httpx.AsyncClient(timeout=30) as _http:
+                        _resp = await _http.post(
+                            "https://api.perplexity.ai/chat/completions",
+                            headers=headers,
+                            json=payload,
+                        )
+                    response = _resp
+
                     if response.status_code == 200:
                         result_data = response.json()
                         content = result_data.get("choices", [{}])[0].get("message", {}).get("content", "")
@@ -1045,16 +1047,14 @@ Return your response in JSON format:
                                 "provider": "perplexity"
                             }
                         else:
-                            print(f"[RAG] Failed to parse Perplexity response: {content}")
+                            logger.warning("rag_perplexity_parse_failed", content_preview=content[:200])
                             provider = "llm_only"
                     else:
-                        print(f"[RAG] Perplexity API error: {response.status_code} - {response.text}")
+                        logger.warning("rag_perplexity_api_error", status_code=response.status_code)
                         provider = "llm_only"
-                        
+
             except Exception as e:
-                print(f"[RAG] Error calling Perplexity API: {e}")
-                import traceback
-                traceback.print_exc()
+                logger.error("rag_perplexity_call_failed", error=str(e))
                 provider = "llm_only"
         
         # Mock mode or LLM-only validation
@@ -1130,10 +1130,7 @@ Return JSON only:
             }
             
         except Exception as e:
-            print(f"[RAG] Error validating article: {e}")
-            import traceback
-            traceback.print_exc()
-            # Return default validation
+            logger.error("rag_validate_article_failed", error=str(e))
             return {
                 "validation_score": 70,
                 "sources": [],
@@ -1185,7 +1182,7 @@ Return JSON only:
             perplexity_api_key = os.getenv("PERPLEXITY_API_KEY", "").strip('"')
             
             if not perplexity_api_key:
-                print("[RAG] Perplexity API key not configured, falling back to mock data")
+                logger.warning("rag_perplexity_key_missing_trending_fallback_mock")
                 return get_mock_data()
             
             # Determine search query based on custom scope or industry
@@ -1231,13 +1228,15 @@ Return JSON in this format:
                 "max_tokens": 1000
             }
             
-            response = requests.post(
-                "https://api.perplexity.ai/chat/completions",
-                headers=headers,
-                json=payload,
-                timeout=30
-            )
-            
+            import httpx
+            async with httpx.AsyncClient(timeout=30) as _http:
+                _resp = await _http.post(
+                    "https://api.perplexity.ai/chat/completions",
+                    headers=headers,
+                    json=payload,
+                )
+            response = _resp
+
             if response.status_code == 200:
                 result_data = response.json()
                 content = result_data.get("choices", [{}])[0].get("message", {}).get("content", "")
@@ -1260,14 +1259,14 @@ Return JSON in this format:
                         
                     return formatted_cases[:count]
                 else:
-                    print(f"[RAG] Failed to parse Perplexity response for trending use cases: {content}")
+                    logger.warning("rag_trending_perplexity_parse_failed", content_preview=content[:200])
                     return get_mock_data()
             else:
-                print(f"[RAG] Perplexity API error: {response.status_code} - {response.text}")
+                logger.warning("rag_trending_perplexity_api_error", status_code=response.status_code)
                 return get_mock_data()
-                
+
         except Exception as e:
-            print(f"[RAG] Error finding trending use cases: {e}")
+            logger.error("rag_trending_use_cases_failed", error=str(e))
             return get_mock_data()
 
 
@@ -1369,9 +1368,7 @@ If not relevant, return: {{"relevance_score": 0, "impact_type": "none", "suggest
             return affected_usecases
             
         except Exception as e:
-            print(f"[RAG] Error finding affected use cases: {e}")
-            import traceback
-            traceback.print_exc()
+            logger.error("rag_find_affected_use_cases_failed", error=str(e))
             return []
 
 

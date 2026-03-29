@@ -129,33 +129,30 @@ async def list_all_workshops(
     Admin can see ALL workshops regardless of facilitator
     Excludes deleted workshops
     """
-    # Get workshops with facilitator info, excluding deleted workshops
+    # Get workshops with facilitator info and counts in a single query
+    participant_count_sq = (
+        select(func.count(Participant.id))
+        .where(Participant.workshop_id == Workshop.id)
+        .correlate(Workshop)
+        .scalar_subquery()
+    )
+    use_case_count_sq = (
+        select(func.count(UseCase.id))
+        .where(UseCase.workshop_id == Workshop.id)
+        .correlate(Workshop)
+        .scalar_subquery()
+    )
     result = await db.execute(
-        select(Workshop, User.full_name)
+        select(Workshop, User.full_name, participant_count_sq, use_case_count_sq)
         .join(User, Workshop.facilitator_id == User.id)
         .where(Workshop.status != WorkshopStatus.DELETED)
         .offset(skip)
         .limit(limit)
         .order_by(Workshop.id.desc())
     )
-    
-    workshops_data = result.all()
-    
-    # For each workshop, get participant and use case counts
+
     workshop_list = []
-    for workshop, facilitator_name in workshops_data:
-        # Count participants
-        participant_count_result = await db.execute(
-            select(func.count(Participant.id)).where(Participant.workshop_id == workshop.id)
-        )
-        participant_count = participant_count_result.scalar() or 0
-        
-        # Count use cases
-        use_case_count_result = await db.execute(
-            select(func.count(UseCase.id)).where(UseCase.workshop_id == workshop.id)
-        )
-        use_case_count = use_case_count_result.scalar() or 0
-        
+    for workshop, facilitator_name, participant_count, use_case_count in result.all():
         workshop_list.append(WorkshopListItem(
             id=str(workshop.id),
             title=workshop.title,
@@ -1145,9 +1142,9 @@ async def confirm_import_use_cases(
     await db.execute(
         sa_update(UseCase)
         .where(
-            UseCase.workshop_id == None,
+            UseCase.workshop_id.is_(None),
             UseCase.added_by_facilitator == True,
-            UseCase.facilitator_group_id != None,
+            UseCase.facilitator_group_id.isnot(None),
         )
         .values(facilitator_group_id=None)
     )
@@ -1205,7 +1202,7 @@ async def get_pending_migration_count(
     # Count standalone (admin-imported, no workshop) use cases already in main table
     standalone_result = await db.execute(
         select(func.count(UseCase.id)).where(
-            UseCase.workshop_id == None,
+            UseCase.workshop_id.is_(None),
             UseCase.added_by_facilitator == True,
         )
     )
@@ -1256,7 +1253,7 @@ async def migrate_kb_usecases_to_usecases(
     # Standalone use cases already imported (count-based guard)
     standalone_result = await db.execute(
         select(func.count(UseCase.id)).where(
-            UseCase.workshop_id == None,
+            UseCase.workshop_id.is_(None),
             UseCase.added_by_facilitator == True,
         )
     )
@@ -1268,9 +1265,9 @@ async def migrate_kb_usecases_to_usecases(
     await db.execute(
         sa_update(UseCase)
         .where(
-            UseCase.workshop_id == None,
+            UseCase.workshop_id.is_(None),
             UseCase.added_by_facilitator == True,
-            UseCase.facilitator_group_id != None,
+            UseCase.facilitator_group_id.isnot(None),
         )
         .values(facilitator_group_id=None)
     )

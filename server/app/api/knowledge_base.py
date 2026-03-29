@@ -12,6 +12,7 @@ import difflib
 import uuid
 
 from app.core.database import get_db
+from app.core.db_utils import get_or_404
 from app.api.auth import get_current_user
 from app.models.models import User, Workshop, UseCase, Vote
 from app.schemas.knowledge_base import (
@@ -616,12 +617,8 @@ async def get_workshop_insights(
     Only accessible to workshop facilitator or admin
     """
     # Get workshop
-    result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
-    workshop = result.scalars().first()
-    
-    if not workshop:
-        raise HTTPException(status_code=404, detail="Workshop not found")
-    
+    workshop = await get_or_404(db, Workshop, workshop_id, "Workshop")
+
     # Check access: must be facilitator or admin
     if str(workshop.facilitator_id) != str(current_user.id) and not current_user.is_admin:
         raise HTTPException(status_code=403, detail="Access denied")
@@ -673,11 +670,7 @@ async def analyze_use_case(
     Provides matched templates, feasibility, and recommendations
     """
     # Get use case
-    result = await db.execute(select(UseCase).where(UseCase.id == use_case_id))
-    use_case = result.scalars().first()
-    
-    if not use_case:
-        raise HTTPException(status_code=404, detail="Use case not found")
+    use_case = await get_or_404(db, UseCase, use_case_id, "Use case")
     
     # Get workshop to check access
     workshop_result = await db.execute(select(Workshop).where(Workshop.id == use_case.workshop_id))

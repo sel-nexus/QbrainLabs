@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 from app.core.database import get_db
+from app.core.db_utils import get_or_404
 from app.models.models import Workshop, UseCase, Vote
 from app.schemas.results import AggregatedResult
 from typing import List
@@ -17,14 +18,12 @@ router = APIRouter()
 @router.get("/{workshop_id}", response_model=List[AggregatedResult])
 async def get_workshop_results(workshop_id: str, db: AsyncSession = Depends(get_db)):
     # Fetch workshop to get config/weights if needed
-    workshop_result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
-    workshop = workshop_result.scalars().first()
-    if not workshop:
-        raise HTTPException(status_code=404, detail="Workshop not found")
+    workshop = await get_or_404(db, Workshop, workshop_id, "Workshop")
     
     # Store template_id for coordinate calculation
-    ws_template_id = workshop.config.get('template_id')
-        
+    ws_config = workshop.config or {}
+    ws_template_id = ws_config.get('template_id')
+
     # Simplify: Fetch all usecases for this workshop with their votes
     result = await db.execute(
         select(UseCase)
@@ -32,11 +31,11 @@ async def get_workshop_results(workshop_id: str, db: AsyncSession = Depends(get_
         .options(selectinload(UseCase.votes))
     )
     use_cases = result.scalars().all()
-    
+
     aggregated_results = []
-    
+
     # Get criteria weights from config
-    criteria = workshop.config.get('criteria', [])
+    criteria = ws_config.get('criteria', [])
     weights = {c['name']: (c['weight'] or 0) for c in criteria}
     
     for uc in use_cases:
@@ -94,7 +93,7 @@ async def get_workshop_results(workshop_id: str, db: AsyncSession = Depends(get_
             if len(crit_params) > 1:
                 try:
                     criteria_variances.append(statistics.variance(crit_params))
-                except:
+                except statistics.StatisticsError:
                     criteria_variances.append(0)
             else:
                 criteria_variances.append(0)

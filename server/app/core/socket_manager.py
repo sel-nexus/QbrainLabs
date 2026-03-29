@@ -1,5 +1,9 @@
 import socketio
+import structlog
+from typing import Any
 from app.core.config import settings
+
+logger = structlog.get_logger(__name__)
 
 # For local dev without Redis, we use the default in-memory manager.
 # In production, we would use a RedisManager:
@@ -29,9 +33,16 @@ else:
         if origin.strip()
     ] if settings.CORS_ORIGINS else []
 
+if not cors_origins:
+    raise ValueError(
+        "WebSocket cors_allowed_origins must not be empty. "
+        "Set the CORS_ORIGINS environment variable (e.g. CORS_ORIGINS=http://localhost:5173). "
+        "Refusing to start with open WebSocket CORS (*) which bypasses authentication."
+    )
+
 sio = socketio.AsyncServer(
     async_mode='asgi',
-    cors_allowed_origins=cors_origins if cors_origins else "*",  # Allow all if empty (for development)
+    cors_allowed_origins=cors_origins,
     # Proxy/Zscaler compatibility settings
     ping_timeout=60,  # Increased for proxy environments
     ping_interval=25,  # Keep connection alive through proxies
@@ -49,11 +60,11 @@ class SocketManager:
     def __init__(self, sio):
         self.sio = sio
         
-    async def broadcast_to_workshop(self, workshop_id: str, event: str, data: any):
+    async def broadcast_to_workshop(self, workshop_id: str, event: str, data: Any):
         """Emit an event to all clients in a workshop room"""
         await self.sio.emit(event, data, room=str(workshop_id))
         
-    async def emit_to_client(self, sid: str, event: str, data: any):
+    async def emit_to_client(self, sid: str, event: str, data: Any):
         """Emit an event to a specific client"""
         await self.sio.emit(event, data, to=sid)
 
@@ -92,20 +103,20 @@ async def connect(sid, environ):
                     'email': payload.get('sub'),
                     'role': payload.get('role')
                 })
-                print(f"Client connected: {sid} (authenticated: {payload.get('sub')})")
+                logger.info("socket_client_connected", sid=sid, user=payload.get('sub'))
             else:
-                print(f"Client connected: {sid} (invalid token)")
+                logger.warning("socket_client_connected_invalid_token", sid=sid)
         except Exception as e:
-            print(f"Client connected: {sid} (auth error: {e})")
+            logger.warning("socket_client_connected_auth_error", sid=sid, error=str(e))
     else:
         # Allow connection without token (for participant access)
-        print(f"Client connected: {sid} (unauthenticated - participant access)")
+        logger.info("socket_client_connected_unauthenticated", sid=sid)
     
     return True  # Accept connection
 
 @sio.event
 async def disconnect(sid):
-    print(f"Client disconnected: {sid}")
+    logger.info("socket_client_disconnected", sid=sid)
 
 @sio.event
 async def join_workshop(sid, data):
@@ -114,7 +125,7 @@ async def join_workshop(sid, data):
     if workshop_id:
         await sio.enter_room(sid, workshop_id)
         await sio.emit('participant_joined', {'sid': sid}, room=workshop_id)
-        print(f"SID {sid} joined room {workshop_id}")
+        logger.info("socket_joined_workshop", sid=sid, workshop_id=workshop_id)
         
         # Fetch current state to allow client restoration
         from app.core.database import AsyncSessionLocal
@@ -139,7 +150,7 @@ async def join_survey(sid, data):
     survey_id = data.get('survey_id')
     if survey_id:
         await sio.enter_room(sid, f"survey_{survey_id}")
-        print(f"SID {sid} joined survey room {survey_id}")
+        logger.info("socket_joined_survey", sid=sid, survey_id=survey_id)
 
 
 @sio.event
@@ -148,7 +159,7 @@ async def leave_survey(sid, data):
     survey_id = data.get('survey_id')
     if survey_id:
         await sio.leave_room(sid, f"survey_{survey_id}")
-        print(f"SID {sid} left survey room {survey_id}")
+        logger.info("socket_left_survey", sid=sid, survey_id=survey_id)
 
 
 async def emit_survey_response_submitted(survey_id: str, data: dict):
@@ -192,7 +203,7 @@ async def join_breakout_room(sid, data):
     room_id = data.get('room_id')
     if room_id:
         await sio.enter_room(sid, f"breakout_{room_id}")
-        print(f"SID {sid} joined breakout room {room_id}")
+        logger.info("socket_joined_breakout_room", sid=sid, room_id=room_id)
 
 
 @sio.event
@@ -201,7 +212,7 @@ async def leave_breakout_room(sid, data):
     room_id = data.get('room_id')
     if room_id:
         await sio.leave_room(sid, f"breakout_{room_id}")
-        print(f"SID {sid} left breakout room {room_id}")
+        logger.info("socket_left_breakout_room", sid=sid, room_id=room_id)
 
 
 async def emit_breakout_room_created(workshop_id: str, rooms: list):
@@ -306,7 +317,7 @@ async def join_copilot(sid, data):
     workshop_id = data.get('workshop_id')
     if workshop_id:
         await sio.enter_room(sid, f"copilot_{workshop_id}")
-        print(f"SID {sid} joined copilot room for workshop {workshop_id}")
+        logger.info("socket_joined_copilot", sid=sid, workshop_id=workshop_id)
 
 
 @sio.event
@@ -315,7 +326,7 @@ async def leave_copilot(sid, data):
     workshop_id = data.get('workshop_id')
     if workshop_id:
         await sio.leave_room(sid, f"copilot_{workshop_id}")
-        print(f"SID {sid} left copilot room for workshop {workshop_id}")
+        logger.info("socket_left_copilot", sid=sid, workshop_id=workshop_id)
 
 
 @sio.event
@@ -390,7 +401,7 @@ async def matrix_position_update(sid, data):
     if workshop_id:
         # Broadcast to workshop room (facilitators will receive this)
         await sio.emit('matrix:position_update', data, room=str(workshop_id))
-        print(f"Matrix position update broadcast for workshop {workshop_id}")
+        logger.debug("socket_matrix_position_update", workshop_id=workshop_id)
 
 
 @sio.event
@@ -400,4 +411,4 @@ async def matrix_drag_start(sid, data):
     if workshop_id:
         # Broadcast to workshop room (facilitators will receive this)
         await sio.emit('matrix:drag_start', data, room=str(workshop_id))
-        print(f"Matrix drag start broadcast for workshop {workshop_id}")
+        logger.debug("socket_matrix_drag_start", workshop_id=workshop_id)

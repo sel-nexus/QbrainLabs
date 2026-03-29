@@ -15,6 +15,16 @@ from app.models.settings import SystemSetting, SettingsAuditLog, DEFAULT_SYSTEM_
 
 logger = logging.getLogger(__name__)
 
+_SENSITIVE_KEY_PATTERNS = ("secret", "password", "token", "key", "api", "credential")
+
+
+def _mask_if_sensitive(key: str, value: Any) -> Any:
+    """Return '***REDACTED***' if the setting key suggests a sensitive value."""
+    if isinstance(value, str) and any(p in key.lower() for p in _SENSITIVE_KEY_PATTERNS):
+        return "***REDACTED***"
+    return value
+
+
 # In-memory cache with TTL
 _settings_cache: Dict[str, tuple] = {}
 _cache_ttl_seconds = 60  # Cache TTL in seconds
@@ -125,12 +135,12 @@ async def update_setting(
     
     old_value = setting.value
     
-    # Create audit log entry
+    # Create audit log entry — redact sensitive values before persisting
     audit_entry = SettingsAuditLog(
         setting_id=setting.id,
         setting_key=key,
-        old_value=old_value,
-        new_value=value,
+        old_value=_mask_if_sensitive(key, old_value),
+        new_value=_mask_if_sensitive(key, value),
         changed_by=updated_by,
         ip_address=ip_address
     )
@@ -147,7 +157,12 @@ async def update_setting(
     # Invalidate cache
     invalidate_cache(key)
     
-    logger.info(f"Setting updated: {key} = {value} (was: {old_value})")
+    logger.info(
+        "Setting updated: %s = %s (was: %s)",
+        key,
+        _mask_if_sensitive(key, value),
+        _mask_if_sensitive(key, old_value),
+    )
     
     return setting
 

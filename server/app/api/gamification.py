@@ -51,17 +51,38 @@ async def check_and_award_badges(
         .where(UseCase.workshop_id == workshop_id)
     )
     use_case_count = use_case_count_result.scalar() or 0
-    
+
     points_result = await db.execute(
         select(func.sum(ParticipantPoint.points))
         .where(ParticipantPoint.participant_id == participant_id)
         .where(ParticipantPoint.workshop_id == workshop_id)
     )
     total_points = points_result.scalar() or 0
-    
+
+    # Batch load all badge definitions and already-awarded badge IDs in 2 queries
+    all_badges_result = await db.execute(select(Badge))
+    badges_by_name = {b.name: b for b in all_badges_result.scalars().all()}
+
+    awarded_result = await db.execute(
+        select(ParticipantBadge.badge_id)
+        .where(ParticipantBadge.participant_id == participant_id)
+    )
+    awarded_badge_ids = {row[0] for row in awarded_result.all()}
+
+    def _grant_badge(name: str) -> bool:
+        badge = badges_by_name.get(name)
+        if badge and badge.id not in awarded_badge_ids:
+            db.add(ParticipantBadge(
+                id=uuid.uuid4(),
+                participant_id=participant_id,
+                badge_id=badge.id,
+                workshop_id=workshop_id
+            ))
+            return True
+        return False
+
     # Check for "First Contributor" badge
     if action == "submit_use_case":
-        # Check if this is the first use case in the workshop
         first_use_case_result = await db.execute(
             select(UseCase)
             .where(UseCase.workshop_id == workshop_id)
@@ -70,48 +91,13 @@ async def check_and_award_badges(
         )
         first_use_case = first_use_case_result.scalar_one_or_none()
         if first_use_case and str(first_use_case.participant_id) == participant_id:
-            badge_result = await db.execute(
-                select(Badge).where(Badge.name == "First Contributor")
-            )
-            badge = badge_result.scalar_one_or_none()
-            if badge:
-                # Check if already earned
-                existing_result = await db.execute(
-                    select(ParticipantBadge)
-                    .where(ParticipantBadge.participant_id == participant_id)
-                    .where(ParticipantBadge.badge_id == badge.id)
-                )
-                if not existing_result.scalar_one_or_none():
-                    participant_badge = ParticipantBadge(
-                        id=uuid.uuid4(),
-                        participant_id=participant_id,
-                        badge_id=badge.id,
-                        workshop_id=workshop_id
-                    )
-                    db.add(participant_badge)
-                    newly_earned.append("First Contributor")
-    
+            if _grant_badge("First Contributor"):
+                newly_earned.append("First Contributor")
+
     # Check for "Idea Generator" badge (5+ use cases)
     if use_case_count >= 5:
-        badge_result = await db.execute(
-            select(Badge).where(Badge.name == "Idea Generator")
-        )
-        badge = badge_result.scalar_one_or_none()
-        if badge:
-            existing_result = await db.execute(
-                select(ParticipantBadge)
-                .where(ParticipantBadge.participant_id == participant_id)
-                .where(ParticipantBadge.badge_id == badge.id)
-            )
-            if not existing_result.scalar_one_or_none():
-                participant_badge = ParticipantBadge(
-                    id=uuid.uuid4(),
-                    participant_id=participant_id,
-                    badge_id=badge.id,
-                    workshop_id=workshop_id
-                )
-                db.add(participant_badge)
-                newly_earned.append("Idea Generator")
+        if _grant_badge("Idea Generator"):
+            newly_earned.append("Idea Generator")
     
     await db.commit()
     return newly_earned

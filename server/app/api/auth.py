@@ -3,12 +3,9 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import union
-from sqlalchemy.exc import SQLAlchemyError, OperationalError
+from sqlalchemy.exc import SQLAlchemyError
 from datetime import datetime, timedelta
 from typing import Optional, List
-import asyncio
-import base64
-import json
 import jwt
 
 from app.core.database import get_db
@@ -33,9 +30,6 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 SECRET_KEY = settings.SECRET_KEY
 ALGORITHM = settings.ALGORITHM
 ACCESS_TOKEN_EXPIRE_MINUTES = settings.ACCESS_TOKEN_EXPIRE_MINUTES
-
-# Use centralized password functions from security module
-from app.core.security import hash_password, verify_password, PasswordValidator
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     """Create a JWT access token with role and status"""
@@ -175,7 +169,7 @@ async def _authenticate_user(
     from app.core.logging import get_logger
     logger = get_logger("auth")
 
-    masked_email = email[:3] + "***" + email.split("@")[-1] if "@" in email else "INVALID_EMAIL"
+    masked_email = (email[:2] + "***@***.***") if "@" in email else "INVALID_EMAIL"
     logger.info(f"Login attempt for user: {masked_email}")
 
     try:

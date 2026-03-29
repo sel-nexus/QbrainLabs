@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import and_
 from app.core.database import get_db
+from app.core.db_utils import get_or_404
 from app.models.models import Workshop, Participant, WorkshopStatus, ParticipantRole, User, UseCase
 from app.models import Survey, SurveyResponse
 from app.schemas.participant import JoinRequest, JoinResponse, ParticipantSessionInfo, UseCaseSummary, SurveySummary, ParticipantResponse
@@ -86,12 +87,7 @@ async def update_role(
     db: AsyncSession = Depends(get_db)
 ):
     """Update participant role. Requires authentication (facilitator only)."""
-    result = await db.execute(select(Participant).where(Participant.id == participant_id))
-    participant = result.scalars().first()
-    
-    if not participant:
-        raise HTTPException(status_code=404, detail="Participant not found")
-        
+    participant = await get_or_404(db, Participant, participant_id, "Participant")
     participant.role = update_in.role
     await db.commit()
     await db.refresh(participant)
@@ -126,18 +122,10 @@ async def get_participant_session_info(
 ):
     """Get session info for a participant including workshop details, use cases, and surveys."""
     # Get participant
-    result = await db.execute(select(Participant).where(Participant.id == participant_id))
-    participant = result.scalars().first()
-    
-    if not participant:
-        raise HTTPException(status_code=404, detail="Participant not found")
-    
+    participant = await get_or_404(db, Participant, participant_id, "Participant")
+
     # Get workshop
-    ws_result = await db.execute(select(Workshop).where(Workshop.id == participant.workshop_id))
-    workshop = ws_result.scalars().first()
-    
-    if not workshop:
-        raise HTTPException(status_code=404, detail="Workshop not found")
+    workshop = await get_or_404(db, Workshop, participant.workshop_id, "Workshop")
     
     # Get use cases for this workshop
     uc_result = await db.execute(

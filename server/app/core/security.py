@@ -142,12 +142,12 @@ class RateLimiter:
             # Use Redis for distributed rate limiting
             try:
                 key = f"rate_limit:{identifier}"
-                current = await redis_client.incr(key)
-                
-                if current == 1:
-                    # Set expiration on first request
-                    await redis_client.expire(key, self.window_seconds)
-                
+                pipe = redis_client.pipeline()
+                pipe.incr(key)
+                pipe.expire(key, self.window_seconds)
+                results = await pipe.execute()
+                current = results[0]
+
                 return current <= self.max_requests
             except Exception:
                 # Fallback to in-memory if Redis fails
@@ -288,10 +288,12 @@ def sanitize_input(text: str) -> str:
 
 def get_client_ip(request: Request) -> str:
     """Extract client IP address from request"""
-    # Check for forwarded headers (when behind proxy)
+    # Check for forwarded headers (when behind proxy).
+    # Use the rightmost IP — it's appended by our own trusted proxy,
+    # whereas leftmost entries are client-supplied and can be spoofed.
     forwarded = request.headers.get("X-Forwarded-For")
     if forwarded:
-        return forwarded.split(",")[0].strip()
+        return forwarded.split(",")[-1].strip()
     
     real_ip = request.headers.get("X-Real-IP")
     if real_ip:
@@ -316,7 +318,7 @@ def rate_limit(max_requests: int = None, window_seconds: int = None):
         async def wrapper(request: Request, *args, **kwargs):
             client_ip = get_client_ip(request)
             
-            if not limiter.is_allowed(client_ip):
+            if not await limiter.is_allowed(client_ip):
                 raise HTTPException(
                     status_code=status.HTTP_429_TOO_MANY_REQUESTS,
                     detail="Rate limit exceeded. Please try again later."

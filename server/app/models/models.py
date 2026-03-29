@@ -176,18 +176,28 @@ class Workshop(Base):
     active_use_case = relationship("UseCase", foreign_keys=[active_use_case_id], post_update=True)
     challenge_cards = relationship("ChallengeCard", back_populates="workshop", cascade="all, delete-orphan")
 
+    __table_args__ = (
+        Index('ix_workshops_facilitator_id', 'facilitator_id'),
+        Index('ix_workshops_status', 'status'),
+    )
+
 class Vote(Base):
     __tablename__ = "votes"
 
     id = Column(GUID(), primary_key=True, default=uuid.uuid4)
     use_case_id = Column(GUID(), ForeignKey("use_cases.id"), nullable=False)
     participant_id = Column(GUID(), ForeignKey("participants.id"), nullable=False)
-    
+
     # Stores scores as JSON: {"Feasibility": 80, "Value": 60}
     scores = Column(JSONType, default={})
-    
+
     use_case = relationship("UseCase", back_populates="votes")
     participant = relationship("Participant", back_populates="votes")
+
+    __table_args__ = (
+        Index('ix_votes_use_case_id', 'use_case_id'),
+        Index('ix_votes_participant_id', 'participant_id'),
+    )
 
 
 class ParticipantRole(str, enum.Enum):
@@ -208,6 +218,10 @@ class Participant(Base):
 
     workshop = relationship("Workshop", back_populates="participants")
     use_cases = relationship("UseCase", back_populates="participant")
+
+    __table_args__ = (
+        Index('ix_participants_workshop_id', 'workshop_id'),
+    )
 
 class UseCase(Base):
     __tablename__ = "use_cases"
@@ -234,6 +248,11 @@ class UseCase(Base):
     participant = relationship("Participant", back_populates="use_cases", foreign_keys=[participant_id])
     workshop = relationship("Workshop", back_populates="use_cases", foreign_keys=[workshop_id])
     roi_calculation = relationship("ROICalculation", back_populates="use_case", uselist=False)
+
+    __table_args__ = (
+        Index('ix_use_cases_workshop_id', 'workshop_id'),
+        Index('ix_use_cases_participant_id', 'participant_id'),
+    )
 
 # Add relationship on Workshop as well
 

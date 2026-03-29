@@ -6,6 +6,8 @@ import ipaddress
 from typing import List, Set, Optional
 import logging
 
+from app.core.config import settings
+
 logger = logging.getLogger(__name__)
 
 
@@ -100,11 +102,9 @@ def get_cors_origins_for_ips(ip_addresses: List[str], client_port: int = 5173) -
     """
     origins: Set[str] = set()
     
-    # Always include localhost origins
-    origins.add("http://localhost:5173")
-    origins.add("http://127.0.0.1:5173")
-    origins.add("http://localhost:3000")
-    origins.add("http://127.0.0.1:3000")
+    # Always include localhost origins (configurable via settings.DEV_CORS_ORIGINS)
+    for origin in settings.DEV_CORS_ORIGINS:
+        origins.add(origin)
     
     # Add origins for each detected IP
     for ip in ip_addresses:
@@ -161,13 +161,18 @@ def origin_matches_server_ip(origin: str, server_ips: List[str], client_port: in
         if hostname in server_ips: 
             return True
         
-        # Try to resolve hostname to IP and check
-        try:
-            resolved_ip = socket.gethostbyname(hostname)
-            if resolved_ip in server_ips:
-                return True
-        except socket.gaierror:
-            pass
+        # DNS resolution: only allowed for explicitly trusted hostnames.
+        # Prevents DNS rebinding attacks where an attacker registers evil.com
+        # pointing to the server IP and gets CORS accepted.
+        trusted_raw = settings.TRUSTED_ORIGIN_HOSTNAMES
+        trusted_hostnames = {h.strip() for h in trusted_raw.split(",") if h.strip()} if trusted_raw else set()
+        if hostname in trusted_hostnames:
+            try:
+                resolved_ip = socket.gethostbyname(hostname)
+                if resolved_ip in server_ips:
+                    return True
+            except socket.gaierror:
+                pass
         
         return False
     

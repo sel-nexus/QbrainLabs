@@ -68,13 +68,21 @@ class ProductionSettings(BaseSettings):
     ENABLE_WEBSOCKETS: bool = True
     ENABLE_METRICS: bool = True
     
+    _KNOWN_INSECURE_KEYS = frozenset({
+        "dev-secret-key-not-for-production-use-only",
+        "CHANGE_ME_TO_A_SECURE_RANDOM_STRING_AT_LEAST_32_CHARS",
+    })
+
     @field_validator('SECRET_KEY')
     @classmethod
     def validate_secret_key(cls, v: str) -> str:
         if len(v) < 32:
             raise ValueError('SECRET_KEY must be at least 32 characters')
-        if v == "CHANGE_ME_TO_A_SECURE_RANDOM_STRING_AT_LEAST_32_CHARS":
-            raise ValueError('SECRET_KEY must be changed from default')
+        if v in cls._KNOWN_INSECURE_KEYS:
+            raise ValueError(
+                'SECRET_KEY matches a known insecure development key. '
+                'Generate a secure key with: python -c "import secrets; print(secrets.token_urlsafe(32))"'
+            )
         return v
     
     @field_validator('CORS_ORIGINS', mode='before')

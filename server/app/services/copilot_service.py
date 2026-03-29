@@ -6,7 +6,10 @@ discussion prompts, and summary generation for workshop facilitators.
 """
 import os
 import json
+import structlog
 from typing import List, Dict, Any, Optional
+
+logger = structlog.get_logger(__name__)
 from datetime import datetime
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -43,7 +46,7 @@ class CopilotService:
         if not self.mock_mode:
             self._initialize_ai_components()
         else:
-            print("CopilotService running in MOCK MODE (No API Key found)")
+            logger.warning("copilot_service_mock_mode", reason="No API key found")
 
     def _initialize_ai_components(self):
         """Initialize LangChain/OpenAI components (Azure OpenAI or standard OpenAI)."""
@@ -65,10 +68,10 @@ class CopilotService:
                     api_key=self.api_key
                 )
         except ImportError:
-            print("LangChain dependencies missing. Reverting to Mock Mode.")
+            logger.error("copilot_langchain_missing_reverting_mock")
             self.mock_mode = True
         except Exception as e:
-            print(f"Failed to init AI components: {e}")
+            logger.error("copilot_ai_init_failed", error=str(e))
             self.mock_mode = True
 
     # =========================================================================
@@ -116,7 +119,7 @@ class CopilotService:
                 )
                 suggestions.extend(ai_suggestions)
             except Exception as e:
-                print(f"AI Suggestion generation failed: {e}")
+                logger.warning("copilot_suggestion_generation_failed", error=str(e))
 
         # Always check engagement across all phases
         if not settings or settings.engagement_alerts_enabled:
@@ -178,16 +181,16 @@ class CopilotService:
             return []
             
         try:
-            if "```json" in content:
-                content = content.split("```json")[1].split("```")[0].strip()
-            elif "```" in content:
-                content = content.split("```")[1].split("```")[0].strip()
-            
+            import re as _re
+            fence_match = _re.search(r'```(?:json)?\s*(.*?)\s*```', content, _re.DOTALL)
+            if fence_match:
+                content = fence_match.group(1)
+
             suggestion = json.loads(content)
             if suggestion:
                 return [suggestion]
-        except:
-            pass
+        except (json.JSONDecodeError, AttributeError) as e:
+            logger.warning("copilot_suggestion_parse_failed", error=str(e))
             
         return []
     
@@ -409,13 +412,24 @@ class CopilotService:
         at_risk_count = 0
         total_score = 0
         
+        # Build lookup dicts once — O(m+k) — instead of scanning per participant
+        votes_by_participant: dict = {}
+        for v in votes:
+            pid = str(v.participant_id)
+            votes_by_participant.setdefault(pid, []).append(v)
+        submissions_by_participant: dict = {}
+        for uc in use_cases:
+            if uc.participant_id:
+                pid = str(uc.participant_id)
+                submissions_by_participant.setdefault(pid, []).append(uc)
+
         for participant in participants:
             if participant.role != "PARTICIPANT":
                 continue
-            
-            # Calculate metrics for this participant
-            p_votes = [v for v in votes if str(v.participant_id) == str(participant.id)]
-            p_submissions = [uc for uc in use_cases if str(uc.participant_id) == str(participant.id)]
+
+            pid = str(participant.id)
+            p_votes = votes_by_participant.get(pid, [])
+            p_submissions = submissions_by_participant.get(pid, [])
             
             # Calculate engagement score (0-100)
             score = self._calculate_engagement_score(p_votes, p_submissions, len(use_cases))
@@ -590,12 +604,18 @@ class CopilotService:
         """
         anomalies = []
         
+        # Build vote lookup dict once — O(m) — instead of scanning per participant
+        votes_by_participant: dict = {}
+        for v in votes:
+            pid = str(v.participant_id)
+            votes_by_participant.setdefault(pid, []).append(v)
+
         # Individual participant anomalies
         for participant in participants:
             if participant.role != "PARTICIPANT":
                 continue
-            
-            p_votes = [v for v in votes if str(v.participant_id) == str(participant.id)]
+
+            p_votes = votes_by_participant.get(str(participant.id), [])
             
             if len(p_votes) < 3:
                 continue
@@ -679,12 +699,17 @@ class CopilotService:
             from langchain_core.messages import HumanMessage
             
             # Prepare voting data for analysis
+            votes_by_participant: dict = {}
+            for v in votes:
+                pid = str(v.participant_id)
+                votes_by_participant.setdefault(pid, []).append(v)
+
             voting_patterns = []
             for participant in participants:
                 if participant.role != "PARTICIPANT":
                     continue
-                
-                p_votes = [v for v in votes if str(v.participant_id) == str(participant.id)]
+
+                p_votes = votes_by_participant.get(str(participant.id), [])
                 if not p_votes:
                     continue
                 
@@ -786,7 +811,7 @@ If no significant anomalies, return empty array []."""
             return anomalies
             
         except Exception as e:
-            print(f"Groupthink and bias detection failed: {e}")
+            logger.warning("copilot_groupthink_detection_failed", error=str(e))
             return []
 
     
@@ -922,7 +947,7 @@ If no significant duplicates found, return empty array []."""
             return anomalies
             
         except Exception as e:
-            print(f"Semantic duplicate detection failed: {e}")
+            logger.warning("copilot_duplicate_detection_failed", error=str(e))
             return []
 
     
@@ -935,13 +960,25 @@ If no significant duplicates found, return empty array []."""
         """Detect behavioral anomalies."""
         anomalies = []
         
+        # Build lookup dicts once — O(m+k) — instead of scanning per participant
+        votes_by_participant: dict = {}
+        for v in votes:
+            pid = str(v.participant_id)
+            votes_by_participant.setdefault(pid, []).append(v)
+        submissions_by_participant: dict = {}
+        for uc in use_cases:
+            if uc.participant_id:
+                pid = str(uc.participant_id)
+                submissions_by_participant.setdefault(pid, []).append(uc)
+
         # Check for inactive participants
         for participant in participants:
             if participant.role != "PARTICIPANT":
                 continue
-            
-            p_votes = [v for v in votes if str(v.participant_id) == str(participant.id)]
-            p_submissions = [uc for uc in use_cases if str(uc.participant_id) == str(participant.id)]
+
+            pid = str(participant.id)
+            p_votes = votes_by_participant.get(pid, [])
+            p_submissions = submissions_by_participant.get(pid, [])
             
             if len(p_votes) == 0 and len(p_submissions) == 0 and len(use_cases) > 5:
                 anomalies.append({
@@ -1004,7 +1041,7 @@ If no significant duplicates found, return empty array []."""
             result = json.loads(content)
             return result
         except Exception as e:
-            print(f"AI prompt generation failed: {e}")
+            logger.warning("copilot_prompt_generation_failed", error=str(e))
             return self._get_mock_discussion_prompts(use_case, variance_data)
 
     async def generate_summary(
@@ -1072,7 +1109,7 @@ If no significant duplicates found, return empty array []."""
             result["is_mock"] = False
             return result
         except Exception as e:
-            print(f"AI summary generation failed: {e}")
+            logger.warning("copilot_summary_generation_failed", error=str(e))
             return self._generate_mock_summary(
                 workshop, scored_use_cases, engagement_data, format, sections
             )
@@ -1269,35 +1306,25 @@ If no significant duplicates found, return empty array []."""
     async def _check_duplicates(self, use_cases: List[UseCase]) -> List[Dict[str, Any]]:
         """Check for duplicate/similar use cases."""
         import difflib
-        
+
+        # Cap at 30 to bound worst-case comparisons at 435
+        candidates = use_cases[:30]
+        # Pre-normalize once outside the inner loop
+        texts = [f"{uc.title} {uc.description or ''}".lower() for uc in candidates]
+
         duplicates = []
-        checked = set()
-        
-        for i, uc1 in enumerate(use_cases):
-            for j, uc2 in enumerate(use_cases):
-                if i >= j:
-                    continue
-                
-                pair_key = f"{uc1.id}-{uc2.id}"
-                if pair_key in checked:
-                    continue
-                checked.add(pair_key)
-                
-                # Compare title and description
-                text1 = f"{uc1.title} {uc1.description}".lower()
-                text2 = f"{uc2.title} {uc2.description}".lower()
-                
-                similarity = difflib.SequenceMatcher(None, text1, text2).ratio()
-                
+        for i in range(len(candidates)):
+            for j in range(i + 1, len(candidates)):
+                similarity = difflib.SequenceMatcher(None, texts[i], texts[j]).ratio()
                 if similarity > 0.6:
                     duplicates.append({
-                        "id1": str(uc1.id),
-                        "title1": uc1.title,
-                        "id2": str(uc2.id),
-                        "title2": uc2.title,
+                        "id1": str(candidates[i].id),
+                        "title1": candidates[i].title,
+                        "id2": str(candidates[j].id),
+                        "title2": candidates[j].title,
                         "similarity": int(similarity * 100)
                     })
-        
+
         return sorted(duplicates, key=lambda x: x["similarity"], reverse=True)
     
     async def _calculate_voting_velocity(self, votes: List[Vote]) -> float:

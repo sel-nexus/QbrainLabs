@@ -5,6 +5,50 @@ from typing import Union
 from fastapi import UploadFile
 
 try:
+    import filetype as _filetype
+except ImportError:
+    _filetype = None  # type: ignore
+
+# Extensions whose content is plain text — no binary magic bytes to check
+_TEXT_EXTENSIONS = {".txt", ".md", ".jsx", ".csv", ".json"}
+
+# Expected filetype library extension for each binary format
+_MAGIC_EXTENSION_MAP = {
+    ".xlsx": "xlsx",
+    ".docx": "docx",
+    ".pptx": "pptx",
+    ".pdf": "pdf",
+    ".jpg": "jpg",
+    ".jpeg": "jpg",
+    ".png": "png",
+}
+
+
+def _assert_file_magic(content: bytes, filename_extension: str) -> None:
+    """
+    Validate that the uploaded file's actual content matches its declared extension.
+    Raises ValueError for mismatches to prevent processing disguised malicious files.
+    Skips check when filetype library is not installed (logs a warning in that case).
+    """
+    if _filetype is None:
+        return  # Library not installed — skip check
+
+    if filename_extension in _TEXT_EXTENSIONS:
+        return  # Text files have no binary magic bytes
+
+    expected_ext = _MAGIC_EXTENSION_MAP.get(filename_extension)
+    if expected_ext is None:
+        return  # Unknown extension — let later parsing handle it
+
+    kind = _filetype.guess(content)
+    if kind is None or kind.extension != expected_ext:
+        detected = kind.extension if kind else "unknown"
+        raise ValueError(
+            f"File content does not match declared extension '{filename_extension}'. "
+            f"Detected type: '{detected}'. Upload a valid {filename_extension} file."
+        )
+
+try:
     from docx import Document
 except ImportError:
     Document = None
@@ -127,6 +171,13 @@ class FileAnalysisService:
         """
         filename = (file.filename or "").lower()
         content = await file.read()
+
+        # Validate file content matches declared extension (magic-byte check)
+        ext = next((e for e in _MAGIC_EXTENSION_MAP if filename.endswith(e)), None)
+        if ext is None:
+            ext = next((e for e in _TEXT_EXTENSIONS if filename.endswith(e)), "")
+        _assert_file_magic(content, ext)
+
         file_obj = io.BytesIO(content)
 
         # ── XLSX ────────────────────────────────────────────────────────────

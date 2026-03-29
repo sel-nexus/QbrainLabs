@@ -90,7 +90,7 @@ class ROIService:
             irr = npf.irr(cash_flows)
             if irr is None or str(irr) == 'nan':
                 irr = 0.0
-        except:
+        except (ValueError, FloatingPointError):
             irr = 0.0
             
         # ROI
@@ -126,7 +126,7 @@ class ROIService:
             curr = cf_cumulative[i]
             if prev < 0 and curr >= 0:
                 # Fraction of year
-                fraction = abs(prev) / (curr - prev + 0.0001) # Avoid div by zero
+                fraction = abs(prev) / (curr - prev) if curr != prev else 0.0
                 payback_years = (i - 1) + fraction
                 recovered = True
                 break

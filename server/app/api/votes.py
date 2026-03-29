@@ -56,7 +56,8 @@ async def submit_vote(
         }
     
     if existing_vote:
-        new_scores = existing_vote.scores.copy() if existing_vote.scores else {}
+        import copy
+        new_scores = copy.deepcopy(existing_vote.scores) if existing_vote.scores else {}
         new_scores.update(vote_in.scores)
         existing_vote.scores = new_scores
         db_vote = existing_vote

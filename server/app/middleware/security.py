@@ -10,6 +10,14 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from app.core.security import SECURITY_HEADERS, rate_limiter, get_client_ip
 from app.core.logging import request_logger, audit_logger
 
+_SUSPICIOUS_SQL_PATTERNS = [
+    "' OR '1'='1",
+    "'; DROP TABLE",
+    "UNION SELECT",
+    "1=1--",
+    "' OR 1=1--",
+]
+
 
 class SecurityHeadersMiddleware(BaseHTTPMiddleware):
     """Add security headers to all responses"""
@@ -91,19 +99,13 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
 
 class SQLInjectionProtectionMiddleware(BaseHTTPMiddleware):
     """Basic SQL injection protection"""
-    
-    SUSPICIOUS_PATTERNS = [
-        "' OR '1'='1",
-        "'; DROP TABLE",
-        "UNION SELECT",
-        "1=1--",
-        "' OR 1=1--",
-    ]
-    
+
+    SUSPICIOUS_PATTERNS = _SUSPICIOUS_SQL_PATTERNS
+
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
         # Check query parameters
         query_string = str(request.url.query).upper()
-        
+
         for pattern in self.SUSPICIOUS_PATTERNS:
             if pattern.upper() in query_string:
                 audit_logger.log_auth_event(

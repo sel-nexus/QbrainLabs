@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.core.database import engine, Base
 from app.api import workshops
@@ -77,20 +78,20 @@ else:
         if origin.strip()
     ] if settings.CORS_ORIGINS else []
     
-    # Add public IP explicitly
-    cors_origins.extend([
-        "http://48.214.144.154:5173",
-        "https://48.214.144.154:5173",
-        "http://qbrainlabs.com",
-        "https://qbrainlabs.com"
-    ])
-    
+    # Add production origins from environment variable (never hardcode IPs in source)
+    if settings.PRODUCTION_CORS_ORIGINS:
+        cors_origins.extend([
+            o.strip()
+            for o in settings.PRODUCTION_CORS_ORIGINS.split(",")
+            if o.strip()
+        ])
+
     app.add_middleware(
         CORSMiddleware,
         allow_origins=cors_origins,
         allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
+        allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+        allow_headers=["Content-Type", "Authorization", "X-Request-ID"],
     )
     logger.info(f"Using standard CORS middleware with origins: {cors_origins}")
 

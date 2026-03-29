@@ -162,13 +162,27 @@ class Settings(BaseSettings):
         # If DATABASE_URL is explicitly set, use it
         if v and v != "postgresql://postgres:postgres@localhost:5432/hotspotmatrix":
             return v
-        
+
         # Try to load from secure configuration
         secure_url = load_secure_db_config()
         if secure_url:
             return secure_url
-        
+
         # Fall back to default or environment variable
+        return v
+
+    @field_validator('DATABASE_URL', mode='after')
+    @classmethod
+    def warn_default_db_credentials(cls, v):
+        """Warn when the insecure default postgres:postgres credentials are in use."""
+        if "postgres:postgres" in v:
+            import warnings
+            warnings.warn(
+                "DATABASE_URL is using the default postgres:postgres credentials. "
+                "Set the DATABASE_URL environment variable to a secure value before deploying.",
+                UserWarning,
+                stacklevel=2,
+            )
         return v
     DB_POOL_SIZE: int = Field(
         default=10,
@@ -316,7 +330,32 @@ class Settings(BaseSettings):
         le=65535,
         description="Client/frontend port for dynamic CORS origins"
     )
-    
+    DEV_CORS_ORIGINS: list[str] = Field(
+        default=[
+            "http://localhost:5173",
+            "http://127.0.0.1:5173",
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+        ],
+        description="Localhost CORS origins always included for local development"
+    )
+    PRODUCTION_CORS_ORIGINS: str = Field(
+        default="",
+        description=(
+            "Comma-separated list of production CORS origins (IPs, domains). "
+            "Set via PRODUCTION_CORS_ORIGINS environment variable. "
+            "Example: https://myapp.com,http://203.0.113.10:5173"
+        )
+    )
+    TRUSTED_ORIGIN_HOSTNAMES: str = Field(
+        default="",
+        description=(
+            "Comma-separated hostnames allowed for dynamic CORS IP matching via DNS resolution. "
+            "Prevents DNS rebinding attacks by restricting which hostnames can be resolved. "
+            "Example: myapp.com,staging.myapp.com"
+        )
+    )
+
     # ============================================================================
     # AI SERVICES CONFIGURATION
     # ============================================================================
