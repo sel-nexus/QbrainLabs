@@ -25,7 +25,6 @@ import { KnowledgeBase } from './pages/KnowledgeBase';
 import { AdminLayout } from './components/AdminLayout';
 import { AuthenticatedLayout, PublicWithHeaderLayout } from './components/AuthenticatedLayout';
 import { FeedbackWidget } from './components/feedback/FeedbackWidget';
-import { AnalyticsDashboard } from './pages/AnalyticsDashboard';
 import { WaitingRoom } from './pages/WaitingRoom';
 import { ParticipantDashboard } from './pages/ParticipantDashboard';
 import { ParticipantMatrix } from './pages/ParticipantMatrix';
@@ -123,7 +122,6 @@ function App() {
           {/* Facilitator Routes (Protected) - All wrapped with AuthenticatedLayout for consistent header */}
           <Route path="/facilitator/dashboard" element={<AuthenticatedRoute showBackButton={false}><FacilitatorDashboard /></AuthenticatedRoute>} />
           <Route path="/facilitator/create" element={<AuthenticatedRoute requireAdmin title="Create Workshop"><CreateWorkshop /></AuthenticatedRoute>} />
-          <Route path="/facilitator/analytics" element={<AuthenticatedRoute title="Analytics"><AnalyticsDashboard /></AuthenticatedRoute>} />
           <Route path="/facilitator/knowledge-base" element={<AuthenticatedRoute title="Knowledge Base"><KnowledgeBase /></AuthenticatedRoute>} />
           <Route path="/facilitator/usecases" element={<AuthenticatedRoute title="All Use Cases"><AllUseCases /></AuthenticatedRoute>} />
           <Route path="/facilitator/challenge-planner" element={<AuthenticatedRoute title="Business Challenge Planner"><BusinessChallengePlanner /></AuthenticatedRoute>} />

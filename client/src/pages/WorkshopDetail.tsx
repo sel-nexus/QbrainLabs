@@ -25,7 +25,6 @@ import { ROICalculatorModal, ROIComparisonView } from '../components/roi';
 import { BreakoutManager } from '../components/breakout';
 import { RoadmapGenerator } from '../components/roadmap';
 import { ChallengeManager, WorkshopPlannerPanel } from '../components/challenges';
-import { CopilotPanel } from '../components/ai-copilot';
 import { useAuth } from '../context/AuthContext';
 import { MatrixActivityDashboard } from '../components/MatrixActivityDashboard';
 import { PrioritizationScale } from '../components/prioritization/PrioritizationScale';
@@ -1070,18 +1069,6 @@ export function WorkshopDetail() {
                         />
                     </div>
                 </Modal>
-            )}
-
-            {/* AI Copilot Panel - US16 */}
-            {id && hasRole(['admin', 'facilitator']) && (
-                <CopilotPanel
-                    workshopId={id}
-                    workshopTitle={workshop?.title}
-                    currentPhase={currentPhase}
-                    activeUseCaseId={activeCardId || undefined}
-                    activeUseCaseTitle={activeCardId ? useCases.find(uc => uc.id === activeCardId)?.title : undefined}
-                    isFacilitator={hasRole(['admin', 'facilitator'])}
-                />
             )}
 
             {/* Workshop Settings Modal */}

@@ -10,8 +10,6 @@ import {
   LayoutDashboard,
   Users,
   FileText,
-  BarChart3,
-  Download,
   Clock,
   CheckCircle2,
   Play,
@@ -216,13 +214,6 @@ export function FacilitatorDashboard() {
             onClick={handleUseCasesClick}
           />
           <ActionTile
-            icon={<BarChart3 className="w-7 h-7" />}
-            title="Analytics"
-            description="View analytics across workshops"
-            badgeVariant="default"
-            onClick={() => navigate('/facilitator/analytics')}
-          />
-          <ActionTile
             icon={<Users className="w-7 h-7" />}
             title="Knowledge Base"
             description="Browse AI knowledge base"
@@ -370,20 +361,6 @@ export function FacilitatorDashboard() {
                         >
                           Enter Workshop
                           <ArrowRight className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => navigate(`/workshop/${workshop.id}?tab=analytics`)}
-                          className="p-2 border rounded-lg theme-hover transition-colors theme-border"
-                          title="View Analytics"
-                        >
-                          <BarChart3 className="w-5 h-5 theme-text-secondary" />
-                        </button>
-                        <button
-                          onClick={() => navigate(`/workshop/${workshop.id}?tab=export`)}
-                          className="p-2 border rounded-lg theme-hover transition-colors theme-border"
-                          title="Export Data"
-                        >
-                          <Download className="w-5 h-5 theme-text-secondary" />
                         </button>
                       </div>
                     </div>
