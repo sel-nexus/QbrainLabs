@@ -13,7 +13,12 @@ import {
   MoreVertical,
   UserCheck,
   UserX,
-  Building2
+  Building2,
+  KeyRound,
+  Eye,
+  EyeOff,
+  Copy,
+  RefreshCw
 } from 'lucide-react';
 
 import { API_BASE_URL } from '../lib/config';
@@ -55,6 +60,14 @@ export function AdminUsers() {
   // Deletion impact state
   const [deleteMessage, setDeleteMessage] = useState('');
   const [isCheckingImpact, setIsCheckingImpact] = useState(false);
+
+  // Reset password state
+  const [resetPasswordModalOpen, setResetPasswordModalOpen] = useState(false);
+  const [resetPasswordUser, setResetPasswordUser] = useState<Facilitator | null>(null);
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [isResettingPassword, setIsResettingPassword] = useState(false);
 
   const isLight = theme === 'light';
 
@@ -215,6 +228,72 @@ export function AdminUsers() {
       console.error(error);
     }
     setActionMenuOpen(null);
+  };
+
+  const generateRandomPassword = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+    let password = '';
+    const array = new Uint32Array(14);
+    crypto.getRandomValues(array);
+    for (let i = 0; i < 14; i++) {
+      password += chars[array[i] % chars.length];
+    }
+    return password;
+  };
+
+  const handleResetPasswordClick = (facilitator: Facilitator) => {
+    setResetPasswordUser(facilitator);
+    setNewPassword('');
+    setConfirmNewPassword('');
+    setShowNewPassword(false);
+    setResetPasswordModalOpen(true);
+    setActionMenuOpen(null);
+  };
+
+  const handleResetPasswordSubmit = async () => {
+    if (!resetPasswordUser || !newPassword) return;
+
+    if (newPassword.length < 8) {
+      toast.error(t('admin.passwordTooShort', 'Password must be at least 8 characters'));
+      return;
+    }
+
+    if (newPassword !== confirmNewPassword) {
+      toast.error(t('admin.passwordMismatch', 'Passwords do not match'));
+      return;
+    }
+
+    setIsResettingPassword(true);
+    try {
+      const response = await fetch(
+        `${API_BASE}/api/admin/users/${resetPasswordUser.id}/reset-password`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ new_password: newPassword }),
+        }
+      );
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.detail || 'Failed to reset password');
+      }
+
+      toast.success(
+        t('admin.resetPasswordSuccess', 'Password reset successfully for {{email}}', { email: resetPasswordUser.email })
+      );
+      setResetPasswordModalOpen(false);
+      setResetPasswordUser(null);
+      setNewPassword('');
+      setConfirmNewPassword('');
+    } catch (error) {
+      toast.error(error instanceof Error ? error.message : t('admin.resetPasswordError', 'Failed to reset password'));
+    } finally {
+      setIsResettingPassword(false);
+    }
   };
 
   const handleDeleteClick = async (facilitatorId: string) => {
@@ -416,6 +495,14 @@ export function AdminUsers() {
                               </button>
                             )}
 
+                            <button
+                              onClick={() => handleResetPasswordClick(facilitator)}
+                              className={`w-full flex items-center gap-2 px-4 py-2 text-sm ${isLight ? 'text-gray-700 hover:bg-gray-50' : 'text-gray-300 hover:bg-white/5'}`}
+                            >
+                              <KeyRound className="w-4 h-4" />
+                              {t('admin.resetPassword', 'Reset Password')}
+                            </button>
+
                             <div className={`my-1 border-t ${isLight ? 'border-gray-100' : 'border-white/5'}`} />
 
                             <button
@@ -447,6 +534,136 @@ export function AdminUsers() {
         cancelText={t('common.cancel')}
         variant="danger"
       />
+
+      {/* Reset Password Modal */}
+      {resetPasswordModalOpen && resetPasswordUser && (
+        <div className="relative z-50">
+          <div
+            className="fixed inset-0 bg-gray-900/75 transition-opacity"
+            onClick={() => setResetPasswordModalOpen(false)}
+          />
+          <div className="fixed inset-0 z-10 overflow-y-auto">
+            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+              <div className={`relative transform overflow-hidden rounded-xl text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-md ${isLight ? 'bg-white border border-gray-200' : 'bg-surface-800 border border-white/10'}`}>
+                <div className="px-6 pt-6 pb-4">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className={`text-lg font-semibold ${isLight ? 'text-gray-900' : 'text-white'}`}>
+                      {t('admin.resetPassword', 'Reset Password')}
+                    </h3>
+                    <button
+                      onClick={() => setResetPasswordModalOpen(false)}
+                      className={`p-1 rounded-lg transition ${isLight ? 'text-gray-400 hover:text-gray-600 hover:bg-gray-100' : 'text-gray-400 hover:text-white hover:bg-white/10'}`}
+                    >
+                      <XCircle className="w-5 h-5" />
+                    </button>
+                  </div>
+
+                  <div className={`mb-4 p-3 rounded-lg ${isLight ? 'bg-gray-50 border border-gray-200' : 'bg-white/5 border border-white/10'}`}>
+                    <p className={`text-sm ${isLight ? 'text-gray-600' : 'text-gray-300'}`}>
+                      {t('admin.resetPasswordFor', 'Setting new password for:')}
+                    </p>
+                    <p className={`font-medium ${isLight ? 'text-gray-900' : 'text-white'}`}>
+                      {resetPasswordUser.full_name || resetPasswordUser.email}
+                    </p>
+                    <p className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>
+                      {resetPasswordUser.email}
+                    </p>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label className={`block text-sm font-medium mb-1.5 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
+                        {t('admin.newPassword', 'New Password')}
+                      </label>
+                      <div className="relative">
+                        <input
+                          type={showNewPassword ? 'text' : 'password'}
+                          value={newPassword}
+                          onChange={(e) => setNewPassword(e.target.value)}
+                          placeholder={t('admin.enterNewPassword', 'Enter new password') as string}
+                          minLength={8}
+                          className={`w-full pl-4 pr-20 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-amber-500/50 ${isLight ? 'bg-white border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-white/5 border-white/10 text-white placeholder-gray-500'}`}
+                        />
+                        <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                          <button
+                            type="button"
+                            onClick={() => setShowNewPassword(!showNewPassword)}
+                            className={`p-1 rounded transition ${isLight ? 'text-gray-400 hover:text-gray-600' : 'text-gray-400 hover:text-white'}`}
+                            title={showNewPassword ? 'Hide' : 'Show'}
+                          >
+                            {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => {
+                              if (newPassword) {
+                                navigator.clipboard.writeText(newPassword);
+                                toast.success(t('admin.passwordCopied', 'Password copied to clipboard'));
+                              }
+                            }}
+                            className={`p-1 rounded transition ${isLight ? 'text-gray-400 hover:text-gray-600' : 'text-gray-400 hover:text-white'}`}
+                            title="Copy"
+                          >
+                            <Copy className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className={`block text-sm font-medium mb-1.5 ${isLight ? 'text-gray-700' : 'text-gray-300'}`}>
+                        {t('admin.confirmNewPassword', 'Confirm New Password')}
+                      </label>
+                      <input
+                        type={showNewPassword ? 'text' : 'password'}
+                        value={confirmNewPassword}
+                        onChange={(e) => setConfirmNewPassword(e.target.value)}
+                        placeholder={t('admin.reEnterPassword', 'Re-enter new password') as string}
+                        minLength={8}
+                        className={`w-full px-4 py-2.5 rounded-lg border focus:outline-none focus:ring-2 focus:ring-amber-500/50 ${isLight ? 'bg-white border-gray-200 text-gray-900 placeholder-gray-400' : 'bg-white/5 border-white/10 text-white placeholder-gray-500'}`}
+                      />
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const pw = generateRandomPassword();
+                        setNewPassword(pw);
+                        setConfirmNewPassword(pw);
+                        setShowNewPassword(true);
+                      }}
+                      className={`flex items-center gap-2 text-sm font-medium px-3 py-1.5 rounded-lg transition ${isLight ? 'text-amber-700 bg-amber-50 hover:bg-amber-100' : 'text-amber-400 bg-amber-500/10 hover:bg-amber-500/20'}`}
+                    >
+                      <RefreshCw className="w-3.5 h-3.5" />
+                      {t('admin.generatePassword', 'Generate Random Password')}
+                    </button>
+                  </div>
+                </div>
+
+                <div className={`px-6 py-4 flex gap-3 justify-end ${isLight ? 'bg-gray-50 border-t border-gray-100' : 'bg-surface-900/50 border-t border-white/5'}`}>
+                  <button
+                    type="button"
+                    onClick={() => setResetPasswordModalOpen(false)}
+                    className={`px-4 py-2 text-sm font-semibold rounded-lg transition ${isLight ? 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50' : 'bg-surface-700 text-white border border-white/10 hover:bg-white/5'}`}
+                  >
+                    {t('common.cancel')}
+                  </button>
+                  <button
+                    type="button"
+                    disabled={isResettingPassword || !newPassword || !confirmNewPassword || newPassword !== confirmNewPassword}
+                    onClick={handleResetPasswordSubmit}
+                    className="px-4 py-2 text-sm font-semibold text-white rounded-lg bg-amber-600 hover:bg-amber-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isResettingPassword
+                      ? t('admin.resettingPassword', 'Resetting...')
+                      : t('admin.resetPassword', 'Reset Password')}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </AdminLayout>
   );
 }

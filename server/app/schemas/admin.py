@@ -67,6 +67,17 @@ class UserUpdateByAdmin(BaseModel):
     is_active: Optional[bool] = None
 
 
+class AdminResetPasswordRequest(BaseModel):
+    """Schema for admin resetting a user's password"""
+    new_password: str
+
+
+class AdminResetPasswordResponse(BaseModel):
+    """Response after admin resets a user's password"""
+    message: str
+    email: str
+
+
 class UserDeletionImpact(BaseModel):
     """Impact analysis for deleting a user"""
     workshops_owned: int

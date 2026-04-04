@@ -37,6 +37,8 @@ from app.schemas.admin import (
     WorkshopStatusUpdate,
     UserUpdateByAdmin,
     UserDeletionImpact,
+    AdminResetPasswordRequest,
+    AdminResetPasswordResponse,
     LLMUsageSummary,
     LLMUsageByFeature,
     LLMUsageByWorkshop,
@@ -317,6 +319,46 @@ async def create_user(
         full_name=new_user.full_name,
         is_admin=new_user.is_admin,
         workshop_count=0
+    )
+
+
+@router.post("/users/{user_id}/reset-password", response_model=AdminResetPasswordResponse)
+async def admin_reset_user_password(
+    user_id: str,
+    payload: AdminResetPasswordRequest,
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Reset any user's password (admin only).
+    The admin supplies the new password; it is hashed and stored immediately.
+    """
+    from app.core.security import PasswordValidator
+
+    result = await db.execute(select(User).where(User.id == user_id))
+    user = result.scalars().first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    validation = PasswordValidator.validate(payload.new_password)
+    if not validation["valid"]:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="; ".join(validation["errors"]),
+        )
+
+    user.password_hash = hash_password(payload.new_password)
+    await db.commit()
+
+    logging.getLogger(__name__).info(
+        "Admin %s reset password for user %s (%s)",
+        admin.email, user.email, user_id,
+    )
+
+    return AdminResetPasswordResponse(
+        message="Password has been reset successfully",
+        email=user.email,
     )
 
 
