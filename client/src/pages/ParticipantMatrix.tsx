@@ -1,18 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSession } from '../context/SessionContext';
 import { useTheme } from '../context/ThemeContext';
 import { api } from '../lib/api';
 import { socket } from '../lib/socket';
 import { Button } from '../components/ui/Button';
-import { ArrowLeft, Loader2, X, Save, GripVertical } from 'lucide-react';
+import { ArrowLeft, Loader2, X, Save, GripVertical, ChevronDown, ChevronUp, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { Header } from '../components/Header';
 import { PrioritizationScale } from '../components/prioritization/PrioritizationScale';
 
 export function ParticipantMatrix() {
     const navigate = useNavigate();
-    const { } = useTheme();
+    const { theme } = useTheme();
     const { session } = useSession();
 
     // Original use cases from workshop
@@ -47,7 +47,10 @@ export function ParticipantMatrix() {
 
     const [isSaving, setIsSaving] = useState(false);
     const [unsavedChanges, setUnsavedChanges] = useState<Set<string>>(new Set());
-
+    const [mobileItemsExpanded, setMobileItemsExpanded] = useState(true);
+    const [mobileRatedExpanded, setMobileRatedExpanded] = useState(false);
+    const [mobileScoreTarget, setMobileScoreTarget] = useState<any | null>(null);
+    const criteriaScrollRef = useRef<HTMLDivElement>(null);
 
     const activeCriterion = workshopCriteria[activeCriterionIndex]?.name;
 
@@ -313,54 +316,112 @@ export function ParticipantMatrix() {
         );
     }
 
+    const pendingUseCases = useCases.filter(uc => !scores[uc.id]?.[activeCriterion]);
+    const ratedUseCases = useCases.filter(uc => scores[uc.id]?.[activeCriterion]);
+    const scale = [10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
+
+    const handleMobileScoreSelect = (score: number) => {
+        if (!mobileScoreTarget) return;
+        handleScoreChange(mobileScoreTarget.id, score);
+        setMobileScoreTarget(null);
+    };
+
     return (
         <div className="min-h-screen theme-bg-primary pt-[64px]">
             <Header showBackButton={false} showHomeButton={false} />
 
+            {/* Sticky Header — responsive */}
             <header className="sticky top-[64px] z-40 border-b backdrop-blur theme-bg-secondary/80 theme-border">
-                <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                        <Button
-                            variant="ghost"
-                            onClick={() => navigate('/participant-dashboard')}
-                            className="theme-text-secondary hover:theme-text-primary"
-                        >
-                            <ArrowLeft className="w-4 h-4 mr-2" />
-                            Back
-                        </Button>
-                        <div>
-                            <h1 className="text-xl font-bold theme-text-primary">
-                                Strategic Prioritization
-                            </h1>
-                            <p className="text-sm theme-text-secondary">
-                                {workshopTitle}
-                            </p>
+                <div className="max-w-7xl mx-auto px-3 sm:px-4 py-2 sm:py-4">
+                    {/* Row 1: Back + Title + Submit */}
+                    <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+                            <button
+                                onClick={() => navigate('/participant-dashboard')}
+                                className="p-1.5 sm:p-2 rounded-lg theme-text-secondary hover:theme-text-primary hover:bg-black/5 transition shrink-0"
+                            >
+                                <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                            </button>
+                            <div className="min-w-0">
+                                <h1 className="text-sm sm:text-xl font-bold theme-text-primary truncate">
+                                    Strategic Prioritization
+                                </h1>
+                                <p className="text-[10px] sm:text-sm theme-text-secondary truncate">
+                                    {workshopTitle}
+                                </p>
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="flex items-center gap-3">
-                        {lastSaved && unsavedChanges.size === 0 && (
-                            <span className="text-[10px] theme-text-muted flex items-center gap-1">
-                                <span className="w-1.5 h-1.5 rounded-full bg-semantic-success" />
-                                All changes saved
-                            </span>
-                        )}
-                        <Button
-                            onClick={handleSaveChanges}
-                            disabled={unsavedChanges.size === 0 || isSaving}
-                            variant={unsavedChanges.size > 0 ? 'primary' : 'secondary'}
-                        >
-                            {isSaving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-                            {unsavedChanges.size > 0 ? `Submit (${unsavedChanges.size})` : 'Submitted'}
-                        </Button>
+                        <div className="flex items-center gap-2 shrink-0">
+                            {lastSaved && unsavedChanges.size === 0 && (
+                                <span className="hidden sm:flex text-[10px] theme-text-muted items-center gap-1">
+                                    <span className="w-1.5 h-1.5 rounded-full bg-semantic-success" />
+                                    Saved
+                                </span>
+                            )}
+                            <Button
+                                onClick={handleSaveChanges}
+                                disabled={unsavedChanges.size === 0 || isSaving}
+                                variant={unsavedChanges.size > 0 ? 'primary' : 'secondary'}
+                                className="text-xs sm:text-sm !px-2.5 sm:!px-4 !py-1.5 sm:!py-2"
+                            >
+                                {isSaving ? <Loader2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin" /> : <Save className="w-3.5 h-3.5 sm:w-4 sm:h-4 sm:mr-2" />}
+                                <span className="hidden sm:inline">{unsavedChanges.size > 0 ? `Submit (${unsavedChanges.size})` : 'Submitted'}</span>
+                                <span className="sm:hidden ml-1">{unsavedChanges.size > 0 ? unsavedChanges.size : <Check className="w-3 h-3" />}</span>
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </header>
 
-            <main className="max-w-[1600px] mx-auto px-4 py-8">
-                <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr_300px] gap-8 items-start">
-                    {/* Left Sidebar: Category Navigation */}
-                    <aside className="space-y-4 sticky top-[140px] z-30">
+            {/* Mobile: Horizontal criteria tabs */}
+            <div className="lg:hidden sticky top-[112px] sm:top-[128px] z-30 border-b theme-border backdrop-blur theme-bg-secondary/90">
+                <div className="px-3 py-2">
+                    <div className="flex items-center gap-2 mb-1.5">
+                        <span className="text-[10px] font-bold uppercase tracking-wider theme-text-secondary shrink-0">
+                            Category
+                        </span>
+                        <span className="text-[10px] theme-text-muted">
+                            {activeCriterionIndex + 1}/{workshopCriteria.length}
+                        </span>
+                    </div>
+                    <div ref={criteriaScrollRef} className="flex gap-2 overflow-x-auto pb-1 scrollbar-hide -mx-1 px-1">
+                        {workshopCriteria.map((criterion, idx) => {
+                            const isSelected = activeCriterionIndex === idx;
+                            const pendingCount = useCases.filter(uc => !scores[uc.id]?.[criterion.name]).length;
+                            const isCompleted = pendingCount === 0 && useCases.length > 0;
+
+                            return (
+                                <button
+                                    key={criterion.name}
+                                    onClick={() => setActiveCriterionIndex(idx)}
+                                    className={`shrink-0 px-3 py-1.5 rounded-full text-[11px] font-semibold transition-all flex items-center gap-1.5 ${isSelected
+                                        ? 'bg-brand-violet text-white shadow-md'
+                                        : isCompleted
+                                            ? 'bg-semantic-success/10 text-semantic-success border border-semantic-success/30'
+                                            : 'theme-bg-tertiary theme-text-secondary border theme-border'
+                                        }`}
+                                >
+                                    {criterion.name}
+                                    {isCompleted ? (
+                                        <Check className="w-3 h-3" />
+                                    ) : pendingCount > 0 && !isSelected ? (
+                                        <span className="bg-brand-violet/20 text-brand-violet text-[9px] px-1 rounded-full font-bold">
+                                            {pendingCount}
+                                        </span>
+                                    ) : null}
+                                </button>
+                            );
+                        })}
+                    </div>
+                </div>
+            </div>
+
+            <main className="max-w-[1600px] mx-auto px-3 sm:px-4 py-4 sm:py-8">
+                <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr_300px] gap-4 sm:gap-8 items-start">
+
+                    {/* Left Sidebar: Category Navigation — desktop only */}
+                    <aside className="hidden lg:block space-y-4 sticky top-[140px] z-30">
                         <div className="flex items-center justify-between px-1">
                             <h3 className="font-bold theme-text-secondary text-xs uppercase tracking-wider">
                                 Categories
@@ -423,22 +484,22 @@ export function ParticipantMatrix() {
                     </aside>
 
                     {/* Center Section: Scale & Description */}
-                    <div className="space-y-6">
-                        <div className="text-center bg-brand-violet/5 py-4 px-6 rounded-2xl border border-brand-violet/10 backdrop-blur-sm">
-                            <h2 className="text-lg font-bold theme-text-primary flex items-center justify-center gap-2">
-                                <span className="w-8 h-8 rounded-lg bg-brand-violet text-white flex items-center justify-center text-sm">
+                    <div className="space-y-4 sm:space-y-6">
+                        <div className="text-center bg-brand-violet/5 py-3 sm:py-4 px-4 sm:px-6 rounded-xl sm:rounded-2xl border border-brand-violet/10 backdrop-blur-sm">
+                            <h2 className="text-sm sm:text-lg font-bold theme-text-primary flex items-center justify-center gap-2">
+                                <span className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-brand-violet text-white flex items-center justify-center text-xs sm:text-sm">
                                     {activeCriterionIndex + 1}
                                 </span>
                                 {workshopCriteria[activeCriterionIndex]?.name}
                             </h2>
                             {workshopCriteria[activeCriterionIndex]?.description && (
-                                <p className="text-sm theme-text-secondary mt-2 italic max-w-2xl mx-auto">
+                                <p className="text-xs sm:text-sm theme-text-secondary mt-1.5 sm:mt-2 italic max-w-2xl mx-auto">
                                     &ldquo;{workshopCriteria[activeCriterionIndex].description}&rdquo;
                                 </p>
                             )}
                         </div>
 
-                        <div className="p-6 rounded-2xl border theme-card theme-border bg-white/50 backdrop-blur-sm shadow-xl">
+                        <div className="p-3 sm:p-6 rounded-xl sm:rounded-2xl border theme-card theme-border bg-white/50 backdrop-blur-sm shadow-xl">
                             <PrioritizationScale
                                 criterion={activeCriterion}
                                 useCases={useCases}
@@ -448,69 +509,180 @@ export function ParticipantMatrix() {
                         </div>
                     </div>
 
-                    {/* Right Sidebar: Pending Use Cases */}
-                    <aside className="space-y-4 sticky top-[140px] z-30">
-                        <div className="flex items-center justify-between px-1">
-                            <h3 className="font-bold theme-text-primary text-xs uppercase tracking-wider">
-                                Pending Items
-                            </h3>
-                            <span className="text-[10px] bg-brand-violet/10 text-brand-violet px-2 py-0.5 rounded-full font-bold">
-                                {useCases.filter(uc => !scores[uc.id]?.[activeCriterion]).length}
-                            </span>
-                        </div>
+                    {/* Right Sidebar — Desktop: sticky aside; Mobile: inline collapsible sections */}
+                    <div className="lg:sticky lg:top-[140px] lg:z-30 space-y-4">
 
-                        <div className="space-y-3 max-h-[calc(100vh-450px)] overflow-y-auto pr-2 scrollbar-hide">
-                            {useCases.map((uc) => {
-                                const isRated = !!scores[uc.id]?.[activeCriterion];
-                                if (isRated) return null;
+                        {/* Pending Items */}
+                        <div>
+                            <button
+                                className="lg:pointer-events-none w-full flex items-center justify-between px-1 py-2 lg:py-0 lg:mb-0"
+                                onClick={() => setMobileItemsExpanded(v => !v)}
+                            >
+                                <div className="flex items-center gap-2">
+                                    <h3 className="font-bold theme-text-primary text-xs uppercase tracking-wider">
+                                        Pending Items
+                                    </h3>
+                                    <span className="text-[10px] bg-brand-violet/10 text-brand-violet px-2 py-0.5 rounded-full font-bold">
+                                        {pendingUseCases.length}
+                                    </span>
+                                </div>
+                                <span className="lg:hidden theme-text-secondary">
+                                    {mobileItemsExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                                </span>
+                            </button>
 
-                                return (
-                                    <div
-                                        key={uc.id}
-                                        draggable
-                                        onDragStart={(e) => handleDragStart(e, uc)}
-                                        className="p-4 rounded-xl border theme-bg-secondary theme-border cursor-grab active:cursor-grabbing hover:border-brand-violet transition-all group shadow-sm hover:shadow-md"
-                                    >
-                                        <div className="flex gap-3">
-                                            <GripVertical className="w-4 h-4 mt-1 opacity-20 group-hover:opacity-100 transition-opacity shrink-0" />
-                                            <div>
-                                                <div className="font-semibold text-xs theme-text-primary line-clamp-1">{uc.title}</div>
-                                                <div className="text-[10px] theme-text-secondary line-clamp-2 mt-1">{uc.description}</div>
+                            <div className={`space-y-2 sm:space-y-3 overflow-hidden transition-all lg:!max-h-none lg:!opacity-100 ${mobileItemsExpanded ? 'max-h-[2000px] opacity-100 mt-2' : 'max-h-0 opacity-0'}`}>
+                                <div className="lg:max-h-[calc(100vh-450px)] lg:overflow-y-auto lg:pr-2 scrollbar-hide space-y-2 sm:space-y-3">
+                                    {pendingUseCases.length === 0 && (
+                                        <div className="text-center py-4 rounded-xl border-2 border-dashed theme-border theme-bg-secondary">
+                                            <p className="text-xs theme-text-secondary">All items rated for this category</p>
+                                        </div>
+                                    )}
+                                    {pendingUseCases.map((uc) => (
+                                        <div
+                                            key={uc.id}
+                                            draggable
+                                            onDragStart={(e) => handleDragStart(e, uc)}
+                                            onClick={() => setMobileScoreTarget(uc)}
+                                            className="p-3 sm:p-4 rounded-xl border theme-bg-secondary theme-border cursor-pointer sm:cursor-grab active:cursor-grabbing hover:border-brand-violet transition-all group shadow-sm hover:shadow-md active:scale-[0.98]"
+                                        >
+                                            <div className="flex gap-2 sm:gap-3">
+                                                <GripVertical className="w-4 h-4 mt-0.5 opacity-20 group-hover:opacity-100 transition-opacity shrink-0 hidden sm:block" />
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="font-semibold text-xs theme-text-primary line-clamp-1">{uc.title}</div>
+                                                    <div className="text-[10px] theme-text-secondary line-clamp-2 mt-0.5 sm:mt-1">{uc.description}</div>
+                                                </div>
+                                                <span className="sm:hidden text-[10px] text-brand-violet font-semibold shrink-0 self-center">
+                                                    Tap to rate
+                                                </span>
                                             </div>
                                         </div>
-                                    </div>
-                                );
-                            })}
-                        </div>
-
-                        {/* Rated in this category */}
-                        <div className="pt-4 border-t theme-border">
-                            <h4 className="text-[10px] font-bold uppercase tracking-widest theme-text-secondary mb-3 px-1">
-                                Rated Items
-                            </h4>
-                            <div className="space-y-2 max-h-[300px] overflow-y-auto pr-2 scrollbar-hide">
-                                {useCases.filter(uc => scores[uc.id]?.[activeCriterion]).map(uc => (
-                                    <div key={uc.id} className="flex items-center justify-between p-2 rounded-lg bg-brand-violet/5 border border-brand-violet/20 group animate-in fade-in slide-in-from-right-2 duration-300">
-                                        <div className="text-[11px] font-medium theme-text-primary truncate">{uc.title}</div>
-                                        <div className="flex items-center gap-2">
-                                            <span className="text-[10px] font-black text-brand-violet bg-brand-violet/10 px-1.5 py-0.5 rounded">
-                                                {scores[uc.id][activeCriterion]}
-                                            </span>
-                                            <button
-                                                onClick={() => handleRemoveRating(uc.id)}
-                                                className="p-1 hover:bg-red-100 hover:text-red-500 rounded transition-colors"
-                                                title="Remove Rating"
-                                            >
-                                                <X className="w-3 h-3" />
-                                            </button>
-                                        </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
                             </div>
                         </div>
-                    </aside>
+
+                        {/* Rated Items */}
+                        <div className="pt-3 sm:pt-4 border-t theme-border">
+                            <button
+                                className="lg:pointer-events-none w-full flex items-center justify-between px-1 py-2 lg:py-0 lg:mb-3"
+                                onClick={() => setMobileRatedExpanded(v => !v)}
+                            >
+                                <div className="flex items-center gap-2">
+                                    <h4 className="text-[10px] font-bold uppercase tracking-widest theme-text-secondary">
+                                        Rated Items
+                                    </h4>
+                                    {ratedUseCases.length > 0 && (
+                                        <span className="text-[10px] bg-semantic-success/10 text-semantic-success px-2 py-0.5 rounded-full font-bold">
+                                            {ratedUseCases.length}
+                                        </span>
+                                    )}
+                                </div>
+                                <span className="lg:hidden theme-text-secondary">
+                                    {mobileRatedExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+                                </span>
+                            </button>
+
+                            <div className={`overflow-hidden transition-all lg:!max-h-none lg:!opacity-100 ${mobileRatedExpanded ? 'max-h-[2000px] opacity-100 mt-2' : 'max-h-0 opacity-0 lg:opacity-100'}`}>
+                                <div className="space-y-2 lg:max-h-[300px] lg:overflow-y-auto lg:pr-2 scrollbar-hide">
+                                    {ratedUseCases.map(uc => (
+                                        <div key={uc.id} className="flex items-center justify-between p-2 rounded-lg bg-brand-violet/5 border border-brand-violet/20 group">
+                                            <div className="text-[11px] font-medium theme-text-primary truncate">{uc.title}</div>
+                                            <div className="flex items-center gap-2 shrink-0 ml-2">
+                                                <span className="text-[10px] font-black text-brand-violet bg-brand-violet/10 px-1.5 py-0.5 rounded">
+                                                    {scores[uc.id][activeCriterion]}
+                                                </span>
+                                                <button
+                                                    onClick={() => handleRemoveRating(uc.id)}
+                                                    className="p-1 hover:bg-red-100 hover:text-red-500 rounded transition-colors"
+                                                    title="Remove Rating"
+                                                >
+                                                    <X className="w-3 h-3" />
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </main>
+
+            {/* Mobile Score Selector Modal */}
+            {mobileScoreTarget && (
+                <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-black/60 p-0 sm:p-4"
+                    onClick={() => setMobileScoreTarget(null)}
+                >
+                    <div
+                        className={`w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl shadow-2xl border overflow-hidden ${theme === 'light' ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/10'}`}
+                        onClick={e => e.stopPropagation()}
+                    >
+                        <div className="px-4 pt-4 pb-2">
+                            <div className="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-3 sm:hidden" />
+                            <h3 className={`text-sm font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                                Rate: {mobileScoreTarget.title}
+                            </h3>
+                            {mobileScoreTarget.description && (
+                                <p className={`text-xs mt-1 line-clamp-2 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
+                                    {mobileScoreTarget.description}
+                                </p>
+                            )}
+                            <p className={`text-[10px] mt-2 uppercase tracking-wider font-semibold ${theme === 'light' ? 'text-gray-400' : 'text-gray-500'}`}>
+                                {activeCriterion}
+                            </p>
+                        </div>
+
+                        <div className="px-4 py-3">
+                            <div className="flex items-center justify-between mb-2 px-1">
+                                <span className="text-[10px] font-semibold theme-text-secondary uppercase">Low</span>
+                                <span className="text-[10px] font-semibold theme-text-secondary uppercase">High</span>
+                            </div>
+                            <div className="grid grid-cols-5 gap-2">
+                                {scale.map((num) => {
+                                    const currentScore = scores[mobileScoreTarget.id]?.[activeCriterion];
+                                    const isActive = currentScore !== undefined && currentScore > (num - 10) && currentScore <= num;
+                                    return (
+                                        <button
+                                            key={num}
+                                            onClick={() => handleMobileScoreSelect(num)}
+                                            className={`py-3 rounded-xl text-sm font-bold transition-all ${isActive
+                                                ? 'bg-brand-violet text-white shadow-lg scale-105 ring-2 ring-brand-violet/40'
+                                                : theme === 'light'
+                                                    ? 'bg-gray-100 text-gray-700 hover:bg-brand-violet/10 hover:text-brand-violet active:scale-95'
+                                                    : 'bg-surface-700 text-gray-300 hover:bg-brand-violet/20 hover:text-white active:scale-95'
+                                                }`}
+                                        >
+                                            {num}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        <div className={`px-4 py-3 flex gap-2 border-t ${theme === 'light' ? 'border-gray-100' : 'border-white/5'}`}>
+                            <button
+                                onClick={() => handleMobileScoreSelect(-1)}
+                                className={`flex-1 py-2.5 rounded-xl text-xs font-semibold transition-all ${theme === 'light'
+                                    ? 'bg-amber-50 text-amber-700 hover:bg-amber-100 active:scale-95'
+                                    : 'bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 active:scale-95'
+                                    }`}
+                            >
+                                Unsure / Don&apos;t Know
+                            </button>
+                            <button
+                                onClick={() => setMobileScoreTarget(null)}
+                                className={`px-4 py-2.5 rounded-xl text-xs font-semibold transition-all ${theme === 'light'
+                                    ? 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                                    : 'bg-surface-700 text-gray-400 hover:bg-surface-600'
+                                    }`}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
