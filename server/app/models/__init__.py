@@ -169,3 +169,9 @@ from .planner_session import (
 from .llm_usage import (
     LLMUsageLog
 )
+
+from .llm_model import (
+    LLMModelConfig,
+    LLMProvider,
+    LLMRole
+)
