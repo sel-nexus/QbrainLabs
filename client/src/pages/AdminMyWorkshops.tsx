@@ -79,6 +79,7 @@ export function AdminMyWorkshops() {
                     workshops.map((w: any) => (
                         <div
                             key={w.id}
+                            data-testid="workshop-card"
                             className={`rounded-2xl p-6 transition-all cursor-pointer border ${isLight ? 'bg-white border-gray-200 shadow-sm hover:border-brand-violet/50' : 'bg-surface-800/50 border-white/10 hover:border-brand-violet/50'}`}
                             onClick={() => navigate(`/workshop/${w.id}`)}
                         >

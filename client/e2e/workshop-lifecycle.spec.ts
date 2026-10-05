@@ -1,0 +1,34 @@
+import { test, expect } from '@playwright/test';
+import { ADMIN_EMAIL, ADMIN_PASSWORD } from './support/credentials';
+
+test.describe('Workshop Lifecycle', () => {
+    test.beforeEach(async ({ page }) => {
+        await page.goto('/facilitator-login');
+        await page.getByPlaceholder('you@example.com').fill(ADMIN_EMAIL);
+        await page.getByPlaceholder('Enter your password').fill(ADMIN_PASSWORD);
+        await page.locator('form button[type="submit"]').click();
+        await page.waitForURL(/\/admin/);
+    });
+
+    test('creates a workshop and advances it through every phase', async ({ page }) => {
+        const title = `E2E Workshop ${Date.now()}`;
+
+        await page.goto('/facilitator/create');
+        await page.getByPlaceholder('e.g. Q1 AI Roadmap').fill(title);
+        await page.getByRole('button', { name: 'Create Workshop' }).click();
+
+        await page.waitForURL(/\/admin\/my-workshops/);
+        const card = page.getByTestId('workshop-card').filter({ hasText: title });
+        await expect(card).toBeVisible();
+
+        await card.click();
+        await page.waitForURL(/\/workshop\/.+/);
+        await expect(page.getByText('INTAKE', { exact: true })).toBeVisible();
+
+        await page.getByRole('button', { name: /start scoring/i }).click();
+        await expect(page.getByText('SCORING', { exact: true })).toBeVisible();
+
+        await page.getByRole('button', { name: /show results/i }).click();
+        await expect(page.getByText('ANALYSIS', { exact: true })).toBeVisible();
+    });
+});
