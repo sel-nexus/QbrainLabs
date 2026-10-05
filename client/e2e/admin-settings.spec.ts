@@ -40,7 +40,7 @@ test.describe('Admin Settings Page', () => {
         await page.waitForTimeout(500);
 
         // Check that security settings are displayed
-        await expect(page.locator('text=Password')).toBeVisible();
+        await expect(page.locator('text=Password').first()).toBeVisible();
     });
 
     test('should edit and save a setting', async ({ page }) => {
@@ -65,8 +65,8 @@ test.describe('Admin Settings Page', () => {
         // Click on Security category
         await page.click('button:has-text("Security")');
 
-        // Find a toggle switch
-        const toggle = page.locator('button[class*="rounded-full"]').first();
+        // Find a toggle switch (scoped to main settings area to avoid header buttons)
+        const toggle = page.locator('main').locator('button[class*="rounded-full"]').first();
 
         // Click toggle
         await toggle.click();
@@ -82,8 +82,8 @@ test.describe('Admin Settings Page', () => {
         // Click on Rate Limiting category
         await page.click('button:has-text("Rate Limiting")');
 
-        // Click reset button (RotateCcw icon)
-        await page.locator('button[title="Reset to default"]').first().click();
+        // Click reset button (uses aria-label, not title)
+        await page.locator('button[aria-label="Reset"]').first().click();
 
         // Confirm reset
         await page.click('button:has-text("OK")');
@@ -123,7 +123,7 @@ test.describe('Admin Settings Page', () => {
         await page.click('button:has-text("Rate Limiting")');
 
         // Check that default values are displayed
-        await expect(page.locator('text=Default:')).toBeVisible();
+        await expect(page.locator('text=Default:').first()).toBeVisible();
     });
 });
 
