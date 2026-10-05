@@ -42,6 +42,36 @@ async def admin_token(client: AsyncClient, admin_user: User) -> str:
 
 
 @pytest.fixture
+async def other_facilitator_user(db_session: AsyncSession) -> User:
+    # A facilitator with no ownership/assignment relationship to `workshop_id`
+    unique_suffix = str(uuid4())[:8]
+    email = f"wsllmother_{unique_suffix}@test.com"
+
+    user = User(
+        email=email,
+        password_hash=hash_password("otherpass123"),
+        full_name="Other Facilitator",
+        role=UserRole.FACILITATOR,
+        status=AccountStatus.ACTIVE,
+    )
+    db_session.add(user)
+    await db_session.commit()
+    await db_session.refresh(user)
+
+    return user
+
+
+@pytest.fixture
+async def other_facilitator_token(client: AsyncClient, other_facilitator_user: User) -> str:
+    response = await client.post(
+        "/api/auth/login",
+        json={"email": other_facilitator_user.email, "password": "otherpass123"},
+    )
+    assert response.status_code == 200
+    return response.json()["access_token"]
+
+
+@pytest.fixture
 async def workshop_id(client: AsyncClient, admin_token: str) -> str:
     response = await client.post(
         "/api/workshops/",
@@ -169,3 +199,31 @@ async def test_set_workshop_llm_models_rejects_inactive_model(
         headers={"Authorization": f"Bearer {admin_token}"},
     )
     assert response.status_code == 400
+
+
+@pytest.mark.asyncio
+async def test_get_workshop_llm_models_forbidden_for_unrelated_facilitator(
+    client: AsyncClient,
+    workshop_id: str,
+    other_facilitator_token: str,
+):
+    response = await client.get(
+        f"/api/workshops/{workshop_id}/llm-models",
+        headers={"Authorization": f"Bearer {other_facilitator_token}"},
+    )
+    assert response.status_code == 403
+
+
+@pytest.mark.asyncio
+async def test_set_workshop_llm_models_forbidden_for_unrelated_facilitator(
+    client: AsyncClient,
+    workshop_id: str,
+    reasoning_model_id: str,
+    other_facilitator_token: str,
+):
+    response = await client.put(
+        f"/api/workshops/{workshop_id}/llm-models",
+        json={"reasoning_model_id": reasoning_model_id},
+        headers={"Authorization": f"Bearer {other_facilitator_token}"},
+    )
+    assert response.status_code == 403
