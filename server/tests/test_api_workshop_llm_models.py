@@ -12,7 +12,7 @@ from app.api.auth import hash_password
 
 
 @pytest.fixture
-async def admin_user(db_session: AsyncSession, request) -> User:
+async def admin_user(db_session: AsyncSession) -> User:
     # Generate unique email per test to avoid constraint violations
     unique_suffix = str(uuid4())[:8]
     email = f"wsllmadmin_{unique_suffix}@test.com"
@@ -28,18 +28,14 @@ async def admin_user(db_session: AsyncSession, request) -> User:
     await db_session.commit()
     await db_session.refresh(user)
 
-    # Store the email on the request node so admin_token can use it
-    request.node.admin_email = email
-
     return user
 
 
 @pytest.fixture
-async def admin_token(client: AsyncClient, admin_user: User, request) -> str:
-    email = request.node.admin_email
+async def admin_token(client: AsyncClient, admin_user: User) -> str:
     response = await client.post(
         "/api/auth/login",
-        json={"email": email, "password": "adminpass123"},
+        json={"email": admin_user.email, "password": "adminpass123"},
     )
     assert response.status_code == 200
     return response.json()["access_token"]

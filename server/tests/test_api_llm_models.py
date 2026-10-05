@@ -12,7 +12,7 @@ from app.api.auth import hash_password
 
 
 @pytest.fixture
-async def admin_user(db_session: AsyncSession, request) -> User:
+async def admin_user(db_session: AsyncSession) -> User:
     # Use unique email per test to avoid UNIQUE constraint violations in session-scoped DB
     unique_id = str(uuid.uuid4())[:8]
     email = f"llmadmin-{unique_id}@test.com"
@@ -26,13 +26,11 @@ async def admin_user(db_session: AsyncSession, request) -> User:
     db_session.add(user)
     await db_session.commit()
     await db_session.refresh(user)
-    # Store email in request for token fixture
-    request.node.admin_email = email
     return user
 
 
 @pytest.fixture
-async def facilitator_user(db_session: AsyncSession, request) -> User:
+async def facilitator_user(db_session: AsyncSession) -> User:
     # Use unique email per test to avoid UNIQUE constraint violations in session-scoped DB
     unique_id = str(uuid.uuid4())[:8]
     email = f"llmfacilitator-{unique_id}@test.com"
@@ -46,28 +44,24 @@ async def facilitator_user(db_session: AsyncSession, request) -> User:
     db_session.add(user)
     await db_session.commit()
     await db_session.refresh(user)
-    # Store email in request for token fixture
-    request.node.facilitator_email = email
     return user
 
 
 @pytest.fixture
-async def admin_token(client: AsyncClient, admin_user: User, request) -> str:
-    email = request.node.admin_email
+async def admin_token(client: AsyncClient, admin_user: User) -> str:
     response = await client.post(
         "/api/auth/login",
-        json={"email": email, "password": "adminpass123"},
+        json={"email": admin_user.email, "password": "adminpass123"},
     )
     assert response.status_code == 200
     return response.json()["access_token"]
 
 
 @pytest.fixture
-async def facilitator_token(client: AsyncClient, facilitator_user: User, request) -> str:
-    email = request.node.facilitator_email
+async def facilitator_token(client: AsyncClient, facilitator_user: User) -> str:
     response = await client.post(
         "/api/auth/login",
-        json={"email": email, "password": "facilitatorpass123"},
+        json={"email": facilitator_user.email, "password": "facilitatorpass123"},
     )
     assert response.status_code == 200
     return response.json()["access_token"]
