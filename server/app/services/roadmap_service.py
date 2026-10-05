@@ -54,7 +54,7 @@ class RoadmapService:
             print(f"Failed to init AI components: {e}")
             self.mock_mode = True
 
-    async def analyze_complexity(self, use_cases: List[UseCase]) -> Dict[str, Any]:
+    async def analyze_complexity(self, use_cases: List[UseCase], db=None) -> Dict[str, Any]:
         """
         Analyze complexity of use cases for estimation.
         Returns complexity scores (1-10), reasoning factors, and confidence levels.
@@ -78,6 +78,8 @@ class RoadmapService:
                 "is_mock": True
             }
         
+        workshop_id = str(use_cases[0].workshop_id) if use_cases else None
+
         # Use AI to analyze complexity with detailed factors
         use_case_data = []
         for uc in use_cases:
@@ -117,10 +119,26 @@ Return ONLY a JSON object with this exact structure:
     }}
   }}
 }}"""
-        
+
+        from app.services.llm_resolver import resolve_chat_model
+        from app.utils.llm_tracking import track_llm_usage, get_usage_from_response
+
+        llm_to_use, model_name_for_tracking = await resolve_chat_model(
+            db, workshop_id, "reasoning", self.llm, getattr(self.llm, 'model_name', settings.OPENAI_MODEL)
+        )
+
         try:
             from langchain_core.messages import HumanMessage
-            response = await self.llm.ainvoke([HumanMessage(content=prompt)])
+            response = await llm_to_use.ainvoke([HumanMessage(content=prompt)])
+
+            usage = get_usage_from_response(response, prompt_text=prompt)
+            await track_llm_usage(
+                feature="roadmap_complexity",
+                model_name=model_name_for_tracking,
+                prompt_tokens=usage["prompt"],
+                completion_tokens=usage["completion"],
+                workshop_id=workshop_id,
+            )
             
             content = response.content
             # Cleanup json if needed
@@ -177,7 +195,8 @@ Return ONLY a JSON object with this exact structure:
         self,
         use_cases: List[UseCase],
         constraints: RoadmapConstraints,
-        options: Optional[RoadmapOptions] = None
+        options: Optional[RoadmapOptions] = None,
+        db=None
     ) -> Dict[str, Any]:
         """Generate project timeline with phases and tasks."""
         
@@ -187,13 +206,13 @@ Return ONLY a JSON object with this exact structure:
         # AI Mode Check
         if not self.mock_mode:
             try:
-                return await self._generate_ai_timeline(use_cases, constraints, options)
+                return await self._generate_ai_timeline(use_cases, constraints, options, db=db)
             except Exception as e:
                 print(f"AI Timeline Generation failed, falling back to heuristic: {e}")
         
         # Fallback / Mock Logic
         # Calculate base duration based on complexity
-        complexity = await self.analyze_complexity(use_cases)
+        complexity = await self.analyze_complexity(use_cases, db=db)
         base_weeks = max(8, int(complexity["average_complexity"] * 2))
         
         # Apply risk buffer
@@ -245,15 +264,22 @@ Return ONLY a JSON object with this exact structure:
             "is_mock": True
         }
 
-    async def _generate_ai_timeline(self, use_cases: List[UseCase], constraints: RoadmapConstraints, options: RoadmapOptions) -> Dict[str, Any]:
+    async def _generate_ai_timeline(self, use_cases: List[UseCase], constraints: RoadmapConstraints, options: RoadmapOptions, db=None) -> Dict[str, Any]:
         """
         Generate timeline using AI analysis of use case types.
         Creates custom phases and tasks specific to the AI project type.
         """
         from langchain_core.messages import HumanMessage
-        
+        from app.services.llm_resolver import resolve_chat_model
+        from app.utils.llm_tracking import track_llm_usage, get_usage_from_response
+
+        workshop_id = str(use_cases[0].workshop_id) if use_cases else None
+        llm_to_use, model_name_for_tracking = await resolve_chat_model(
+            db, workshop_id, "reasoning", self.llm, getattr(self.llm, 'model_name', settings.OPENAI_MODEL)
+        )
+
         # Detect use case types for better timeline customization
-        use_case_types = await self._detect_use_case_types(use_cases)
+        use_case_types = await self._detect_use_case_types(use_cases, db=db)
         
         # Prepare detailed use case information
         use_case_details = []
@@ -307,7 +333,16 @@ Return ONLY a JSON object with this structure:
 }}"""
         
         try:
-            response = await self.llm.ainvoke([HumanMessage(content=prompt)])
+            response = await llm_to_use.ainvoke([HumanMessage(content=prompt)])
+
+            usage = get_usage_from_response(response, prompt_text=prompt)
+            await track_llm_usage(
+                feature="roadmap_timeline",
+                model_name=model_name_for_tracking,
+                prompt_tokens=usage["prompt"],
+                completion_tokens=usage["completion"],
+                workshop_id=workshop_id,
+            )
             content = response.content
             
             # Clean JSON from markdown
@@ -365,7 +400,7 @@ Return ONLY a JSON object with this structure:
             # Fallback to heuristic method
             return await self._generate_heuristic_timeline(use_cases, constraints, options)
     
-    async def _detect_use_case_types(self, use_cases: List[UseCase]) -> Dict[str, str]:
+    async def _detect_use_case_types(self, use_cases: List[UseCase], db=None) -> Dict[str, str]:
         """
         Detect the type of AI project for each use case.
         Returns mapping of use_case_id to project type.
@@ -375,7 +410,14 @@ Return ONLY a JSON object with this structure:
         
         try:
             from langchain_core.messages import HumanMessage
-            
+            from app.services.llm_resolver import resolve_chat_model
+            from app.utils.llm_tracking import track_llm_usage, get_usage_from_response
+
+            workshop_id = str(use_cases[0].workshop_id) if use_cases else None
+            llm_to_use, model_name_for_tracking = await resolve_chat_model(
+                db, workshop_id, "reasoning", self.llm, getattr(self.llm, 'model_name', settings.OPENAI_MODEL)
+            )
+
             use_case_summaries = []
             for uc in use_cases:
                 use_case_summaries.append({
@@ -401,7 +443,16 @@ Return JSON mapping use_case_id to category:
   "use_case_id": "Category Name"
 }}"""
             
-            response = await self.llm.ainvoke([HumanMessage(content=prompt)])
+            response = await llm_to_use.ainvoke([HumanMessage(content=prompt)])
+
+            usage = get_usage_from_response(response, prompt_text=prompt)
+            await track_llm_usage(
+                feature="roadmap_use_case_types",
+                model_name=model_name_for_tracking,
+                prompt_tokens=usage["prompt"],
+                completion_tokens=usage["completion"],
+                workshop_id=workshop_id,
+            )
             content = response.content
             
             if "```json" in content:
@@ -535,7 +586,8 @@ Return JSON mapping use_case_id to category:
         self,
         timeline: Dict[str, Any],
         constraints: RoadmapConstraints,
-        use_cases: Optional[List[UseCase]] = None
+        use_cases: Optional[List[UseCase]] = None,
+        db=None
     ) -> Dict[str, Any]:
         """
         Calculate resource requirements with AI-powered skill recommendations.
@@ -544,7 +596,7 @@ Return JSON mapping use_case_id to category:
         
         if not self.mock_mode and use_cases:
             try:
-                return await self._calculate_ai_resources(timeline, constraints, use_cases)
+                return await self._calculate_ai_resources(timeline, constraints, use_cases, db=db)
             except Exception as e:
                 print(f"AI Resource Calculation failed: {e}")
         
@@ -620,14 +672,22 @@ Return JSON mapping use_case_id to category:
         self,
         timeline: Dict[str, Any],
         constraints: RoadmapConstraints,
-        use_cases: List[UseCase]
+        use_cases: List[UseCase],
+        db=None
     ) -> Dict[str, Any]:
         """
         Use AI to recommend resources based on technical requirements of use cases.
         Analyzes proposed solutions for technology keywords and maps to skill requirements.
         """
         from langchain_core.messages import HumanMessage
-        
+        from app.services.llm_resolver import resolve_chat_model
+        from app.utils.llm_tracking import track_llm_usage, get_usage_from_response
+
+        workshop_id = str(use_cases[0].workshop_id) if use_cases else None
+        llm_to_use, model_name_for_tracking = await resolve_chat_model(
+            db, workshop_id, "reasoning", self.llm, getattr(self.llm, 'model_name', settings.OPENAI_MODEL)
+        )
+
         # Extract technical information from use cases
         use_case_tech = []
         for uc in use_cases:
@@ -691,7 +751,16 @@ Return JSON object:
   "technology_summary": "Brief summary of the technology stack and why these specific skills are required"
 }}"""
         
-        response = await self.llm.ainvoke([HumanMessage(content=prompt)])
+        response = await llm_to_use.ainvoke([HumanMessage(content=prompt)])
+
+        usage = get_usage_from_response(response, prompt_text=prompt)
+        await track_llm_usage(
+            feature="roadmap_resources",
+            model_name=model_name_for_tracking,
+            prompt_tokens=usage["prompt"],
+            completion_tokens=usage["completion"],
+            workshop_id=workshop_id,
+        )
         content = response.content
         
         # Clean JSON from markdown

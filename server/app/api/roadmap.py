@@ -72,12 +72,14 @@ async def generate_roadmap(
     timeline_data = await roadmap_service.generate_timeline(
         use_cases,
         request.constraints,
-        request.options
+        request.options,
+        db=db
     )
     
     resources_data = await roadmap_service.calculate_resources(
         timeline_data,
-        request.constraints
+        request.constraints,
+        db=db
     )
     
     milestones_data = await roadmap_service.generate_milestones(timeline_data)
