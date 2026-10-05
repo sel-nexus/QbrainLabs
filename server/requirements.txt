@@ -6,6 +6,7 @@ aiosqlite==0.22.1
 alembic==1.12.1
 annotated-doc==0.0.4
 annotated-types==0.7.0
+anthropic==1.11.0
 anyio==4.12.1
 APScheduler==3.11.2
 asgiref==3.11.0
@@ -63,7 +64,7 @@ httpx-sse==0.4.3
 huggingface_hub==1.3.5
 humanfriendly==10.0
 hyperframe==6.1.0
-idna==3.11
+idna==3.20
 importlib_metadata==8.7.1
 importlib_resources==6.5.2
 iniconfig==2.3.0
@@ -81,10 +82,12 @@ jsonschema-specifications==2025.9.1
 keyring==25.7.0
 kubernetes==35.0.0
 langchain==1.2.12
+langchain-anthropic==1.7.5
 langchain-classic==1.0.3
 langchain-community==0.4.1
-langchain-core==1.2.19
+langchain-core==1.6.6
 langchain-openai==1.1.11
+langchain-protocol==0.0.19
 langchain-text-splitters==1.1.1
 langgraph==1.1.2
 langgraph-checkpoint==4.0.1
