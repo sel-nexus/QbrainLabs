@@ -68,12 +68,14 @@ test.describe('Admin Settings Page', () => {
         // Wait for settings to load
         await page.waitForTimeout(500);
 
-        // Find the first settings row that contains a toggle (boolean setting)
-        const row = page.locator('div').filter({ has: page.locator('button[class*="rounded-full"]') }).first();
+        // Find the first toggle button in the main settings area
+        const toggle = page.locator('main button[class*="rounded-full"]').first();
 
-        // Click toggle and Save within the same row
-        await row.locator('button[class*="rounded-full"]').click();
-        await row.locator('button:has-text("Save")').click();
+        // Click toggle
+        await toggle.click();
+
+        // Click Save
+        await page.locator('button:has-text("Save")').first().click();
 
         // Wait for success message
         await expect(page.locator('text=Updated')).toBeVisible({ timeout: 5000 });
