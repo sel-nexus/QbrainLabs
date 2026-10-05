@@ -123,6 +123,7 @@ User stories are organized into 11 logical groups based on feature domains. Each
 | US16 | AI Copilot Assistant | ✅ Implemented | 34 | [US16_ai_copilot_assistant.md](./04-ai-intelligence/US16_ai_copilot_assistant.md) |
 | US19 | AI Demo Sandbox | 📋 Backlog | 34 | [US19_ai_demo_sandbox.md](./04-ai-intelligence/US19_ai_demo_sandbox.md) |
 | US26 | Knowledge Base Research Refresh | ✅ Implemented | 8 | [US26_knowledge_base_research_refresh.md](./04-ai-intelligence/US26_knowledge_base_research_refresh.md) |
+| US46 | Configurable LLM Models | ✅ Implemented (Phase 1) | 13 | [US46_configurable_llm_models.md](./04-ai-intelligence/US46_configurable_llm_models.md) |
 
 **Notes:**
 - US07 provides RAG-powered use case enhancement (implemented)
