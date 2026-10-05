@@ -23,7 +23,7 @@ test.describe('Admin Settings Page', () => {
 
     test('should display settings page with categories', async ({ page }) => {
         // Check page title
-        await expect(page.locator('h1')).toContainText('System Settings');
+        await expect(page.locator('h2')).toContainText('System Settings');
 
         // Check category tabs exist
         await expect(page.locator('button:has-text("Rate Limiting")')).toBeVisible();
@@ -139,16 +139,18 @@ test.describe('Admin Panel Navigation', () => {
 
     test('should navigate to settings from admin panel', async ({ page }) => {
         // Click on System Settings in sidebar
-        await page.click('button:has-text("System Settings")');
+        await page.click('a:has-text("System Settings")');
+        await page.waitForURL('/admin/settings');
 
         // Verify navigation
         await expect(page).toHaveURL('/admin/settings');
-        await expect(page.locator('h1')).toContainText('System Settings');
+        await expect(page.locator('h2')).toContainText('System Settings');
     });
 
     test('should navigate to facilitators management', async ({ page }) => {
         // Click on Facilitators in sidebar
-        await page.click('button:has-text("Facilitators")');
+        await page.click('a:has-text("Facilitators")');
+        await page.waitForURL('/admin/facilitators');
 
         // Verify navigation
         await expect(page).toHaveURL('/admin/facilitators');
@@ -156,7 +158,8 @@ test.describe('Admin Panel Navigation', () => {
 
     test('should navigate to workshops management', async ({ page }) => {
         // Click on Workshops in sidebar
-        await page.click('button:has-text("Workshops")');
+        await page.click('a:has-text("Workshops")');
+        await page.waitForURL('/admin/workshops');
 
         // Verify navigation
         await expect(page).toHaveURL('/admin/workshops');
@@ -237,8 +240,8 @@ test.describe('Authentication and Authorization', () => {
         await page.click('button[type="submit"]');
         await page.waitForURL('/admin');
 
-        // Verify access to admin features
-        await expect(page.locator('text=Admin Panel')).toBeVisible();
+        // Verify admin page is accessible
+        await expect(page.locator('a:has-text("System Settings")')).toBeVisible();
 
         // Navigate to different admin pages
         await page.goto('/admin/settings');
@@ -288,7 +291,7 @@ test.describe('Responsive Design', () => {
         await page.waitForURL('/admin');
 
         // Check that page renders correctly
-        await expect(page.locator('h1')).toBeVisible();
+        await expect(page.locator('h2')).toBeVisible();
     });
 
     test('should display correctly on tablet', async ({ page }) => {
@@ -304,6 +307,6 @@ test.describe('Responsive Design', () => {
         await page.goto('/admin/settings');
 
         // Check that settings page renders correctly
-        await expect(page.locator('h1')).toBeVisible();
+        await expect(page.locator('h2')).toBeVisible();
     });
 });
