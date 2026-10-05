@@ -227,3 +227,60 @@ async def test_set_workshop_llm_models_forbidden_for_unrelated_facilitator(
         headers={"Authorization": f"Bearer {other_facilitator_token}"},
     )
     assert response.status_code == 403
+
+
+@pytest.mark.asyncio
+async def test_get_workshop_llm_models_resolves_deactivated_model_to_none(
+    client: AsyncClient,
+    admin_token: str,
+    workshop_id: str,
+    reasoning_model_id: str,
+):
+    set_response = await client.put(
+        f"/api/workshops/{workshop_id}/llm-models",
+        json={"reasoning_model_id": reasoning_model_id},
+        headers={"Authorization": f"Bearer {admin_token}"},
+    )
+    assert set_response.status_code == 200
+
+    deactivate_response = await client.put(
+        f"/api/admin/llm-models/{reasoning_model_id}",
+        json={"is_active": False},
+        headers={"Authorization": f"Bearer {admin_token}"},
+    )
+    assert deactivate_response.status_code == 200
+
+    get_response = await client.get(
+        f"/api/workshops/{workshop_id}/llm-models",
+        headers={"Authorization": f"Bearer {admin_token}"},
+    )
+    assert get_response.status_code == 200
+    assert get_response.json()["reasoning_model_id"] is None
+
+
+@pytest.mark.asyncio
+async def test_get_workshop_llm_models_resolves_deleted_model_to_none(
+    client: AsyncClient,
+    admin_token: str,
+    workshop_id: str,
+    reasoning_model_id: str,
+):
+    set_response = await client.put(
+        f"/api/workshops/{workshop_id}/llm-models",
+        json={"reasoning_model_id": reasoning_model_id},
+        headers={"Authorization": f"Bearer {admin_token}"},
+    )
+    assert set_response.status_code == 200
+
+    delete_response = await client.delete(
+        f"/api/admin/llm-models/{reasoning_model_id}",
+        headers={"Authorization": f"Bearer {admin_token}"},
+    )
+    assert delete_response.status_code == 204
+
+    get_response = await client.get(
+        f"/api/workshops/{workshop_id}/llm-models",
+        headers={"Authorization": f"Bearer {admin_token}"},
+    )
+    assert get_response.status_code == 200
+    assert get_response.json()["reasoning_model_id"] is None

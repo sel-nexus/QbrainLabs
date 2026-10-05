@@ -270,7 +270,9 @@ async def get_workshop_llm_models(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db),
 ):
-    """Get this workshop's selected embedding/decision/reasoning models, if any."""
+    """Get this workshop's selected embedding/decision/reasoning models, if any.
+    A stored id that no longer resolves to an active model config (deactivated
+    or deleted) resolves to None rather than being returned raw."""
     result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
     workshop = result.scalars().first()
     if not workshop:
@@ -279,10 +281,30 @@ async def get_workshop_llm_models(
     await _check_workshop_permission(workshop, current_user, db)
 
     config = workshop.config or {}
+    stored_ids = {
+        slot: config.get(slot)
+        for slot in ("embedding_model_id", "decision_model_id", "reasoning_model_id")
+        if config.get(slot)
+    }
+
+    valid_ids = set()
+    if stored_ids:
+        models_result = await db.execute(
+            select(LLMModelConfig.id).where(
+                LLMModelConfig.id.in_(stored_ids.values()),
+                LLMModelConfig.is_active == True,
+            )
+        )
+        valid_ids = {str(row[0]) for row in models_result.all()}
+
+    def _resolve(slot: str):
+        raw = stored_ids.get(slot)
+        return raw if raw and str(raw) in valid_ids else None
+
     return WorkshopLLMModelsResponse(
-        embedding_model_id=config.get("embedding_model_id"),
-        decision_model_id=config.get("decision_model_id"),
-        reasoning_model_id=config.get("reasoning_model_id"),
+        embedding_model_id=_resolve("embedding_model_id"),
+        decision_model_id=_resolve("decision_model_id"),
+        reasoning_model_id=_resolve("reasoning_model_id"),
     )
 
 
