@@ -117,13 +117,14 @@ app.include_router(usecases.router, prefix="/api/usecases", tags=["usecases"])
 app.include_router(votes.router, prefix="/api/votes", tags=["votes"])
 app.include_router(results.router, prefix="/api/results", tags=["results"])
 
-from app.api import ai, auth, admin, knowledge_base, surveys, participant_auth, analytics, export, organizations, marketplace, errors, facilitators, members, settings, subscription, rag_admin
+from app.api import ai, auth, admin, knowledge_base, surveys, participant_auth, analytics, export, organizations, marketplace, errors, facilitators, members, settings, subscription, rag_admin, llm_models
 app.include_router(ai.router, prefix="/api/ai", tags=["ai"])
 app.include_router(rag_admin.router, prefix="/api/knowledge-base", tags=["rag-admin"])
 app.include_router(errors.router, tags=["errors"])
 app.include_router(auth.router, tags=["authentication"])
 app.include_router(admin.router, tags=["admin"])
 app.include_router(settings.router, tags=["admin-settings"])
+app.include_router(llm_models.router, tags=["admin-llm-models"])
 app.include_router(subscription.router, tags=["admin-subscription"])
 app.include_router(knowledge_base.router, tags=["knowledge-base"])
 app.include_router(surveys.router, prefix="/api", tags=["surveys"])
