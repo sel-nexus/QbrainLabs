@@ -150,6 +150,19 @@ npm run test:e2e -- --project=webkit
 npm run test:e2e:debug
 ```
 
+### E2E Test Plan
+
+See `docs/testing/E2E_TEST_PLAN.md` for the full E2E architecture, scope, and
+out-of-scope list. Required environment variable before running
+`npm run test:e2e` locally:
+
+```bash
+export E2E_ADMIN_PASSWORD=<password for your local admin@qbrainlabs.com account>
+```
+
+Optional overrides: `E2E_ADMIN_EMAIL` (defaults to `admin@qbrainlabs.com`),
+`PLAYWRIGHT_API_URL` (defaults to `http://localhost:8000`).
+
 ### Test Structure
 
 ```
