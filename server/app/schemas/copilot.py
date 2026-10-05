@@ -62,6 +62,7 @@ class EnhanceContentRequest(BaseModel):
     """Request for enhancing use case content."""
     content: Dict[str, str]  # title, description, kpi
     context: Optional[Dict[str, str]] = None  # industry, workshop_goals
+    workshop_id: Optional[str] = None
 
 
 class VarianceAnalysisRequest(BaseModel):

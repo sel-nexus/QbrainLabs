@@ -84,7 +84,8 @@ class CopilotService:
         participants: List[Participant],
         use_cases: List[UseCase],
         votes: List[Vote],
-        settings: Optional[CopilotSettings] = None
+        settings: Optional[CopilotSettings] = None,
+        db=None
     ) -> List[Dict[str, Any]]:
         """
         Generate contextual suggestions based on workshop state.
@@ -115,7 +116,7 @@ class CopilotService:
         if not self.mock_mode:
             try:
                 ai_suggestions = await self._generate_ai_suggestions(
-                    workshop, participants, use_cases, votes, phase
+                    workshop, participants, use_cases, votes, phase, db=db
                 )
                 suggestions.extend(ai_suggestions)
             except Exception as e:
@@ -136,10 +137,16 @@ class CopilotService:
         participants: List[Participant],
         use_cases: List[UseCase],
         votes: List[Vote],
-        phase: str
+        phase: str,
+        db=None
     ) -> List[Dict[str, Any]]:
         """Generate high-level facilitation advice using LLM."""
         from langchain_core.messages import HumanMessage
+        from app.services.llm_resolver import resolve_chat_model
+
+        llm_to_use, model_name_for_tracking = await resolve_chat_model(
+            db, str(workshop.id), "reasoning", self.llm, getattr(self.llm, 'model_name', settings.OPENAI_MODEL)
+        )
         
         # Prepare context context
         active_participant_count = len([p for p in participants if p.role == "PARTICIPANT"])
@@ -175,7 +182,16 @@ class CopilotService:
         }}
         """
         
-        response = await self.llm.ainvoke([HumanMessage(content=prompt)])
+        response = await llm_to_use.ainvoke([HumanMessage(content=prompt)])
+
+        usage = get_usage_from_response(response, prompt_text=prompt)
+        await track_llm_usage(
+            feature="copilot_suggestions",
+            model_name=model_name_for_tracking,
+            prompt_tokens=usage["prompt"],
+            completion_tokens=usage["completion"],
+            workshop_id=str(workshop.id),
+        )
         content = response.content
         if "null" in content.lower() and len(content) < 10:
             return []
@@ -574,7 +590,8 @@ class CopilotService:
         data_type: str,
         participants: List[Participant],
         votes: List[Vote],
-        use_cases: List[UseCase]
+        use_cases: List[UseCase],
+        db=None
     ) -> List[Dict[str, Any]]:
         """
         Detect anomalies in workshop data.
@@ -583,10 +600,10 @@ class CopilotService:
         anomalies = []
         
         if data_type in ["votes", "all"]:
-            anomalies.extend(await self._detect_voting_anomalies(participants, votes))
+            anomalies.extend(await self._detect_voting_anomalies(participants, votes, workshop_id=workshop_id, db=db))
         
         if data_type in ["content", "all"]:
-            anomalies.extend(await self._detect_content_anomalies(use_cases))
+            anomalies.extend(await self._detect_content_anomalies(use_cases, workshop_id=workshop_id, db=db))
         
         if data_type in ["behavior", "all"]:
             anomalies.extend(await self._detect_behavior_anomalies(participants, votes, use_cases))
@@ -596,7 +613,9 @@ class CopilotService:
     async def _detect_voting_anomalies(
         self,
         participants: List[Participant],
-        votes: List[Vote]
+        votes: List[Vote],
+        workshop_id=None,
+        db=None
     ) -> List[Dict[str, Any]]:
         """
         Detect voting pattern anomalies using AI-powered analysis.
@@ -659,7 +678,7 @@ class CopilotService:
         
         # AI-powered group-level anomaly detection
         if not self.mock_mode and len(votes) >= 10:
-            group_anomalies = await self._detect_groupthink_and_bias(participants, votes)
+            group_anomalies = await self._detect_groupthink_and_bias(participants, votes, workshop_id=workshop_id, db=db)
             anomalies.extend(group_anomalies)
         else:
             # Fallback: Basic statistical groupthink detection
@@ -689,7 +708,9 @@ class CopilotService:
     async def _detect_groupthink_and_bias(
         self,
         participants: List[Participant],
-        votes: List[Vote]
+        votes: List[Vote],
+        workshop_id=None,
+        db=None
     ) -> List[Dict[str, Any]]:
         """
         Use AI to detect groupthink patterns and voting biases.
@@ -697,6 +718,11 @@ class CopilotService:
         """
         try:
             from langchain_core.messages import HumanMessage
+            from app.services.llm_resolver import resolve_chat_model
+
+            llm_to_use, model_name_for_tracking = await resolve_chat_model(
+                db, workshop_id, "decision", self.llm, getattr(self.llm, 'model_name', settings.OPENAI_MODEL)
+            )
             
             # Prepare voting data for analysis
             votes_by_participant: dict = {}
@@ -776,7 +802,16 @@ Return JSON array:
 
 If no significant anomalies, return empty array []."""
 
-            response = await self.llm.ainvoke([HumanMessage(content=prompt)])
+            response = await llm_to_use.ainvoke([HumanMessage(content=prompt)])
+
+            usage = get_usage_from_response(response, prompt_text=prompt)
+            await track_llm_usage(
+                feature="copilot_groupthink_detection",
+                model_name=model_name_for_tracking,
+                prompt_tokens=usage["prompt"],
+                completion_tokens=usage["completion"],
+                workshop_id=workshop_id,
+            )
             content = response.content
             
             # Clean JSON from markdown
@@ -817,7 +852,9 @@ If no significant anomalies, return empty array []."""
     
     async def _detect_content_anomalies(
         self,
-        use_cases: List[UseCase]
+        use_cases: List[UseCase],
+        workshop_id=None,
+        db=None
     ) -> List[Dict[str, Any]]:
         """
         Detect content-related anomalies using AI-powered semantic analysis.
@@ -827,7 +864,7 @@ If no significant anomalies, return empty array []."""
         
         # AI-powered semantic duplicate detection
         if not self.mock_mode and len(use_cases) >= 2:
-            semantic_duplicates = await self._detect_semantic_duplicates(use_cases)
+            semantic_duplicates = await self._detect_semantic_duplicates(use_cases, workshop_id=workshop_id, db=db)
             anomalies.extend(semantic_duplicates)
         else:
             # Fallback to keyword-based duplicate detection
@@ -858,7 +895,9 @@ If no significant anomalies, return empty array []."""
     
     async def _detect_semantic_duplicates(
         self,
-        use_cases: List[UseCase]
+        use_cases: List[UseCase],
+        workshop_id=None,
+        db=None
     ) -> List[Dict[str, Any]]:
         """
         Use AI to detect semantically similar use cases that may be duplicates.
@@ -869,6 +908,11 @@ If no significant anomalies, return empty array []."""
         
         try:
             from langchain_core.messages import HumanMessage
+            from app.services.llm_resolver import resolve_chat_model
+
+            llm_to_use, model_name_for_tracking = await resolve_chat_model(
+                db, workshop_id, "decision", self.llm, getattr(self.llm, 'model_name', settings.OPENAI_MODEL)
+            )
             
             # Prepare use case data for analysis
             use_case_data = []
@@ -910,7 +954,16 @@ Return JSON array:
 
 If no significant duplicates found, return empty array []."""
 
-            response = await self.llm.ainvoke([HumanMessage(content=prompt)])
+            response = await llm_to_use.ainvoke([HumanMessage(content=prompt)])
+
+            usage = get_usage_from_response(response, prompt_text=prompt)
+            await track_llm_usage(
+                feature="copilot_semantic_duplicates",
+                model_name=model_name_for_tracking,
+                prompt_tokens=usage["prompt"],
+                completion_tokens=usage["completion"],
+                workshop_id=workshop_id,
+            )
             content = response.content
             
             # Clean JSON from markdown
@@ -1000,7 +1053,8 @@ If no significant duplicates found, return empty array []."""
     async def generate_discussion_prompts(
         self,
         use_case: UseCase,
-        variance_data: Optional[Dict[str, Any]] = None
+        variance_data: Optional[Dict[str, Any]] = None,
+        db=None
     ) -> List[Dict[str, Any]]:
         """Generate AI-powered discussion prompts for a use case."""
         
@@ -1010,6 +1064,11 @@ If no significant duplicates found, return empty array []."""
         # Use AI to generate contextual prompts
         try:
             from langchain_core.messages import HumanMessage
+            from app.services.llm_resolver import resolve_chat_model
+
+            llm_to_use, model_name_for_tracking = await resolve_chat_model(
+                db, str(use_case.workshop_id), "reasoning", self.llm, getattr(self.llm, 'model_name', settings.OPENAI_MODEL)
+            )
             
             variance_context = ""
             if variance_data and variance_data.get('std_dev', 0) > 2:
@@ -1030,7 +1089,16 @@ If no significant duplicates found, return empty array []."""
             - "follow_up": A follow-up probe (e.g., "What if...")
             """
             
-            response = await self.llm.ainvoke([HumanMessage(content=prompt)])
+            response = await llm_to_use.ainvoke([HumanMessage(content=prompt)])
+
+            usage = get_usage_from_response(response, prompt_text=prompt)
+            await track_llm_usage(
+                feature="copilot_discussion_prompts",
+                model_name=model_name_for_tracking,
+                prompt_tokens=usage["prompt"],
+                completion_tokens=usage["completion"],
+                workshop_id=str(use_case.workshop_id),
+            )
             content = response.content
             
             if "```json" in content:
@@ -1051,7 +1119,8 @@ If no significant duplicates found, return empty array []."""
         votes: List[Vote],
         participants: List[Participant],
         format: str = "executive",
-        sections: Optional[List[str]] = None
+        sections: Optional[List[str]] = None,
+        db=None
     ) -> Dict[str, Any]:
         """Generate workshop summary in the specified format."""
         
@@ -1072,6 +1141,11 @@ If no significant duplicates found, return empty array []."""
         # Use AI to generate summary
         try:
             from langchain_core.messages import HumanMessage
+            from app.services.llm_resolver import resolve_chat_model
+
+            llm_to_use, model_name_for_tracking = await resolve_chat_model(
+                db, str(workshop.id), "reasoning", self.llm, getattr(self.llm, 'model_name', settings.OPENAI_MODEL)
+            )
             
             top_cases = scored_use_cases[:5] if scored_use_cases else []
             top_cases_summary = [{"title": uc.get("title"), "score": uc.get("avg_score")} for uc in top_cases]
@@ -1095,7 +1169,16 @@ If no significant duplicates found, return empty array []."""
             Ensure the tone is professional and actionable.
             """
             
-            response = await self.llm.ainvoke([HumanMessage(content=prompt)])
+            response = await llm_to_use.ainvoke([HumanMessage(content=prompt)])
+
+            usage = get_usage_from_response(response, prompt_text=prompt)
+            await track_llm_usage(
+                feature="copilot_summary",
+                model_name=model_name_for_tracking,
+                prompt_tokens=usage["prompt"],
+                completion_tokens=usage["completion"],
+                workshop_id=str(workshop.id),
+            )
             content = response.content
             
             if "```json" in content:
@@ -1464,7 +1547,9 @@ If no significant duplicates found, return empty array []."""
     async def enhance_content(
         self,
         content: Dict[str, str],
-        context: Optional[Dict[str, str]] = None
+        context: Optional[Dict[str, str]] = None,
+        workshop_id=None,
+        db=None
     ) -> Dict[str, Any]:
         """
         Enhance use case content with AI suggestions.
@@ -1474,7 +1559,7 @@ If no significant duplicates found, return empty array []."""
         
         # Use existing RAG service for enhancement
         text = f"{content.get('title', '')} {content.get('description', '')}"
-        enhanced = await rag_service.enhance_use_case(text)
+        enhanced = await rag_service.enhance_use_case(text, workshop_id=workshop_id, db=db)
         
         # Add quality scoring
         quality_score = self._calculate_quality_score(content)

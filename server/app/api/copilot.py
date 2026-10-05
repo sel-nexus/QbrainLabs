@@ -69,7 +69,8 @@ async def get_suggestions(
             participants=workshop.participants,
             use_cases=workshop.use_cases,
             votes=await _get_workshop_votes(request.workshop_id, db),
-            settings=settings
+            settings=settings,
+            db=db
         )
         
         # Store suggestions in database
@@ -283,7 +284,8 @@ async def get_discussion_prompts(
         # Generate prompts
         prompts = await copilot_service.generate_discussion_prompts(
             use_case=use_case,
-            variance_data=variance_data if variance_data.get("is_significant") else None
+            variance_data=variance_data if variance_data.get("is_significant") else None,
+            db=db
         )
         
         return DiscussionPromptsResponse(
@@ -312,7 +314,9 @@ async def enhance_content(
     try:
         result = await copilot_service.enhance_content(
             content=request.content,
-            context=request.context
+            context=request.context,
+            workshop_id=request.workshop_id,
+            db=db
         )
         
         return EnhanceContentResponse(
@@ -352,7 +356,8 @@ async def generate_summary(
             votes=votes,
             participants=workshop.participants,
             format=request.format.value,
-            sections=request.sections
+            sections=request.sections,
+            db=db
         )
         
         # Store summary in database
@@ -429,7 +434,8 @@ async def detect_anomalies(
             data_type=request.data_type.value,
             participants=workshop.participants,
             votes=votes,
-            use_cases=workshop.use_cases
+            use_cases=workshop.use_cases,
+            db=db
         )
         
         # Store significant anomalies
