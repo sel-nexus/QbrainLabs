@@ -6,6 +6,13 @@ import { api } from '../lib/api';
 import { toast } from 'sonner';
 import { Settings } from 'lucide-react';
 
+interface LLMModelOption {
+    id: string;
+    name: string;
+    role: 'embedding' | 'decision' | 'reasoning';
+    is_active: boolean;
+}
+
 interface WorkshopSettingsModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -24,6 +31,10 @@ export function WorkshopSettingsModal({ isOpen, onClose, workshop, onUpdate }: W
     const [description, setDescription] = useState(workshop.description || '');
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState<{ title?: string; description?: string }>({});
+    const [llmRegistry, setLlmRegistry] = useState<LLMModelOption[]>([]);
+    const [embeddingModelId, setEmbeddingModelId] = useState<string>('');
+    const [decisionModelId, setDecisionModelId] = useState<string>('');
+    const [reasoningModelId, setReasoningModelId] = useState<string>('');
 
     // Reset form when workshop changes
     useEffect(() => {
@@ -31,6 +42,25 @@ export function WorkshopSettingsModal({ isOpen, onClose, workshop, onUpdate }: W
         setDescription(workshop.description || '');
         setErrors({});
     }, [workshop]);
+
+    // Load LLM registry and workshop's current selection when modal opens
+    useEffect(() => {
+        if (!isOpen) return;
+
+        api.get('admin/llm-models').then((res) => {
+            setLlmRegistry(res.data.filter((m: LLMModelOption) => m.is_active));
+        }).catch((error) => {
+            console.error('Failed to load LLM model registry:', error);
+        });
+
+        api.get(`workshops/${workshop.id}/llm-models`).then((res) => {
+            setEmbeddingModelId(res.data.embedding_model_id || '');
+            setDecisionModelId(res.data.decision_model_id || '');
+            setReasoningModelId(res.data.reasoning_model_id || '');
+        }).catch((error) => {
+            console.error('Failed to load workshop LLM model selection:', error);
+        });
+    }, [isOpen, workshop.id]);
 
     const validate = () => {
         const newErrors: { title?: string; description?: string } = {};
@@ -61,6 +91,12 @@ export function WorkshopSettingsModal({ isOpen, onClose, workshop, onUpdate }: W
             await api.patch(`workshops/${workshop.id}`, {
                 title: title.trim(),
                 description: description.trim() || null,
+            });
+
+            await api.put(`workshops/${workshop.id}/llm-models`, {
+                embedding_model_id: embeddingModelId || null,
+                decision_model_id: decisionModelId || null,
+                reasoning_model_id: reasoningModelId || null,
             });
 
             toast.success('Workshop settings updated successfully');
@@ -156,6 +192,67 @@ export function WorkshopSettingsModal({ isOpen, onClose, workshop, onUpdate }: W
                         <p className="mt-1 text-xs contrast-muted">
                             {description.length}/1000 characters
                         </p>
+                    </div>
+                </div>
+
+                {/* AI Models Section */}
+                <div className="space-y-4 pt-4 border-t theme-border">
+                    <h4 className={`text-sm font-semibold ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                        AI Models
+                    </h4>
+
+                    <div>
+                        <label htmlFor="embedding-model" className="block text-sm font-medium mb-2">
+                            Embedding Model
+                        </label>
+                        <select
+                            id="embedding-model"
+                            aria-label="Embedding Model"
+                            value={embeddingModelId}
+                            onChange={(e) => setEmbeddingModelId(e.target.value)}
+                            className="w-full px-4 py-2 rounded-lg border"
+                        >
+                            <option value="">Use default</option>
+                            {llmRegistry.filter((m) => m.role === 'embedding').map((m) => (
+                                <option key={m.id} value={m.id}>{m.name}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label htmlFor="decision-model" className="block text-sm font-medium mb-2">
+                            Decision Model
+                        </label>
+                        <select
+                            id="decision-model"
+                            aria-label="Decision Model"
+                            value={decisionModelId}
+                            onChange={(e) => setDecisionModelId(e.target.value)}
+                            className="w-full px-4 py-2 rounded-lg border"
+                        >
+                            <option value="">Use default</option>
+                            {llmRegistry.filter((m) => m.role === 'decision').map((m) => (
+                                <option key={m.id} value={m.id}>{m.name}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div>
+                        <label htmlFor="reasoning-model" className="block text-sm font-medium mb-2">
+                            Reasoning Model
+                        </label>
+                        <select
+                            id="reasoning-model"
+                            aria-label="Reasoning Model"
+                            value={reasoningModelId}
+                            onChange={(e) => setReasoningModelId(e.target.value)}
+                            className="w-full px-4 py-2 rounded-lg border"
+                        >
+                            <option value="">Use default</option>
+                            {llmRegistry.filter((m) => m.role === 'reasoning').map((m) => (
+                                <option key={m.id} value={m.id}>{m.name}</option>
+                            ))}
+                        </select>
                     </div>
                 </div>
 
