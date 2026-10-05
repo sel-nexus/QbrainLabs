@@ -140,7 +140,7 @@ class RAGService:
             traceback.print_exc()
             self.mock_mode = True
 
-    async def enhance_use_case(self, text: str) -> Dict[str, Any]:
+    async def enhance_use_case(self, text: str, workshop_id: Optional[str] = None, db=None) -> Dict[str, Any]:
         """
         Refines the problem statement and suggests a solution/KPI.
         """
@@ -166,6 +166,10 @@ class RAGService:
         
         # Real Logic
         from langchain_core.messages import HumanMessage
+        from app.services.llm_resolver import resolve_chat_model
+        llm_to_use, model_name_for_tracking = await resolve_chat_model(
+            db, workshop_id, "reasoning", self.llm, getattr(self.llm, 'model_name', settings.OPENAI_MODEL)
+        )
         
         try:
             # 1. Retrieve context
@@ -192,13 +196,13 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
             
             # 3. Call LLM directly (not via chain)
             message = HumanMessage(content=prompt_text)
-            response = await self.llm.ainvoke([message])
+            response = await llm_to_use.ainvoke([message])
             
             # Track Usage
             usage = get_usage_from_response(response, prompt_text=prompt_text)
             await track_llm_usage(
                 feature="enhance",
-                model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
+                model_name=model_name_for_tracking,
                 prompt_tokens=usage["prompt"],
                 completion_tokens=usage["completion"]
             )
@@ -229,7 +233,7 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
             logger.error("rag_enhance_use_case_failed", error=str(e))
             raise
 
-    async def check_feasibility(self, solution_text: str) -> Dict[str, Any]:
+    async def check_feasibility(self, solution_text: str, workshop_id: Optional[str] = None, db=None) -> Dict[str, Any]:
         if self.mock_mode:
             score = random.choice(["High", "Medium", "Low"])
             reasons = {
@@ -244,6 +248,10 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
             }
             
         # Real Logic
+        from app.services.llm_resolver import resolve_chat_model
+        llm_to_use, model_name_for_tracking = await resolve_chat_model(
+            db, workshop_id, "decision", self.llm, getattr(self.llm, 'model_name', settings.OPENAI_MODEL)
+        )
         prompt = ChatPromptTemplate.from_template("""
         Assess the technical feasibility of this AI solution:
         "{solution}"
@@ -252,14 +260,14 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
         Return JSON: {{ "score": "High/Medium/Low", "reason": "One sentence explanation." }}
         """)
         
-        chain = prompt | self.llm
+        chain = prompt | llm_to_use
         response = await chain.ainvoke({"solution": solution_text})
         
         # Track Usage
         usage = get_usage_from_response(response, prompt_text=solution_text)
         await track_llm_usage(
             feature="feasibility",
-            model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
+            model_name=model_name_for_tracking,
             prompt_tokens=usage["prompt"],
             completion_tokens=usage["completion"]
         )
@@ -307,7 +315,7 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
             "message": f"Similar idea detected: '{best_match['title']}' ({int(highest_score*100)}% match)" if is_duplicate else None
         }
 
-    async def estimate_roi(self, use_case_title: str, use_case_desc: str, industry: str = None) -> Dict[str, Any]:
+    async def estimate_roi(self, use_case_title: str, use_case_desc: str, industry: str = None, workshop_id: Optional[str] = None, db=None) -> Dict[str, Any]:
         """
         AI-powered Robust ROI parameter estimation.
         Performs multi-step reasoning to identify cost drivers and benefit levers.
@@ -327,6 +335,10 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
             }
 
         from langchain_core.prompts import ChatPromptTemplate
+        from app.services.llm_resolver import resolve_chat_model
+        llm_to_use, model_name_for_tracking = await resolve_chat_model(
+            db, workshop_id, "reasoning", self.llm, getattr(self.llm, 'model_name', settings.OPENAI_MODEL)
+        )
         
         # Step 1: Analyze Cost Drivers & Benefit Levers
         analysis_prompt = ChatPromptTemplate.from_template("""
@@ -343,7 +355,7 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
         Return JSON: {{ "cost_drivers": [], "benefit_levers": [], "assumptions": [] }}
         """)
         
-        chain1 = analysis_prompt | self.llm
+        chain1 = analysis_prompt | llm_to_use
         analysis_res = await chain1.ainvoke({
             "title": use_case_title,
             "description": use_case_desc,
@@ -385,7 +397,7 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
         }}
         """)
 
-        chain2 = est_prompt | self.llm
+        chain2 = est_prompt | llm_to_use
         est_res = await chain2.ainvoke({
             "title": use_case_title,
             "drivers": ", ".join(analysis_data.get("cost_drivers", [])),
@@ -397,7 +409,7 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
         usage = get_usage_from_response(est_res, prompt_text=use_case_title)
         await track_llm_usage(
             feature="roi_robust",
-            model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
+            model_name=model_name_for_tracking,
             prompt_tokens=usage["prompt"],
             completion_tokens=usage["completion"]
         )
@@ -427,7 +439,7 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
             logger.warning("estimate_effort_parse_failed", error=str(e))
             return {"error": "Failed to parse estimate", "is_mock": False}
 
-    async def generate_business_case(self, use_case_data: Dict, roi_results: Dict) -> Dict[str, Any]:
+    async def generate_business_case(self, use_case_data: Dict, roi_results: Dict, workshop_id: Optional[str] = None, db=None) -> Dict[str, Any]:
         """Generates a comprehensive, professional Business Case narrative."""
         if self.mock_mode:
             return {
@@ -442,6 +454,10 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
             }
 
         from langchain_core.prompts import ChatPromptTemplate
+        from app.services.llm_resolver import resolve_chat_model
+        llm_to_use, model_name_for_tracking = await resolve_chat_model(
+            db, workshop_id, "reasoning", self.llm, getattr(self.llm, 'model_name', settings.OPENAI_MODEL)
+        )
         
         # Prepare financial context
         estimates = roi_results.get("estimates", {})
@@ -473,7 +489,7 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
         Ensure a professional, persuasive tone suitable for a CIO/CFO.
         """)
 
-        chain = prompt | self.llm
+        chain = prompt | llm_to_use
         response = await chain.ainvoke({
             "title": use_case_data.get("title"),
             "description": use_case_data.get("description"),
@@ -488,7 +504,7 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
         usage = get_usage_from_response(response, prompt_text=str(use_case_data.get("title", "")))
         await track_llm_usage(
             feature="business_case_full",
-            model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
+            model_name=model_name_for_tracking,
             prompt_tokens=usage["prompt"],
             completion_tokens=usage["completion"]
         )
@@ -546,7 +562,7 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
             logger.warning("executive_presentation_parse_failed", error=str(e))
             return {"error": "Failed to generate presentation"}
 
-    async def enhance_business_value(self, title: str, description: str, category: str = "Generative AI", current_kpi: str = None) -> Dict[str, Any]:
+    async def enhance_business_value(self, title: str, description: str, category: str = "Generative AI", current_kpi: str = None, workshop_id: Optional[str] = None, db=None) -> Dict[str, Any]:
         """
         Enhances the business value proposition with specific metrics, ROI indicators, and benchmarks.
         """
@@ -583,6 +599,10 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
         
         # Real LLM Logic
         from langchain_core.messages import HumanMessage
+        from app.services.llm_resolver import resolve_chat_model
+        llm_to_use, model_name_for_tracking = await resolve_chat_model(
+            db, workshop_id, "reasoning", self.llm, getattr(self.llm, 'model_name', settings.OPENAI_MODEL)
+        )
         
         try:
             prompt_text = f"""You are an expert Business Value Analyst specializing in AI/ML projects.
@@ -614,13 +634,13 @@ Return ONLY valid JSON in this exact format:
 }}"""
             
             message = HumanMessage(content=prompt_text)
-            response = await self.llm.ainvoke([message])
+            response = await llm_to_use.ainvoke([message])
 
             # Track usage
             usage = get_usage_from_response(response, prompt_text=prompt_text)
             await track_llm_usage(
                 feature="business_value",
-                model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
+                model_name=model_name_for_tracking,
                 prompt_tokens=usage["prompt"],
                 completion_tokens=usage["completion"],
             )
@@ -653,7 +673,7 @@ Return ONLY valid JSON in this exact format:
             logger.error("rag_enhance_business_value_failed", error=str(e))
             raise
 
-    async def analyze_technical_feasibility(self, title: str, description: str, proposed_solution: str) -> Dict[str, Any]:
+    async def analyze_technical_feasibility(self, title: str, description: str, proposed_solution: str, workshop_id: Optional[str] = None, db=None) -> Dict[str, Any]:
         """
         Generates a detailed technical analysis including architecture, stack, and risks.
         """
@@ -684,6 +704,10 @@ Return ONLY valid JSON in this exact format:
 
         # Real LLM Logic
         from langchain_core.messages import HumanMessage
+        from app.services.llm_resolver import resolve_chat_model
+        llm_to_use, model_name_for_tracking = await resolve_chat_model(
+            db, workshop_id, "reasoning", self.llm, getattr(self.llm, 'model_name', settings.OPENAI_MODEL)
+        )
         
         try:
             prompt_text = f"""You are an expert Chief Software Architect.
@@ -712,13 +736,13 @@ Return valid JSON:
 }}"""
             
             message = HumanMessage(content=prompt_text)
-            response = await self.llm.ainvoke([message])
+            response = await llm_to_use.ainvoke([message])
 
             # Track usage
             usage = get_usage_from_response(response, prompt_text=prompt_text)
             await track_llm_usage(
                 feature="technical",
-                model_name=getattr(self.llm, 'model_name', settings.OPENAI_MODEL),
+                model_name=model_name_for_tracking,
                 prompt_tokens=usage["prompt"],
                 completion_tokens=usage["completion"],
             )

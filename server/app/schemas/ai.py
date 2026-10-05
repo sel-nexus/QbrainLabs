@@ -3,6 +3,7 @@ from typing import Optional, Dict, Any, List
 
 class EnhanceRequest(BaseModel):
     text: str
+    workshop_id: Optional[str] = None
 
 class EnhanceResponse(BaseModel):
     refined_title: Optional[str] = None
@@ -16,6 +17,7 @@ class EnhanceResponse(BaseModel):
 
 class FeasibilityRequest(BaseModel):
     solution: str
+    workshop_id: Optional[str] = None
 
 class FeasibilityResponse(BaseModel):
     score: str
@@ -39,6 +41,7 @@ class BusinessValueRequest(BaseModel):
     description: str
     category: Optional[str] = "Generative AI"
     current_kpi: Optional[str] = None
+    workshop_id: Optional[str] = None
 
 class BusinessValueResponse(BaseModel):
     enhanced_kpi: str
@@ -58,6 +61,7 @@ class TechnicalAnalysisRequest(BaseModel):
     title: str
     description: str
     proposed_solution: str
+    workshop_id: Optional[str] = None
 
 class TechnicalAnalysisResponse(BaseModel):
     architecture_overview: str

@@ -20,9 +20,9 @@ from typing import List, Dict, Any
 router = APIRouter()
 
 @router.post("/enhance", response_model=EnhanceResponse)
-async def enhance_use_case(request: EnhanceRequest):
+async def enhance_use_case(request: EnhanceRequest, db: AsyncSession = Depends(get_db)):
     try:
-        result = await rag_service.enhance_use_case(request.text)
+        result = await rag_service.enhance_use_case(request.text, workshop_id=request.workshop_id, db=db)
         # Normalize keys if LLM returns short ones
         return EnhanceResponse(
             refined_title=result.get("title") or result.get("refined_title"),
@@ -35,9 +35,9 @@ async def enhance_use_case(request: EnhanceRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/feasibility", response_model=FeasibilityResponse)
-async def check_feasibility(request: FeasibilityRequest):
+async def check_feasibility(request: FeasibilityRequest, db: AsyncSession = Depends(get_db)):
     try:
-        result = await rag_service.check_feasibility(request.solution)
+        result = await rag_service.check_feasibility(request.solution, workshop_id=request.workshop_id, db=db)
         return FeasibilityResponse(
             score=result.get("score", "Unknown"),
             reason=result.get("reason", "Analysis failed"),
@@ -71,7 +71,7 @@ async def check_duplicates(
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/business-value", response_model=BusinessValueResponse)
-async def enhance_business_value(request: BusinessValueRequest):
+async def enhance_business_value(request: BusinessValueRequest, db: AsyncSession = Depends(get_db)):
     """
     Enhance the business value proposition with specific metrics, ROI indicators, and benchmarks.
     """
@@ -80,7 +80,9 @@ async def enhance_business_value(request: BusinessValueRequest):
             title=request.title,
             description=request.description,
             category=request.category,
-            current_kpi=request.current_kpi
+            current_kpi=request.current_kpi,
+            workshop_id=request.workshop_id,
+            db=db
         )
         return BusinessValueResponse(
             enhanced_kpi=result.get("enhanced_kpi", ""),
@@ -95,7 +97,7 @@ async def enhance_business_value(request: BusinessValueRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 @router.post("/technical-analysis", response_model=TechnicalAnalysisResponse)
-async def analyze_technical_feasibility(request: TechnicalAnalysisRequest):
+async def analyze_technical_feasibility(request: TechnicalAnalysisRequest, db: AsyncSession = Depends(get_db)):
     """
     Generate deep-dive technical analysis including architecture, stack, and risks.
     """
@@ -103,7 +105,9 @@ async def analyze_technical_feasibility(request: TechnicalAnalysisRequest):
         result = await rag_service.analyze_technical_feasibility(
             title=request.title,
             description=request.description,
-            proposed_solution=request.proposed_solution
+            proposed_solution=request.proposed_solution,
+            workshop_id=request.workshop_id,
+            db=db
         )
         return TechnicalAnalysisResponse(
             architecture_overview=result.get("architecture_overview", ""),

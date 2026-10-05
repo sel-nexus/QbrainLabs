@@ -178,9 +178,11 @@ async def estimate_roi_parameters(
 
     # Call AI Service
     estimates = await rag_service.estimate_roi(
-        use_case.title, 
-        use_case.description, 
-        req.industry
+        use_case.title,
+        use_case.description,
+        req.industry,
+        workshop_id=str(use_case.workshop_id),
+        db=db
     )
     
     return ROIEstimatesResponse(**estimates)
@@ -204,8 +206,10 @@ async def generate_business_case(
 
     # Generate content via AI
     content = await rag_service.generate_business_case(
-        use_case.__dict__, 
-        roi.results
+        use_case.__dict__,
+        roi.results,
+        workshop_id=str(use_case.workshop_id),
+        db=db
     )
     
     # Save to database
