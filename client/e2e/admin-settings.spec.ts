@@ -65,9 +65,8 @@ test.describe('Admin Settings Page', () => {
         // Click on Security category
         await page.click('button:has-text("Security")');
 
-        // Find a toggle switch within the first settings item (p-6 rounded-xl container)
-        const settingItem = page.locator('main').locator('div[class*="p-6"][class*="rounded-xl"]').first();
-        const toggle = settingItem.locator('button[class*="rounded-full"]');
+        // Find a toggle switch within the first settings item (scoped to settings list with space-y-4 class)
+        const toggle = page.locator('main').locator('div[class*="space-y-4"]').locator('div[class*="rounded-xl"]').first().locator('button[class*="rounded-full"]');
 
         // Click toggle
         await toggle.click();
