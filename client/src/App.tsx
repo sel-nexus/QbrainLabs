@@ -14,6 +14,7 @@ import { FacilitatorLogin } from './pages/FacilitatorLogin';
 import { FacilitatorDashboard } from './pages/FacilitatorDashboard';
 import { AdminPanel } from './pages/AdminPanel';
 import { AdminSettings } from './pages/AdminSettings';
+import { AdminLLMModels } from './pages/AdminLLMModels';
 import { AdminWorkshops } from './pages/AdminWorkshops';
 import { AdminUsers } from './pages/AdminUsers';
 import { AdminKnowledgeBase } from './pages/AdminKnowledgeBase';
@@ -129,6 +130,7 @@ function App() {
           {/* Admin Routes (Admin Only) */}
           <Route path="/admin" element={<PrivateRoute requireAdmin><AdminPanelLayout title="Dashboard"><AdminPanel /></AdminPanelLayout></PrivateRoute>} />
           <Route path="/admin/settings" element={<PrivateRoute requireAdmin><AdminSettings /></PrivateRoute>} />
+          <Route path="/admin/llm-models" element={<PrivateRoute requireAdmin><AdminLLMModels /></PrivateRoute>} />
           <Route path="/admin/workshops" element={<PrivateRoute requireAdmin><AdminWorkshops /></PrivateRoute>} />
           <Route path="/admin/users" element={<PrivateRoute requireAdmin><AdminUsers /></PrivateRoute>} />
           <Route path="/admin/facilitators" element={<PrivateRoute requireAdmin><FacilitatorManagement /></PrivateRoute>} />

@@ -7,7 +7,8 @@ import {
     Settings,
     Brain,
     Activity,
-    Lightbulb
+    Lightbulb,
+    Cpu
 } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { Header } from './Header';
@@ -33,6 +34,7 @@ export function AdminLayout({ children, title, actions }: AdminLayoutProps) {
         { path: '/admin/knowledge-base', label: t('admin.knowledgeBase.title'), icon: Brain },
         { path: '/admin/llm-usage', label: t('admin.llmUsage'), icon: Activity },
         { path: '/admin/settings', label: t('admin.systemSettings'), icon: Settings },
+        { path: '/admin/llm-models', label: 'LLM Models', icon: Cpu },
         { path: '/admin/my-workshops', label: t('admin.myWorkshops'), icon: FolderKanban },
     ];
 
