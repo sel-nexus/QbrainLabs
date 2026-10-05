@@ -166,8 +166,12 @@ python-json-logger==4.0.0
 python-multipart==0.0.22
 python-socketio==5.10.0
 pytz==2025.2
-pywin32==311
-pywin32-ctypes==0.2.3
+# Windows-only transitive deps (of keyring). Without these environment markers
+# `pip install -r requirements.txt` hard-fails on Linux/macOS with
+# "No matching distribution found for pywin32", which breaks both
+# server/Dockerfile's build and the CI backend-dependency install step.
+pywin32==311; sys_platform == "win32"
+pywin32-ctypes==0.2.3; sys_platform == "win32"
 PyYAML==6.0.3
 realtime==2.5.3
 redis==5.0.1

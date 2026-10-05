@@ -53,7 +53,22 @@ sio = socketio.AsyncServer(
     logger=False
 )
 
-socket_app = socketio.ASGIApp(sio, socketio_path='socket.io')
+# Client-visible Socket.IO path. Keep in sync with client/src/lib/socket.ts
+# (`path: '/ws/socket.io'`), client/vite.config.ts's `/ws` dev proxy, and
+# client/nginx.conf's `location /ws` - all three forward this path unchanged.
+#
+# This MUST be the full path including the "/ws" mount prefix, not a path
+# relative to it. engineio's ASGIApp matches on the raw `scope['path']` and is
+# root_path-unaware, while Starlette's Mount (>=0.33, i.e. every version this
+# project has ever pinned) advances `scope['root_path']` WITHOUT stripping
+# `scope['path']`. A sub-app mounted at "/ws" therefore still observes the full
+# "/ws/socket.io/..." path. With socketio_path='socket.io' the match
+# ('/ws/socket.io/'.startswith('/socket.io/')) failed, so engineio fell through
+# to its own not_found() handler: a 404 for polling, and a hard RuntimeError for
+# websocket upgrades (not_found() emits an HTTP response on a websocket scope).
+SOCKETIO_PATH = '/ws/socket.io'
+
+socket_app = socketio.ASGIApp(sio, socketio_path=SOCKETIO_PATH)
 
 class SocketManager:
     """Wrapper for Socket.io server to provide cleaner interface"""

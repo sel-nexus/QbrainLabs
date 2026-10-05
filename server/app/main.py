@@ -95,7 +95,9 @@ else:
     )
     logger.info(f"Using standard CORS middleware with origins: {cors_origins}")
 
-# Mount Socket.IO
+# Mount Socket.IO. Starlette does not strip the mount prefix from scope['path'],
+# so socket_app is configured with the full SOCKETIO_PATH ('/ws/socket.io') -
+# see the comment in app/core/socket_manager.py before changing this prefix.
 app.mount("/ws", socket_app)
 
 # Mount Static Files for Reports
