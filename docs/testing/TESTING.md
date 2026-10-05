@@ -172,6 +172,9 @@ client/
 │   ├── test-utils.tsx               # Testing utilities
 │   └── AdminSettings.test.tsx       # Component unit tests
 └── e2e/
+    ├── auth.spec.ts                 # Login, route guard E2E tests
+    ├── workshop-lifecycle.spec.ts   # Workshop creation/phase E2E tests
+    ├── participant-flow.spec.ts     # Participant join/scoring E2E tests
     └── admin-settings.spec.ts       # E2E tests
 ```
 

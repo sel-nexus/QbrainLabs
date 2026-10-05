@@ -3,7 +3,6 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { ADMIN_EMAIL, ADMIN_PASSWORD } from './support/credentials';
-import { createFixtureWorkshop } from './support/api';
 
 // client/package.json sets "type": "module", so this file runs as an ESM module
 // under Playwright's loader - `__dirname` is not defined there, unlike CJS.
@@ -47,10 +46,4 @@ export default async function globalSetup(): Promise<void> {
 
     await page.context().storageState({ path: path.join(AUTH_DIR, 'admin-state.json') });
     await browser.close();
-
-    const workshop = await createFixtureWorkshop(API_URL, token);
-    fs.writeFileSync(
-        path.join(AUTH_DIR, 'fixture.json'),
-        JSON.stringify({ workshopId: workshop.id, pin: workshop.pin }, null, 2)
-    );
 }

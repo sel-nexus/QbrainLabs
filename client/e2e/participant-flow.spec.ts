@@ -1,14 +1,13 @@
 import { test, expect } from '@playwright/test';
-import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createFixtureWorkshop } from './support/api';
 
 // client/package.json sets "type": "module", so this file runs as an ESM module
 // under Playwright's loader - `__dirname` is not defined there, unlike CJS.
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const fixturePath = path.join(__dirname, '.auth', 'fixture.json');
-const fixture: { workshopId: string; pin: string } = JSON.parse(fs.readFileSync(fixturePath, 'utf-8'));
+const API_URL = process.env.PLAYWRIGHT_API_URL || 'http://localhost:8000';
 const adminStatePath = path.join(__dirname, '.auth', 'admin-state.json');
 
 test('participant joins, submits a use case, votes, and it appears on the matrix', async ({ browser }) => {
@@ -17,9 +16,21 @@ test('participant joins, submits a use case, votes, and it appears on the matrix
     const adminPage = await adminContext.newPage();
     const participantPage = await participantContext.newPage();
 
+    // storageState only restores cookies/localStorage once a page has navigated to the
+    // matching origin, so load the app first before reading the token out of localStorage.
+    await adminPage.goto('/');
+    const token = await adminPage.evaluate(() => localStorage.getItem('hm_auth_token'));
+    if (!token) {
+        throw new Error('Admin storageState did not restore an auth token under "hm_auth_token".');
+    }
+
+    // Create a fresh fixture workshop for this test run so concurrent projects/retries
+    // never share (and fight over) the same workshop's lifecycle state.
+    const fixture = await createFixtureWorkshop(API_URL, token);
+
     const useCaseTitle = `E2E Use Case ${Date.now()}`;
 
-    await adminPage.goto(`/workshop/${fixture.workshopId}`);
+    await adminPage.goto(`/workshop/${fixture.id}`);
     await expect(adminPage.getByText('INTAKE', { exact: true })).toBeVisible();
 
     await participantPage.goto('/join');

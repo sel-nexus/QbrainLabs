@@ -110,8 +110,10 @@ The Qbrain AI Labs application has achieved **Full Feature Completion** with all
 ### E2E Tests (Playwright)
 | Spec | Coverage |
 |------|----------|
-| auth.spec.ts | Login, signup, logout flows |
-| workshop.spec.ts | Workshop creation, participation |
+| auth.spec.ts | Login, route guards |
+| workshop-lifecycle.spec.ts | Workshop creation, participation |
+| participant-flow.spec.ts | Participant join, intake, scoring, matrix |
+| admin-settings.spec.ts | Admin settings, facilitator management |
 
 ### Known Issues
 - **AI Mock Mode:** Operating without OpenAI API key (non-blocking)

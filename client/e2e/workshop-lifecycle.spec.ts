@@ -1,13 +1,9 @@
 import { test, expect } from '@playwright/test';
-import { ADMIN_EMAIL, ADMIN_PASSWORD } from './support/credentials';
+import { loginAsAdmin } from './support/auth';
 
 test.describe('Workshop Lifecycle', () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto('/facilitator-login');
-        await page.getByPlaceholder('you@example.com').fill(ADMIN_EMAIL);
-        await page.getByPlaceholder('Enter your password').fill(ADMIN_PASSWORD);
-        await page.locator('form button[type="submit"]').click();
-        await page.waitForURL(/\/admin/);
+        await loginAsAdmin(page);
     });
 
     test('creates a workshop and advances it through every phase', async ({ page }) => {

@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { ADMIN_EMAIL, ADMIN_PASSWORD } from './support/credentials';
+import { loginAsAdmin } from './support/auth';
 
 /**
  * E2E Tests for Admin Settings Page
@@ -8,14 +8,7 @@ import { ADMIN_EMAIL, ADMIN_PASSWORD } from './support/credentials';
 
 test.describe('Admin Settings Page', () => {
     test.beforeEach(async ({ page }) => {
-        // Login as admin
-        await page.goto('/facilitator-login');
-        await page.fill('input[type="email"]', ADMIN_EMAIL);
-        await page.fill('input[type="password"]', ADMIN_PASSWORD);
-        await page.click('button[type="submit"]');
-
-        // Wait for redirect to admin panel
-        await page.waitForURL('/admin');
+        await loginAsAdmin(page);
 
         // Navigate to settings
         await page.goto('/admin/settings');
@@ -138,12 +131,7 @@ test.describe('Admin Settings Page', () => {
 
 test.describe('Admin Panel Navigation', () => {
     test.beforeEach(async ({ page }) => {
-        // Login as admin
-        await page.goto('/facilitator-login');
-        await page.fill('input[type="email"]', ADMIN_EMAIL);
-        await page.fill('input[type="password"]', ADMIN_PASSWORD);
-        await page.click('button[type="submit"]');
-        await page.waitForURL('/admin');
+        await loginAsAdmin(page);
     });
 
     test('should navigate to settings from admin panel', async ({ page }) => {
@@ -177,12 +165,7 @@ test.describe('Admin Panel Navigation', () => {
 
 test.describe('Facilitator Management', () => {
     test.beforeEach(async ({ page }) => {
-        // Login as admin
-        await page.goto('/facilitator-login');
-        await page.fill('input[type="email"]', ADMIN_EMAIL);
-        await page.fill('input[type="password"]', ADMIN_PASSWORD);
-        await page.click('button[type="submit"]');
-        await page.waitForURL('/admin');
+        await loginAsAdmin(page);
 
         // Navigate to facilitators
         await page.goto('/admin/facilitators');
@@ -242,12 +225,7 @@ test.describe('Authentication and Authorization', () => {
     });
 
     test('should allow admin to access all admin features', async ({ page }) => {
-        // Login as admin
-        await page.goto('/facilitator-login');
-        await page.fill('input[type="email"]', ADMIN_EMAIL);
-        await page.fill('input[type="password"]', ADMIN_PASSWORD);
-        await page.click('button[type="submit"]');
-        await page.waitForURL('/admin');
+        await loginAsAdmin(page);
 
         // Verify admin page is accessible
         await expect(page.locator('a:has-text("System Settings")')).toBeVisible();
@@ -293,11 +271,7 @@ test.describe('Responsive Design', () => {
         await page.setViewportSize({ width: 375, height: 667 });
 
         // Navigate to admin panel
-        await page.goto('/facilitator-login');
-        await page.fill('input[type="email"]', ADMIN_EMAIL);
-        await page.fill('input[type="password"]', ADMIN_PASSWORD);
-        await page.click('button[type="submit"]');
-        await page.waitForURL('/admin');
+        await loginAsAdmin(page);
 
         // Check that page renders correctly
         await expect(page.locator('h2')).toBeVisible();
@@ -307,11 +281,7 @@ test.describe('Responsive Design', () => {
         // Set tablet viewport
         await page.setViewportSize({ width: 768, height: 1024 });
 
-        await page.goto('/facilitator-login');
-        await page.fill('input[type="email"]', ADMIN_EMAIL);
-        await page.fill('input[type="password"]', ADMIN_PASSWORD);
-        await page.click('button[type="submit"]');
-        await page.waitForURL('/admin');
+        await loginAsAdmin(page);
 
         await page.goto('/admin/settings');
 

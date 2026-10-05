@@ -127,14 +127,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       
-      - name: Run database migrations
-        env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/hotspot_matrix_test
-        run: |
-          cd server
-          python migrations/us32_facilitator_approval.py
-          python migrations/us33_subscription_kb.py
-
       - name: Seed database
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/hotspot_matrix_test
@@ -146,6 +138,7 @@ jobs:
       - name: Start backend server
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/hotspot_matrix_test
+          RATE_LIMIT_REQUESTS: "1000000"
         run: |
           cd server
           uvicorn app.main:app --host 0.0.0.0 --port 8000 &
@@ -178,7 +171,7 @@ jobs:
           E2E_ADMIN_PASSWORD: ${{ env.E2E_ADMIN_PASSWORD }}
         run: |
           cd client
-          npm run test:e2e
+          npx playwright test --project=chromium --project=firefox
       
       - name: Upload Playwright report
         if: always()
