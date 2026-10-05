@@ -96,7 +96,7 @@ async def update_llm_model(
         config.model_name = payload.model_name
     if payload.config_json is not None:
         config.config_json = payload.config_json
-    if payload.api_key is not None:
+    if payload.api_key:
         config.encrypted_api_key = encrypt_secret(payload.api_key)
     if payload.is_active is not None:
         config.is_active = payload.is_active

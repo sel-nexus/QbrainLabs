@@ -35,7 +35,7 @@ class LLMModelConfig(Base):
     provider = Column(String(50), nullable=False)
     role = Column(String(50), nullable=False)
     model_name = Column(String(200), nullable=False)
-    config_json = Column(JSONType, default={})
+    config_json = Column(JSONType, default=dict, nullable=False)
     encrypted_api_key = Column(String, nullable=True)
     is_active = Column(Boolean, default=True, nullable=False)
     created_by = Column(GUID(), ForeignKey("users.id"), nullable=False)
