@@ -10,6 +10,9 @@ class Criterion(BaseModel):
 class WorkshopConfig(BaseModel):
     criteria: List[Criterion]
     template_id: Optional[str] = None
+    embedding_model_id: Optional[UUID] = None
+    decision_model_id: Optional[UUID] = None
+    reasoning_model_id: Optional[UUID] = None
 
     @validator('criteria')
     def validate_weights(cls, v):

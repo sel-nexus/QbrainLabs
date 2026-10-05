@@ -7,6 +7,8 @@ from app.models import Workshop, User, Participant, ParticipantRole, WorkshopSta
 from app.models.rbac import WorkshopFacilitator
 from app.schemas.workshop import WorkshopCreate, WorkshopResponse, PendingFacilitator
 from app.api.auth import get_current_user, oauth2_scheme, get_current_user_optional
+from app.models.llm_model import LLMModelConfig, LLMRole
+from app.schemas.workshop_actions import WorkshopLLMModelsUpdate, WorkshopLLMModelsResponse
 from typing import Optional
 import random
 import string
@@ -244,5 +246,86 @@ async def update_workshop(
         'title': workshop.title,
         'description': workshop.config.get('description') if workshop.config else None
     }, room=str(workshop.id))
-    
+
     return workshop
+
+
+_LLM_SLOT_ROLES = {
+    "embedding_model_id": LLMRole.EMBEDDING.value,
+    "decision_model_id": LLMRole.DECISION.value,
+    "reasoning_model_id": LLMRole.REASONING.value,
+}
+
+
+@router.get("/{workshop_id}/llm-models", response_model=WorkshopLLMModelsResponse)
+async def get_workshop_llm_models(
+    workshop_id: str,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Get this workshop's selected embedding/decision/reasoning models, if any."""
+    result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
+    workshop = result.scalars().first()
+    if not workshop:
+        raise HTTPException(status_code=404, detail="Workshop not found")
+
+    config = workshop.config or {}
+    return WorkshopLLMModelsResponse(
+        embedding_model_id=config.get("embedding_model_id"),
+        decision_model_id=config.get("decision_model_id"),
+        reasoning_model_id=config.get("reasoning_model_id"),
+    )
+
+
+@router.put("/{workshop_id}/llm-models", response_model=WorkshopLLMModelsResponse)
+async def set_workshop_llm_models(
+    workshop_id: str,
+    payload: WorkshopLLMModelsUpdate,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Set this workshop's embedding/decision/reasoning model selection.
+    Requires authentication only (facilitator only), matching the existing
+    phase/active_card endpoints in this file."""
+    result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
+    workshop = result.scalars().first()
+    if not workshop:
+        raise HTTPException(status_code=404, detail="Workshop not found")
+
+    selections = {
+        "embedding_model_id": payload.embedding_model_id,
+        "decision_model_id": payload.decision_model_id,
+        "reasoning_model_id": payload.reasoning_model_id,
+    }
+
+    for slot, model_id in selections.items():
+        if model_id is None:
+            continue
+        expected_role = _LLM_SLOT_ROLES[slot]
+        model_result = await db.execute(
+            select(LLMModelConfig).where(LLMModelConfig.id == model_id)
+        )
+        model_config = model_result.scalars().first()
+        if not model_config:
+            raise HTTPException(status_code=404, detail=f"LLM model config not found for {slot}")
+        if not model_config.is_active:
+            raise HTTPException(status_code=400, detail=f"LLM model config for {slot} is not active")
+        if model_config.role != expected_role:
+            raise HTTPException(
+                status_code=400,
+                detail=f"LLM model config for {slot} has role '{model_config.role}', expected '{expected_role}'",
+            )
+
+    new_config = dict(workshop.config or {})
+    for slot, model_id in selections.items():
+        new_config[slot] = str(model_id) if model_id else None
+    workshop.config = new_config
+
+    await db.commit()
+    await db.refresh(workshop)
+
+    return WorkshopLLMModelsResponse(
+        embedding_model_id=selections["embedding_model_id"],
+        decision_model_id=selections["decision_model_id"],
+        reasoning_model_id=selections["reasoning_model_id"],
+    )
