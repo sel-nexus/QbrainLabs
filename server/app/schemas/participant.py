@@ -7,6 +7,10 @@ class JoinRequest(BaseModel):
     pin: str
     display_name: str
     role: Optional[str] = "PARTICIPANT" # PARTICIPANT or FACILITATOR
+    # Participant ids this device has used before. If one belongs to this
+    # workshop under the same display name, that identity is resumed (keeps
+    # ownership of submitted use cases and votes) instead of creating a new one.
+    resume_participant_ids: Optional[List[UUID]] = None
 
 
 class UseCaseSummary(BaseModel):

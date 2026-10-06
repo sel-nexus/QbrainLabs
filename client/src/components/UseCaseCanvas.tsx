@@ -9,9 +9,13 @@ import { PointsAnimation } from './gamification/PointsAnimation';
 interface UseCaseCanvasProps {
     session: any;
     onSuccess?: () => void;
+    onDirtyChange?: (dirty: boolean) => void;
 }
 
-export function UseCaseCanvas({ session, onSuccess }: UseCaseCanvasProps) {
+const useCaseDraftKey = (session: { workshopId: string; participantId: string }) =>
+    `hm_uc_draft:${session.workshopId}:${session.participantId}`;
+
+export function UseCaseCanvas({ session, onSuccess, onDirtyChange }: UseCaseCanvasProps) {
     const [pointsEarned, setPointsEarned] = useState<number | null>(null);
 
     const handleSubmit = async (data: UseCaseData) => {
@@ -68,6 +72,8 @@ export function UseCaseCanvas({ session, onSuccess }: UseCaseCanvasProps) {
                 <UseCaseForm
                     workshopId={session.workshopId}
                     onSubmit={handleSubmit}
+                    draftKey={useCaseDraftKey(session)}
+                    onDirtyChange={onDirtyChange}
                 />
             </motion.div>
         </div>

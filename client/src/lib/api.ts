@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { API_BASE_URL } from './config';
+import { apiErrorText } from './apiErrors';
+import { AUTH_EXPIRED_EVENT } from './authEvents';
 
 const TOKEN_KEY = 'hm_auth_token';
 const PARTICIPANT_TOKEN_KEY = 'participant_token';
@@ -59,6 +61,27 @@ api.interceptors.response.use(
         return response;
     },
     (error) => {
+        // The backend's error envelope is {success:false, error:{message,...}};
+        // existing call sites read response.data.detail, so expose the real
+        // message there (never overwrite a detail the server did send).
+        const data = error.response?.data;
+        if (data && typeof data === 'object' && !(data as { detail?: unknown }).detail) {
+            const text = apiErrorText(data);
+            if (text) (data as { detail?: string }).detail = text;
+        }
+
+        // An expired/revoked facilitator token: let AuthContext sign the user
+        // out (route guards then send them to login with a return URL).
+        // Login/registration requests are excluded; their 401 means bad credentials.
+        if (error.response?.status === 401) {
+            const stored = localStorage.getItem(TOKEN_KEY);
+            const sent = String(error.config?.headers?.Authorization || '');
+            const isAuthRequest = /(^|\/)auth\/(login|register)\b/.test(String(error.config?.url || ''));
+            if (stored && sent === `Bearer ${stored}` && !isAuthRequest) {
+                window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT));
+            }
+        }
+
         // Handle network errors (no response from server)
         if (!error.response) {
             if (error.code === 'ECONNABORTED' || error.message.includes('timeout')) {

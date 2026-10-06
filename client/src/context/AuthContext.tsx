@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 import { API_BASE_URL as API_BASE } from '../lib/config';
+import { AUTH_EXPIRED_EVENT } from '../lib/authEvents';
+import { toast } from 'sonner';
 
 
 export type UserRole = 'admin' | 'facilitator' | 'member';
@@ -301,6 +303,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       showChangePasswordDialog: false,
     });
   }, [state.token]);
+
+  // Session expired (any API call returned 401 for our token): sign out
+  // locally and tell the user why, instead of a generic error per screen.
+  useEffect(() => {
+    const onExpired = () => {
+      if (!localStorage.getItem(TOKEN_KEY)) return;
+      localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem(USER_KEY);
+      setState(prev => ({ ...prev, user: null, token: null, isAuthenticated: false, assignedWorkshops: [] }));
+      toast.error('Your session has expired. Please sign in again.', { id: 'session-expired' });
+    };
+    window.addEventListener(AUTH_EXPIRED_EVENT, onExpired);
+    return () => window.removeEventListener(AUTH_EXPIRED_EVENT, onExpired);
+  }, []);
 
   const joinWorkshop = useCallback(async (pin: string, displayName: string): Promise<MemberSession> => {
     const response = await fetch(`${API_BASE}/api/member/join`, {

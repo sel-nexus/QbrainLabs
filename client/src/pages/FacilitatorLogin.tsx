@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { useAuth } from '../context/AuthContext';
 import { API_BASE_URL } from '../lib/config';
 import { LayoutDashboard } from 'lucide-react';
+import { apiErrorText } from '../lib/apiErrors';
 
 export function FacilitatorLogin() {
     const navigate = useNavigate();
+    const location = useLocation();
+    const returnTo = (location.state as { from?: string } | null)?.from;
     const { login, isAuthenticated, isLoading, user } = useAuth();
     const [isLogin, setIsLogin] = useState(true);
     const [formData, setFormData] = useState({
@@ -20,13 +23,15 @@ export function FacilitatorLogin() {
 
     useEffect(() => {
         if (!isLoading && isAuthenticated) {
-            if (user?.is_admin) {
+            if (returnTo && returnTo.startsWith('/') && !returnTo.startsWith('//') && returnTo !== '/facilitator-login') {
+                navigate(returnTo, { replace: true });
+            } else if (user?.is_admin) {
                 navigate('/admin', { replace: true });
             } else {
                 navigate('/facilitator/dashboard', { replace: true });
             }
         }
-    }, [isAuthenticated, isLoading, user, navigate]);
+    }, [isAuthenticated, isLoading, user, navigate, returnTo]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -55,7 +60,7 @@ export function FacilitatorLogin() {
 
                 if (!response.ok) {
                     const error = await response.json();
-                    throw new Error(error.detail || 'Signup failed');
+                    throw new Error(apiErrorText(error) || 'Signup failed');
                 }
 
                 toast.success("Account created! Your registration is pending admin approval. You'll receive an email when your account is activated.");

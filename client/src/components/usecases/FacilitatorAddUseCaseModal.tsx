@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { useAuth } from '../../context/AuthContext';
 import { API_BASE_URL } from '../../lib/config';
 import { api } from '../../lib/api';
+import { apiErrorText } from '../../lib/apiErrors';
 
 const API_BASE = API_BASE_URL;
 
@@ -193,7 +194,7 @@ export function FacilitatorAddUseCaseModal({
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        throw new Error(err.detail || 'Failed to submit use case');
+        throw new Error(apiErrorText(err) || 'Failed to submit use case');
       }
 
       const result = await res.json();

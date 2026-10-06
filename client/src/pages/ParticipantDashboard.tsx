@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { socket } from '../lib/socket';
 import { useSession } from '../context/SessionContext';
@@ -70,6 +70,17 @@ export function ParticipantDashboard() {
     const [activeModal, setActiveModal] = useState<ActiveModal>(null);
     const [activeSurveyId, setActiveSurveyId] = useState<string | null>(null);
     const [selectedUseCase, setSelectedUseCase] = useState<UseCase | null>(null);
+    // While the participant is writing a use case, a phase change must not
+    // navigate away; we show a banner and continue once they're done.
+    const [scoringStartedWhileWriting, setScoringStartedWhileWriting] = useState(false);
+    const writingRef = useRef(false);
+    const activeModalRef = useRef<ActiveModal>(null);
+    useEffect(() => {
+        activeModalRef.current = activeModal;
+    }, [activeModal]);
+    const handleDraftDirtyChange = useCallback((dirty: boolean) => {
+        writingRef.current = dirty;
+    }, []);
 
     const fetchSessionInfo = async () => {
         if (!session?.participantId || !session?.workshopId) {
@@ -119,7 +130,11 @@ export function ParticipantDashboard() {
             console.log("State changed:", data);
             fetchSessionInfo();
             if (data.phase === 'SCORING') {
-                navigate('/scoring');
+                if (activeModalRef.current === 'usecase' && writingRef.current) {
+                    setScoringStartedWhileWriting(true);
+                } else {
+                    navigate('/scoring');
+                }
             }
         };
 
@@ -135,12 +150,16 @@ export function ParticipantDashboard() {
         const onUseCaseAdded = () => fetchSessionInfo();
         const onSurveyUpdate = () => fetchSessionInfo();
 
+        // After a dropped connection, pick up anything missed while offline.
+        const onReconnect = () => fetchSessionInfo();
+        socket.on('connect', onReconnect);
         socket.on('workshop_state_change', onStateChange);
         socket.on('participant_role_update', onRoleUpdate);
         socket.on('use_case_added', onUseCaseAdded);
         socket.on('survey_status_changed', onSurveyUpdate);
 
         return () => {
+            socket.off('connect', onReconnect);
             socket.off('workshop_state_change', onStateChange);
             socket.off('participant_role_update', onRoleUpdate);
             socket.off('use_case_added', onUseCaseAdded);
@@ -177,6 +196,12 @@ export function ParticipantDashboard() {
     };
 
     const handleModalClose = () => {
+        if (scoringStartedWhileWriting) {
+            // The draft (if any) stays saved; continue to the live scoring.
+            setScoringStartedWhileWriting(false);
+            navigate('/scoring');
+            return;
+        }
         setActiveModal(null);
         setActiveSurveyId(null);
         fetchSessionInfo();
@@ -436,11 +461,21 @@ export function ParticipantDashboard() {
                     <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl theme-bg-primary">
                         <button
                             onClick={handleModalClose}
+                            aria-label="Close (your draft is saved)"
                             className="absolute top-4 right-4 z-10 p-2 rounded-lg transition theme-text-secondary hover:theme-bg-tertiary hover:theme-text-primary"
                         >
                             <X className="w-5 h-5" />
                         </button>
-                        <UseCaseCanvas session={session} onSuccess={handleModalClose} />
+                        {scoringStartedWhileWriting && (
+                            <div role="alert" className="mx-4 mt-4 rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm theme-text-primary">
+                                <p className="font-medium">The facilitator has started scoring.</p>
+                                <p className="mt-1 contrast-muted">Finish and submit your use case — your draft is saved — then you'll go to scoring.</p>
+                                <button type="button" onClick={handleModalClose} className="mt-2 text-brand-violet underline">
+                                    Go to scoring now (keep my draft)
+                                </button>
+                            </div>
+                        )}
+                        <UseCaseCanvas session={session} onSuccess={handleModalClose} onDirtyChange={handleDraftDirtyChange} />
                     </div>
                 </div>
             )}

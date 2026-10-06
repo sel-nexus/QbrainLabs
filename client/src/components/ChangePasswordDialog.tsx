@@ -3,6 +3,7 @@ import { toast } from 'sonner';
 import { X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { API_BASE_URL } from '../lib/config';
+import { apiErrorText } from '../lib/apiErrors';
 
 interface ChangePasswordDialogProps {
     onClose: () => void;
@@ -49,7 +50,7 @@ export function ChangePasswordDialog({ onClose }: ChangePasswordDialogProps) {
 
             if (!response.ok) {
                 const error = await response.json();
-                throw new Error(error.detail || 'Failed to change password');
+                throw new Error(apiErrorText(error) || 'Failed to change password');
             }
 
             toast.success('Password changed successfully!');

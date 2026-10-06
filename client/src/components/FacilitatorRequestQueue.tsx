@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 
 import { API_BASE_URL } from '../lib/config';
+import { apiErrorText } from '../lib/apiErrors';
 
 const API_BASE = API_BASE_URL;
 
@@ -98,7 +99,7 @@ export function FacilitatorRequestQueue({ onRefresh }: Props) {
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.detail || 'Failed to approve');
+        throw new Error(apiErrorText(error) || 'Failed to approve');
       }
 
       toast.success('Facilitator access approved');
@@ -125,7 +126,7 @@ export function FacilitatorRequestQueue({ onRefresh }: Props) {
 
       if (!response.ok) {
         const error = await response.json();
-        throw new Error(error.detail || 'Failed to reject');
+        throw new Error(apiErrorText(error) || 'Failed to reject');
       }
 
       toast.success('Facilitator access rejected');

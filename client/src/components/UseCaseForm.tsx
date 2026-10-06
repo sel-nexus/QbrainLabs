@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from './ui/Button';
 import { Input } from './ui/Input';
 import { api } from '../lib/api';
@@ -7,6 +7,7 @@ import { Loader2, Check, Sparkles, AlertTriangle, AlertCircle, Server, Code, Lay
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { Modal } from './ui/Modal';
+import { errorMessage } from '../lib/apiErrors';
 
 export interface UseCaseData {
     title: string;
@@ -23,9 +24,35 @@ interface UseCaseFormProps {
     submitLabel?: string;
     initialData?: Partial<UseCaseData>;
     onSuccess?: () => void;
+    /** localStorage key; when set, the form autosaves a draft and restores it. */
+    draftKey?: string;
+    /** Called when the form goes from empty to having unsaved input, and back. */
+    onDirtyChange?: (dirty: boolean) => void;
 }
 
-export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Matrix", initialData, onSuccess }: UseCaseFormProps) {
+const EMPTY_FORM: UseCaseData = {
+    title: '',
+    description: '',
+    proposed_solution: '',
+    kpi: '',
+    target_user: '',
+    category: 'Generative AI',
+};
+
+function readDraft(key?: string): Partial<UseCaseData> | null {
+    if (!key) return null;
+    try {
+        const raw = localStorage.getItem(key);
+        return raw ? JSON.parse(raw) : null;
+    } catch {
+        return null;
+    }
+}
+
+const isDirty = (d: UseCaseData) =>
+    !!(d.title || d.description || d.proposed_solution || d.kpi || d.target_user);
+
+export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Matrix", initialData, onSuccess, draftKey, onDirtyChange }: UseCaseFormProps) {
     const [loading, setLoading] = useState(false);
     const [enhancing, setEnhancing] = useState(false);
     const [checkingFeasibility, setCheckingFeasibility] = useState(false);
@@ -37,15 +64,36 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
     const [technicalData, setTechnicalData] = useState<any>(null);
     const [showDuplicateModal, setShowDuplicateModal] = useState(false);
 
-    // Form State
-    const [formData, setFormData] = useState<UseCaseData>({
-        title: initialData?.title || '',
-        description: initialData?.description || '', // Problem
-        proposed_solution: initialData?.proposed_solution || '',
-        kpi: initialData?.kpi || '',
-        target_user: initialData?.target_user || '',
-        category: initialData?.category || 'Generative AI'
+    // Form State (restored from an autosaved draft when there is one)
+    const [formData, setFormData] = useState<UseCaseData>(() => {
+        const source = initialData || readDraft(draftKey) || {};
+        return {
+            title: source.title || '',
+            description: source.description || '', // Problem
+            proposed_solution: source.proposed_solution || '',
+            kpi: source.kpi || '',
+            target_user: source.target_user || '',
+            category: source.category || 'Generative AI'
+        };
     });
+    const [draftRestored] = useState(() => !initialData && !!readDraft(draftKey));
+
+    // Autosave the draft so a refresh, dropped connection or phase change
+    // never loses what the participant typed.
+    useEffect(() => {
+        if (!draftKey) return;
+        try {
+            if (isDirty(formData)) localStorage.setItem(draftKey, JSON.stringify(formData));
+            else localStorage.removeItem(draftKey);
+        } catch {
+            // storage unavailable (private mode / quota): autosave is best-effort
+        }
+    }, [draftKey, formData]);
+
+    const dirty = isDirty(formData);
+    useEffect(() => {
+        onDirtyChange?.(dirty);
+    }, [dirty, onDirtyChange]);
 
     const handleChange = (field: keyof UseCaseData, value: string) => {
         setFormData(prev => ({ ...prev, [field]: value }));
@@ -82,15 +130,11 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
         try {
             await onSubmit(formData);
 
-            // Reset form
-            setFormData({
-                title: '',
-                description: '',
-                proposed_solution: '',
-                kpi: '',
-                target_user: '',
-                category: 'Generative AI'
-            });
+            // Reset form and drop the saved draft
+            setFormData(EMPTY_FORM);
+            if (draftKey) {
+                try { localStorage.removeItem(draftKey); } catch { /* best-effort */ }
+            }
 
             // Reset AI data
             setBusinessValueData(null);
@@ -103,7 +147,9 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
             }
         } catch (err) {
             console.error(err);
-            // Parent handles error toast usually, but we can double safe
+            // Keep everything the participant typed and say why it failed.
+            setShowDuplicateModal(false);
+            toast.error(errorMessage(err, 'Could not submit your use case.') + ' Your text has been kept — please try again.');
         } finally {
             setLoading(false);
         }
@@ -215,6 +261,11 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
     return (
         <div className="space-y-6">
             <form onSubmit={handleSubmitClick} className="space-y-6">
+                {draftRestored && (
+                    <p className="text-xs rounded-lg px-3 py-2 bg-brand-violet/10 text-brand-violet" role="status">
+                        We restored your unsaved draft.
+                    </p>
+                )}
                 <Input
                     label="Title"
                     placeholder="e.g. Automated Customer Support"

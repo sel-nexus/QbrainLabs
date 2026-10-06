@@ -29,6 +29,7 @@ import {
 import { SurveyResults } from './SurveyResults';
 import { API_BASE_URL } from '../../lib/config';
 import { socket } from '../../lib/socket';
+import { apiErrorText } from '../../lib/apiErrors';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -206,7 +207,7 @@ export function SurveyMonitorPanel({ workshops, token }: SurveyMonitorPanelProps
         }
       } else {
         const err = await res.json().catch(() => ({}));
-        toast.error(err.detail ?? 'Failed to delete survey');
+        toast.error(apiErrorText(err) ?? 'Failed to delete survey');
       }
     } catch {
       toast.error('Failed to delete survey');

@@ -5,6 +5,8 @@ import { awardPoints } from '../lib/api/gamification';
 import { Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { PointsAnimation } from './gamification/PointsAnimation';
+import { toast } from 'sonner';
+import { errorMessage } from '../lib/apiErrors';
 
 interface ScoringCardProps {
     session: any;
@@ -50,19 +52,26 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
         loadExistingVote();
     }, [activeCard?.id, session?.participantId, session?.workshopId]);
 
+    // What the participant sees is what gets saved: untouched sliders submit
+    // the value they display (the default) rather than being left out.
+    const displayedScores = (): Record<string, number> =>
+        Object.fromEntries(criteria.map((c) => [c.name, scores[c.name] ?? defaultVal]));
+
     const handleSubmit = async () => {
         if (!activeCard) return;
         setLoading(true);
+        const finalScores = displayedScores();
         try {
             await api.post('votes/', {
                 use_case_id: activeCard.id,
                 participant_id: session.participantId,
-                scores: scores
+                scores: finalScores
             });
+            setScores(finalScores);
 
             // Award points for voting
             try {
-                const allCriteriaScored = Object.keys(scores).length === criteria.length;
+                const allCriteriaScored = Object.keys(finalScores).length === criteria.length;
                 const pointsResponse = await awardPoints(
                     session.participantId,
                     session.workshopId,
@@ -81,23 +90,22 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
             setSubmitted(true);
         } catch (e) {
             console.error(e);
+            toast.error(errorMessage(e, 'Your score was not saved.') + ' Please try again.');
         } finally {
             setLoading(false);
         }
     };
 
-    // Reset state when activeCard changes
-    if (submitted && activeCard.id !== submitted) { // logic flaw check?
-        // This simple logic might fail if component doesn't unmount or prop change check isn't strictly handled.
-        // Better to rely on parent to reset activeCard prop triggering effect?
-    }
-
+    // (The parent keys this component by card id, so state resets per card.)
     if (submitted) {
         return (
-            <div className="flex flex-col items-center justify-center p-8 bg-surface-800 rounded-xl border border-white/10 animate-pulse">
-                <div className="text-4xl mb-4">🙌</div>
-                <h3 className="text-xl font-bold mb-2">Vote Recorded</h3>
-                <p className="text-gray-400">Waiting for other participants...</p>
+            <div className="flex flex-col items-center justify-center p-8 bg-surface-800 rounded-xl border border-white/10" role="status">
+                <div className="text-4xl mb-4" aria-hidden="true">🙌</div>
+                <h3 className="text-xl font-bold mb-2">Score recorded</h3>
+                <p className="text-gray-400 mb-4">Waiting for other participants...</p>
+                <Button variant="secondary" onClick={() => setSubmitted(false)}>
+                    Change my score
+                </Button>
             </div>
         );
     }
@@ -139,21 +147,19 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
                 <div className="space-y-6 mb-8">
                     {criteria.map((c, idx) => (
                         <div key={idx}>
-                            <div className="flex justify-between mb-2">
-                                <label className="text-sm font-medium flex items-center gap-2 group relative">
+                            <div className="flex justify-between mb-1">
+                                <label htmlFor={`score-${idx}`} className="text-sm font-medium">
                                     {c.name}
-                                    {c.description && (
-                                        <span className="cursor-help text-gray-500 text-xs">(?)</span>
-                                    )}
-                                    {c.description && (
-                                        <div className="absolute left-0 bottom-full mb-2 w-64 p-2 bg-black/90 text-xs text-white rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-                                            {c.description}
-                                        </div>
-                                    )}
                                 </label>
-                                <span className="font-mono text-brand-magenta">{scores[c.name] ?? defaultVal}</span>
+                                <span className="font-mono text-brand-magenta" aria-hidden="true">{scores[c.name] ?? defaultVal}</span>
                             </div>
+                            {/* Shown inline (not hover-only) so phone users can read it */}
+                            {c.description && (
+                                <p id={`score-${idx}-desc`} className="text-xs text-gray-400 mb-2">{c.description}</p>
+                            )}
                             <input
+                                id={`score-${idx}`}
+                                aria-describedby={c.description ? `score-${idx}-desc` : undefined}
                                 type="range"
                                 min={minVal}
                                 max={maxVal}
@@ -171,7 +177,7 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
                 </div>
 
                 <Button className="w-full justify-center" onClick={handleSubmit} disabled={loading}>
-                    {loading ? <Loader2 className="animate-spin" /> : 'Submit Vote'}
+                    {loading ? <Loader2 className="animate-spin" /> : 'Submit score'}
                 </Button>
             </motion.div>
         </>

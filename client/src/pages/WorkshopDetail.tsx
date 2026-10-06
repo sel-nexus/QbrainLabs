@@ -28,12 +28,15 @@ import { ChallengeManager, WorkshopPlannerPanel } from '../components/challenges
 import { useAuth } from '../context/AuthContext';
 import { MatrixActivityDashboard } from '../components/MatrixActivityDashboard';
 import { PrioritizationScale } from '../components/prioritization/PrioritizationScale';
+import { errorMessage } from '../lib/apiErrors';
+import { LoadErrorPanel } from '../components/StatusPages';
 
 export function WorkshopDetail() {
     const { id } = useParams();
     const { theme } = useTheme();
     const { hasRole } = useAuth();
     const [workshop, setWorkshop] = useState<any>(null);
+    const [loadError, setLoadError] = useState<string | null>(null);
     const [useCases, setUseCases] = useState<any[]>([]);
     const [currentPhase, setCurrentPhase] = useState<string>('');
     const [activeCardId, setActiveCardId] = useState<string | null>(null);
@@ -151,6 +154,7 @@ export function WorkshopDetail() {
         try {
             const { data } = await api.get(`workshops/${id}`);
             setWorkshop(data);
+            setLoadError(null);
             setCurrentPhase(data.current_phase);
             setActiveCardId(data.active_use_case_id);
             if (data.pending_facilitators) {
@@ -169,7 +173,8 @@ export function WorkshopDetail() {
             }
         } catch (e) {
             console.error(e);
-            toast.error("Failed to load workshop data");
+            setLoadError(errorMessage(e, 'Failed to load workshop data'));
+            toast.error(errorMessage(e, 'Failed to load workshop data'));
         }
     };
 
@@ -305,6 +310,7 @@ export function WorkshopDetail() {
         toast.success("Export started");
     };
 
+    if (!workshop && loadError) return <LoadErrorPanel message={loadError} onRetry={() => { setLoadError(null); fetchWorkshop(); }} />;
     if (!workshop) return <div className={`min-h-screen flex items-center justify-center ${theme === 'light' ? 'bg-gray-50 text-gray-600' : 'bg-surface-900 text-gray-400'}`}>Loading...</div>;
 
     return (

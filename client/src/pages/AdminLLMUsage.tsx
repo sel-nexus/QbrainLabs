@@ -18,6 +18,7 @@ import {
 import { AdminLayout } from '../components/AdminLayout';
 import { useTheme } from '../context/ThemeContext';
 import { API_BASE_URL } from '../lib/config';
+import { apiErrorText } from '../lib/apiErrors';
 
 const API_BASE = API_BASE_URL;
 const TOKEN_KEY = 'hm_auth_token';
@@ -248,8 +249,8 @@ export function AdminLLMUsage() {
             if (summaryResponse && !summaryResponse.ok) {
                 const errBody = await summaryResponse.json().catch(() => ({}));
                 let msg = 'LLM usage data is temporarily unavailable. Showing empty view.';
-                const d = errBody?.detail;
-                if (typeof d === 'string') msg = d;
+                const d = apiErrorText(errBody);
+                if (d) msg = d;
                 else if (summaryResponse.status === 401) msg = 'Please sign in to view LLM usage.';
                 else if (summaryResponse.status === 403) msg = 'Administrator access required to view LLM usage.';
                 toast.error(msg);

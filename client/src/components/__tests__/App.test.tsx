@@ -75,10 +75,11 @@ describe('App', () => {
   });
 
   // A3: Catch-all route
-  it('should catch unknown routes and redirect to home', async () => {
+  it('should show a not-found page for unknown routes', async () => {
     renderApp('/this-route-does-not-exist');
     await waitFor(() => {
-      expect(document.location.pathname).toBe('/');
+      expect(screen.getByRole('heading', { name: 'Page not found' })).toBeInTheDocument();
     });
+    expect(screen.getByRole('link', { name: 'Go home' })).toHaveAttribute('href', '/');
   });
 });

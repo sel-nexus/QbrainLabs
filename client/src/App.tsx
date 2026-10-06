@@ -1,5 +1,5 @@
 import { type ReactElement } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Toaster } from 'sonner';
 
 // Actions
@@ -34,19 +34,23 @@ import { ScoringPhase } from './pages/ScoringPhase';
 import { AllUseCases } from './pages/AllUseCases';
 import { FacilitatorRegister } from './pages/FacilitatorRegister';
 import { BusinessChallengePlanner } from './pages/BusinessChallengePlanner';
+import { AccessDeniedPage, NotFoundPage } from './components/StatusPages';
+import { ConnectionBanner } from './components/ConnectionBanner';
 
 // Route Guards
 const PrivateRoute = ({ children, requireAdmin = false }: { children: ReactElement, requireAdmin?: boolean }) => {
   const { user, isLoading, hasRole } = useAuth(); // Corrected properties based on AuthContext
+  const location = useLocation();
 
   if (isLoading) return <div>Loading...</div>;
 
   if (!user) {
-    return <Navigate to="/facilitator-login" />;
+    // Remember where the user was going so login can return them there.
+    return <Navigate to="/facilitator-login" state={{ from: location.pathname + location.search }} />;
   }
 
   if (requireAdmin && !hasRole('admin')) {
-    return <Navigate to="/facilitator/dashboard" />;
+    return <AccessDeniedPage />;
   }
 
   return children;
@@ -140,8 +144,11 @@ function App() {
           <Route path="/admin/my-workshops" element={<PrivateRoute requireAdmin><AdminMyWorkshops /></PrivateRoute>} />
 
           {/* Catch-all */}
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<PublicWithHeaderLayout><NotFoundPage /></PublicWithHeaderLayout>} />
         </Routes>
+
+        {/* Live connection status */}
+        <ConnectionBanner />
 
         {/* Global Feedback Widget */}
         <FeedbackWidget />

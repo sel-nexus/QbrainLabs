@@ -11,6 +11,8 @@ export const socket = io(SOCKET_URL, {
   reconnection: true,
   reconnectionDelay: 1000,
   reconnectionDelayMax: 5000,
-  reconnectionAttempts: 5,
+  // Keep retrying for the whole session: venue Wi-Fi drops are common in
+  // live workshops and giving up after a few attempts strands participants.
+  reconnectionAttempts: Infinity,
   timeout: 20000
 });

@@ -42,6 +42,7 @@ interface Invitation {
 }
 
 import { API_BASE_URL } from '../../lib/config';
+import { apiErrorText } from '../../lib/apiErrors';
 
 const API_BASE = API_BASE_URL;
 
@@ -140,7 +141,7 @@ export function OrganizationManager() {
         toast.success('Organization created successfully');
       } else {
         const error = await res.json();
-        toast.error(error.detail || 'Failed to create organization');
+        toast.error(apiErrorText(error) || 'Failed to create organization');
       }
     } catch (error) {
       toast.error('Failed to create organization');
@@ -163,7 +164,7 @@ export function OrganizationManager() {
         toast.success('Invitation sent');
       } else {
         const error = await res.json();
-        toast.error(error.detail || 'Failed to send invitation');
+        toast.error(apiErrorText(error) || 'Failed to send invitation');
       }
     } catch (error) {
       toast.error('Failed to send invitation');
