@@ -216,7 +216,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel, initialData, on
         }
         setEnhancing(true);
         try {
-            const { data } = await api.post('ai/enhance', { text: formData.description + " " + formData.proposed_solution });
+            const { data } = await api.post('ai/enhance', { text: formData.description + " " + formData.proposed_solution, workshop_id: workshopId });
             const proposed: Suggestion = {
                 title: data.refined_title || data.title,
                 description: data.refined_description || data.description,
@@ -244,7 +244,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel, initialData, on
         }
         setCheckingFeasibility(true);
         try {
-            const { data } = await api.post('ai/feasibility', { solution: formData.proposed_solution });
+            const { data } = await api.post('ai/feasibility', { solution: formData.proposed_solution, workshop_id: workshopId });
             setFeasibilityData({ score: data.score, reason: data.reason });
         } catch (e: any) {
             console.error('[UseCaseForm] Feasibility check error:', e);
@@ -265,7 +265,8 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel, initialData, on
                 title: formData.title,
                 description: formData.description,
                 category: formData.category || undefined,
-                current_kpi: formData.kpi
+                current_kpi: formData.kpi,
+                workshop_id: workshopId,
             });
             setBusinessValueData(data);
             if (data.enhanced_kpi && data.enhanced_kpi !== formData.kpi) {
@@ -289,7 +290,8 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel, initialData, on
             const { data } = await api.post('ai/technical-analysis', {
                 title: formData.title,
                 description: formData.description,
-                proposed_solution: formData.proposed_solution
+                proposed_solution: formData.proposed_solution,
+                workshop_id: workshopId,
             });
             setTechnicalData(data);
         } catch (e) {

@@ -676,8 +676,14 @@ class CopilotService:
                         "recommendation": f"'{participant.display_name}' is consistently voting {direction}. Consider discussing scoring criteria."
                     })
         
-        # AI-powered group-level anomaly detection
-        if not self.mock_mode and len(votes) >= 10:
+        # AI-powered group-level anomaly detection: Jev when the workshop
+        # selected it as its decision model, otherwise the chat LLM.
+        from app.services.llm_resolver import resolve_jev_model
+        jev = await resolve_jev_model(db, workshop_id) if len(votes) >= 10 else None
+        jev_anomalies = await self._jev_groupthink_and_bias(jev, participants, votes, workshop_id) if jev else None
+        if jev_anomalies is not None:
+            anomalies.extend(jev_anomalies)
+        elif not self.mock_mode and len(votes) >= 10:
             group_anomalies = await self._detect_groupthink_and_bias(participants, votes, workshop_id=workshop_id, db=db)
             anomalies.extend(group_anomalies)
         else:
@@ -705,6 +711,97 @@ class CopilotService:
         
         return anomalies
     
+    @staticmethod
+    def _voting_patterns(participants: List[Participant], votes: List[Vote]):
+        """Per-participant score summary plus overall average and std dev."""
+        votes_by_participant: dict = {}
+        for v in votes:
+            votes_by_participant.setdefault(str(v.participant_id), []).append(v)
+
+        voting_patterns = []
+        for participant in participants:
+            if participant.role != "PARTICIPANT":
+                continue
+            p_votes = votes_by_participant.get(str(participant.id), [])
+            scores = [s for vote in p_votes if vote.scores for s in vote.scores.values()]
+            if scores:
+                voting_patterns.append({
+                    "participant_name": participant.display_name,
+                    "vote_count": len(p_votes),
+                    "avg_score": round(sum(scores) / len(scores), 2),
+                    "min_score": min(scores),
+                    "max_score": max(scores),
+                    "score_range": max(scores) - min(scores)
+                })
+
+        all_scores = [s for vote in votes if vote.scores for s in vote.scores.values()]
+        overall_std = statistics.stdev(all_scores) if len(all_scores) > 1 else 0
+        overall_avg = sum(all_scores) / len(all_scores) if all_scores else 0
+        return voting_patterns, overall_avg, overall_std
+
+    # Group patterns Jev can judge as yes/no probabilities, with the text we show.
+    JEV_GROUP_PATTERNS = {
+        "groupthink": (
+            "Participants score almost identically, suggesting they are not judging independently",
+            "Scores are unusually uniform across participants.",
+            "Encourage a devil's advocate or anonymous scoring to surface disagreements.",
+        ),
+        "systematic_bias": (
+            "Some participants score consistently high or consistently low regardless of the use case",
+            "Some participants score the same way regardless of the use case.",
+            "Revisit the scoring criteria together before continuing.",
+        ),
+        "polarization": (
+            "Participants split into groups with strongly opposing scores",
+            "The group is split into strongly opposing camps.",
+            "Discuss the most divisive use cases before finalizing priorities.",
+        ),
+    }
+
+    async def _jev_groupthink_and_bias(self, jev, participants, votes, workshop_id=None) -> Optional[List[Dict[str, Any]]]:
+        """Group-level voting anomalies via Jev `noul` questions; None to fall back."""
+        from app.services.typesafe_client import TypesafeError, system_one, usage_tokens
+        voting_patterns, overall_avg, overall_std = self._voting_patterns(participants, votes)
+        if len(voting_patterns) < 3:
+            return []
+        state = {
+            "voting_patterns": voting_patterns,
+            "total_votes": len(votes),
+            "overall_average": round(overall_avg, 2),
+            "overall_std_dev": round(overall_std, 2),
+        }
+        questions = {key: {"type": "noul", "instructions": text} for key, (text, _, _) in self.JEV_GROUP_PATTERNS.items()}
+        try:
+            data = await system_one(jev, state, questions)
+            usage = usage_tokens(data)
+            await track_llm_usage(
+                feature="copilot_groupthink_detection",
+                model_name=data.get("model") or jev.model,
+                prompt_tokens=usage["prompt"],
+                completion_tokens=usage["completion"],
+                workshop_id=workshop_id,
+            )
+            anomalies = []
+            for key, (_, explanation, recommendation) in self.JEV_GROUP_PATTERNS.items():
+                probability = float(data["answers"][key]["noul"])
+                if probability < 0.6:
+                    continue
+                anomalies.append({
+                    "type": key,
+                    "severity": AnomalySeverity.CRITICAL.value if probability >= 0.85 else AnomalySeverity.WARNING.value,
+                    "details": {
+                        "evidence": f"Jev probability {probability:.0%}",
+                        "overall_std": overall_std,
+                        "participant_count": len(voting_patterns),
+                    },
+                    "explanation": explanation,
+                    "recommendation": recommendation,
+                })
+            return anomalies
+        except (TypesafeError, KeyError, TypeError, ValueError) as e:
+            logger.warning("jev_groupthink_detection_failed_falling_back", workshop_id=workshop_id, error=str(e))
+            return None
+
     async def _detect_groupthink_and_bias(
         self,
         participants: List[Participant],
@@ -724,47 +821,9 @@ class CopilotService:
                 db, workshop_id, "decision", self.llm, getattr(self.llm, 'model_name', settings.OPENAI_MODEL)
             )
             
-            # Prepare voting data for analysis
-            votes_by_participant: dict = {}
-            for v in votes:
-                pid = str(v.participant_id)
-                votes_by_participant.setdefault(pid, []).append(v)
-
-            voting_patterns = []
-            for participant in participants:
-                if participant.role != "PARTICIPANT":
-                    continue
-
-                p_votes = votes_by_participant.get(str(participant.id), [])
-                if not p_votes:
-                    continue
-                
-                scores = []
-                for vote in p_votes:
-                    if vote.scores:
-                        scores.extend(vote.scores.values())
-                
-                if scores:
-                    voting_patterns.append({
-                        "participant_name": participant.display_name,
-                        "vote_count": len(p_votes),
-                        "avg_score": round(sum(scores) / len(scores), 2),
-                        "min_score": min(scores),
-                        "max_score": max(scores),
-                        "score_range": max(scores) - min(scores)
-                    })
-            
+            voting_patterns, overall_avg, overall_std = self._voting_patterns(participants, votes)
             if len(voting_patterns) < 3:
                 return []
-            
-            # Calculate overall statistics
-            all_scores = []
-            for vote in votes:
-                if vote.scores:
-                    all_scores.extend(vote.scores.values())
-            
-            overall_std = statistics.stdev(all_scores) if len(all_scores) > 1 else 0
-            overall_avg = sum(all_scores) / len(all_scores) if all_scores else 0
             
             prompt = f"""Analyze these voting patterns for anomalies in a workshop prioritization session.
 
@@ -828,7 +887,7 @@ If no significant anomalies, return empty array []."""
             
             # Convert to standard anomaly format
             anomalies = []
-            severity_map = {"low": AnomalySeverity.INFO.value, "medium": AnomalySeverity.WARNING.value, "high": AnomalySeverity.HIGH.value}
+            severity_map = {"low": AnomalySeverity.INFO.value, "medium": AnomalySeverity.WARNING.value, "high": AnomalySeverity.CRITICAL.value}
             
             for anomaly in detected_anomalies:
                 anomalies.append({
@@ -982,7 +1041,7 @@ If no significant duplicates found, return empty array []."""
             anomalies = []
             for dup in duplicates:
                 if dup.get("similarity_score", 0) > 0.7:  # High similarity threshold
-                    severity = AnomalySeverity.HIGH.value if dup["similarity_score"] > 0.9 else AnomalySeverity.MEDIUM.value
+                    severity = AnomalySeverity.CRITICAL.value if dup["similarity_score"] > 0.9 else AnomalySeverity.WARNING.value
                     
                     anomalies.append({
                         "type": "semantic_duplicate",
