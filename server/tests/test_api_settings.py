@@ -12,66 +12,6 @@ from app.services import settings_service
 from app.api.auth import hash_password
 
 
-@pytest.fixture
-async def admin_user(db_session: AsyncSession) -> User:
-    """Create an admin user for testing"""
-    user = User(
-        email="admin@test.com",
-        password_hash=hash_password("adminpass123"),
-        full_name="Admin User",
-        role=UserRole.ADMIN,
-        status=AccountStatus.ACTIVE
-    )
-    db_session.add(user)
-    await db_session.commit()
-    await db_session.refresh(user)
-    return user
-
-
-@pytest.fixture
-async def facilitator_user(db_session: AsyncSession) -> User:
-    """Create a facilitator user for testing"""
-    user = User(
-        email="facilitator@test.com",
-        password_hash=hash_password("facilitatorpass123"),
-        full_name="Facilitator User",
-        role=UserRole.FACILITATOR,
-        status=AccountStatus.ACTIVE
-    )
-    db_session.add(user)
-    await db_session.commit()
-    await db_session.refresh(user)
-    return user
-
-
-@pytest.fixture
-async def admin_token(client: AsyncClient, admin_user: User) -> str:
-    """Get authentication token for admin user"""
-    response = await client.post(
-        "/api/auth/login",
-        json={
-            "email": "admin@test.com",
-            "password": "adminpass123"
-        }
-    )
-    assert response.status_code == 200
-    return response.json()["access_token"]
-
-
-@pytest.fixture
-async def facilitator_token(client: AsyncClient, facilitator_user: User) -> str:
-    """Get authentication token for facilitator user"""
-    response = await client.post(
-        "/api/auth/login",
-        json={
-            "email": "facilitator@test.com",
-            "password": "facilitatorpass123"
-        }
-    )
-    assert response.status_code == 200
-    return response.json()["access_token"]
-
-
 @pytest.mark.asyncio
 @pytest.mark.integration
 class TestSettingsAPI:
@@ -200,7 +140,7 @@ class TestSettingsAPI:
         )
         
         assert response.status_code == 400
-        assert "detail" in response.json()
+        assert "at most" in response.json()["error"]["message"]
 
     async def test_update_setting_creates_audit_log(
         self,

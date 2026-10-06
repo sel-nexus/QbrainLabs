@@ -1,77 +1,65 @@
 """
-Workshop API tests
+Workshop API tests (create, list, get, update, join) against the current routes.
 """
 import pytest
 from httpx import AsyncClient
 
+from tests.conftest import auth_headers_for
+
+WORKSHOP = {
+    "title": "Test Workshop",
+    "config": {"criteria": [{"name": "Feasibility", "weight": 50}, {"name": "Business Value", "weight": 50}]},
+}
+
+
+async def _create(client: AsyncClient, headers: dict) -> dict:
+    response = await client.post("/api/workshops/", json=WORKSHOP, headers=headers)
+    assert response.status_code == 201, response.text
+    return response.json()
+
 
 @pytest.mark.asyncio
 class TestWorkshopAPI:
-    """Test workshop CRUD endpoints"""
-    
-    async def test_create_workshop(self, client: AsyncClient, sample_workshop_data: dict):
-        """Test creating a new workshop"""
-        response = await client.post("/api/workshops", json=sample_workshop_data)
-        assert response.status_code in [200, 201]
-        data = response.json()
-        assert data.get("name") == sample_workshop_data["name"]
-    
-    async def test_get_workshops(self, client: AsyncClient):
-        """Test listing all workshops"""
-        response = await client.get("/api/workshops")
+    async def test_create_workshop(self, client: AsyncClient, make_user):
+        data = await _create(client, auth_headers_for(await make_user()))
+        assert data["title"] == WORKSHOP["title"]
+        assert data["pin"]
+
+    async def test_list_shows_own_workshops_and_nothing_anonymously(self, client: AsyncClient, make_user):
+        headers = auth_headers_for(await make_user())
+        created = await _create(client, headers)
+
+        mine = await client.get("/api/workshops/", headers=headers)
+        assert mine.status_code == 200
+        assert created["id"] in [w["id"] for w in mine.json()]
+
+        anonymous = await client.get("/api/workshops/")
+        assert anonymous.status_code == 200
+        assert anonymous.json() == []
+
+    async def test_get_workshop_by_id(self, client: AsyncClient, make_user):
+        headers = auth_headers_for(await make_user())
+        created = await _create(client, headers)
+        response = await client.get(f"/api/workshops/{created['id']}", headers=headers)
         assert response.status_code == 200
-        data = response.json()
-        assert isinstance(data, list)
-    
-    async def test_get_workshop_by_id(self, client: AsyncClient, sample_workshop_data: dict):
-        """Test getting a single workshop by ID"""
-        # Create workshop first
-        create_response = await client.post("/api/workshops", json=sample_workshop_data)
-        if create_response.status_code in [200, 201]:
-            workshop_id = create_response.json().get("id")
-            if workshop_id:
-                response = await client.get(f"/api/workshops/{workshop_id}")
-                assert response.status_code == 200
-    
+        assert response.json()["title"] == WORKSHOP["title"]
+
     async def test_get_nonexistent_workshop(self, client: AsyncClient):
-        """Test getting a non-existent workshop returns 404"""
-        response = await client.get("/api/workshops/99999")
+        response = await client.get("/api/workshops/00000000-0000-0000-0000-000000000000")
         assert response.status_code == 404
-    
-    async def test_update_workshop(self, client: AsyncClient, sample_workshop_data: dict):
-        """Test updating a workshop"""
-        # Create workshop first
-        create_response = await client.post("/api/workshops", json=sample_workshop_data)
-        if create_response.status_code in [200, 201]:
-            workshop_id = create_response.json().get("id")
-            if workshop_id:
-                update_data = {"name": "Updated Workshop"}
-                response = await client.put(f"/api/workshops/{workshop_id}", json=update_data)
-                assert response.status_code in [200, 204]
-    
-    async def test_delete_workshop(self, client: AsyncClient, sample_workshop_data: dict):
-        """Test deleting a workshop"""
-        # Create workshop first
-        create_response = await client.post("/api/workshops", json=sample_workshop_data)
-        if create_response.status_code in [200, 201]:
-            workshop_id = create_response.json().get("id")
-            if workshop_id:
-                response = await client.delete(f"/api/workshops/{workshop_id}")
-                assert response.status_code in [200, 204]
+
+    async def test_update_workshop_title(self, client: AsyncClient, make_user):
+        headers = auth_headers_for(await make_user())
+        created = await _create(client, headers)
+        response = await client.patch(f"/api/workshops/{created['id']}", json={"title": "Updated Workshop"}, headers=headers)
+        assert response.status_code == 200
+        assert response.json()["title"] == "Updated Workshop"
 
 
 @pytest.mark.asyncio
 class TestWorkshopParticipants:
-    """Test workshop participant management"""
-    
-    async def test_join_workshop(self, client: AsyncClient, sample_workshop_data: dict):
-        """Test joining a workshop"""
-        # Create workshop first
-        create_response = await client.post("/api/workshops", json=sample_workshop_data)
-        if create_response.status_code in [200, 201]:
-            workshop = create_response.json()
-            join_code = workshop.get("join_code") or workshop.get("id")
-            if join_code:
-                join_data = {"name": "Test Participant"}
-                response = await client.post(f"/api/workshops/{join_code}/join", json=join_data)
-                assert response.status_code in [200, 201, 404]  # 404 if endpoint differs
+    async def test_join_workshop_by_pin(self, client: AsyncClient, make_user):
+        created = await _create(client, auth_headers_for(await make_user()))
+        response = await client.post("/api/join", json={"pin": created["pin"], "display_name": "Test Participant", "role": "PARTICIPANT"})
+        assert response.status_code in (200, 201), response.text
+        assert response.json()["workshop_id"] == created["id"]

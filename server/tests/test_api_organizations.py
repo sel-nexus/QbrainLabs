@@ -4,26 +4,30 @@ Organizations API tests
 import pytest
 from httpx import AsyncClient
 
+from tests.conftest import auth_headers_for
+
 
 @pytest.mark.asyncio
 class TestOrganizationAPI:
     """Test organization CRUD endpoints"""
     
-    async def test_create_organization(self, client: AsyncClient):
-        """Test creating a new organization"""
-        org_data = {
-            "name": "Test Corp",
-            "slug": "test-corp",
-            "tier": "starter"
-        }
-        response = await client.post("/api/organizations/", json=org_data)
-        # May require auth
-        assert response.status_code in [200, 201, 401, 422]
-    
-    async def test_list_organizations(self, client: AsyncClient):
-        """Test listing organizations"""
-        response = await client.get("/api/organizations/")
-        assert response.status_code in [200, 401]
+    async def test_create_organization_requires_auth(self, client: AsyncClient):
+        response = await client.post("/api/organizations", json={"name": "Test Corp", "slug": "test-corp"})
+        assert response.status_code == 401
+
+    async def test_create_and_list_organizations(self, client: AsyncClient, make_user):
+        headers = auth_headers_for(await make_user())
+        created = await client.post("/api/organizations", json={"name": "Test Corp", "slug": "test-corp"}, headers=headers)
+        assert created.status_code in (200, 201), created.text
+        assert created.json()["slug"] == "test-corp"
+
+        listed = await client.get("/api/organizations", headers=headers)
+        assert listed.status_code == 200
+        assert "test-corp" in str(listed.json())
+
+    async def test_list_organizations_requires_auth(self, client: AsyncClient):
+        response = await client.get("/api/organizations")
+        assert response.status_code == 401
     
     async def test_get_organization_not_found(self, client: AsyncClient):
         """Test getting non-existent organization"""

@@ -7,6 +7,7 @@ from typing import Callable
 from fastapi import FastAPI, Request, Response
 from starlette.middleware.base import BaseHTTPMiddleware
 
+from app.core.config import settings
 from app.core.security import SECURITY_HEADERS, rate_limiter, get_client_ip
 from app.core.logging import request_logger, audit_logger
 
@@ -68,8 +69,8 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         self.window_seconds = window_seconds
     
     async def dispatch(self, request: Request, call_next: Callable) -> Response:
-        # Skip rate limiting for health checks
-        if request.url.path in ["/health", "/health/ready", "/health/live", "/metrics"]:
+        # Skip rate limiting when disabled (e.g. tests) and for health checks
+        if not settings.RATE_LIMIT_ENABLED or request.url.path in ["/health", "/health/ready", "/health/live", "/metrics"]:
             return await call_next(request)
         
         client_ip = get_client_ip(request)

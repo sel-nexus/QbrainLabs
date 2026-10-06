@@ -11,62 +11,6 @@ from app.models.rbac import UserRole, AccountStatus
 from app.api.auth import hash_password
 
 
-@pytest.fixture
-async def admin_user(db_session: AsyncSession) -> User:
-    # Use unique email per test to avoid UNIQUE constraint violations in session-scoped DB
-    unique_id = str(uuid.uuid4())[:8]
-    email = f"llmadmin-{unique_id}@test.com"
-    user = User(
-        email=email,
-        password_hash=hash_password("adminpass123"),
-        full_name="LLM Admin",
-        role=UserRole.ADMIN,
-        status=AccountStatus.ACTIVE,
-    )
-    db_session.add(user)
-    await db_session.commit()
-    await db_session.refresh(user)
-    return user
-
-
-@pytest.fixture
-async def facilitator_user(db_session: AsyncSession) -> User:
-    # Use unique email per test to avoid UNIQUE constraint violations in session-scoped DB
-    unique_id = str(uuid.uuid4())[:8]
-    email = f"llmfacilitator-{unique_id}@test.com"
-    user = User(
-        email=email,
-        password_hash=hash_password("facilitatorpass123"),
-        full_name="LLM Facilitator",
-        role=UserRole.FACILITATOR,
-        status=AccountStatus.ACTIVE,
-    )
-    db_session.add(user)
-    await db_session.commit()
-    await db_session.refresh(user)
-    return user
-
-
-@pytest.fixture
-async def admin_token(client: AsyncClient, admin_user: User) -> str:
-    response = await client.post(
-        "/api/auth/login",
-        json={"email": admin_user.email, "password": "adminpass123"},
-    )
-    assert response.status_code == 200
-    return response.json()["access_token"]
-
-
-@pytest.fixture
-async def facilitator_token(client: AsyncClient, facilitator_user: User) -> str:
-    response = await client.post(
-        "/api/auth/login",
-        json={"email": facilitator_user.email, "password": "facilitatorpass123"},
-    )
-    assert response.status_code == 200
-    return response.json()["access_token"]
-
-
 @pytest.mark.asyncio
 async def test_create_llm_model_requires_admin(client: AsyncClient, facilitator_token: str):
     response = await client.post(

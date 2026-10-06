@@ -7,6 +7,7 @@ Admin endpoints for managing subscription tiers and feature flags.
 from fastapi import APIRouter, Depends, HTTPException, status, Request
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.orm import selectinload
 from typing import List, Optional
 from pydantic import BaseModel
 from datetime import datetime
@@ -288,7 +289,7 @@ async def list_feature_flags(
     Admin only.
     """
     result = await db.execute(
-        select(FeatureFlag).order_by(FeatureFlag.name)
+        select(FeatureFlag).options(selectinload(FeatureFlag.overrides)).order_by(FeatureFlag.name)
     )
     flags = result.scalars().all()
     
@@ -330,8 +331,12 @@ async def create_feature_flag(
     flag = FeatureFlag(**flag_data.model_dump())
     db.add(flag)
     await db.commit()
-    await db.refresh(flag)
-    
+    # Re-load with overrides; a lazy load here fails under async SQLAlchemy.
+    result = await db.execute(
+        select(FeatureFlag).options(selectinload(FeatureFlag.overrides)).where(FeatureFlag.id == flag.id)
+    )
+    flag = result.scalar_one()
+
     return FeatureFlagResponse(
         id=str(flag.id),
         name=flag.name,
@@ -372,8 +377,12 @@ async def update_feature_flag(
         setattr(flag, field, value)
     
     await db.commit()
-    await db.refresh(flag)
-    
+    # Re-load with overrides; a lazy load here fails under async SQLAlchemy.
+    result = await db.execute(
+        select(FeatureFlag).options(selectinload(FeatureFlag.overrides)).where(FeatureFlag.id == flag.id)
+    )
+    flag = result.scalar_one()
+
     return FeatureFlagResponse(
         id=str(flag.id),
         name=flag.name,
@@ -397,7 +406,9 @@ async def list_feature_flag_overrides(
     Admin only.
     """
     result = await db.execute(
-        select(FeatureFlag).where(FeatureFlag.name == flag_name)
+        select(FeatureFlag)
+        .options(selectinload(FeatureFlag.overrides).selectinload(FeatureFlagOverride.organization))
+        .where(FeatureFlag.name == flag_name)
     )
     flag = result.scalar_one_or_none()
     

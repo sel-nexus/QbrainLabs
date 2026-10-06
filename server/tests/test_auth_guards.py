@@ -17,7 +17,7 @@ class TestAuthenticationGuards:
             "title": "Test Workshop",
             "config": {"criteria": []}
         }
-        response = await client.post("/api/workshops", json=workshop_data)
+        response = await client.post("/api/workshops/", json=workshop_data)
         # Should return 401 Unauthorized without auth token
         assert response.status_code == 401
     
@@ -54,10 +54,10 @@ class TestAuthenticatedEndpoints:
     """Test endpoints with valid authentication"""
     
     async def test_get_workshops_list(self, client: AsyncClient):
-        """Test getting workshop list (public endpoint)"""
-        response = await client.get("/api/workshops")
+        """Anonymous callers get an empty list rather than an error"""
+        response = await client.get("/api/workshops/")
         assert response.status_code == 200
-        assert isinstance(response.json(), list)
+        assert response.json() == []
     
     async def test_get_workshop_by_id_not_found(self, client: AsyncClient):
         """Test getting non-existent workshop returns 404"""
