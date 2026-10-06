@@ -8,10 +8,8 @@ import {
     TrendingUp,
     Users,
     CheckCircle2,
-    Download,
-    FileText
 } from 'lucide-react';
-import { Button } from './ui/Button';
+import { CONSENSUS_LABELS, QUADRANT_LABELS, toConsensusLevel } from '../lib/results';
 
 interface AgreementData {
     use_case_id: string;
@@ -28,6 +26,8 @@ interface AgreementData {
 }
 
 interface QuadrantData {
+    x_label?: string;
+    y_label?: string;
     quadrants: {
         quick_wins: any[];
         strategic_bets: any[];
@@ -88,56 +88,11 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
         }
     };
 
-    const exportPDF = async () => {
-        try {
-            const response = await api.get(`/export/workshop/${workshopId}/pdf`, {
-                responseType: 'blob'
-            });
-
-            // Create blob and download
-            const blob = new Blob([response.data], { type: 'text/html' });
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `workshop_report_${workshopId}.html`;
-            link.click();
-            window.URL.revokeObjectURL(url);
-
-            toast.success('Report downloaded! Open in browser and print to PDF.');
-        } catch (error) {
-            console.error('Failed to export PDF:', error);
-            toast.error('Failed to export report');
-        }
-    };
-
-    const exportCSV = async () => {
-        try {
-            const response = await api.get(`/export/workshop/${workshopId}/csv`, {
-                responseType: 'blob'
-            });
-
-            const blob = new Blob([response.data], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `workshop_results_${workshopId}.csv`;
-            link.click();
-            window.URL.revokeObjectURL(url);
-
-            toast.success('CSV exported successfully');
-        } catch (error) {
-            console.error('Failed to export CSV:', error);
-            toast.error('Failed to export CSV');
-        }
-    };
-
-    const getConsensusColor = (level: string) => {
-        switch (level) {
-            case 'High': return 'theme-badge-success';
-            case 'Medium': return 'theme-badge-warning';
-            case 'Low': return 'theme-badge-danger';
-            default: return 'theme-badge-neutral';
-        }
+    const consensusBadge = (level: string) => {
+        const key = toConsensusLevel(level);
+        return key
+            ? { className: { high: 'theme-badge-success', moderate: 'theme-badge-warning', needs_discussion: 'theme-badge-danger' }[key], label: CONSENSUS_LABELS[key] }
+            : { className: 'theme-badge-neutral', label: level };
     };
 
     if (loading) {
@@ -158,16 +113,6 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
                     {workshopTitle && (
                         <p className="theme-text-secondary text-sm">{workshopTitle}</p>
                     )}
-                </div>
-                <div className="flex gap-2">
-                    <Button variant="secondary" onClick={exportCSV}>
-                        <Download className="w-4 h-4 mr-2" />
-                        CSV
-                    </Button>
-                    <Button onClick={exportPDF}>
-                        <FileText className="w-4 h-4 mr-2" />
-                        PDF Report
-                    </Button>
                 </div>
             </div>
 
@@ -202,25 +147,25 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
                             <div className="text-3xl font-bold text-semantic-success">
                                 {quadrantData.summary.quick_wins_count}
                             </div>
-                            <div className="text-sm theme-text-secondary">Quick Wins</div>
+                            <div className="text-sm theme-text-secondary">{QUADRANT_LABELS.quick_wins}</div>
                         </div>
                         <div className="theme-bg-secondary p-4 rounded-xl border theme-border">
                             <div className="text-3xl font-bold text-brand-violet">
                                 {quadrantData.summary.strategic_bets_count}
                             </div>
-                            <div className="text-sm theme-text-secondary">Strategic Bets</div>
+                            <div className="text-sm theme-text-secondary">{QUADRANT_LABELS.strategic_bets}</div>
                         </div>
                         <div className="theme-bg-secondary p-4 rounded-xl border theme-border">
                             <div className="text-3xl font-bold text-semantic-info">
                                 {quadrantData.summary.nice_to_have_count}
                             </div>
-                            <div className="text-sm theme-text-secondary">Nice to Have</div>
+                            <div className="text-sm theme-text-secondary">{QUADRANT_LABELS.nice_to_have}</div>
                         </div>
                         <div className="theme-bg-secondary p-4 rounded-xl border theme-border">
                             <div className="text-3xl font-bold theme-text-muted">
                                 {quadrantData.summary.dont_do_count}
                             </div>
-                            <div className="text-sm theme-text-secondary">Deprioritize</div>
+                            <div className="text-sm theme-text-secondary">{QUADRANT_LABELS.dont_do}</div>
                         </div>
                     </div>
 
@@ -232,19 +177,19 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
                                 <div className="text-2xl font-bold">
                                     {agreementData.summary.high_consensus_count}
                                 </div>
-                                <div className="text-xs opacity-80">High Agreement</div>
+                                <div className="text-xs opacity-80">{CONSENSUS_LABELS.high}</div>
                             </div>
                             <div className="text-center p-4 theme-badge-warning rounded-lg">
                                 <div className="text-2xl font-bold">
                                     {agreementData.summary.medium_consensus_count}
                                 </div>
-                                <div className="text-xs opacity-80">Moderate</div>
+                                <div className="text-xs opacity-80">{CONSENSUS_LABELS.moderate}</div>
                             </div>
                             <div className="text-center p-4 theme-badge-danger rounded-lg">
                                 <div className="text-2xl font-bold">
                                     {agreementData.summary.low_consensus_count}
                                 </div>
-                                <div className="text-xs opacity-80">Needs Discussion</div>
+                                <div className="text-xs opacity-80">{CONSENSUS_LABELS.needs_discussion}</div>
                             </div>
                         </div>
                         <div className="text-center text-sm theme-text-secondary">
@@ -256,22 +201,22 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
                     <div className="theme-bg-secondary p-6 rounded-xl border theme-border">
                         <h3 className="text-lg font-bold mb-4 flex items-center gap-2 theme-text-primary">
                             <CheckCircle2 className="w-5 h-5 theme-success-text" />
-                            Top Quick Wins
+                            Top {QUADRANT_LABELS.quick_wins.toLowerCase()}
                         </h3>
                         <div className="space-y-3">
                             {quadrantData.quadrants.quick_wins.slice(0, 5).map((uc, idx) => (
                                 <div key={uc.id} className="flex items-center justify-between p-3 theme-bg-tertiary rounded-lg">
                                     <div className="flex items-center gap-3">
-                                        <span className="theme-success-text font-bold">#{idx + 1}</span>
+                                        <span className="theme-success-text font-bold">{uc.rank ? `#${uc.rank}` : `#${idx + 1}`}</span>
                                         <span className="font-medium theme-text-primary">{uc.title}</span>
                                     </div>
                                     <div className="text-sm theme-text-secondary">
-                                        V: {uc.y} | F: {uc.x}
+                                        {quadrantData.y_label || 'Y'}: {Math.round(uc.y)} · {quadrantData.x_label || 'X'}: {Math.round(uc.x)}
                                     </div>
                                 </div>
                             ))}
                             {quadrantData.quadrants.quick_wins.length === 0 && (
-                                <p className="theme-text-secondary text-center py-4">No quick wins identified yet</p>
+                                <p className="theme-text-secondary text-center py-4">No {QUADRANT_LABELS.quick_wins.toLowerCase()} identified yet</p>
                             )}
                         </div>
                     </div>
@@ -316,8 +261,8 @@ export function AnalyticsDashboard({ workshopId, workshopTitle }: AnalyticsDashb
                                             </div>
                                         </td>
                                         <td className="p-3">
-                                            <span className={`px-2 py-1 rounded text-xs font-medium ${getConsensusColor(item.consensus_level)}`}>
-                                                {item.consensus_level}
+                                            <span className={`px-2 py-1 rounded text-xs font-medium ${consensusBadge(item.consensus_level).className}`}>
+                                                {consensusBadge(item.consensus_level).label}
                                             </span>
                                         </td>
                                     </tr>

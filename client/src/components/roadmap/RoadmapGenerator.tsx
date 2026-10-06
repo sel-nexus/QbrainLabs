@@ -19,10 +19,13 @@ interface UseCase {
 interface RoadmapGeneratorProps {
     workshopId: string;
     useCases: UseCase[];
+    /** Matrix axis criteria; value_score is the Y position and feasibility_score the X position (0-100). */
+    xLabel?: string;
+    yLabel?: string;
     onClose?: () => void;
 }
 
-export function RoadmapGenerator({ workshopId, useCases, onClose }: RoadmapGeneratorProps) {
+export function RoadmapGenerator({ workshopId, useCases, xLabel = 'Feasibility', yLabel = 'Value', onClose }: RoadmapGeneratorProps) {
     const [selectedUseCases, setSelectedUseCases] = useState<string[]>([]);
     const [roadmap, setRoadmap] = useState<any>(null);
     const [generating, setGenerating] = useState(false);
@@ -183,8 +186,7 @@ export function RoadmapGenerator({ workshopId, useCases, onClose }: RoadmapGener
                                 <div className="text-sm theme-text-secondary mt-1">{uc.description}</div>
                                 {(uc.value_score !== undefined || uc.feasibility_score !== undefined) && (
                                     <div className="text-xs theme-text-secondary mt-2">
-                                        Value: {uc.value_score?.toFixed(1) || 'N/A'} |
-                                        Feasibility: {uc.feasibility_score?.toFixed(1) || 'N/A'}
+                                        {yLabel}: {uc.value_score != null ? Math.round(uc.value_score) : 'Not scored'} · {xLabel}: {uc.feasibility_score != null ? Math.round(uc.feasibility_score) : 'Not scored'}
                                     </div>
                                 )}
                             </div>

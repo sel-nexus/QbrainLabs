@@ -1,437 +1,315 @@
 """
 Export API Endpoints
-Provides PDF and CSV export with branding support
+CSV and PDF exports of workshop results.
+
+Both are built from app.services.workshop_results, so ranks, scores,
+quadrants and consensus match the results screen exactly (US48.11).
 """
 
-from fastapi import APIRouter, Depends, HTTPException, Response
-from fastapi.responses import StreamingResponse
+import csv
+import io
+import re
+from datetime import datetime
+from typing import Dict, List, Optional
+from xml.sax.saxutils import escape
+
+from fastapi import APIRouter, Depends, Query
+from fastapi.responses import Response, StreamingResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from sqlalchemy.orm import selectinload
-from typing import Optional
-from datetime import datetime
-from collections import defaultdict
-import io
-import csv
-import statistics
 
-from app.core.database import get_db
-from app.models.models import Workshop, UseCase, Vote, Participant, User
-from app.middleware.error_handler import NotFoundException
 from app.api.auth import get_current_user
+from app.core.database import get_db
+from app.middleware.error_handler import NotFoundException
+from app.models.models import User, Workshop
+from app.services.workshop_results import (
+    CONSENSUS_LABELS,
+    QUADRANT_DESCRIPTIONS,
+    QUADRANT_LABELS,
+    axis_labels,
+    compute_workshop_results,
+)
 
 router = APIRouter(prefix="/api/export", tags=["export"])
 
+_HEX_COLOR = re.compile(r"^#[0-9a-fA-F]{6}$")
 
-def generate_html_report(
-    workshop: Workshop,
-    use_cases: list,
-    quadrant_data: dict,
-    agreement_data: list,
-    branding: dict = None
-) -> str:
-    """Generate HTML report for PDF conversion"""
-    
-    # Default branding
-    brand_name = branding.get("company_name", "Qbrain AI Labs") if branding else "Qbrain AI Labs"
-    brand_color = branding.get("primary_color", "#8b5cf6") if branding else "#8b5cf6"
-    logo_url = branding.get("logo_url", "") if branding else ""
-    
-    # Build HTML
-    html = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{workshop.title} - Workshop Report</title>
-        <style>
-            * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-            body {{ 
-                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-                color: #333; 
-                line-height: 1.6;
-                padding: 40px;
-            }}
-            .header {{ 
-                border-bottom: 3px solid {brand_color}; 
-                padding-bottom: 20px; 
-                margin-bottom: 30px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }}
-            .logo {{ max-height: 50px; }}
-            .brand-name {{ color: {brand_color}; font-size: 14px; }}
-            h1 {{ color: {brand_color}; font-size: 28px; margin-bottom: 10px; }}
-            h2 {{ color: {brand_color}; font-size: 20px; margin: 30px 0 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }}
-            h3 {{ color: #555; font-size: 16px; margin: 20px 0 10px; }}
-            .meta {{ color: #666; font-size: 14px; }}
-            .stats-grid {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin: 20px 0; }}
-            .stat-card {{ 
-                background: #f8f9fa; 
-                padding: 20px; 
-                border-radius: 8px; 
-                text-align: center;
-                border-left: 4px solid {brand_color};
-            }}
-            .stat-value {{ font-size: 32px; font-weight: bold; color: {brand_color}; }}
-            .stat-label {{ font-size: 12px; color: #666; text-transform: uppercase; }}
-            .quadrant-section {{ margin: 20px 0; }}
-            .quadrant {{ 
-                background: #f8f9fa; 
-                padding: 15px; 
-                border-radius: 8px; 
-                margin: 10px 0;
-            }}
-            .quadrant-title {{ 
-                font-weight: bold; 
-                padding: 5px 10px; 
-                border-radius: 4px; 
-                display: inline-block;
-                margin-bottom: 10px;
-            }}
-            .quick-wins {{ background: #10b981; color: white; }}
-            .strategic-bets {{ background: #8b5cf6; color: white; }}
-            .nice-to-have {{ background: #3b82f6; color: white; }}
-            .dont-do {{ background: #ef4444; color: white; }}
-            .use-case-item {{ 
-                background: white; 
-                padding: 12px; 
-                margin: 8px 0; 
-                border-radius: 4px;
-                border: 1px solid #eee;
-            }}
-            .use-case-title {{ font-weight: bold; }}
-            .use-case-scores {{ font-size: 12px; color: #666; margin-top: 5px; }}
-            table {{ width: 100%; border-collapse: collapse; margin: 15px 0; }}
-            th, td {{ padding: 12px; text-align: left; border-bottom: 1px solid #eee; }}
-            th {{ background: #f8f9fa; font-weight: 600; }}
-            .agreement-high {{ color: #10b981; }}
-            .agreement-medium {{ color: #f59e0b; }}
-            .agreement-low {{ color: #ef4444; }}
-            .footer {{ 
-                margin-top: 40px; 
-                padding-top: 20px; 
-                border-top: 1px solid #eee; 
-                text-align: center;
-                color: #666;
-                font-size: 12px;
-            }}
-            @media print {{
-                body {{ padding: 20px; }}
-                .page-break {{ page-break-before: always; }}
-            }}
-        </style>
-    </head>
-    <body>
-        <div class="header">
-            <div>
-                <h1>{workshop.title}</h1>
-                <p class="meta">Workshop Report • Generated {datetime.now().strftime('%B %d, %Y')}</p>
-            </div>
-            <div class="brand-name">
-                {f'<img src="{logo_url}" class="logo" alt="Logo">' if logo_url else ''}
-                <div>{brand_name}</div>
-            </div>
-        </div>
-        
-        <h2>Executive Summary</h2>
-        <div class="stats-grid">
-            <div class="stat-card">
-                <div class="stat-value">{len(use_cases)}</div>
-                <div class="stat-label">Use Cases</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">{quadrant_data['summary']['quick_wins_count']}</div>
-                <div class="stat-label">Quick Wins</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">{quadrant_data['summary']['strategic_bets_count']}</div>
-                <div class="stat-label">Strategic Bets</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-value">{sum(uc.get('vote_count', 0) for uc in use_cases)}</div>
-                <div class="stat-label">Total Votes</div>
-            </div>
-        </div>
-        
-        <h2>Prioritization Matrix</h2>
-        
-        <div class="quadrant-section">
-            <div class="quadrant">
-                <span class="quadrant-title quick-wins">Quick Wins ({len(quadrant_data['quadrants']['quick_wins'])})</span>
-                <p style="font-size: 12px; color: #666; margin-bottom: 10px;">High value, high feasibility - prioritize these</p>
-                {''.join([f'<div class="use-case-item"><div class="use-case-title">{uc["title"]}</div><div class="use-case-scores">Value: {uc["y"]} | Feasibility: {uc["x"]} | Votes: {uc["vote_count"]}</div></div>' for uc in quadrant_data['quadrants']['quick_wins'][:5]]) or '<p style="color: #666;">No use cases in this quadrant</p>'}
-            </div>
-            
-            <div class="quadrant">
-                <span class="quadrant-title strategic-bets">Strategic Bets ({len(quadrant_data['quadrants']['strategic_bets'])})</span>
-                <p style="font-size: 12px; color: #666; margin-bottom: 10px;">High value, lower feasibility - invest strategically</p>
-                {''.join([f'<div class="use-case-item"><div class="use-case-title">{uc["title"]}</div><div class="use-case-scores">Value: {uc["y"]} | Feasibility: {uc["x"]} | Votes: {uc["vote_count"]}</div></div>' for uc in quadrant_data['quadrants']['strategic_bets'][:5]]) or '<p style="color: #666;">No use cases in this quadrant</p>'}
-            </div>
-        </div>
-        
-        <div class="page-break"></div>
-        
-        <h2>Consensus Analysis</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Use Case</th>
-                    <th>Agreement Score</th>
-                    <th>Consensus Level</th>
-                    <th>Votes</th>
-                </tr>
-            </thead>
-            <tbody>
-                {''.join([f'<tr><td>{item["title"]}</td><td>{item["overall_agreement"]}%</td><td class="agreement-{item["consensus_level"].lower()}">{item["consensus_level"]}</td><td>{item["vote_count"]}</td></tr>' for item in agreement_data[:10]])}
-            </tbody>
-        </table>
-        
-        <h2>All Use Cases Ranked</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Title</th>
-                    <th>Category</th>
-                    <th>Avg Score</th>
-                    <th>Votes</th>
-                </tr>
-            </thead>
-            <tbody>
-                {''.join([f'<tr><td>{i+1}</td><td>{uc["title"]}</td><td>{uc.get("category", "-")}</td><td>{uc.get("total_score", "-")}</td><td>{uc.get("vote_count", 0)}</td></tr>' for i, uc in enumerate(use_cases[:20])])}
-            </tbody>
-        </table>
-        
-        <div class="footer">
-            <p>Generated by {brand_name} • {datetime.now().strftime('%Y-%m-%d %H:%M:%S UTC')}</p>
-            <p>This report contains confidential workshop data.</p>
-        </div>
-    </body>
-    </html>
-    """
-    
-    return html
+
+async def _load_workshop(db: AsyncSession, workshop_id: str, user: User) -> Workshop:
+    from app.api.workshops import _check_workshop_permission  # avoid import cycle at module load
+
+    result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
+    workshop = result.scalars().first()
+    if not workshop:
+        raise NotFoundException("Workshop", workshop_id)
+    await _check_workshop_permission(workshop, user, db)
+    return workshop
+
+
+def _safe_filename(title: str, suffix: str) -> str:
+    slug = re.sub(r"[^A-Za-z0-9]+", "-", title or "workshop").strip("-").lower()[:60] or "workshop"
+    return f"{slug}-results.{suffix}"
+
+
+def _criteria_names(workshop: Workshop, results: List[dict]) -> List[str]:
+    names = [c.get("name") for c in (workshop.config or {}).get("criteria", []) if c.get("name")]
+    extra = sorted({k for r in results for k in r["scores"] if k not in names})
+    return names + extra
+
+
+# ---------------------------------------------------------------------------
+# CSV
+# ---------------------------------------------------------------------------
+
+@router.get("/workshop/{workshop_id}/csv")
+async def export_workshop_csv(
+    workshop_id: str,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+):
+    """Ranked results as CSV (same numbers as the results screen)."""
+    workshop = await _load_workshop(db, workshop_id, current_user)
+    results = await compute_workshop_results(db, workshop)
+    criteria = _criteria_names(workshop, results)
+    x_label, y_label = axis_labels(workshop.config)
+
+    output = io.StringIO()
+    writer = csv.writer(output)
+    writer.writerow([
+        "Rank", "Use case", "Category", "Quadrant", "Score (0-100)", "Consensus", "Agreement (%)",
+        "Scores received", f"Matrix X: {x_label} (0-100)", f"Matrix Y: {y_label} (0-100)",
+        *[f"{c} (avg)" for c in criteria], "Description",
+    ])
+    for r in results:
+        writer.writerow([
+            (f"{r['rank']}=" if r["tied"] else r["rank"]) if r["rank"] else "",
+            r["title"],
+            r["category"] or "",
+            QUADRANT_LABELS.get(r["quadrant"], ""),
+            r["normalized_score"] if r["vote_count"] else "",
+            CONSENSUS_LABELS.get(r["consensus_level"], "") if r["consensus_level"] else "",
+            r["agreement"] if r["agreement"] is not None else "",
+            r["vote_count"],
+            round(r["x"], 1) if r["x"] is not None else "",
+            round(r["y"], 1) if r["y"] is not None else "",
+            *[r["scores"].get(c, "") for c in criteria],
+            (r["description"] or "")[:500],
+        ])
+
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="{_safe_filename(workshop.title, "csv")}"'},
+    )
+
+
+# ---------------------------------------------------------------------------
+# PDF
+# ---------------------------------------------------------------------------
+
+QUADRANT_COLORS = {
+    "quick_wins": "#10b981",
+    "strategic_bets": "#8b5cf6",
+    "nice_to_have": "#3b82f6",
+    "dont_do": "#ef4444",
+}
+CONSENSUS_COLORS = {"high": "#047857", "moderate": "#b45309", "needs_discussion": "#b91c1c"}
+
+
+def _matrix_drawing(results: List[dict], x_label: str, y_label: str, brand: str):
+    """Scatter of the prioritization matrix with quadrants and rank labels."""
+    from reportlab.graphics.shapes import Circle, Drawing, Group, Line, Rect, String
+    from reportlab.lib import colors
+
+    width, height, pad = 460, 300, 40
+    plot_w, plot_h = width - pad - 10, height - pad - 20
+    drawing = Drawing(width, height)
+
+    def px(x):
+        return pad + plot_w * (x / 100.0)
+
+    def py(y):
+        return pad + plot_h * (y / 100.0)
+
+    quads = [
+        ("strategic_bets", 0, 50), ("quick_wins", 50, 50),
+        ("dont_do", 0, 0), ("nice_to_have", 50, 0),
+    ]
+    for key, qx, qy in quads:
+        drawing.add(Rect(px(qx), py(qy), plot_w / 2, plot_h / 2,
+                         fillColor=colors.HexColor(QUADRANT_COLORS[key]), fillOpacity=0.08, strokeColor=None))
+        drawing.add(String(px(qx) + 6, py(qy) + plot_h / 2 - 14, QUADRANT_LABELS[key],
+                           fontName="Helvetica-Bold", fontSize=8, fillColor=colors.HexColor(QUADRANT_COLORS[key])))
+    drawing.add(Rect(pad, pad, plot_w, plot_h, fillColor=None, strokeColor=colors.HexColor("#9ca3af")))
+    drawing.add(Line(px(50), pad, px(50), pad + plot_h, strokeColor=colors.HexColor("#d1d5db"), strokeDashArray=[3, 3]))
+    drawing.add(Line(pad, py(50), pad + plot_w, py(50), strokeColor=colors.HexColor("#d1d5db"), strokeDashArray=[3, 3]))
+    drawing.add(String(pad + plot_w / 2, 12, f"{x_label} →", textAnchor="middle", fontName="Helvetica", fontSize=9))
+    y_axis = Group(String(0, 0, f"{y_label} →", textAnchor="middle", fontName="Helvetica", fontSize=9))
+    y_axis.translate(16, pad + plot_h / 2)
+    y_axis.rotate(90)
+    drawing.add(y_axis)
+
+    for r in results:
+        if r["x"] is None or r["y"] is None:
+            continue
+        color = colors.HexColor(QUADRANT_COLORS.get(r["quadrant"], brand))
+        drawing.add(Circle(px(r["x"]), py(r["y"]), 7, fillColor=color, strokeColor=colors.white))
+        if r["rank"]:
+            drawing.add(String(px(r["x"]), py(r["y"]) - 3, str(r["rank"]), textAnchor="middle",
+                               fontName="Helvetica-Bold", fontSize=7, fillColor=colors.white))
+    return drawing
+
+
+def build_pdf(workshop: Workshop, results: List[dict], brand_name: str, brand_color: str) -> bytes:
+    from reportlab.lib import colors
+    from reportlab.lib.pagesizes import A4
+    from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+    from reportlab.lib.units import mm
+    from reportlab.platypus import KeepTogether, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle
+
+    brand = colors.HexColor(brand_color)
+    styles = getSampleStyleSheet()
+    h1 = ParagraphStyle("h1", parent=styles["Title"], textColor=brand, alignment=0, fontSize=22, spaceAfter=4)
+    h2 = ParagraphStyle("h2", parent=styles["Heading2"], textColor=brand, spaceBefore=12, spaceAfter=6)
+    body = ParagraphStyle("body", parent=styles["BodyText"], fontSize=9.5, leading=13)
+    small = ParagraphStyle("small", parent=body, fontSize=8, leading=10, textColor=colors.HexColor("#4b5563"))
+    cell = ParagraphStyle("cell", parent=body, fontSize=8.5, leading=11)
+
+    x_label, y_label = axis_labels(workshop.config)
+    scored = [r for r in results if r["vote_count"]]
+    by_quadrant: Dict[str, List[dict]] = {k: [r for r in scored if r["quadrant"] == k] for k in QUADRANT_LABELS}
+    needs_discussion = [r for r in scored if r["consensus_level"] == "needs_discussion"]
+    criteria = (workshop.config or {}).get("criteria", [])
+
+    story = [
+        Paragraph(escape(workshop.title), h1),
+        Paragraph(f"Prioritization results · {datetime.now().strftime('%d %B %Y')} · {escape(brand_name)}", small),
+        Spacer(1, 6 * mm),
+    ]
+
+    stats = Table(
+        [[str(len(results)), str(len(scored)), str(len(by_quadrant["quick_wins"])), str(len(needs_discussion))],
+         ["Use cases", "Scored", "Quick wins", "Need discussion"]],
+        colWidths=[42 * mm] * 4,
+    )
+    stats.setStyle(TableStyle([
+        ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", 18),
+        ("TEXTCOLOR", (0, 0), (-1, 0), brand),
+        ("FONT", (0, 1), (-1, 1), "Helvetica", 8),
+        ("TEXTCOLOR", (0, 1), (-1, 1), colors.HexColor("#6b7280")),
+        ("ALIGN", (0, 0), (-1, -1), "CENTER"),
+        ("BACKGROUND", (0, 0), (-1, -1), colors.HexColor("#f9fafb")),
+        ("BOX", (0, 0), (-1, -1), 0.5, colors.HexColor("#e5e7eb")),
+        ("TOPPADDING", (0, 0), (-1, -1), 6), ("BOTTOMPADDING", (0, 0), (-1, -1), 6),
+    ]))
+    story += [stats]
+
+    if scored:
+        top = scored[:3]
+        story += [Paragraph("Top use cases", h2)]
+        story += [Paragraph(
+            "; ".join(f"<b>#{r['rank']}</b> {escape(r['title'])} ({r['normalized_score']:.0f}/100)" for r in top), body)]
+
+    story += [Paragraph("Prioritization matrix", h2),
+              Paragraph(f"Horizontal: <b>{escape(x_label)}</b> · Vertical: <b>{escape(y_label)}</b>. "
+                        "Numbers on the dots are ranks.", small),
+              Spacer(1, 2 * mm),
+              _matrix_drawing(results, x_label, y_label, brand_color)]
+
+    # Ranked table
+    rows = [["Rank", "Use case", "Quadrant", "Score\n/100", "Consensus", "Scores"]]
+    for r in results:
+        rank = (f"{r['rank']}=" if r["tied"] else str(r["rank"])) if r["rank"] else "–"
+        consensus = CONSENSUS_LABELS.get(r["consensus_level"], "Not enough scores") if r["vote_count"] else "Not scored"
+        rows.append([
+            rank,
+            Paragraph(escape(r["title"]), cell),
+            QUADRANT_LABELS.get(r["quadrant"], "–"),
+            f"{r['normalized_score']:.0f}" if r["vote_count"] else "–",
+            consensus,
+            str(r["vote_count"]),
+        ])
+    table = Table(rows, colWidths=[13 * mm, 70 * mm, 28 * mm, 15 * mm, 32 * mm, 14 * mm], repeatRows=1)
+    style = [
+        ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", 8.5),
+        ("TEXTCOLOR", (0, 0), (-1, 0), colors.white),
+        ("BACKGROUND", (0, 0), (-1, 0), brand),
+        ("FONT", (0, 1), (-1, -1), "Helvetica", 8.5),
+        ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
+        ("ALIGN", (0, 0), (0, -1), "CENTER"),
+        ("ALIGN", (3, 0), (3, -1), "CENTER"),
+        ("ALIGN", (5, 0), (5, -1), "CENTER"),
+        ("ROWBACKGROUNDS", (0, 1), (-1, -1), [colors.white, colors.HexColor("#f9fafb")]),
+        ("LINEBELOW", (0, 0), (-1, -1), 0.25, colors.HexColor("#e5e7eb")),
+    ]
+    for i, r in enumerate(results, start=1):
+        if r["consensus_level"]:
+            style.append(("TEXTCOLOR", (4, i), (4, i), colors.HexColor(CONSENSUS_COLORS[r["consensus_level"]])))
+        if r["quadrant"]:
+            style.append(("TEXTCOLOR", (2, i), (2, i), colors.HexColor(QUADRANT_COLORS[r["quadrant"]])))
+    table.setStyle(TableStyle(style))
+    story += [Paragraph("All use cases, ranked", h2), table]
+
+    # Quadrant breakdown
+    for index, (key, label) in enumerate(QUADRANT_LABELS.items()):
+        items = by_quadrant[key]
+        text = ", ".join(f"#{r['rank']} {escape(r['title'])}" for r in items) or "None"
+        block = [
+            Paragraph(f"<font color='{QUADRANT_COLORS[key]}'><b>{label}</b></font> ({len(items)}) — {QUADRANT_DESCRIPTIONS[key]}", body),
+            Paragraph(text, small),
+            Spacer(1, 2 * mm),
+        ]
+        # Keep the section heading with its first block (no orphaned heading).
+        story.append(KeepTogether(([Paragraph("By quadrant", h2)] if index == 0 else []) + block))
+
+    if needs_discussion:
+        story += [Paragraph("Needs discussion", h2),
+                  Paragraph("Participants scored these very differently — worth a follow-up conversation:", body),
+                  Paragraph(", ".join(f"{escape(r['title'])} (agreement {r['agreement']:.0f}%)" for r in needs_discussion), small)]
+
+    if criteria:
+        crit_rows = [["Criterion", "Weight"]] + [[Paragraph(escape(c.get("name", "")), cell), f"{c.get('weight', 0)}%"] for c in criteria]
+        crit = Table(crit_rows, colWidths=[120 * mm, 25 * mm])
+        crit.setStyle(TableStyle([
+            ("FONT", (0, 0), (-1, 0), "Helvetica-Bold", 8.5),
+            ("LINEBELOW", (0, 0), (-1, -1), 0.25, colors.HexColor("#e5e7eb")),
+            ("ALIGN", (1, 0), (1, -1), "RIGHT"),
+        ]))
+        story += [Paragraph("Scoring criteria", h2), crit,
+                  Paragraph("Scores are weighted averages shown on a 0–100 scale. Consensus reflects how closely "
+                            "participants agreed (High ≥ 70%, Moderate ≥ 40%).", small)]
+
+    def footer(canvas, doc):
+        canvas.saveState()
+        canvas.setFont("Helvetica", 7.5)
+        canvas.setFillColor(colors.HexColor("#6b7280"))
+        canvas.drawString(18 * mm, 10 * mm, f"{brand_name} · {workshop.title}"[:110])
+        canvas.drawRightString(A4[0] - 18 * mm, 10 * mm, f"Page {doc.page}")
+        canvas.restoreState()
+
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=A4, leftMargin=18 * mm, rightMargin=18 * mm,
+                            topMargin=16 * mm, bottomMargin=18 * mm, title=f"{workshop.title} — Results",
+                            author=brand_name)
+    doc.build(story, onFirstPage=footer, onLaterPages=footer)
+    return buffer.getvalue()
 
 
 @router.get("/workshop/{workshop_id}/pdf")
 async def export_workshop_pdf(
     workshop_id: str,
-    company_name: Optional[str] = None,
-    primary_color: Optional[str] = None,
-    logo_url: Optional[str] = None,
+    company_name: Optional[str] = Query(None, max_length=100),
+    primary_color: Optional[str] = Query(None),
     current_user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db)
+    db: AsyncSession = Depends(get_db),
 ):
-    """
-    Export workshop results as a branded PDF report.
-    Returns HTML that can be converted to PDF client-side.
-    """
-    try:
-        # Get workshop
-        workshop_result = await db.execute(
-            select(Workshop).where(Workshop.id == workshop_id)
-        )
-        workshop = workshop_result.scalars().first()
-        if not workshop:
-            raise NotFoundException("Workshop", workshop_id)
-        
-        # Get use cases with votes
-        result = await db.execute(
-            select(UseCase)
-            .where(UseCase.workshop_id == workshop_id)
-            .options(selectinload(UseCase.votes))
-        )
-        use_cases_raw = result.scalars().all()
-        
-        # Process use cases
-        use_cases = []
-        for uc in use_cases_raw:
-            scores_sum = defaultdict(float)
-            scores_count = defaultdict(int)
-            
-            for vote in uc.votes:
-                if vote.scores:
-                    for criterion, score in vote.scores.items():
-                        scores_sum[criterion] += float(score)
-                        scores_count[criterion] += 1
-            
-            avg_scores = {k: round(scores_sum[k] / scores_count[k], 2) for k in scores_sum}
-            total_score = round(sum(avg_scores.values()) / len(avg_scores), 2) if avg_scores else 0
-            
-            use_cases.append({
-                "id": str(uc.id),
-                "title": uc.title,
-                "category": uc.category,
-                "total_score": total_score,
-                "vote_count": len(uc.votes),
-                "scores": avg_scores
-            })
-        
-        use_cases.sort(key=lambda x: x["total_score"], reverse=True)
-        
-        # Build quadrant data
-        threshold = 5.0
-        quadrant_data = {
-            "quadrants": {
-                "quick_wins": [],
-                "strategic_bets": [],
-                "nice_to_have": [],
-                "dont_do": []
-            },
-            "summary": {
-                "quick_wins_count": 0,
-                "strategic_bets_count": 0,
-                "nice_to_have_count": 0,
-                "dont_do_count": 0
-            }
-        }
-        
-        for uc in use_cases:
-            feasibility_keys = ['Feasibility', 'Ease of Implementation', 'Data Readiness']
-            value_keys = ['Business Value', 'Impact', 'Value', 'Business Impact']
-            
-            x_val = next((uc["scores"].get(k) for k in feasibility_keys if k in uc["scores"]), None)
-            y_val = next((uc["scores"].get(k) for k in value_keys if k in uc["scores"]), None)
-            
-            # If coordinates missing, skip or handle gracefully
-            if x_val is None or y_val is None:
-                continue
-            
-            uc_data = {**uc, "x": x_val, "y": y_val}
-            
-            if y_val >= threshold and x_val >= threshold:
-                quadrant_data["quadrants"]["quick_wins"].append(uc_data)
-            elif y_val >= threshold:
-                quadrant_data["quadrants"]["strategic_bets"].append(uc_data)
-            elif x_val >= threshold:
-                quadrant_data["quadrants"]["nice_to_have"].append(uc_data)
-            else:
-                quadrant_data["quadrants"]["dont_do"].append(uc_data)
-        
-        for key in ["quick_wins", "strategic_bets", "nice_to_have", "dont_do"]:
-            quadrant_data["summary"][f"{key}_count"] = len(quadrant_data["quadrants"][key])
-        
-        # Build agreement data
-        agreement_data = []
-        for uc in use_cases_raw:
-            if not uc.votes:
-                continue
-            
-            # Calculate simple agreement (higher vote count = more confidence)
-            agreement_score = min(100, len(uc.votes) * 10)
-            consensus = "High" if agreement_score >= 70 else "Medium" if agreement_score >= 40 else "Low"
-            
-            agreement_data.append({
-                "title": uc.title,
-                "overall_agreement": agreement_score,
-                "consensus_level": consensus,
-                "vote_count": len(uc.votes)
-            })
-        
-        # Generate HTML report
-        branding = {}
-        if company_name:
-            branding["company_name"] = company_name
-        if primary_color:
-            branding["primary_color"] = primary_color
-        if logo_url:
-            branding["logo_url"] = logo_url
-        
-        html_content = generate_html_report(
-            workshop=workshop,
-            use_cases=use_cases,
-            quadrant_data=quadrant_data,
-            agreement_data=agreement_data,
-            branding=branding
-        )
-        
-        return Response(
-            content=html_content,
-            media_type="text/html",
-            headers={
-                "Content-Disposition": f'attachment; filename="workshop_report_{workshop_id}.html"'
-            }
-        )
-    except Exception as e:
-        print(f"Error generating PDF report: {str(e)}")  # Basic logging
-        raise HTTPException(status_code=500, detail=f"Failed to generate report: {str(e)}")
-
-
-@router.get("/workshop/{workshop_id}/csv")
-async def export_workshop_csv(
-    workshop_id: str,
-    db: AsyncSession = Depends(get_db)
-):
-    """
-    Export workshop results as CSV.
-    """
-    # Get workshop
-    workshop_result = await db.execute(
-        select(Workshop).where(Workshop.id == workshop_id)
-    )
-    workshop = workshop_result.scalars().first()
-    if not workshop:
-        raise NotFoundException("Workshop", workshop_id)
-    
-    # Get use cases with votes
-    result = await db.execute(
-        select(UseCase)
-        .where(UseCase.workshop_id == workshop_id)
-        .options(selectinload(UseCase.votes))
-    )
-    use_cases = result.scalars().all()
-    
-    # Collect all criteria
-    all_criteria = set()
-    for uc in use_cases:
-        for vote in uc.votes:
-            if vote.scores:
-                all_criteria.update(vote.scores.keys())
-    
-    # Create CSV
-    output = io.StringIO()
-    writer = csv.writer(output)
-    
-    # Header row
-    headers = ['ID', 'Title', 'Category', 'Description', 'Vote Count', 'Avg Total Score']
-    headers.extend(sorted(all_criteria))
-    writer.writerow(headers)
-    
-    # Data rows
-    for uc in use_cases:
-        scores_sum = defaultdict(float)
-        scores_count = defaultdict(int)
-        
-        for vote in uc.votes:
-            if vote.scores:
-                for criterion, score in vote.scores.items():
-                    scores_sum[criterion] += float(score)
-                    scores_count[criterion] += 1
-        
-        avg_scores = {k: round(scores_sum[k] / scores_count[k], 2) for k in scores_sum}
-        total_score = round(sum(avg_scores.values()) / len(avg_scores), 2) if avg_scores else 0
-        
-        row = [
-            str(uc.id),
-            uc.title,
-            uc.category or '',
-            uc.description[:200] if uc.description else '',
-            len(uc.votes),
-            total_score
-        ]
-        for criterion in sorted(all_criteria):
-            row.append(avg_scores.get(criterion, ''))
-        
-        writer.writerow(row)
-    
-    output.seek(0)
-    
-    return StreamingResponse(
-        iter([output.getvalue()]),
-        media_type="text/csv",
-        headers={
-            "Content-Disposition": f'attachment; filename="workshop_results_{workshop_id}.csv"'
-        }
+    """Ranked results as a PDF report (summary, matrix, ranked table, quadrants)."""
+    workshop = await _load_workshop(db, workshop_id, current_user)
+    results = await compute_workshop_results(db, workshop)
+    color = primary_color if primary_color and _HEX_COLOR.match(primary_color) else "#7c3aed"
+    pdf = build_pdf(workshop, results, company_name or "Qbrain AI Labs", color)
+    return Response(
+        content=pdf,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f'attachment; filename="{_safe_filename(workshop.title, "pdf")}"'},
     )

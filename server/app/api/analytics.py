@@ -15,11 +15,9 @@ import uuid
 from collections import defaultdict
 
 from app.utils.matrix import (
-    axes_from_config,
     calculate_agreement_score, 
     detect_scale_max, 
     get_scale_factor, 
-    calculate_matrix_position,
     STANDARD_X_KEYWORDS,
     STANDARD_Y_KEYWORDS
 )
@@ -441,6 +439,8 @@ async def get_agreement_metrics(
             if not vote.scores:
                 continue
             for criterion, score in vote.scores.items():
+                if float(score) < 0:  # "Unsure" is not a score
+                    continue
                 if criterion not in criteria_stats:
                     criteria_stats[criterion] = []
                 criteria_stats[criterion].append(float(score))
@@ -578,100 +578,42 @@ async def get_quadrant_analysis(
 ):
     """
     Get quadrant analysis with use case categorization.
+    Uses the shared results service so quadrants match the matrix and exports.
     """
-    # Verify workshop exists
+    from app.services.workshop_results import QUADRANT_LABELS, axis_labels, compute_workshop_results
+
     workshop_result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
     workshop = workshop_result.scalars().first()
     if not workshop:
         raise NotFoundException("Workshop", workshop_id)
-    
-    # Get aggregated results
-    result = await db.execute(
-        select(UseCase)
-        .where(UseCase.workshop_id == workshop_id)
-        .options(selectinload(UseCase.votes))
-    )
-    use_cases = result.scalars().all()
-    
-    quadrants = {
-        "quick_wins": [],      # High Value, High Feasibility
-        "strategic_bets": [],  # High Value, Low Feasibility
-        "nice_to_have": [],    # Low Value, High Feasibility
-        "dont_do": []          # Low Value, Low Feasibility
-    }
-    
-    workshop_config = workshop.config or {}
-    template_id = workshop.ws_template_id if hasattr(workshop, 'ws_template_id') else None
-    
-    # Analyze all scores to detect scale
-    all_scores = []
-    for uc in use_cases:
-        for vote in uc.votes:
-            if vote.scores:
-                all_scores.extend([float(s) for s in vote.scores.values()])
-    
-    scale_max = detect_scale_max(all_scores)
-    threshold = scale_max / 2  # Dynamic threshold
-    norm_threshold = 50.0
-    
-    for uc in use_cases:
-        if not uc.votes:
-            continue
-        
-        # Calculate average scores
-        scores_sum = defaultdict(float)
-        scores_count = defaultdict(int)
-        
-        for vote in uc.votes:
-            if vote.scores:
-                for criterion, score in vote.scores.items():
-                    scores_sum[criterion] += float(score)
-                    scores_count[criterion] += 1
-        
-        avg_scores = {k: scores_sum[k] / scores_count[k] for k in scores_sum}
-        
-        # Determine X and Y coordinates using centralized standardized logic
-        x_val, y_val = calculate_matrix_position(avg_scores, template_id, scale_max, **axes_from_config(workshop_config))
-        
-        if x_val is None or y_val is None:
-            continue
-        
-        # Normalize back to raw scale for quadrant comparison if x_val/y_val are 0-100
-        # Wait, x_val and y_val are returned on 0-100 scale by calculate_matrix_position.
-        # So we should compare them against a 50.0 threshold if they are normalized.
-        # OR we keep them on their raw scale for the quadrant logic here?
-        # Actually, let's keep threshold at 50.0 if we use calc_matrix_pos's normalized output.
-        
 
-        
-        use_case_data = {
-            "id": str(uc.id),
-            "title": uc.title,
-            "x": round(x_val, 2),
-            "y": round(y_val, 2),
-            "vote_count": len(uc.votes),
-            "scores": {k: round(v, 2) for k, v in avg_scores.items()}
-        }
-        
-        # Categorize into quadrant based on normalized 0-100 coordinates
-        if y_val >= norm_threshold and x_val >= norm_threshold:
-            quadrants["quick_wins"].append(use_case_data)
-        elif y_val >= norm_threshold and x_val < norm_threshold:
-            quadrants["strategic_bets"].append(use_case_data)
-        elif y_val < norm_threshold and x_val >= norm_threshold:
-            quadrants["nice_to_have"].append(use_case_data)
-        else:
-            quadrants["dont_do"].append(use_case_data)
-    
-    # Sort each quadrant by total score (y + x)
-    for quadrant in quadrants.values():
-        quadrant.sort(key=lambda x: x["y"] + x["x"], reverse=True)
-    
+    results = await compute_workshop_results(db, workshop)
+    quadrants = {key: [] for key in QUADRANT_LABELS}
+    for r in results:
+        if not r["quadrant"]:
+            continue
+        quadrants[r["quadrant"]].append({
+            "id": str(r["id"]),
+            "title": r["title"],
+            "x": round(r["x"], 2),
+            "y": round(r["y"], 2),
+            "rank": r["rank"],
+            "normalized_score": r["normalized_score"],
+            "vote_count": r["vote_count"],
+            "scores": r["scores"],
+        })
+    for items in quadrants.values():
+        items.sort(key=lambda item: (item["rank"] or 10**6))
+
+    x_label, y_label = axis_labels(workshop.config)
     return {
         "workshop_id": workshop_id,
-        "threshold": threshold, # Still return raw threshold for UI if needed
-        "norm_threshold": norm_threshold,
-        "scale_max": scale_max,
+        "threshold": 50.0,
+        "norm_threshold": 50.0,
+        "scale_max": 100.0,
+        "x_label": x_label,
+        "y_label": y_label,
+        "quadrant_labels": QUADRANT_LABELS,
         "quadrants": quadrants,
         "summary": {
             "quick_wins_count": len(quadrants["quick_wins"]),

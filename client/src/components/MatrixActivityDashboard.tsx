@@ -6,6 +6,7 @@ import { Activity, Users, TrendingUp, Clock, MapPin, RefreshCw } from 'lucide-re
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from './ui/Button';
 import { toast } from 'sonner';
+import { QUADRANT_COLORS, QUADRANT_LABELS, quadrantFor } from '../lib/results';
 
 interface ParticipantAction {
     id: string;
@@ -27,6 +28,9 @@ interface MatrixActivityDashboardProps {
     onPositionUpdate?: (position: any) => void;
     /** Participants in the workshop; used to compute who is still pending. */
     totalParticipants?: number;
+    /** The workshop's matrix axis criteria (positions are 0-100 on these). */
+    xLabel?: string;
+    yLabel?: string;
 }
 
 export function MatrixActivityDashboard({
@@ -35,7 +39,9 @@ export function MatrixActivityDashboard({
     viewMode: externalViewMode,
     onRefreshMatrix,
     onPositionUpdate,
-    totalParticipants
+    totalParticipants,
+    xLabel = 'X',
+    yLabel = 'Y',
 }: MatrixActivityDashboardProps) {
     const { theme } = useTheme();
     const [recentActions, setRecentActions] = useState<ParticipantAction[]>([]);
@@ -255,21 +261,9 @@ export function MatrixActivityDashboard({
         return `${hours}h ago`;
     };
 
-    const getQuadrantLabel = (x: number, y: number) => {
-        const mid = 50;
-        if (x > mid && y > mid) return 'Quick Wins';
-        if (x <= mid && y > mid) return 'Strategic Bets';
-        if (x > mid && y <= mid) return 'Nice to Have';
-        return "Don't Do";
-    };
-
-    const getQuadrantColor = (x: number, y: number) => {
-        const mid = 50;
-        if (x > mid && y > mid) return 'text-green-500';
-        if (x <= mid && y > mid) return 'text-purple-500';
-        if (x > mid && y <= mid) return 'text-blue-500';
-        return 'text-red-500';
-    };
+    const getQuadrantLabel = (x: number, y: number) => QUADRANT_LABELS[quadrantFor(x, y)!];
+    const getQuadrantColor = (x: number, y: number) => QUADRANT_COLORS[quadrantFor(x, y)!];
+    const position = (p: { x: number; y: number }) => `${xLabel}: ${Math.round(p.x)} · ${yLabel}: ${Math.round(p.y)}`;
 
     return (
         <div className="rounded-xl border p-4 theme-bg-secondary theme-border">
@@ -412,16 +406,16 @@ export function MatrixActivityDashboard({
                                         <div className="flex items-center gap-3 text-xs">
                                             <div className="flex items-center gap-1">
                                                 <TrendingUp className="w-3 h-3" />
-                                                <span className={getQuadrantColor(action.position.x, action.position.y)}>
+                                                <span style={{ color: getQuadrantColor(action.position.x, action.position.y) }}>
                                                     {getQuadrantLabel(action.position.x, action.position.y)}
                                                 </span>
                                             </div>
                                             <div className="theme-text-secondary">
-                                                F: {Math.round(action.position.x)} | V: {Math.round(action.position.y)}
+                                                {position(action.position)}
                                             </div>
                                             {action.previousPosition && (
                                                 <div className={`text-xs ${theme === 'light' ? 'text-gray-400' : 'text-gray-500'}`}>
-                                                    from F: {Math.round(action.previousPosition.x)} | V: {Math.round(action.previousPosition.y)}
+                                                    from {position(action.previousPosition)}
                                                 </div>
                                             )}
                                         </div>
