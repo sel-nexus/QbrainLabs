@@ -39,6 +39,7 @@ class ParticipantSessionInfo(BaseModel):
     current_phase: str
     use_cases: List[UseCaseSummary] = []
     surveys: List[SurveySummary] = []
+    show_leaderboard: bool = False  # off unless the facilitator turns it on
 
     class Config:
         from_attributes = True

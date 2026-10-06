@@ -62,7 +62,7 @@ async function renderDashboard() {
           </AuthProvider>
         </ThemeProvider>
     );
-    fireEvent.click(await screen.findByText('dashboard.participant.tiles.submitUseCase.title'));
+    fireEvent.click(await screen.findByText('Submit Use Case'));
 }
 
 describe('Phase change while writing a use case', () => {

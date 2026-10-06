@@ -32,6 +32,7 @@ import { Leaderboard } from '../components/gamification/Leaderboard';
 import { BadgeGrid } from '../components/gamification/BadgeGrid';
 import { Header } from '../components/Header';
 import { UseCaseDetailModal } from '../components/usecases/UseCaseDetailModal';
+import { FALLBACK_REFRESH_MS } from '../hooks/useLiveRefresh';
 
 interface UseCase {
     id: string;
@@ -58,6 +59,7 @@ interface SessionInfo {
     current_phase: string;
     use_cases: UseCase[];
     surveys: Survey[];
+    show_leaderboard?: boolean;
 }
 
 type ActiveModal = 'usecase' | 'survey' | 'qa' | 'leaderboard' | 'badges' | 'results' | null;
@@ -109,7 +111,8 @@ export function ParticipantDashboard() {
     useEffect(() => {
         if (session?.participantId && session?.workshopId) {
             fetchSessionInfo();
-            const interval = setInterval(fetchSessionInfo, 10000);
+            // Socket events (below) keep this live; this is a slow safety net.
+            const interval = setInterval(fetchSessionInfo, FALLBACK_REFRESH_MS);
             return () => clearInterval(interval);
         } else {
             setLoading(false);
@@ -160,6 +163,7 @@ export function ParticipantDashboard() {
         socket.on('participant_role_update', onRoleUpdate);
         socket.on('use_case_added', onUseCaseAdded);
         socket.on('survey_status_changed', onSurveyUpdate);
+        socket.on('workshop_updated', onSurveyUpdate);
 
         return () => {
             socket.off('connect', onReconnect);
@@ -167,6 +171,7 @@ export function ParticipantDashboard() {
             socket.off('participant_role_update', onRoleUpdate);
             socket.off('use_case_added', onUseCaseAdded);
             socket.off('survey_status_changed', onSurveyUpdate);
+            socket.off('workshop_updated', onSurveyUpdate);
         };
     }, [navigate, session, updateRole]);
 
@@ -226,27 +231,27 @@ export function ParticipantDashboard() {
     // One clear "what to do now" per phase.
     const nextStep: { step?: string; title: string; detail: string; action?: { label: string; onClick: () => void } } =
         isComplete ? {
-            title: 'The workshop is complete — thank you!',
-            detail: 'Here are the use cases the group ranked highest.',
-            action: { label: 'See top use cases', onClick: () => setActiveModal('results') },
+            title: t('participantDashboard.complete.title'),
+            detail: t('participantDashboard.complete.detail'),
+            action: { label: t('participantDashboard.seeTopUseCases'), onClick: () => setActiveModal('results') },
         } : currentPhase === 'INTAKE' ? {
-            step: 'Step 1 of 3',
-            title: 'Add your AI use case ideas',
-            detail: 'Describe a problem AI could help with. You can add as many as you like.',
-            action: { label: 'Add a use case', onClick: handleUseCaseClick },
+            step: t('participantDashboard.stepOf', { step: 1, total: 3 }),
+            title: t('participantDashboard.intake.title'),
+            detail: t('participantDashboard.intake.detail'),
+            action: { label: t('participantDashboard.intake.action'), onClick: handleUseCaseClick },
         } : currentPhase === 'SCORING' ? {
-            step: 'Step 2 of 3',
-            title: 'Score the use cases',
-            detail: 'The facilitator presents each use case; rate it against the criteria.',
-            action: { label: 'Go to scoring', onClick: () => navigate('/scoring') },
+            step: t('participantDashboard.stepOf', { step: 2, total: 3 }),
+            title: t('participantDashboard.scoring.title'),
+            detail: t('participantDashboard.scoring.detail'),
+            action: { label: t('participantDashboard.scoring.action'), onClick: () => navigate('/scoring') },
         } : currentPhase === 'ANALYSIS' ? {
-            step: 'Step 3 of 3',
-            title: 'See the results',
-            detail: 'Scoring is closed. See which use cases came out on top.',
-            action: { label: 'See top use cases', onClick: () => setActiveModal('results') },
+            step: t('participantDashboard.stepOf', { step: 3, total: 3 }),
+            title: t('participantDashboard.results.title'),
+            detail: t('participantDashboard.results.detail'),
+            action: { label: t('participantDashboard.seeTopUseCases'), onClick: () => setActiveModal('results') },
         } : {
-            title: 'Waiting for the facilitator to start',
-            detail: "You're in. This page updates automatically when the workshop begins.",
+            title: t('participantDashboard.waiting.title'),
+            detail: t('participantDashboard.waiting.detail'),
         };
 
     const hasUseCases = (sessionInfo?.use_cases.length || 0) > 0;
@@ -262,7 +267,7 @@ export function ParticipantDashboard() {
             <div className="min-h-screen flex items-center justify-center theme-bg-primary">
                 <div className="flex items-center gap-3 theme-text-secondary">
                     <Loader2 className="w-6 h-6 animate-spin" />
-                    <span>Loading workshop...</span>
+                    <span>{t('participantDashboard.loading')}</span>
                 </div>
             </div>
         );
@@ -280,14 +285,14 @@ export function ParticipantDashboard() {
                 <div className="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
                     <div>
                         <h1 className="text-xl font-bold theme-text-primary">
-                            {sessionInfo?.workshop_title || 'Workshop'}
+                            {sessionInfo?.workshop_title || t('participantDashboard.workshopFallback')}
                         </h1>
                         <div className="flex items-center gap-3 mt-1">
                             <span className="text-sm theme-text-secondary">
-                                Welcome, {session?.name}
+                                {t('participantDashboard.welcome', { name: session?.name })}
                             </span>
                             <span className="text-xs px-2 py-0.5 rounded-full bg-brand-violet/20 text-brand-violet font-medium">
-                                {isComplete ? 'Complete' : phaseLabel(currentPhase)}
+                                {isComplete ? t('participantDashboard.complete.badge') : phaseLabel(currentPhase)}
                             </span>
                         </div>
                     </div>
@@ -295,17 +300,19 @@ export function ParticipantDashboard() {
                         {session?.participantId && (
                             <PointsDisplay participantId={session.participantId} />
                         )}
-                        <Button variant="ghost" onClick={() => setActiveModal('leaderboard')} className="theme-text-secondary hover:theme-text-primary px-2 sm:px-4">
-                            <Trophy className="w-4 h-4 sm:mr-2" />
-                            <span className="hidden sm:inline">Leaderboard</span>
-                        </Button>
-                        <Button variant="ghost" onClick={() => setActiveModal('badges')} className="theme-text-secondary hover:theme-text-primary px-2 sm:px-4">
+                        {sessionInfo?.show_leaderboard && (
+                            <Button variant="ghost" onClick={() => setActiveModal('leaderboard')} aria-label={t('participantDashboard.leaderboard')} className="theme-text-secondary hover:theme-text-primary px-2 sm:px-4">
+                                <Trophy className="w-4 h-4 sm:mr-2" aria-hidden="true" />
+                                <span className="hidden sm:inline">{t('participantDashboard.leaderboard')}</span>
+                            </Button>
+                        )}
+                        <Button variant="ghost" onClick={() => setActiveModal('badges')} aria-label={t('participantDashboard.badges')} className="theme-text-secondary hover:theme-text-primary px-2 sm:px-4">
                             <Award className="w-4 h-4 sm:mr-2" />
-                            <span className="hidden sm:inline">Badges</span>
+                            <span className="hidden sm:inline">{t('participantDashboard.badges')}</span>
                         </Button>
-                        <Button variant="ghost" onClick={() => setActiveModal('qa')} className="theme-text-secondary hover:theme-text-primary px-2 sm:px-4">
+                        <Button variant="ghost" onClick={() => setActiveModal('qa')} aria-label={t('participantDashboard.qaLabel')} className="theme-text-secondary hover:theme-text-primary px-2 sm:px-4">
                             <MessageSquare className="w-4 h-4 sm:mr-2" />
-                            <span className="hidden sm:inline">Q&A</span>
+                            <span className="hidden sm:inline">{t('participantDashboard.qa')}</span>
                         </Button>
                     </div>
                 </div>
@@ -340,7 +347,7 @@ export function ParticipantDashboard() {
                             icon={<FileText className="w-7 h-7" />}
                             title={t('dashboard.participant.tiles.useCases.title')}
                             description={t('dashboard.participant.tiles.useCases.description')}
-                            badge={`${sessionInfo?.use_cases.length || 0} total`}
+                            badge={t('participantDashboard.totalBadge', { count: sessionInfo?.use_cases.length || 0 })}
                             badgeVariant="info"
                             onClick={handleUseCasesViewClick}
                         />
@@ -351,7 +358,7 @@ export function ParticipantDashboard() {
                             icon={<Plus className="w-7 h-7" />}
                             title={t('dashboard.participant.tiles.addUseCase.title')}
                             description={t('dashboard.participant.tiles.addUseCase.description')}
-                            badge="Available"
+                            badge={t('participantDashboard.available')}
                             badgeVariant="success"
                             onClick={handleUseCaseClick}
                         />
@@ -390,9 +397,9 @@ export function ParticipantDashboard() {
                         {/* Tile 4: Prioritization matrix */}
                         <ActionTile
                             icon={<Target className="w-7 h-7" />}
-                            title="Prioritization matrix"
+                            title={t('participantDashboard.matrixTitle')}
                             description={t('dashboard.participant.tiles.prioritize.description')}
-                            badge={canPrioritize ? `${sessionInfo?.use_cases.length || 0} ${t('dashboard.participant.tiles.prioritize.available')}` : "Not available"}
+                            badge={canPrioritize ? `${sessionInfo?.use_cases.length || 0} ${t('dashboard.participant.tiles.prioritize.available')}` : t('participantDashboard.notAvailable')}
                             badgeVariant={canPrioritize ? "warning" : "default"}
                             disabled={!canPrioritize}
                             disabledReason={
@@ -422,7 +429,7 @@ export function ParticipantDashboard() {
                             icon={<BarChart3 className="w-7 h-7" />}
                             title={t('dashboard.participant.tiles.prioritize.title')}
                             description={t('dashboard.participant.tiles.prioritize.description')}
-                            badge="0 to review"
+                            badge={t('participantDashboard.toReview')}
                             badgeVariant="default"
                             disabled={true}
                             disabledReason={t('dashboard.participant.tiles.prioritize.noUseCases')}
@@ -468,17 +475,17 @@ export function ParticipantDashboard() {
                 >
                     <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
                         <h2 className="text-lg font-semibold theme-text-primary">
-                            Workshop Use Cases ({sessionInfo?.use_cases.length || 0})
+                            {t('participantDashboard.useCasesHeading', { count: sessionInfo?.use_cases.length || 0 })}
                         </h2>
                         {myUseCaseCount > 0 && (
-                            <div role="group" aria-label="Filter use cases" className="flex gap-1 text-sm">
+                            <div role="group" aria-label={t('participantDashboard.filterLabel')} className="flex gap-1 text-sm">
                                 <button type="button" aria-pressed={!showOnlyMine} onClick={() => setShowOnlyMine(false)}
                                     className={`px-3 py-1 rounded-full ${!showOnlyMine ? 'bg-brand-violet text-white' : 'theme-bg-tertiary theme-text-secondary'}`}>
-                                    All
+                                    {t('participantDashboard.filterAll')}
                                 </button>
                                 <button type="button" aria-pressed={showOnlyMine} onClick={() => setShowOnlyMine(true)}
                                     className={`px-3 py-1 rounded-full ${showOnlyMine ? 'bg-brand-violet text-white' : 'theme-bg-tertiary theme-text-secondary'}`}>
-                                    Mine ({myUseCaseCount})
+                                    {t('participantDashboard.filterMine', { count: myUseCaseCount })}
                                 </button>
                             </div>
                         )}
@@ -486,7 +493,7 @@ export function ParticipantDashboard() {
 
                     {(sessionInfo?.use_cases.length || 0) === 0 ? (
                         <p className="text-sm theme-text-secondary">
-                            No use cases submitted yet. Be the first to add one!
+                            {t('participantDashboard.empty')}
                         </p>
                     ) : (
                         <div className="grid gap-3 max-h-96 overflow-y-auto">
@@ -500,7 +507,7 @@ export function ParticipantDashboard() {
                                     <div className="flex items-center gap-2 font-medium text-sm theme-text-primary">
                                         <span className="flex-1">{uc.title}</span>
                                         {isMine(uc) && (
-                                            <span className="text-[11px] px-2 py-0.5 rounded-full bg-brand-violet/20 text-brand-violet">Mine · tap to edit</span>
+                                            <span className="text-[11px] px-2 py-0.5 rounded-full bg-brand-violet/20 text-brand-violet">{t('participantDashboard.mineBadge')}</span>
                                         )}
                                     </div>
                                     {uc.description && (
@@ -519,7 +526,7 @@ export function ParticipantDashboard() {
             {activeModal === 'qa' && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
                     <div className="relative w-full max-w-2xl h-[80vh] rounded-2xl overflow-hidden theme-bg-primary">
-                        <button
+                        <button aria-label={t('participantDashboard.close')}
                             onClick={handleModalClose}
                             className="absolute top-4 right-4 z-10 p-2 rounded-lg transition hover:opacity-80 contrast-muted hover:theme-text-primary"
                         >
@@ -536,17 +543,17 @@ export function ParticipantDashboard() {
                     <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl theme-bg-primary">
                         <button
                             onClick={handleModalClose}
-                            aria-label="Close (your draft is saved)"
+                            aria-label={t('participantDashboard.closeDraftSaved')}
                             className="absolute top-4 right-4 z-10 p-2 rounded-lg transition theme-text-secondary hover:theme-bg-tertiary hover:theme-text-primary"
                         >
                             <X className="w-5 h-5" />
                         </button>
                         {scoringStartedWhileWriting && (
                             <div role="alert" className="mx-4 mt-4 rounded-lg border border-amber-500/40 bg-amber-500/10 px-4 py-3 text-sm theme-text-primary">
-                                <p className="font-medium">The facilitator has started scoring.</p>
-                                <p className="mt-1 contrast-muted">Finish and submit your use case — your draft is saved — then you'll go to scoring.</p>
+                                <p className="font-medium">{t('participantDashboard.scoringStarted.title')}</p>
+                                <p className="mt-1 contrast-muted">{t('participantDashboard.scoringStarted.detail')}</p>
                                 <button type="button" onClick={handleModalClose} className="mt-2 text-brand-violet underline">
-                                    Go to scoring now (keep my draft)
+                                    {t('participantDashboard.scoringStarted.action')}
                                 </button>
                             </div>
                         )}
@@ -559,7 +566,7 @@ export function ParticipantDashboard() {
             {activeModal === 'survey' && activeSurveyId && session?.participantId && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
                     <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 theme-card">
-                        <button
+                        <button aria-label={t('participantDashboard.close')}
                             onClick={handleModalClose}
                             className="absolute top-4 right-4 p-2 rounded-lg transition theme-text-secondary hover:theme-bg-tertiary hover:theme-text-primary"
                         >
@@ -580,12 +587,12 @@ export function ParticipantDashboard() {
                     <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 theme-card">
                         <button
                             onClick={handleModalClose}
-                            aria-label="Close"
+                            aria-label={t('participantDashboard.close')}
                             className="absolute top-4 right-4 p-2 rounded-lg transition theme-text-secondary hover:theme-bg-tertiary hover:theme-text-primary"
                         >
                             <X className="w-5 h-5" />
                         </button>
-                        <h2 id="top-ideas-title" className="text-xl font-bold theme-text-primary mb-4">Top use cases</h2>
+                        <h2 id="top-ideas-title" className="text-xl font-bold theme-text-primary mb-4">{t('participantDashboard.topUseCases')}</h2>
                         <TopIdeas workshopId={session.workshopId} />
                     </div>
                 </div>
@@ -594,7 +601,7 @@ export function ParticipantDashboard() {
             {activeModal === 'leaderboard' && session?.workshopId && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
                     <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 theme-card">
-                        <button
+                        <button aria-label={t('participantDashboard.close')}
                             onClick={handleModalClose}
                             className="absolute top-4 right-4 p-2 rounded-lg transition theme-text-secondary hover:theme-bg-tertiary hover:theme-text-primary"
                         >
@@ -614,9 +621,9 @@ export function ParticipantDashboard() {
                     <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 theme-card">
                         <div className="flex justify-between items-center mb-4">
                             <h2 className="text-2xl font-bold theme-text-primary">
-                                Your Badges
+                                {t('participantDashboard.yourBadges')}
                             </h2>
-                            <button
+                            <button aria-label={t('participantDashboard.close')}
                                 onClick={handleModalClose}
                                 className="p-2 rounded-lg transition theme-text-secondary hover:theme-bg-tertiary hover:theme-text-primary"
                             >

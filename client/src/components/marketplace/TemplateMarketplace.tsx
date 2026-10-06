@@ -342,13 +342,13 @@ export function TemplateMarketplace() {
 
           {/* View Toggle */}
           <div className="flex items-center border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden">
-            <button
+            <button aria-label="Grid view"
               onClick={() => setViewMode('grid')}
               className={`p-2 ${viewMode === 'grid' ? 'bg-indigo-600 text-white' : 'bg-white dark:bg-gray-700'}`}
             >
               <Grid className="w-4 h-4" />
             </button>
-            <button
+            <button aria-label="List view"
               onClick={() => setViewMode('list')}
               className={`p-2 ${viewMode === 'list' ? 'bg-indigo-600 text-white' : 'bg-white dark:bg-gray-700'}`}
             >
@@ -546,7 +546,7 @@ export function TemplateMarketplace() {
                   <Download className="w-5 h-5" />
                   {selectedTemplate.is_free ? 'Use Template' : `Use for ${selectedTemplate.price_credits} credits`}
                 </button>
-                <button
+                <button aria-label="Add to favorites"
                   onClick={() => favoriteTemplate(selectedTemplate.id)}
                   className="p-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
                 >

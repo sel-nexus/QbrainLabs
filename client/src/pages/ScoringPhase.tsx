@@ -8,7 +8,9 @@ import { Button } from '../components/ui/Button';
 import { LogOut, ArrowLeft, Loader2 } from 'lucide-react';
 import { LoadErrorPanel } from '../components/StatusPages';
 import { ConfirmationModal } from '../components/ConfirmationModal';
+import { PollResponder } from '../components/polls/PollResponder';
 import { errorMessage } from '../lib/apiErrors';
+import { useTranslation } from 'react-i18next';
 
 interface ActiveCard {
     id: string;
@@ -37,6 +39,7 @@ async function loadScoringState(id: string): Promise<{ workshop: ScoringWorkshop
 export function ScoringPhase() {
     const navigate = useNavigate();
     const { session, logout } = useSession();
+    const { t } = useTranslation();
     const [workshop, setWorkshop] = useState<any>(null);
 
     const [confirmLeave, setConfirmLeave] = useState(false);
@@ -59,9 +62,9 @@ export function ScoringPhase() {
             })
             .catch((e) => {
                 console.error(e);
-                setLoadError(errorMessage(e, 'Could not load the scoring session.'));
+                setLoadError(errorMessage(e, t('scoring.loadFailed')));
             });
-    }, []);
+    }, [t]);
 
     useEffect(() => {
         if (!session) {
@@ -90,25 +93,25 @@ export function ScoringPhase() {
         return (
             <div className="min-h-screen flex items-center justify-center theme-bg-primary" role="status" aria-live="polite">
                 <Loader2 className="w-8 h-8 animate-spin text-brand-violet" aria-hidden="true" />
-                <span className="sr-only">Loading scoring session</span>
+                <span className="sr-only">{t('scoring.loading')}</span>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-surface-900 p-4 pb-20 flex flex-col items-center">
+        <div className="min-h-screen theme-bg-primary theme-text-primary p-4 pb-20 flex flex-col items-center">
             <header className="w-full max-w-lg mx-auto flex justify-between items-center mb-6">
                 <button
                     type="button"
                     onClick={() => navigate('/participant-dashboard')}
-                    className="flex items-center gap-1 text-gray-400 hover:text-white text-sm"
+                    className="flex items-center gap-1 contrast-muted hover:theme-text-primary text-sm"
                 >
-                    <ArrowLeft className="w-4 h-4" aria-hidden="true" /> Dashboard
+                    <ArrowLeft className="w-4 h-4" aria-hidden="true" /> {t('scoring.dashboard')}
                 </button>
                 <div className="flex items-center gap-4">
                     <span className="font-mono text-brand-violet">{workshop.title}</span>
-                    <Button variant="ghost" onClick={() => setConfirmLeave(true)} className="text-gray-400 hover:text-white px-2 h-auto text-sm">
-                        <LogOut className="w-4 h-4 mr-1" aria-hidden="true" /> Leave
+                    <Button variant="ghost" onClick={() => setConfirmLeave(true)} className="contrast-muted hover:theme-text-primary px-2 h-auto text-sm">
+                        <LogOut className="w-4 h-4 mr-1" aria-hidden="true" /> {t('scoring.leave')}
                     </Button>
                 </div>
             </header>
@@ -124,17 +127,18 @@ export function ScoringPhase() {
             ) : (
                 <div className="text-center py-20 opacity-50">
                     <div className="text-6xl mb-4">👀</div>
-                    <p>Wait for the facilitator to present an item.</p>
+                    <p>{t('scoring.waitItem')}</p>
                 </div>
             )}
+            <PollResponder />
             <ConfirmationModal
                 isOpen={confirmLeave}
                 onClose={() => setConfirmLeave(false)}
                 onConfirm={handleLeave}
-                title="Leave the workshop?"
-                message="You'll stop scoring and leave this workshop. You can rejoin later with the same PIN and name."
-                confirmText="Leave workshop"
-                cancelText="Stay"
+                title={t('scoring.leaveTitle')}
+                message={t('scoring.leaveMessage')}
+                confirmText={t('scoring.leaveConfirm')}
+                cancelText={t('scoring.stay')}
                 variant="warning"
             />
         </div>

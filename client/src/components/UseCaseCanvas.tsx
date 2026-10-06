@@ -5,6 +5,7 @@ import { awardPoints } from '../lib/api/gamification';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { PointsAnimation } from './gamification/PointsAnimation';
+import { useTranslation } from 'react-i18next';
 
 interface UseCaseCanvasProps {
     session: any;
@@ -17,6 +18,7 @@ const useCaseDraftKey = (session: { workshopId: string; participantId: string })
 
 export function UseCaseCanvas({ session, onSuccess, onDirtyChange }: UseCaseCanvasProps) {
     const [pointsEarned, setPointsEarned] = useState<number | null>(null);
+    const { t } = useTranslation();
 
     const handleSubmit = async (data: UseCaseData) => {
         // Proceed with submission (Duplicate check already handled by UseCaseForm)
@@ -35,15 +37,13 @@ export function UseCaseCanvas({ session, onSuccess, onDirtyChange }: UseCaseCanv
                 { use_case_title: data.title }
             );
             setPointsEarned(pointsResponse.points_earned);
-            if (pointsResponse.achievements_unlocked.length > 0) {
-                toast.success(`Badge unlocked: ${pointsResponse.achievements_unlocked.join(', ')}!`);
-            }
+            // Points and badges are announced once by AchievementToast (socket).
         } catch (pointsError) {
             console.error('Failed to award points:', pointsError);
         }
 
         // Show confirmation and close modal
-        toast.success('Use case submitted successfully!');
+        toast.success(t('useCaseForm.submitted'));
         if (onSuccess) {
             setTimeout(() => onSuccess(), 1500);
         }
@@ -63,7 +63,7 @@ export function UseCaseCanvas({ session, onSuccess, onDirtyChange }: UseCaseCanv
                 className="theme-bg-primary theme-border border rounded-2xl p-6 shadow-xl"
             >
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-heading font-bold theme-text-primary">New use case</h2>
+                    <h2 className="text-2xl font-heading font-bold theme-text-primary">{t('useCaseForm.newTitle')}</h2>
                 </div>
 
                 <UseCaseForm

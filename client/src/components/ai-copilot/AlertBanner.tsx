@@ -60,7 +60,7 @@ export function AlertBanner({ alerts, onDismiss }: AlertBannerProps) {
                                         <AlertTriangle className="w-4 h-4" />
                                         <span>{alert.message}</span>
                                     </div>
-                                    <button
+                                    <button aria-label="Close"
                                         onClick={() => onDismiss(alert.id)}
                                         className={`p-1 rounded hover:bg-red-200/50 ${
                                             theme === 'light' ? 'text-red-500' : 'text-red-400'

@@ -1,5 +1,6 @@
 import type { BadgeResponse } from '../../lib/api/gamification';
 import { useTheme } from '../../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface BadgeCardProps {
     badge: BadgeResponse;
@@ -26,6 +27,7 @@ const rarityGlow: Record<string, string> = {
 
 export function BadgeCard({ badge, earned = false, earnedAt, className = '' }: BadgeCardProps) {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const rarity = badge.rarity?.toLowerCase() || 'common';
     const bgColor = rarityColors[rarity] || rarityColors.common;
     const glow = rarityGlow[rarity] || '';
@@ -50,13 +52,13 @@ export function BadgeCard({ badge, earned = false, earnedAt, className = '' }: B
                     )}
                     {earned && earnedAt && (
                         <p className={`text-xs mt-1 ${theme === 'light' ? 'text-gray-500' : 'text-gray-500'}`}>
-                            Earned {new Date(earnedAt).toLocaleDateString()}
+                            {t('gamification.earnedOn', { date: new Date(earnedAt).toLocaleDateString() })}
                         </p>
                     )}
                 </div>
                 {earned && (
                     <div className="absolute top-1 right-1">
-                        <span className="text-xs">✓</span>
+                        <span className="text-xs" role="img" aria-label={t('gamification.earned')}>{'✓'}</span>
                     </div>
                 )}
             </div>

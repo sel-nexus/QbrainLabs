@@ -35,7 +35,9 @@
         "knowledgeBase": "Knowledge Base",
         "changePassword": "Change Password",
         "signIn": "Sign In",
-        "signOut": "Sign Out"
+        "signOut": "Sign Out",
+        "createworkshop": "Create Workshop",
+        "analytics": "Analytics"
     },
     "auth": {
         "login": "Login",
@@ -60,7 +62,33 @@
         "results": "Results",
         "active": "Active",
         "completed": "Completed",
-        "pending": "Pending"
+        "pending": "Pending",
+        "open": "Open",
+        "draft": "Draft",
+        "closed": "Closed",
+        "pincode": "PIN Code",
+        "phase": "Phase",
+        "openDashboard": "Open Dashboard",
+        "newWorkshop": "New Workshop",
+        "noWorkshops": "No active workshops found.",
+        "createFirst": "Create your first session",
+        "deleteWorkshopConfirm": "Are you sure you want to delete this workshop? This action cannot be undone.",
+        "deleteWorkshopSuccess": "Workshop deleted successfully",
+        "searchWorkshops": "Search by title or PIN...",
+        "showingWorkshops": "Showing {{count}} of {{total}} workshops",
+        "by": "by",
+        "viewWorkshop": "View Workshop",
+        "deleteWorkshop": "Delete Workshop",
+        "failedLoad": "Failed to load workshops",
+        "phases": {
+            "setup": "Setup",
+            "intake": "Intake",
+            "analysis": "Analysis",
+            "brainstorming": "Brainstorming",
+            "prioritization": "Prioritization",
+            "roadmap": "Roadmap"
+        },
+        "contactAdmin": "Contact an administrator to have workshops assigned to you."
     },
     "matrix": {
         "title": "Prioritization Matrix",
@@ -87,7 +115,7 @@
             "aiPoweredDesc": "Our RAG engine helps refine use cases and check technical feasibility in real-time.",
             "realtime": "Real-Time Collaboration",
             "realtimeDesc": "Vote, score, and discuss ideas synchronously. See results update live on the matrix.",
-            "strategic": "Strategic Prioritization",
+            "strategic": "Prioritization matrix",
             "strategicDesc": "Automatically map opportunities to a Value vs. Feasibility matrix to find quick wins."
         },
         "howItWorks": {
@@ -131,10 +159,556 @@
         "title": "Admin Dashboard",
         "users": "Users",
         "workshops": "Workshops",
-        "settings": "Settings",
+        "settings": {
+            "title": "System Settings",
+            "subtitle": "Configure system-wide settings and limits",
+            "tabs": {
+                "features": "Features",
+                "limits": "Limits",
+                "rate_limiting": "Rate Limiting",
+                "security": "Security"
+            },
+            "labels": {
+                "enabled": "Enabled",
+                "disabled": "Disabled",
+                "defaultValue": "Default: "
+            },
+            "actions": {
+                "save": "Save",
+                "reset": "Reset",
+                "resetConfirm": "Reset \"{{key}}\" to default value?"
+            },
+            "messages": {
+                "loadError": "Failed to load settings",
+                "updateSuccess": "Updated {{key}}",
+                "updateError": "Failed to update setting",
+                "resetSuccess": "Reset {{key}} to default",
+                "resetError": "Failed to reset setting",
+                "noSettings": "No settings found in this category"
+            },
+            "keys": {
+                "features.ai_enhancement": "AI Enhancement",
+                "features.export_csv": "Export CSV",
+                "features.export_pdf": "Export PDF",
+                "features.knowledge_base": "Knowledge Base"
+            },
+            "descriptions": {
+                "features.ai_enhancement": "Enable AI-powered use case enhancement",
+                "features.export_csv": "Enable CSV export functionality",
+                "features.export_pdf": "Enable PDF export functionality",
+                "features.knowledge_base": "Enable Knowledge Base access"
+            }
+        },
         "statistics": "Statistics",
         "totalUsers": "Total Users",
         "activeWorkshops": "Active Workshops",
-        "totalSubmissions": "Total Submissions"
+        "totalSubmissions": "Total Submissions",
+        "facilitators": "Facilitators",
+        "llmUsage": "LLM Usage",
+        "systemSettings": "System Settings",
+        "myWorkshops": "My Workshops",
+        "activeNow": "Active Now",
+        "quickActions": "Quick Actions",
+        "dashboard": "Dashboard",
+        "manageWorkshops": "Manage Workshops",
+        "manageWorkshopsDesc": "View and manage all workshops",
+        "manageUsers": "Manage Users",
+        "manageUsersDesc": "Create and manage facilitators",
+        "aiKnowledgeBaseDesc": "Browse industry use cases",
+        "myWorkshopsDesc": "View your own workshops",
+        "myworkshops": "My Workshops",
+        "allworkshops": "All Workshops",
+        "aiknowledgebase": "AI Knowledge Base",
+        "pendingApproval": "Pending Approval",
+        "activeUsers": "Active Users",
+        "searchPlaceholder": "Search by name or email...",
+        "allStatus": "All Status",
+        "user": "User",
+        "organization": "Organization",
+        "status": "Status",
+        "actions": "Actions",
+        "approve": "Approve",
+        "reject": "Reject",
+        "disable": "Disable",
+        "enable": "Enable",
+        "deleteUser": "Delete User",
+        "deleteUserConfirm": "Are you sure you want to delete this user? This action cannot be undone and will remove all associated data, including the user's workshops.",
+        "checkingImpact": "Checking user data...",
+        "noUsersFound": "No users found",
+        "failedLoadUsers": "Failed to load facilitators",
+        "recentActivityWarning": "This user has been active recently.",
+        "deleteSuccess": "User deleted successfully",
+        "deleteError": "Failed to delete user",
+        "knowledgeBase": {
+            "title": "AI Knowledge Base",
+            "importKnowledge": "Import Knowledge",
+            "searchPlaceholder": "Search AI use cases across all industries...",
+            "industries": "Industries",
+            "useCases": "Use Cases",
+            "categories": "Categories",
+            "technologies": "Technologies",
+            "browseByIndustry": "Browse by Industry",
+            "backTo": "Back to {{name}}",
+            "backToIndustries": "Back to Industries",
+            "complexity": "Complexity",
+            "typicalRoi": "Typical ROI",
+            "implementationTime": "Implementation Time",
+            "dataRequirements": "Data Requirements",
+            "kpis": "Key Performance Indicators",
+            "uploadPrompt": "Click to upload or drag and drop",
+            "uploadNote": "PDF, PPTX, DOCX, JPG, PNG (max 10MB)",
+            "processing": "Processing...",
+            "importDocument": "Import Document",
+            "removeFile": "Remove file",
+            "uploadHelp": "Upload PDF, PPT, Word documents, or Images (JPG, PNG) to enhance the AI knowledge base.",
+            "importSuccess": "Successfully imported {{name}}",
+            "failedLoad": "Failed to load Knowledge Base",
+            "failedLoadIndustry": "Failed to load industry details",
+            "showingKeyAIUseCases": "Showing Key AI usecases"
+        },
+        "systemsettings": "System Settings"
+    },
+    "dashboard": {
+        "facilitator": {
+            "title": "Facilitator Dashboard",
+            "myWorkshops": "My Workshops",
+            "createWorkshop": "Create Workshop",
+            "selectWorkshop": "Select a workshop to view its use cases.",
+            "noWorkshops": "No workshops assigned. Select a workshop once available to view use cases.",
+            "emptyState": "You haven't created any workshops yet.",
+            "createNew": "Create your first workshop to get started.",
+            "quickStats": "Quick Stats",
+            "activeSessions": "Active Sessions",
+            "totalParticipants": "Total Participants",
+            "avgEngagement": "Avg. Engagement"
+        },
+        "participant": {
+            "title": "Participant Dashboard",
+            "welcome": "Welcome back",
+            "points": "Points",
+            "rank": "Rank",
+            "badges": "Badges",
+            "activeSession": "Active Session",
+            "noActiveSession": "No active session",
+            "joinSession": "Join a Session",
+            "enterPin": "Enter PIN to join",
+            "myContributions": "My Contributions",
+            "ideasSubmitted": "Ideas Submitted",
+            "votesCast": "Votes Cast",
+            "achievements": "Achievements",
+            "tiles": {
+                "useCases": {
+                    "title": "Use Cases",
+                    "description": "View and discuss submitted use cases"
+                },
+                "addUseCase": {
+                    "title": "Add Use Case",
+                    "description": "Submit a new idea for prioritization"
+                },
+                "survey": {
+                    "title": "Complete Survey",
+                    "description": "Share your feedback",
+                    "pending": "Pending",
+                    "done": "Done",
+                    "noSurveys": "No surveys",
+                    "unavailable": "No active surveys",
+                    "completed": "Completed"
+                },
+                "prioritize": {
+                    "title": "Prioritize",
+                    "description": "Vote on use cases",
+                    "available": "Use Cases",
+                    "noUseCases": "No use cases to prioritize"
+                },
+                "submitUseCase": {
+                    "title": "Submit Use Case",
+                    "badge": "submitted"
+                }
+            }
+        },
+        "columns": {
+            "workshop": "Workshop",
+            "pin": "PIN",
+            "phase": "Phase",
+            "status": "Status",
+            "participants": "Participants",
+            "useCases": "Use Cases",
+            "created": "Created",
+            "actions": "Actions"
+        },
+        "status": {
+            "draft": "Draft",
+            "open": "Open",
+            "in_progress": "In Progress",
+            "completed": "Completed",
+            "paused": "Paused",
+            "closed": "Closed"
+        },
+        "phases": {
+            "setup": "Setup",
+            "intake": "Intake",
+            "prioritization": "Prioritization",
+            "analysis": "Analysis",
+            "voting": "Voting",
+            "results": "Results"
+        }
+    },
+    "join": {
+        "title": "Join Session",
+        "currentWorkshop": "your current workshop",
+        "stillIn": "You're still in “{{title}}”.",
+        "differentWorkshop": "This link is for a different workshop (PIN {{pin}}). Leave the current one and join this workshop?",
+        "leaveAndJoin": "Leave and join this workshop",
+        "stayCurrent": "Stay in current workshop",
+        "pinLabel": "Workshop PIN (6 characters)",
+        "pinPlaceholder": "Enter PIN",
+        "nameLabel": "Your name (others in the workshop will see it)",
+        "namePlaceholder": "Your Name",
+        "joinFailed": "Failed to join. Please check PIN and try again.",
+        "hosting": "Are you hosting this workshop?",
+        "joinAs": "Join as:",
+        "asParticipant": "Participant (Default)",
+        "requestFacilitator": "Request Facilitator Access",
+        "emailPlaceholder": "Email (optional, for notifications)",
+        "emailHelp": "Provide email to receive approval notification",
+        "join": "Join",
+        "signIn": "Sign in to track contributions",
+        "backHome": "← Back to Home",
+        "authTitle": "Join Workshop",
+        "pinPrefix": "Workshop PIN:",
+        "enterPinToJoin": "Please enter a workshop PIN to join a workshop",
+        "sessionFailed": "Failed to set up session",
+        "requestSubmittedToast": "Facilitator access request submitted!",
+        "requestSubmitted": "Request Submitted",
+        "requestSubmittedBody": "Your request to join as a facilitator has been submitted for approval.",
+        "yourName": "Your Name:",
+        "requestId": "Request ID:",
+        "whatNext": "What happens next?",
+        "next1": "Your request will be reviewed by an administrator",
+        "next2": "You will receive an email notification once approved or rejected",
+        "next3": "If approved, you can access facilitator features",
+        "joinAsParticipantNow": "Join as Participant Now",
+        "returnHome": "Return to Home"
+    },
+    "phases": {
+        "DRAFT": "Not started",
+        "LOBBY": "Not started",
+        "INTAKE": "Capture ideas",
+        "SCORING": "Score",
+        "ANALYSIS": "Results",
+        "COMPLETE": "Complete",
+        "COMPLETED": "Complete"
+    },
+    "participantDashboard": {
+        "complete": {
+            "title": "The workshop is complete — thank you!",
+            "detail": "Here are the use cases the group ranked highest.",
+            "badge": "Complete"
+        },
+        "seeTopUseCases": "See top use cases",
+        "stepOf": "Step {{step}} of {{total}}",
+        "intake": {
+            "title": "Add your AI use case ideas",
+            "detail": "Describe a problem AI could help with. You can add as many as you like.",
+            "action": "Add a use case"
+        },
+        "scoring": {
+            "title": "Score the use cases",
+            "detail": "The facilitator presents each use case; rate it against the criteria.",
+            "action": "Go to scoring"
+        },
+        "results": {
+            "title": "See the results",
+            "detail": "Scoring is closed. See which use cases came out on top."
+        },
+        "waiting": {
+            "title": "Waiting for the facilitator to start",
+            "detail": "You're in. This page updates automatically when the workshop begins."
+        },
+        "loading": "Loading workshop...",
+        "workshopFallback": "Workshop",
+        "welcome": "Welcome, {{name}}",
+        "leaderboard": "Leaderboard",
+        "badges": "Badges",
+        "qa": "Q&A",
+        "qaLabel": "Questions and answers",
+        "totalBadge": "{{count}} total",
+        "available": "Available",
+        "matrixTitle": "Prioritization matrix",
+        "notAvailable": "Not available",
+        "toReview": "0 to review",
+        "useCasesHeading": "Workshop Use Cases ({{count}})",
+        "filterLabel": "Filter use cases",
+        "filterAll": "All",
+        "filterMine": "Mine ({{count}})",
+        "empty": "No use cases submitted yet. Be the first to add one!",
+        "mineBadge": "Mine · tap to edit",
+        "close": "Close",
+        "closeDraftSaved": "Close (your draft is saved)",
+        "scoringStarted": {
+            "title": "The facilitator has started scoring.",
+            "detail": "Finish and submit your use case — your draft is saved — then you'll go to scoring.",
+            "action": "Go to scoring now (keep my draft)"
+        },
+        "topUseCases": "Top use cases",
+        "yourBadges": "Your Badges"
+    },
+    "useCaseForm": {
+        "fields": {
+            "title": {
+                "label": "Give your idea a short name",
+                "placeholder": "e.g. Automated Customer Support"
+            },
+            "target_user": {
+                "label": "Who has this problem?",
+                "placeholder": "e.g. Support agents",
+                "example": "Customer support agents in the EMEA contact centre"
+            },
+            "description": {
+                "label": "What's the problem today?",
+                "placeholder": "Describe the pain point...",
+                "hint": "Describe what happens now and why it hurts — no technical detail needed.",
+                "example": "Agents spend about 6 minutes per ticket searching three systems for order history, so customers wait and repeat themselves."
+            },
+            "proposed_solution": {
+                "label": "How could AI help?",
+                "placeholder": "How does AI solve it?",
+                "hint": "Optional — it's fine to leave this for the IT team.",
+                "example": "An assistant that summarises the customer history and suggests a reply while the agent reads the ticket."
+            },
+            "kpi": {
+                "label": "How would we measure success?",
+                "placeholder": "e.g. Reduce handle time by 20%",
+                "example": "Average handle time drops from 9 to 6 minutes"
+            }
+        },
+        "errors": {
+            "required": "Please fill this in",
+            "tooLong": "Keep it under {{max}} characters"
+        },
+        "submit": "Submit use case",
+        "submitFailed": "Could not submit your use case.",
+        "textKept": "Your text has been kept — please try again.",
+        "ai": {
+            "needProblem": "Describe the problem first, then AI can suggest improvements.",
+            "noChanges": "AI has no changes to suggest.",
+            "unavailable": "AI suggestions aren't available right now.",
+            "needSolution": "Describe how AI could help first.",
+            "feasibilityFailed": "Feasibility check failed.",
+            "needNameAndProblem": "Add a name and describe the problem first.",
+            "measureFailed": "Couldn't suggest a measure right now.",
+            "needNameAndSolution": "Add a name and describe how AI could help first.",
+            "technicalFailed": "Technical analysis failed."
+        },
+        "optional": "(optional)",
+        "hideExample": "Hide example",
+        "seeExample": "See an example",
+        "suggestionFields": {
+            "title": "Name",
+            "description": "Problem",
+            "proposed_solution": "How AI could help",
+            "kpi": "Measure of success"
+        },
+        "draftRestored": "We restored your unsaved draft.",
+        "aiType": "Type of AI",
+        "aiTypes": {
+            "notSure": "Not sure",
+            "generative": "Generative AI",
+            "predictive": "Predictive ML",
+            "vision": "Computer Vision",
+            "robotics": "Robotics",
+            "other": "Other"
+        },
+        "improveWithAi": "Improve with AI",
+        "aiSuggestions": "AI suggestions",
+        "useAll": "Use all",
+        "yours": "Yours",
+        "empty": "empty",
+        "suggestion": "Suggestion",
+        "useSuggestion": "Use suggestion",
+        "keepMine": "Keep mine",
+        "undoAi": "Undo AI changes",
+        "suggestMeasure": "Suggest a measure",
+        "businessImpact": "Business impact",
+        "waysToMeasure": "Ways to measure it",
+        "itReviewers": "For IT reviewers (optional)",
+        "checkFeasibility": "Check feasibility",
+        "deepDive": "Technical deep dive",
+        "feasibility": "Feasibility: {{score}}",
+        "recommendedStack": "Recommended stack",
+        "implementationSteps": "Implementation steps",
+        "technicalRisks": "Technical risks",
+        "complexity": "Estimated complexity",
+        "fixHighlighted": "Please fill in the highlighted fields.",
+        "duplicate": {
+            "title": "Similar Idea Detected",
+            "heading": "Wait! We found a similar submission.",
+            "yourTitle": "Your Title",
+            "existingTitle": "Existing Title",
+            "cancelEdit": "Cancel & Edit",
+            "submitAnyway": "Submit Anyway"
+        },
+        "submitted": "Use case submitted successfully!",
+        "newTitle": "New use case"
+    },
+    "scoring": {
+        "notSaved": "Your score was not saved.",
+        "tryAgain": "Please try again.",
+        "recorded": "Score recorded",
+        "waitingOthers": "Waiting for other participants...",
+        "change": "Change my score",
+        "waiting": "Waiting",
+        "waitingCard": "Waiting for the facilitator to present a card...",
+        "now": "Now scoring",
+        "cardOf": "Card {{position}} of {{total}}",
+        "solution": "Solution:",
+        "low": "Low",
+        "high": "High",
+        "submit": "Submit score",
+        "loadFailed": "Could not load the scoring session.",
+        "loading": "Loading scoring session",
+        "dashboard": "Dashboard",
+        "leave": "Leave",
+        "waitItem": "Wait for the facilitator to present an item.",
+        "leaveTitle": "Leave the workshop?",
+        "leaveMessage": "You'll stop scoring and leave this workshop. You can rejoin later with the same PIN and name.",
+        "leaveConfirm": "Leave workshop",
+        "stay": "Stay"
+    },
+    "participantMatrix": {
+        "participant": "Participant",
+        "unknown": "Unknown",
+        "allSaved": "All changes saved",
+        "someNotSaved": "Some ratings could not be saved. Check your connection and tap Retry.",
+        "added": "\"{{title}}\" added! Drag it to the scale to rate it.",
+        "workshop": "Workshop",
+        "loadFailed": "Failed to load matrix data",
+        "saveFailed": "Couldn't save your rating. Tap Retry at the top when you're back online.",
+        "loading": "Loading prioritization...",
+        "goBack": "Go back",
+        "title": "Prioritization matrix",
+        "saving": "Saving…",
+        "retry": "Not saved — Retry ({{count}})",
+        "category": "Category",
+        "criteria": "Criteria",
+        "noCriteria": "No prioritization criteria defined.",
+        "ratedProgress": "{{rated}} of {{total}} rated for this criterion",
+        "pending": "Pending Items",
+        "allRated": "All items rated for this category",
+        "tapToRate": "Tap to rate",
+        "rated": "Rated Items",
+        "changeRating": "Change rating",
+        "unsure": "Unsure",
+        "removeRating": "Remove rating",
+        "removeRatingFor": "Remove rating for {{title}}",
+        "rate": "Rate: {{title}}",
+        "low": "Low",
+        "high": "High",
+        "unsureDontKnow": "Unsure / Don't Know",
+        "cancel": "Cancel",
+        "participantScore": "{{name}} - {{score}} on {{title}}",
+        "useCase": "Use Case",
+        "doesNotKnow": "Does Not Know",
+        "dragUnsure": "Drag here if you are unsure about the priority",
+        "tapUnsure": "Tap an item and choose “Unsure”",
+        "lowCriterion": "Low {{criterion}}",
+        "highCriterion": "High {{criterion}}"
+    },
+    "polls": {
+        "newPoll": "New poll available!",
+        "view": "View",
+        "voteRecorded": "Vote recorded",
+        "noLongerActive": "This poll is no longer active.",
+        "voteFailed": "Failed to submit your vote. Please try again.",
+        "selectOne": "Please select at least one option",
+        "enterResponse": "Please enter a response",
+        "submitSelected": "Submit ({{count}} selected)",
+        "typeResponse": "Type your response...",
+        "submit": "Submit",
+        "submitRanking": "Submit Ranking",
+        "skip": "Skip this poll",
+        "moveUp": "Move {{option}} up",
+        "moveDown": "Move {{option}} down"
+    },
+    "reactions": {
+        "agree": "Agree",
+        "disagree": "Disagree",
+        "love": "Love",
+        "thinking": "Thinking",
+        "insight": "Insight",
+        "exciting": "Exciting",
+        "concern": "Concern",
+        "question": "Question",
+        "close": "Close reactions",
+        "open": "React",
+        "group": "Send a reaction"
+    },
+    "gamification": {
+        "noRankings": "No rankings yet. Be the first to earn points!",
+        "leaderboard": "Leaderboard",
+        "you": "(You)",
+        "badgeCount_one": "{{count}} badge",
+        "badgeCount_other": "{{count}} badges",
+        "earnedOn": "Earned {{date}}",
+        "earned": "Earned",
+        "pointsEarned_one": "+{{count}} point",
+        "pointsEarned_other": "+{{count}} points",
+        "badgeUnlocked": "Badge unlocked: {{names}}"
+    },
+    "status": {
+        "reconnecting": "Connection lost — reconnecting… Your work is saved on this device.",
+        "notFound": {
+            "title": "Page not found",
+            "message": "The link may be out of date, or the page has moved."
+        },
+        "goHome": "Go home",
+        "joinWorkshop": "Join a workshop",
+        "denied": {
+            "title": "You don't have access to this page",
+            "message": "Ask an administrator if you think you should."
+        },
+        "backToDashboard": "Back to dashboard",
+        "loadError": {
+            "title": "Couldn't load this page",
+            "message": "Check your connection and try again."
+        },
+        "retry": "Retry"
+    },
+    "topIdeas": {
+        "loadFailed": "Could not load the results.",
+        "loading": "Loading results…",
+        "empty": "No results yet.",
+        "label": "Top use cases",
+        "first": "1st"
+    },
+    "useCaseDetail": {
+        "updated": "Use case updated successfully",
+        "updateFailed": "Failed to update use case",
+        "withdrawn": "Use case withdrawn",
+        "withdrawFailed": "Failed to withdraw the use case",
+        "enterFeedback": "Please enter feedback",
+        "feedbackTooLong": "Feedback must be 500 characters or less",
+        "feedbackSubmitted": "Feedback submitted successfully",
+        "feedbackFailed": "Failed to submit feedback",
+        "title": "Use Case Details",
+        "yours": "Your Use Case",
+        "viewOnly": "View Only",
+        "notSpecified": "Not specified",
+        "yourFeedback": "Your Feedback",
+        "feedbackPlaceholder": "Share your thoughts on this use case...",
+        "characters": "{{count}}/{{max}} characters",
+        "feedbackWillUpdate": "Previously submitted feedback will be updated",
+        "withdraw": "Withdraw",
+        "cancel": "Cancel",
+        "close": "Close",
+        "saving": "Saving...",
+        "save": "Save Changes",
+        "edit": "Edit",
+        "submitting": "Submitting...",
+        "updateFeedback": "Update Feedback",
+        "submitFeedback": "Submit Feedback",
+        "withdrawTitle": "Withdraw this use case?",
+        "withdrawMessage": "It will be removed from the workshop, including any scores it has received. This can't be undone.",
+        "keep": "Keep it"
     }
 }

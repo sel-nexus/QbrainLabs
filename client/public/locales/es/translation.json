@@ -221,8 +221,13 @@
             "uploadHelp": "Cargue documentos PDF, PPT, Word o imágenes (JPG, PNG) para mejorar la base de conocimientos de IA.",
             "importSuccess": "Se importó con éxito {{name}}",
             "failedLoad": "Error al cargar la base de conocimientos",
-            "failedLoadIndustry": "Error al cargar los detalles de la industria"
-        }
+            "failedLoadIndustry": "Error al cargar los detalles de la industria",
+            "showingKeyAIUseCases": "Mostrando casos de uso clave de IA"
+        },
+        "failedLoadUsers": "No se pudieron cargar los facilitadores",
+        "recentActivityWarning": "Este usuario ha estado activo recientemente.",
+        "deleteSuccess": "Usuario eliminado correctamente",
+        "deleteError": "No se pudo eliminar el usuario"
     },
     "workshop": {
         "title": "Taller",
@@ -262,5 +267,448 @@
             "prioritization": "Priorización",
             "roadmap": "Hoja de ruta"
         }
+    },
+    "dashboard": {
+        "facilitator": {
+            "title": "Panel del facilitador",
+            "myWorkshops": "Mis talleres",
+            "createWorkshop": "Crear taller",
+            "selectWorkshop": "Selecciona un taller para ver sus casos de uso.",
+            "noWorkshops": "No tienes talleres asignados. Selecciona un taller cuando esté disponible para ver sus casos de uso.",
+            "emptyState": "Todavía no has creado ningún taller.",
+            "createNew": "Crea tu primer taller para empezar.",
+            "quickStats": "Estadísticas rápidas",
+            "activeSessions": "Sesiones activas",
+            "totalParticipants": "Participantes totales",
+            "avgEngagement": "Participación media"
+        },
+        "participant": {
+            "title": "Panel del participante",
+            "welcome": "Bienvenido de nuevo",
+            "points": "Puntos",
+            "rank": "Posición",
+            "badges": "Insignias",
+            "activeSession": "Sesión activa",
+            "noActiveSession": "No hay ninguna sesión activa",
+            "joinSession": "Unirse a una sesión",
+            "enterPin": "Introduce el PIN para unirte",
+            "myContributions": "Mis aportaciones",
+            "ideasSubmitted": "Ideas enviadas",
+            "votesCast": "Puntuaciones dadas",
+            "achievements": "Logros",
+            "tiles": {
+                "useCases": {
+                    "title": "Casos de uso",
+                    "description": "Consulta y comenta los casos de uso enviados"
+                },
+                "addUseCase": {
+                    "title": "Añadir caso de uso",
+                    "description": "Envía una nueva idea para priorizar"
+                },
+                "survey": {
+                    "title": "Completar encuesta",
+                    "description": "Comparte tu opinión",
+                    "pending": "Pendiente",
+                    "done": "Hecho",
+                    "noSurveys": "Sin encuestas",
+                    "unavailable": "No hay encuestas activas",
+                    "completed": "Completada"
+                },
+                "prioritize": {
+                    "title": "Priorizar",
+                    "description": "Puntúa los casos de uso",
+                    "available": "Casos de uso",
+                    "noUseCases": "No hay casos de uso para priorizar"
+                },
+                "submitUseCase": {
+                    "title": "Enviar caso de uso",
+                    "badge": "enviados"
+                }
+            }
+        },
+        "columns": {
+            "workshop": "Taller",
+            "pin": "PIN",
+            "phase": "Fase",
+            "status": "Estado",
+            "participants": "Participantes",
+            "useCases": "Casos de uso",
+            "created": "Creado",
+            "actions": "Acciones"
+        },
+        "status": {
+            "draft": "Borrador",
+            "open": "Abierto",
+            "in_progress": "En curso",
+            "completed": "Completado",
+            "paused": "En pausa",
+            "closed": "Cerrado"
+        },
+        "phases": {
+            "setup": "Configuración",
+            "intake": "Captura",
+            "prioritization": "Priorización",
+            "analysis": "Análisis",
+            "voting": "Puntuación",
+            "results": "Resultados"
+        }
+    },
+    "join": {
+        "title": "Unirse a la sesión",
+        "currentWorkshop": "tu taller actual",
+        "stillIn": "Sigues en «{{title}}».",
+        "differentWorkshop": "Este enlace es de otro taller (PIN {{pin}}). ¿Quieres salir del actual y unirte a este?",
+        "leaveAndJoin": "Salir y unirme a este taller",
+        "stayCurrent": "Quedarme en el taller actual",
+        "pinLabel": "PIN del taller (6 caracteres)",
+        "pinPlaceholder": "Introduce el PIN",
+        "nameLabel": "Tu nombre (lo verán los demás participantes)",
+        "namePlaceholder": "Tu nombre",
+        "joinFailed": "No se pudo unir. Comprueba el PIN e inténtalo de nuevo.",
+        "hosting": "¿Eres quien organiza este taller?",
+        "joinAs": "Unirse como:",
+        "asParticipant": "Participante (predeterminado)",
+        "requestFacilitator": "Solicitar acceso de facilitador",
+        "emailPlaceholder": "Correo electrónico (opcional, para notificaciones)",
+        "emailHelp": "Indica tu correo para recibir el aviso de aprobación",
+        "join": "Unirse",
+        "signIn": "Inicia sesión para seguir tus aportaciones",
+        "backHome": "← Volver al inicio",
+        "authTitle": "Unirse al taller",
+        "pinPrefix": "PIN del taller:",
+        "enterPinToJoin": "Introduce el PIN de un taller para unirte",
+        "sessionFailed": "No se pudo iniciar la sesión",
+        "requestSubmittedToast": "¡Solicitud de acceso de facilitador enviada!",
+        "requestSubmitted": "Solicitud enviada",
+        "requestSubmittedBody": "Tu solicitud para unirte como facilitador se ha enviado para su aprobación.",
+        "yourName": "Tu nombre:",
+        "requestId": "ID de la solicitud:",
+        "whatNext": "¿Y ahora qué?",
+        "next1": "Un administrador revisará tu solicitud",
+        "next2": "Recibirás un correo cuando se apruebe o se rechace",
+        "next3": "Si se aprueba, podrás usar las funciones de facilitador",
+        "joinAsParticipantNow": "Unirme ahora como participante",
+        "returnHome": "Volver al inicio"
+    },
+    "phases": {
+        "DRAFT": "Sin empezar",
+        "LOBBY": "Sin empezar",
+        "INTAKE": "Captura de ideas",
+        "SCORING": "Puntuación",
+        "ANALYSIS": "Resultados",
+        "COMPLETE": "Finalizado",
+        "COMPLETED": "Finalizado"
+    },
+    "participantDashboard": {
+        "complete": {
+            "title": "El taller ha terminado. ¡Gracias!",
+            "detail": "Estos son los casos de uso mejor valorados por el grupo.",
+            "badge": "Finalizado"
+        },
+        "seeTopUseCases": "Ver los mejores casos de uso",
+        "stepOf": "Paso {{step}} de {{total}}",
+        "intake": {
+            "title": "Añade tus ideas de casos de uso de IA",
+            "detail": "Describe un problema que la IA podría ayudar a resolver. Puedes añadir tantos como quieras.",
+            "action": "Añadir un caso de uso"
+        },
+        "scoring": {
+            "title": "Puntúa los casos de uso",
+            "detail": "El facilitador presenta cada caso de uso; puntúalo según los criterios.",
+            "action": "Ir a puntuar"
+        },
+        "results": {
+            "title": "Consulta los resultados",
+            "detail": "La puntuación ha terminado. Mira qué casos de uso han quedado arriba."
+        },
+        "waiting": {
+            "title": "Esperando a que el facilitador empiece",
+            "detail": "Ya estás dentro. Esta página se actualiza sola cuando empiece el taller."
+        },
+        "loading": "Cargando el taller...",
+        "workshopFallback": "Taller",
+        "welcome": "Hola, {{name}}",
+        "leaderboard": "Clasificación",
+        "badges": "Insignias",
+        "qa": "Preguntas",
+        "qaLabel": "Preguntas y respuestas",
+        "totalBadge": "{{count}} en total",
+        "available": "Disponible",
+        "matrixTitle": "Matriz de priorización",
+        "notAvailable": "No disponible",
+        "toReview": "0 por revisar",
+        "useCasesHeading": "Casos de uso del taller ({{count}})",
+        "filterLabel": "Filtrar casos de uso",
+        "filterAll": "Todos",
+        "filterMine": "Míos ({{count}})",
+        "empty": "Aún no hay casos de uso. ¡Sé el primero en añadir uno!",
+        "mineBadge": "Mío · toca para editar",
+        "close": "Cerrar",
+        "closeDraftSaved": "Cerrar (tu borrador está guardado)",
+        "scoringStarted": {
+            "title": "El facilitador ha empezado la puntuación.",
+            "detail": "Termina y envía tu caso de uso (tu borrador está guardado) y después pasarás a puntuar.",
+            "action": "Ir a puntuar ahora (conservar mi borrador)"
+        },
+        "topUseCases": "Mejores casos de uso",
+        "yourBadges": "Tus insignias"
+    },
+    "useCaseForm": {
+        "fields": {
+            "title": {
+                "label": "Dale un nombre corto a tu idea",
+                "placeholder": "p. ej., Atención al cliente automatizada"
+            },
+            "target_user": {
+                "label": "¿Quién tiene este problema?",
+                "placeholder": "p. ej., Agentes de soporte",
+                "example": "Agentes de atención al cliente del centro de contacto de EMEA"
+            },
+            "description": {
+                "label": "¿Cuál es el problema hoy?",
+                "placeholder": "Describe el problema...",
+                "hint": "Explica qué ocurre ahora y por qué es un problema; no hace falta detalle técnico.",
+                "example": "Los agentes dedican unos 6 minutos por incidencia a buscar el historial de pedidos en tres sistemas, así que los clientes esperan y repiten la información."
+            },
+            "proposed_solution": {
+                "label": "¿Cómo podría ayudar la IA?",
+                "placeholder": "¿Cómo lo resuelve la IA?",
+                "hint": "Opcional: puedes dejarlo para el equipo de TI.",
+                "example": "Un asistente que resume el historial del cliente y sugiere una respuesta mientras el agente lee la incidencia."
+            },
+            "kpi": {
+                "label": "¿Cómo mediríamos el éxito?",
+                "placeholder": "p. ej., Reducir el tiempo de gestión un 20 %",
+                "example": "El tiempo medio de gestión baja de 9 a 6 minutos"
+            }
+        },
+        "errors": {
+            "required": "Rellena este campo",
+            "tooLong": "Usa menos de {{max}} caracteres"
+        },
+        "submit": "Enviar caso de uso",
+        "submitFailed": "No se pudo enviar tu caso de uso.",
+        "textKept": "Hemos conservado tu texto; inténtalo de nuevo.",
+        "ai": {
+            "needProblem": "Describe primero el problema y la IA podrá sugerir mejoras.",
+            "noChanges": "La IA no tiene cambios que sugerir.",
+            "unavailable": "Las sugerencias de IA no están disponibles ahora mismo.",
+            "needSolution": "Describe primero cómo podría ayudar la IA.",
+            "feasibilityFailed": "No se pudo comprobar la viabilidad.",
+            "needNameAndProblem": "Añade primero un nombre y describe el problema.",
+            "measureFailed": "No se pudo sugerir una medida ahora mismo.",
+            "needNameAndSolution": "Añade primero un nombre y describe cómo podría ayudar la IA.",
+            "technicalFailed": "No se pudo hacer el análisis técnico."
+        },
+        "optional": "(opcional)",
+        "hideExample": "Ocultar ejemplo",
+        "seeExample": "Ver un ejemplo",
+        "suggestionFields": {
+            "title": "Nombre",
+            "description": "Problema",
+            "proposed_solution": "Cómo podría ayudar la IA",
+            "kpi": "Medida del éxito"
+        },
+        "draftRestored": "Hemos recuperado tu borrador sin guardar.",
+        "aiType": "Tipo de IA",
+        "aiTypes": {
+            "notSure": "No lo sé",
+            "generative": "IA generativa",
+            "predictive": "ML predictivo",
+            "vision": "Visión artificial",
+            "robotics": "Robótica",
+            "other": "Otro"
+        },
+        "improveWithAi": "Mejorar con IA",
+        "aiSuggestions": "Sugerencias de IA",
+        "useAll": "Usar todas",
+        "yours": "Tu texto",
+        "empty": "vacío",
+        "suggestion": "Sugerencia",
+        "useSuggestion": "Usar sugerencia",
+        "keepMine": "Mantener el mío",
+        "undoAi": "Deshacer cambios de IA",
+        "suggestMeasure": "Sugerir una medida",
+        "businessImpact": "Impacto en el negocio",
+        "waysToMeasure": "Formas de medirlo",
+        "itReviewers": "Para revisores de TI (opcional)",
+        "checkFeasibility": "Comprobar viabilidad",
+        "deepDive": "Análisis técnico detallado",
+        "feasibility": "Viabilidad: {{score}}",
+        "recommendedStack": "Tecnologías recomendadas",
+        "implementationSteps": "Pasos de implementación",
+        "technicalRisks": "Riesgos técnicos",
+        "complexity": "Complejidad estimada",
+        "fixHighlighted": "Rellena los campos marcados.",
+        "duplicate": {
+            "title": "Idea similar detectada",
+            "heading": "¡Espera! Hemos encontrado una propuesta parecida.",
+            "yourTitle": "Tu título",
+            "existingTitle": "Título existente",
+            "cancelEdit": "Cancelar y editar",
+            "submitAnyway": "Enviar de todos modos"
+        },
+        "submitted": "¡Caso de uso enviado correctamente!",
+        "newTitle": "Nuevo caso de uso"
+    },
+    "scoring": {
+        "notSaved": "Tu puntuación no se ha guardado.",
+        "tryAgain": "Inténtalo de nuevo.",
+        "recorded": "Puntuación registrada",
+        "waitingOthers": "Esperando al resto de participantes...",
+        "change": "Cambiar mi puntuación",
+        "waiting": "En espera",
+        "waitingCard": "Esperando a que el facilitador presente una tarjeta...",
+        "now": "Puntuando ahora",
+        "cardOf": "Tarjeta {{position}} de {{total}}",
+        "solution": "Solución:",
+        "low": "Bajo",
+        "high": "Alto",
+        "submit": "Enviar puntuación",
+        "loadFailed": "No se pudo cargar la sesión de puntuación.",
+        "loading": "Cargando la sesión de puntuación",
+        "dashboard": "Panel",
+        "leave": "Salir",
+        "waitItem": "Espera a que el facilitador presente un elemento.",
+        "leaveTitle": "¿Salir del taller?",
+        "leaveMessage": "Dejarás de puntuar y saldrás de este taller. Puedes volver más tarde con el mismo PIN y nombre.",
+        "leaveConfirm": "Salir del taller",
+        "stay": "Quedarme"
+    },
+    "participantMatrix": {
+        "participant": "Participante",
+        "unknown": "Desconocido",
+        "allSaved": "Todos los cambios guardados",
+        "someNotSaved": "Algunas puntuaciones no se han guardado. Comprueba tu conexión y pulsa Reintentar.",
+        "added": "¡«{{title}}» añadido! Arrástralo a la escala para puntuarlo.",
+        "workshop": "Taller",
+        "loadFailed": "No se pudieron cargar los datos de la matriz",
+        "saveFailed": "No se pudo guardar tu puntuación. Pulsa Reintentar arriba cuando vuelvas a tener conexión.",
+        "loading": "Cargando la priorización...",
+        "goBack": "Volver",
+        "title": "Matriz de priorización",
+        "saving": "Guardando…",
+        "retry": "Sin guardar — Reintentar ({{count}})",
+        "category": "Criterio",
+        "criteria": "Criterios",
+        "noCriteria": "No hay criterios de priorización definidos.",
+        "ratedProgress": "{{rated}} de {{total}} puntuados para este criterio",
+        "pending": "Pendientes",
+        "allRated": "Todo puntuado para este criterio",
+        "tapToRate": "Toca para puntuar",
+        "rated": "Puntuados",
+        "changeRating": "Cambiar puntuación",
+        "unsure": "No lo sé",
+        "removeRating": "Quitar puntuación",
+        "removeRatingFor": "Quitar la puntuación de {{title}}",
+        "rate": "Puntuar: {{title}}",
+        "low": "Bajo",
+        "high": "Alto",
+        "unsureDontKnow": "No estoy seguro / No lo sé",
+        "cancel": "Cancelar",
+        "participantScore": "{{name}} - {{score}} en {{title}}",
+        "useCase": "Caso de uso",
+        "doesNotKnow": "No lo sabe",
+        "dragUnsure": "Arrastra aquí si no estás seguro de la prioridad",
+        "tapUnsure": "Toca un elemento y elige «No lo sé»",
+        "lowCriterion": "{{criterion}} bajo",
+        "highCriterion": "{{criterion}} alto"
+    },
+    "polls": {
+        "newPoll": "¡Nueva encuesta disponible!",
+        "view": "Ver",
+        "voteRecorded": "Respuesta registrada",
+        "noLongerActive": "Esta encuesta ya no está activa.",
+        "voteFailed": "No se pudo enviar tu respuesta. Inténtalo de nuevo.",
+        "selectOne": "Selecciona al menos una opción",
+        "enterResponse": "Escribe una respuesta",
+        "submitSelected": "Enviar ({{count}} seleccionadas)",
+        "typeResponse": "Escribe tu respuesta...",
+        "submit": "Enviar",
+        "submitRanking": "Enviar orden",
+        "skip": "Omitir esta encuesta",
+        "moveUp": "Subir {{option}}",
+        "moveDown": "Bajar {{option}}"
+    },
+    "reactions": {
+        "agree": "De acuerdo",
+        "disagree": "En desacuerdo",
+        "love": "Me encanta",
+        "thinking": "Pensando",
+        "insight": "Buena idea",
+        "exciting": "Emocionante",
+        "concern": "Preocupación",
+        "question": "Pregunta",
+        "close": "Cerrar reacciones",
+        "open": "Reaccionar",
+        "group": "Enviar una reacción"
+    },
+    "gamification": {
+        "noRankings": "Aún no hay clasificación. ¡Sé el primero en ganar puntos!",
+        "leaderboard": "Clasificación",
+        "you": "(Tú)",
+        "badgeCount_one": "{{count}} insignia",
+        "badgeCount_other": "{{count}} insignias",
+        "earnedOn": "Conseguida el {{date}}",
+        "earned": "Conseguida",
+        "pointsEarned_one": "+{{count}} punto",
+        "pointsEarned_other": "+{{count}} puntos",
+        "badgeUnlocked": "Insignia desbloqueada: {{names}}"
+    },
+    "status": {
+        "reconnecting": "Conexión perdida; reconectando… Tu trabajo está guardado en este dispositivo.",
+        "notFound": {
+            "title": "Página no encontrada",
+            "message": "Puede que el enlace esté desactualizado o que la página se haya movido."
+        },
+        "goHome": "Ir al inicio",
+        "joinWorkshop": "Unirse a un taller",
+        "denied": {
+            "title": "No tienes acceso a esta página",
+            "message": "Pregunta a un administrador si crees que deberías tenerlo."
+        },
+        "backToDashboard": "Volver al panel",
+        "loadError": {
+            "title": "No se pudo cargar esta página",
+            "message": "Comprueba tu conexión e inténtalo de nuevo."
+        },
+        "retry": "Reintentar"
+    },
+    "topIdeas": {
+        "loadFailed": "No se pudieron cargar los resultados.",
+        "loading": "Cargando resultados…",
+        "empty": "Aún no hay resultados.",
+        "label": "Mejores casos de uso",
+        "first": "1.º"
+    },
+    "useCaseDetail": {
+        "updated": "Caso de uso actualizado correctamente",
+        "updateFailed": "No se pudo actualizar el caso de uso",
+        "withdrawn": "Caso de uso retirado",
+        "withdrawFailed": "No se pudo retirar el caso de uso",
+        "enterFeedback": "Escribe tu comentario",
+        "feedbackTooLong": "El comentario debe tener 500 caracteres como máximo",
+        "feedbackSubmitted": "Comentario enviado correctamente",
+        "feedbackFailed": "No se pudo enviar el comentario",
+        "title": "Detalles del caso de uso",
+        "yours": "Tu caso de uso",
+        "viewOnly": "Solo lectura",
+        "notSpecified": "No indicado",
+        "yourFeedback": "Tu comentario",
+        "feedbackPlaceholder": "Comparte tu opinión sobre este caso de uso...",
+        "characters": "{{count}}/{{max}} caracteres",
+        "feedbackWillUpdate": "Se actualizará el comentario que enviaste antes",
+        "withdraw": "Retirar",
+        "cancel": "Cancelar",
+        "close": "Cerrar",
+        "saving": "Guardando...",
+        "save": "Guardar cambios",
+        "edit": "Editar",
+        "submitting": "Enviando...",
+        "updateFeedback": "Actualizar comentario",
+        "submitFeedback": "Enviar comentario",
+        "withdrawTitle": "¿Retirar este caso de uso?",
+        "withdrawMessage": "Se eliminará del taller junto con las puntuaciones que haya recibido. No se puede deshacer.",
+        "keep": "Conservarlo"
     }
 }

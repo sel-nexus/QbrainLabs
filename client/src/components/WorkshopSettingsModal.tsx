@@ -25,7 +25,7 @@ interface WorkshopSettingsModalProps {
         description?: string;
         status?: string;
         current_phase?: string;
-        config?: { criteria?: Criterion[]; x_axis?: string | null; y_axis?: string | null };
+        config?: { criteria?: Criterion[]; x_axis?: string | null; y_axis?: string | null; show_leaderboard?: boolean };
     };
     onUpdate: () => void;
 }
@@ -34,6 +34,7 @@ export function WorkshopSettingsModal({ isOpen, onClose, workshop, onUpdate }: W
     const { theme } = useTheme();
     const [title, setTitle] = useState(workshop.title);
     const [description, setDescription] = useState(workshop.description || '');
+    const [showLeaderboard, setShowLeaderboard] = useState(!!workshop.config?.show_leaderboard);
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState<{ title?: string; description?: string; criteria?: string }>({});
     const [llmRegistry, setLlmRegistry] = useState<LLMModelOption[]>([]);
@@ -54,6 +55,7 @@ export function WorkshopSettingsModal({ isOpen, onClose, workshop, onUpdate }: W
     useEffect(() => {
         setTitle(workshop.title);
         setDescription(workshop.description || '');
+        setShowLeaderboard(!!workshop.config?.show_leaderboard);
         setErrors({});
         setCriteria(workshop.config?.criteria || []);
         setAxes({ x_axis: workshop.config?.x_axis || null, y_axis: workshop.config?.y_axis || null });
@@ -111,6 +113,7 @@ export function WorkshopSettingsModal({ isOpen, onClose, workshop, onUpdate }: W
             await api.patch(`workshops/${workshop.id}`, {
                 title: title.trim(),
                 description: description.trim() || null,
+                show_leaderboard: showLeaderboard,
             });
 
             if (criteriaEditable && criteriaDirty) {
@@ -143,6 +146,7 @@ export function WorkshopSettingsModal({ isOpen, onClose, workshop, onUpdate }: W
         // Reset form to original values
         setTitle(workshop.title);
         setDescription(workshop.description || '');
+        setShowLeaderboard(!!workshop.config?.show_leaderboard);
         setErrors({});
         onClose();
     };
@@ -251,6 +255,19 @@ export function WorkshopSettingsModal({ isOpen, onClose, workshop, onUpdate }: W
                         {errors.criteria && <p className="text-sm text-red-500" role="alert">{errors.criteria}</p>}
                     </div>
                 )}
+
+                <label className="flex items-start gap-3 pt-4 border-t theme-border cursor-pointer">
+                    <input
+                        type="checkbox"
+                        checked={showLeaderboard}
+                        onChange={(e) => setShowLeaderboard(e.target.checked)}
+                        className="mt-1 w-4 h-4 accent-brand-violet"
+                    />
+                    <span>
+                        <span className="block text-sm font-medium theme-text-primary">Show participant leaderboard</span>
+                        <span className="block text-xs contrast-muted">Off by default so the session stays focused on the use cases.</span>
+                    </span>
+                </label>
 
                 {/* AI Models: advanced, collapsed by default */}
                 <details className="pt-4 border-t theme-border group">

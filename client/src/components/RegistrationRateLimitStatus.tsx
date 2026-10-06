@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 
 import { API_BASE_URL } from '../lib/config';
+import { useConfirm } from '../context/ConfirmContext';
 
 const API_BASE = API_BASE_URL;
 
@@ -30,6 +31,7 @@ interface RateLimits {
 }
 
 export function RegistrationRateLimitStatus() {
+  const confirm = useConfirm();
   const { token } = useAuth();
   const [limits, setLimits] = useState<RateLimits | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -66,7 +68,7 @@ export function RegistrationRateLimitStatus() {
   }, [fetchLimits]);
 
   const handleReset = async (period: string) => {
-    if (!confirm(`Are you sure you want to reset ${period} rate limits? This is for emergency use only.`)) {
+    if (!(await confirm.ok({ title: `Reset ${period} rate limits?`, message: 'This is for emergency use only.', confirmText: 'Reset limits', variant: 'warning' }))) {
       return;
     }
 

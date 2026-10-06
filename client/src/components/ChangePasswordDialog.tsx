@@ -75,7 +75,7 @@ export function ChangePasswordDialog({ onClose }: ChangePasswordDialogProps) {
                     <h2 className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                         Change Password
                     </h2>
-                    <button
+                    <button aria-label="Close"
                         onClick={onClose}
                         className={`transition ${theme === 'light'
                             ? 'text-gray-500 hover:text-gray-900'

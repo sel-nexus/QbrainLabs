@@ -20,6 +20,7 @@ import { ConfirmationModal } from '../components/ConfirmationModal';
 
 import { API_BASE_URL } from '../lib/config';
 import { apiErrorText } from '../lib/apiErrors';
+import { useConfirm } from '../context/ConfirmContext';
 
 const API_BASE = API_BASE_URL;
 
@@ -76,6 +77,7 @@ const statusConfig = {
 };
 
 export function FacilitatorManagement() {
+  const confirm = useConfirm();
   const { token } = useAuth();
   const [facilitators, setFacilitators] = useState<Facilitator[]>([]);
   const [pendingCount, setPendingCount] = useState(0);
@@ -289,7 +291,7 @@ export function FacilitatorManagement() {
   };
 
   const handleReject = async (facilitatorId: string) => {
-    const reason = prompt('Reason for rejection (optional):');
+    const reason = await confirm.reason({ title: 'Reject this facilitator request?', message: 'They will be told their request was not approved.', confirmText: 'Reject', reasonLabel: 'Reason for rejection (optional)' });
     // Cancel returns null: abort instead of rejecting the facilitator.
     if (reason === null) {
       setActionMenuOpen(null);
@@ -344,7 +346,7 @@ export function FacilitatorManagement() {
   };
 
   const handleDisable = async (facilitatorId: string) => {
-    if (!confirm('Are you sure you want to disable this facilitator?')) return;
+    if (!(await confirm.ok({ title: 'Disable this facilitator?', message: 'They will no longer be able to sign in or run workshops.', confirmText: 'Disable' }))) return;
 
     try {
       const response = await fetch(
@@ -546,245 +548,247 @@ export function FacilitatorManagement() {
               <p className="contrast-muted">No facilitators found</p>
             </div>
           ) : (
-            <table className="w-full">
-              <thead className="theme-bg-tertiary border-b" style={{ borderColor: 'var(--theme-border-color)' }}>
-                <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium contrast-muted uppercase tracking-wider">
-                    Facilitator
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium contrast-muted uppercase tracking-wider">
-                    Organization
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium contrast-muted uppercase tracking-wider">
-                    Status
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium contrast-muted uppercase tracking-wider">
-                    Workshops
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium contrast-muted uppercase tracking-wider">
-                    Registered
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium contrast-muted uppercase tracking-wider">
-                    Last Login
-                  </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium contrast-muted uppercase tracking-wider">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y" style={{ borderColor: 'var(--theme-border-color)' }}>
-                {facilitators.map((facilitator) => {
-                  const StatusIcon = statusConfig[facilitator.status]?.icon || Clock;
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="theme-bg-tertiary border-b" style={{ borderColor: 'var(--theme-border-color)' }}>
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium contrast-muted uppercase tracking-wider">
+                      Facilitator
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium contrast-muted uppercase tracking-wider">
+                      Organization
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium contrast-muted uppercase tracking-wider">
+                      Status
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium contrast-muted uppercase tracking-wider">
+                      Workshops
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium contrast-muted uppercase tracking-wider">
+                      Registered
+                    </th>
+                    <th className="px-6 py-3 text-left text-xs font-medium contrast-muted uppercase tracking-wider">
+                      Last Login
+                    </th>
+                    <th className="px-6 py-3 text-right text-xs font-medium contrast-muted uppercase tracking-wider">
+                      Actions
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y" style={{ borderColor: 'var(--theme-border-color)' }}>
+                  {facilitators.map((facilitator) => {
+                    const StatusIcon = statusConfig[facilitator.status]?.icon || Clock;
 
-                  return (
-                    <tr key={facilitator.id} className="theme-hover">
-                      <td className="px-6 py-4">
-                        <div className="flex items-center">
-                          <div className="w-10 h-10 rounded-full bg-brand-violet/10 flex items-center justify-center">
-                            <span className="text-brand-violet font-medium">
-                              {facilitator.full_name?.charAt(0) || facilitator.email.charAt(0).toUpperCase()}
-                            </span>
+                    return (
+                      <tr key={facilitator.id} className="theme-hover">
+                        <td className="px-6 py-4">
+                          <div className="flex items-center">
+                            <div className="w-10 h-10 rounded-full bg-brand-violet/10 flex items-center justify-center">
+                              <span className="text-brand-violet font-medium">
+                                {facilitator.full_name?.charAt(0) || facilitator.email.charAt(0).toUpperCase()}
+                              </span>
+                            </div>
+                            <div className="ml-3">
+                              <p className="font-medium theme-text-primary">
+                                {facilitator.full_name || 'No name'}
+                              </p>
+                              <p className="text-sm contrast-muted">{facilitator.email}</p>
+                            </div>
                           </div>
-                          <div className="ml-3">
-                            <p className="font-medium theme-text-primary">
-                              {facilitator.full_name || 'No name'}
-                            </p>
-                            <p className="text-sm contrast-muted">{facilitator.email}</p>
+                        </td>
+                        <td className="px-6 py-4">
+                          <div className="flex items-center gap-2 theme-text-secondary">
+                            <Building2 className="w-4 h-4" />
+                            {facilitator.organization || '-'}
                           </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="flex items-center gap-2 theme-text-secondary">
-                          <Building2 className="w-4 h-4" />
-                          {facilitator.organization || '-'}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4">
-                        <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${statusConfig[facilitator.status]?.color || 'theme-badge-neutral'}`}>
-                          <StatusIcon className="w-3.5 h-3.5" />
-                          {statusConfig[facilitator.status]?.label || facilitator.status}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 relative">
-                        <div ref={workshopDropdownOpen === facilitator.id ? dropdownRef : null}>
-                          <button
-                            ref={(el) => { buttonRef.current[facilitator.id] = el; }}
-                            onClick={(e) => {
-                              const isOpening = workshopDropdownOpen !== facilitator.id;
-                              if (isOpening) {
-                                const button = e.currentTarget;
-                                const rect = button.getBoundingClientRect();
-                                const spaceBelow = window.innerHeight - rect.bottom;
-                                const spaceAbove = rect.top;
-                                const dropdownHeight = 300; // max-h-60 is approximately 240px + padding
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium ${statusConfig[facilitator.status]?.color || 'theme-badge-neutral'}`}>
+                            <StatusIcon className="w-3.5 h-3.5" />
+                            {statusConfig[facilitator.status]?.label || facilitator.status}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 relative">
+                          <div ref={workshopDropdownOpen === facilitator.id ? dropdownRef : null}>
+                            <button
+                              ref={(el) => { buttonRef.current[facilitator.id] = el; }}
+                              onClick={(e) => {
+                                const isOpening = workshopDropdownOpen !== facilitator.id;
+                                if (isOpening) {
+                                  const button = e.currentTarget;
+                                  const rect = button.getBoundingClientRect();
+                                  const spaceBelow = window.innerHeight - rect.bottom;
+                                  const spaceAbove = rect.top;
+                                  const dropdownHeight = 300; // max-h-60 is approximately 240px + padding
 
-                                // Position dropdown upward if not enough space below
-                                setDropdownPosition(spaceBelow < dropdownHeight && spaceAbove > spaceBelow ? 'top' : 'bottom');
-                              }
-                              setWorkshopDropdownOpen(
-                                workshopDropdownOpen === facilitator.id ? null : facilitator.id
-                              );
-                            }}
-                            disabled={savingWorkshops === facilitator.id}
-                            className="flex items-center gap-2 px-3 py-1.5 border rounded-lg theme-hover transition-colors min-w-[140px] justify-between theme-border"
+                                  // Position dropdown upward if not enough space below
+                                  setDropdownPosition(spaceBelow < dropdownHeight && spaceAbove > spaceBelow ? 'top' : 'bottom');
+                                }
+                                setWorkshopDropdownOpen(
+                                  workshopDropdownOpen === facilitator.id ? null : facilitator.id
+                                );
+                              }}
+                              disabled={savingWorkshops === facilitator.id}
+                              className="flex items-center gap-2 px-3 py-1.5 border rounded-lg theme-hover transition-colors min-w-[140px] justify-between theme-border"
+                            >
+                              <span className="text-sm theme-text-secondary">
+                                {savingWorkshops === facilitator.id ? (
+                                  'Saving...'
+                                ) : (
+                                  `${(facilitatorWorkshops[facilitator.id] || []).length} workshop${(facilitatorWorkshops[facilitator.id] || []).length !== 1 ? 's' : ''}`
+                                )}
+                              </span>
+                              <ChevronDown className="w-4 h-4 contrast-muted" />
+                            </button>
+
+                            {workshopDropdownOpen === facilitator.id && (
+                              <div className={`absolute z-20 w-72 rounded-lg shadow-lg border max-h-60 overflow-y-auto theme-card ${dropdownPosition === 'top' ? 'bottom-full mb-1' : 'mt-1'
+                                }`}>
+                                <div className="p-2 border-b" style={{ borderColor: 'var(--theme-border-color)' }}>
+                                  <p className="text-xs contrast-muted font-medium">
+                                    Assign Workshops to {facilitator.full_name || 'Facilitator'}
+                                  </p>
+                                </div>
+                                {allWorkshops.length === 0 ? (
+                                  <div className="p-4 text-center contrast-muted text-sm">
+                                    No workshops available
+                                  </div>
+                                ) : (
+                                  <div className="py-1">
+                                    {allWorkshops.map((workshop) => {
+                                      const isAssigned = (facilitatorWorkshops[facilitator.id] || [])
+                                        .some(w => w.id === workshop.id);
+                                      return (
+                                        <button
+                                          key={workshop.id}
+                                          onClick={() => toggleWorkshop(facilitator.id, workshop.id)}
+                                          disabled={savingWorkshops === facilitator.id}
+                                          className={`w-full px-3 py-2 text-left text-sm theme-hover flex items-center justify-between transition-colors ${isAssigned ? 'bg-brand-violet/5' : ''
+                                            }`}
+                                        >
+                                          <div className="flex-1 min-w-0">
+                                            <p className="font-medium theme-text-primary truncate">
+                                              {workshop.title}
+                                            </p>
+                                            <p className="text-xs contrast-muted">
+                                              PIN: {workshop.pin || 'N/A'} • {workshop.status}
+                                            </p>
+                                          </div>
+                                          {isAssigned && (
+                                            <CheckCircle className="w-4 h-4 text-brand-violet flex-shrink-0 ml-2" />
+                                          )}
+                                        </button>
+                                      );
+                                    })}
+                                  </div>
+                                )}
+
+                                {/* Selected workshops tags */}
+                                {(facilitatorWorkshops[facilitator.id] || []).length > 0 && (
+                                  <div className="p-2 border-t theme-bg-tertiary" style={{ borderColor: 'var(--theme-border-color)' }}>
+                                    <p className="text-xs contrast-muted mb-1">Selected:</p>
+                                    <div className="flex flex-wrap gap-1">
+                                      {(facilitatorWorkshops[facilitator.id] || []).map(w => (
+                                        <span
+                                          key={w.id}
+                                          className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand-violet/10 text-brand-violet rounded text-xs"
+                                        >
+                                          {w.title.length > 15 ? w.title.slice(0, 15) + '...' : w.title}
+                                          <button aria-label="Close"
+                                            onClick={(e) => {
+                                              e.stopPropagation();
+                                              toggleWorkshop(facilitator.id, w.id);
+                                            }}
+                                            className="hover:opacity-70"
+                                            style={{ color: 'var(--theme-danger-text)' }}
+                                          >
+                                            <X className="w-3 h-3" />
+                                          </button>
+                                        </span>
+                                      ))}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-sm contrast-muted">
+                          {formatDate(facilitator.created_at)}
+                        </td>
+                        <td className="px-6 py-4 text-sm contrast-muted">
+                          {formatDate(facilitator.last_login)}
+                        </td>
+                        <td className="px-6 py-4 text-right relative">
+                          <button aria-label="More actions"
+                            onClick={() => setActionMenuOpen(
+                              actionMenuOpen === facilitator.id ? null : facilitator.id
+                            )}
+                            className="p-2 theme-hover rounded-lg transition-colors"
                           >
-                            <span className="text-sm theme-text-secondary">
-                              {savingWorkshops === facilitator.id ? (
-                                'Saving...'
-                              ) : (
-                                `${(facilitatorWorkshops[facilitator.id] || []).length} workshop${(facilitatorWorkshops[facilitator.id] || []).length !== 1 ? 's' : ''}`
-                              )}
-                            </span>
-                            <ChevronDown className="w-4 h-4 contrast-muted" />
+                            <MoreVertical className="w-5 h-5 contrast-muted" />
                           </button>
 
-                          {workshopDropdownOpen === facilitator.id && (
-                            <div className={`absolute z-20 w-72 rounded-lg shadow-lg border max-h-60 overflow-y-auto theme-card ${dropdownPosition === 'top' ? 'bottom-full mb-1' : 'mt-1'
-                              }`}>
-                              <div className="p-2 border-b" style={{ borderColor: 'var(--theme-border-color)' }}>
-                                <p className="text-xs contrast-muted font-medium">
-                                  Assign Workshops to {facilitator.full_name || 'Facilitator'}
-                                </p>
-                              </div>
-                              {allWorkshops.length === 0 ? (
-                                <div className="p-4 text-center contrast-muted text-sm">
-                                  No workshops available
-                                </div>
-                              ) : (
-                                <div className="py-1">
-                                  {allWorkshops.map((workshop) => {
-                                    const isAssigned = (facilitatorWorkshops[facilitator.id] || [])
-                                      .some(w => w.id === workshop.id);
-                                    return (
-                                      <button
-                                        key={workshop.id}
-                                        onClick={() => toggleWorkshop(facilitator.id, workshop.id)}
-                                        disabled={savingWorkshops === facilitator.id}
-                                        className={`w-full px-3 py-2 text-left text-sm theme-hover flex items-center justify-between transition-colors ${isAssigned ? 'bg-brand-violet/5' : ''
-                                          }`}
-                                      >
-                                        <div className="flex-1 min-w-0">
-                                          <p className="font-medium theme-text-primary truncate">
-                                            {workshop.title}
-                                          </p>
-                                          <p className="text-xs contrast-muted">
-                                            PIN: {workshop.pin || 'N/A'} • {workshop.status}
-                                          </p>
-                                        </div>
-                                        {isAssigned && (
-                                          <CheckCircle className="w-4 h-4 text-brand-violet flex-shrink-0 ml-2" />
-                                        )}
-                                      </button>
-                                    );
-                                  })}
-                                </div>
+                          {actionMenuOpen === facilitator.id && (
+                            <div className="absolute right-6 top-12 w-48 rounded-lg shadow-lg border py-1 z-10 theme-card">
+                              {facilitator.status === 'pending' && (
+                                <>
+                                  <button
+                                    onClick={() => handleApprove(facilitator.id)}
+                                    className="w-full px-4 py-2 text-left text-sm flex items-center gap-2 theme-hover"
+                                    style={{ color: 'var(--theme-success-text)' }}
+                                  >
+                                    <UserCheck className="w-4 h-4" />
+                                    Approve
+                                  </button>
+                                  <button
+                                    onClick={() => handleReject(facilitator.id)}
+                                    className="w-full px-4 py-2 text-left text-sm flex items-center gap-2 theme-hover"
+                                    style={{ color: 'var(--theme-danger-text)' }}
+                                  >
+                                    <UserX className="w-4 h-4" />
+                                    Reject
+                                  </button>
+                                </>
                               )}
-
-                              {/* Selected workshops tags */}
-                              {(facilitatorWorkshops[facilitator.id] || []).length > 0 && (
-                                <div className="p-2 border-t theme-bg-tertiary" style={{ borderColor: 'var(--theme-border-color)' }}>
-                                  <p className="text-xs contrast-muted mb-1">Selected:</p>
-                                  <div className="flex flex-wrap gap-1">
-                                    {(facilitatorWorkshops[facilitator.id] || []).map(w => (
-                                      <span
-                                        key={w.id}
-                                        className="inline-flex items-center gap-1 px-2 py-0.5 bg-brand-violet/10 text-brand-violet rounded text-xs"
-                                      >
-                                        {w.title.length > 15 ? w.title.slice(0, 15) + '...' : w.title}
-                                        <button
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            toggleWorkshop(facilitator.id, w.id);
-                                          }}
-                                          className="hover:opacity-70"
-                                          style={{ color: 'var(--theme-danger-text)' }}
-                                        >
-                                          <X className="w-3 h-3" />
-                                        </button>
-                                      </span>
-                                    ))}
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          )}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 text-sm contrast-muted">
-                        {formatDate(facilitator.created_at)}
-                      </td>
-                      <td className="px-6 py-4 text-sm contrast-muted">
-                        {formatDate(facilitator.last_login)}
-                      </td>
-                      <td className="px-6 py-4 text-right relative">
-                        <button
-                          onClick={() => setActionMenuOpen(
-                            actionMenuOpen === facilitator.id ? null : facilitator.id
-                          )}
-                          className="p-2 theme-hover rounded-lg transition-colors"
-                        >
-                          <MoreVertical className="w-5 h-5 contrast-muted" />
-                        </button>
-
-                        {actionMenuOpen === facilitator.id && (
-                          <div className="absolute right-6 top-12 w-48 rounded-lg shadow-lg border py-1 z-10 theme-card">
-                            {facilitator.status === 'pending' && (
-                              <>
+                              {facilitator.status === 'active' && (
                                 <button
-                                  onClick={() => handleApprove(facilitator.id)}
-                                  className="w-full px-4 py-2 text-left text-sm flex items-center gap-2 theme-hover"
-                                  style={{ color: 'var(--theme-success-text)' }}
-                                >
-                                  <UserCheck className="w-4 h-4" />
-                                  Approve
-                                </button>
-                                <button
-                                  onClick={() => handleReject(facilitator.id)}
+                                  onClick={() => handleDisable(facilitator.id)}
                                   className="w-full px-4 py-2 text-left text-sm flex items-center gap-2 theme-hover"
                                   style={{ color: 'var(--theme-danger-text)' }}
                                 >
                                   <UserX className="w-4 h-4" />
-                                  Reject
+                                  Disable Account
                                 </button>
-                              </>
-                            )}
-                            {facilitator.status === 'active' && (
+                              )}
+                              {(facilitator.status === 'disabled' || facilitator.status === 'suspended') && (
+                                <button
+                                  onClick={() => handleEnable(facilitator.id)}
+                                  className="w-full px-4 py-2 text-left text-sm flex items-center gap-2 theme-hover"
+                                  style={{ color: 'var(--theme-success-text)' }}
+                                >
+                                  <UserCheck className="w-4 h-4" />
+                                  Enable Account
+                                </button>
+                              )}
+                              <div className="border-t my-1" style={{ borderColor: 'var(--theme-border-color)' }}></div>
                               <button
-                                onClick={() => handleDisable(facilitator.id)}
+                                onClick={() => handleDelete(facilitator)}
                                 className="w-full px-4 py-2 text-left text-sm flex items-center gap-2 theme-hover"
                                 style={{ color: 'var(--theme-danger-text)' }}
                               >
                                 <UserX className="w-4 h-4" />
-                                Disable Account
+                                Delete
                               </button>
-                            )}
-                            {(facilitator.status === 'disabled' || facilitator.status === 'suspended') && (
-                              <button
-                                onClick={() => handleEnable(facilitator.id)}
-                                className="w-full px-4 py-2 text-left text-sm flex items-center gap-2 theme-hover"
-                                style={{ color: 'var(--theme-success-text)' }}
-                              >
-                                <UserCheck className="w-4 h-4" />
-                                Enable Account
-                              </button>
-                            )}
-                            <div className="border-t my-1" style={{ borderColor: 'var(--theme-border-color)' }}></div>
-                            <button
-                              onClick={() => handleDelete(facilitator)}
-                              className="w-full px-4 py-2 text-left text-sm flex items-center gap-2 theme-hover"
-                              style={{ color: 'var(--theme-danger-text)' }}
-                            >
-                              <UserX className="w-4 h-4" />
-                              Delete
-                            </button>
-                          </div>
-                        )}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                            </div>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
 

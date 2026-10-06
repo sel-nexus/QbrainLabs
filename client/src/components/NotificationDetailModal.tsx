@@ -95,7 +95,7 @@ export function NotificationDetailModal({
                             <h3 className="text-xl font-semibold text-white">
                                 {notification.title}
                             </h3>
-                            <button
+                            <button aria-label="Close"
                                 onClick={onClose}
                                 className="text-white hover:text-gray-200 transition-colors"
                             >

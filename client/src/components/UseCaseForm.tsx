@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 import { Modal } from './ui/Modal';
 import { errorMessage } from '../lib/apiErrors';
 import { FIELDS, FIELD_LIMITS, FIELD_ORDER, validateUseCase, type FieldKey } from '../lib/useCaseFields';
+import { useTranslation } from 'react-i18next';
 
 export interface UseCaseData {
     title: string;
@@ -55,8 +56,9 @@ type Suggestion = Partial<Record<'title' | 'description' | 'proposed_solution' |
 
 const AI_BUTTON = 'min-h-[44px] sm:min-h-0 sm:h-8 text-xs py-0 px-3 flex items-center gap-1';
 
-export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use case', initialData, onSuccess, draftKey, onDirtyChange }: UseCaseFormProps) {
+export function UseCaseForm({ workshopId, onSubmit, submitLabel, initialData, onSuccess, draftKey, onDirtyChange }: UseCaseFormProps) {
     const formId = useId();
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(false);
     const [enhancing, setEnhancing] = useState(false);
     const [checkingFeasibility, setCheckingFeasibility] = useState(false);
@@ -172,7 +174,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
             console.error(err);
             // Keep everything the participant typed and say why it failed.
             setShowDuplicateModal(false);
-            toast.error(errorMessage(err, 'Could not submit your use case.') + ' Your text has been kept — please try again.');
+            toast.error(`${errorMessage(err, t('useCaseForm.submitFailed'))} ${t('useCaseForm.textKept')}`);
         } finally {
             setLoading(false);
         }
@@ -208,7 +210,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
 
     const handleEnhance = async () => {
         if (!formData.description) {
-            toast.error("Describe the problem first, then AI can suggest improvements.");
+            toast.error(t('useCaseForm.ai.needProblem'));
             fieldRefs.current.description?.focus();
             return;
         }
@@ -226,10 +228,10 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
                 Object.entries(proposed).filter(([k, v]) => v && v !== formData[k as keyof UseCaseData])
             ) as Suggestion;
             if (Object.keys(offered).length) setSuggestion(offered);
-            else toast.info('AI has no changes to suggest.');
+            else toast.info(t('useCaseForm.ai.noChanges'));
         } catch (e: any) {
             console.error('[UseCaseForm] AI Enhancement error:', e);
-            toast.error(errorMessage(e, "AI suggestions aren't available right now."));
+            toast.error(errorMessage(e, t('useCaseForm.ai.unavailable')));
         } finally {
             setEnhancing(false);
         }
@@ -237,7 +239,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
 
     const handleFeasibility = async () => {
         if (!formData.proposed_solution) {
-            toast.error("Describe how AI could help first.");
+            toast.error(t('useCaseForm.ai.needSolution'));
             return;
         }
         setCheckingFeasibility(true);
@@ -246,7 +248,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
             setFeasibilityData({ score: data.score, reason: data.reason });
         } catch (e: any) {
             console.error('[UseCaseForm] Feasibility check error:', e);
-            toast.error(errorMessage(e, "Feasibility check failed."));
+            toast.error(errorMessage(e, t('useCaseForm.ai.feasibilityFailed')));
         } finally {
             setCheckingFeasibility(false);
         }
@@ -254,7 +256,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
 
     const handleBusinessValueEnhancement = async () => {
         if (!formData.title || !formData.description) {
-            toast.error("Add a name and describe the problem first.");
+            toast.error(t('useCaseForm.ai.needNameAndProblem'));
             return;
         }
         setEnhancingBusinessValue(true);
@@ -271,7 +273,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
             }
         } catch (e) {
             console.error(e);
-            toast.error(errorMessage(e, "Couldn't suggest a measure right now."));
+            toast.error(errorMessage(e, t('useCaseForm.ai.measureFailed')));
         } finally {
             setEnhancingBusinessValue(false);
         }
@@ -279,7 +281,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
 
     const handleTechnicalDeepDive = async () => {
         if (!formData.title || !formData.proposed_solution) {
-            toast.error("Add a name and describe how AI could help first.");
+            toast.error(t('useCaseForm.ai.needNameAndSolution'));
             return;
         }
         setGeneratingArch(true);
@@ -292,7 +294,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
             setTechnicalData(data);
         } catch (e) {
             console.error(e);
-            toast.error(errorMessage(e, "Technical analysis failed."));
+            toast.error(errorMessage(e, t('useCaseForm.ai.technicalFailed')));
         } finally {
             setGeneratingArch(false);
         }
@@ -317,7 +319,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
             <div className="space-y-1.5">
                 <div className="flex flex-wrap justify-between items-end gap-2">
                     <label htmlFor={id} className="text-sm font-medium theme-text-secondary pl-1">
-                        {f.label}{f.required ? <span className="text-semantic-danger" aria-hidden="true"> *</span> : <span className="contrast-muted"> (optional)</span>}
+                        {f.label}{f.required ? <span className="text-semantic-danger" aria-hidden="true"> *</span> : <span className="contrast-muted"> {t('useCaseForm.optional')}</span>}
                     </label>
                     {opts.action}
                 </div>
@@ -332,7 +334,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
                         {errors[key] && <span id={`${id}-err`} className="text-semantic-danger" role="alert">{errors[key]}</span>}
                         {!errors[key] && f.example && (
                             <button type="button" className="text-brand-violet underline" aria-expanded={!!examplesOpen[key]} onClick={() => setExamplesOpen(p => ({ ...p, [key]: !p[key] }))}>
-                                {examplesOpen[key] ? 'Hide example' : 'See an example'}
+                                {examplesOpen[key] ? t('useCaseForm.hideExample') : t('useCaseForm.seeExample')}
                             </button>
                         )}
                     </span>
@@ -351,7 +353,8 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
     };
 
     const suggestionLabels: Record<keyof Suggestion, string> = {
-        title: 'Name', description: 'Problem', proposed_solution: 'How AI could help', kpi: 'Measure of success',
+        title: t('useCaseForm.suggestionFields.title'), description: t('useCaseForm.suggestionFields.description'),
+        proposed_solution: t('useCaseForm.suggestionFields.proposed_solution'), kpi: t('useCaseForm.suggestionFields.kpi'),
     };
 
     return (
@@ -359,7 +362,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
             <form onSubmit={handleSubmitClick} className="space-y-6" noValidate>
                 {draftRestored && (
                     <p className="text-xs rounded-lg px-3 py-2 bg-brand-violet/10 text-brand-violet" role="status">
-                        We restored your unsaved draft.
+                        {t('useCaseForm.draftRestored')}
                     </p>
                 )}
 
@@ -369,7 +372,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
                     {renderField('target_user')}
                     <div className="space-y-1.5">
                         <label htmlFor={`${formId}-category`} className="text-sm font-medium theme-text-secondary pl-1">
-                            Type of AI <span className="contrast-muted">(optional)</span>
+                            {t('useCaseForm.aiType')} <span className="contrast-muted">{t('useCaseForm.optional')}</span>
                         </label>
                         <select
                             id={`${formId}-category`}
@@ -377,12 +380,13 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
                             value={formData.category}
                             onChange={e => handleChange('category', e.target.value)}
                         >
-                            <option value="">Not sure</option>
-                            <option>Generative AI</option>
-                            <option>Predictive ML</option>
-                            <option>Computer Vision</option>
-                            <option>Robotics</option>
-                            <option>Other</option>
+                            <option value="">{t('useCaseForm.aiTypes.notSure')}</option>
+                            {/* Stored values stay English so reports group consistently. */}
+                            <option value="Generative AI">{t('useCaseForm.aiTypes.generative')}</option>
+                            <option value="Predictive ML">{t('useCaseForm.aiTypes.predictive')}</option>
+                            <option value="Computer Vision">{t('useCaseForm.aiTypes.vision')}</option>
+                            <option value="Robotics">{t('useCaseForm.aiTypes.robotics')}</option>
+                            <option value="Other">{t('useCaseForm.aiTypes.other')}</option>
                         </select>
                     </div>
                 </div>
@@ -392,21 +396,21 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
                     action: (
                         <Button type="button" variant="secondary" className={`${AI_BUTTON} bg-brand-violet/10 text-brand-violet border-brand-violet/20 hover:bg-brand-violet/20`} onClick={handleEnhance} disabled={enhancing}>
                             {enhancing ? <Loader2 className="w-3 h-3 animate-spin" aria-hidden="true" /> : <Sparkles className="w-3 h-3" aria-hidden="true" />}
-                            Improve with AI
+                            {t('useCaseForm.improveWithAi')}
                         </Button>
                     ),
                 })}
 
                 {(suggestion || undoSnapshot) && (
-                    <section aria-label="AI suggestions" className="rounded-lg border border-brand-violet/30 bg-brand-violet/5 p-4 space-y-3">
+                    <section aria-label={t('useCaseForm.aiSuggestions')} className="rounded-lg border border-brand-violet/30 bg-brand-violet/5 p-4 space-y-3">
                         {suggestion && (
                             <>
                                 <div className="flex flex-wrap items-center justify-between gap-2">
                                     <h4 className="text-sm font-semibold text-brand-violet flex items-center gap-1">
-                                        <Sparkles className="w-4 h-4" aria-hidden="true" /> AI suggestions
+                                        <Sparkles className="w-4 h-4" aria-hidden="true" /> {t('useCaseForm.aiSuggestions')}
                                     </h4>
                                     <Button type="button" variant="secondary" className="h-8 text-xs px-3" onClick={() => applySuggestion(Object.keys(suggestion) as (keyof Suggestion)[])}>
-                                        Use all
+                                        {t('useCaseForm.useAll')}
                                     </Button>
                                 </div>
                                 {(Object.keys(suggestion) as (keyof Suggestion)[]).map((field) => (
@@ -414,17 +418,17 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
                                         <div className="text-xs font-semibold theme-text-secondary">{suggestionLabels[field]}</div>
                                         <div className="grid sm:grid-cols-2 gap-2">
                                             <div>
-                                                <div className="text-[11px] uppercase contrast-muted">Yours</div>
-                                                <p className="theme-text-primary whitespace-pre-wrap">{formData[field] || <em className="contrast-muted">empty</em>}</p>
+                                                <div className="text-[11px] uppercase contrast-muted">{t('useCaseForm.yours')}</div>
+                                                <p className="theme-text-primary whitespace-pre-wrap">{formData[field] || <em className="contrast-muted">{t('useCaseForm.empty')}</em>}</p>
                                             </div>
                                             <div>
-                                                <div className="text-[11px] uppercase text-brand-violet">Suggestion</div>
+                                                <div className="text-[11px] uppercase text-brand-violet">{t('useCaseForm.suggestion')}</div>
                                                 <p className="theme-text-primary whitespace-pre-wrap">{suggestion[field]}</p>
                                             </div>
                                         </div>
                                         <div className="flex gap-2">
-                                            <Button type="button" className="h-8 text-xs px-3" onClick={() => applySuggestion([field])}>Use suggestion</Button>
-                                            <Button type="button" variant="ghost" className="h-8 text-xs px-3" onClick={() => keepMine(field)}>Keep mine</Button>
+                                            <Button type="button" className="h-8 text-xs px-3" onClick={() => applySuggestion([field])}>{t('useCaseForm.useSuggestion')}</Button>
+                                            <Button type="button" variant="ghost" className="h-8 text-xs px-3" onClick={() => keepMine(field)}>{t('useCaseForm.keepMine')}</Button>
                                         </div>
                                     </div>
                                 ))}
@@ -432,7 +436,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
                         )}
                         {undoSnapshot && (
                             <Button type="button" variant="ghost" className="h-8 text-xs px-3" onClick={undo}>
-                                <Undo2 className="w-3 h-3 mr-1" aria-hidden="true" /> Undo AI changes
+                                <Undo2 className="w-3 h-3 mr-1" aria-hidden="true" /> {t('useCaseForm.undoAi')}
                             </Button>
                         )}
                     </section>
@@ -444,7 +448,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
                     action: (
                         <Button type="button" variant="secondary" className={`${AI_BUTTON} bg-green-500/10 text-green-600 border-green-500/20 hover:bg-green-500/20`} onClick={handleBusinessValueEnhancement} disabled={enhancingBusinessValue}>
                             {enhancingBusinessValue ? <Loader2 className="w-3 h-3 animate-spin" aria-hidden="true" /> : <Sparkles className="w-3 h-3" aria-hidden="true" />}
-                            Suggest a measure
+                            {t('useCaseForm.suggestMeasure')}
                         </Button>
                     ),
                     after: businessValueData && (
@@ -455,13 +459,13 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
                         >
                             {businessValueData.business_impact && (
                                 <div>
-                                    <h4 className="text-xs font-bold text-green-600 uppercase tracking-wider mb-2">Business impact</h4>
+                                    <h4 className="text-xs font-bold text-green-600 uppercase tracking-wider mb-2">{t('useCaseForm.businessImpact')}</h4>
                                     <p className="text-sm theme-text-primary">{businessValueData.business_impact}</p>
                                 </div>
                             )}
                             {businessValueData.specific_metrics?.length > 0 && (
                                 <div>
-                                    <h4 className="text-xs font-bold text-green-600 uppercase tracking-wider mb-2">Ways to measure it</h4>
+                                    <h4 className="text-xs font-bold text-green-600 uppercase tracking-wider mb-2">{t('useCaseForm.waysToMeasure')}</h4>
                                     <ul className="text-sm theme-text-secondary space-y-1">
                                         {businessValueData.specific_metrics.map((metric: string, idx: number) => (
                                             <li key={idx} className="flex items-start gap-2">
@@ -478,16 +482,16 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
 
                 {/* Technical analysis is for IT reviewers; business users can skip it. */}
                 <details className="rounded-lg border theme-border p-3">
-                    <summary className="cursor-pointer text-sm font-medium theme-text-secondary">For IT reviewers (optional)</summary>
+                    <summary className="cursor-pointer text-sm font-medium theme-text-secondary">{t('useCaseForm.itReviewers')}</summary>
                     <div className="mt-3 space-y-3">
                         <div className="flex flex-wrap gap-2">
                             <Button type="button" variant="secondary" className={`${AI_BUTTON} theme-bg-tertiary theme-border`} onClick={handleFeasibility} disabled={checkingFeasibility}>
                                 {checkingFeasibility ? <Loader2 className="w-3 h-3 animate-spin" aria-hidden="true" /> : <AlertTriangle className="w-3 h-3" aria-hidden="true" />}
-                                Check feasibility
+                                {t('useCaseForm.checkFeasibility')}
                             </Button>
                             <Button type="button" variant="secondary" className={`${AI_BUTTON} bg-blue-500/10 text-blue-600 border-blue-500/20 hover:bg-blue-500/20`} onClick={handleTechnicalDeepDive} disabled={generatingArch}>
                                 {generatingArch ? <Loader2 className="w-3 h-3 animate-spin" aria-hidden="true" /> : <Server className="w-3 h-3" aria-hidden="true" />}
-                                Technical deep dive
+                                {t('useCaseForm.deepDive')}
                             </Button>
                         </div>
                         {feasibilityData && (
@@ -498,7 +502,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
                                         'bg-semantic-danger/10 border-semantic-danger/30 text-semantic-danger'
                                     }`}
                             >
-                                <span className="font-bold">Feasibility: {feasibilityData.score}</span> — {feasibilityData.reason}
+                                <span className="font-bold">{t('useCaseForm.feasibility', { score: feasibilityData.score })}</span> — {feasibilityData.reason}
                             </div>
                         )}
                         {technicalData && (
@@ -508,7 +512,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
                                     <div className="bg-blue-500/10 p-3 rounded border border-blue-500/20">
                                         <div className="flex items-center gap-1.5 mb-2">
                                             <Layers className="w-3 h-3 text-blue-500" aria-hidden="true" />
-                                            <span className="text-xs font-bold text-blue-500 uppercase">Recommended stack</span>
+                                            <span className="text-xs font-bold text-blue-500 uppercase">{t('useCaseForm.recommendedStack')}</span>
                                         </div>
                                         <div className="space-y-2">
                                             {technicalData.recommended_stack?.map((item: any, idx: number) => (
@@ -522,7 +526,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
                                     <div className="bg-blue-500/10 p-3 rounded border border-blue-500/20">
                                         <div className="flex items-center gap-1.5 mb-2">
                                             <Code className="w-3 h-3 text-blue-500" aria-hidden="true" />
-                                            <span className="text-xs font-bold text-blue-500 uppercase">Implementation steps</span>
+                                            <span className="text-xs font-bold text-blue-500 uppercase">{t('useCaseForm.implementationSteps')}</span>
                                         </div>
                                         <ol className="text-xs space-y-1.5 list-decimal list-inside theme-text-secondary">
                                             {technicalData.implementation_steps?.map((step: string, idx: number) => (
@@ -534,7 +538,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
                                 {technicalData.technical_risks?.length > 0 && (
                                     <div className="text-xs border border-orange-500/30 bg-orange-500/5 rounded p-2">
                                         <div className="font-bold text-orange-500 mb-1 flex items-center gap-1">
-                                            <AlertTriangle className="w-3 h-3" aria-hidden="true" /> Technical risks
+                                            <AlertTriangle className="w-3 h-3" aria-hidden="true" /> {t('useCaseForm.technicalRisks')}
                                         </div>
                                         <ul className="space-y-1 theme-text-secondary">
                                             {technicalData.technical_risks.map((risk: string, idx: number) => <li key={idx}>• {risk}</li>)}
@@ -543,7 +547,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
                                 )}
                                 {typeof technicalData.complexity_score === 'number' && (
                                     <div className="flex items-center justify-between pt-2 border-t theme-border text-xs">
-                                        <span className="theme-text-secondary">Estimated complexity</span>
+                                        <span className="theme-text-secondary">{t('useCaseForm.complexity')}</span>
                                         <span className="font-bold theme-text-primary">{technicalData.complexity_score}/10</span>
                                     </div>
                                 )}
@@ -554,29 +558,29 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
 
                 <div className="pt-4">
                     {Object.values(errors).some(Boolean) && (
-                        <p className="text-sm text-semantic-danger mb-2" role="alert">Please fill in the highlighted fields.</p>
+                        <p className="text-sm text-semantic-danger mb-2" role="alert">{t('useCaseForm.fixHighlighted')}</p>
                     )}
                     <Button type="submit" className="w-full justify-center h-12 text-lg" disabled={loading}>
-                        {loading ? <Loader2 className="animate-spin" /> : submitLabel}
+                        {loading ? <Loader2 className="animate-spin" /> : (submitLabel ?? t('useCaseForm.submit'))}
                     </Button>
                 </div>
             </form>
 
-            <Modal isOpen={showDuplicateModal} onClose={() => setShowDuplicateModal(false)} title="Similar Idea Detected">
+            <Modal isOpen={showDuplicateModal} onClose={() => setShowDuplicateModal(false)} title={t('useCaseForm.duplicate.title')}>
                 <div className="space-y-4">
                     <div className="bg-orange-500/10 border border-orange-500/30 rounded-lg p-4 flex gap-3">
                         <AlertCircle className="w-5 h-5 text-orange-500 shrink-0" />
                         <div>
-                            <p className="text-sm font-bold text-orange-500">Wait! We found a similar submission.</p>
+                            <p className="text-sm font-bold text-orange-500">{t('useCaseForm.duplicate.heading')}</p>
                             <p className="text-sm theme-text-secondary mt-1">{duplicateData?.message}</p>
                         </div>
                     </div>
 
                     <div className="theme-bg-tertiary p-4 rounded border theme-border">
-                        <h4 className="text-xs font-bold theme-text-secondary uppercase tracking-wider mb-1">Your Title</h4>
+                        <h4 className="text-xs font-bold theme-text-secondary uppercase tracking-wider mb-1">{t('useCaseForm.duplicate.yourTitle')}</h4>
                         <p className="font-bold mb-3 theme-text-primary">{formData.title}</p>
 
-                        <h4 className="text-xs font-bold theme-text-secondary uppercase tracking-wider mb-1">Existing Title</h4>
+                        <h4 className="text-xs font-bold theme-text-secondary uppercase tracking-wider mb-1">{t('useCaseForm.duplicate.existingTitle')}</h4>
                         <p className="font-bold text-brand-violet">{duplicateData?.similar_to_title}</p>
                     </div>
 
@@ -586,14 +590,14 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use ca
                             className="flex-1"
                             onClick={() => setShowDuplicateModal(false)}
                         >
-                            Cancel & Edit
+                            {t('useCaseForm.duplicate.cancelEdit')}
                         </Button>
                         <Button
                             className="flex-1 bg-brand-violet hover:bg-brand-violet/90"
                             onClick={executeSubmit}
                             disabled={loading}
                         >
-                            {loading ? <Loader2 className="animate-spin" /> : 'Submit Anyway'}
+                            {loading ? <Loader2 className="animate-spin" /> : t('useCaseForm.duplicate.submitAnyway')}
                         </Button>
                     </div>
                 </div>

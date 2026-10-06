@@ -6,16 +6,21 @@ import { useSession } from '../../context/SessionContext';
 import { useTheme } from '../../context/ThemeContext';
 import { socket } from '../../lib/socket';
 import { toast } from 'sonner';
-import { CheckCircle, Circle, GripVertical } from 'lucide-react';
+import { CheckCircle, Circle, GripVertical, X } from 'lucide-react';
+import { errorMessage } from '../../lib/apiErrors';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 export function PollResponder() {
     const { session } = useSession();
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const [activePolls, setActivePolls] = useState<Poll[]>([]);
     const [textResponses, setTextResponses] = useState<Record<string, string>>({});
     const [selectedOptions, setSelectedOptions] = useState<Record<string, string[]>>({});
     const [rankings, setRankings] = useState<Record<string, string[]>>({});
+    // Polls the participant chose to skip; they stay hidden for this visit.
+    const [dismissed, setDismissed] = useState<string[]>([]);
 
     useEffect(() => {
         if (!session?.workshopId || !session.participantId) return;
@@ -25,9 +30,9 @@ export function PollResponder() {
             // Add new poll if active
             if (poll.status === 'ACTIVE') {
                 setActivePolls(prev => [poll, ...prev]);
-                toast("New poll available!", {
+                toast(t('polls.newPoll'), {
                     description: poll.question_text,
-                    action: { label: "View", onClick: () => { } }
+                    action: { label: t('polls.view'), onClick: () => { } }
                 });
             }
         };
@@ -64,7 +69,7 @@ export function PollResponder() {
             // Usually just active ones to vote on.
             // But if we want to show results of closed ones, we keep them.
             // The API returns all, let's filter or sort.
-            setActivePolls(data);
+            setActivePolls(Array.isArray(data) ? data : []);
         } catch (err) {
             console.error(err);
         }
@@ -81,29 +86,10 @@ export function PollResponder() {
                 }
                 return p;
             }));
-            toast.success("Vote recorded");
+            toast.success(t('polls.voteRecorded'));
         } catch (err: any) {
             console.error('Failed to vote on poll:', err);
-            let errorMessage = "Failed to submit your vote. Please try again.";
-            
-            if (err.response) {
-                // Server responded with error
-                const detail = err.response.data?.detail || err.response.data?.message;
-                if (detail) {
-                    errorMessage = detail;
-                } else if (err.response.status === 404) {
-                    errorMessage = "This poll is no longer active.";
-                } else if (err.response.status === 400) {
-                    errorMessage = "Invalid vote. Please check your selection.";
-                } else if (err.response.status === 500) {
-                    errorMessage = "An error occurred. Your vote may not have been recorded.";
-                }
-            } else if (err.request) {
-                // Request made but no response
-                errorMessage = "Unable to connect. Please check your internet connection.";
-            }
-            
-            toast.error(errorMessage);
+            toast.error(err?.response?.status === 404 ? t('polls.noLongerActive') : errorMessage(err, t('polls.voteFailed')));
         }
     };
 
@@ -118,7 +104,7 @@ export function PollResponder() {
     const handleSubmitMultipleSelect = async (pollId: string) => {
         const selected = selectedOptions[pollId] || [];
         if (selected.length === 0) {
-            toast.error("Please select at least one option");
+            toast.error(t('polls.selectOne'));
             return;
         }
         await handleVote(pollId, selected);
@@ -128,7 +114,7 @@ export function PollResponder() {
     const handleTextSubmit = async (pollId: string) => {
         const text = textResponses[pollId]?.trim();
         if (!text) {
-            toast.error("Please enter a response");
+            toast.error(t('polls.enterResponse'));
             return;
         }
         await handleVote(pollId, text);
@@ -154,7 +140,8 @@ export function PollResponder() {
         await handleVote(pollId, ranking);
     };
 
-    if (activePolls.filter(p => p.status === 'ACTIVE').length === 0) {
+    const visiblePolls = activePolls.filter(p => p.status === 'ACTIVE' && !p.user_response && !dismissed.includes(p.id));
+    if (visiblePolls.length === 0) {
         return null;
     }
 
@@ -195,7 +182,7 @@ export function PollResponder() {
                         </label>
                     ))}
                     <Button onClick={() => handleSubmitMultipleSelect(poll.id)} className="w-full mt-2" disabled={selected.length === 0}>
-                        Submit ({selected.length} selected)
+                        {t('polls.submitSelected', { count: selected.length })}
                     </Button>
                 </div>
             );
@@ -230,10 +217,10 @@ export function PollResponder() {
                     <Input
                         value={textResponses[poll.id] || ''}
                         onChange={e => setTextResponses({ ...textResponses, [poll.id]: e.target.value })}
-                        placeholder="Type your response..."
+                        placeholder={t('polls.typeResponse')}
                     />
                     <Button onClick={() => handleTextSubmit(poll.id)} className="w-full" disabled={!textResponses[poll.id]?.trim()}>
-                        Submit
+                        {t('polls.submit')}
                     </Button>
                 </div>
             );
@@ -250,6 +237,8 @@ export function PollResponder() {
                             <span className="flex-1 text-sm theme-text-primary">{opt}</span>
                             <div className="flex flex-col gap-1">
                                 <button
+                                    type="button"
+                                    aria-label={t('polls.moveUp', { option: opt })}
                                     onClick={() => handleRankingMove(poll.id, opt, 'up', pollOptions)}
                                     disabled={idx === 0}
                                     className="text-xs px-2 py-0.5 rounded theme-bg-secondary disabled:opacity-30 theme-text-primary"
@@ -257,6 +246,8 @@ export function PollResponder() {
                                     ↑
                                 </button>
                                 <button
+                                    type="button"
+                                    aria-label={t('polls.moveDown', { option: opt })}
                                     onClick={() => handleRankingMove(poll.id, opt, 'down', pollOptions)}
                                     disabled={idx === currentRanking.length - 1}
                                     className="text-xs px-2 py-0.5 rounded theme-bg-secondary disabled:opacity-30 theme-text-primary"
@@ -267,7 +258,7 @@ export function PollResponder() {
                         </div>
                     ))}
                     <Button onClick={() => handleRankingSubmit(poll.id, pollOptions)} className="w-full mt-2">
-                        Submit Ranking
+                        {t('polls.submitRanking')}
                     </Button>
                 </div>
             );
@@ -279,7 +270,7 @@ export function PollResponder() {
     return (
         <div className="fixed bottom-24 right-4 w-80 max-w-[90vw] z-40 space-y-2">
             <AnimatePresence>
-                {activePolls.filter(p => p.status === 'ACTIVE' && !p.user_response).map(poll => (
+                {visiblePolls.map(poll => (
                     <motion.div
                         key={poll.id}
                         initial={{ opacity: 0, y: 50, scale: 0.9 }}
@@ -288,7 +279,15 @@ export function PollResponder() {
                         className="theme-bg-primary theme-border border shadow-2xl rounded-xl p-4 overflow-hidden relative"
                     >
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 to-purple-500" />
-                        <h4 className="font-bold mb-3 mt-1 theme-text-primary">{poll.question_text}</h4>
+                        <button
+                            type="button"
+                            onClick={() => setDismissed(prev => [...prev, poll.id])}
+                            aria-label={t('polls.skip')}
+                            className="absolute top-2 right-2 p-1.5 rounded-full theme-text-secondary hover:theme-bg-tertiary"
+                        >
+                            <X className="w-4 h-4" aria-hidden="true" />
+                        </button>
+                        <h4 className="font-bold mb-3 mt-1 pr-6 theme-text-primary">{poll.question_text}</h4>
                         {renderPollContent(poll)}
                     </motion.div>
                 ))}

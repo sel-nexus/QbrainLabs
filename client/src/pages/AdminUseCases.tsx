@@ -6,6 +6,7 @@ import { API_BASE_URL } from '../lib/config';
 import { AdminLayout } from '../components/AdminLayout';
 import { UseCaseApprovalModal } from '../components/usecases/UseCaseApprovalModal';
 import { AdminImportUseCasesModal } from '../components/usecases/AdminImportUseCasesModal';
+import { useConfirm } from '../context/ConfirmContext';
 
 const API_BASE = API_BASE_URL;
 
@@ -75,6 +76,7 @@ const formatDate = (d: string | null) =>
 // ─── Page ─────────────────────────────────────────────────────────────────────
 
 export function AdminUseCases() {
+  const confirm = useConfirm();
   const { token } = useAuth();
 
   const [useCases, setUseCases]     = useState<UseCase[]>([]);
@@ -137,7 +139,7 @@ export function AdminUseCases() {
   // ── Delete rejected use case ───────────────────────────────────────────────
 
   const handleDeleteUseCase = async (id: string, title?: string) => {
-    if (!window.confirm(`Delete this use case from the repository?\n\n"${title ?? id}"`)) return;
+    if (!(await confirm.ok({ title: 'Delete this use case from the repository?', message: `"${title ?? id}"`, confirmText: 'Delete' }))) return;
     if (!token) return;
     try {
       const res = await fetch(`${API_BASE}/api/usecases/${id}`, {

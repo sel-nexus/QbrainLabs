@@ -4,6 +4,7 @@ import { Plus, Trash2, Pencil } from 'lucide-react';
 import { AdminLayout } from '../components/AdminLayout';
 import { useTheme } from '../context/ThemeContext';
 import { API_BASE_URL } from '../lib/config';
+import { useConfirm } from '../context/ConfirmContext';
 
 const API_BASE = API_BASE_URL;
 const TOKEN_KEY = 'hm_auth_token';
@@ -51,6 +52,7 @@ const EMPTY_FORM: FormState = {
 };
 
 export function AdminLLMModels() {
+    const confirm = useConfirm();
     const { theme } = useTheme();
     const isLight = theme === 'light';
     const [models, setModels] = useState<LLMModelConfig[]>([]);
@@ -158,7 +160,7 @@ export function AdminLLMModels() {
     };
 
     const handleDelete = async (id: string) => {
-        if (!confirm('Delete this LLM model config? Workshops using it will fall back to no model selected.')) {
+        if (!(await confirm.ok({ title: 'Delete this LLM model config?', message: 'Workshops using it will fall back to no model selected.', confirmText: 'Delete' }))) {
             return;
         }
         try {
@@ -189,37 +191,39 @@ export function AdminLLMModels() {
             {loading ? (
                 <p className="contrast-muted">Loading...</p>
             ) : (
-                <table className="w-full text-sm">
-                    <thead>
-                        <tr className={`text-left border-b ${isLight ? 'border-gray-200' : 'border-white/10'}`}>
-                            <th className="py-2">Name</th>
-                            <th className="py-2">Provider</th>
-                            <th className="py-2">Role</th>
-                            <th className="py-2">Model Name</th>
-                            <th className="py-2">Active</th>
-                            <th className="py-2">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {models.map((model) => (
-                            <tr key={model.id} className={`border-b ${isLight ? 'border-gray-100' : 'border-white/5'}`}>
-                                <td className="py-2">{model.name}</td>
-                                <td className="py-2">{model.provider}</td>
-                                <td className="py-2">{model.role}</td>
-                                <td className="py-2">{model.model_name}</td>
-                                <td className="py-2">{model.is_active ? 'Yes' : 'No'}</td>
-                                <td className="py-2 flex gap-2">
-                                    <button onClick={() => openEditForm(model)} aria-label="Edit">
-                                        <Pencil className="w-4 h-4" />
-                                    </button>
-                                    <button onClick={() => handleDelete(model.id)} aria-label="Delete">
-                                        <Trash2 className="w-4 h-4 text-semantic-danger" />
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                      <thead>
+                          <tr className={`text-left border-b ${isLight ? 'border-gray-200' : 'border-white/10'}`}>
+                              <th className="py-2">Name</th>
+                              <th className="py-2">Provider</th>
+                              <th className="py-2">Role</th>
+                              <th className="py-2">Model Name</th>
+                              <th className="py-2">Active</th>
+                              <th className="py-2">Actions</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {models.map((model) => (
+                              <tr key={model.id} className={`border-b ${isLight ? 'border-gray-100' : 'border-white/5'}`}>
+                                  <td className="py-2">{model.name}</td>
+                                  <td className="py-2">{model.provider}</td>
+                                  <td className="py-2">{model.role}</td>
+                                  <td className="py-2">{model.model_name}</td>
+                                  <td className="py-2">{model.is_active ? 'Yes' : 'No'}</td>
+                                  <td className="py-2 flex gap-2">
+                                      <button onClick={() => openEditForm(model)} aria-label="Edit">
+                                          <Pencil className="w-4 h-4" />
+                                      </button>
+                                      <button onClick={() => handleDelete(model.id)} aria-label="Delete">
+                                          <Trash2 className="w-4 h-4 text-semantic-danger" />
+                                      </button>
+                                  </td>
+                              </tr>
+                          ))}
+                      </tbody>
+                  </table>
+                </div>
             )}
 
             {showForm && (

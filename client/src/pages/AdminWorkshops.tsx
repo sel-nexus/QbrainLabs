@@ -14,6 +14,7 @@ import { AdminLayout } from '../components/AdminLayout';
 
 import { API_BASE_URL } from '../lib/config';
 import { apiErrorText } from '../lib/apiErrors';
+import { useConfirm } from '../context/ConfirmContext';
 
 const API_BASE = API_BASE_URL;
 
@@ -31,6 +32,7 @@ interface Workshop {
 }
 
 export function AdminWorkshops() {
+    const confirm = useConfirm();
     const navigate = useNavigate();
     const { theme } = useTheme();
     const { t } = useTranslation();
@@ -67,7 +69,7 @@ export function AdminWorkshops() {
     };
 
     const handleDeleteWorkshop = async (workshopId: string) => {
-        if (!confirm(t('workshop.deleteWorkshopConfirm'))) return;
+        if (!(await confirm.ok({ title: t('workshop.deleteWorkshopConfirm'), message: 'This cannot be undone.', confirmText: 'Delete' }))) return;
 
         try {
             const authToken = localStorage.getItem('hm_auth_token');
@@ -149,7 +151,7 @@ export function AdminWorkshops() {
                     <p className={isLight ? 'text-gray-500' : 'text-gray-400'}>{t('workshop.noWorkshops')}</p>
                 </div>
             ) : (
-                <div className={`rounded-xl border overflow-hidden ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
+                <div className={`rounded-xl border overflow-x-auto ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
                     <table className="w-full">
                         <thead>
                             <tr className={`border-b ${isLight ? 'border-gray-200' : 'border-white/10'}`}>

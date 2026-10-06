@@ -9,6 +9,8 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Loader2, UserCircle, CheckCircle, Users } from 'lucide-react';
 import { ParticipantAuth } from '../components/ParticipantAuth';
 import { toast } from 'sonner';
+import { errorMessage } from '../lib/apiErrors';
+import { useTranslation } from 'react-i18next';
 
 // Participant ids used on this device, so re-joining a workshop under the
 // same name resumes the same identity (and ownership of earlier work).
@@ -34,6 +36,7 @@ function rememberParticipantId(id: string) {
 
 export function JoinWorkshop() {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const { theme } = useTheme();
     const [searchParams] = useSearchParams();
     const [pin, setPin] = useState(searchParams.get('pin') || '');
@@ -68,19 +71,19 @@ export function JoinWorkshop() {
                 if (String(data?.pin || '').toUpperCase() === urlPin) {
                     navigate('/participant-dashboard', { replace: true });
                 } else {
-                    setSwitchFrom(data?.title || 'your current workshop');
+                    setSwitchFrom(data?.title || t('join.currentWorkshop'));
                 }
             })
             .catch((err) => {
                 if (cancelled) return;
                 // The old workshop no longer exists: just let them join the new one.
                 if (err?.response?.status === 404) logout();
-                else setSwitchFrom('your current workshop');
+                else setSwitchFrom(t('join.currentWorkshop'));
             });
         return () => {
             cancelled = true;
         };
-    }, [session, navigate, urlPin, logout]);
+    }, [session, navigate, urlPin, logout, t]);
 
     const handleAdvancedAuthSuccess = async (data: { token: string; participant: any; mode: 'anonymous' | 'registered' }) => {
         // Store token for future requests
@@ -131,13 +134,13 @@ export function JoinWorkshop() {
             } else {
                 // If no workshop joined, keep them on join page so they can enter PIN
                 // Don't create a session yet - they need to join a workshop first
-                toast.info('Please enter a workshop PIN to join a workshop');
+                toast.info(t('join.enterPinToJoin'));
                 // Close the auth modal so they can see the join form
                 setShowAdvancedAuth(false);
             }
         } catch (error) {
             console.error('Error setting up participant session:', error);
-            toast.error('Failed to set up session');
+            toast.error(t('join.sessionFailed'));
         }
     };
 
@@ -172,7 +175,7 @@ export function JoinWorkshop() {
                 console.log('[JoinWorkshop] Facilitator request success:', requestData);
                 setFacilitatorRequestId(requestData.request_id);
                 setShowFacilitatorRequestSuccess(true);
-                toast.success('Facilitator access request submitted!');
+                toast.success(t('join.requestSubmittedToast'));
                 setLoading(false);
                 return;
             }
@@ -210,9 +213,9 @@ export function JoinWorkshop() {
             navigate('/participant-dashboard', { replace: true });
         } catch (err: any) {
             console.error('[JoinWorkshop] Join error:', err);
-            const errorMessage = err.response?.data?.detail || err.message || "Failed to join. Please check PIN and try again.";
-            setError(errorMessage);
-            toast.error(errorMessage);
+            const message = errorMessage(err, t('join.joinFailed'));
+            setError(message);
+            toast.error(message);
             setLoading(false);
         }
     };
@@ -227,23 +230,23 @@ export function JoinWorkshop() {
             >
                 <h1 className={`text-3xl font-heading font-bold text-center mb-8 ${theme === 'light' ? 'text-gray-900' : 'text-white'
                     }`}>
-                    Join Session
+                    {t('join.title')}
                 </h1>
 
                 {switchFrom && (
                     <div role="alertdialog" aria-labelledby="switch-title" className="mb-6 rounded-xl border border-amber-500/40 bg-amber-500/10 p-4">
                         <p id="switch-title" className={`font-semibold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                            You're still in “{switchFrom}”.
+                            {t('join.stillIn', { title: switchFrom })}
                         </p>
                         <p className={`text-sm mt-1 ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>
-                            This link is for a different workshop (PIN {urlPin}). Leave the current one and join this workshop?
+                            {t('join.differentWorkshop', { pin: urlPin })}
                         </p>
                         <div className="flex flex-wrap gap-2 mt-3">
                             <Button type="button" onClick={() => { logout(); setSwitchFrom(null); }}>
-                                Leave and join this workshop
+                                {t('join.leaveAndJoin')}
                             </Button>
                             <Button type="button" variant="secondary" onClick={() => navigate('/participant-dashboard', { replace: true })}>
-                                Stay in current workshop
+                                {t('join.stayCurrent')}
                             </Button>
                         </div>
                     </div>
@@ -251,12 +254,12 @@ export function JoinWorkshop() {
 
                 <form onSubmit={handleJoin} className="space-y-6" noValidate>
                     <Input
-                        label="Workshop PIN (6 characters)"
+                        label={t('join.pinLabel')}
                         inputMode="text"
                         autoCapitalize="characters"
                         autoComplete="off"
                         className="text-4xl text-center tracking-widest uppercase py-6 font-mono font-bold placeholder:tracking-normal placeholder:normal-case placeholder:text-2xl placeholder:font-sans"
-                        placeholder="Enter PIN"
+                        placeholder={t('join.pinPlaceholder')}
                         maxLength={6}
                         value={pin}
                         onChange={(e) => setPin(e.target.value)}
@@ -269,8 +272,8 @@ export function JoinWorkshop() {
                     />
 
                     <Input
-                        label="Your name (others in the workshop will see it)"
-                        placeholder="Your Name"
+                        label={t('join.nameLabel')}
+                        placeholder={t('join.namePlaceholder')}
                         maxLength={60}
                         autoComplete="name"
                         className="text-center text-lg"
@@ -298,12 +301,12 @@ export function JoinWorkshop() {
                             className={`w-full text-center text-sm underline ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}
                             onClick={() => setShowHostOptions(true)}
                         >
-                            Are you hosting this workshop?
+                            {t('join.hosting')}
                         </button>
                     ) : (
                     <div className={`p-4 rounded-lg ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-800'}`}>
                         <p className={`text-sm font-medium mb-3 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
-                            Join as:
+                            {t('join.joinAs')}
                         </p>
                         <div className="space-y-2">
                             <label className={`flex items-center gap-3 p-2 rounded cursor-pointer ${!requestFacilitatorAccess
@@ -319,7 +322,7 @@ export function JoinWorkshop() {
                                 />
                                 <Users className="w-4 h-4" />
                                 <span className={`text-sm ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
-                                    Participant (Default)
+                                    {t('join.asParticipant')}
                                 </span>
                             </label>
                             <label className={`flex items-center gap-3 p-2 rounded cursor-pointer ${requestFacilitatorAccess
@@ -335,7 +338,7 @@ export function JoinWorkshop() {
                                 />
                                 <UserCircle className="w-4 h-4" />
                                 <span className={`text-sm ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
-                                    Request Facilitator Access
+                                    {t('join.requestFacilitator')}
                                 </span>
                             </label>
                         </div>
@@ -345,13 +348,13 @@ export function JoinWorkshop() {
                             <div className="mt-3">
                                 <Input
                                     type="email"
-                                    placeholder="Email (optional, for notifications)"
+                                    placeholder={t('join.emailPlaceholder')}
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="text-sm"
                                 />
                                 <p className={`text-xs mt-1 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
-                                    Provide email to receive approval notification
+                                    {t('join.emailHelp')}
                                 </p>
                             </div>
                         )}
@@ -366,7 +369,7 @@ export function JoinWorkshop() {
                         className="w-full h-12 text-lg"
                         disabled={!pin || !name || loading}
                     >
-                        {loading ? <Loader2 className="animate-spin" /> : <span className="flex items-center">Join <ArrowRight className="ml-2 w-4 h-4" /></span>}
+                        {loading ? <Loader2 className="animate-spin" /> : <span className="flex items-center">{t('join.join')} <ArrowRight className="ml-2 w-4 h-4" aria-hidden="true" /></span>}
                     </Button>
 
                     {/* Toggle to advanced auth */}
@@ -379,7 +382,7 @@ export function JoinWorkshop() {
                             }`}
                     >
                         <UserCircle className="w-4 h-4" />
-                        Sign in to track contributions
+                        {t('join.signIn')}
                     </button>
                 </form>
 
@@ -392,7 +395,7 @@ export function JoinWorkshop() {
                             : 'text-gray-400 hover:text-gray-300'
                             }`}
                     >
-                        ← Back to Home
+                        {t('join.backHome')}
                     </Link>
                 </div>
             </motion.div>
@@ -410,7 +413,7 @@ export function JoinWorkshop() {
                     >
                         <h2 className={`text-xl font-bold mb-4 text-center ${theme === 'light' ? 'text-gray-900' : 'text-white'
                             }`}>
-                            Join Workshop
+                            {t('join.authTitle')}
                         </h2>
 
                         {/* PIN display if provided */}
@@ -418,7 +421,7 @@ export function JoinWorkshop() {
                             <div className={`text-center mb-4 p-2 rounded-lg ${theme === 'light' ? 'bg-gray-100' : 'bg-surface-800'
                                 }`}>
                                 <span className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
-                                    Workshop PIN:{' '}
+                                    {t('join.pinPrefix')}{' '}
                                 </span>
                                 <span className="font-mono font-bold text-brand-violet">{pin.toUpperCase()}</span>
                             </div>
@@ -450,31 +453,31 @@ export function JoinWorkshop() {
                             </div>
                             <h2 className={`text-xl font-bold mb-2 ${theme === 'light' ? 'text-gray-900' : 'text-white'
                                 }`}>
-                                Request Submitted
+                                {t('join.requestSubmitted')}
                             </h2>
                             <p className={`mb-4 ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>
-                                Your request to join as a facilitator has been submitted for approval.
+                                {t('join.requestSubmittedBody')}
                             </p>
 
                             <div className={`p-4 rounded-lg mb-4 text-left ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-800'
                                 }`}>
                                 <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
-                                    <strong>Workshop PIN:</strong> {pin.toUpperCase()}
+                                    <strong>{t('join.pinPrefix')}</strong> {pin.toUpperCase()}
                                 </p>
                                 <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
-                                    <strong>Your Name:</strong> {name}
+                                    <strong>{t('join.yourName')}</strong> {name}
                                 </p>
                                 <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
-                                    <strong>Request ID:</strong> {facilitatorRequestId}
+                                    <strong>{t('join.requestId')}</strong> {facilitatorRequestId}
                                 </p>
                             </div>
 
                             <div className={`text-sm mb-6 text-left ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>
-                                <p className="font-medium mb-2">What happens next?</p>
+                                <p className="font-medium mb-2">{t('join.whatNext')}</p>
                                 <ol className="list-decimal list-inside space-y-1">
-                                    <li>Your request will be reviewed by an administrator</li>
-                                    <li>You will receive an email notification once approved or rejected</li>
-                                    <li>If approved, you can access facilitator features</li>
+                                    <li>{t('join.next1')}</li>
+                                    <li>{t('join.next2')}</li>
+                                    <li>{t('join.next3')}</li>
                                 </ol>
                             </div>
 
@@ -488,14 +491,14 @@ export function JoinWorkshop() {
                                     }}
                                     className="flex-1"
                                 >
-                                    Join as Participant Now
+                                    {t('join.joinAsParticipantNow')}
                                 </Button>
                                 <Button
                                     variant="secondary"
                                     onClick={() => navigate('/')}
                                     className="flex-1"
                                 >
-                                    Return to Home
+                                    {t('join.returnHome')}
                                 </Button>
                             </div>
                         </div>

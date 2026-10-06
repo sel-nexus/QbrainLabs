@@ -177,7 +177,7 @@ export function UseCaseApprovalModal({ useCase, allUseCases, token, onClose, onS
                         </div>
                         <h2 className="text-xl font-bold text-gray-900 dark:text-white leading-snug">{useCase.title}</h2>
                     </div>
-                    <button
+                    <button aria-label="Close"
                         onClick={onClose}
                         className="shrink-0 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-500 transition"
                     >

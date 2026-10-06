@@ -413,7 +413,7 @@ export function AdminUsers() {
           <p className={isLight ? 'text-gray-500' : 'text-gray-400'}>{t('admin.noUsersFound')}</p>
         </div>
       ) : (
-        <div className={`rounded-xl border overflow-hidden ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
+        <div className={`rounded-xl border overflow-x-auto ${isLight ? 'bg-white border-gray-200 shadow-sm' : 'bg-surface-800 border-white/10'}`}>
           <table className="w-full">
             <thead>
               <tr className={`border-b ${isLight ? 'border-gray-200' : 'border-white/10'}`}>
@@ -449,7 +449,7 @@ export function AdminUsers() {
                     </td>
                     <td className="py-4 px-6">
                       <div className="flex justify-end relative">
-                        <button
+                        <button aria-label="More actions"
                           onClick={() => setActionMenuOpen(actionMenuOpen === facilitator.id ? null : facilitator.id)}
                           className={`p-2 rounded-lg transition ${isLight ? 'text-gray-500 hover:text-gray-900 hover:bg-gray-100' : 'text-gray-400 hover:text-white hover:bg-white/10'}`}
                         >
@@ -550,7 +550,7 @@ export function AdminUsers() {
                     <h3 className={`text-lg font-semibold ${isLight ? 'text-gray-900' : 'text-white'}`}>
                       {t('admin.resetPassword', 'Reset Password')}
                     </h3>
-                    <button
+                    <button aria-label="Close"
                       onClick={() => setResetPasswordModalOpen(false)}
                       className={`p-1 rounded-lg transition ${isLight ? 'text-gray-400 hover:text-gray-600 hover:bg-gray-100' : 'text-gray-400 hover:text-white hover:bg-white/10'}`}
                     >

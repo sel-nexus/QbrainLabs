@@ -415,7 +415,10 @@ async def update_workshop(
         if workshop.config is None:
             workshop.config = {}
         workshop.config['description'] = workshop_update.description
-    
+    if workshop_update.show_leaderboard is not None:
+        # Reassign so the JSON column change is detected.
+        workshop.config = {**(workshop.config or {}), 'show_leaderboard': workshop_update.show_leaderboard}
+
     await db.commit()
     await db.refresh(workshop)
     

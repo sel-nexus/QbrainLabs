@@ -125,7 +125,7 @@ export function ChallengeCardDetail({ challenge, onClose, isFacilitator }: Chall
           <h2 className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
             {challenge.title}
           </h2>
-          <Button variant="ghost" onClick={onClose} className="px-3 py-2">
+          <Button aria-label="Close" variant="ghost" onClick={onClose} className="px-3 py-2">
             <X className="w-5 h-5" />
           </Button>
         </div>
@@ -253,14 +253,14 @@ export function ChallengeCardDetail({ challenge, onClose, isFacilitator }: Chall
                               Generated Prompt
                             </h4>
                             <div className="flex gap-2">
-                              <Button
+                              <Button aria-label="Copy to clipboard"
                                 variant="ghost"
                                 onClick={() => copyToClipboard(stepContent.prompt!.content)}
                                 className="px-2 py-2"
                               >
                                 <Copy className="w-4 h-4" />
                               </Button>
-                              <Button
+                              <Button aria-label="Download"
                                 variant="ghost"
                                 onClick={() =>
                                   downloadAsFile(
@@ -297,14 +297,14 @@ export function ChallengeCardDetail({ challenge, onClose, isFacilitator }: Chall
                               One-Slide Summary
                             </h4>
                             <div className="flex gap-2">
-                              <Button
+                              <Button aria-label="Copy to clipboard"
                                 variant="ghost"
                                 onClick={() => copyToClipboard(stepContent.summary!.content)}
                                 className="px-2 py-2"
                               >
                                 <Copy className="w-4 h-4" />
                               </Button>
-                              <Button
+                              <Button aria-label="Download"
                                 variant="ghost"
                                 onClick={() =>
                                   downloadAsFile(

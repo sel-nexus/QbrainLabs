@@ -8,9 +8,12 @@ import { Button } from '../components/ui/Button';
 import { ArrowLeft, Loader2, X, RotateCcw, GripVertical, ChevronDown, ChevronUp, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { Header } from '../components/Header';
+import { PollResponder } from '../components/polls/PollResponder';
 import { PrioritizationScale } from '../components/prioritization/PrioritizationScale';
+import { useTranslation } from 'react-i18next';
 
 export function ParticipantMatrix() {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const { theme } = useTheme();
     const { session } = useSession();
@@ -77,9 +80,9 @@ export function ParticipantMatrix() {
                     const useCase = useCases.find(u => u.id === id);
                     socket.emit('matrix:position_update', {
                         participant_id: session.participantId,
-                        participant_name: session.name || 'Participant',
+                        participant_name: session.name || t('participantMatrix.participant'),
                         use_case_id: id,
-                        use_case_title: useCase?.title || 'Unknown',
+                        use_case_title: useCase?.title || t('participantMatrix.unknown'),
                         scores: itemScores,
                         workshop_id: session.workshopId
                     });
@@ -89,10 +92,10 @@ export function ParticipantMatrix() {
             await Promise.all(promises);
             setUnsavedChanges(new Set());
             setLastSaved(new Date());
-            toast.success("All changes saved");
+            toast.success(t('participantMatrix.allSaved'));
         } catch (err: any) {
             console.error('Failed to save changes:', err);
-            toast.error("Some ratings could not be saved. Check your connection and tap Retry.");
+            toast.error(t('participantMatrix.someNotSaved'));
         } finally {
             setIsSaving(false);
         }
@@ -125,7 +128,7 @@ export function ParticipantMatrix() {
                     console.error('Failed to refresh use cases:', err);
                 });
 
-            toast.success(`"${data.title}" added! Drag it to the scale to rate it.`);
+            toast.success(t('participantMatrix.added', { title: data.title }));
         };
 
         socket.on('new_submission', handleNewSubmission);
@@ -152,7 +155,7 @@ export function ParticipantMatrix() {
         try {
             setLoading(true);
             const workshopResponse = await api.get(`workshops/${session.workshopId}`);
-            setWorkshopTitle(workshopResponse.data?.title || 'Workshop');
+            setWorkshopTitle(workshopResponse.data?.title || t('participantMatrix.workshop'));
             setWorkshopCriteria(workshopResponse.data?.config?.criteria || []);
 
             const useCasesResponse = await api.get(`usecases/${session.workshopId}`);
@@ -201,7 +204,7 @@ export function ParticipantMatrix() {
             }
         } catch (err: any) {
             console.error('Failed to fetch matrix data:', err);
-            toast.error('Failed to load matrix data');
+            toast.error(t('participantMatrix.loadFailed'));
         } finally {
             setLoading(false);
         }
@@ -263,16 +266,16 @@ export function ParticipantMatrix() {
 
             socket.emit('matrix:position_update', {
                 participant_id: session.participantId,
-                participant_name: session.name || 'Participant',
+                participant_name: session.name || t('participantMatrix.participant'),
                 use_case_id: useCaseId,
-                use_case_title: useCase?.title || 'Unknown',
+                use_case_title: useCase?.title || t('participantMatrix.unknown'),
                 scores: itemScores,
                 workshop_id: session.workshopId
             });
         } catch (err) {
             console.error('Auto-save failed:', err);
             // The item stays in unsavedChanges, so the header shows "Not saved — Retry".
-            toast.error("Couldn't save your rating. Tap Retry at the top when you're back online.", { id: 'matrix-save-failed' });
+            toast.error(t('participantMatrix.saveFailed'), { id: 'matrix-save-failed' });
         } finally {
             setPendingSaves((n) => Math.max(0, n - 1));
         }
@@ -312,7 +315,7 @@ export function ParticipantMatrix() {
             <div className="min-h-screen flex items-center justify-center theme-bg-primary">
                 <div className="flex items-center gap-3 theme-text-secondary">
                     <Loader2 className="w-6 h-6 animate-spin" />
-                    <span>Loading prioritization...</span>
+                    <span>{t('participantMatrix.loading')}</span>
                 </div>
             </div>
         );
@@ -331,6 +334,7 @@ export function ParticipantMatrix() {
     return (
         <div className="min-h-screen theme-bg-primary pt-[64px]">
             <Header showBackButton={false} showHomeButton={false} />
+            <PollResponder />
 
             {/* Sticky Header — responsive */}
             <header className="sticky top-[64px] z-40 border-b backdrop-blur theme-bg-secondary/80 theme-border">
@@ -338,7 +342,7 @@ export function ParticipantMatrix() {
                     {/* Row 1: Back + Title + Submit */}
                     <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-2 sm:gap-4 min-w-0">
-                            <button
+                            <button aria-label={t('participantMatrix.goBack')}
                                 onClick={() => navigate('/participant-dashboard')}
                                 className="p-1.5 sm:p-2 rounded-lg theme-text-secondary hover:theme-text-primary hover:bg-black/5 transition shrink-0"
                             >
@@ -346,7 +350,7 @@ export function ParticipantMatrix() {
                             </button>
                             <div className="min-w-0">
                                 <h1 className="text-sm sm:text-xl font-bold theme-text-primary truncate">
-                                    Prioritization matrix
+                                    {t('participantMatrix.title')}
                                 </h1>
                                 <p className="text-[10px] sm:text-sm theme-text-secondary truncate">
                                     {workshopTitle}
@@ -359,7 +363,7 @@ export function ParticipantMatrix() {
                             <div role="status" aria-live="polite" className="flex items-center">
                                 {isSaving || pendingSaves > 0 ? (
                                     <span className="flex items-center gap-1 text-xs theme-text-muted">
-                                        <Loader2 className="w-3.5 h-3.5 animate-spin" aria-hidden="true" /> Saving…
+                                        <Loader2 className="w-3.5 h-3.5 animate-spin" aria-hidden="true" /> {t('participantMatrix.saving')}
                                     </span>
                                 ) : unsavedChanges.size > 0 ? (
                                     <Button
@@ -368,11 +372,11 @@ export function ParticipantMatrix() {
                                         className="text-xs sm:text-sm !px-2.5 sm:!px-4 !py-1.5 sm:!py-2"
                                     >
                                         <RotateCcw className="w-3.5 h-3.5 mr-1.5" aria-hidden="true" />
-                                        Not saved — Retry ({unsavedChanges.size})
+                                        {t('participantMatrix.retry', { count: unsavedChanges.size })}
                                     </Button>
                                 ) : lastSaved ? (
                                     <span className="flex items-center gap-1 text-xs theme-text-muted">
-                                        <Check className="w-3.5 h-3.5 text-semantic-success" aria-hidden="true" /> All changes saved
+                                        <Check className="w-3.5 h-3.5 text-semantic-success" aria-hidden="true" /> {t('participantMatrix.allSaved')}
                                     </span>
                                 ) : null}
                             </div>
@@ -386,7 +390,7 @@ export function ParticipantMatrix() {
                 <div className="px-3 py-2">
                     <div className="flex items-center gap-2 mb-1.5">
                         <span className="text-[10px] font-bold uppercase tracking-wider theme-text-secondary shrink-0">
-                            Category
+                            {t('participantMatrix.category')}
                         </span>
                         <span className="text-[10px] theme-text-muted">
                             {activeCriterionIndex + 1}/{workshopCriteria.length}
@@ -431,7 +435,7 @@ export function ParticipantMatrix() {
                     <aside className="hidden lg:block space-y-4 sticky top-[140px] z-30">
                         <div className="flex items-center justify-between px-1">
                             <h3 className="font-bold theme-text-secondary text-xs uppercase tracking-wider">
-                                Criteria
+                                {t('participantMatrix.criteria')}
                             </h3>
                             <span className="text-[10px] bg-theme-bg-tertiary px-2 py-0.5 rounded-full theme-text-muted">
                                 {activeCriterionIndex + 1} / {workshopCriteria.length}
@@ -442,7 +446,7 @@ export function ParticipantMatrix() {
                             {workshopCriteria.length === 0 ? (
                                 <div className="text-center py-8 rounded-2xl border-2 border-dashed theme-border theme-bg-secondary">
                                     <p className="text-xs theme-text-secondary italic px-4">
-                                        No prioritization criteria defined.
+                                        {t('participantMatrix.noCriteria')}
                                     </p>
                                 </div>
                             ) : (
@@ -506,7 +510,7 @@ export function ParticipantMatrix() {
                             )}
                             {useCases.length > 0 && (
                                 <p className="text-xs font-medium text-brand-violet mt-1.5" aria-live="polite">
-                                    {ratedUseCases.length} of {useCases.length} rated for this criterion
+                                    {t('participantMatrix.ratedProgress', { rated: ratedUseCases.length, total: useCases.length })}
                                 </p>
                             )}
                         </div>
@@ -532,7 +536,7 @@ export function ParticipantMatrix() {
                             >
                                 <div className="flex items-center gap-2">
                                     <h3 className="font-bold theme-text-primary text-xs uppercase tracking-wider">
-                                        Pending Items
+                                        {t('participantMatrix.pending')}
                                     </h3>
                                     <span className="text-[10px] bg-brand-violet/10 text-brand-violet px-2 py-0.5 rounded-full font-bold">
                                         {pendingUseCases.length}
@@ -547,7 +551,7 @@ export function ParticipantMatrix() {
                                 <div className="lg:max-h-[calc(100vh-450px)] lg:overflow-y-auto lg:pr-2 scrollbar-hide space-y-2 sm:space-y-3">
                                     {pendingUseCases.length === 0 && (
                                         <div className="text-center py-4 rounded-xl border-2 border-dashed theme-border theme-bg-secondary">
-                                            <p className="text-xs theme-text-secondary">All items rated for this category</p>
+                                            <p className="text-xs theme-text-secondary">{t('participantMatrix.allRated')}</p>
                                         </div>
                                     )}
                                     {pendingUseCases.map((uc) => (
@@ -565,7 +569,7 @@ export function ParticipantMatrix() {
                                                     <div className="text-[10px] theme-text-secondary line-clamp-2 mt-0.5 sm:mt-1">{uc.description}</div>
                                                 </div>
                                                 <span className="sm:hidden text-[10px] text-brand-violet font-semibold shrink-0 self-center">
-                                                    Tap to rate
+                                                    {t('participantMatrix.tapToRate')}
                                                 </span>
                                             </div>
                                         </div>
@@ -582,7 +586,7 @@ export function ParticipantMatrix() {
                             >
                                 <div className="flex items-center gap-2">
                                     <h4 className="text-[10px] font-bold uppercase tracking-widest theme-text-secondary">
-                                        Rated Items
+                                        {t('participantMatrix.rated')}
                                     </h4>
                                     {ratedUseCases.length > 0 && (
                                         <span className="text-[10px] bg-semantic-success/10 text-semantic-success px-2 py-0.5 rounded-full font-bold">
@@ -603,20 +607,20 @@ export function ParticipantMatrix() {
                                                 type="button"
                                                 onClick={() => setMobileScoreTarget(uc)}
                                                 className="text-[11px] font-medium theme-text-primary truncate text-left flex-1 min-w-0 py-2"
-                                                title="Change rating"
+                                                title={t('participantMatrix.changeRating')}
                                             >
                                                 {uc.title}
                                             </button>
                                             <div className="flex items-center gap-1 shrink-0 ml-2">
                                                 <span className="text-[10px] font-black text-brand-violet bg-brand-violet/10 px-1.5 py-0.5 rounded">
-                                                    {scores[uc.id][activeCriterion] === -1 ? 'Unsure' : scores[uc.id][activeCriterion]}
+                                                    {scores[uc.id][activeCriterion] === -1 ? t('participantMatrix.unsure') : scores[uc.id][activeCriterion]}
                                                 </span>
                                                 <button
                                                     type="button"
                                                     onClick={() => handleRemoveRating(uc.id)}
                                                     className="min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-red-100 hover:text-red-500 rounded transition-colors"
-                                                    title="Remove rating"
-                                                    aria-label={`Remove rating for ${uc.title}`}
+                                                    title={t('participantMatrix.removeRating')}
+                                                    aria-label={t('participantMatrix.removeRatingFor', { title: uc.title })}
                                                 >
                                                     <X className="w-4 h-4" aria-hidden="true" />
                                                 </button>
@@ -642,7 +646,7 @@ export function ParticipantMatrix() {
                         <div className="px-4 pt-4 pb-2">
                             <div className="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-3 sm:hidden" />
                             <h3 className={`text-sm font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                                Rate: {mobileScoreTarget.title}
+                                {t('participantMatrix.rate', { title: mobileScoreTarget.title })}
                             </h3>
                             {mobileScoreTarget.description && (
                                 <p className={`text-xs mt-1 line-clamp-2 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
@@ -656,8 +660,8 @@ export function ParticipantMatrix() {
 
                         <div className="px-4 py-3">
                             <div className="flex items-center justify-between mb-2 px-1">
-                                <span className="text-[10px] font-semibold theme-text-secondary uppercase">Low</span>
-                                <span className="text-[10px] font-semibold theme-text-secondary uppercase">High</span>
+                                <span className="text-[10px] font-semibold theme-text-secondary uppercase">{t('participantMatrix.low')}</span>
+                                <span className="text-[10px] font-semibold theme-text-secondary uppercase">{t('participantMatrix.high')}</span>
                             </div>
                             <div className="grid grid-cols-5 gap-2">
                                 {scale.map((num) => {
@@ -689,7 +693,7 @@ export function ParticipantMatrix() {
                                     : 'bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 active:scale-95'
                                     }`}
                             >
-                                Unsure / Don&apos;t Know
+                                {t('participantMatrix.unsureDontKnow')}
                             </button>
                             <button
                                 onClick={() => setMobileScoreTarget(null)}
@@ -698,7 +702,7 @@ export function ParticipantMatrix() {
                                     : 'bg-surface-700 text-gray-400 hover:bg-surface-600'
                                     }`}
                             >
-                                Cancel
+                                {t('participantMatrix.cancel')}
                             </button>
                         </div>
                     </div>

@@ -332,7 +332,7 @@ export function BusinessChallengePlanner() {
         {/* Header */}
         <div className="flex items-center justify-between gap-3 mb-8">
           <div className="flex items-center gap-3">
-            <button
+            <button aria-label="Go back"
               onClick={() => navigate('/facilitator/dashboard')}
               className={`p-2 rounded-lg transition-colors ${
                 isLight ? 'hover:bg-gray-200 text-gray-600' : 'hover:bg-surface-700 text-gray-400'
@@ -639,7 +639,7 @@ export function BusinessChallengePlanner() {
                   </p>
                 </div>
               </div>
-              <button onClick={() => setShowHistory(false)} className={`p-2 rounded-lg transition-colors ${isLight ? 'hover:bg-gray-100 text-gray-500' : 'hover:bg-surface-700 text-gray-400'}`}>
+              <button aria-label="Close" onClick={() => setShowHistory(false)} className={`p-2 rounded-lg transition-colors ${isLight ? 'hover:bg-gray-100 text-gray-500' : 'hover:bg-surface-700 text-gray-400'}`}>
                 <X className="w-5 h-5" />
               </button>
             </div>

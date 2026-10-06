@@ -1,22 +1,24 @@
-import React from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ThumbsUp, ThumbsDown, Heart, Zap, AlertTriangle, HelpCircle, Lightbulb, Brain } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, Heart, Zap, AlertTriangle, HelpCircle, Lightbulb, Brain, Smile, X } from 'lucide-react';
 import { PollService } from '../../lib/api/polls';
 import { useSession } from '../../context/SessionContext';
+import { useTranslation } from 'react-i18next';
 
 const REACTIONS = [
-    { type: '👍', icon: ThumbsUp, color: 'text-blue-400', label: 'Agree' },
-    { type: '👎', icon: ThumbsDown, color: 'text-blue-300', label: 'Disagree' },
-    { type: '❤️', icon: Heart, color: 'text-red-400', label: 'Love' },
-    { type: '🤔', icon: Brain, color: 'text-purple-400', label: 'Thinking' },
-    { type: '💡', icon: Lightbulb, color: 'text-yellow-400', label: 'Insight' },
-    { type: '🔥', icon: Zap, color: 'text-orange-400', label: 'Exciting' },
-    { type: '⚠️', icon: AlertTriangle, color: 'text-yellow-500', label: 'Concern' },
-    { type: '❓', icon: HelpCircle, color: 'text-purple-300', label: 'Question' },
+    { type: '👍', icon: ThumbsUp, color: 'text-blue-400', label: 'agree' },
+    { type: '👎', icon: ThumbsDown, color: 'text-blue-300', label: 'disagree' },
+    { type: '❤️', icon: Heart, color: 'text-red-400', label: 'love' },
+    { type: '🤔', icon: Brain, color: 'text-purple-400', label: 'thinking' },
+    { type: '💡', icon: Lightbulb, color: 'text-yellow-400', label: 'insight' },
+    { type: '🔥', icon: Zap, color: 'text-orange-400', label: 'exciting' },
+    { type: '⚠️', icon: AlertTriangle, color: 'text-yellow-500', label: 'concern' },
+    { type: '❓', icon: HelpCircle, color: 'text-purple-300', label: 'question' },
 ];
 
 export function ReactionBar() {
     const { session } = useSession();
+    const { t } = useTranslation();
 
     const handleReact = async (type: string) => {
         if (!session?.workshopId || !session?.participantId) return;
@@ -29,23 +31,41 @@ export function ReactionBar() {
         }
     };
 
+    // Collapsed to one floating button so it never covers the form or matrix.
+    const [open, setOpen] = useState(false);
+
     return (
-        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-surface-900/90 backdrop-blur border border-white/10 rounded-full px-2 py-2 shadow-xl z-50 flex gap-1 items-center">
-            {REACTIONS.map((r) => (
-                <motion.button
-                    key={r.type}
-                    whileHover={{ scale: 1.2, y: -5 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={() => handleReact(r.type)}
-                    className={`p-2 rounded-full hover:bg-white/10 transition-colors ${r.color} relative group`}
-                    title={r.label}
-                >
-                    <span className="text-xl">{r.type}</span>
-                    <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-black/80 text-white text-xs rounded opacity-0 group-hover:opacity-100 pointer-events-none whitespace-nowrap">
-                        {r.label}
-                    </span>
-                </motion.button>
-            ))}
+        <div className="fixed bottom-6 right-4 z-40 flex items-center gap-2">
+            {open && (
+                <div role="group" aria-label={t('reactions.group')} className="theme-bg-secondary backdrop-blur border theme-border rounded-full px-2 py-1.5 shadow-xl flex flex-wrap gap-1 items-center max-w-[calc(100vw-6rem)]">
+                    {REACTIONS.map((r) => (
+                        <motion.button
+                            key={r.type}
+                            type="button"
+                            whileHover={{ scale: 1.15 }}
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => {
+                                handleReact(r.type);
+                                setOpen(false);
+                            }}
+                            className={`p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 ${r.color}`}
+                            aria-label={t(`reactions.${r.label}`)}
+                            title={t(`reactions.${r.label}`)}
+                        >
+                            <span className="text-xl" aria-hidden="true">{r.type}</span>
+                        </motion.button>
+                    ))}
+                </div>
+            )}
+            <button
+                type="button"
+                onClick={() => setOpen((v) => !v)}
+                aria-expanded={open}
+                aria-label={open ? t('reactions.close') : t('reactions.open')}
+                className="w-12 h-12 rounded-full bg-brand-violet text-white shadow-xl flex items-center justify-center"
+            >
+                {open ? <X className="w-5 h-5" aria-hidden="true" /> : <Smile className="w-5 h-5" aria-hidden="true" />}
+            </button>
         </div>
     );
 }

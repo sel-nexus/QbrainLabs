@@ -288,7 +288,7 @@ export function BreakoutRoomComponent({ roomId, roomName, workshopId, participan
                 onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                 className="flex-1"
               />
-              <Button onClick={sendMessage}>
+              <Button aria-label="Send message" onClick={sendMessage}>
                 <Send className="w-4 h-4" />
               </Button>
             </div>

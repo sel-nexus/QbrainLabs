@@ -6,7 +6,7 @@ import { api } from '../lib/api';
 import { socket } from '../lib/socket';
 import { Button } from '../components/ui/Button';
 import { useTheme } from '../context/ThemeContext';
-import { TrendingUp, Download, FileText, BarChart3, Plus, X, Map, LayoutGrid, Vote, Target, Sparkles, Edit, Trash2, Settings, Monitor, Wrench } from 'lucide-react';
+import { TrendingUp, FileText, BarChart3, Plus, X, Map, LayoutGrid, Vote, Target, Sparkles, Edit, Trash2, Settings, Monitor, Wrench } from 'lucide-react';
 import { ResultsChart } from '../components/ResultsChart';
 import { WorkshopInsights } from '../components/WorkshopInsights';
 import { AnalyticsDashboard } from '../components/AnalyticsDashboard';
@@ -39,8 +39,10 @@ import { ExportMenu } from '../components/results/ExportMenu';
 import { ResultCard } from '../components/results/ResultCard';
 import type { RankedResult } from '../lib/results';
 import { matrixAxes } from '../lib/criteria';
+import { useConfirm } from '../context/ConfirmContext';
 
 export function WorkshopDetail() {
+    const confirm = useConfirm();
     const { id } = useParams();
     const { theme } = useTheme();
     const { hasRole } = useAuth();
@@ -327,7 +329,7 @@ export function WorkshopDetail() {
     };
 
     const handleDeleteUseCase = async (ucId: string) => {
-        if (!confirm("Are you sure you want to delete this use case? This cannot be undone.")) return;
+        if (!(await confirm.ok({ title: 'Delete this use case?', message: 'This cannot be undone.', confirmText: 'Delete use case' }))) return;
 
         localActionIds.current.add(String(ucId));
         try {
@@ -996,7 +998,7 @@ export function WorkshopDetail() {
                             ? 'bg-white border-gray-200'
                             : 'bg-surface-900 border-white/10'
                             }`}>
-                            <button
+                            <button aria-label="Close"
                                 onClick={() => setShowAddUseCase(false)}
                                 className={`absolute top-4 right-4 p-2 rounded-lg transition ${theme === 'light'
                                     ? 'hover:bg-gray-100 text-gray-500'
@@ -1065,7 +1067,7 @@ export function WorkshopDetail() {
                             ? 'bg-white border-gray-200'
                             : 'bg-surface-900 border-white/10'
                             }`}>
-                            <button
+                            <button aria-label="Close"
                                 onClick={() => setEditingUseCase(null)}
                                 className={`absolute top-4 right-4 p-2 rounded-lg transition ${theme === 'light'
                                     ? 'hover:bg-gray-100 text-gray-500'

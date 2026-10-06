@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTheme } from '../../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface PrioritizationScaleProps {
     criterion: string;
@@ -20,6 +21,7 @@ export function PrioritizationScale({
     readOnly = false
 }: PrioritizationScaleProps) {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const [mobileScoreTarget, setMobileScoreTarget] = useState<any | null>(null);
 
 
@@ -80,8 +82,8 @@ export function PrioritizationScale({
     return (
         <div className="w-full space-y-4">
             <div className="flex items-center justify-between px-2">
-                <span className="text-xs font-semibold theme-text-secondary uppercase tracking-wider">Low {criterion}</span>
-                <span className="text-xs font-semibold theme-text-secondary uppercase tracking-wider">High {criterion}</span>
+                <span className="text-xs font-semibold theme-text-secondary uppercase tracking-wider">{t('participantMatrix.lowCriterion', { criterion })}</span>
+                <span className="text-xs font-semibold theme-text-secondary uppercase tracking-wider">{t('participantMatrix.highCriterion', { criterion })}</span>
             </div>
 
             {/* Desktop: 10-column grid */}
@@ -132,7 +134,7 @@ export function PrioritizationScale({
                                                     key={`${p.id}-${p.useCaseId}`}
                                                     className="w-3 h-3 rounded-full border border-white shadow-sm"
                                                     style={{ backgroundColor: p.color || '#8b5cf6' }}
-                                                    title={`${p.name} - ${pScore} on ${p.useCaseTitle || 'Use Case'}`}
+                                                    title={t('participantMatrix.participantScore', { name: p.name, score: pScore, title: p.useCaseTitle || t('participantMatrix.useCase') })}
                                                 />
                                             );
                                         }
@@ -193,15 +195,15 @@ export function PrioritizationScale({
                         } hover:border-semantic-warning/30`}
                 >
                     <div className="flex flex-col min-w-[100px] sm:min-w-[120px]">
-                        <span className="text-[10px] sm:text-xs font-bold uppercase theme-text-secondary">Unsure</span>
-                        <span className="text-xs sm:text-sm font-bold text-semantic-warning">Does Not Know</span>
+                        <span className="text-[10px] sm:text-xs font-bold uppercase theme-text-secondary">{t('participantMatrix.unsure')}</span>
+                        <span className="text-xs sm:text-sm font-bold text-semantic-warning">{t('participantMatrix.doesNotKnow')}</span>
                     </div>
 
                     <div className="flex flex-wrap gap-2 flex-1 items-center">
                         {getUseCasesInBox(-1).length === 0 && (
                             <span className="text-[10px] sm:text-xs theme-text-muted italic">
-                                <span className="hidden sm:inline">Drag here if you are unsure about the priority</span>
-                                <span className="sm:hidden">Tap an item and choose &ldquo;Unsure&rdquo;</span>
+                                <span className="hidden sm:inline">{t('participantMatrix.dragUnsure')}</span>
+                                <span className="sm:hidden">{t('participantMatrix.tapUnsure')}</span>
                             </span>
                         )}
                         {getUseCasesInBox(-1).map((uc) => (
@@ -250,7 +252,7 @@ export function PrioritizationScale({
                         <div className="px-4 pt-4 pb-2">
                             <div className="w-10 h-1 bg-gray-300 rounded-full mx-auto mb-3 sm:hidden" />
                             <h3 className={`text-sm font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                                Rate: {mobileScoreTarget.title}
+                                {t('participantMatrix.rate', { title: mobileScoreTarget.title })}
                             </h3>
                             {mobileScoreTarget.description && (
                                 <p className={`text-xs mt-1 line-clamp-2 ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
@@ -264,8 +266,8 @@ export function PrioritizationScale({
 
                         <div className="px-4 py-3">
                             <div className="flex items-center justify-between mb-2 px-1">
-                                <span className="text-[10px] font-semibold theme-text-secondary uppercase">Low</span>
-                                <span className="text-[10px] font-semibold theme-text-secondary uppercase">High</span>
+                                <span className="text-[10px] font-semibold theme-text-secondary uppercase">{t('participantMatrix.low')}</span>
+                                <span className="text-[10px] font-semibold theme-text-secondary uppercase">{t('participantMatrix.high')}</span>
                             </div>
                             <div className="grid grid-cols-5 gap-2">
                                 {scale.map((num) => {
@@ -297,7 +299,7 @@ export function PrioritizationScale({
                                     : 'bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 active:scale-95'
                                     }`}
                             >
-                                Unsure / Don&apos;t Know
+                                {t('participantMatrix.unsureDontKnow')}
                             </button>
                             <button
                                 onClick={() => setMobileScoreTarget(null)}
@@ -306,7 +308,7 @@ export function PrioritizationScale({
                                     : 'bg-surface-700 text-gray-400 hover:bg-surface-600'
                                     }`}
                             >
-                                Cancel
+                                {t('participantMatrix.cancel')}
                             </button>
                         </div>
                     </div>

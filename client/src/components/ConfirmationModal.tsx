@@ -1,17 +1,27 @@
-import React from 'react';
+import { useId, useRef, useState } from 'react';
 import { AlertTriangle, X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
+import { useDialog } from '../hooks/useDialog';
 
 interface ConfirmationModalProps {
     isOpen: boolean;
     onClose: () => void;
-    onConfirm: () => void;
+    /** Receives the typed reason when `reasonLabel` is set. */
+    onConfirm: (reason?: string) => void;
     title: string;
     message: string;
     confirmText?: string;
     cancelText?: string;
     variant?: 'danger' | 'warning' | 'info';
+    /** Show an optional free-text reason field (replaces window.prompt). */
+    reasonLabel?: string;
 }
+
+const VARIANTS = {
+    danger: { iconBg: 'bg-red-100', iconColor: 'text-red-600', buttonBg: 'bg-red-600 hover:bg-red-700' },
+    warning: { iconBg: 'bg-yellow-100', iconColor: 'text-yellow-600', buttonBg: 'bg-yellow-600 hover:bg-yellow-700' },
+    info: { iconBg: 'bg-blue-100', iconColor: 'text-blue-600', buttonBg: 'bg-blue-600 hover:bg-blue-700' },
+};
 
 export function ConfirmationModal({
     isOpen,
@@ -21,59 +31,48 @@ export function ConfirmationModal({
     message,
     confirmText = 'Confirm',
     cancelText = 'Cancel',
-    variant = 'danger'
+    variant = 'danger',
+    reasonLabel,
 }: ConfirmationModalProps) {
     const { theme } = useTheme();
     const isLight = theme === 'light';
+    const panelRef = useRef<HTMLDivElement>(null);
+    const titleId = useId();
+    const messageId = useId();
+    const reasonId = useId();
+    const [reason, setReason] = useState('');
+    // Clear the reason whenever the dialog closes, so the next prompt starts empty.
+    const close = () => {
+        setReason('');
+        onClose();
+    };
+    useDialog(panelRef, isOpen, close);
 
     if (!isOpen) return null;
-
-    const getVariantStyles = () => {
-        switch (variant) {
-            case 'danger':
-                return {
-                    iconBg: 'bg-red-100',
-                    iconColor: 'text-red-600',
-                    buttonBg: 'bg-red-600 hover:bg-red-700 focus:ring-red-500',
-                };
-            case 'warning':
-                return {
-                    iconBg: 'bg-yellow-100',
-                    iconColor: 'text-yellow-600',
-                    buttonBg: 'bg-yellow-600 hover:bg-yellow-700 focus:ring-yellow-500',
-                };
-            case 'info':
-            default:
-                return {
-                    iconBg: 'bg-blue-100',
-                    iconColor: 'text-blue-600',
-                    buttonBg: 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500',
-                };
-        }
-    };
-
-    const styles = getVariantStyles();
+    const styles = VARIANTS[variant];
 
     return (
-        <div className="relative z-50">
-            {/* Backdrop */}
-            <div
-                className="fixed inset-0 bg-gray-900/75 transition-opacity"
-                onClick={onClose}
-            />
+        <div className="relative z-[60]">
+            <div className="fixed inset-0 bg-gray-900/75" onClick={close} aria-hidden="true" />
 
-            {/* Modal Panel */}
-            <div className="fixed inset-0 z-10 overflow-y-auto">
+            <div className="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
                 <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                    <div className={`relative transform overflow-hidden rounded-lg text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg ${isLight ? 'bg-white' : 'bg-surface-800 border border-white/10'}`}>
-                        {/* Close button */}
-                        <div className="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
+                    <div
+                        ref={panelRef}
+                        role="alertdialog"
+                        aria-modal="true"
+                        aria-labelledby={titleId}
+                        aria-describedby={messageId}
+                        tabIndex={-1}
+                        className={`pointer-events-auto relative overflow-hidden rounded-lg text-left shadow-xl outline-none sm:my-8 sm:w-full sm:max-w-lg ${isLight ? 'bg-white' : 'bg-surface-800 border border-white/10'}`}
+                    >
+                        <div className="absolute right-0 top-0 pr-3 pt-3">
                             <button
                                 type="button"
-                                className={`rounded-md ${isLight ? 'bg-white text-gray-400 hover:text-gray-500' : 'bg-transparent text-gray-400 hover:text-gray-300'} focus:outline-none focus:ring-2 focus:ring-amber-500 focus:ring-offset-2`}
-                                onClick={onClose}
+                                className={`rounded-md p-1 ${isLight ? 'text-gray-400 hover:text-gray-500' : 'text-gray-400 hover:text-gray-300'}`}
+                                onClick={close}
+                                aria-label="Close dialog"
                             >
-                                <span className="sr-only">Close</span>
                                 <X className="h-6 w-6" aria-hidden="true" />
                             </button>
                         </div>
@@ -83,33 +82,48 @@ export function ConfirmationModal({
                                 <div className={`mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full sm:mx-0 sm:h-10 sm:w-10 ${styles.iconBg}`}>
                                     <AlertTriangle className={`h-6 w-6 ${styles.iconColor}`} aria-hidden="true" />
                                 </div>
-                                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                    <h3 className={`text-base font-semibold leading-6 ${isLight ? 'text-gray-900' : 'text-white'}`}>
+                                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left flex-1">
+                                    <h3 id={titleId} className={`text-base font-semibold leading-6 ${isLight ? 'text-gray-900' : 'text-white'}`}>
                                         {title}
                                     </h3>
-                                    <div className="mt-2">
-                                        <p className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-300'}`}>
-                                            {message}
-                                        </p>
-                                    </div>
+                                    <p id={messageId} className={`mt-2 text-sm whitespace-pre-line ${isLight ? 'text-gray-500' : 'text-gray-300'}`}>
+                                        {message}
+                                    </p>
+                                    {reasonLabel && (
+                                        <div className="mt-3 text-left">
+                                            <label htmlFor={reasonId} className={`block text-sm font-medium mb-1 ${isLight ? 'text-gray-700' : 'text-gray-200'}`}>
+                                                {reasonLabel}
+                                            </label>
+                                            <textarea
+                                                id={reasonId}
+                                                value={reason}
+                                                onChange={(e) => setReason(e.target.value)}
+                                                rows={3}
+                                                maxLength={500}
+                                                autoFocus
+                                                className={`w-full rounded-md border px-3 py-2 text-sm ${isLight ? 'bg-white border-gray-300 text-gray-900' : 'bg-surface-900 border-white/10 text-white'}`}
+                                            />
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>
-                        <div className={`bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 ${isLight ? 'bg-gray-50' : 'bg-surface-900/50'}`}>
+                        <div className={`px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 ${isLight ? 'bg-gray-50' : 'bg-surface-900/50'}`}>
                             <button
                                 type="button"
                                 className={`inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto ${styles.buttonBg}`}
                                 onClick={() => {
-                                    onConfirm();
-                                    onClose(); // Optional: close on confirm or let parent handle? Usually parent handles state change which closes it or we close it here.
+                                    onConfirm(reasonLabel ? reason.trim() : undefined);
+                                    close();
                                 }}
                             >
                                 {confirmText}
                             </button>
                             <button
                                 type="button"
+                                autoFocus={!reasonLabel}
                                 className={`mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset sm:mt-0 sm:w-auto ${isLight ? 'bg-white text-gray-900 ring-gray-300 hover:bg-gray-50' : 'bg-surface-700 text-white ring-white/10 hover:bg-white/5'}`}
-                                onClick={onClose}
+                                onClick={close}
                             >
                                 {cancelText}
                             </button>

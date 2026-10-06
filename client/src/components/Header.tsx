@@ -171,7 +171,11 @@ export function Header({ showBackButton = true, showHomeButton = true, title }: 
           {isLoggedIn ? (
             <div className="relative" ref={menuRef}>
               <button
+                type="button"
                 onClick={() => setShowUserMenu(!showUserMenu)}
+                aria-label={`Account menu for ${getUserDisplayName()}`}
+                aria-haspopup="menu"
+                aria-expanded={showUserMenu}
                 className={`flex items-center gap-2 p-1.5 pl-2 rounded-lg transition-colors ${theme === 'light'
                   ? 'hover:bg-gray-100 text-gray-700'
                   : 'hover:bg-white/10 text-gray-200'

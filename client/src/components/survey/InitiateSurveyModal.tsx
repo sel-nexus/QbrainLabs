@@ -330,7 +330,7 @@ export function InitiateSurveyModal({
               </p>
             </div>
           </div>
-          <button
+          <button aria-label="Close"
             onClick={onClose}
             disabled={isSubmitting}
             className="p-2 rounded-lg theme-hover transition-colors"
@@ -770,7 +770,7 @@ function QuestionCard({
                       onChange={(e) => onUpdateOption(oIdx, e.target.value)}
                       className="flex-1 px-3 py-1.5 rounded-lg border theme-border theme-bg-secondary theme-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-brand-violet/50"
                     />
-                    <button
+                    <button aria-label="Close"
                       onClick={() => onRemoveOption(oIdx)}
                       className="p-1.5 contrast-muted hover:text-red-400 transition-colors"
                     >
@@ -829,7 +829,7 @@ function QuestionCard({
                         onChange={(e) => onUpdateStatement(sIdx, e.target.value)}
                         className="flex-1 px-3 py-1.5 rounded-lg border theme-border theme-bg-secondary theme-text-primary text-sm focus:outline-none focus:ring-2 focus:ring-brand-violet/50"
                       />
-                      <button
+                      <button aria-label="Close"
                         onClick={() => onRemoveStatement(sIdx)}
                         className="p-1.5 contrast-muted hover:text-red-400 transition-colors"
                       >
