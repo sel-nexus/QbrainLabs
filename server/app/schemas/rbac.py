@@ -116,6 +116,7 @@ class FacilitatorWorkshopListItem(BaseModel):
     participant_count: int
     use_case_count: int
     created_at: datetime
+    completed_at: Optional[datetime] = None
     can_edit: bool
     can_delete: bool
     

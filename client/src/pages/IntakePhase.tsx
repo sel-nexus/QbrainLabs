@@ -5,8 +5,10 @@ import { socket } from '../lib/socket';
 import { useSession } from '../context/SessionContext';
 import { Button } from '../components/ui/Button';
 import { LogOut } from 'lucide-react';
+import { useSocketStatus } from '../hooks/useSocketStatus';
 
 export function IntakePhase() {
+    const socketStatus = useSocketStatus();
     const navigate = useNavigate();
     const { session, logout } = useSession();
 
@@ -42,8 +44,8 @@ export function IntakePhase() {
                 <div className="max-w-2xl mx-auto flex justify-between items-center">
                     <h1 className="text-lg font-bold text-white">Intake Phase</h1>
                     <div className="flex items-center gap-2">
-                        <div className="w-2 h-2 rounded-full bg-semantic-success animate-pulse" />
-                        <span className="text-xs text-gray-400 font-mono">LIVE</span>
+                        <div className={`w-2 h-2 rounded-full ${socketStatus === 'connected' ? 'bg-semantic-success animate-pulse' : 'bg-amber-500'}`} aria-hidden="true" />
+                        <span className="text-xs text-gray-400 font-mono">{socketStatus === 'connected' ? 'LIVE' : 'RECONNECTING'}</span>
                     </div>
                     <Button variant="ghost" onClick={handleLeave} className="text-gray-400 hover:text-white ml-2">
                         <LogOut className="w-4 h-4" />

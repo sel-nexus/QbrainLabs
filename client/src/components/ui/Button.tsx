@@ -12,7 +12,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     children: ReactNode;
 }
 
-export function Button({ variant = 'primary', className, children, ...props }: ButtonProps) {
+// type defaults to "button" so a Button inside a <form> (e.g. Browse Templates on
+// CreateWorkshop) never submits it by accident; submit buttons pass type="submit".
+export function Button({ variant = 'primary', type = 'button', className, children, ...props }: ButtonProps) {
     const baseStyles = "px-6 py-2.5 rounded-full font-medium transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center";
 
     const variants = {
@@ -24,6 +26,7 @@ export function Button({ variant = 'primary', className, children, ...props }: B
 
     return (
         <button
+            type={type}
             className={cn(baseStyles, variants[variant], className)}
             {...props}
         >

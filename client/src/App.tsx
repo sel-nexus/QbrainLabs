@@ -1,5 +1,5 @@
 import { type ReactElement } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { Toaster } from 'sonner';
 
 // Actions
@@ -26,27 +26,29 @@ import { KnowledgeBase } from './pages/KnowledgeBase';
 import { AdminLayout } from './components/AdminLayout';
 import { AuthenticatedLayout, PublicWithHeaderLayout } from './components/AuthenticatedLayout';
 import { FeedbackWidget } from './components/feedback/FeedbackWidget';
-import { WaitingRoom } from './pages/WaitingRoom';
 import { ParticipantDashboard } from './pages/ParticipantDashboard';
 import { ParticipantMatrix } from './pages/ParticipantMatrix';
-import { IntakePhase } from './pages/IntakePhase';
 import { ScoringPhase } from './pages/ScoringPhase';
 import { AllUseCases } from './pages/AllUseCases';
 import { FacilitatorRegister } from './pages/FacilitatorRegister';
 import { BusinessChallengePlanner } from './pages/BusinessChallengePlanner';
+import { AccessDeniedPage, NotFoundPage } from './components/StatusPages';
+import { ConnectionBanner } from './components/ConnectionBanner';
 
 // Route Guards
 const PrivateRoute = ({ children, requireAdmin = false }: { children: ReactElement, requireAdmin?: boolean }) => {
   const { user, isLoading, hasRole } = useAuth(); // Corrected properties based on AuthContext
+  const location = useLocation();
 
   if (isLoading) return <div>Loading...</div>;
 
   if (!user) {
-    return <Navigate to="/facilitator-login" />;
+    // Remember where the user was going so login can return them there.
+    return <Navigate to="/facilitator-login" state={{ from: location.pathname + location.search }} />;
   }
 
   if (requireAdmin && !hasRole('admin')) {
-    return <Navigate to="/facilitator/dashboard" />;
+    return <AccessDeniedPage />;
   }
 
   return children;
@@ -114,15 +116,16 @@ function App() {
           <Route path="/workshop/:id" element={<PublicWithHeaderLayout><WorkshopDetail /></PublicWithHeaderLayout>} />
 
           {/* Participant Routes - Require active SessionContext session */}
-          <Route path="/lobby" element={<ParticipantRoute><WaitingRoom /></ParticipantRoute>} />
+          {/* One participant shell: the old lobby/intake pages redirect to the dashboard */}
+          <Route path="/lobby" element={<ParticipantRoute><Navigate to="/participant-dashboard" replace /></ParticipantRoute>} />
           <Route path="/participant-dashboard" element={<ParticipantRoute><ParticipantDashboard /></ParticipantRoute>} />
           <Route path="/participant-matrix" element={<ParticipantRoute><ParticipantMatrix /></ParticipantRoute>} />
-          <Route path="/intake" element={<ParticipantRoute><IntakePhase /></ParticipantRoute>} />
+          <Route path="/intake" element={<ParticipantRoute><Navigate to="/participant-dashboard" replace /></ParticipantRoute>} />
           <Route path="/scoring" element={<ParticipantRoute><ScoringPhase /></ParticipantRoute>} />
 
           {/* Facilitator Routes (Protected) - All wrapped with AuthenticatedLayout for consistent header */}
           <Route path="/facilitator/dashboard" element={<AuthenticatedRoute showBackButton={false}><FacilitatorDashboard /></AuthenticatedRoute>} />
-          <Route path="/facilitator/create" element={<AuthenticatedRoute requireAdmin title="Create Workshop"><CreateWorkshop /></AuthenticatedRoute>} />
+          <Route path="/facilitator/create" element={<AuthenticatedRoute title="Create Workshop"><CreateWorkshop /></AuthenticatedRoute>} />
           <Route path="/facilitator/knowledge-base" element={<AuthenticatedRoute title="Knowledge Base"><KnowledgeBase /></AuthenticatedRoute>} />
           <Route path="/facilitator/usecases" element={<AuthenticatedRoute title="All Use Cases"><AllUseCases /></AuthenticatedRoute>} />
           <Route path="/facilitator/challenge-planner" element={<AuthenticatedRoute title="Business Challenge Planner"><BusinessChallengePlanner /></AuthenticatedRoute>} />
@@ -140,8 +143,11 @@ function App() {
           <Route path="/admin/my-workshops" element={<PrivateRoute requireAdmin><AdminMyWorkshops /></PrivateRoute>} />
 
           {/* Catch-all */}
-          <Route path="*" element={<Navigate to="/" />} />
+          <Route path="*" element={<PublicWithHeaderLayout><NotFoundPage /></PublicWithHeaderLayout>} />
         </Routes>
+
+        {/* Live connection status */}
+        <ConnectionBanner />
 
         {/* Global Feedback Widget */}
         <FeedbackWidget />

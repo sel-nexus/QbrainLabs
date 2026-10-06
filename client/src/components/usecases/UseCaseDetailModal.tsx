@@ -4,7 +4,10 @@ import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { api } from '../../lib/api';
 import { toast } from 'sonner';
-import { Loader2, Save, X, MessageSquare, Edit2, Eye } from 'lucide-react';
+import { Loader2, Save, X, MessageSquare, Edit2, Eye, Trash2 } from 'lucide-react';
+import { ConfirmationModal } from '../ConfirmationModal';
+import { FIELDS, validateUseCase, type FieldKey } from '../../lib/useCaseFields';
+import { errorMessage as apiErrorMessage } from '../../lib/apiErrors';
 import { useTheme } from '../../context/ThemeContext';
 
 interface UseCase {
@@ -41,6 +44,8 @@ export function UseCaseDetailModal({
     const [existingFeedback, setExistingFeedback] = useState<string>('');
     const [submitting, setSubmitting] = useState(false);
     const [loadingFeedback, setLoadingFeedback] = useState(false);
+    const [fieldErrors, setFieldErrors] = useState<Partial<Record<FieldKey, string>>>({});
+    const [confirmWithdraw, setConfirmWithdraw] = useState(false);
 
     useEffect(() => {
         if (useCase) {
@@ -75,9 +80,17 @@ export function UseCaseDetailModal({
     const handleSave = async () => {
         if (!formData || !useCase) return;
 
-        // Validate required fields
-        if (!formData.title || !formData.description) {
-            toast.error('Title and description are required');
+        // Same rules as when the use case was created.
+        const found = validateUseCase({
+            title: formData.title || '',
+            description: formData.description || '',
+            proposed_solution: formData.proposed_solution || '',
+            kpi: formData.kpi || '',
+            target_user: formData.target_user || '',
+        });
+        setFieldErrors(found);
+        if (Object.values(found).some(Boolean)) {
+            toast.error('Please fill in the highlighted fields.');
             return;
         }
 
@@ -89,7 +102,7 @@ export function UseCaseDetailModal({
                 proposed_solution: formData.proposed_solution || '',
                 kpi: formData.kpi || '',
                 target_user: formData.target_user || '',
-                category: formData.category || 'Generative AI'
+                category: formData.category || ''
             });
 
             toast.success('Use case updated successfully');
@@ -99,8 +112,22 @@ export function UseCaseDetailModal({
             }
         } catch (error: any) {
             console.error('Failed to update use case:', error);
-            const errorMessage = error.response?.data?.detail || error.message || 'Failed to update use case';
-            toast.error(errorMessage);
+            toast.error(apiErrorMessage(error, 'Failed to update use case'));
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    const handleWithdraw = async () => {
+        if (!useCase) return;
+        try {
+            setSubmitting(true);
+            await api.delete(`/usecases/${useCase.id}`, { params: { participant_id: participantId } });
+            toast.success('Use case withdrawn');
+            onUpdate?.();
+            onClose();
+        } catch (error) {
+            toast.error(apiErrorMessage(error, 'Failed to withdraw the use case'));
         } finally {
             setSubmitting(false);
         }
@@ -168,7 +195,7 @@ export function UseCaseDetailModal({
                 {/* Title */}
                 <div>
                     <label className="text-sm font-medium theme-text-secondary mb-1.5 block">
-                        Title
+                        {FIELDS.title.label}{FIELDS.title.required && isEditing ? ' *' : ''}
                     </label>
                     {isEditing ? (
                         <Input
@@ -186,7 +213,7 @@ export function UseCaseDetailModal({
                 {/* Description */}
                 <div>
                     <label className="text-sm font-medium theme-text-secondary mb-1.5 block">
-                        Problem Statement
+                        {FIELDS.description.label}{FIELDS.description.required && isEditing ? ' *' : ''}
                     </label>
                     {isEditing ? (
                         <textarea
@@ -206,7 +233,7 @@ export function UseCaseDetailModal({
                 {/* Proposed Solution */}
                 <div>
                     <label className="text-sm font-medium theme-text-secondary mb-1.5 block">
-                        Proposed Solution
+                        {FIELDS.proposed_solution.label}{FIELDS.proposed_solution.required && isEditing ? ' *' : ''}
                     </label>
                     {isEditing ? (
                         <textarea
@@ -227,7 +254,7 @@ export function UseCaseDetailModal({
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <label className="text-sm font-medium theme-text-secondary mb-1.5 block">
-                            Expected Benefit (KPI)
+                            {FIELDS.kpi.label}{FIELDS.kpi.required && isEditing ? ' *' : ''}
                         </label>
                         {isEditing ? (
                             <Input
@@ -244,7 +271,7 @@ export function UseCaseDetailModal({
 
                     <div>
                         <label className="text-sm font-medium theme-text-secondary mb-1.5 block">
-                            Target User
+                            {FIELDS.target_user.label}{FIELDS.target_user.required && isEditing ? ' *' : ''}
                         </label>
                         {isEditing ? (
                             <Input
@@ -261,7 +288,7 @@ export function UseCaseDetailModal({
 
                     <div>
                         <label className="text-sm font-medium theme-text-secondary mb-1.5 block">
-                            AI Technique
+                            Type of AI
                         </label>
                         {isEditing ? (
                             <select
@@ -311,8 +338,26 @@ export function UseCaseDetailModal({
                     </div>
                 )}
 
+                {isEditing && Object.values(fieldErrors).some(Boolean) && (
+                    <ul role="alert" className="text-sm text-semantic-danger list-disc pl-5">
+                        {(Object.keys(fieldErrors) as FieldKey[]).filter((k) => fieldErrors[k]).map((k) => (
+                            <li key={k}>{FIELDS[k].label}: {fieldErrors[k]}</li>
+                        ))}
+                    </ul>
+                )}
+
                 {/* Action Buttons */}
                 <div className="flex items-center justify-end gap-3 pt-4 border-t theme-border">
+                    {isOwner && (
+                        <Button
+                            variant="ghost"
+                            className="mr-auto text-semantic-danger"
+                            onClick={() => setConfirmWithdraw(true)}
+                            disabled={submitting}
+                        >
+                            <Trash2 className="w-4 h-4 mr-2" aria-hidden="true" /> Withdraw
+                        </Button>
+                    )}
                     <Button
                         variant="ghost"
                         onClick={onClose}
@@ -323,7 +368,7 @@ export function UseCaseDetailModal({
                     {isOwner && isEditing ? (
                         <Button
                             onClick={handleSave}
-                            disabled={submitting || !formData.title || !formData.description}
+                            disabled={submitting}
                         >
                             {submitting ? (
                                 <>
@@ -364,6 +409,16 @@ export function UseCaseDetailModal({
                     )}
                 </div>
             </div>
+            <ConfirmationModal
+                isOpen={confirmWithdraw}
+                onClose={() => setConfirmWithdraw(false)}
+                onConfirm={handleWithdraw}
+                title="Withdraw this use case?"
+                message="It will be removed from the workshop, including any scores it has received. This can't be undone."
+                confirmText="Withdraw"
+                cancelText="Keep it"
+                variant="danger"
+            />
         </Modal>
     );
 }

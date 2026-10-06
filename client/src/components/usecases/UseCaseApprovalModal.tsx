@@ -5,6 +5,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { API_BASE_URL } from '../../lib/config';
+import { apiErrorText } from '../../lib/apiErrors';
 
 const API_BASE = API_BASE_URL;
 
@@ -142,7 +143,7 @@ export function UseCaseApprovalModal({ useCase, allUseCases, token, onClose, onS
             });
             if (!res.ok) {
                 const errBody = await res.json().catch(() => ({}));
-                throw new Error(errBody?.detail || `Server error ${res.status}`);
+                throw new Error(apiErrorText(errBody) || `Server error ${res.status}`);
             }
             const label = newStatus === 'APPROVED' ? 'approved' : 'rejected';
             toast.success(`Use case ${label} successfully`);

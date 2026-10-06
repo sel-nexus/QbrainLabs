@@ -23,6 +23,7 @@ import {
   Play,
 } from 'lucide-react';
 import { API_BASE_URL } from '../../lib/config';
+import { apiErrorText } from '../../lib/apiErrors';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -259,7 +260,7 @@ export function InitiateSurveyModal({
         );
         if (!createRes.ok) {
           const err = await createRes.json().catch(() => ({}));
-          throw new Error(err.detail ?? 'Failed to create survey');
+          throw new Error(apiErrorText(err) ?? 'Failed to create survey');
         }
         const survey = await createRes.json();
         createdIds.push(workshopId);

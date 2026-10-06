@@ -10,6 +10,28 @@ import { ArrowRight, Loader2, UserCircle, CheckCircle, Users } from 'lucide-reac
 import { ParticipantAuth } from '../components/ParticipantAuth';
 import { toast } from 'sonner';
 
+// Participant ids used on this device, so re-joining a workshop under the
+// same name resumes the same identity (and ownership of earlier work).
+const KNOWN_PARTICIPANTS_KEY = 'hm_known_participants';
+
+function readKnownParticipantIds(): string[] {
+    try {
+        const ids = JSON.parse(localStorage.getItem(KNOWN_PARTICIPANTS_KEY) || '[]');
+        return Array.isArray(ids) ? ids.filter((x) => typeof x === 'string').slice(0, 50) : [];
+    } catch {
+        return [];
+    }
+}
+
+function rememberParticipantId(id: string) {
+    try {
+        const ids = [id, ...readKnownParticipantIds().filter((x) => x !== id)].slice(0, 50);
+        localStorage.setItem(KNOWN_PARTICIPANTS_KEY, JSON.stringify(ids));
+    } catch {
+        // storage unavailable: resume is best-effort
+    }
+}
+
 export function JoinWorkshop() {
     const navigate = useNavigate();
     const { theme } = useTheme();
@@ -25,14 +47,40 @@ export function JoinWorkshop() {
     const [facilitatorRequestId, setFacilitatorRequestId] = useState('');
     const [email, setEmail] = useState('');
 
-    const { login, session } = useSession();
+    const { login, logout, session } = useSession();
+    const urlPin = (searchParams.get('pin') || '').trim().toUpperCase();
+    // Set when a QR/link for a *different* workshop is opened while the
+    // participant still has a session in another one.
+    const [switchFrom, setSwitchFrom] = useState<string | null>(null);
+    const [showHostOptions, setShowHostOptions] = useState(false);
 
-    // If user already has a valid session with workshop, redirect to dashboard
+    // Existing session: go back to it, unless the link is for another workshop.
     useEffect(() => {
-        if (session && session.workshopId && session.participantId) {
+        if (!(session && session.workshopId && session.participantId)) return;
+        if (!urlPin) {
             navigate('/participant-dashboard', { replace: true });
+            return;
         }
-    }, [session, navigate]);
+        let cancelled = false;
+        api.get(`workshops/${session.workshopId}`)
+            .then(({ data }) => {
+                if (cancelled) return;
+                if (String(data?.pin || '').toUpperCase() === urlPin) {
+                    navigate('/participant-dashboard', { replace: true });
+                } else {
+                    setSwitchFrom(data?.title || 'your current workshop');
+                }
+            })
+            .catch((err) => {
+                if (cancelled) return;
+                // The old workshop no longer exists: just let them join the new one.
+                if (err?.response?.status === 404) logout();
+                else setSwitchFrom('your current workshop');
+            });
+        return () => {
+            cancelled = true;
+        };
+    }, [session, navigate, urlPin, logout]);
 
     const handleAdvancedAuthSuccess = async (data: { token: string; participant: any; mode: 'anonymous' | 'registered' }) => {
         // Store token for future requests
@@ -133,7 +181,8 @@ export function JoinWorkshop() {
             const { data } = await api.post('join', {
                 pin: pin.toUpperCase(),
                 display_name: name,
-                role: isFacilitator ? "FACILITATOR" : "PARTICIPANT"
+                role: isFacilitator ? "FACILITATOR" : "PARTICIPANT",
+                resume_participant_ids: readKnownParticipantIds(),
             });
 
             console.log('[JoinWorkshop] Join response:', data);
@@ -143,6 +192,8 @@ export function JoinWorkshop() {
                 console.error('[JoinWorkshop] Invalid response data:', data);
                 throw new Error('Invalid response from server');
             }
+
+            rememberParticipantId(String(data.participant_id));
 
             // Save session info via Context
             console.log('[JoinWorkshop] saving session context...');
@@ -179,9 +230,31 @@ export function JoinWorkshop() {
                     Join Session
                 </h1>
 
+                {switchFrom && (
+                    <div role="alertdialog" aria-labelledby="switch-title" className="mb-6 rounded-xl border border-amber-500/40 bg-amber-500/10 p-4">
+                        <p id="switch-title" className={`font-semibold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
+                            You're still in “{switchFrom}”.
+                        </p>
+                        <p className={`text-sm mt-1 ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'}`}>
+                            This link is for a different workshop (PIN {urlPin}). Leave the current one and join this workshop?
+                        </p>
+                        <div className="flex flex-wrap gap-2 mt-3">
+                            <Button type="button" onClick={() => { logout(); setSwitchFrom(null); }}>
+                                Leave and join this workshop
+                            </Button>
+                            <Button type="button" variant="secondary" onClick={() => navigate('/participant-dashboard', { replace: true })}>
+                                Stay in current workshop
+                            </Button>
+                        </div>
+                    </div>
+                )}
+
                 <form onSubmit={handleJoin} className="space-y-6" noValidate>
                     <Input
+                        label="Workshop PIN (6 characters)"
                         inputMode="text"
+                        autoCapitalize="characters"
+                        autoComplete="off"
                         className="text-4xl text-center tracking-widest uppercase py-6 font-mono font-bold placeholder:tracking-normal placeholder:normal-case placeholder:text-2xl placeholder:font-sans"
                         placeholder="Enter PIN"
                         maxLength={6}
@@ -196,7 +269,10 @@ export function JoinWorkshop() {
                     />
 
                     <Input
+                        label="Your name (others in the workshop will see it)"
                         placeholder="Your Name"
+                        maxLength={60}
+                        autoComplete="name"
                         className="text-center text-lg"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
@@ -214,7 +290,17 @@ export function JoinWorkshop() {
                         </div>
                     )}
 
-                    {/* US32: Join as options */}
+                    {/* US32: facilitator access requests are rare, so they sit behind a small
+                        link instead of being a choice every participant has to read. */}
+                    {!showHostOptions ? (
+                        <button
+                            type="button"
+                            className={`w-full text-center text-sm underline ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}
+                            onClick={() => setShowHostOptions(true)}
+                        >
+                            Are you hosting this workshop?
+                        </button>
+                    ) : (
                     <div className={`p-4 rounded-lg ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-800'}`}>
                         <p className={`text-sm font-medium mb-3 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
                             Join as:
@@ -270,6 +356,7 @@ export function JoinWorkshop() {
                             </div>
                         )}
                     </div>
+                    )}
 
                     {/* Legacy facilitator checkbox - hidden but kept for backward compatibility */}
                     <input type="hidden" value={isFacilitator ? "true" : "false"} />

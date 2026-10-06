@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { UseCaseForm, type UseCaseData } from '../components/UseCaseForm';
 import { BulkUseCaseForm } from '../components/BulkUseCaseForm';
 import { api } from '../lib/api';
 import { socket } from '../lib/socket';
 import { Button } from '../components/ui/Button';
 import { useTheme } from '../context/ThemeContext';
-import { Play, TrendingUp, Download, FileText, BarChart3, Plus, X, Map, LayoutGrid, Vote, Target, Sparkles, Edit, Trash2, Settings } from 'lucide-react';
+import { TrendingUp, Download, FileText, BarChart3, Plus, X, Map, LayoutGrid, Vote, Target, Sparkles, Edit, Trash2, Settings, Monitor, Wrench } from 'lucide-react';
 import { ResultsChart } from '../components/ResultsChart';
 import { WorkshopInsights } from '../components/WorkshopInsights';
 import { AnalyticsDashboard } from '../components/AnalyticsDashboard';
@@ -28,12 +28,21 @@ import { ChallengeManager, WorkshopPlannerPanel } from '../components/challenges
 import { useAuth } from '../context/AuthContext';
 import { MatrixActivityDashboard } from '../components/MatrixActivityDashboard';
 import { PrioritizationScale } from '../components/prioritization/PrioritizationScale';
+import { errorMessage } from '../lib/apiErrors';
+import { LoadErrorPanel } from '../components/StatusPages';
+import { PhaseStepper } from '../components/facilitator/PhaseStepper';
+import { LiveProgressPanel, ActiveCardControls } from '../components/facilitator/LiveProgress';
+import { PresenterJoinView, PresenterResultsView } from '../components/facilitator/PresenterViews';
+import { useWorkshopProgress } from '../hooks/useWorkshopProgress';
+import { phaseLabel } from '../lib/workshopPhases';
+import { matrixAxes } from '../lib/criteria';
 
 export function WorkshopDetail() {
     const { id } = useParams();
     const { theme } = useTheme();
     const { hasRole } = useAuth();
     const [workshop, setWorkshop] = useState<any>(null);
+    const [loadError, setLoadError] = useState<string | null>(null);
     const [useCases, setUseCases] = useState<any[]>([]);
     const [currentPhase, setCurrentPhase] = useState<string>('');
     const [activeCardId, setActiveCardId] = useState<string | null>(null);
@@ -54,10 +63,31 @@ export function WorkshopDetail() {
     const [roiModalOpen, setRoiModalOpen] = useState(false);
     const [showRoadmap, setShowRoadmap] = useState(false);
     const [showSettings, setShowSettings] = useState(false);
+    const [workshopStatus, setWorkshopStatus] = useState<string>('');
+    const [newIdeas, setNewIdeas] = useState(0);
+    const [presentJoin, setPresentJoin] = useState(false);
+    const [presentResults, setPresentResults] = useState(false);
+    const [analysisSection, setAnalysisSection] = useState<'results' | 'tools'>('results');
+    const [copyFallback, setCopyFallback] = useState(false);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const justCreated = searchParams.get('created') === '1';
+    const dismissCreated = () => {
+        searchParams.delete('created');
+        setSearchParams(searchParams, { replace: true });
+    };
+    // Use case ids this facilitator just edited/deleted: skip the echo toast from the socket.
+    const localActionIds = useRef<Set<string>>(new Set());
+    const isFacilitator = hasRole(['admin', 'facilitator']);
+    const { progress } = useWorkshopProgress(id, isFacilitator);
 
     // Tab navigation state
     type TabId = 'usecases' | 'polls' | 'challenges' | 'rooms' | 'insights';
     const [activeTab, setActiveTab] = useState<TabId>('usecases');
+    const activeTabRef = useRef<TabId>('usecases');
+    useEffect(() => {
+        activeTabRef.current = activeTab;
+        if (activeTab === 'usecases') setNewIdeas(0);
+    }, [activeTab]);
 
     const tabs: { id: TabId; label: string; icon: React.ReactNode }[] = [
         { id: 'usecases', label: 'Use Cases', icon: <LayoutGrid className="w-4 h-4" /> },
@@ -83,9 +113,9 @@ export function WorkshopDetail() {
         }
 
         socket.on('new_submission', (data: any) => {
-            console.log("New submission:", data);
             setUseCases(prev => [data, ...prev]);
-            toast.info("New submission received");
+            // A counter badge instead of a toast per idea (toasts flood a projector).
+            if (activeTabRef.current !== 'usecases') setNewIdeas(n => n + 1);
         });
 
         socket.on('participant_joined', () => {
@@ -93,12 +123,14 @@ export function WorkshopDetail() {
         });
 
         socket.on('active_card_update', (data: any) => {
-            if (data.active_card) setActiveCardId(data.active_card.id);
+            setActiveCardId(data.active_card ? data.active_card.id : null);
         });
 
         socket.on('workshop_state_change', (data: any) => {
+            if (data.status) setWorkshopStatus(data.status);
+            // Changes made from this console are already shown; only announce others'.
+            if (data.phase !== currentPhase) toast.info(`Moved to: ${phaseLabel(data.phase)}`);
             setCurrentPhase(data.phase);
-            toast.info(`Phase changed to ${data.phase}`);
         });
 
         socket.on('facilitator_request', (data: any) => {
@@ -125,12 +157,12 @@ export function WorkshopDetail() {
 
         socket.on('use_case_updated', (updatedUseCase: any) => {
             setUseCases(prev => prev.map(uc => uc.id === updatedUseCase.id ? { ...uc, ...updatedUseCase } : uc));
-            toast.info("Use case updated");
+            if (!localActionIds.current.delete(String(updatedUseCase.id))) toast.info("A use case was updated");
         });
 
         socket.on('use_case_deleted', ({ id }: { id: string }) => {
             setUseCases(prev => prev.filter(uc => uc.id !== id));
-            toast.info("Use case deleted");
+            if (!localActionIds.current.delete(String(id))) toast.info("A use case was deleted");
         });
 
         return () => {
@@ -151,7 +183,9 @@ export function WorkshopDetail() {
         try {
             const { data } = await api.get(`workshops/${id}`);
             setWorkshop(data);
+            setLoadError(null);
             setCurrentPhase(data.current_phase);
+            setWorkshopStatus(data.status);
             setActiveCardId(data.active_use_case_id);
             if (data.pending_facilitators) {
                 setPendingFacilitators(data.pending_facilitators);
@@ -169,33 +203,46 @@ export function WorkshopDetail() {
             }
         } catch (e) {
             console.error(e);
-            toast.error("Failed to load workshop data");
+            setLoadError(errorMessage(e, 'Failed to load workshop data'));
+            toast.error(errorMessage(e, 'Failed to load workshop data'));
         }
     };
 
     const startPhase = async (phase: string) => {
         try {
-            await api.post(`workshops/${id}/phase`, { phase });
+            const { data: updated } = await api.post(`workshops/${id}/phase`, { phase });
             setCurrentPhase(phase);
+            if (updated?.status) setWorkshopStatus(updated.status);
             if (phase === 'ANALYSIS') {
+                setAnalysisSection('results');
                 const { data } = await api.get(`results/${id}`);
                 setResults(data);
             }
-            toast.success(`Started ${phase} phase`);
+            toast.success(`Moved to: ${phaseLabel(phase)}`);
         } catch (e) {
             console.error(e);
-            toast.error("Failed to change phase");
+            toast.error(errorMessage(e, 'Failed to change phase'));
         }
     };
 
-    const activateCard = async (ucId: string) => {
+    const setCompleted = async (completed: boolean) => {
+        try {
+            const { data } = await api.post(`workshops/${id}/complete`, { completed });
+            setWorkshopStatus(data.status);
+            if (completed) setActiveCardId(null);
+            toast.success(completed ? 'Workshop completed' : 'Workshop reopened');
+        } catch (e) {
+            toast.error(errorMessage(e, completed ? 'Failed to complete the workshop' : 'Failed to reopen the workshop'));
+        }
+    };
+
+    const activateCard = async (ucId: string | null) => {
         try {
             await api.post(`workshops/${id}/active_card`, { use_case_id: ucId });
             setActiveCardId(ucId);
-            toast.success("Card presented for voting");
         } catch (e) {
             console.error(e);
-            toast.error("Failed to activate card");
+            toast.error(errorMessage(e, ucId ? 'Failed to present the card' : 'Failed to stop scoring'));
         }
     };
 
@@ -250,6 +297,7 @@ export function WorkshopDetail() {
 
     const handleEditSubmission = async (data: UseCaseData) => {
         if (!editingUseCase) return;
+        localActionIds.current.add(String(editingUseCase.id));
         try {
             await api.put(`usecases/${editingUseCase.id}`, {
                 ...data, // Include all form fields
@@ -268,6 +316,7 @@ export function WorkshopDetail() {
     const handleDeleteUseCase = async (ucId: string) => {
         if (!confirm("Are you sure you want to delete this use case? This cannot be undone.")) return;
 
+        localActionIds.current.add(String(ucId));
         try {
             await api.delete(`usecases/${ucId}`);
             // Socket will update the list
@@ -305,6 +354,7 @@ export function WorkshopDetail() {
         toast.success("Export started");
     };
 
+    if (!workshop && loadError) return <LoadErrorPanel message={loadError} onRetry={() => { setLoadError(null); fetchWorkshop(); }} />;
     if (!workshop) return <div className={`min-h-screen flex items-center justify-center ${theme === 'light' ? 'bg-gray-50 text-gray-600' : 'bg-surface-900 text-gray-400'}`}>Loading...</div>;
 
     return (
@@ -313,7 +363,7 @@ export function WorkshopDetail() {
 
             {/* Quick Polls Overlay / Manager - Rendered in Sidebar */}
 
-            <header className={`flex justify-between items-center mb-8 border-b pb-4 ${theme === 'light' ? 'border-gray-200' : 'border-white/10'
+            <header className={`flex flex-wrap justify-between items-center gap-4 mb-4 border-b pb-4 ${theme === 'light' ? 'border-gray-200' : 'border-white/10'
                 }`}>
                 {/* Header Content - Back button now in main Header */}
                 <div className="flex items-start gap-4">
@@ -324,54 +374,105 @@ export function WorkshopDetail() {
                         <div className="flex items-center gap-2 mt-2">
                             <span className="text-brand-magenta font-mono text-xl font-bold">{workshop.pin}</span>
                             <span className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>Join PIN</span>
-                            <span className={`ml-4 px-2 py-0.5 text-xs rounded uppercase tracking-wider font-mono ${theme === 'light'
+                            <span className={`ml-4 px-2 py-0.5 text-xs rounded ${theme === 'light'
                                 ? 'bg-gray-100 text-gray-600'
                                 : 'bg-white/10 text-gray-400'
                                 }`}>
-                                {currentPhase}
+                                {workshopStatus === 'COMPLETED' ? 'Complete' : phaseLabel(currentPhase)}
                             </span>
                         </div>
                     </div>
                 </div>
 
-                <div className="flex gap-4">
+                <div className="flex flex-wrap gap-2">
                     <Button variant="ghost" className="text-sm h-8 px-2" onClick={() => setShowSettings(true)}>
                         <Settings className="w-4 h-4 mr-2" /> Settings
                     </Button>
                     <Button variant="ghost" className="text-sm h-8 px-2" onClick={() => setShowQR(true)}>
                         <QrCode className="w-4 h-4 mr-2" /> Show Join Code
                     </Button>
+                    <Button variant="ghost" className="text-sm h-8 px-2" onClick={() => setPresentJoin(true)}>
+                        <Monitor className="w-4 h-4 mr-2" /> Present join screen
+                    </Button>
                     <Button variant={showQA ? "primary" : "secondary"} onClick={() => setShowQA(!showQA)}>
                         <MessageSquare className="w-4 h-4 mr-2" /> Q&A
                     </Button>
                 </div>
 
-                <div className="flex gap-4">
-                    {/* Phase Buttons */}
-                    {currentPhase === 'INTAKE' && (
-                        <Button onClick={() => startPhase('SCORING')}>
-                            Next: Start Scoring &rarr;
+                {currentPhase === 'ANALYSIS' && (
+                    <div className="flex flex-wrap gap-2">
+                        <Button onClick={() => setPresentResults(true)} variant="secondary">
+                            <Monitor className="w-4 h-4 mr-2" /> Present results
                         </Button>
-                    )}
-                    {currentPhase === 'SCORING' && (
-                        <Button onClick={() => startPhase('ANALYSIS')}>
-                            <TrendingUp className="w-4 h-4 mr-2" /> Show Results
-                        </Button>
-                    )}
-                    {currentPhase === 'ANALYSIS' && (
                         <Button onClick={downloadCSV} variant="secondary">
                             <Download className="w-4 h-4 mr-2" /> Export CSV
                         </Button>
-                    )}
-                    {currentPhase === 'DRAFT' && (
-                        <Button onClick={() => startPhase('INTAKE')}>
-                            <Play className="w-4 h-4 mr-2" /> Start Intake
-                        </Button>
-                    )}
-                </div>
+                    </div>
+                )}
             </header>
 
-            {currentPhase === 'ANALYSIS' ? (
+            {justCreated && (
+                <section role="status" aria-label="Workshop created" className="mb-6 rounded-2xl border border-semantic-success/40 bg-semantic-success/10 p-5 flex flex-wrap items-center gap-4">
+                    <div className="flex-1 min-w-[220px]">
+                        <h2 className="font-bold theme-text-primary">Workshop created — share this PIN</h2>
+                        <p className="text-sm theme-text-secondary">Participants join at <span className="font-mono">{window.location.host}/join</span> with PIN</p>
+                        <p className="font-mono font-bold text-3xl tracking-widest text-brand-magenta mt-1">{workshop.pin}</p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                        <Button onClick={() => setPresentJoin(true)}><Monitor className="w-4 h-4 mr-2" /> Present join screen</Button>
+                        <Button variant="secondary" onClick={() => setShowQR(true)}><QrCode className="w-4 h-4 mr-2" /> QR code &amp; link</Button>
+                        <Button variant="ghost" onClick={dismissCreated} aria-label="Dismiss">Dismiss</Button>
+                    </div>
+                </section>
+            )}
+
+            {isFacilitator && (
+                <div className="mb-6 space-y-4">
+                    <PhaseStepper
+                        phase={currentPhase}
+                        completed={workshopStatus === 'COMPLETED'}
+                        progress={progress}
+                        onSetPhase={startPhase}
+                        onSetCompleted={setCompleted}
+                    />
+                    {(currentPhase === 'INTAKE' || currentPhase === 'SCORING') && (
+                        <LiveProgressPanel progress={progress} phase={currentPhase} />
+                    )}
+                    {currentPhase === 'SCORING' && workshopStatus !== 'COMPLETED' && (
+                        <ActiveCardControls
+                            useCases={useCases}
+                            activeCardId={activeCardId}
+                            progress={progress}
+                            onPresent={activateCard}
+                        />
+                    )}
+                </div>
+            )}
+
+            {currentPhase === 'ANALYSIS' && (
+                <div role="tablist" aria-label="Results or workshop tools" className="inline-flex gap-1 p-1 mb-6 rounded-lg theme-bg-secondary">
+                    <button
+                        type="button"
+                        role="tab"
+                        aria-selected={analysisSection === 'results'}
+                        onClick={() => setAnalysisSection('results')}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium ${analysisSection === 'results' ? 'bg-brand-violet text-white' : 'contrast-muted'}`}
+                    >
+                        <TrendingUp className="w-4 h-4" aria-hidden="true" /> Results
+                    </button>
+                    <button
+                        type="button"
+                        role="tab"
+                        aria-selected={analysisSection === 'tools'}
+                        onClick={() => setAnalysisSection('tools')}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium ${analysisSection === 'tools' ? 'bg-brand-violet text-white' : 'contrast-muted'}`}
+                    >
+                        <Wrench className="w-4 h-4" aria-hidden="true" /> Workshop tools
+                    </button>
+                </div>
+            )}
+
+            {currentPhase === 'ANALYSIS' && analysisSection === 'results' ? (
                 // Analysis View
                 <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
                     {/* View Toggle */}
@@ -413,7 +514,7 @@ export function WorkshopDetail() {
                     ) : (
                         <>
                             <div className="flex items-center justify-between">
-                                <h2 className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Strategic Prioritization</h2>
+                                <h2 className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Prioritization matrix</h2>
                                 <div className="flex gap-2">
                                     <Button
                                         variant={!showAllParticipantPositions ? 'primary' : 'secondary'}
@@ -459,19 +560,7 @@ export function WorkshopDetail() {
                             <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6 mt-4">
                                 <div className="p-6 rounded-2xl border theme-card theme-border bg-white/50 backdrop-blur-sm">
                                     {(() => {
-                                        const criteriaNames = workshop.config.criteria?.map((c: any) => c.name) || [];
-
-                                        // Standardized Keyword Mapping (matches backend matrix.py)
-                                        const xKeywords = ['Feasibility', 'Ease of Implementation', 'Effort (Inverse)', 'Readiness', 'Data Readiness', 'Organizational Readiness', 'Complexity', 'Implementation Readiness'];
-                                        const yKeywords = ['Business Value', 'Impact', 'Value', 'Business Impact', 'Strategic Alignment', 'Scalability & Value', 'ROI', 'Alignment', 'Strategic', 'Strategic Value'];
-
-                                        let xLabel = criteriaNames.find((n: string) => xKeywords.includes(n)) || criteriaNames[0] || "Feasibility";
-                                        let yLabel = criteriaNames.find((n: string) => yKeywords.includes(n)) || criteriaNames[1] || "Business Value";
-
-                                        // Ensure they are different if possible
-                                        if (xLabel === yLabel && criteriaNames.length > 1) {
-                                            yLabel = criteriaNames.find((n: string) => n !== xLabel) || yLabel;
-                                        }
+                                        const { xLabel, yLabel } = matrixAxes(workshop.config.criteria?.map((c: any) => c.name) || [], workshop.config);
 
                                         const mappedResults = results.map(item => {
                                             // Backend now provides standardized 0-100 coordinates
@@ -537,6 +626,7 @@ export function WorkshopDetail() {
                                 {hasRole(['admin', 'facilitator']) && (
                                     <MatrixActivityDashboard
                                         workshopId={id!}
+                                        totalParticipants={progress?.participants}
                                         isVisible={showAnalytics === 'matrix' || showAnalytics === 'scale'}
                                         viewMode={showAllParticipantPositions ? 'all' : 'consolidated'}
                                         onRefreshMatrix={(positions, isAllPositions) => {
@@ -658,6 +748,11 @@ export function WorkshopDetail() {
                             >
                                 {tab.icon}
                                 <span className="hidden sm:inline">{tab.label}</span>
+                                {tab.id === 'usecases' && newIdeas > 0 && (
+                                    <span className="ml-1 text-[11px] font-bold px-1.5 py-0.5 rounded-full bg-semantic-success text-white" aria-label={`${newIdeas} new use cases`}>
+                                        +{newIdeas}
+                                    </span>
+                                )}
                             </button>
                         ))}
                     </div>
@@ -714,7 +809,7 @@ export function WorkshopDetail() {
                                                     <h3 className={`font-bold text-lg ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>{uc.title}</h3>
                                                     <div className="flex items-center gap-2">
                                                         {activeCardId === uc.id ? (
-                                                            <span className="text-xs text-brand-violet font-bold py-1 px-2 bg-brand-violet/10 rounded">VOTING ACTIVE</span>
+                                                            <span className="text-xs text-brand-violet font-bold py-1 px-2 bg-brand-violet/10 rounded">Being scored</span>
                                                         ) : (
                                                             hasRole(['admin', 'facilitator']) && (
                                                                 <>
@@ -743,7 +838,7 @@ export function WorkshopDetail() {
                                                                 className="h-8 text-xs py-0"
                                                                 onClick={() => activateCard(uc.id)}
                                                             >
-                                                                Present for Voting
+                                                                Present for scoring
                                                             </Button>
                                                         )}
                                                     </div>
@@ -839,7 +934,7 @@ export function WorkshopDetail() {
                                     <div className="space-y-4">
                                         <div className="flex justify-between items-center">
                                             <span className="contrast-muted">Participants</span>
-                                            <span className="font-mono theme-text-primary text-lg">--</span>
+                                            <span className="font-mono theme-text-primary text-lg">{progress ? progress.participants : '–'}</span>
                                         </div>
                                         <div className="flex justify-between items-center">
                                             <span className="contrast-muted">Submissions</span>
@@ -847,7 +942,7 @@ export function WorkshopDetail() {
                                         </div>
                                         <div className="flex justify-between items-center">
                                             <span className="contrast-muted">Current Phase</span>
-                                            <span className="font-mono text-brand-violet text-lg">{currentPhase}</span>
+                                            <span className="font-mono text-brand-violet text-lg">{workshopStatus === 'COMPLETED' ? 'Complete' : phaseLabel(currentPhase)}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -860,6 +955,23 @@ export function WorkshopDetail() {
                         )}
                     </div>
                 </div>
+            )}
+
+            {presentJoin && (
+                <PresenterJoinView
+                    title={workshop.title}
+                    pin={workshop.pin}
+                    joinUrl={`${window.location.protocol}//${window.location.host}/join?pin=${workshop.pin}`}
+                    onClose={() => setPresentJoin(false)}
+                />
+            )}
+            {presentResults && (
+                <PresenterResultsView
+                    title={workshop.title}
+                    results={results.map((r) => ({ ...r, x: r.x ?? 50, y: r.y ?? 50 }))}
+                    {...matrixAxes(workshop.config.criteria?.map((c: any) => c.name) || [], workshop.config)}
+                    onClose={() => setPresentResults(false)}
+                />
             )}
 
             {/* Q&A Modal/Sidebar */}
@@ -891,13 +1003,35 @@ export function WorkshopDetail() {
                     <Button
                         variant="secondary"
                         className="w-full"
-                        onClick={() => {
+                        onClick={async () => {
                             const url = `${window.location.protocol}//${window.location.host}/join?pin=${workshop.pin}`;
-                            navigator.clipboard.writeText(url);
-                            toast.success("Link copied to clipboard");
+                            try {
+                                await navigator.clipboard.writeText(url);
+                                toast.success("Link copied to clipboard");
+                            } catch {
+                                // Clipboard blocked (e.g. insecure context): let them copy it by hand.
+                                setCopyFallback(true);
+                                toast.info("Copy the link below");
+                            }
                         }}
                     >
                         <Copy className="w-4 h-4 mr-2" /> Copy Link
+                    </Button>
+                    {copyFallback && (
+                        <input
+                            readOnly
+                            aria-label="Join link"
+                            className="w-full px-3 py-2 rounded border font-mono text-sm"
+                            value={`${window.location.protocol}//${window.location.host}/join?pin=${workshop.pin}`}
+                            onFocus={(e) => e.currentTarget.select()}
+                            autoFocus
+                        />
+                    )}
+                    <Button
+                        className="w-full"
+                        onClick={() => { setShowQR(false); setPresentJoin(true); }}
+                    >
+                        <Monitor className="w-4 h-4 mr-2" /> Present full screen
                     </Button>
                 </div>
             </Modal>

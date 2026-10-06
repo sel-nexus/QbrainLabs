@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { API_BASE_URL } from '../../lib/config';
+import { apiErrorText } from '../../lib/apiErrors';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -100,7 +101,7 @@ export function SurveyList({ workshopId, onCreateSurvey, onEditSurvey, onViewRes
                 fetchSurveys();
             } else {
                 const error = await response.json();
-                toast.error(error.detail || `Failed to ${action} survey`);
+                toast.error(apiErrorText(error) || `Failed to ${action} survey`);
             }
         } catch {
             toast.error(`Failed to ${action} survey`);
@@ -131,7 +132,7 @@ export function SurveyList({ workshopId, onCreateSurvey, onEditSurvey, onViewRes
                 fetchSurveys();
             } else {
                 const error = await response.json();
-                toast.error(error.detail || 'Failed to delete survey');
+                toast.error(apiErrorText(error) || 'Failed to delete survey');
             }
         } catch {
             toast.error('Failed to delete survey');

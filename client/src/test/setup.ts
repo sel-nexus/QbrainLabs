@@ -54,6 +54,7 @@ vi.mock('../lib/socket', () => ({
     connect: vi.fn(),
     disconnect: vi.fn(),
     connected: false,
+    io: { on: vi.fn(), off: vi.fn() },
   },
 }));
 

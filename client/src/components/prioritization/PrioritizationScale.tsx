@@ -22,7 +22,6 @@ export function PrioritizationScale({
     const { theme } = useTheme();
     const [mobileScoreTarget, setMobileScoreTarget] = useState<any | null>(null);
 
-    const isScale100 = true;
 
     const allScores: number[] = [];
     Object.values(scores).forEach(s => {
@@ -98,7 +97,7 @@ export function PrioritizationScale({
                             } hover:border-brand-violet/30`}
                     >
                         <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-brand-violet text-white text-[10px] font-bold px-2 py-0.5 rounded-full z-10">
-                            {isScale100 ? `≤${num}` : num}
+                            {num}
                         </div>
 
                         <div className="flex-1 overflow-y-auto space-y-2 pt-4 scrollbar-hide">
@@ -162,7 +161,7 @@ export function PrioritizationScale({
                         >
                             <div className="text-center mb-1">
                                 <span className="bg-brand-violet text-white text-[9px] font-bold px-1.5 py-px rounded-full">
-                                    {isScale100 ? `≤${num}` : num}
+                                    {num}
                                 </span>
                             </div>
                             <div className="space-y-1">

@@ -19,6 +19,7 @@ import {
 import { ConfirmationModal } from '../components/ConfirmationModal';
 
 import { API_BASE_URL } from '../lib/config';
+import { apiErrorText } from '../lib/apiErrors';
 
 const API_BASE = API_BASE_URL;
 
@@ -172,7 +173,7 @@ export function FacilitatorManagement() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.detail || 'Failed to update workshops');
+        throw new Error(apiErrorText(errorData) || 'Failed to update workshops');
       }
 
       const data = await response.json();
@@ -289,6 +290,11 @@ export function FacilitatorManagement() {
 
   const handleReject = async (facilitatorId: string) => {
     const reason = prompt('Reason for rejection (optional):');
+    // Cancel returns null: abort instead of rejecting the facilitator.
+    if (reason === null) {
+      setActionMenuOpen(null);
+      return;
+    }
 
     try {
       const response = await fetch(

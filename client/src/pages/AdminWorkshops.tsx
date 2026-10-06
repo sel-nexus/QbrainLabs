@@ -13,6 +13,7 @@ import { useTheme } from '../context/ThemeContext';
 import { AdminLayout } from '../components/AdminLayout';
 
 import { API_BASE_URL } from '../lib/config';
+import { apiErrorText } from '../lib/apiErrors';
 
 const API_BASE = API_BASE_URL;
 
@@ -88,7 +89,7 @@ export function AdminWorkshops() {
                 let errorMessage = t('workshop.deleteWorkshopError', 'Failed to delete workshop');
                 try {
                     const errorData = await response.json();
-                    errorMessage = errorData.detail || errorMessage;
+                    errorMessage = apiErrorText(errorData) || errorMessage;
                 } catch {
                     // If response is not JSON, use status text
                     if (response.status === 404) {

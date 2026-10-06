@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { socket } from '../lib/socket';
 
 interface Session {
@@ -75,26 +75,34 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
     }, [session]);
 
 
-    const login = (newSession: Session) => {
+    const login = useCallback((newSession: Session) => {
         localStorage.setItem('hm_session', JSON.stringify(newSession));
+        sessionRef.current = newSession;
         setSession(newSession);
         if (socket.connected) {
             socket.emit('join_workshop', { workshop_id: newSession.workshopId });
+        } else {
+            // logout() disconnects the socket; reconnect so the new workshop
+            // gets live updates (the connect handler joins its room).
+            socket.connect();
         }
-    };
+    }, []);
 
-    const logout = () => {
+    const logout = useCallback(() => {
         localStorage.removeItem('hm_session');
+        sessionRef.current = null;
         setSession(null);
         socket.disconnect();
-    };
+    }, []);
 
-    const updateRole = (role: string) => {
-        if (!session) return;
-        const updated = { ...session, role };
-        localStorage.setItem('hm_session', JSON.stringify(updated));
-        setSession(updated);
-    };
+    const updateRole = useCallback((role: string) => {
+        setSession((current) => {
+            if (!current) return current;
+            const updated = { ...current, role };
+            localStorage.setItem('hm_session', JSON.stringify(updated));
+            return updated;
+        });
+    }, []);
 
     return (
         <SessionContext.Provider value={{ session, isLoading, login, logout, updateRole }}>

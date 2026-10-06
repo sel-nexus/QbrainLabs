@@ -61,20 +61,40 @@ def calculate_agreement_score(scores: List[float], scale_max: float = 10.0) -> f
     agreement = max(0, 100 - (variance / max_variance * 100))
     return round(float(agreement), 2)
 
+def axes_from_config(config: Optional[Dict[str, Any]]) -> Dict[str, Optional[str]]:
+    """Explicit X/Y axis criteria chosen by the facilitator (if any)."""
+    config = config or {}
+    return {"x_axis": config.get("x_axis") or None, "y_axis": config.get("y_axis") or None}
+
+
+def _is_inverse(name: str) -> bool:
+    return any(k.lower() in name.lower() for k in INVERSE_KEYWORDS)
+
+
 def calculate_matrix_position(
     avgs: Dict[str, float], 
     template_id: Optional[str] = None,
-    scale_max: Optional[float] = None
+    scale_max: Optional[float] = None,
+    x_axis: Optional[str] = None,
+    y_axis: Optional[str] = None,
 ) -> Tuple[Optional[float], Optional[float]]:
     """
     Standardizes coordinate calculation across the platform.
     Returns (x, y) on a 0-100 scale.
+
+    When the facilitator picked explicit axes (x_axis / y_axis criterion
+    names), exactly those criteria are used; otherwise axes are inferred from
+    the template or standard keywords.
     """
     x_val = None
     y_val = None
 
-    # Determine axis parameters based on template or keywords
-    if template_id in ['7_POINT_COMPREHENSIVE', '7_POINT_COMPRE_HENSIVE']:
+    # Determine axis parameters based on explicit choice, template or keywords
+    if x_axis and y_axis:
+        x_params = [] if _is_inverse(x_axis) else [x_axis]
+        inverse_params = [x_axis] if _is_inverse(x_axis) else []
+        y_params = [y_axis]
+    elif template_id in ['7_POINT_COMPREHENSIVE', '7_POINT_COMPRE_HENSIVE']:
         y_params = ['Business Impact', 'Strategic Alignment', 'Scalability & Value']
         x_params = ['Ease of Implementation', 'Data Readiness', 'Organizational Readiness']
         inverse_params = ['Risk & Compliance']

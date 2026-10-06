@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from sqlalchemy import and_
+from sqlalchemy import and_, func
 from app.core.database import get_db
 from app.core.db_utils import get_or_404
 from app.models.models import Workshop, Participant, WorkshopStatus, ParticipantRole, User, UseCase
@@ -47,15 +47,28 @@ async def join_workshop(
     if join_in.role == "FACILITATOR":
         role = ParticipantRole.PENDING_FACILITATOR
     
-    # Create Participant
-    participant = Participant(
-        workshop_id=workshop.id,
-        display_name=join_in.display_name,
-        role=role
-    )
-    db.add(participant)
-    await db.commit()
-    await db.refresh(participant)
+    # Resume an identity this device already has in this workshop (same
+    # display name), so a refresh/re-join keeps ownership of earlier work.
+    participant = None
+    if role == ParticipantRole.PARTICIPANT and join_in.resume_participant_ids:
+        resume_result = await db.execute(
+            select(Participant).where(
+                Participant.id.in_(join_in.resume_participant_ids[:50]),
+                Participant.workshop_id == workshop.id,
+                func.lower(Participant.display_name) == join_in.display_name.strip().lower(),
+            )
+        )
+        participant = resume_result.scalars().first()
+
+    if participant is None:
+        participant = Participant(
+            workshop_id=workshop.id,
+            display_name=join_in.display_name,
+            role=role
+        )
+        db.add(participant)
+        await db.commit()
+        await db.refresh(participant)
     
     # If facilitator request, notify admins
     if role == ParticipantRole.PENDING_FACILITATOR:

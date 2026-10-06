@@ -89,7 +89,7 @@ export function VotingHeatmap({ workshopId }: VotingHeatmapProps) {
     if (!data || data.heatmap.length === 0) {
         return (
             <div className="theme-bg-secondary rounded-xl p-6 border theme-border">
-                <h3 className="text-lg font-bold mb-4 theme-text-primary">Voting Heatmap</h3>
+                <h3 className="text-lg font-bold mb-4 theme-text-primary">Score heatmap</h3>
                 <p className="theme-text-secondary text-center py-8">No voting data available</p>
             </div>
         );
@@ -98,7 +98,7 @@ export function VotingHeatmap({ workshopId }: VotingHeatmapProps) {
     return (
         <div className="theme-bg-secondary rounded-xl p-6 border theme-border">
             <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold theme-text-primary">Voting Heatmap</h3>
+                <h3 className="text-lg font-bold theme-text-primary">Score heatmap</h3>
                 <span className="text-sm theme-text-secondary">
                     {data.participant_count} participants
                 </span>

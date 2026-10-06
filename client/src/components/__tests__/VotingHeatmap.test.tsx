@@ -54,7 +54,7 @@ describe('VotingHeatmap', () => {
     render(<VotingHeatmap workshopId="test-workshop" />);
     
     await waitFor(() => {
-      expect(screen.getByText('Voting Heatmap')).toBeInTheDocument();
+      expect(screen.getByText('Score heatmap')).toBeInTheDocument();
     });
     
     expect(screen.getByText('Participant 1')).toBeInTheDocument();

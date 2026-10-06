@@ -5,7 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 import { api } from '../lib/api';
 import { socket } from '../lib/socket';
 import { Button } from '../components/ui/Button';
-import { ArrowLeft, Loader2, X, Save, GripVertical, ChevronDown, ChevronUp, Check } from 'lucide-react';
+import { ArrowLeft, Loader2, X, RotateCcw, GripVertical, ChevronDown, ChevronUp, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { Header } from '../components/Header';
 import { PrioritizationScale } from '../components/prioritization/PrioritizationScale';
@@ -46,6 +46,8 @@ export function ParticipantMatrix() {
     }, [activeCriterionIndex, session?.workshopId]);
 
     const [isSaving, setIsSaving] = useState(false);
+    // Number of autosaves in flight (each rating saves immediately).
+    const [pendingSaves, setPendingSaves] = useState(0);
     const [unsavedChanges, setUnsavedChanges] = useState<Set<string>>(new Set());
     const [mobileItemsExpanded, setMobileItemsExpanded] = useState(true);
     const [mobileRatedExpanded, setMobileRatedExpanded] = useState(false);
@@ -86,10 +88,11 @@ export function ParticipantMatrix() {
 
             await Promise.all(promises);
             setUnsavedChanges(new Set());
-            toast.success("All ratings submitted successfully!");
+            setLastSaved(new Date());
+            toast.success("All changes saved");
         } catch (err: any) {
             console.error('Failed to save changes:', err);
-            toast.error("Failed to submit changes. Please try again.");
+            toast.error("Some ratings could not be saved. Check your connection and tap Retry.");
         } finally {
             setIsSaving(false);
         }
@@ -235,13 +238,9 @@ export function ParticipantMatrix() {
             console.warn('[ParticipantMatrix] Cannot save - no participant ID');
             return;
         }
-        if (isSaving) {
-            console.warn('[ParticipantMatrix] Skipping save - already saving');
-            return;
-        }
-
         const useCase = useCases.find(u => u.id === useCaseId);
 
+        setPendingSaves((n) => n + 1);
         try {
             console.log('[ParticipantMatrix] Auto-saving scores:', {
                 use_case_id: useCaseId,
@@ -272,7 +271,10 @@ export function ParticipantMatrix() {
             });
         } catch (err) {
             console.error('Auto-save failed:', err);
-            toast.error('Follow-up save failed. Please click "Submit" manually.');
+            // The item stays in unsavedChanges, so the header shows "Not saved — Retry".
+            toast.error("Couldn't save your rating. Tap Retry at the top when you're back online.", { id: 'matrix-save-failed' });
+        } finally {
+            setPendingSaves((n) => Math.max(0, n - 1));
         }
     };
 
@@ -344,7 +346,7 @@ export function ParticipantMatrix() {
                             </button>
                             <div className="min-w-0">
                                 <h1 className="text-sm sm:text-xl font-bold theme-text-primary truncate">
-                                    Strategic Prioritization
+                                    Prioritization matrix
                                 </h1>
                                 <p className="text-[10px] sm:text-sm theme-text-secondary truncate">
                                     {workshopTitle}
@@ -353,22 +355,27 @@ export function ParticipantMatrix() {
                         </div>
 
                         <div className="flex items-center gap-2 shrink-0">
-                            {lastSaved && unsavedChanges.size === 0 && (
-                                <span className="hidden sm:flex text-[10px] theme-text-muted items-center gap-1">
-                                    <span className="w-1.5 h-1.5 rounded-full bg-semantic-success" />
-                                    Saved
-                                </span>
-                            )}
-                            <Button
-                                onClick={handleSaveChanges}
-                                disabled={unsavedChanges.size === 0 || isSaving}
-                                variant={unsavedChanges.size > 0 ? 'primary' : 'secondary'}
-                                className="text-xs sm:text-sm !px-2.5 sm:!px-4 !py-1.5 sm:!py-2"
-                            >
-                                {isSaving ? <Loader2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin" /> : <Save className="w-3.5 h-3.5 sm:w-4 sm:h-4 sm:mr-2" />}
-                                <span className="hidden sm:inline">{unsavedChanges.size > 0 ? `Submit (${unsavedChanges.size})` : 'Submitted'}</span>
-                                <span className="sm:hidden ml-1">{unsavedChanges.size > 0 ? unsavedChanges.size : <Check className="w-3 h-3" />}</span>
-                            </Button>
+                            {/* Ratings save automatically; this shows where that stands. */}
+                            <div role="status" aria-live="polite" className="flex items-center">
+                                {isSaving || pendingSaves > 0 ? (
+                                    <span className="flex items-center gap-1 text-xs theme-text-muted">
+                                        <Loader2 className="w-3.5 h-3.5 animate-spin" aria-hidden="true" /> Saving…
+                                    </span>
+                                ) : unsavedChanges.size > 0 ? (
+                                    <Button
+                                        onClick={handleSaveChanges}
+                                        variant="primary"
+                                        className="text-xs sm:text-sm !px-2.5 sm:!px-4 !py-1.5 sm:!py-2"
+                                    >
+                                        <RotateCcw className="w-3.5 h-3.5 mr-1.5" aria-hidden="true" />
+                                        Not saved — Retry ({unsavedChanges.size})
+                                    </Button>
+                                ) : lastSaved ? (
+                                    <span className="flex items-center gap-1 text-xs theme-text-muted">
+                                        <Check className="w-3.5 h-3.5 text-semantic-success" aria-hidden="true" /> All changes saved
+                                    </span>
+                                ) : null}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -424,7 +431,7 @@ export function ParticipantMatrix() {
                     <aside className="hidden lg:block space-y-4 sticky top-[140px] z-30">
                         <div className="flex items-center justify-between px-1">
                             <h3 className="font-bold theme-text-secondary text-xs uppercase tracking-wider">
-                                Categories
+                                Criteria
                             </h3>
                             <span className="text-[10px] bg-theme-bg-tertiary px-2 py-0.5 rounded-full theme-text-muted">
                                 {activeCriterionIndex + 1} / {workshopCriteria.length}
@@ -495,6 +502,11 @@ export function ParticipantMatrix() {
                             {workshopCriteria[activeCriterionIndex]?.description && (
                                 <p className="text-xs sm:text-sm theme-text-secondary mt-1.5 sm:mt-2 italic max-w-2xl mx-auto">
                                     &ldquo;{workshopCriteria[activeCriterionIndex].description}&rdquo;
+                                </p>
+                            )}
+                            {useCases.length > 0 && (
+                                <p className="text-xs font-medium text-brand-violet mt-1.5" aria-live="polite">
+                                    {ratedUseCases.length} of {useCases.length} rated for this criterion
                                 </p>
                             )}
                         </div>
@@ -587,17 +599,26 @@ export function ParticipantMatrix() {
                                 <div className="space-y-2 lg:max-h-[300px] lg:overflow-y-auto lg:pr-2 scrollbar-hide">
                                     {ratedUseCases.map(uc => (
                                         <div key={uc.id} className="flex items-center justify-between p-2 rounded-lg bg-brand-violet/5 border border-brand-violet/20 group">
-                                            <div className="text-[11px] font-medium theme-text-primary truncate">{uc.title}</div>
-                                            <div className="flex items-center gap-2 shrink-0 ml-2">
+                                            <button
+                                                type="button"
+                                                onClick={() => setMobileScoreTarget(uc)}
+                                                className="text-[11px] font-medium theme-text-primary truncate text-left flex-1 min-w-0 py-2"
+                                                title="Change rating"
+                                            >
+                                                {uc.title}
+                                            </button>
+                                            <div className="flex items-center gap-1 shrink-0 ml-2">
                                                 <span className="text-[10px] font-black text-brand-violet bg-brand-violet/10 px-1.5 py-0.5 rounded">
-                                                    {scores[uc.id][activeCriterion]}
+                                                    {scores[uc.id][activeCriterion] === -1 ? 'Unsure' : scores[uc.id][activeCriterion]}
                                                 </span>
                                                 <button
+                                                    type="button"
                                                     onClick={() => handleRemoveRating(uc.id)}
-                                                    className="p-1 hover:bg-red-100 hover:text-red-500 rounded transition-colors"
-                                                    title="Remove Rating"
+                                                    className="min-w-[44px] min-h-[44px] flex items-center justify-center hover:bg-red-100 hover:text-red-500 rounded transition-colors"
+                                                    title="Remove rating"
+                                                    aria-label={`Remove rating for ${uc.title}`}
                                                 >
-                                                    <X className="w-3 h-3" />
+                                                    <X className="w-4 h-4" aria-hidden="true" />
                                                 </button>
                                             </div>
                                         </div>

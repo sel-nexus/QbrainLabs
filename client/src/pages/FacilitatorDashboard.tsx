@@ -34,6 +34,7 @@ interface Workshop {
   participant_count: number;
   use_case_count: number;
   created_at: string;
+  completed_at?: string | null;
   can_edit: boolean;
   can_delete: boolean;
 }
@@ -191,7 +192,8 @@ export function FacilitatorDashboard() {
                 Welcome back, {user?.full_name || user?.email}
               </p>
             </div>
-            {user?.is_admin && (
+            {/* Any approved facilitator can create workshops (pending accounts see the approval screen) */}
+            {!isPending && (
               <button
                 onClick={() => navigate('/facilitator/create')}
                 className="px-4 py-2 bg-brand-violet text-white rounded-lg hover:bg-brand-violet/90 transition-colors flex items-center gap-2"
@@ -303,9 +305,7 @@ export function FacilitatorDashboard() {
               <LayoutDashboard className="w-12 h-12 contrast-muted mx-auto mb-3" />
               <p className="theme-text-secondary font-medium">No workshops assigned</p>
               <p className="contrast-muted text-sm mt-1">
-                {user?.is_admin
-                  ? 'Create a workshop to get started'
-                  : 'Contact an administrator to get assigned to workshops'}
+                Create a workshop to get started, or ask a colleague to add you to theirs.
               </p>
             </div>
           ) : (
@@ -412,7 +412,7 @@ export function FacilitatorDashboard() {
                         {workshop.use_case_count}
                       </td>
                       <td className="px-6 py-4 text-sm contrast-muted">
-                        {formatDate(workshop.created_at)}
+                        {formatDate(workshop.completed_at || workshop.created_at)}
                       </td>
                       <td className="px-6 py-4 text-right">
                         <button

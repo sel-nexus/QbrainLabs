@@ -15,6 +15,7 @@ import uuid
 from collections import defaultdict
 
 from app.utils.matrix import (
+    axes_from_config,
     calculate_agreement_score, 
     detect_scale_max, 
     get_scale_factor, 
@@ -630,7 +631,7 @@ async def get_quadrant_analysis(
         avg_scores = {k: scores_sum[k] / scores_count[k] for k in scores_sum}
         
         # Determine X and Y coordinates using centralized standardized logic
-        x_val, y_val = calculate_matrix_position(avg_scores, template_id, scale_max)
+        x_val, y_val = calculate_matrix_position(avg_scores, template_id, scale_max, **axes_from_config(workshop_config))
         
         if x_val is None or y_val is None:
             continue

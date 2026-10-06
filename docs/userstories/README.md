@@ -191,6 +191,7 @@ User stories are organized into 11 logical groups based on feature domains. Each
 | US27 | Application Icon & Branding | ✅ Implemented | 2 | [US27_application_icon_branding.md](./07-ui-ux/US27_application_icon_branding.md) |
 | US35 | Participant Theme Consistency for Use Case Creation | 📋 Backlog | 3 | [US35_participant_theme_consistency.md](./07-ui-ux/US35_participant_theme_consistency.md) |
 | US39 | Remove Redundant Leave Button for Participants | 📋 Backlog | 2 | [US39_remove_redundant_leave_button.md](./07-ui-ux/US39_remove_redundant_leave_button.md) |
+| US48 | Workshop Usability Improvements (Epic, 13 child stories) | 📋 Backlog | 86 | [US48_workshop_usability_improvements.md](./07-ui-ux/US48_workshop_usability_improvements.md) |
 
 **Notes:**
 - US11 is a catch-all for initial enhancements (now covered by other stories)
@@ -335,6 +336,7 @@ Stories not yet fully implemented and recommended for future sprints:
 | US41 | Participant Feedback System + Admin | 06-Business-Intelligence | High |
 | US42 | Enhanced Q&A Chat with History | 05-Engagement | High |
 | US43 | Enhanced Matrix Activity Dashboard | 06-Business-Intelligence | High |
+| US48 | Workshop Usability Improvements (Epic) | 07-UI-UX | High (P0 items before next live workshop) |
 
 Functional issues (FUN-001–FUN-030) are tracked in [FUNCTIONAL_ISSUES_BACKLOG.md](../project_management/FUNCTIONAL_ISSUES_BACKLOG.md); implement in sequential order where applicable.
 
