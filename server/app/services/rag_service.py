@@ -234,6 +234,15 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
             raise
 
     async def check_feasibility(self, solution_text: str, workshop_id: Optional[str] = None, db=None) -> Dict[str, Any]:
+        # A workshop that selected Typesafe AI's Jev as its decision model gets a
+        # typed High/Medium/Low answer from Jev (works without an OpenAI key).
+        from app.services.llm_resolver import resolve_jev_model
+        jev = await resolve_jev_model(db, workshop_id)
+        if jev:
+            result = await self._jev_feasibility(jev, solution_text, workshop_id)
+            if result:
+                return result
+
         if self.mock_mode:
             score = random.choice(["High", "Medium", "Low"])
             reasons = {
@@ -277,6 +286,43 @@ Return JSON only: {{ "title": "...", "description": "...", "solution": "...", "k
         except (json.JSONDecodeError, AttributeError) as e:
             logger.warning("feasibility_response_parse_failed", error=str(e))
             return {"score": "Unknown", "reason": "Parse error"}
+
+    async def _jev_feasibility(self, jev, solution_text: str, workshop_id: Optional[str]) -> Optional[Dict[str, Any]]:
+        """Feasibility as a Jev `choice` question; None (fall back) on any error."""
+        from app.services.typesafe_client import TypesafeError, system_one, usage_tokens
+        questions = {
+            "feasibility": {
+                "type": "choice",
+                "instructions": "How technically feasible is this AI solution, considering data availability, model complexity and computing cost?",
+                "criteria": {
+                    "High": "Standard pattern with well-supported tools and readily available data",
+                    "Medium": "Feasible, but needs significant data preparation or integration work",
+                    "Low": "High technical risk, scarce data or high resource cost",
+                },
+            }
+        }
+        try:
+            data = await system_one(jev, {"proposed_solution": solution_text}, questions)
+            answer = data["answers"]["feasibility"]
+            score = answer.get("choice")
+            if score not in questions["feasibility"]["criteria"]:
+                raise TypesafeError(f"unexpected choice {score!r}")
+            usage = usage_tokens(data)
+            await track_llm_usage(
+                feature="feasibility",
+                model_name=data.get("model") or jev.model,
+                prompt_tokens=usage["prompt"],
+                completion_tokens=usage["completion"],
+                workshop_id=workshop_id,
+            )
+            confidence = answer.get("confidence")
+            reason = questions["feasibility"]["criteria"][score]
+            if isinstance(confidence, (int, float)):
+                reason += f" (Jev confidence {confidence:.0%})"
+            return {"score": score, "reason": reason, "is_mock": False}
+        except (TypesafeError, KeyError, TypeError, ValueError) as e:
+            logger.warning("jev_feasibility_failed_falling_back", workshop_id=workshop_id, error=str(e))
+            return None
 
     async def check_duplicates(self, candidate_title: str, candidate_desc: str, existing_items: List[Dict[str, Any]]) -> Dict[str, Any]:
         """
