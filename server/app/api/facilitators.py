@@ -706,6 +706,15 @@ async def update_facilitator_workshops(
 
 # ============== Facilitator: Workshop Access ==============
 
+def _completed_at(workshop):
+    """When the workshop was marked completed (stored in config by /complete)."""
+    raw = (workshop.config or {}).get("completed_at")
+    try:
+        return datetime.fromisoformat(raw) if raw else None
+    except (TypeError, ValueError):
+        return None
+
+
 @router.get("/facilitator/workshops", response_model=List[FacilitatorWorkshopListItem])
 async def get_facilitator_workshops(
     current_user: User = Depends(require_facilitator),
@@ -749,6 +758,7 @@ async def get_facilitator_workshops(
             participant_count=participant_count.scalar() or 0,
             use_case_count=use_case_count.scalar() or 0,
             created_at=workshop.created_at,
+            completed_at=_completed_at(workshop),
             can_edit=True,  # Owners can always edit
             can_delete=True  # Owners can always delete
         ))
@@ -787,6 +797,7 @@ async def get_facilitator_workshops(
                 participant_count=participant_count.scalar() or 0,
                 use_case_count=use_case_count.scalar() or 0,
                 created_at=workshop.created_at,
+                completed_at=_completed_at(workshop),
                 can_edit=assignment.can_edit,
                 can_delete=assignment.can_delete
             ))
@@ -817,6 +828,7 @@ async def get_facilitator_workshops(
                 participant_count=participant_count.scalar() or 0,
                 use_case_count=use_case_count.scalar() or 0,
                 created_at=workshop.created_at,
+                completed_at=_completed_at(workshop),
                 can_edit=True,
                 can_delete=True
             ))
@@ -889,6 +901,7 @@ async def get_facilitator_workshop_detail(
         participant_count=participant_count.scalar() or 0,
         use_case_count=use_case_count.scalar() or 0,
         created_at=workshop.created_at,
+        completed_at=_completed_at(workshop),
         can_edit=can_edit,
         can_delete=can_delete
     )

@@ -52,6 +52,7 @@ export function JoinWorkshop() {
     // Set when a QR/link for a *different* workshop is opened while the
     // participant still has a session in another one.
     const [switchFrom, setSwitchFrom] = useState<string | null>(null);
+    const [showHostOptions, setShowHostOptions] = useState(false);
 
     // Existing session: go back to it, unless the link is for another workshop.
     useEffect(() => {
@@ -250,7 +251,10 @@ export function JoinWorkshop() {
 
                 <form onSubmit={handleJoin} className="space-y-6" noValidate>
                     <Input
+                        label="Workshop PIN (6 characters)"
                         inputMode="text"
+                        autoCapitalize="characters"
+                        autoComplete="off"
                         className="text-4xl text-center tracking-widest uppercase py-6 font-mono font-bold placeholder:tracking-normal placeholder:normal-case placeholder:text-2xl placeholder:font-sans"
                         placeholder="Enter PIN"
                         maxLength={6}
@@ -265,7 +269,10 @@ export function JoinWorkshop() {
                     />
 
                     <Input
+                        label="Your name (others in the workshop will see it)"
                         placeholder="Your Name"
+                        maxLength={60}
+                        autoComplete="name"
                         className="text-center text-lg"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
@@ -283,7 +290,17 @@ export function JoinWorkshop() {
                         </div>
                     )}
 
-                    {/* US32: Join as options */}
+                    {/* US32: facilitator access requests are rare, so they sit behind a small
+                        link instead of being a choice every participant has to read. */}
+                    {!showHostOptions ? (
+                        <button
+                            type="button"
+                            className={`w-full text-center text-sm underline ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}
+                            onClick={() => setShowHostOptions(true)}
+                        >
+                            Are you hosting this workshop?
+                        </button>
+                    ) : (
                     <div className={`p-4 rounded-lg ${theme === 'light' ? 'bg-gray-50' : 'bg-surface-800'}`}>
                         <p className={`text-sm font-medium mb-3 ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
                             Join as:
@@ -339,6 +356,7 @@ export function JoinWorkshop() {
                             </div>
                         )}
                     </div>
+                    )}
 
                     {/* Legacy facilitator checkbox - hidden but kept for backward compatibility */}
                     <input type="hidden" value={isFacilitator ? "true" : "false"} />

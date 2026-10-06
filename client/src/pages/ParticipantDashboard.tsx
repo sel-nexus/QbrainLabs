@@ -23,7 +23,9 @@ import { PollResponder } from '../components/polls/PollResponder';
 import { ReactionBar } from '../components/polls/ReactionBar';
 import { ReactionOverlay } from '../components/polls/ReactionOverlay';
 import { QAPanel } from '../components/polls/QAPanel';
-import { MessageSquare, Trophy, Award } from 'lucide-react';
+import { MessageSquare, Trophy, Award, ArrowRight } from 'lucide-react';
+import { TopIdeas } from '../components/participant/TopIdeas';
+import { phaseLabel } from '../lib/workshopPhases';
 import { PointsDisplay } from '../components/gamification/PointsDisplay';
 import { AchievementToast } from '../components/gamification/AchievementToast';
 import { Leaderboard } from '../components/gamification/Leaderboard';
@@ -58,7 +60,7 @@ interface SessionInfo {
     surveys: Survey[];
 }
 
-type ActiveModal = 'usecase' | 'survey' | 'qa' | 'leaderboard' | 'badges' | null;
+type ActiveModal = 'usecase' | 'survey' | 'qa' | 'leaderboard' | 'badges' | 'results' | null;
 
 export function ParticipantDashboard() {
     const navigate = useNavigate();
@@ -70,6 +72,7 @@ export function ParticipantDashboard() {
     const [activeModal, setActiveModal] = useState<ActiveModal>(null);
     const [activeSurveyId, setActiveSurveyId] = useState<string | null>(null);
     const [selectedUseCase, setSelectedUseCase] = useState<UseCase | null>(null);
+    const [showOnlyMine, setShowOnlyMine] = useState(false);
     // While the participant is writing a use case, a phase change must not
     // navigate away; we show a banner and continue once they're done.
     const [scoringStartedWhileWriting, setScoringStartedWhileWriting] = useState(false);
@@ -214,6 +217,37 @@ export function ParticipantDashboard() {
     };
 
     const currentPhase = sessionInfo?.current_phase || 'LOBBY';
+    const isComplete = sessionInfo?.workshop_status === 'COMPLETED';
+    const isMine = (uc: UseCase) => !!session?.participantId && uc.participant_id === session.participantId;
+    const myUseCaseCount = (sessionInfo?.use_cases || []).filter(isMine).length;
+    const visibleUseCases = (sessionInfo?.use_cases || []).filter((uc) => !showOnlyMine || isMine(uc));
+    const highlightAddTile = !isComplete && currentPhase === 'INTAKE';
+
+    // One clear "what to do now" per phase.
+    const nextStep: { step?: string; title: string; detail: string; action?: { label: string; onClick: () => void } } =
+        isComplete ? {
+            title: 'The workshop is complete — thank you!',
+            detail: 'Here are the use cases the group ranked highest.',
+            action: { label: 'See top use cases', onClick: () => setActiveModal('results') },
+        } : currentPhase === 'INTAKE' ? {
+            step: 'Step 1 of 3',
+            title: 'Add your AI use case ideas',
+            detail: 'Describe a problem AI could help with. You can add as many as you like.',
+            action: { label: 'Add a use case', onClick: handleUseCaseClick },
+        } : currentPhase === 'SCORING' ? {
+            step: 'Step 2 of 3',
+            title: 'Score the use cases',
+            detail: 'The facilitator presents each use case; rate it against the criteria.',
+            action: { label: 'Go to scoring', onClick: () => navigate('/scoring') },
+        } : currentPhase === 'ANALYSIS' ? {
+            step: 'Step 3 of 3',
+            title: 'See the results',
+            detail: 'Scoring is closed. See which use cases came out on top.',
+            action: { label: 'See top use cases', onClick: () => setActiveModal('results') },
+        } : {
+            title: 'Waiting for the facilitator to start',
+            detail: "You're in. This page updates automatically when the workshop begins.",
+        };
 
     const hasUseCases = (sessionInfo?.use_cases.length || 0) > 0;
     const canPrioritize = hasUseCases; // Enabled whenever use cases exist, regardless of phase
@@ -253,7 +287,7 @@ export function ParticipantDashboard() {
                                 Welcome, {session?.name}
                             </span>
                             <span className="text-xs px-2 py-0.5 rounded-full bg-brand-violet/20 text-brand-violet font-medium">
-                                {currentPhase}
+                                {isComplete ? 'Complete' : phaseLabel(currentPhase)}
                             </span>
                         </div>
                     </div>
@@ -279,6 +313,25 @@ export function ParticipantDashboard() {
 
             {/* Main Content */}
             <main className="max-w-5xl mx-auto px-4 py-8 pb-32">
+                {/* What to do now: one clear next step per phase */}
+                <section
+                    aria-labelledby="next-step-title"
+                    className="mb-8 rounded-2xl border border-brand-violet/30 bg-brand-violet/5 p-5 flex flex-col sm:flex-row sm:items-center gap-4"
+                >
+                    <div className="flex-1">
+                        {nextStep.step && (
+                            <p className="text-xs font-semibold uppercase tracking-wide text-brand-violet">{nextStep.step}</p>
+                        )}
+                        <h2 id="next-step-title" className="text-lg font-bold theme-text-primary">{nextStep.title}</h2>
+                        <p className="text-sm theme-text-secondary mt-1">{nextStep.detail}</p>
+                    </div>
+                    {nextStep.action && (
+                        <Button onClick={nextStep.action.onClick} className="shrink-0">
+                            {nextStep.action.label} <ArrowRight className="w-4 h-4 ml-2" aria-hidden="true" />
+                        </Button>
+                    )}
+                </section>
+
                 {/* Action Tiles Grid - Show 4 tiles when use cases exist */}
                 {(sessionInfo?.use_cases.length || 0) > 0 ? (
                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
@@ -293,6 +346,7 @@ export function ParticipantDashboard() {
                         />
 
                         {/* Tile 2: Add a New Use Case */}
+                        <div className={highlightAddTile ? 'rounded-2xl ring-2 ring-brand-violet ring-offset-2 ring-offset-transparent' : ''}>
                         <ActionTile
                             icon={<Plus className="w-7 h-7" />}
                             title={t('dashboard.participant.tiles.addUseCase.title')}
@@ -301,6 +355,7 @@ export function ParticipantDashboard() {
                             badgeVariant="success"
                             onClick={handleUseCaseClick}
                         />
+                        </div>
 
                         {/* Tile 3: Survey */}
                         <ActionTile
@@ -351,6 +406,7 @@ export function ParticipantDashboard() {
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {/* Tile 1: Submit Use Case */}
+                        <div className={highlightAddTile ? 'rounded-2xl ring-2 ring-brand-violet ring-offset-2 ring-offset-transparent' : ''}>
                         <ActionTile
                             icon={<Lightbulb className="w-7 h-7" />}
                             title={t('dashboard.participant.tiles.submitUseCase.title')}
@@ -359,6 +415,7 @@ export function ParticipantDashboard() {
                             badgeVariant="info"
                             onClick={handleUseCaseClick}
                         />
+                        </div>
 
                         {/* Tile 2: Prioritize Use Cases */}
                         <ActionTile
@@ -409,31 +466,49 @@ export function ParticipantDashboard() {
                     id="use-cases-section"
                     className="mt-8 p-6 rounded-xl border theme-card theme-border"
                 >
-                    <h2 className="text-lg font-semibold mb-4 theme-text-primary">
-                        Workshop Use Cases ({sessionInfo?.use_cases.length || 0})
-                    </h2>
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
+                        <h2 className="text-lg font-semibold theme-text-primary">
+                            Workshop Use Cases ({sessionInfo?.use_cases.length || 0})
+                        </h2>
+                        {myUseCaseCount > 0 && (
+                            <div role="group" aria-label="Filter use cases" className="flex gap-1 text-sm">
+                                <button type="button" aria-pressed={!showOnlyMine} onClick={() => setShowOnlyMine(false)}
+                                    className={`px-3 py-1 rounded-full ${!showOnlyMine ? 'bg-brand-violet text-white' : 'theme-bg-tertiary theme-text-secondary'}`}>
+                                    All
+                                </button>
+                                <button type="button" aria-pressed={showOnlyMine} onClick={() => setShowOnlyMine(true)}
+                                    className={`px-3 py-1 rounded-full ${showOnlyMine ? 'bg-brand-violet text-white' : 'theme-bg-tertiary theme-text-secondary'}`}>
+                                    Mine ({myUseCaseCount})
+                                </button>
+                            </div>
+                        )}
+                    </div>
 
                     {(sessionInfo?.use_cases.length || 0) === 0 ? (
                         <p className="text-sm theme-text-secondary">
                             No use cases submitted yet. Be the first to add one!
                         </p>
                     ) : (
-                        <div className="grid gap-3 max-h-64 overflow-y-auto">
-                            {sessionInfo?.use_cases.map((uc) => (
-                                <div
+                        <div className="grid gap-3 max-h-96 overflow-y-auto">
+                            {visibleUseCases.map((uc) => (
+                                <button
+                                    type="button"
                                     key={uc.id}
-                                    className="p-3 rounded-lg theme-bg-tertiary cursor-pointer hover:theme-bg-secondary transition-colors"
+                                    className="text-left p-3 rounded-lg theme-bg-tertiary cursor-pointer hover:theme-bg-secondary transition-colors"
                                     onClick={() => setSelectedUseCase(uc)}
                                 >
-                                    <div className="font-medium text-sm theme-text-primary">
-                                        {uc.title}
+                                    <div className="flex items-center gap-2 font-medium text-sm theme-text-primary">
+                                        <span className="flex-1">{uc.title}</span>
+                                        {isMine(uc) && (
+                                            <span className="text-[11px] px-2 py-0.5 rounded-full bg-brand-violet/20 text-brand-violet">Mine · tap to edit</span>
+                                        )}
                                     </div>
                                     {uc.description && (
                                         <div className="text-xs mt-1 line-clamp-1 theme-text-secondary">
                                             {uc.description}
                                         </div>
                                     )}
-                                </div>
+                                </button>
                             ))}
                         </div>
                     )}
@@ -500,6 +575,22 @@ export function ParticipantDashboard() {
             )}
 
             {/* Leaderboard Modal */}
+            {activeModal === 'results' && session?.workshopId && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4" role="dialog" aria-modal="true" aria-labelledby="top-ideas-title">
+                    <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 theme-card">
+                        <button
+                            onClick={handleModalClose}
+                            aria-label="Close"
+                            className="absolute top-4 right-4 p-2 rounded-lg transition theme-text-secondary hover:theme-bg-tertiary hover:theme-text-primary"
+                        >
+                            <X className="w-5 h-5" />
+                        </button>
+                        <h2 id="top-ideas-title" className="text-xl font-bold theme-text-primary mb-4">Top use cases</h2>
+                        <TopIdeas workshopId={session.workshopId} />
+                    </div>
+                </div>
+            )}
+
             {activeModal === 'leaderboard' && session?.workshopId && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
                     <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 theme-card">

@@ -8,7 +8,10 @@ from app.models.rbac import WorkshopFacilitator
 from app.schemas.workshop import WorkshopCreate, WorkshopResponse, PendingFacilitator
 from app.api.auth import get_current_user, oauth2_scheme, get_current_user_optional
 from app.models.llm_model import LLMModelConfig, LLMRole
-from app.schemas.workshop_actions import WorkshopLLMModelsUpdate, WorkshopLLMModelsResponse
+from app.schemas.workshop_actions import WorkshopLLMModelsUpdate, WorkshopLLMModelsResponse, WorkshopCompletion, WorkshopProgress
+from app.models.models import UseCase, Vote
+from sqlalchemy import func
+from datetime import datetime
 from typing import Optional
 import random
 import string
@@ -135,20 +138,116 @@ async def update_phase(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    """Update workshop phase. Requires authentication (facilitator only)."""
+    """Update workshop phase (forward or back). Owner, assigned facilitator or admin."""
     result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
     workshop = result.scalars().first()
     if not workshop:
         raise HTTPException(status_code=404, detail="Workshop not found")
 
+    await _check_workshop_permission(workshop, current_user, db)
+    if phase_in.phase not in _VALID_PHASES:
+        raise HTTPException(
+            status_code=422,
+            detail=f"Invalid phase '{phase_in.phase}'. Use one of: {', '.join(_VALID_PHASES)}",
+        )
+
     workshop.current_phase = phase_in.phase
+    if workshop.status in (WorkshopStatus.DRAFT, WorkshopStatus.OPEN, WorkshopStatus.COMPLETED):
+        # Moving through phases means the session is live (also reopens a completed one).
+        workshop.status = WorkshopStatus.IN_PROGRESS
     await db.commit()
     await db.refresh(workshop)
     
     # Broadcast state change
-    await sio.emit('workshop_state_change', {'phase': workshop.current_phase}, room=str(workshop.id))
+    await sio.emit(
+        'workshop_state_change',
+        {'phase': workshop.current_phase, 'status': workshop.status},
+        room=str(workshop.id),
+    )
     
     return workshop
+
+
+_VALID_PHASES = ("INTAKE", "SCORING", "ANALYSIS")
+
+
+@router.post("/{workshop_id}/complete", response_model=WorkshopResponse)
+async def complete_workshop(
+    workshop_id: str,
+    body: WorkshopCompletion,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Mark the workshop completed (or reopen it with completed=false)."""
+    result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
+    workshop = result.scalars().first()
+    if not workshop:
+        raise HTTPException(status_code=404, detail="Workshop not found")
+    await _check_workshop_permission(workshop, current_user, db)
+
+    config = dict(workshop.config or {})
+    if body.completed:
+        workshop.status = WorkshopStatus.COMPLETED
+        workshop.active_use_case_id = None
+        config["completed_at"] = datetime.utcnow().isoformat()
+    else:
+        workshop.status = WorkshopStatus.IN_PROGRESS
+        config.pop("completed_at", None)
+    workshop.config = config
+    await db.commit()
+    await db.refresh(workshop)
+
+    await sio.emit(
+        'workshop_state_change',
+        {'phase': workshop.current_phase, 'status': workshop.status},
+        room=str(workshop.id),
+    )
+    return workshop
+
+
+@router.get("/{workshop_id}/progress", response_model=WorkshopProgress)
+async def get_workshop_progress(
+    workshop_id: str,
+    current_user: User = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db)
+):
+    """Live counts for the facilitator: who joined, submitted and scored."""
+    result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
+    workshop = result.scalars().first()
+    if not workshop:
+        raise HTTPException(status_code=404, detail="Workshop not found")
+    await _check_workshop_permission(workshop, current_user, db)
+
+    participants = (await db.execute(
+        select(func.count(Participant.id)).where(
+            Participant.workshop_id == workshop.id,
+            Participant.role == ParticipantRole.PARTICIPANT,
+        )
+    )).scalar() or 0
+    use_case_rows = (await db.execute(
+        select(UseCase.id, UseCase.participant_id).where(UseCase.workshop_id == workshop.id)
+    )).all()
+    submitters = len({row.participant_id for row in use_case_rows if row.participant_id})
+    vote_rows = (await db.execute(
+        select(Vote.use_case_id, Vote.participant_id)
+        .join(UseCase, UseCase.id == Vote.use_case_id)
+        .where(UseCase.workshop_id == workshop.id)
+    )).all()
+    votes_by_use_case: dict = {}
+    for row in vote_rows:
+        votes_by_use_case.setdefault(str(row.use_case_id), set()).add(str(row.participant_id))
+    scorers = len({str(row.participant_id) for row in vote_rows})
+    active_id = str(workshop.active_use_case_id) if workshop.active_use_case_id else None
+
+    return WorkshopProgress(
+        participants=participants,
+        use_cases=len(use_case_rows),
+        submitters=submitters,
+        scorers=scorers,
+        votes_by_use_case={k: len(v) for k, v in votes_by_use_case.items()},
+        active_use_case_id=active_id,
+        active_card_votes=len(votes_by_use_case.get(active_id, ())) if active_id else 0,
+    )
 
 from app.schemas.workshop_actions import ActivateCard
 from app.models.models import UseCase
@@ -160,11 +259,18 @@ async def set_active_card(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    """Set active use case card. Requires authentication (facilitator only)."""
+    """Set (or clear, with use_case_id=null) the card being scored.
+    Owner, assigned facilitator or admin."""
     result = await db.execute(select(Workshop).where(Workshop.id == workshop_id))
     workshop = result.scalars().first()
     if not workshop:
         raise HTTPException(status_code=404, detail="Workshop not found")
+    await _check_workshop_permission(workshop, current_user, db)
+    if action.use_case_id:
+        uc_check = await db.execute(select(UseCase.workshop_id).where(UseCase.id == action.use_case_id))
+        row = uc_check.first()
+        if not row or str(row[0]) != str(workshop.id):
+            raise HTTPException(status_code=400, detail="That use case does not belong to this workshop")
 
     workshop.active_use_case_id = action.use_case_id
     await db.commit()

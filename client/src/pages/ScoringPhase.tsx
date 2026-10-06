@@ -7,6 +7,7 @@ import { useSession } from '../context/SessionContext';
 import { Button } from '../components/ui/Button';
 import { LogOut, ArrowLeft, Loader2 } from 'lucide-react';
 import { LoadErrorPanel } from '../components/StatusPages';
+import { ConfirmationModal } from '../components/ConfirmationModal';
 import { errorMessage } from '../lib/apiErrors';
 
 interface ActiveCard {
@@ -38,11 +39,10 @@ export function ScoringPhase() {
     const { session, logout } = useSession();
     const [workshop, setWorkshop] = useState<any>(null);
 
+    const [confirmLeave, setConfirmLeave] = useState(false);
     const handleLeave = () => {
-        if (confirm("Are you sure you want to leave the scoring session?")) {
-            logout();
-            navigate('/');
-        }
+        logout();
+        navigate('/');
     };
     const [activeCard, setActiveCard] = useState<any>(null);
     const [loadError, setLoadError] = useState<string | null>(null);
@@ -107,8 +107,8 @@ export function ScoringPhase() {
                 </button>
                 <div className="flex items-center gap-4">
                     <span className="font-mono text-brand-violet">{workshop.title}</span>
-                    <Button variant="ghost" onClick={handleLeave} className="text-gray-400 hover:text-white p-2 h-auto" aria-label="Leave workshop">
-                        <LogOut className="w-4 h-4" aria-hidden="true" />
+                    <Button variant="ghost" onClick={() => setConfirmLeave(true)} className="text-gray-400 hover:text-white px-2 h-auto text-sm">
+                        <LogOut className="w-4 h-4 mr-1" aria-hidden="true" /> Leave
                     </Button>
                 </div>
             </header>
@@ -127,6 +127,16 @@ export function ScoringPhase() {
                     <p>Wait for the facilitator to present an item.</p>
                 </div>
             )}
+            <ConfirmationModal
+                isOpen={confirmLeave}
+                onClose={() => setConfirmLeave(false)}
+                onConfirm={handleLeave}
+                title="Leave the workshop?"
+                message="You'll stop scoring and leave this workshop. You can rejoin later with the same PIN and name."
+                confirmText="Leave workshop"
+                cancelText="Stay"
+                variant="warning"
+            />
         </div>
     );
 }

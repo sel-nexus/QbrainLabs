@@ -26,10 +26,8 @@ import { KnowledgeBase } from './pages/KnowledgeBase';
 import { AdminLayout } from './components/AdminLayout';
 import { AuthenticatedLayout, PublicWithHeaderLayout } from './components/AuthenticatedLayout';
 import { FeedbackWidget } from './components/feedback/FeedbackWidget';
-import { WaitingRoom } from './pages/WaitingRoom';
 import { ParticipantDashboard } from './pages/ParticipantDashboard';
 import { ParticipantMatrix } from './pages/ParticipantMatrix';
-import { IntakePhase } from './pages/IntakePhase';
 import { ScoringPhase } from './pages/ScoringPhase';
 import { AllUseCases } from './pages/AllUseCases';
 import { FacilitatorRegister } from './pages/FacilitatorRegister';
@@ -118,10 +116,11 @@ function App() {
           <Route path="/workshop/:id" element={<PublicWithHeaderLayout><WorkshopDetail /></PublicWithHeaderLayout>} />
 
           {/* Participant Routes - Require active SessionContext session */}
-          <Route path="/lobby" element={<ParticipantRoute><WaitingRoom /></ParticipantRoute>} />
+          {/* One participant shell: the old lobby/intake pages redirect to the dashboard */}
+          <Route path="/lobby" element={<ParticipantRoute><Navigate to="/participant-dashboard" replace /></ParticipantRoute>} />
           <Route path="/participant-dashboard" element={<ParticipantRoute><ParticipantDashboard /></ParticipantRoute>} />
           <Route path="/participant-matrix" element={<ParticipantRoute><ParticipantMatrix /></ParticipantRoute>} />
-          <Route path="/intake" element={<ParticipantRoute><IntakePhase /></ParticipantRoute>} />
+          <Route path="/intake" element={<ParticipantRoute><Navigate to="/participant-dashboard" replace /></ParticipantRoute>} />
           <Route path="/scoring" element={<ParticipantRoute><ScoringPhase /></ParticipantRoute>} />
 
           {/* Facilitator Routes (Protected) - All wrapped with AuthenticatedLayout for consistent header */}

@@ -34,6 +34,7 @@ interface Workshop {
   participant_count: number;
   use_case_count: number;
   created_at: string;
+  completed_at?: string | null;
   can_edit: boolean;
   can_delete: boolean;
 }
@@ -412,7 +413,7 @@ export function FacilitatorDashboard() {
                         {workshop.use_case_count}
                       </td>
                       <td className="px-6 py-4 text-sm contrast-muted">
-                        {formatDate(workshop.created_at)}
+                        {formatDate(workshop.completed_at || workshop.created_at)}
                       </td>
                       <td className="px-6 py-4 text-right">
                         <button

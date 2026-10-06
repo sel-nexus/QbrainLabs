@@ -25,6 +25,8 @@ interface MatrixActivityDashboardProps {
     viewMode?: 'consolidated' | 'all' | 'participant';
     onRefreshMatrix?: (positions: any[], isAllPositions: boolean) => void;
     onPositionUpdate?: (position: any) => void;
+    /** Participants in the workshop; used to compute who is still pending. */
+    totalParticipants?: number;
 }
 
 export function MatrixActivityDashboard({
@@ -32,7 +34,8 @@ export function MatrixActivityDashboard({
     isVisible,
     viewMode: externalViewMode,
     onRefreshMatrix,
-    onPositionUpdate
+    onPositionUpdate,
+    totalParticipants
 }: MatrixActivityDashboardProps) {
     const { theme } = useTheme();
     const [recentActions, setRecentActions] = useState<ParticipantAction[]>([]);
@@ -360,7 +363,11 @@ export function MatrixActivityDashboard({
                 <div className="p-3 rounded-lg theme-bg-tertiary">
                     <div className="text-xs theme-text-secondary">Pending</div>
                     <div className="text-xl font-bold theme-text-primary text-amber-500">
-                        {Math.max(0, activeParticipants.size - submittedParticipants.size)}
+                        {/* Everyone in the workshop who hasn't submitted yet (previously
+                            active − submitted, which was always 0). */}
+                        {totalParticipants !== undefined
+                            ? Math.max(0, totalParticipants - submittedParticipants.size)
+                            : '–'}
                     </div>
                 </div>
                 <div className="p-3 rounded-lg theme-bg-tertiary">
