@@ -225,7 +225,7 @@ export const ScenarioModeler: React.FC<ScenarioModelerProps> = ({
                                     className="text-sm font-medium bg-transparent border-none focus:outline-none focus:ring-0 p-0 text-gray-900 dark:text-white w-full"
                                     onClick={(e) => e.stopPropagation()}
                                 />
-                                <button
+                                <button aria-label="Delete"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         deleteScenario(scenario.id);

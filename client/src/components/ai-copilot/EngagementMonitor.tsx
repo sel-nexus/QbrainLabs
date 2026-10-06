@@ -83,7 +83,7 @@ export function EngagementMonitor({ workshopId, className = '' }: EngagementMoni
                         <Activity className="w-4 h-4" />
                         Group Engagement
                     </h4>
-                    <button 
+                    <button aria-label="Refresh" 
                         onClick={fetchEngagement}
                         className={`p-1 rounded hover:bg-white/10 ${
                             theme === 'light' ? 'text-gray-400' : 'text-gray-500'

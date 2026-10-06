@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Coins } from 'lucide-react';
 import { getParticipantPoints } from '../../lib/api/gamification';
 import type { PointsResponse } from '../../lib/api/gamification';
 import { useTheme } from '../../context/ThemeContext';
+import { useLiveRefresh } from '../../hooks/useLiveRefresh';
 
 interface PointsDisplayProps {
     participantId: string;
@@ -14,26 +15,16 @@ export function PointsDisplay({ participantId, className = '' }: PointsDisplayPr
     const [points, setPoints] = useState<number>(0);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        if (!participantId) return;
-        
-        const fetchPoints = async () => {
-            try {
-                const data: PointsResponse = await getParticipantPoints(participantId);
-                setPoints(data.total_points);
-            } catch (error) {
-                console.error('Failed to fetch points:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchPoints();
-        
-        // Refresh every 5 seconds
-        const interval = setInterval(fetchPoints, 5000);
-        return () => clearInterval(interval);
-    }, [participantId]);
+    useLiveRefresh(async () => {
+        try {
+            const data: PointsResponse = await getParticipantPoints(participantId);
+            setPoints(data.total_points);
+        } catch (error) {
+            console.error('Failed to fetch points:', error);
+        } finally {
+            setLoading(false);
+        }
+    }, ['gamification:points_earned'], !!participantId);
 
     if (loading) {
         return (

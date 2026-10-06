@@ -4,6 +4,7 @@ import { render, screen, fireEvent, waitFor, act, within } from '@testing-librar
 import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '../context/ThemeContext';
 import { SessionProvider } from '../context/SessionContext';
+import { ConfirmProvider } from '../context/ConfirmContext';
 import { socket } from '../lib/socket';
 
 const mockGet = vi.fn();
@@ -49,11 +50,13 @@ async function renderConsole(path = '/workshop/w-1') {
     const { WorkshopDetail } = await import('../pages/WorkshopDetail');
     render(
         <ThemeProvider>
-            <SessionProvider>
-                <MemoryRouter initialEntries={[path]}>
-                    <Routes><Route path="/workshop/:id" element={<WorkshopDetail />} /></Routes>
-                </MemoryRouter>
-            </SessionProvider>
+            <ConfirmProvider>
+                <SessionProvider>
+                    <MemoryRouter initialEntries={[path]}>
+                        <Routes><Route path="/workshop/:id" element={<WorkshopDetail />} /></Routes>
+                    </MemoryRouter>
+                </SessionProvider>
+            </ConfirmProvider>
         </ThemeProvider>
     );
     await screen.findByRole('heading', { name: 'AI Day' });

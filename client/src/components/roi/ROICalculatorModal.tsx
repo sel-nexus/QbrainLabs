@@ -35,7 +35,7 @@ export const ROICalculatorModal: React.FC<ROICalculatorModalProps> = ({
                         <h2 className="text-lg font-bold text-white">ROI Calculator</h2>
                         <p className="text-sm text-indigo-200 truncate max-w-lg">{useCaseTitle}</p>
                     </div>
-                    <button
+                    <button aria-label="Close"
                         onClick={onClose}
                         className="p-2 rounded-lg hover:bg-white/10 text-white transition-colors"
                     >

@@ -38,7 +38,7 @@ export function ChallengeCard({ challenge, isFacilitator, onEdit, onDelete, onCl
         <h3 className="text-xl font-bold theme-text-primary flex-1">{challenge.title}</h3>
         {isFacilitator && (
           <div className="flex gap-2 ml-4" onClick={(e) => e.stopPropagation()}>
-            <Button
+            <Button aria-label="Edit"
               variant="ghost"
               size="sm"
               onClick={(e) => {
@@ -49,7 +49,7 @@ export function ChallengeCard({ challenge, isFacilitator, onEdit, onDelete, onCl
             >
               <Edit2 className="w-4 h-4" />
             </Button>
-            <Button
+            <Button aria-label="Delete"
               variant="ghost"
               size="sm"
               onClick={(e) => {

@@ -1,6 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@600;700&display=swap');
 @import "tailwindcss";
 
+/* dark: variants follow the in-app theme toggle (data-theme), not the OS setting. */
+@custom-variant dark (&:where([data-theme=contrast], [data-theme=contrast] *));
+
 @theme {
   --color-brand-violet: hsl(250, 100%, 65%);
   --color-brand-magenta: hsl(320, 100%, 60%);
@@ -124,9 +127,20 @@
 
 /* Respect reduced motion preference */
 @media (prefers-reduced-motion: reduce) {
-  * {
-    transition: none;
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
   }
+}
+
+/* Visible keyboard focus everywhere (mouse clicks don't show it). */
+:focus-visible {
+  outline: 2px solid var(--theme-accent);
+  outline-offset: 2px;
 }
 
 body {

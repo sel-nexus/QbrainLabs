@@ -8,6 +8,7 @@ import { Button } from '../components/ui/Button';
 import { LogOut, ArrowLeft, Loader2 } from 'lucide-react';
 import { LoadErrorPanel } from '../components/StatusPages';
 import { ConfirmationModal } from '../components/ConfirmationModal';
+import { PollResponder } from '../components/polls/PollResponder';
 import { errorMessage } from '../lib/apiErrors';
 
 interface ActiveCard {
@@ -96,18 +97,18 @@ export function ScoringPhase() {
     }
 
     return (
-        <div className="min-h-screen bg-surface-900 p-4 pb-20 flex flex-col items-center">
+        <div className="min-h-screen theme-bg-primary theme-text-primary p-4 pb-20 flex flex-col items-center">
             <header className="w-full max-w-lg mx-auto flex justify-between items-center mb-6">
                 <button
                     type="button"
                     onClick={() => navigate('/participant-dashboard')}
-                    className="flex items-center gap-1 text-gray-400 hover:text-white text-sm"
+                    className="flex items-center gap-1 contrast-muted hover:theme-text-primary text-sm"
                 >
                     <ArrowLeft className="w-4 h-4" aria-hidden="true" /> Dashboard
                 </button>
                 <div className="flex items-center gap-4">
                     <span className="font-mono text-brand-violet">{workshop.title}</span>
-                    <Button variant="ghost" onClick={() => setConfirmLeave(true)} className="text-gray-400 hover:text-white px-2 h-auto text-sm">
+                    <Button variant="ghost" onClick={() => setConfirmLeave(true)} className="contrast-muted hover:theme-text-primary px-2 h-auto text-sm">
                         <LogOut className="w-4 h-4 mr-1" aria-hidden="true" /> Leave
                     </Button>
                 </div>
@@ -127,6 +128,7 @@ export function ScoringPhase() {
                     <p>Wait for the facilitator to present an item.</p>
                 </div>
             )}
+            <PollResponder />
             <ConfirmationModal
                 isOpen={confirmLeave}
                 onClose={() => setConfirmLeave(false)}

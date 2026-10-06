@@ -355,7 +355,7 @@ function DeleteConfirmModal({
                         </div>
                         <h2 className="text-lg font-semibold theme-text-primary">Delete Survey</h2>
                     </div>
-                    <button
+                    <button aria-label="Close"
                         onClick={onCancel}
                         disabled={isDeleting}
                         className="p-2 rounded-lg theme-hover transition-colors"

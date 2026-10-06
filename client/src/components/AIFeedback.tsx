@@ -83,6 +83,9 @@ export default function AIFeedback({
                 {[1, 2, 3, 4, 5].map((star) => (
                     <button
                         key={star}
+                        type="button"
+                        aria-label={`Rate ${star} out of 5`}
+                        aria-pressed={!!rating && star <= rating}
                         onClick={() => setRating(star)}
                         className={`p-1 rounded transition ${rating && star <= rating
                             ? 'text-yellow-500'

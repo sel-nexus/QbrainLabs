@@ -147,7 +147,7 @@ ${summary.next_steps.map((s, i) => `${i + 1}. ${s}`).join('\n')}
                                         Mock
                                     </span>
                                 )}
-                                <button
+                                <button aria-label="Download"
                                     onClick={handleCopyToClipboard}
                                     className={`p-1.5 rounded hover:bg-white/10 ${
                                         theme === 'light' ? 'text-gray-500' : 'text-gray-400'

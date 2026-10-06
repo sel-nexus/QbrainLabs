@@ -225,7 +225,7 @@ export function FacilitatorAddUseCaseModal({
             <Plus className="w-5 h-5 text-brand-violet" />
             <h2 className="text-xl font-bold theme-text-primary">Add Use Case</h2>
           </div>
-          <button
+          <button aria-label="Close"
             onClick={onClose}
             className="p-1 rounded-full hover:bg-black/10 dark:hover:bg-white/10 theme-text-secondary hover:theme-text-primary transition-colors"
           >

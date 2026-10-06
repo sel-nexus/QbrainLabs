@@ -234,7 +234,7 @@ export function ChallengeForm({ challenge, onSubmit, onCancel }: ChallengeFormPr
                   />
                 </div>
                 {successCriteria.length > 1 && (
-                  <Button
+                  <Button aria-label="Close"
                     type="button"
                     variant="ghost"
                     onClick={() => removeCriterion(index)}

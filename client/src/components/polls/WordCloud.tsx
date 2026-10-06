@@ -3,6 +3,7 @@ import { PollService, type Poll } from '../../lib/api/polls';
 import { useSession } from '../../context/SessionContext';
 import { socket } from '../../lib/socket';
 import { RefreshCw } from 'lucide-react';
+import { FALLBACK_REFRESH_MS } from '../../hooks/useLiveRefresh';
 
 interface WordCloudProps {
     pollId: string;
@@ -24,7 +25,8 @@ export function WordCloud({ pollId, className }: WordCloudProps) {
         if (!session?.workshopId) return;
         loadPollData();
 
-        const interval = setInterval(loadPollData, 5000); // Refresh every 5 seconds
+        // Socket events drive updates; this is only a safety net for missed events.
+        const interval = setInterval(loadPollData, FALLBACK_REFRESH_MS);
 
         const onPollVote = (data: { poll_id: string, total_responses: number, results: any }) => {
             if (data.poll_id === pollId) {

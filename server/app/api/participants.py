@@ -184,5 +184,6 @@ async def get_participant_session_info(
         workshop_status=workshop.status,
         current_phase=workshop.current_phase or "LOBBY",
         use_cases=[UseCaseSummary(id=uc.id, title=uc.title, description=uc.description) for uc in use_cases],
-        surveys=survey_summaries
+        surveys=survey_summaries,
+        show_leaderboard=bool((workshop.config or {}).get("show_leaderboard", False)),
     )

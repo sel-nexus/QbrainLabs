@@ -8,6 +8,7 @@ import { Button } from '../components/ui/Button';
 import { ArrowLeft, Loader2, X, RotateCcw, GripVertical, ChevronDown, ChevronUp, Check } from 'lucide-react';
 import { toast } from 'sonner';
 import { Header } from '../components/Header';
+import { PollResponder } from '../components/polls/PollResponder';
 import { PrioritizationScale } from '../components/prioritization/PrioritizationScale';
 
 export function ParticipantMatrix() {
@@ -331,6 +332,7 @@ export function ParticipantMatrix() {
     return (
         <div className="min-h-screen theme-bg-primary pt-[64px]">
             <Header showBackButton={false} showHomeButton={false} />
+            <PollResponder />
 
             {/* Sticky Header — responsive */}
             <header className="sticky top-[64px] z-40 border-b backdrop-blur theme-bg-secondary/80 theme-border">
@@ -338,7 +340,7 @@ export function ParticipantMatrix() {
                     {/* Row 1: Back + Title + Submit */}
                     <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-2 sm:gap-4 min-w-0">
-                            <button
+                            <button aria-label="Go back"
                                 onClick={() => navigate('/participant-dashboard')}
                                 className="p-1.5 sm:p-2 rounded-lg theme-text-secondary hover:theme-text-primary hover:bg-black/5 transition shrink-0"
                             >

@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from '../context/AuthContext';
 import { ThemeProvider } from '../context/ThemeContext';
 import { SessionProvider } from '../context/SessionContext';
+import { ConfirmProvider } from '../context/ConfirmContext';
 
 interface AllProvidersProps {
   children: React.ReactNode;
@@ -14,11 +15,13 @@ const AllProviders: React.FC<AllProvidersProps> = ({ children }) => {
   return (
     <BrowserRouter>
       <ThemeProvider>
-        <AuthProvider>
-          <SessionProvider>
-            {children}
-          </SessionProvider>
-        </AuthProvider>
+        <ConfirmProvider>
+          <AuthProvider>
+            <SessionProvider>
+              {children}
+            </SessionProvider>
+          </AuthProvider>
+        </ConfirmProvider>
       </ThemeProvider>
     </BrowserRouter>
   );

@@ -35,9 +35,7 @@ export function UseCaseCanvas({ session, onSuccess, onDirtyChange }: UseCaseCanv
                 { use_case_title: data.title }
             );
             setPointsEarned(pointsResponse.points_earned);
-            if (pointsResponse.achievements_unlocked.length > 0) {
-                toast.success(`Badge unlocked: ${pointsResponse.achievements_unlocked.join(', ')}!`);
-            }
+            // Points and badges are announced once by AchievementToast (socket).
         } catch (pointsError) {
             console.error('Failed to award points:', pointsError);
         }

@@ -19,5 +19,13 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    rules: {
+      // US48.12: use the shared `api` client (token, timeout, error envelope) instead of raw fetch.
+      'no-restricted-globals': ['warn', { name: 'fetch', message: "Use the `api` client from 'lib/api' instead of fetch." }],
+    },
+  },
+  {
+    files: ['src/test/**', '**/__tests__/**', 'e2e/**', 'src/lib/api.ts'],
+    rules: { 'no-restricted-globals': 'off' },
   },
 ])

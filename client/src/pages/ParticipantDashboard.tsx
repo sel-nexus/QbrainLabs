@@ -32,6 +32,7 @@ import { Leaderboard } from '../components/gamification/Leaderboard';
 import { BadgeGrid } from '../components/gamification/BadgeGrid';
 import { Header } from '../components/Header';
 import { UseCaseDetailModal } from '../components/usecases/UseCaseDetailModal';
+import { FALLBACK_REFRESH_MS } from '../hooks/useLiveRefresh';
 
 interface UseCase {
     id: string;
@@ -58,6 +59,7 @@ interface SessionInfo {
     current_phase: string;
     use_cases: UseCase[];
     surveys: Survey[];
+    show_leaderboard?: boolean;
 }
 
 type ActiveModal = 'usecase' | 'survey' | 'qa' | 'leaderboard' | 'badges' | 'results' | null;
@@ -109,7 +111,8 @@ export function ParticipantDashboard() {
     useEffect(() => {
         if (session?.participantId && session?.workshopId) {
             fetchSessionInfo();
-            const interval = setInterval(fetchSessionInfo, 10000);
+            // Socket events (below) keep this live; this is a slow safety net.
+            const interval = setInterval(fetchSessionInfo, FALLBACK_REFRESH_MS);
             return () => clearInterval(interval);
         } else {
             setLoading(false);
@@ -160,6 +163,7 @@ export function ParticipantDashboard() {
         socket.on('participant_role_update', onRoleUpdate);
         socket.on('use_case_added', onUseCaseAdded);
         socket.on('survey_status_changed', onSurveyUpdate);
+        socket.on('workshop_updated', onSurveyUpdate);
 
         return () => {
             socket.off('connect', onReconnect);
@@ -167,6 +171,7 @@ export function ParticipantDashboard() {
             socket.off('participant_role_update', onRoleUpdate);
             socket.off('use_case_added', onUseCaseAdded);
             socket.off('survey_status_changed', onSurveyUpdate);
+            socket.off('workshop_updated', onSurveyUpdate);
         };
     }, [navigate, session, updateRole]);
 
@@ -295,15 +300,17 @@ export function ParticipantDashboard() {
                         {session?.participantId && (
                             <PointsDisplay participantId={session.participantId} />
                         )}
-                        <Button variant="ghost" onClick={() => setActiveModal('leaderboard')} className="theme-text-secondary hover:theme-text-primary px-2 sm:px-4">
-                            <Trophy className="w-4 h-4 sm:mr-2" />
-                            <span className="hidden sm:inline">Leaderboard</span>
-                        </Button>
-                        <Button variant="ghost" onClick={() => setActiveModal('badges')} className="theme-text-secondary hover:theme-text-primary px-2 sm:px-4">
+                        {sessionInfo?.show_leaderboard && (
+                            <Button variant="ghost" onClick={() => setActiveModal('leaderboard')} aria-label="Leaderboard" className="theme-text-secondary hover:theme-text-primary px-2 sm:px-4">
+                                <Trophy className="w-4 h-4 sm:mr-2" aria-hidden="true" />
+                                <span className="hidden sm:inline">Leaderboard</span>
+                            </Button>
+                        )}
+                        <Button variant="ghost" onClick={() => setActiveModal('badges')} aria-label="Badges" className="theme-text-secondary hover:theme-text-primary px-2 sm:px-4">
                             <Award className="w-4 h-4 sm:mr-2" />
                             <span className="hidden sm:inline">Badges</span>
                         </Button>
-                        <Button variant="ghost" onClick={() => setActiveModal('qa')} className="theme-text-secondary hover:theme-text-primary px-2 sm:px-4">
+                        <Button variant="ghost" onClick={() => setActiveModal('qa')} aria-label="Questions and answers" className="theme-text-secondary hover:theme-text-primary px-2 sm:px-4">
                             <MessageSquare className="w-4 h-4 sm:mr-2" />
                             <span className="hidden sm:inline">Q&A</span>
                         </Button>
@@ -519,7 +526,7 @@ export function ParticipantDashboard() {
             {activeModal === 'qa' && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
                     <div className="relative w-full max-w-2xl h-[80vh] rounded-2xl overflow-hidden theme-bg-primary">
-                        <button
+                        <button aria-label="Close"
                             onClick={handleModalClose}
                             className="absolute top-4 right-4 z-10 p-2 rounded-lg transition hover:opacity-80 contrast-muted hover:theme-text-primary"
                         >
@@ -559,7 +566,7 @@ export function ParticipantDashboard() {
             {activeModal === 'survey' && activeSurveyId && session?.participantId && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
                     <div className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 theme-card">
-                        <button
+                        <button aria-label="Close"
                             onClick={handleModalClose}
                             className="absolute top-4 right-4 p-2 rounded-lg transition theme-text-secondary hover:theme-bg-tertiary hover:theme-text-primary"
                         >
@@ -594,7 +601,7 @@ export function ParticipantDashboard() {
             {activeModal === 'leaderboard' && session?.workshopId && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
                     <div className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl p-6 theme-card">
-                        <button
+                        <button aria-label="Close"
                             onClick={handleModalClose}
                             className="absolute top-4 right-4 p-2 rounded-lg transition theme-text-secondary hover:theme-bg-tertiary hover:theme-text-primary"
                         >
@@ -616,7 +623,7 @@ export function ParticipantDashboard() {
                             <h2 className="text-2xl font-bold theme-text-primary">
                                 Your Badges
                             </h2>
-                            <button
+                            <button aria-label="Close"
                                 onClick={handleModalClose}
                                 className="p-2 rounded-lg transition theme-text-secondary hover:theme-bg-tertiary hover:theme-text-primary"
                             >

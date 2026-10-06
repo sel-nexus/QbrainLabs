@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { api } from '../../lib/api';
@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { Users, Clock, MessageSquare, Play, Square, Plus, X, Send } from 'lucide-react';
 import { Modal } from '../ui/Modal';
 import { useTheme } from '../../context/ThemeContext';
+import { useLiveRefresh } from '../../hooks/useLiveRefresh';
 
 interface BreakoutRoom {
   id: string;
@@ -37,11 +38,10 @@ export function BreakoutManager({ workshopId }: BreakoutManagerProps) {
   });
   const [broadcastMessage, setBroadcastMessage] = useState('');
 
-  useEffect(() => {
-    fetchRooms();
-    const interval = setInterval(fetchRooms, 5000); // Refresh every 5 seconds
-    return () => clearInterval(interval);
-  }, [workshopId]);
+  useLiveRefresh(() => fetchRooms(), [
+    'breakout:room_created', 'breakout:assigned', 'breakout:participant_joined', 'breakout:participant_left',
+    'breakout:rooms_ending', 'breakout:rooms_closed', 'breakout:help_requested',
+  ]);
 
   const fetchRooms = async () => {
     try {
@@ -330,7 +330,7 @@ function RoomCard({ room, theme }: { room: BreakoutRoom; theme: 'light' | 'contr
         <Button variant="secondary" size="sm" className="flex-1">
           <MessageSquare className="w-4 h-4 mr-2" /> View
         </Button>
-        <Button variant="ghost" size="sm">
+        <Button aria-label="Stop" variant="ghost" size="sm">
           <Square className="w-4 h-4" />
         </Button>
       </div>

@@ -846,7 +846,7 @@ export function KnowledgeBase() {
                                         <h3 className={`text-lg font-semibold ${isLight ? 'text-gray-900' : 'text-white'}`}>
                                             {t('common.searchResults', 'Search Results')} ({searchResults.length})
                                         </h3>
-                                        <button
+                                        <button aria-label="Close"
                                             onClick={() => { setSearchResults([]); setSearchQuery(''); }}
                                             className={`${isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'}`}
                                         >
@@ -1097,7 +1097,7 @@ export function KnowledgeBase() {
                                     <p className={`text-sm ${isLight ? 'text-gray-500' : 'text-gray-400'}`}>{t('admin.knowledgeBase.discoverTrendingDesc', 'Discover trending use cases from the web')}</p>
                                 </div>
                             </div>
-                            <button onClick={() => setShowResearchModal(false)} className={`${isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'}`}>
+                            <button aria-label="Close" onClick={() => setShowResearchModal(false)} className={`${isLight ? 'text-gray-500 hover:text-gray-900' : 'text-gray-400 hover:text-white'}`}>
                                 <X className="w-5 h-5" />
                             </button>
                         </div>

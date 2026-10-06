@@ -401,7 +401,7 @@ export function SurveyBuilder({ workshopId, surveyId, onSave, onCancel }: Survey
                                                         onChange={(e) => updateOption(index, optIdx, e.target.value)}
                                                         className="flex-1 px-3 py-2 bg-surface-700 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
                                                     />
-                                                    <button
+                                                    <button aria-label="Close"
                                                         onClick={() => removeOption(index, optIdx)}
                                                         className="p-2 text-gray-400 hover:text-red-400"
                                                     >
@@ -460,7 +460,7 @@ export function SurveyBuilder({ workshopId, surveyId, onSave, onCancel }: Survey
                                                         }}
                                                         className="flex-1 px-3 py-2 bg-surface-700 border border-white/10 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-purple-500"
                                                     />
-                                                    <button
+                                                    <button aria-label="Close"
                                                         onClick={() => {
                                                             const newStatements = question.config?.statements?.filter((_, i) => i !== stmtIdx);
                                                             updateQuestion(index, {
@@ -500,21 +500,21 @@ export function SurveyBuilder({ workshopId, surveyId, onSave, onCancel }: Survey
                                         Required
                                     </label>
                                     <div className="flex gap-2">
-                                        <button
+                                        <button aria-label="Move up"
                                             onClick={() => moveQuestion(index, 'up')}
                                             disabled={index === 0}
                                             className="p-2 text-gray-400 hover:text-white disabled:opacity-30"
                                         >
                                             <ChevronUp className="w-4 h-4" />
                                         </button>
-                                        <button
+                                        <button aria-label="Move down"
                                             onClick={() => moveQuestion(index, 'down')}
                                             disabled={index === questions.length - 1}
                                             className="p-2 text-gray-400 hover:text-white disabled:opacity-30"
                                         >
                                             <ChevronDown className="w-4 h-4" />
                                         </button>
-                                        <button
+                                        <button aria-label="Delete"
                                             onClick={() => removeQuestion(index)}
                                             className="p-2 text-gray-400 hover:text-red-400"
                                         >
@@ -597,7 +597,7 @@ export function SurveyBuilder({ workshopId, surveyId, onSave, onCancel }: Survey
                     <div className="bg-surface-800 rounded-xl border border-white/10 max-w-2xl w-full max-h-[80vh] overflow-hidden">
                         <div className="flex items-center justify-between p-4 border-b border-white/10">
                             <h3 className="text-lg font-semibold text-white">Survey Templates</h3>
-                            <button onClick={() => setShowTemplates(false)} className="text-gray-400 hover:text-white">
+                            <button aria-label="Close" onClick={() => setShowTemplates(false)} className="text-gray-400 hover:text-white">
                                 <X className="w-5 h-5" />
                             </button>
                         </div>

@@ -244,7 +244,7 @@ export function CopilotPanel({
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-1">
-                                    <button
+                                    <button aria-label="Refresh"
                                         onClick={fetchSuggestions}
                                         disabled={loading}
                                         className={`p-2 rounded-lg transition-colors ${
@@ -255,7 +255,7 @@ export function CopilotPanel({
                                     >
                                         <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
                                     </button>
-                                    <button
+                                    <button aria-label="Close"
                                         onClick={() => setIsOpen(false)}
                                         className={`p-2 rounded-lg transition-colors ${
                                             theme === 'light'

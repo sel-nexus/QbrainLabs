@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Building2, Users, Settings, Plus, Mail, Crown, Shield, Eye, UserPlus, Trash2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useConfirm } from '../../context/ConfirmContext';
 
 interface Organization {
   id: string;
@@ -47,6 +48,7 @@ import { apiErrorText } from '../../lib/apiErrors';
 const API_BASE = API_BASE_URL;
 
 export function OrganizationManager() {
+  const confirm = useConfirm();
   const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [selectedOrg, setSelectedOrg] = useState<Organization | null>(null);
   const [members, setMembers] = useState<Member[]>([]);
@@ -172,7 +174,7 @@ export function OrganizationManager() {
   };
 
   const removeMember = async (memberId: string) => {
-    if (!selectedOrg || !confirm('Remove this member?')) return;
+    if (!selectedOrg || !(await confirm.ok({ title: 'Remove this member?', message: 'They will lose access to this organization.', confirmText: 'Remove member' }))) return;
     try {
       const res = await fetch(`${API_BASE}/api/organizations/${selectedOrg.id}/members/${memberId}`, {
         method: 'DELETE',
@@ -390,7 +392,7 @@ export function OrganizationManager() {
                             </div>
                           </div>
                           {member.role !== 'OWNER' && (
-                            <button
+                            <button aria-label="Delete"
                               onClick={() => removeMember(member.id)}
                               className="p-2 text-gray-400 hover:text-red-500"
                             >

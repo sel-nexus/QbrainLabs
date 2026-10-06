@@ -1,71 +1,56 @@
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect } from 'react';
 import { socket } from '../../lib/socket';
 import { toast } from 'sonner';
-import { Trophy, Sparkles } from 'lucide-react';
 
 interface AchievementToastProps {
     participantId: string;
 }
 
-export function AchievementToast({ participantId }: AchievementToastProps) {
-    const [showAnimation, setShowAnimation] = useState(false);
-    const [badgeName, setBadgeName] = useState<string>('');
+const BATCH_MS = 800;
 
+/**
+ * All reward feedback in one toast: points and badges that arrive together
+ * (the server sends them back-to-back) are merged instead of stacking up.
+ */
+export function AchievementToast({ participantId }: AchievementToastProps) {
     useEffect(() => {
-        const handleBadgeUnlocked = (data: { participant_id: string; badge_name: string }) => {
-            if (data.participant_id === participantId) {
-                setBadgeName(data.badge_name);
-                setShowAnimation(true);
-                toast.success(`Badge Unlocked: ${data.badge_name}!`, {
-                    duration: 4000,
-                    icon: '🏅',
-                });
-                
-                setTimeout(() => {
-                    setShowAnimation(false);
-                }, 3000);
-            }
+        let points = 0;
+        let badges: string[] = [];
+        let timer: ReturnType<typeof setTimeout> | undefined;
+
+        const flush = () => {
+            const parts = [
+                points > 0 ? `+${points} points` : '',
+                badges.length ? `Badge unlocked: ${badges.join(', ')}` : '',
+            ].filter(Boolean);
+            if (parts.length) toast.success(parts.join(' · '), { id: 'reward', icon: badges.length ? '🏅' : '🪙', duration: 3000 });
+            points = 0;
+            badges = [];
+        };
+        const queue = () => {
+            clearTimeout(timer);
+            timer = setTimeout(flush, BATCH_MS);
         };
 
-        const handlePointsEarned = (data: { participant_id: string; points: number; action: string }) => {
-            if (data.participant_id === participantId && data.points > 0) {
-                toast.success(`+${data.points} points earned!`, {
-                    duration: 2000,
-                    icon: '🪙',
-                });
-            }
+        const handleBadgeUnlocked = (data: { participant_id: string; badge_name: string }) => {
+            if (data.participant_id !== participantId) return;
+            badges.push(data.badge_name);
+            queue();
+        };
+        const handlePointsEarned = (data: { participant_id: string; points: number }) => {
+            if (data.participant_id !== participantId || data.points <= 0) return;
+            points += data.points;
+            queue();
         };
 
         socket.on('gamification:badge_unlocked', handleBadgeUnlocked);
         socket.on('gamification:points_earned', handlePointsEarned);
-
         return () => {
+            clearTimeout(timer);
             socket.off('gamification:badge_unlocked', handleBadgeUnlocked);
             socket.off('gamification:points_earned', handlePointsEarned);
         };
     }, [participantId]);
 
-    return (
-        <AnimatePresence>
-            {showAnimation && (
-                <motion.div
-                    initial={{ opacity: 0, scale: 0.5, y: 50 }}
-                    animate={{ opacity: 1, scale: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.5, y: -50 }}
-                    transition={{ duration: 0.5 }}
-                    className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 pointer-events-none"
-                >
-                    <div className="bg-gradient-to-r from-yellow-500 to-orange-500 text-white px-8 py-4 rounded-2xl shadow-2xl flex items-center gap-3">
-                        <Sparkles className="w-6 h-6 animate-pulse" />
-                        <div>
-                            <div className="font-bold text-lg">Badge Unlocked!</div>
-                            <div className="text-sm">{badgeName}</div>
-                        </div>
-                        <Trophy className="w-8 h-8" />
-                    </div>
-                </motion.div>
-            )}
-        </AnimatePresence>
-    );
+    return null;
 }

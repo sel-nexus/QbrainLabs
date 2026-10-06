@@ -6,7 +6,8 @@ import { useSession } from '../../context/SessionContext';
 import { useTheme } from '../../context/ThemeContext';
 import { socket } from '../../lib/socket';
 import { toast } from 'sonner';
-import { CheckCircle, Circle, GripVertical } from 'lucide-react';
+import { CheckCircle, Circle, GripVertical, X } from 'lucide-react';
+import { errorMessage } from '../../lib/apiErrors';
 import { AnimatePresence, motion } from 'framer-motion';
 
 export function PollResponder() {
@@ -16,6 +17,8 @@ export function PollResponder() {
     const [textResponses, setTextResponses] = useState<Record<string, string>>({});
     const [selectedOptions, setSelectedOptions] = useState<Record<string, string[]>>({});
     const [rankings, setRankings] = useState<Record<string, string[]>>({});
+    // Polls the participant chose to skip; they stay hidden for this visit.
+    const [dismissed, setDismissed] = useState<string[]>([]);
 
     useEffect(() => {
         if (!session?.workshopId || !session.participantId) return;
@@ -64,7 +67,7 @@ export function PollResponder() {
             // Usually just active ones to vote on.
             // But if we want to show results of closed ones, we keep them.
             // The API returns all, let's filter or sort.
-            setActivePolls(data);
+            setActivePolls(Array.isArray(data) ? data : []);
         } catch (err) {
             console.error(err);
         }
@@ -84,26 +87,7 @@ export function PollResponder() {
             toast.success("Vote recorded");
         } catch (err: any) {
             console.error('Failed to vote on poll:', err);
-            let errorMessage = "Failed to submit your vote. Please try again.";
-            
-            if (err.response) {
-                // Server responded with error
-                const detail = err.response.data?.detail || err.response.data?.message;
-                if (detail) {
-                    errorMessage = detail;
-                } else if (err.response.status === 404) {
-                    errorMessage = "This poll is no longer active.";
-                } else if (err.response.status === 400) {
-                    errorMessage = "Invalid vote. Please check your selection.";
-                } else if (err.response.status === 500) {
-                    errorMessage = "An error occurred. Your vote may not have been recorded.";
-                }
-            } else if (err.request) {
-                // Request made but no response
-                errorMessage = "Unable to connect. Please check your internet connection.";
-            }
-            
-            toast.error(errorMessage);
+            toast.error(err?.response?.status === 404 ? 'This poll is no longer active.' : errorMessage(err, 'Failed to submit your vote. Please try again.'));
         }
     };
 
@@ -154,7 +138,8 @@ export function PollResponder() {
         await handleVote(pollId, ranking);
     };
 
-    if (activePolls.filter(p => p.status === 'ACTIVE').length === 0) {
+    const visiblePolls = activePolls.filter(p => p.status === 'ACTIVE' && !p.user_response && !dismissed.includes(p.id));
+    if (visiblePolls.length === 0) {
         return null;
     }
 
@@ -279,7 +264,7 @@ export function PollResponder() {
     return (
         <div className="fixed bottom-24 right-4 w-80 max-w-[90vw] z-40 space-y-2">
             <AnimatePresence>
-                {activePolls.filter(p => p.status === 'ACTIVE' && !p.user_response).map(poll => (
+                {visiblePolls.map(poll => (
                     <motion.div
                         key={poll.id}
                         initial={{ opacity: 0, y: 50, scale: 0.9 }}
@@ -288,7 +273,15 @@ export function PollResponder() {
                         className="theme-bg-primary theme-border border shadow-2xl rounded-xl p-4 overflow-hidden relative"
                     >
                         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 to-purple-500" />
-                        <h4 className="font-bold mb-3 mt-1 theme-text-primary">{poll.question_text}</h4>
+                        <button
+                            type="button"
+                            onClick={() => setDismissed(prev => [...prev, poll.id])}
+                            aria-label="Skip this poll"
+                            className="absolute top-2 right-2 p-1.5 rounded-full theme-text-secondary hover:theme-bg-tertiary"
+                        >
+                            <X className="w-4 h-4" aria-hidden="true" />
+                        </button>
+                        <h4 className="font-bold mb-3 mt-1 pr-6 theme-text-primary">{poll.question_text}</h4>
                         {renderPollContent(poll)}
                     </motion.div>
                 ))}

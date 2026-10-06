@@ -99,10 +99,10 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
     // (The parent keys this component by card id, so state resets per card.)
     if (submitted) {
         return (
-            <div className="flex flex-col items-center justify-center p-8 bg-surface-800 rounded-xl border border-white/10" role="status">
+            <div className="flex flex-col items-center justify-center p-8 theme-bg-secondary rounded-xl border theme-border" role="status">
                 <div className="text-4xl mb-4" aria-hidden="true">🙌</div>
                 <h3 className="text-xl font-bold mb-2">Score recorded</h3>
-                <p className="text-gray-400 mb-4">Waiting for other participants...</p>
+                <p className="contrast-muted mb-4">Waiting for other participants...</p>
                 <Button variant="secondary" onClick={() => setSubmitted(false)}>
                     Change my score
                 </Button>
@@ -112,9 +112,9 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
 
     if (!activeCard) {
         return (
-            <div className="flex flex-col items-center justify-center p-8 bg-surface-800 rounded-xl border border-white/10">
-                <h3 className="text-xl font-bold mb-2 text-white">Waiting</h3>
-                <p className="text-gray-400">Waiting for the facilitator to present a card...</p>
+            <div className="flex flex-col items-center justify-center p-8 theme-bg-secondary rounded-xl border theme-border">
+                <h3 className="text-xl font-bold mb-2 theme-text-primary">Waiting</h3>
+                <p className="contrast-muted">Waiting for the facilitator to present a card...</p>
             </div>
         );
     }
@@ -131,16 +131,16 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
                 key={activeCard.id}
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-surface-800/80 backdrop-blur border border-white/10 rounded-2xl p-6 shadow-xl max-w-lg mx-auto"
+                className="theme-bg-secondary backdrop-blur border theme-border rounded-2xl p-6 shadow-xl max-w-lg mx-auto"
             >
                 <div className="mb-6">
                     <span className="text-xs text-brand-violet font-mono uppercase tracking-wider">
                         Now scoring{activeCard.position && activeCard.total ? ` · Card ${activeCard.position} of ${activeCard.total}` : ''}
                     </span>
-                    <h2 className="text-2xl font-bold text-white mt-1 ">{activeCard.title}</h2>
-                    <p className="text-gray-300 mt-2 text-sm">{activeCard.description}</p>
+                    <h2 className="text-2xl font-bold theme-text-primary mt-1 ">{activeCard.title}</h2>
+                    <p className="theme-text-secondary mt-2 text-sm">{activeCard.description}</p>
                     {activeCard.proposed_solution && (
-                        <p className="text-gray-400 text-xs mt-2 bg-black/20 p-2 rounded">
+                        <p className="contrast-muted text-xs mt-2 theme-bg-tertiary p-2 rounded">
                             <span className="font-bold">Solution:</span> {activeCard.proposed_solution}
                         </p>
                     )}
@@ -157,7 +157,7 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
                             </div>
                             {/* Shown inline (not hover-only) so phone users can read it */}
                             {c.description && (
-                                <p id={`score-${idx}-desc`} className="text-xs text-gray-400 mb-2">{c.description}</p>
+                                <p id={`score-${idx}-desc`} className="text-xs contrast-muted mb-2">{c.description}</p>
                             )}
                             <input
                                 id={`score-${idx}`}
@@ -166,12 +166,12 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
                                 min={minVal}
                                 max={maxVal}
                                 step={stepVal}
-                                className="w-full h-2 bg-surface-900 rounded-lg appearance-none cursor-pointer accent-brand-violet"
+                                className="w-full h-2 theme-bg-tertiary rounded-lg appearance-none cursor-pointer accent-brand-violet"
                                 value={scores[c.name] ?? defaultVal}
                                 onChange={(e) => handleScoreChange(c.name, Number(e.target.value))}
                             />
                             {/* Same anchors as the prioritization matrix: low on the left, high on the right */}
-                            <div className="flex justify-between text-xs text-gray-500 mt-1" aria-hidden="true">
+                            <div className="flex justify-between text-xs contrast-muted mt-1" aria-hidden="true">
                                 <span>{minVal} · Low</span>
                                 <span>{maxVal} · High</span>
                             </div>

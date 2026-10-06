@@ -260,7 +260,7 @@ export function PollManager({ workshopId: propWorkshopId }: PollManagerProps = {
                                 <div key={idx} className="flex gap-2 mb-2">
                                     <Input value={opt} onChange={e => handleOptionChange(idx, e.target.value)} placeholder={`Option ${idx + 1}`} />
                                     {options.length > 2 && (
-                                        <button onClick={() => handleRemoveOption(idx)} className={`text-red-400 p-1 rounded ${
+                                        <button aria-label="Close" onClick={() => handleRemoveOption(idx)} className={`text-red-400 p-1 rounded ${
                                             theme === 'light' ? 'hover:bg-gray-100' : 'hover:bg-white/5'
                                         }`}>
                                             <X className="w-4 h-4" />

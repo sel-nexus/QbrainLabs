@@ -7,17 +7,23 @@ import ErrorBoundary from './components/ErrorBoundary'
 import { ThemeProvider } from './context/ThemeContext'
 import { AuthProvider } from './context/AuthContext'
 import { SessionProvider } from './context/SessionContext'
+import { ConfirmProvider } from './context/ConfirmContext'
+import { MotionConfig } from 'framer-motion'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <ThemeProvider>
-      <AuthProvider>
-        <SessionProvider>
-          <ErrorBoundary>
-            <App />
-          </ErrorBoundary>
-        </SessionProvider>
-      </AuthProvider>
-    </ThemeProvider>
+    <MotionConfig reducedMotion="user">
+      <ThemeProvider>
+        <ConfirmProvider>
+          <AuthProvider>
+            <SessionProvider>
+              <ErrorBoundary>
+                <App />
+              </ErrorBoundary>
+            </SessionProvider>
+          </AuthProvider>
+        </ConfirmProvider>
+      </ThemeProvider>
+    </MotionConfig>
   </StrictMode>,
 )

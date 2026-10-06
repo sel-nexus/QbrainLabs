@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { getWorkshopLeaderboard, type LeaderboardEntry } from '../../lib/api/gamification';
 import { useTheme } from '../../context/ThemeContext';
 import { Trophy, Medal, Award, Loader2 } from 'lucide-react';
+import { useLiveRefresh } from '../../hooks/useLiveRefresh';
 
 interface LeaderboardProps {
     workshopPin: string;
@@ -14,24 +15,16 @@ export function Leaderboard({ workshopPin, currentParticipantId, className = '' 
     const [rankings, setRankings] = useState<LeaderboardEntry[]>([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchLeaderboard = async () => {
-            try {
-                const data = await getWorkshopLeaderboard(workshopPin);
-                setRankings(data.rankings);
-            } catch (error) {
-                console.error('Failed to fetch leaderboard:', error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchLeaderboard();
-        
-        // Refresh every 3 seconds
-        const interval = setInterval(fetchLeaderboard, 3000);
-        return () => clearInterval(interval);
-    }, [workshopPin]);
+    useLiveRefresh(async () => {
+        try {
+            const data = await getWorkshopLeaderboard(workshopPin);
+            setRankings(data.rankings);
+        } catch (error) {
+            console.error('Failed to fetch leaderboard:', error);
+        } finally {
+            setLoading(false);
+        }
+    }, ['gamification:points_earned']);
 
     const getRankIcon = (rank: number) => {
         if (rank === 1) return <Trophy className="w-5 h-5 text-yellow-500" />;

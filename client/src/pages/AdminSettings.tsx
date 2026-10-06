@@ -16,6 +16,7 @@ import { useTheme } from '../context/ThemeContext';
 
 import { API_BASE_URL } from '../lib/config';
 import { apiErrorText } from '../lib/apiErrors';
+import { useConfirm } from '../context/ConfirmContext';
 
 const API_BASE = API_BASE_URL;
 const TOKEN_KEY = 'hm_auth_token';
@@ -58,6 +59,7 @@ const categoryColors: Record<string, string> = {
 };
 
 export function AdminSettings() {
+    const confirm = useConfirm();
     const { t } = useTranslation();
     const { theme } = useTheme();
     const isLight = theme === 'light';
@@ -139,7 +141,7 @@ export function AdminSettings() {
     };
 
     const handleReset = async (setting: SystemSetting) => {
-        if (!confirm(t('admin.settings.actions.resetConfirm', { key: setting.key, defaultValue: `Reset "${setting.key}" to default value?` }))) return;
+        if (!(await confirm.ok({ title: t('admin.settings.actions.resetConfirm', { key: setting.key, defaultValue: `Reset "${setting.key}" to default value?` }), message: setting.key, confirmText: 'Reset', variant: 'warning' }))) return;
 
         try {
             setSaving(setting.key);

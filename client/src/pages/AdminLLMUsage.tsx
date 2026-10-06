@@ -459,148 +459,156 @@ export function AdminLLMUsage() {
 
                 {/* BY FEATURE */}
                 {activeTab === 'feature' && (
-                    <table className="w-full">
-                        <thead className={isLight ? 'bg-gray-50' : 'bg-surface-700'}>
-                            <tr>
-                                <th className={th}>Feature</th>
-                                <th className={thR}>Calls</th>
-                                <th className={thR}>Prompt Tkns</th>
-                                <th className={thR}>Completion Tkns</th>
-                                <th className={thR}>Total Tokens</th>
-                                <th className={thR}>Est. Cost</th>
-                                <th className={thR}>Success Rate</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {byFeature.length > 0 ? byFeature.map((item, i) => (
-                                <tr key={i} className={tr}>
-                                    <td className={`${td} font-medium`}>{getFeatureLabel(item.feature)}</td>
-                                    <td className={tdR}>{item.call_count.toLocaleString()}</td>
-                                    <td className={tdR}>{formatTokens(item.total_prompt_tokens)}</td>
-                                    <td className={tdR}>{formatTokens(item.total_completion_tokens)}</td>
-                                    <td className={tdR}>{formatTokens(item.total_tokens)}</td>
-                                    <td className={tdR}>{formatCostDisplay(item.estimated_cost_cents)}</td>
-                                    <td className={tdR}>
-                                        <span className={item.error_count > 0 ? 'text-amber-500' : 'text-green-500'}>
-                                            {successRate(item.success_count, item.call_count)}
-                                        </span>
-                                    </td>
-                                </tr>
-                            )) : (
-                                <tr><td colSpan={7} className={empty}>
-                                    <Activity className="w-10 h-10 mx-auto mb-2 opacity-30" />
-                                    <p>No feature usage data in this period</p>
-                                </td></tr>
-                            )}
-                        </tbody>
-                    </table>
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                          <thead className={isLight ? 'bg-gray-50' : 'bg-surface-700'}>
+                              <tr>
+                                  <th className={th}>Feature</th>
+                                  <th className={thR}>Calls</th>
+                                  <th className={thR}>Prompt Tkns</th>
+                                  <th className={thR}>Completion Tkns</th>
+                                  <th className={thR}>Total Tokens</th>
+                                  <th className={thR}>Est. Cost</th>
+                                  <th className={thR}>Success Rate</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              {byFeature.length > 0 ? byFeature.map((item, i) => (
+                                  <tr key={i} className={tr}>
+                                      <td className={`${td} font-medium`}>{getFeatureLabel(item.feature)}</td>
+                                      <td className={tdR}>{item.call_count.toLocaleString()}</td>
+                                      <td className={tdR}>{formatTokens(item.total_prompt_tokens)}</td>
+                                      <td className={tdR}>{formatTokens(item.total_completion_tokens)}</td>
+                                      <td className={tdR}>{formatTokens(item.total_tokens)}</td>
+                                      <td className={tdR}>{formatCostDisplay(item.estimated_cost_cents)}</td>
+                                      <td className={tdR}>
+                                          <span className={item.error_count > 0 ? 'text-amber-500' : 'text-green-500'}>
+                                              {successRate(item.success_count, item.call_count)}
+                                          </span>
+                                      </td>
+                                  </tr>
+                              )) : (
+                                  <tr><td colSpan={7} className={empty}>
+                                      <Activity className="w-10 h-10 mx-auto mb-2 opacity-30" />
+                                      <p>No feature usage data in this period</p>
+                                  </td></tr>
+                              )}
+                          </tbody>
+                      </table>
+                    </div>
                 )}
 
                 {/* BY MODEL */}
                 {activeTab === 'model' && (
-                    <table className="w-full">
-                        <thead className={isLight ? 'bg-gray-50' : 'bg-surface-700'}>
-                            <tr>
-                                <th className={th}>Model</th>
-                                <th className={thR}>Calls</th>
-                                <th className={thR}>Prompt Tkns</th>
-                                <th className={thR}>Completion Tkns</th>
-                                <th className={thR}>Total Tokens</th>
-                                <th className={thR}>Est. Cost</th>
-                                <th className={thR}>Success Rate</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {byModel.length > 0 ? byModel.map((item, i) => (
-                                <tr key={i} className={tr}>
-                                    <td className={`${td} font-mono text-xs`}>{item.model_name}</td>
-                                    <td className={tdR}>{item.call_count.toLocaleString()}</td>
-                                    <td className={tdR}>{formatTokens(item.total_prompt_tokens)}</td>
-                                    <td className={tdR}>{formatTokens(item.total_completion_tokens)}</td>
-                                    <td className={tdR}>{formatTokens(item.total_tokens)}</td>
-                                    <td className={tdR}>{formatCostDisplay(item.estimated_cost_cents)}</td>
-                                    <td className={tdR}>
-                                        <span className={item.error_count > 0 ? 'text-amber-500' : 'text-green-500'}>
-                                            {successRate(item.success_count, item.call_count)}
-                                        </span>
-                                    </td>
-                                </tr>
-                            )) : (
-                                <tr><td colSpan={7} className={empty}>
-                                    <Server className="w-10 h-10 mx-auto mb-2 opacity-30" />
-                                    <p>No model usage data in this period</p>
-                                </td></tr>
-                            )}
-                        </tbody>
-                    </table>
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                          <thead className={isLight ? 'bg-gray-50' : 'bg-surface-700'}>
+                              <tr>
+                                  <th className={th}>Model</th>
+                                  <th className={thR}>Calls</th>
+                                  <th className={thR}>Prompt Tkns</th>
+                                  <th className={thR}>Completion Tkns</th>
+                                  <th className={thR}>Total Tokens</th>
+                                  <th className={thR}>Est. Cost</th>
+                                  <th className={thR}>Success Rate</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              {byModel.length > 0 ? byModel.map((item, i) => (
+                                  <tr key={i} className={tr}>
+                                      <td className={`${td} font-mono text-xs`}>{item.model_name}</td>
+                                      <td className={tdR}>{item.call_count.toLocaleString()}</td>
+                                      <td className={tdR}>{formatTokens(item.total_prompt_tokens)}</td>
+                                      <td className={tdR}>{formatTokens(item.total_completion_tokens)}</td>
+                                      <td className={tdR}>{formatTokens(item.total_tokens)}</td>
+                                      <td className={tdR}>{formatCostDisplay(item.estimated_cost_cents)}</td>
+                                      <td className={tdR}>
+                                          <span className={item.error_count > 0 ? 'text-amber-500' : 'text-green-500'}>
+                                              {successRate(item.success_count, item.call_count)}
+                                          </span>
+                                      </td>
+                                  </tr>
+                              )) : (
+                                  <tr><td colSpan={7} className={empty}>
+                                      <Server className="w-10 h-10 mx-auto mb-2 opacity-30" />
+                                      <p>No model usage data in this period</p>
+                                  </td></tr>
+                              )}
+                          </tbody>
+                      </table>
+                    </div>
                 )}
 
                 {/* BY WORKSHOP */}
                 {activeTab === 'workshop' && (
-                    <table className="w-full">
-                        <thead className={isLight ? 'bg-gray-50' : 'bg-surface-700'}>
-                            <tr>
-                                <th className={th}>Workshop</th>
-                                <th className={thR}>Calls</th>
-                                <th className={thR}>Total Tokens</th>
-                                <th className={thR}>Est. Cost</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {byWorkshop.length > 0 ? byWorkshop.map((item, i) => (
-                                <tr key={i} className={tr}>
-                                    <td className={td}>
-                                        <div className="font-medium">{item.workshop_title || 'Untitled Workshop'}</div>
-                                        <div className={`text-xs ${isLight ? 'text-gray-400' : 'text-gray-500'}`}>{item.workshop_id.slice(0, 8)}…</div>
-                                    </td>
-                                    <td className={tdR}>{item.call_count.toLocaleString()}</td>
-                                    <td className={tdR}>{formatTokens(item.total_tokens)}</td>
-                                    <td className={tdR}>{formatCostDisplay(item.estimated_cost_cents)}</td>
-                                </tr>
-                            )) : (
-                                <tr><td colSpan={4} className={empty}>
-                                    <FolderKanban className="w-10 h-10 mx-auto mb-2 opacity-30" />
-                                    <p>No workshop usage data in this period</p>
-                                    <p className="text-xs mt-1 opacity-60">Ensure workshop_id is passed when tracking LLM calls</p>
-                                </td></tr>
-                            )}
-                        </tbody>
-                    </table>
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                          <thead className={isLight ? 'bg-gray-50' : 'bg-surface-700'}>
+                              <tr>
+                                  <th className={th}>Workshop</th>
+                                  <th className={thR}>Calls</th>
+                                  <th className={thR}>Total Tokens</th>
+                                  <th className={thR}>Est. Cost</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              {byWorkshop.length > 0 ? byWorkshop.map((item, i) => (
+                                  <tr key={i} className={tr}>
+                                      <td className={td}>
+                                          <div className="font-medium">{item.workshop_title || 'Untitled Workshop'}</div>
+                                          <div className={`text-xs ${isLight ? 'text-gray-400' : 'text-gray-500'}`}>{item.workshop_id.slice(0, 8)}…</div>
+                                      </td>
+                                      <td className={tdR}>{item.call_count.toLocaleString()}</td>
+                                      <td className={tdR}>{formatTokens(item.total_tokens)}</td>
+                                      <td className={tdR}>{formatCostDisplay(item.estimated_cost_cents)}</td>
+                                  </tr>
+                              )) : (
+                                  <tr><td colSpan={4} className={empty}>
+                                      <FolderKanban className="w-10 h-10 mx-auto mb-2 opacity-30" />
+                                      <p>No workshop usage data in this period</p>
+                                      <p className="text-xs mt-1 opacity-60">Ensure workshop_id is passed when tracking LLM calls</p>
+                                  </td></tr>
+                              )}
+                          </tbody>
+                      </table>
+                    </div>
                 )}
 
                 {/* BY USER */}
                 {activeTab === 'user' && (
-                    <table className="w-full">
-                        <thead className={isLight ? 'bg-gray-50' : 'bg-surface-700'}>
-                            <tr>
-                                <th className={th}>User</th>
-                                <th className={thR}>Calls</th>
-                                <th className={thR}>Total Tokens</th>
-                                <th className={thR}>Est. Cost</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {byUser.length > 0 ? byUser.map((item, i) => (
-                                <tr key={i} className={tr}>
-                                    <td className={td}>
-                                        <div className="font-medium">{item.user_name || item.user_email || 'Unknown'}</div>
-                                        {item.user_email && item.user_name && (
-                                            <div className={`text-xs ${isLight ? 'text-gray-400' : 'text-gray-500'}`}>{item.user_email}</div>
-                                        )}
-                                    </td>
-                                    <td className={tdR}>{item.call_count.toLocaleString()}</td>
-                                    <td className={tdR}>{formatTokens(item.total_tokens)}</td>
-                                    <td className={tdR}>{formatCostDisplay(item.estimated_cost_cents)}</td>
-                                </tr>
-                            )) : (
-                                <tr><td colSpan={4} className={empty}>
-                                    <Users className="w-10 h-10 mx-auto mb-2 opacity-30" />
-                                    <p>No user usage data in this period</p>
-                                    <p className="text-xs mt-1 opacity-60">Ensure user_id is passed when tracking LLM calls</p>
-                                </td></tr>
-                            )}
-                        </tbody>
-                    </table>
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                          <thead className={isLight ? 'bg-gray-50' : 'bg-surface-700'}>
+                              <tr>
+                                  <th className={th}>User</th>
+                                  <th className={thR}>Calls</th>
+                                  <th className={thR}>Total Tokens</th>
+                                  <th className={thR}>Est. Cost</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              {byUser.length > 0 ? byUser.map((item, i) => (
+                                  <tr key={i} className={tr}>
+                                      <td className={td}>
+                                          <div className="font-medium">{item.user_name || item.user_email || 'Unknown'}</div>
+                                          {item.user_email && item.user_name && (
+                                              <div className={`text-xs ${isLight ? 'text-gray-400' : 'text-gray-500'}`}>{item.user_email}</div>
+                                          )}
+                                      </td>
+                                      <td className={tdR}>{item.call_count.toLocaleString()}</td>
+                                      <td className={tdR}>{formatTokens(item.total_tokens)}</td>
+                                      <td className={tdR}>{formatCostDisplay(item.estimated_cost_cents)}</td>
+                                  </tr>
+                              )) : (
+                                  <tr><td colSpan={4} className={empty}>
+                                      <Users className="w-10 h-10 mx-auto mb-2 opacity-30" />
+                                      <p>No user usage data in this period</p>
+                                      <p className="text-xs mt-1 opacity-60">Ensure user_id is passed when tracking LLM calls</p>
+                                  </td></tr>
+                              )}
+                          </tbody>
+                      </table>
+                    </div>
                 )}
 
                 {/* DAILY TREND */}
@@ -627,26 +635,28 @@ export function AdminLLMUsage() {
                                     })}
                                 </div>
                                 {/* Table */}
-                                <table className="w-full">
-                                    <thead>
-                                        <tr>
-                                            <th className={th}>Date</th>
-                                            <th className={thR}>Calls</th>
-                                            <th className={thR}>Tokens</th>
-                                            <th className={thR}>Est. Cost</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {[...byDay].reverse().map((d, i) => (
-                                            <tr key={i} className={tr}>
-                                                <td className={td}>{d.date}</td>
-                                                <td className={tdR}>{d.call_count.toLocaleString()}</td>
-                                                <td className={tdR}>{formatTokens(d.total_tokens)}</td>
-                                                <td className={tdR}>{formatCostDisplay(d.estimated_cost_cents)}</td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                <div className="overflow-x-auto">
+                                  <table className="w-full">
+                                      <thead>
+                                          <tr>
+                                              <th className={th}>Date</th>
+                                              <th className={thR}>Calls</th>
+                                              <th className={thR}>Tokens</th>
+                                              <th className={thR}>Est. Cost</th>
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          {[...byDay].reverse().map((d, i) => (
+                                              <tr key={i} className={tr}>
+                                                  <td className={td}>{d.date}</td>
+                                                  <td className={tdR}>{d.call_count.toLocaleString()}</td>
+                                                  <td className={tdR}>{formatTokens(d.total_tokens)}</td>
+                                                  <td className={tdR}>{formatCostDisplay(d.estimated_cost_cents)}</td>
+                                              </tr>
+                                          ))}
+                                      </tbody>
+                                  </table>
+                                </div>
                             </>
                         ) : (
                             <div className={empty}>
@@ -659,44 +669,46 @@ export function AdminLLMUsage() {
 
                 {/* RECENT LOGS */}
                 {activeTab === 'logs' && (
-                    <table className="w-full">
-                        <thead className={isLight ? 'bg-gray-50' : 'bg-surface-700'}>
-                            <tr>
-                                <th className={th}>Time</th>
-                                <th className={th}>Feature</th>
-                                <th className={th}>Model</th>
-                                <th className={thR}>Prompt</th>
-                                <th className={thR}>Completion</th>
-                                <th className={thR}>Total</th>
-                                <th className={thR}>Cost</th>
-                                <th className={th}>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {recentLogs.length > 0 ? recentLogs.map((log) => (
-                                <tr key={log.id} className={tr}>
-                                    <td className={`${td} whitespace-nowrap text-xs`}>{relativeTime(log.created_at)}</td>
-                                    <td className={td}>{getFeatureLabel(log.feature)}</td>
-                                    <td className={`${td} font-mono text-xs`}>{log.model_name || '–'}</td>
-                                    <td className={tdR}>{formatTokens(log.prompt_tokens)}</td>
-                                    <td className={tdR}>{formatTokens(log.completion_tokens)}</td>
-                                    <td className={`${tdR} font-medium`}>{formatTokens(log.total_tokens)}</td>
-                                    <td className={tdR}>{formatCostDisplay(log.estimated_cost_cents)}</td>
-                                    <td className={td}>
-                                        {log.success === 'true'
-                                            ? <span className="text-green-500 flex items-center gap-1 text-xs"><CheckCircle2 className="w-3 h-3" />ok</span>
-                                            : <span className="text-red-400 flex items-center gap-1 text-xs"><XCircle className="w-3 h-3" />error</span>
-                                        }
-                                    </td>
-                                </tr>
-                            )) : (
-                                <tr><td colSpan={8} className={empty}>
-                                    <Clock className="w-10 h-10 mx-auto mb-2 opacity-30" />
-                                    <p>No recent log entries</p>
-                                </td></tr>
-                            )}
-                        </tbody>
-                    </table>
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                          <thead className={isLight ? 'bg-gray-50' : 'bg-surface-700'}>
+                              <tr>
+                                  <th className={th}>Time</th>
+                                  <th className={th}>Feature</th>
+                                  <th className={th}>Model</th>
+                                  <th className={thR}>Prompt</th>
+                                  <th className={thR}>Completion</th>
+                                  <th className={thR}>Total</th>
+                                  <th className={thR}>Cost</th>
+                                  <th className={th}>Status</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              {recentLogs.length > 0 ? recentLogs.map((log) => (
+                                  <tr key={log.id} className={tr}>
+                                      <td className={`${td} whitespace-nowrap text-xs`}>{relativeTime(log.created_at)}</td>
+                                      <td className={td}>{getFeatureLabel(log.feature)}</td>
+                                      <td className={`${td} font-mono text-xs`}>{log.model_name || '–'}</td>
+                                      <td className={tdR}>{formatTokens(log.prompt_tokens)}</td>
+                                      <td className={tdR}>{formatTokens(log.completion_tokens)}</td>
+                                      <td className={`${tdR} font-medium`}>{formatTokens(log.total_tokens)}</td>
+                                      <td className={tdR}>{formatCostDisplay(log.estimated_cost_cents)}</td>
+                                      <td className={td}>
+                                          {log.success === 'true'
+                                              ? <span className="text-green-500 flex items-center gap-1 text-xs"><CheckCircle2 className="w-3 h-3" />ok</span>
+                                              : <span className="text-red-400 flex items-center gap-1 text-xs"><XCircle className="w-3 h-3" />error</span>
+                                          }
+                                      </td>
+                                  </tr>
+                              )) : (
+                                  <tr><td colSpan={8} className={empty}>
+                                      <Clock className="w-10 h-10 mx-auto mb-2 opacity-30" />
+                                      <p>No recent log entries</p>
+                                  </td></tr>
+                              )}
+                          </tbody>
+                      </table>
+                    </div>
                 )}
             </div>
         </AdminLayout>
