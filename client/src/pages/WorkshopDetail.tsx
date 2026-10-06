@@ -35,6 +35,9 @@ import { LiveProgressPanel, ActiveCardControls } from '../components/facilitator
 import { PresenterJoinView, PresenterResultsView } from '../components/facilitator/PresenterViews';
 import { useWorkshopProgress } from '../hooks/useWorkshopProgress';
 import { phaseLabel } from '../lib/workshopPhases';
+import { ExportMenu } from '../components/results/ExportMenu';
+import { ResultCard } from '../components/results/ResultCard';
+import type { RankedResult } from '../lib/results';
 import { matrixAxes } from '../lib/criteria';
 
 export function WorkshopDetail() {
@@ -48,6 +51,13 @@ export function WorkshopDetail() {
     const [activeCardId, setActiveCardId] = useState<string | null>(null);
     const [results, setResults] = useState<any[]>([]);
     const [showAllParticipantPositions, setShowAllParticipantPositions] = useState(false);
+    // Aggregated, ranked results (cards, presenter view, roadmap). `results` may
+    // instead hold individual participant positions when that view is chosen.
+    const [ranked, setRanked] = useState<RankedResult[]>([]);
+    const showAllRef = useRef(false);
+    useEffect(() => {
+        showAllRef.current = showAllParticipantPositions;
+    }, [showAllParticipantPositions]);
     const [pendingFacilitators, setPendingFacilitators] = useState<any[]>([]);
     const [showQR, setShowQR] = useState(false);
     // const [currentView, setCurrentView] = useState<'matrix' | 'analytics'>('matrix'); // Unused
@@ -145,7 +155,8 @@ export function WorkshopDetail() {
             if (currentPhase === 'ANALYSIS') {
                 try {
                     const resultsData = await api.get(`results/${id}`);
-                    setResults(resultsData.data);
+                    setRanked(resultsData.data);
+                    if (!showAllRef.current) setResults(resultsData.data);
                 } catch (e) {
                     console.error('Failed to refresh results:', e);
                 }
@@ -199,6 +210,7 @@ export function WorkshopDetail() {
             if (data.current_phase === 'ANALYSIS') {
                 const resultsData = await api.get(`results/${id}`);
                 setResults(resultsData.data);
+                setRanked(resultsData.data);
                 setShowAllParticipantPositions(false); // Reset to aggregated view
             }
         } catch (e) {
@@ -217,6 +229,7 @@ export function WorkshopDetail() {
                 setAnalysisSection('results');
                 const { data } = await api.get(`results/${id}`);
                 setResults(data);
+                setRanked(data);
             }
             toast.success(`Moved to: ${phaseLabel(phase)}`);
         } catch (e) {
@@ -327,32 +340,6 @@ export function WorkshopDetail() {
         }
     };
 
-    const downloadCSV = () => {
-        if (!results.length || !workshop?.config?.criteria) return;
-
-        const criteriaNames = workshop.config.criteria.map((c: any) => c.name);
-        const headers = ['ID', 'Title', 'Category', ...criteriaNames, 'Total Score', 'Vote Count'];
-        const rows = results.map((r: any) => [
-            r.id,
-            `"${r.title.replace(/"/g, '""')}"`,
-            r.category || '',
-            ...criteriaNames.map((c: string) => r.scores[c] || 0),
-            r.total_score || 0,
-            r.vote_count || 1
-        ]);
-
-        const csvContent = [
-            headers.join(','),
-            ...rows.map(r => r.join(','))
-        ].join('\n');
-
-        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `hotspot_results_${id}.csv`;
-        link.click();
-        toast.success("Export started");
-    };
 
     if (!workshop && loadError) return <LoadErrorPanel message={loadError} onRetry={() => { setLoadError(null); fetchWorkshop(); }} />;
     if (!workshop) return <div className={`min-h-screen flex items-center justify-center ${theme === 'light' ? 'bg-gray-50 text-gray-600' : 'bg-surface-900 text-gray-400'}`}>Loading...</div>;
@@ -404,9 +391,7 @@ export function WorkshopDetail() {
                         <Button onClick={() => setPresentResults(true)} variant="secondary">
                             <Monitor className="w-4 h-4 mr-2" /> Present results
                         </Button>
-                        <Button onClick={downloadCSV} variant="secondary">
-                            <Download className="w-4 h-4 mr-2" /> Export CSV
-                        </Button>
+                        <ExportMenu workshopId={id!} />
                     </div>
                 )}
             </header>
@@ -475,36 +460,32 @@ export function WorkshopDetail() {
             {currentPhase === 'ANALYSIS' && analysisSection === 'results' ? (
                 // Analysis View
                 <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
-                    {/* View Toggle */}
-                    <div className="flex items-center justify-between">
-                        <div className="flex gap-2">
-                            <Button
-                                variant={showAnalytics === 'matrix' ? 'primary' : 'secondary'}
-                                onClick={() => setShowAnalytics('matrix')}
-                            >
-                                <TrendingUp className="w-4 h-4 mr-2" /> Matrix View
-                            </Button>
-                            <Button
-                                variant={showAnalytics === 'analytics' ? 'primary' : 'secondary'}
-                                onClick={() => setShowAnalytics('analytics')}
-                            >
-                                <BarChart3 className="w-4 h-4 mr-2" /> Analytics
-                            </Button>
-                            <Button
-                                variant={showAnalytics === 'roi' ? 'primary' : 'secondary'}
-                                onClick={() => setShowAnalytics('roi')}
-                            >
-                                <Calculator className="w-4 h-4 mr-2" /> ROI Portfolio
-                            </Button>
-                            {currentPhase === 'ANALYSIS' && useCases.length > 0 && (
-                                <Button
-                                    variant="secondary"
-                                    onClick={() => setShowRoadmap(true)}
+                    {/* One view switcher; roadmap generation is a separate action */}
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                        <div role="tablist" aria-label="Results view" className="inline-flex flex-wrap gap-1 p-1 rounded-lg theme-bg-secondary">
+                            {([
+                                { id: 'matrix', label: 'Matrix', icon: <TrendingUp className="w-4 h-4" aria-hidden="true" /> },
+                                { id: 'scale', label: 'Scale', icon: <BarChart3 className="w-4 h-4 rotate-90" aria-hidden="true" /> },
+                                { id: 'analytics', label: 'Analytics', icon: <BarChart3 className="w-4 h-4" aria-hidden="true" /> },
+                                { id: 'roi', label: 'ROI', icon: <Calculator className="w-4 h-4" aria-hidden="true" /> },
+                            ] as const).map((view) => (
+                                <button
+                                    key={view.id}
+                                    type="button"
+                                    role="tab"
+                                    aria-selected={showAnalytics === view.id}
+                                    onClick={() => setShowAnalytics(view.id)}
+                                    className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium ${showAnalytics === view.id ? 'bg-brand-violet text-white' : 'contrast-muted hover:theme-text-primary'}`}
                                 >
-                                    <Map className="w-4 h-4 mr-2" /> Generate Roadmap
-                                </Button>
-                            )}
+                                    {view.icon} {view.label}
+                                </button>
+                            ))}
                         </div>
+                        {useCases.length > 0 && (
+                            <Button variant="secondary" onClick={() => setShowRoadmap(true)}>
+                                <Map className="w-4 h-4 mr-2" aria-hidden="true" /> Generate roadmap
+                            </Button>
+                        )}
                     </div>
 
                     {showAnalytics === 'analytics' ? (
@@ -513,47 +494,11 @@ export function WorkshopDetail() {
                         <ROIComparisonView workshopId={id!} useCases={useCases} />
                     ) : (
                         <>
-                            <div className="flex items-center justify-between">
+                            <div className="flex flex-wrap items-center justify-between gap-2">
                                 <h2 className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Prioritization matrix</h2>
-                                <div className="flex gap-2">
-                                    <Button
-                                        variant={!showAllParticipantPositions ? 'primary' : 'secondary'}
-                                        className="py-1 px-3 text-sm"
-                                        onClick={async () => {
-                                            const resultsData = await api.get(`results/${id}`);
-                                            setResults(resultsData.data);
-                                            setShowAllParticipantPositions(false);
-                                        }}
-                                    >
-                                        Aggregated View
-                                    </Button>
-                                    <Button
-                                        variant={showAllParticipantPositions ? 'primary' : 'secondary'}
-                                        className="py-1 px-3 text-sm"
-                                        onClick={() => {
-                                            // MatrixActivityDashboard handleRefresh will trigger onRefreshMatrix
-                                            // We just need to trigger a manual refresh or wait for socket
-                                            setShowAllParticipantPositions(true);
-                                        }}
-                                    >
-                                        All Participants
-                                    </Button>
-                                    <div className="w-px h-8 bg-gray-200 dark:bg-white/10 mx-2" />
-                                    <Button
-                                        variant={showAnalytics === 'matrix' ? 'primary' : 'secondary'}
-                                        className="py-1 px-3 text-sm"
-                                        onClick={() => setShowAnalytics('matrix')}
-                                    >
-                                        2D Matrix
-                                    </Button>
-                                    <Button
-                                        variant={showAnalytics === 'scale' ? 'primary' : 'secondary'}
-                                        className="py-1 px-3 text-sm"
-                                        onClick={() => setShowAnalytics('scale')}
-                                    >
-                                        1D Scale
-                                    </Button>
-                                </div>
+                                <p className="text-sm contrast-muted">
+                                    Showing {showAllParticipantPositions ? 'every participant’s scores' : 'group averages'} — change this under “View mode”.
+                                </p>
                             </div>
 
                             {/* Matrix View with Activity Dashboard */}
@@ -627,6 +572,7 @@ export function WorkshopDetail() {
                                     <MatrixActivityDashboard
                                         workshopId={id!}
                                         totalParticipants={progress?.participants}
+                                        {...matrixAxes(workshop.config.criteria?.map((c: any) => c.name) || [], workshop.config)}
                                         isVisible={showAnalytics === 'matrix' || showAnalytics === 'scale'}
                                         viewMode={showAllParticipantPositions ? 'all' : 'consolidated'}
                                         onRefreshMatrix={(positions, isAllPositions) => {
@@ -647,47 +593,25 @@ export function WorkshopDetail() {
                                             } else {
                                                 // If in aggregated view, we should probably fetch results to get the new average
                                                 // but for now, we can just trigger a fetch if it's been a while
-                                                api.get(`results/${id}`).then(res => setResults(res.data)).catch(console.error);
+                                                api.get(`results/${id}`).then(res => { setResults(res.data); setRanked(res.data); }).catch(console.error);
                                             }
                                         }}
                                     />
                                 )}
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
-                                {results.map((r: any) => (
-                                    <div key={r.id} className={`p-4 rounded-xl border ${theme === 'light' ? 'bg-white border-gray-200' : 'bg-surface-800 border-white/5'}`}>
-                                        <div className="flex justify-between items-start mb-2">
-                                            <h3 className={`font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>{r.title}</h3>
-                                            <span className="text-brand-violet font-mono font-bold text-xl">{r.total_score}</span>
-                                        </div>
-                                        <div className={`text-sm space-y-1 ${theme === 'light' ? 'text-gray-600' : 'text-gray-400'}`}>
-                                            {Object.entries(r.scores || {}).map(([name, val]: [string, any]) => {
-                                                let displayVal = val;
-                                                const allScores = results.flatMap((res: any) => Object.values(res.scores || {})).filter((s): s is number => typeof s === 'number');
-                                                if (val <= 10 && allScores.length > 0 && allScores.every(s => s <= 10)) {
-                                                    displayVal = val * 10;
-                                                }
-                                                return (
-                                                    <div key={name} className="flex justify-between uppercase text-[10px] font-bold">
-                                                        <span>{name}</span>
-                                                        <span>{displayVal !== null ? Number(displayVal).toFixed(0) : '-'}</span>
-                                                    </div>
-                                                );
-                                            })}
-                                        </div>
-                                        <Button
-                                            variant="secondary"
-                                            className="w-full mt-3 h-8 text-xs"
-                                            onClick={() => {
-                                                setRoiSelectedUseCase({ id: r.id, title: r.title });
-                                                setRoiModalOpen(true);
-                                            }}
-                                        >
-                                            <Calculator className="w-3 h-3 mr-1" />
-                                            Calculate ROI
-                                        </Button>
-                                    </div>
+                            <h3 className={`text-lg font-bold mt-8 ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Ranked use cases</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-3">
+                                {ranked.map((r) => (
+                                    <ResultCard
+                                        key={r.id}
+                                        result={r}
+                                        criteriaOrder={workshop.config.criteria?.map((c: any) => c.name) || []}
+                                        onCalculateROI={() => {
+                                            setRoiSelectedUseCase({ id: r.id, title: r.title });
+                                            setRoiModalOpen(true);
+                                        }}
+                                    />
                                 ))}
                             </div>
                         </>
@@ -968,7 +892,7 @@ export function WorkshopDetail() {
             {presentResults && (
                 <PresenterResultsView
                     title={workshop.title}
-                    results={results.map((r) => ({ ...r, x: r.x ?? 50, y: r.y ?? 50 }))}
+                    results={ranked.map((r) => ({ ...r, x: r.x ?? 50, y: r.y ?? 50 }))}
                     {...matrixAxes(workshop.config.criteria?.map((c: any) => c.name) || [], workshop.config)}
                     onClose={() => setPresentResults(false)}
                 />
@@ -1192,13 +1116,21 @@ export function WorkshopDetail() {
                     <div className="p-4">
                         <RoadmapGenerator
                             workshopId={id!}
-                            useCases={useCases.map(uc => ({
-                                id: uc.id,
-                                title: uc.title,
-                                description: uc.description,
-                                value_score: results.find((r: any) => r.id === uc.id)?.scores?.['Business Value'],
-                                feasibility_score: results.find((r: any) => r.id === uc.id)?.scores?.['Feasibility']
-                            }))}
+                            {...(() => {
+                                // Same axes as the prioritization matrix (0-100 positions).
+                                const { xLabel, yLabel } = matrixAxes(workshop.config.criteria?.map((c: any) => c.name) || [], workshop.config);
+                                return { xLabel, yLabel };
+                            })()}
+                            useCases={useCases.map(uc => {
+                                const r = ranked.find((item) => item.id === uc.id);
+                                return {
+                                    id: uc.id,
+                                    title: uc.title,
+                                    description: uc.description,
+                                    value_score: r?.y ?? undefined,
+                                    feasibility_score: r?.x ?? undefined,
+                                };
+                            })}
                             onClose={() => setShowRoadmap(false)}
                         />
                     </div>

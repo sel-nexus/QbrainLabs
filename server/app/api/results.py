@@ -1,140 +1,23 @@
 from fastapi import APIRouter, Depends, HTTPException
-import statistics
 import math
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-from sqlalchemy.orm import selectinload
 from app.core.database import get_db
 from app.core.db_utils import get_or_404
-from app.models.models import Workshop, UseCase, Vote
+from app.models.models import Workshop
 from app.schemas.results import AggregatedResult
 from typing import List
 
-from app.utils.matrix import calculate_matrix_position, detect_scale_max, axes_from_config
+from app.services.workshop_results import compute_workshop_results
 
 
 router = APIRouter()
 
 @router.get("/{workshop_id}", response_model=List[AggregatedResult])
 async def get_workshop_results(workshop_id: str, db: AsyncSession = Depends(get_db)):
-    # Fetch workshop to get config/weights if needed
+    """Ranked results (highest first). Same numbers as the CSV and PDF exports."""
     workshop = await get_or_404(db, Workshop, workshop_id, "Workshop")
-    
-    # Store template_id for coordinate calculation
-    ws_config = workshop.config or {}
-    ws_template_id = ws_config.get('template_id')
+    aggregated_results = [AggregatedResult(**r) for r in await compute_workshop_results(db, workshop)]
 
-    # Simplify: Fetch all usecases for this workshop with their votes
-    result = await db.execute(
-        select(UseCase)
-        .where(UseCase.workshop_id == workshop_id)
-        .options(selectinload(UseCase.votes))
-    )
-    use_cases = result.scalars().all()
-
-    aggregated_results = []
-
-    # Get criteria weights from config
-    criteria = ws_config.get('criteria', [])
-    weights = {c['name']: (c['weight'] or 0) for c in criteria}
-    
-    for uc in use_cases:
-        votes = uc.votes
-        vote_count = len(votes)
-        
-        if vote_count == 0:
-            aggregated_results.append(AggregatedResult(
-                id=uc.id,
-                title=uc.title,
-                description=uc.description,
-                category=uc.category,
-                scores={},
-                total_score=0,
-                vote_count=0
-            ))
-            continue
-
-        # Aggregate scores
-        totals = {}
-        counts = {}
-        raw_scores = {}
-        
-        for v in votes:
-            if not v.scores: continue
-            for criterion, score in v.scores.items():
-                val = float(score)
-                totals[criterion] = totals.get(criterion, 0) + val
-                counts[criterion] = counts.get(criterion, 0) + 1
-                
-                if criterion not in raw_scores:
-                    raw_scores[criterion] = []
-                raw_scores[criterion].append(val)
-        
-        avgs = {}
-        weighted_sum = 0
-        total_weight = 0
-        
-        for criterion, total in totals.items():
-            avg = total / counts[criterion]
-            avgs[criterion] = round(avg, 2)
-            
-            # Weighted Score Calculation
-            weight = weights.get(criterion, 0)
-            weighted_sum += avg * weight
-            total_weight += weight
-            
-        final_score = 0
-        if total_weight > 0:
-            final_score = weighted_sum / total_weight
-            
-        # Variance Calculation (Average of criteria variances)
-        criteria_variances = []
-        for crit_params in raw_scores.values():
-            if len(crit_params) > 1:
-                try:
-                    criteria_variances.append(statistics.variance(crit_params))
-                except statistics.StatisticsError:
-                    criteria_variances.append(0)
-            else:
-                criteria_variances.append(0)
-
-        avg_variance = 0.0
-        if criteria_variances:
-            avg_variance = sum(criteria_variances) / len(criteria_variances)
-        
-        # Detect scale max from available averages
-        # To unify across categories, we favor 100 unless it's clearly a high-precision 1-10 scale
-        scale_max = detect_scale_max([float(v) for v in avgs.values()])
-        
-        # If any global scores in the workshop results (if we had them) were > 10, we'd use 100
-        # For now, detect_scale_max already favors 100.
-        
-        # Calculate X and Y coordinates using shared utility
-        x_val, y_val = calculate_matrix_position(avgs, ws_template_id, scale_max, **axes_from_config(ws_config))
-
-        # Normalize average variance to 0-100 scale (100 = maximum disagreement)
-        # Max variance for scale_max property is (scale_max^2 / 4)
-        max_variance = (scale_max ** 2) / 4
-        normalized_variance = 0.0
-        if max_variance > 0:
-            normalized_variance = round((avg_variance / max_variance) * 100, 2)
-
-        aggregated_results.append(AggregatedResult(
-            id=uc.id,
-            title=uc.title,
-            description=uc.description,
-            category=uc.category,
-            scores=avgs,
-            total_score=round(final_score, 2),
-            vote_count=vote_count,
-            variance=normalized_variance,
-            x=x_val,
-            y=y_val
-        ))
-        
-    # Sort by total score descending
-    aggregated_results.sort(key=lambda x: x.total_score, reverse=True)
-    
     # Apply jittering to overlapping points
     # Group by coordinates to detect overlaps
     coord_groups = {}

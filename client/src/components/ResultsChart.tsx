@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { toast } from 'sonner';
+import { QUADRANT_COLORS, QUADRANT_LABELS, quadrantFor } from '../lib/results';
 
 interface ResultsChartProps {
     data: any[];
@@ -80,7 +81,7 @@ export function ResultsChart({
                 x: x(axisMid), y: 0,
                 width: x(domainMax) - x(axisMid), height: y(axisMid),
                 color: "#10b981", // Green
-                label: "Quick Wins",
+                label: QUADRANT_LABELS.quick_wins,
                 labelX: width - 20, labelY: 20, anchor: "end", labelColor: "#10b981"
             },
             {
@@ -88,7 +89,7 @@ export function ResultsChart({
                 x: 0, y: 0,
                 width: x(axisMid), height: y(axisMid),
                 color: "#a78bfa", // Purple
-                label: "Strategic Bets",
+                label: QUADRANT_LABELS.strategic_bets,
                 labelX: 20, labelY: 20, anchor: "start", labelColor: "#a78bfa"
             },
             {
@@ -96,7 +97,7 @@ export function ResultsChart({
                 x: 0, y: y(axisMid),
                 width: x(axisMid), height: height - y(axisMid),
                 color: "#ef4444", // Red
-                label: "Don't Do",
+                label: QUADRANT_LABELS.dont_do,
                 labelX: 20, labelY: height - 20, anchor: "start", labelColor: "#ef4444"
             },
             {
@@ -104,7 +105,7 @@ export function ResultsChart({
                 x: x(axisMid), y: y(axisMid),
                 width: x(domainMax) - x(axisMid), height: height - y(axisMid),
                 color: "#3b82f6", // Blue
-                label: "Nice to Have",
+                label: QUADRANT_LABELS.nice_to_have,
                 labelX: width - 20, labelY: height - 20, anchor: "end", labelColor: "#3b82f6"
             }
         ];
@@ -281,7 +282,7 @@ export function ResultsChart({
                 });
                 svgRef.current?.dispatchEvent(customEvent);
 
-                toast.success(`Position updated: F:${Math.round(domainX)}, V:${Math.round(domainY)}`);
+                toast.success(`Position updated: ${xAxisLabel} ${Math.round(domainX)}, ${yAxisLabel} ${Math.round(domainY)}`);
             });
 
         // Nodes - only render if there's data
@@ -297,18 +298,8 @@ export function ResultsChart({
                     // Use participant color if available (for individual view)
                     if (d.participantColor) return d.participantColor;
 
-                    const valX = getScaledX(d);
-                    const valY = getScaledY(d);
-                    // Color by quadrant
-                    if (valX > axisMid && valY > axisMid) {
-                        return '#10b981'; // Quick Wins - Green (Top Right)
-                    } else if (valX <= axisMid && valY > axisMid) {
-                        return '#a78bfa'; // Strategic Bets - Purple (Top Left)
-                    } else if (valX <= axisMid && valY <= axisMid) {
-                        return '#ef4444'; // Don't Do - Red (Bottom Left)
-                    } else {
-                        return '#3b82f6'; // Nice to Have - Blue (Bottom Right)
-                    }
+                    // Same quadrant split (>= 50) as results cards, analytics and exports
+                    return QUADRANT_COLORS[quadrantFor(getScaledX(d), getScaledY(d))!];
                 })
                 .attr("stroke", "#ffffff")
                 .attr("stroke-width", 2)
@@ -322,7 +313,7 @@ export function ResultsChart({
                         <div class="font-bold mb-1">${d.title}</div>
                         ${d.participant_name ? `<div class="text-xs font-semibold mb-1" style="color:${d.participantColor}">${d.participant_name}</div>` : ''}
                         <div class="text-xs ${theme === 'light' ? 'text-gray-600' : 'text-gray-300'} space-y-0.5">
-                            <div><strong>Position:</strong> Feasibility: ${Math.round(feasValue)}, Business Value: ${Math.round(valueScore)}</div>
+                            <div><strong>Position:</strong> ${xAxisLabel}: ${Math.round(feasValue)}, ${yAxisLabel}: ${Math.round(valueScore)}</div>
                             ${d.variance !== undefined ? `<div>Variance: ${d.variance}</div>` : ''}
                             ${d.vote_count ? `<div>Votes: ${d.vote_count}</div>` : ''}
                         </div>
