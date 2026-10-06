@@ -63,10 +63,7 @@ export function UseCaseCanvas({ session, onSuccess, onDirtyChange }: UseCaseCanv
                 className="theme-bg-primary theme-border border rounded-2xl p-6 shadow-xl"
             >
                 <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-2xl font-heading font-bold theme-text-primary">New Use Case</h2>
-                    <span className="bg-brand-violet/20 text-brand-violet px-3 py-1 rounded-full text-sm font-mono">
-                        Drafting Node
-                    </span>
+                    <h2 className="text-2xl font-heading font-bold theme-text-primary">New use case</h2>
                 </div>
 
                 <UseCaseForm

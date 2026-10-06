@@ -10,6 +10,10 @@ class Criterion(BaseModel):
 class WorkshopConfig(BaseModel):
     criteria: List[Criterion]
     template_id: Optional[str] = None
+    # Criteria plotted on the prioritization matrix (names from `criteria`).
+    # When unset, axes are inferred from the template / standard keywords.
+    x_axis: Optional[str] = None
+    y_axis: Optional[str] = None
     embedding_model_id: Optional[UUID] = None
     decision_model_id: Optional[UUID] = None
     reasoning_model_id: Optional[UUID] = None
@@ -24,6 +28,13 @@ class WorkshopConfig(BaseModel):
 class WorkshopCreate(BaseModel):
     title: str
     config: WorkshopConfig
+
+
+class WorkshopCriteriaUpdate(BaseModel):
+    """Edit criteria, weights and matrix axes before scoring starts."""
+    criteria: List[Criterion]
+    x_axis: Optional[str] = None
+    y_axis: Optional[str] = None
 
 class PendingFacilitator(BaseModel):
     id: UUID = Field(..., alias="participant_id")

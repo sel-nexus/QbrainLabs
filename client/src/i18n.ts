@@ -224,7 +224,7 @@ const enTranslations = {
             aiPoweredDesc: "Our RAG engine helps refine use cases and check technical feasibility in real-time.",
             realtime: "Real-Time Collaboration",
             realtimeDesc: "Vote, score, and discuss ideas synchronously. See results update live on the matrix.",
-            strategic: "Strategic Prioritization",
+            strategic: "Prioritization matrix",
             strategicDesc: "Automatically map opportunities to a Value vs. Feasibility matrix to find quick wins."
         },
         howItWorks: {

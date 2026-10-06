@@ -4,7 +4,10 @@ import { Button } from './ui/Button';
 import { useTheme } from '../context/ThemeContext';
 import { api } from '../lib/api';
 import { toast } from 'sonner';
-import { Settings } from 'lucide-react';
+import { Settings, Lock } from 'lucide-react';
+import { CriteriaEditor } from './workshop/CriteriaEditor';
+import { type Criterion, type CriteriaAxes, validateCriteria } from '../lib/criteria';
+import { errorMessage } from '../lib/apiErrors';
 
 interface LLMModelOption {
     id: string;
@@ -21,6 +24,8 @@ interface WorkshopSettingsModalProps {
         title: string;
         description?: string;
         status?: string;
+        current_phase?: string;
+        config?: { criteria?: Criterion[]; x_axis?: string | null; y_axis?: string | null };
     };
     onUpdate: () => void;
 }
@@ -30,17 +35,28 @@ export function WorkshopSettingsModal({ isOpen, onClose, workshop, onUpdate }: W
     const [title, setTitle] = useState(workshop.title);
     const [description, setDescription] = useState(workshop.description || '');
     const [isLoading, setIsLoading] = useState(false);
-    const [errors, setErrors] = useState<{ title?: string; description?: string }>({});
+    const [errors, setErrors] = useState<{ title?: string; description?: string; criteria?: string }>({});
     const [llmRegistry, setLlmRegistry] = useState<LLMModelOption[]>([]);
     const [embeddingModelId, setEmbeddingModelId] = useState<string>('');
     const [decisionModelId, setDecisionModelId] = useState<string>('');
     const [reasoningModelId, setReasoningModelId] = useState<string>('');
+    // Criteria can be edited until scoring starts (the server also enforces this).
+    const criteriaEditable = !workshop.current_phase || workshop.current_phase === 'INTAKE' || workshop.current_phase === 'DRAFT';
+    const initialCriteria = workshop.config?.criteria || [];
+    const [criteria, setCriteria] = useState<Criterion[]>(initialCriteria);
+    const [axes, setAxes] = useState<CriteriaAxes>({ x_axis: workshop.config?.x_axis || null, y_axis: workshop.config?.y_axis || null });
+    const criteriaDirty =
+        JSON.stringify(criteria) !== JSON.stringify(initialCriteria) ||
+        (axes.x_axis || null) !== (workshop.config?.x_axis || null) ||
+        (axes.y_axis || null) !== (workshop.config?.y_axis || null);
 
     // Reset form when workshop changes
     useEffect(() => {
         setTitle(workshop.title);
         setDescription(workshop.description || '');
         setErrors({});
+        setCriteria(workshop.config?.criteria || []);
+        setAxes({ x_axis: workshop.config?.x_axis || null, y_axis: workshop.config?.y_axis || null });
     }, [workshop]);
 
     // Load LLM registry and workshop's current selection when modal opens
@@ -63,7 +79,7 @@ export function WorkshopSettingsModal({ isOpen, onClose, workshop, onUpdate }: W
     }, [isOpen, workshop.id]);
 
     const validate = () => {
-        const newErrors: { title?: string; description?: string } = {};
+        const newErrors: { title?: string; description?: string; criteria?: string } = {};
 
         if (!title.trim()) {
             newErrors.title = 'Workshop title is required';
@@ -75,6 +91,10 @@ export function WorkshopSettingsModal({ isOpen, onClose, workshop, onUpdate }: W
 
         if (description && description.length > 1000) {
             newErrors.description = 'Description must be less than 1000 characters';
+        }
+
+        if (criteriaEditable && criteriaDirty && Object.keys(validateCriteria(criteria, axes)).length > 0) {
+            newErrors.criteria = 'Fix the scoring criteria before saving';
         }
 
         setErrors(newErrors);
@@ -93,6 +113,15 @@ export function WorkshopSettingsModal({ isOpen, onClose, workshop, onUpdate }: W
                 description: description.trim() || null,
             });
 
+            if (criteriaEditable && criteriaDirty) {
+                const bothAxes = axes.x_axis && axes.y_axis;
+                await api.put(`workshops/${workshop.id}/criteria`, {
+                    criteria: criteria.map((c) => ({ ...c, name: c.name.trim() })),
+                    x_axis: bothAxes ? axes.x_axis : null,
+                    y_axis: bothAxes ? axes.y_axis : null,
+                });
+            }
+
             await api.put(`workshops/${workshop.id}/llm-models`, {
                 embedding_model_id: embeddingModelId || null,
                 decision_model_id: decisionModelId || null,
@@ -104,7 +133,7 @@ export function WorkshopSettingsModal({ isOpen, onClose, workshop, onUpdate }: W
             onClose();
         } catch (error: any) {
             console.error('Failed to update workshop settings:', error);
-            toast.error(error.response?.data?.detail || 'Failed to update workshop settings');
+            toast.error(errorMessage(error, 'Failed to update workshop settings'));
         } finally {
             setIsLoading(false);
         }
@@ -195,11 +224,41 @@ export function WorkshopSettingsModal({ isOpen, onClose, workshop, onUpdate }: W
                     </div>
                 </div>
 
-                {/* AI Models Section */}
-                <div className="space-y-4 pt-4 border-t theme-border">
-                    <h4 className={`text-sm font-semibold ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
-                        AI Models
-                    </h4>
+                {/* Scoring criteria (editable until scoring starts) */}
+                {initialCriteria.length > 0 && (
+                    <div className="space-y-3 pt-4 border-t theme-border">
+                        {criteriaEditable ? (
+                            <CriteriaEditor
+                                criteria={criteria}
+                                onChange={setCriteria}
+                                axes={axes}
+                                onAxesChange={setAxes}
+                                showErrors={!!errors.criteria}
+                            />
+                        ) : (
+                            <div>
+                                <h4 className="text-sm font-semibold theme-text-secondary mb-2">Scoring criteria</h4>
+                                <ul className="text-sm theme-text-primary space-y-1">
+                                    {initialCriteria.map((c) => (
+                                        <li key={c.name} className="flex justify-between"><span>{c.name}</span><span className="font-mono contrast-muted">{c.weight}%</span></li>
+                                    ))}
+                                </ul>
+                                <p className="mt-2 text-xs contrast-muted flex items-center gap-1">
+                                    <Lock className="w-3 h-3" aria-hidden="true" /> Criteria are locked once scoring has started, so results stay consistent.
+                                </p>
+                            </div>
+                        )}
+                        {errors.criteria && <p className="text-sm text-red-500" role="alert">{errors.criteria}</p>}
+                    </div>
+                )}
+
+                {/* AI Models: advanced, collapsed by default */}
+                <details className="pt-4 border-t theme-border group">
+                    <summary className={`cursor-pointer text-sm font-semibold ${theme === 'light' ? 'text-gray-700' : 'text-gray-300'}`}>
+                        Advanced: AI models
+                    </summary>
+                    <div className="space-y-4 mt-4">
+                    <p className="text-xs contrast-muted">Optional. Leave on “Use default” unless your administrator asked you to pick specific models.</p>
 
                     <div>
                         <label htmlFor="embedding-model" className="block text-sm font-medium mb-2">
@@ -254,7 +313,8 @@ export function WorkshopSettingsModal({ isOpen, onClose, workshop, onUpdate }: W
                             ))}
                         </select>
                     </div>
-                </div>
+                    </div>
+                </details>
 
                 {/* Action Buttons */}
                 <div className="flex justify-end gap-3 pt-4 border-t theme-border">

@@ -1,13 +1,12 @@
-
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { Button } from './ui/Button';
-import { Input } from './ui/Input';
 import { api } from '../lib/api';
-import { Loader2, Check, Sparkles, AlertTriangle, AlertCircle, Server, Code, Layers } from 'lucide-react';
+import { Loader2, Check, Sparkles, AlertTriangle, AlertCircle, Server, Code, Layers, Undo2, Lightbulb } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { toast } from 'sonner';
 import { Modal } from './ui/Modal';
 import { errorMessage } from '../lib/apiErrors';
+import { FIELDS, FIELD_LIMITS, FIELD_ORDER, validateUseCase, type FieldKey } from '../lib/useCaseFields';
 
 export interface UseCaseData {
     title: string;
@@ -36,7 +35,7 @@ const EMPTY_FORM: UseCaseData = {
     proposed_solution: '',
     kpi: '',
     target_user: '',
-    category: 'Generative AI',
+    category: '',
 };
 
 function readDraft(key?: string): Partial<UseCaseData> | null {
@@ -52,7 +51,12 @@ function readDraft(key?: string): Partial<UseCaseData> | null {
 const isDirty = (d: UseCaseData) =>
     !!(d.title || d.description || d.proposed_solution || d.kpi || d.target_user);
 
-export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Matrix", initialData, onSuccess, draftKey, onDirtyChange }: UseCaseFormProps) {
+type Suggestion = Partial<Record<'title' | 'description' | 'proposed_solution' | 'kpi', string>>;
+
+const AI_BUTTON = 'min-h-[44px] sm:min-h-0 sm:h-8 text-xs py-0 px-3 flex items-center gap-1';
+
+export function UseCaseForm({ workshopId, onSubmit, submitLabel = 'Submit use case', initialData, onSuccess, draftKey, onDirtyChange }: UseCaseFormProps) {
+    const formId = useId();
     const [loading, setLoading] = useState(false);
     const [enhancing, setEnhancing] = useState(false);
     const [checkingFeasibility, setCheckingFeasibility] = useState(false);
@@ -63,6 +67,12 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
     const [generatingArch, setGeneratingArch] = useState(false);
     const [technicalData, setTechnicalData] = useState<any>(null);
     const [showDuplicateModal, setShowDuplicateModal] = useState(false);
+    const [errors, setErrors] = useState<Partial<Record<FieldKey, string>>>({});
+    const [examplesOpen, setExamplesOpen] = useState<Partial<Record<FieldKey, boolean>>>({});
+    // AI suggestions are offered next to the participant's text, never applied silently.
+    const [suggestion, setSuggestion] = useState<Suggestion | null>(null);
+    const [undoSnapshot, setUndoSnapshot] = useState<UseCaseData | null>(null);
+    const fieldRefs = useRef<Partial<Record<FieldKey, HTMLInputElement | HTMLTextAreaElement | null>>>({});
 
     // Form State (restored from an autosaved draft when there is one)
     const [formData, setFormData] = useState<UseCaseData>(() => {
@@ -73,7 +83,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
             proposed_solution: source.proposed_solution || '',
             kpi: source.kpi || '',
             target_user: source.target_user || '',
-            category: source.category || 'Generative AI'
+            category: source.category || '',
         };
     });
     const [draftRestored] = useState(() => !initialData && !!readDraft(draftKey));
@@ -97,10 +107,18 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
 
     const handleChange = (field: keyof UseCaseData, value: string) => {
         setFormData(prev => ({ ...prev, [field]: value }));
+        if (errors[field as FieldKey]) setErrors(prev => ({ ...prev, [field]: undefined }));
     };
 
     const handleSubmitClick = async (e: React.FormEvent) => {
         e.preventDefault();
+        const found = validateUseCase(formData);
+        setErrors(found);
+        const firstInvalid = FIELD_ORDER.find((k) => found[k]);
+        if (firstInvalid) {
+            fieldRefs.current[firstInvalid]?.focus();
+            return;
+        }
         setLoading(true);
 
         // 1. Check Duplicates
@@ -128,7 +146,10 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
     const executeSubmit = async () => {
         setLoading(true);
         try {
-            await onSubmit(formData);
+            const trimmed = Object.fromEntries(
+                Object.entries(formData).map(([k, v]) => [k, typeof v === 'string' ? v.trim() : v])
+            ) as unknown as UseCaseData;
+            await onSubmit(trimmed);
 
             // Reset form and drop the saved draft
             setFormData(EMPTY_FORM);
@@ -140,6 +161,8 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
             setBusinessValueData(null);
             setFeasibilityData(null);
             setTechnicalData(null);
+            setSuggestion(null);
+            setUndoSnapshot(null);
             setShowDuplicateModal(false);
 
             if (onSuccess) {
@@ -155,53 +178,75 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
         }
     };
 
+    const applySuggestion = (fields: (keyof Suggestion)[]) => {
+        if (!suggestion) return;
+        setUndoSnapshot(formData);
+        setFormData(prev => {
+            const next = { ...prev };
+            fields.forEach((f) => {
+                if (suggestion[f]) next[f] = suggestion[f] as string;
+            });
+            return next;
+        });
+        const remaining = { ...suggestion };
+        fields.forEach((f) => delete remaining[f]);
+        setSuggestion(Object.keys(remaining).length ? remaining : null);
+    };
+
+    const keepMine = (field: keyof Suggestion) => {
+        if (!suggestion) return;
+        const remaining = { ...suggestion };
+        delete remaining[field];
+        setSuggestion(Object.keys(remaining).length ? remaining : null);
+    };
+
+    const undo = () => {
+        if (!undoSnapshot) return;
+        setFormData(undoSnapshot);
+        setUndoSnapshot(null);
+    };
+
     const handleEnhance = async () => {
-        console.log('[UseCaseForm] AI Enhance button clicked');
         if (!formData.description) {
-            toast.error("Please enter a Problem Statement first.");
+            toast.error("Describe the problem first, then AI can suggest improvements.");
+            fieldRefs.current.description?.focus();
             return;
         }
         setEnhancing(true);
         try {
-            console.log('[UseCaseForm] Calling /ai/enhance API...');
             const { data } = await api.post('ai/enhance', { text: formData.description + " " + formData.proposed_solution });
-            console.log('[UseCaseForm] AI Enhance response:', data);
-
-            toast.success("AI Enhanced the content!");
-
-            setFormData(prev => ({
-                ...prev,
-                title: data.refined_title || prev.title || data.title,
-                description: data.refined_description || prev.description || data.description,
-                proposed_solution: data.suggested_solution || prev.proposed_solution || data.solution,
-                kpi: data.kpi || prev.kpi
-            }));
+            const proposed: Suggestion = {
+                title: data.refined_title || data.title,
+                description: data.refined_description || data.description,
+                proposed_solution: data.suggested_solution || data.solution,
+                kpi: data.kpi,
+            };
+            // Only offer fields where the AI actually suggests something different.
+            const offered = Object.fromEntries(
+                Object.entries(proposed).filter(([k, v]) => v && v !== formData[k as keyof UseCaseData])
+            ) as Suggestion;
+            if (Object.keys(offered).length) setSuggestion(offered);
+            else toast.info('AI has no changes to suggest.');
         } catch (e: any) {
             console.error('[UseCaseForm] AI Enhancement error:', e);
-            console.error('[UseCaseForm] Error details:', e.response?.data || e.message);
-            toast.error(e.response?.data?.detail || "AI Enhancement failed.");
+            toast.error(errorMessage(e, "AI suggestions aren't available right now."));
         } finally {
             setEnhancing(false);
         }
     };
 
     const handleFeasibility = async () => {
-        console.log('[UseCaseForm] Check Feasibility button clicked');
         if (!formData.proposed_solution) {
-            toast.error("Please enter a Proposed Solution first.");
+            toast.error("Describe how AI could help first.");
             return;
         }
         setCheckingFeasibility(true);
         try {
-            console.log('[UseCaseForm] Calling /ai/feasibility API...');
             const { data } = await api.post('ai/feasibility', { solution: formData.proposed_solution });
-            console.log('[UseCaseForm] Feasibility response:', data);
             setFeasibilityData({ score: data.score, reason: data.reason });
-            toast.success(`Feasibility: ${data.score}`);
         } catch (e: any) {
             console.error('[UseCaseForm] Feasibility check error:', e);
-            console.error('[UseCaseForm] Error details:', e.response?.data || e.message);
-            toast.error(e.response?.data?.detail || "Feasibility check failed.");
+            toast.error(errorMessage(e, "Feasibility check failed."));
         } finally {
             setCheckingFeasibility(false);
         }
@@ -209,7 +254,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
 
     const handleBusinessValueEnhancement = async () => {
         if (!formData.title || !formData.description) {
-            toast.error("Please enter a Title and Problem Statement first.");
+            toast.error("Add a name and describe the problem first.");
             return;
         }
         setEnhancingBusinessValue(true);
@@ -217,20 +262,16 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
             const { data } = await api.post('ai/business-value', {
                 title: formData.title,
                 description: formData.description,
-                category: formData.category,
+                category: formData.category || undefined,
                 current_kpi: formData.kpi
             });
             setBusinessValueData(data);
-
-            // Auto-populate enhanced KPI
-            if (data.enhanced_kpi) {
-                setFormData(prev => ({ ...prev, kpi: data.enhanced_kpi }));
+            if (data.enhanced_kpi && data.enhanced_kpi !== formData.kpi) {
+                setSuggestion(prev => ({ ...(prev || {}), kpi: data.enhanced_kpi }));
             }
-
-            toast.success("Business value enhanced with AI insights!");
         } catch (e) {
             console.error(e);
-            toast.error("Business value enhancement failed.");
+            toast.error(errorMessage(e, "Couldn't suggest a measure right now."));
         } finally {
             setEnhancingBusinessValue(false);
         }
@@ -238,7 +279,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
 
     const handleTechnicalDeepDive = async () => {
         if (!formData.title || !formData.proposed_solution) {
-            toast.error("Please enter a Title and Proposed Solution first.");
+            toast.error("Add a name and describe how AI could help first.");
             return;
         }
         setGeneratingArch(true);
@@ -249,46 +290,94 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
                 proposed_solution: formData.proposed_solution
             });
             setTechnicalData(data);
-            toast.success("Technical architecture generated!");
         } catch (e) {
             console.error(e);
-            toast.error("Technical analysis failed.");
+            toast.error(errorMessage(e, "Technical analysis failed."));
         } finally {
             setGeneratingArch(false);
         }
     };
 
+    const renderField = (key: FieldKey, opts: { multiline?: boolean; action?: React.ReactNode; after?: React.ReactNode } = {}) => {
+        const f = FIELDS[key];
+        const id = `${formId}-${key}`;
+        const value = formData[key];
+        const describedBy = [errors[key] ? `${id}-err` : '', f.hint ? `${id}-hint` : '', `${id}-count`].filter(Boolean).join(' ');
+        const common = {
+            id,
+            value,
+            placeholder: f.placeholder,
+            'aria-invalid': !!errors[key],
+            'aria-required': f.required,
+            'aria-describedby': describedBy,
+            className: `w-full theme-input-bg theme-border border-b-2 px-4 py-3 rounded-t-md theme-text-primary placeholder:theme-text-secondary focus:outline-none focus:border-brand-violet transition-colors ${errors[key] ? 'border-semantic-danger' : ''} ${opts.multiline ? 'min-h-[100px]' : ''}`,
+            onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => handleChange(key, e.target.value),
+        };
+        return (
+            <div className="space-y-1.5">
+                <div className="flex flex-wrap justify-between items-end gap-2">
+                    <label htmlFor={id} className="text-sm font-medium theme-text-secondary pl-1">
+                        {f.label}{f.required ? <span className="text-semantic-danger" aria-hidden="true"> *</span> : <span className="contrast-muted"> (optional)</span>}
+                    </label>
+                    {opts.action}
+                </div>
+                {f.hint && <p id={`${id}-hint`} className="text-xs contrast-muted pl-1">{f.hint}</p>}
+                {opts.multiline ? (
+                    <textarea ref={(el) => { fieldRefs.current[key] = el; }} {...common} />
+                ) : (
+                    <input ref={(el) => { fieldRefs.current[key] = el; }} {...common} />
+                )}
+                <div className="flex justify-between gap-2 text-xs pl-1">
+                    <span>
+                        {errors[key] && <span id={`${id}-err`} className="text-semantic-danger" role="alert">{errors[key]}</span>}
+                        {!errors[key] && f.example && (
+                            <button type="button" className="text-brand-violet underline" aria-expanded={!!examplesOpen[key]} onClick={() => setExamplesOpen(p => ({ ...p, [key]: !p[key] }))}>
+                                {examplesOpen[key] ? 'Hide example' : 'See an example'}
+                            </button>
+                        )}
+                    </span>
+                    <span id={`${id}-count`} className={value.length > FIELD_LIMITS[key] ? 'text-semantic-danger' : 'contrast-muted'}>
+                        {value.length}/{FIELD_LIMITS[key]}
+                    </span>
+                </div>
+                {examplesOpen[key] && f.example && (
+                    <p className="text-xs rounded-md theme-bg-tertiary p-2 theme-text-secondary flex gap-2">
+                        <Lightbulb className="w-4 h-4 shrink-0 text-brand-violet" aria-hidden="true" /> {f.example}
+                    </p>
+                )}
+                {opts.after}
+            </div>
+        );
+    };
+
+    const suggestionLabels: Record<keyof Suggestion, string> = {
+        title: 'Name', description: 'Problem', proposed_solution: 'How AI could help', kpi: 'Measure of success',
+    };
+
     return (
         <div className="space-y-6">
-            <form onSubmit={handleSubmitClick} className="space-y-6">
+            <form onSubmit={handleSubmitClick} className="space-y-6" noValidate>
                 {draftRestored && (
                     <p className="text-xs rounded-lg px-3 py-2 bg-brand-violet/10 text-brand-violet" role="status">
                         We restored your unsaved draft.
                     </p>
                 )}
-                <Input
-                    label="Title"
-                    placeholder="e.g. Automated Customer Support"
-                    value={formData.title}
-                    onChange={e => handleChange('title', e.target.value)}
-                    required
-                />
+
+                {renderField('title')}
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input
-                        label="Target User"
-                        placeholder="e.g. Support Agents"
-                        value={formData.target_user}
-                        onChange={e => handleChange('target_user', e.target.value)}
-                        required
-                    />
-                    <div className="flex flex-col gap-1.5 w-full">
-                        <label className="text-sm theme-text-secondary pl-1">AI Technique</label>
+                    {renderField('target_user')}
+                    <div className="space-y-1.5">
+                        <label htmlFor={`${formId}-category`} className="text-sm font-medium theme-text-secondary pl-1">
+                            Type of AI <span className="contrast-muted">(optional)</span>
+                        </label>
                         <select
+                            id={`${formId}-category`}
                             className="w-full theme-input-bg theme-border border-b-2 px-4 py-3 rounded-t-md theme-text-primary focus:outline-none focus:border-brand-violet transition-colors"
                             value={formData.category}
                             onChange={e => handleChange('category', e.target.value)}
                         >
+                            <option value="">Not sure</option>
                             <option>Generative AI</option>
                             <option>Predictive ML</option>
                             <option>Computer Vision</option>
@@ -298,237 +387,176 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
                     </div>
                 </div>
 
-                <div className="space-y-2">
-                    <div className="flex justify-between items-end">
-                        <label className="text-sm theme-text-secondary pl-1">Problem Statement</label>
-                        <Button
-                            type="button"
-                            variant="secondary"
-                            className="h-7 text-xs py-0 px-2 flex items-center gap-1 bg-brand-violet/10 text-brand-violet border-brand-violet/20 hover:bg-brand-violet/20"
-                            onClick={handleEnhance}
-                            disabled={enhancing}
-                        >
-                            {enhancing ? <Loader2 className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
-                            AI Enhance
+                {renderField('description', {
+                    multiline: true,
+                    action: (
+                        <Button type="button" variant="secondary" className={`${AI_BUTTON} bg-brand-violet/10 text-brand-violet border-brand-violet/20 hover:bg-brand-violet/20`} onClick={handleEnhance} disabled={enhancing}>
+                            {enhancing ? <Loader2 className="w-3 h-3 animate-spin" aria-hidden="true" /> : <Sparkles className="w-3 h-3" aria-hidden="true" />}
+                            Improve with AI
                         </Button>
-                    </div>
-                    <textarea
-                        className="w-full theme-input-bg theme-border border-b-2 px-4 py-3 rounded-t-md theme-text-primary placeholder:theme-text-secondary focus:outline-none focus:border-brand-violet transition-colors min-h-[100px]"
-                        placeholder="Describe the pain point..."
-                        value={formData.description}
-                        onChange={e => handleChange('description', e.target.value)}
-                        required
-                    />
-                </div>
+                    ),
+                })}
 
-                <div className="space-y-2">
-                    <div className="flex justify-between items-end">
-                        <label className="text-sm theme-text-secondary pl-1">Proposed Solution</label>
-                        <div className="flex gap-2">
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                className="h-7 text-xs py-0 px-2 flex items-center gap-1 theme-bg-tertiary theme-border"
-                                onClick={handleFeasibility}
-                                disabled={checkingFeasibility}
-                            >
-                                {checkingFeasibility ? <Loader2 className="w-3 h-3 animate-spin" /> : <AlertTriangle className="w-3 h-3" />}
-                                Check Feasibility
-                            </Button>
-                            <Button
-                                type="button"
-                                variant="secondary"
-                                className="h-7 text-xs py-0 px-2 flex items-center gap-1 bg-blue-500/10 text-blue-500 border-blue-500/20 hover:bg-blue-500/20"
-                                onClick={handleTechnicalDeepDive}
-                                disabled={generatingArch}
-                            >
-                                {generatingArch ? <Loader2 className="w-3 h-3 animate-spin" /> : <Server className="w-3 h-3" />}
-                                Deep Dive
-                            </Button>
-                        </div>
-                    </div>
-                    <textarea
-                        className="w-full theme-input-bg theme-border border-b-2 px-4 py-3 rounded-t-md theme-text-primary placeholder:theme-text-secondary focus:outline-none focus:border-brand-violet transition-colors min-h-[100px]"
-                        placeholder="How does AI solve it?"
-                        value={formData.proposed_solution}
-                        onChange={e => handleChange('proposed_solution', e.target.value)}
-                    />
-                    {feasibilityData && (
-                        <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            className={`text-sm p-3 rounded border ${feasibilityData.score === 'High' ? 'bg-semantic-success/10 border-semantic-success/30 text-semantic-success' :
-                                feasibilityData.score === 'Medium' ? 'bg-yellow-500/10 border-yellow-500/30 text-yellow-500' :
-                                    'bg-semantic-danger/10 border-semantic-danger/30 text-semantic-danger'
-                                }`}
-                        >
-                            <span className="font-bold">Feasibility: {feasibilityData.score}</span> — {feasibilityData.reason}
-                        </motion.div>
-                    )}
-
-                    {technicalData && (
-                        <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            className="space-y-4 p-4 rounded-lg border theme-border bg-blue-500/5 mt-3"
-                        >
-                            <div className="flex items-center gap-2 mb-2">
-                                <Server className="w-4 h-4 text-blue-500" />
-                                <h4 className="text-xs font-bold text-blue-500 uppercase tracking-wider">Technical Deep Dive</h4>
-                            </div>
-
-                            <div className="text-sm theme-text-primary">
-                                <p className="mb-3 font-medium">{technicalData.architecture_overview}</p>
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                <div className="bg-blue-500/10 p-3 rounded border border-blue-500/20">
-                                    <div className="flex items-center gap-1.5 mb-2">
-                                        <Layers className="w-3 h-3 text-blue-400" />
-                                        <span className="text-xs font-bold text-blue-400 uppercase">Recommended Stack</span>
-                                    </div>
-                                    <div className="space-y-2">
-                                        {technicalData.recommended_stack?.map((item: any, idx: number) => (
-                                            <div key={idx} className="text-xs">
-                                                <span className="font-bold theme-text-primary block">{item.category}: {item.name}</span>
-                                                <span className="theme-text-secondary">{item.justification}</span>
+                {(suggestion || undoSnapshot) && (
+                    <section aria-label="AI suggestions" className="rounded-lg border border-brand-violet/30 bg-brand-violet/5 p-4 space-y-3">
+                        {suggestion && (
+                            <>
+                                <div className="flex flex-wrap items-center justify-between gap-2">
+                                    <h4 className="text-sm font-semibold text-brand-violet flex items-center gap-1">
+                                        <Sparkles className="w-4 h-4" aria-hidden="true" /> AI suggestions
+                                    </h4>
+                                    <Button type="button" variant="secondary" className="h-8 text-xs px-3" onClick={() => applySuggestion(Object.keys(suggestion) as (keyof Suggestion)[])}>
+                                        Use all
+                                    </Button>
+                                </div>
+                                {(Object.keys(suggestion) as (keyof Suggestion)[]).map((field) => (
+                                    <div key={field} className="rounded-md theme-bg-primary border theme-border p-3 text-sm space-y-2">
+                                        <div className="text-xs font-semibold theme-text-secondary">{suggestionLabels[field]}</div>
+                                        <div className="grid sm:grid-cols-2 gap-2">
+                                            <div>
+                                                <div className="text-[11px] uppercase contrast-muted">Yours</div>
+                                                <p className="theme-text-primary whitespace-pre-wrap">{formData[field] || <em className="contrast-muted">empty</em>}</p>
                                             </div>
-                                        ))}
+                                            <div>
+                                                <div className="text-[11px] uppercase text-brand-violet">Suggestion</div>
+                                                <p className="theme-text-primary whitespace-pre-wrap">{suggestion[field]}</p>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <Button type="button" className="h-8 text-xs px-3" onClick={() => applySuggestion([field])}>Use suggestion</Button>
+                                            <Button type="button" variant="ghost" className="h-8 text-xs px-3" onClick={() => keepMine(field)}>Keep mine</Button>
+                                        </div>
                                     </div>
-                                </div>
+                                ))}
+                            </>
+                        )}
+                        {undoSnapshot && (
+                            <Button type="button" variant="ghost" className="h-8 text-xs px-3" onClick={undo}>
+                                <Undo2 className="w-3 h-3 mr-1" aria-hidden="true" /> Undo AI changes
+                            </Button>
+                        )}
+                    </section>
+                )}
 
-                                <div className="bg-blue-500/10 p-3 rounded border border-blue-500/20">
-                                    <div className="flex items-center gap-1.5 mb-2">
-                                        <Code className="w-3 h-3 text-blue-400" />
-                                        <span className="text-xs font-bold text-blue-400 uppercase">Implementation Steps</span>
-                                    </div>
-                                    <ol className="text-xs space-y-1.5 list-decimal list-inside theme-text-secondary">
-                                        {technicalData.implementation_steps?.map((step: string, idx: number) => (
-                                            <li key={idx}>
-                                                <span className="theme-text-primary">{step}</span>
-                                            </li>
-                                        ))}
-                                    </ol>
-                                </div>
-                            </div>
+                {renderField('proposed_solution', { multiline: true })}
 
-                            {technicalData.technical_risks?.length > 0 && (
-                                <div className="mt-2 text-xs border border-orange-500/30 bg-orange-500/5 rounded p-2">
-                                    <div className="font-bold text-orange-400 mb-1 flex items-center gap-1">
-                                        <AlertTriangle className="w-3 h-3" /> Technical Risks
-                                    </div>
-                                    <ul className="space-y-1 text-orange-300">
-                                        {technicalData.technical_risks.map((risk: string, idx: number) => (
-                                            <li key={idx}>• {risk}</li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
-
-                            <div className="flex items-center justify-between pt-2 border-t theme-border">
-                                <span className="text-xs theme-text-secondary">Est. Complexity</span>
-                                <div className="flex items-center gap-2">
-                                    <div className="h-2 w-24 bg-gray-700 rounded-full overflow-hidden">
-                                        <div
-                                            className={`h-full ${technicalData.complexity_score > 7 ? 'bg-red-500' : technicalData.complexity_score > 4 ? 'bg-yellow-500' : 'bg-green-500'}`}
-                                            style={{ width: `${technicalData.complexity_score * 10}%` }}
-                                        />
-                                    </div>
-                                    <span className="text-xs font-bold theme-text-primary">{technicalData.complexity_score}/10</span>
-                                </div>
-                            </div>
-                        </motion.div>
-                    )}
-                </div>
-
-                <div className="space-y-2">
-                    <div className="flex justify-between items-end">
-                        <label className="text-sm theme-text-secondary pl-1">Expected Benefit (KPI)</label>
-                        <Button
-                            type="button"
-                            variant="secondary"
-                            className="h-7 text-xs py-0 px-2 flex items-center gap-1 bg-green-500/10 text-green-500 border-green-500/20 hover:bg-green-500/20"
-                            onClick={handleBusinessValueEnhancement}
-                            disabled={enhancingBusinessValue}
-                        >
-                            {enhancingBusinessValue ? <Loader2 className="w-3 h-3 animate-spin" /> : <Sparkles className="w-3 h-3" />}
-                            Enhance Value
+                {renderField('kpi', {
+                    action: (
+                        <Button type="button" variant="secondary" className={`${AI_BUTTON} bg-green-500/10 text-green-600 border-green-500/20 hover:bg-green-500/20`} onClick={handleBusinessValueEnhancement} disabled={enhancingBusinessValue}>
+                            {enhancingBusinessValue ? <Loader2 className="w-3 h-3 animate-spin" aria-hidden="true" /> : <Sparkles className="w-3 h-3" aria-hidden="true" />}
+                            Suggest a measure
                         </Button>
-                    </div>
-                    <Input
-                        placeholder="e.g. Reduce handle time by 20%"
-                        value={formData.kpi}
-                        onChange={e => handleChange('kpi', e.target.value)}
-                        required
-                    />
-                    {businessValueData && (
+                    ),
+                    after: businessValueData && (
                         <motion.div
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             className="space-y-3 p-4 rounded-lg border theme-border bg-green-500/5"
                         >
-                            <div>
-                                <h4 className="text-xs font-bold text-green-500 uppercase tracking-wider mb-2">Business Impact</h4>
-                                <p className="text-sm theme-text-primary">{businessValueData.business_impact}</p>
-                            </div>
-
-                            <div>
-                                <h4 className="text-xs font-bold text-green-500 uppercase tracking-wider mb-2">Specific Metrics</h4>
-                                <ul className="text-sm theme-text-secondary space-y-1">
-                                    {businessValueData.specific_metrics?.map((metric: string, idx: number) => (
-                                        <li key={idx} className="flex items-start gap-2">
-                                            <Check className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
-                                            {metric}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-
-                            <div>
-                                <h4 className="text-xs font-bold text-green-500 uppercase tracking-wider mb-2">ROI Indicators</h4>
-                                <ul className="text-sm theme-text-secondary space-y-1">
-                                    {businessValueData.roi_indicators?.map((roi: string, idx: number) => (
-                                        <li key={idx} className="flex items-start gap-2">
-                                            <Sparkles className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
-                                            {roi}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-
-                            {businessValueData.benchmarks?.length > 0 && (
+                            {businessValueData.business_impact && (
                                 <div>
-                                    <h4 className="text-xs font-bold text-green-500 uppercase tracking-wider mb-2">Industry Benchmarks</h4>
-                                    <div className="grid grid-cols-1 gap-2">
-                                        {businessValueData.benchmarks.map((benchmark: any, idx: number) => (
-                                            <div key={idx} className="text-xs theme-bg-tertiary p-2 rounded">
-                                                <span className="font-bold theme-text-primary">{benchmark.metric}:</span>{' '}
-                                                <span className="text-green-500">{benchmark.value}</span>{' '}
-                                                <span className="theme-text-secondary">({benchmark.source})</span>
-                                            </div>
-                                        ))}
-                                    </div>
+                                    <h4 className="text-xs font-bold text-green-600 uppercase tracking-wider mb-2">Business impact</h4>
+                                    <p className="text-sm theme-text-primary">{businessValueData.business_impact}</p>
                                 </div>
                             )}
-
-                            <div className="flex items-center justify-between pt-2 border-t theme-border">
-                                <span className="text-xs theme-text-secondary">Confidence Score</span>
-                                <span className="text-sm font-bold text-green-500">{(businessValueData.confidence_score * 100).toFixed(0)}%</span>
-                            </div>
-
-                            {businessValueData.is_mock && (
-                                <div className="text-xs theme-text-secondary italic">⚠️ Mock mode - using sample data</div>
+                            {businessValueData.specific_metrics?.length > 0 && (
+                                <div>
+                                    <h4 className="text-xs font-bold text-green-600 uppercase tracking-wider mb-2">Ways to measure it</h4>
+                                    <ul className="text-sm theme-text-secondary space-y-1">
+                                        {businessValueData.specific_metrics.map((metric: string, idx: number) => (
+                                            <li key={idx} className="flex items-start gap-2">
+                                                <Check className="w-4 h-4 text-green-600 shrink-0 mt-0.5" aria-hidden="true" />
+                                                {metric}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
                             )}
                         </motion.div>
-                    )}
-                </div>
+                    ),
+                })}
+
+                {/* Technical analysis is for IT reviewers; business users can skip it. */}
+                <details className="rounded-lg border theme-border p-3">
+                    <summary className="cursor-pointer text-sm font-medium theme-text-secondary">For IT reviewers (optional)</summary>
+                    <div className="mt-3 space-y-3">
+                        <div className="flex flex-wrap gap-2">
+                            <Button type="button" variant="secondary" className={`${AI_BUTTON} theme-bg-tertiary theme-border`} onClick={handleFeasibility} disabled={checkingFeasibility}>
+                                {checkingFeasibility ? <Loader2 className="w-3 h-3 animate-spin" aria-hidden="true" /> : <AlertTriangle className="w-3 h-3" aria-hidden="true" />}
+                                Check feasibility
+                            </Button>
+                            <Button type="button" variant="secondary" className={`${AI_BUTTON} bg-blue-500/10 text-blue-600 border-blue-500/20 hover:bg-blue-500/20`} onClick={handleTechnicalDeepDive} disabled={generatingArch}>
+                                {generatingArch ? <Loader2 className="w-3 h-3 animate-spin" aria-hidden="true" /> : <Server className="w-3 h-3" aria-hidden="true" />}
+                                Technical deep dive
+                            </Button>
+                        </div>
+                        {feasibilityData && (
+                            <div
+                                role="status"
+                                className={`text-sm p-3 rounded border ${feasibilityData.score === 'High' ? 'bg-semantic-success/10 border-semantic-success/30 text-semantic-success' :
+                                    feasibilityData.score === 'Medium' ? 'bg-yellow-500/10 border-yellow-500/30 text-yellow-600' :
+                                        'bg-semantic-danger/10 border-semantic-danger/30 text-semantic-danger'
+                                    }`}
+                            >
+                                <span className="font-bold">Feasibility: {feasibilityData.score}</span> — {feasibilityData.reason}
+                            </div>
+                        )}
+                        {technicalData && (
+                            <div className="space-y-4 p-4 rounded-lg border theme-border bg-blue-500/5">
+                                <p className="text-sm theme-text-primary font-medium">{technicalData.architecture_overview}</p>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                    <div className="bg-blue-500/10 p-3 rounded border border-blue-500/20">
+                                        <div className="flex items-center gap-1.5 mb-2">
+                                            <Layers className="w-3 h-3 text-blue-500" aria-hidden="true" />
+                                            <span className="text-xs font-bold text-blue-500 uppercase">Recommended stack</span>
+                                        </div>
+                                        <div className="space-y-2">
+                                            {technicalData.recommended_stack?.map((item: any, idx: number) => (
+                                                <div key={idx} className="text-xs">
+                                                    <span className="font-bold theme-text-primary block">{item.category}: {item.name}</span>
+                                                    <span className="theme-text-secondary">{item.justification}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="bg-blue-500/10 p-3 rounded border border-blue-500/20">
+                                        <div className="flex items-center gap-1.5 mb-2">
+                                            <Code className="w-3 h-3 text-blue-500" aria-hidden="true" />
+                                            <span className="text-xs font-bold text-blue-500 uppercase">Implementation steps</span>
+                                        </div>
+                                        <ol className="text-xs space-y-1.5 list-decimal list-inside theme-text-secondary">
+                                            {technicalData.implementation_steps?.map((step: string, idx: number) => (
+                                                <li key={idx}><span className="theme-text-primary">{step}</span></li>
+                                            ))}
+                                        </ol>
+                                    </div>
+                                </div>
+                                {technicalData.technical_risks?.length > 0 && (
+                                    <div className="text-xs border border-orange-500/30 bg-orange-500/5 rounded p-2">
+                                        <div className="font-bold text-orange-500 mb-1 flex items-center gap-1">
+                                            <AlertTriangle className="w-3 h-3" aria-hidden="true" /> Technical risks
+                                        </div>
+                                        <ul className="space-y-1 theme-text-secondary">
+                                            {technicalData.technical_risks.map((risk: string, idx: number) => <li key={idx}>• {risk}</li>)}
+                                        </ul>
+                                    </div>
+                                )}
+                                {typeof technicalData.complexity_score === 'number' && (
+                                    <div className="flex items-center justify-between pt-2 border-t theme-border text-xs">
+                                        <span className="theme-text-secondary">Estimated complexity</span>
+                                        <span className="font-bold theme-text-primary">{technicalData.complexity_score}/10</span>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+                    </div>
+                </details>
 
                 <div className="pt-4">
-                    <Button
-                        type="submit"
-                        className="w-full justify-center h-12 text-lg"
-                        disabled={loading || !formData.title}
-                    >
+                    {Object.values(errors).some(Boolean) && (
+                        <p className="text-sm text-semantic-danger mb-2" role="alert">Please fill in the highlighted fields.</p>
+                    )}
+                    <Button type="submit" className="w-full justify-center h-12 text-lg" disabled={loading}>
                         {loading ? <Loader2 className="animate-spin" /> : submitLabel}
                     </Button>
                 </div>
@@ -540,7 +568,7 @@ export function UseCaseForm({ workshopId, onSubmit, submitLabel = "Submit to Mat
                         <AlertCircle className="w-5 h-5 text-orange-500 shrink-0" />
                         <div>
                             <p className="text-sm font-bold text-orange-500">Wait! We found a similar submission.</p>
-                            <p className="text-sm text-gray-300 mt-1">{duplicateData?.message}</p>
+                            <p className="text-sm theme-text-secondary mt-1">{duplicateData?.message}</p>
                         </div>
                     </div>
 

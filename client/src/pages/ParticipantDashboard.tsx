@@ -387,10 +387,10 @@ export function ParticipantDashboard() {
                             onClick={handleSurveyClick}
                         />
 
-                        {/* Tile 4: Hotspot Prioritization */}
+                        {/* Tile 4: Prioritization matrix */}
                         <ActionTile
                             icon={<Target className="w-7 h-7" />}
-                            title="Hotspot Prioritization"
+                            title="Prioritization matrix"
                             description={t('dashboard.participant.tiles.prioritize.description')}
                             badge={canPrioritize ? `${sessionInfo?.use_cases.length || 0} ${t('dashboard.participant.tiles.prioritize.available')}` : "Not available"}
                             badgeVariant={canPrioritize ? "warning" : "default"}

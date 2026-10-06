@@ -100,6 +100,13 @@ describe('ScoringCard', () => {
 describe('UseCaseForm drafts and failures', () => {
     const fillTitle = (value: string) =>
         fireEvent.change(screen.getByPlaceholderText('e.g. Automated Customer Support'), { target: { value } });
+    // The form now validates required fields inline before submitting.
+    const fillRequired = (title: string) => {
+        fillTitle(title);
+        fireEvent.change(screen.getByLabelText(/who has this problem/i), { target: { value: 'Agents' } });
+        fireEvent.change(screen.getByLabelText(/what's the problem today/i), { target: { value: 'Slow lookups' } });
+        fireEvent.change(screen.getByLabelText(/how would we measure success/i), { target: { value: 'Faster handling' } });
+    };
 
     it('autosaves a draft and restores it when reopened', () => {
         const store = installMemoryStorage();
@@ -118,7 +125,7 @@ describe('UseCaseForm drafts and failures', () => {
         mockPost.mockResolvedValue({ data: { is_duplicate: false } });
         const onSubmit = vi.fn().mockRejectedValue({ response: { data: { error: { message: 'Workshop is closed for new ideas' } } } });
         const { container } = render(<UseCaseForm workshopId="w-1" onSubmit={onSubmit} draftKey="draft-2" />);
-        fillTitle('Contract review');
+        fillRequired('Contract review');
         fireEvent.submit(container.querySelector('form')!);
 
         await waitFor(() => expect(toast.error).toHaveBeenCalledWith(expect.stringContaining('Workshop is closed for new ideas')));
@@ -133,7 +140,7 @@ describe('UseCaseForm drafts and failures', () => {
         const { container } = render(
             <UseCaseForm workshopId="w-1" onSubmit={vi.fn().mockResolvedValue(undefined)} draftKey="draft-3" onDirtyChange={onDirty} />
         );
-        fillTitle('Forecasting');
+        fillRequired('Forecasting');
         expect(onDirty).toHaveBeenLastCalledWith(true);
         fireEvent.submit(container.querySelector('form')!);
         await waitFor(() => expect(store.has('draft-3')).toBe(false));

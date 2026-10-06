@@ -10,7 +10,7 @@ from app.models.models import Workshop, UseCase, Vote
 from app.schemas.results import AggregatedResult
 from typing import List
 
-from app.utils.matrix import calculate_matrix_position, detect_scale_max
+from app.utils.matrix import calculate_matrix_position, detect_scale_max, axes_from_config
 
 
 router = APIRouter()
@@ -110,7 +110,7 @@ async def get_workshop_results(workshop_id: str, db: AsyncSession = Depends(get_
         # For now, detect_scale_max already favors 100.
         
         # Calculate X and Y coordinates using shared utility
-        x_val, y_val = calculate_matrix_position(avgs, ws_template_id, scale_max)
+        x_val, y_val = calculate_matrix_position(avgs, ws_template_id, scale_max, **axes_from_config(ws_config))
 
         # Normalize average variance to 0-100 scale (100 = maximum disagreement)
         # Max variance for scale_max property is (scale_max^2 / 4)

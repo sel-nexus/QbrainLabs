@@ -5,7 +5,7 @@ from sqlalchemy.orm import selectinload
 from app.core.database import get_db
 from app.models.models import Vote, UseCase, Participant, Workshop
 from app.schemas.vote import VoteSubmit, VoteResponse
-from app.utils.matrix import calculate_matrix_position, detect_scale_max
+from app.utils.matrix import calculate_matrix_position, detect_scale_max, axes_from_config
 from app.core.socket_manager import sio 
 from uuid import UUID
 from typing import List, Optional
@@ -114,15 +114,17 @@ async def submit_vote(
         participant = participant_res.scalars().first()
         
         ws_template_id = None
+        ws_axes: dict = {}
         if use_case:
             workshop_res = await db.execute(select(Workshop).where(Workshop.id == use_case.workshop_id))
             workshop = workshop_res.scalars().first()
             if workshop:
                 ws_template_id = workshop.config.get('template_id')
+                ws_axes = axes_from_config(workshop.config)
 
         # Detect scale from current vote scores
         scale_max = detect_scale_max([float(v) for v in db_vote.scores.values()])
-        x, y = calculate_matrix_position(db_vote.scores, ws_template_id, scale_max)
+        x, y = calculate_matrix_position(db_vote.scores, ws_template_id, scale_max, **ws_axes)
 
         p_color = get_participant_color(str(vote_in.participant_id))
         
@@ -173,12 +175,14 @@ async def get_participant_matrix_positions(
     votes = result.scalars().all()
     
     ws_template_id = None
+    ws_axes: dict = {}
     if workshop_id:
         try:
             workshop_res = await db.execute(select(Workshop).where(Workshop.id == UUID(workshop_id)))
             workshop = workshop_res.scalars().first()
             if workshop:
                 ws_template_id = workshop.config.get('template_id')
+                ws_axes = axes_from_config(workshop.config)
         except ValueError:
             pass
     
@@ -189,7 +193,7 @@ async def get_participant_matrix_positions(
         if vote.scores:
             use_case = vote.use_case
             scale_max = detect_scale_max([float(v) for v in vote.scores.values()])
-            x, y = calculate_matrix_position(vote.scores, ws_template_id, scale_max)
+            x, y = calculate_matrix_position(vote.scores, ws_template_id, scale_max, **ws_axes)
             
             positions.append(ParticipantMatrixPosition(
                 id=str(use_case.id),
@@ -238,10 +242,12 @@ async def get_all_participant_matrix_positions(
     votes = result.scalars().all()
     
     ws_template_id = None
+    ws_axes: dict = {}
     workshop_res = await db.execute(select(Workshop).where(Workshop.id == workshop_uuid))
     workshop = workshop_res.scalars().first()
     if workshop:
         ws_template_id = workshop.config.get('template_id')
+        ws_axes = axes_from_config(workshop.config)
 
     positions = []
     for vote in votes:
@@ -249,7 +255,7 @@ async def get_all_participant_matrix_positions(
             use_case = vote.use_case
             participant = vote.participant
             scale_max = detect_scale_max([float(v) for v in vote.scores.values()])
-            x, y = calculate_matrix_position(vote.scores, ws_template_id, scale_max)
+            x, y = calculate_matrix_position(vote.scores, ws_template_id, scale_max, **ws_axes)
             
             positions.append(AllParticipantMatrixPosition(
                 use_case_id=str(use_case.id),

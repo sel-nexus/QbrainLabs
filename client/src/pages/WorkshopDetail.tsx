@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useSearchParams } from 'react-router-dom';
 import { UseCaseForm, type UseCaseData } from '../components/UseCaseForm';
 import { BulkUseCaseForm } from '../components/BulkUseCaseForm';
 import { api } from '../lib/api';
@@ -35,18 +35,7 @@ import { LiveProgressPanel, ActiveCardControls } from '../components/facilitator
 import { PresenterJoinView, PresenterResultsView } from '../components/facilitator/PresenterViews';
 import { useWorkshopProgress } from '../hooks/useWorkshopProgress';
 import { phaseLabel } from '../lib/workshopPhases';
-
-// X/Y axes for the prioritization matrix (matches backend matrix.py keyword mapping).
-function matrixAxes(criteriaNames: string[]): { xLabel: string; yLabel: string } {
-    const xKeywords = ['Feasibility', 'Ease of Implementation', 'Effort (Inverse)', 'Readiness', 'Data Readiness', 'Organizational Readiness', 'Complexity', 'Implementation Readiness'];
-    const yKeywords = ['Business Value', 'Impact', 'Value', 'Business Impact', 'Strategic Alignment', 'Scalability & Value', 'ROI', 'Alignment', 'Strategic', 'Strategic Value'];
-    const xLabel = criteriaNames.find((n) => xKeywords.includes(n)) || criteriaNames[0] || 'Feasibility';
-    let yLabel = criteriaNames.find((n) => yKeywords.includes(n)) || criteriaNames[1] || 'Business Value';
-    if (xLabel === yLabel && criteriaNames.length > 1) {
-        yLabel = criteriaNames.find((n) => n !== xLabel) || yLabel;
-    }
-    return { xLabel, yLabel };
-}
+import { matrixAxes } from '../lib/criteria';
 
 export function WorkshopDetail() {
     const { id } = useParams();
@@ -80,6 +69,12 @@ export function WorkshopDetail() {
     const [presentResults, setPresentResults] = useState(false);
     const [analysisSection, setAnalysisSection] = useState<'results' | 'tools'>('results');
     const [copyFallback, setCopyFallback] = useState(false);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const justCreated = searchParams.get('created') === '1';
+    const dismissCreated = () => {
+        searchParams.delete('created');
+        setSearchParams(searchParams, { replace: true });
+    };
     // Use case ids this facilitator just edited/deleted: skip the echo toast from the socket.
     const localActionIds = useRef<Set<string>>(new Set());
     const isFacilitator = hasRole(['admin', 'facilitator']);
@@ -416,6 +411,21 @@ export function WorkshopDetail() {
                 )}
             </header>
 
+            {justCreated && (
+                <section role="status" aria-label="Workshop created" className="mb-6 rounded-2xl border border-semantic-success/40 bg-semantic-success/10 p-5 flex flex-wrap items-center gap-4">
+                    <div className="flex-1 min-w-[220px]">
+                        <h2 className="font-bold theme-text-primary">Workshop created — share this PIN</h2>
+                        <p className="text-sm theme-text-secondary">Participants join at <span className="font-mono">{window.location.host}/join</span> with PIN</p>
+                        <p className="font-mono font-bold text-3xl tracking-widest text-brand-magenta mt-1">{workshop.pin}</p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                        <Button onClick={() => setPresentJoin(true)}><Monitor className="w-4 h-4 mr-2" /> Present join screen</Button>
+                        <Button variant="secondary" onClick={() => setShowQR(true)}><QrCode className="w-4 h-4 mr-2" /> QR code &amp; link</Button>
+                        <Button variant="ghost" onClick={dismissCreated} aria-label="Dismiss">Dismiss</Button>
+                    </div>
+                </section>
+            )}
+
             {isFacilitator && (
                 <div className="mb-6 space-y-4">
                     <PhaseStepper
@@ -504,7 +514,7 @@ export function WorkshopDetail() {
                     ) : (
                         <>
                             <div className="flex items-center justify-between">
-                                <h2 className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Strategic Prioritization</h2>
+                                <h2 className={`text-2xl font-bold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>Prioritization matrix</h2>
                                 <div className="flex gap-2">
                                     <Button
                                         variant={!showAllParticipantPositions ? 'primary' : 'secondary'}
@@ -550,7 +560,7 @@ export function WorkshopDetail() {
                             <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6 mt-4">
                                 <div className="p-6 rounded-2xl border theme-card theme-border bg-white/50 backdrop-blur-sm">
                                     {(() => {
-                                        const { xLabel, yLabel } = matrixAxes(workshop.config.criteria?.map((c: any) => c.name) || []);
+                                        const { xLabel, yLabel } = matrixAxes(workshop.config.criteria?.map((c: any) => c.name) || [], workshop.config);
 
                                         const mappedResults = results.map(item => {
                                             // Backend now provides standardized 0-100 coordinates
@@ -959,7 +969,7 @@ export function WorkshopDetail() {
                 <PresenterResultsView
                     title={workshop.title}
                     results={results.map((r) => ({ ...r, x: r.x ?? 50, y: r.y ?? 50 }))}
-                    {...matrixAxes(workshop.config.criteria?.map((c: any) => c.name) || [])}
+                    {...matrixAxes(workshop.config.criteria?.map((c: any) => c.name) || [], workshop.config)}
                     onClose={() => setPresentResults(false)}
                 />
             )}

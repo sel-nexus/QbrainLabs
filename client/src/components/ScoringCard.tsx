@@ -134,7 +134,9 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
                 className="bg-surface-800/80 backdrop-blur border border-white/10 rounded-2xl p-6 shadow-xl max-w-lg mx-auto"
             >
                 <div className="mb-6">
-                    <span className="text-xs text-brand-violet font-mono uppercase tracking-wider">Voting Now</span>
+                    <span className="text-xs text-brand-violet font-mono uppercase tracking-wider">
+                        Now scoring{activeCard.position && activeCard.total ? ` · Card ${activeCard.position} of ${activeCard.total}` : ''}
+                    </span>
                     <h2 className="text-2xl font-bold text-white mt-1 ">{activeCard.title}</h2>
                     <p className="text-gray-300 mt-2 text-sm">{activeCard.description}</p>
                     {activeCard.proposed_solution && (
@@ -168,9 +170,10 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
                                 value={scores[c.name] ?? defaultVal}
                                 onChange={(e) => handleScoreChange(c.name, Number(e.target.value))}
                             />
-                            <div className="flex justify-between text-xs text-gray-500 mt-1">
-                                <span>Low</span>
-                                <span>High</span>
+                            {/* Same anchors as the prioritization matrix: low on the left, high on the right */}
+                            <div className="flex justify-between text-xs text-gray-500 mt-1" aria-hidden="true">
+                                <span>{minVal} · Low</span>
+                                <span>{maxVal} · High</span>
                             </div>
                         </div>
                     ))}

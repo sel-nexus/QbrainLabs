@@ -45,12 +45,12 @@ function setup(phase: string, status = 'IN_PROGRESS', active: string | null = nu
     mockPost.mockResolvedValue({ data: { status: 'IN_PROGRESS' } });
 }
 
-async function renderConsole() {
+async function renderConsole(path = '/workshop/w-1') {
     const { WorkshopDetail } = await import('../pages/WorkshopDetail');
     render(
         <ThemeProvider>
             <SessionProvider>
-                <MemoryRouter initialEntries={['/workshop/w-1']}>
+                <MemoryRouter initialEntries={[path]}>
                     <Routes><Route path="/workshop/:id" element={<WorkshopDetail />} /></Routes>
                 </MemoryRouter>
             </SessionProvider>
@@ -127,5 +127,17 @@ describe('Facilitator console', () => {
         setup('ANALYSIS', 'COMPLETED');
         await renderConsole();
         expect(screen.getByRole('button', { name: 'Reopen workshop' })).toBeInTheDocument();
+    });
+
+    it('right after creation shows a share-this-PIN panel that can be dismissed', async () => {
+        setup('INTAKE');
+        await renderConsole('/workshop/w-1?created=1');
+        const panel = screen.getByRole('status', { name: 'Workshop created' });
+        expect(within(panel).getByText('ABC123')).toBeInTheDocument();
+        fireEvent.click(within(panel).getByRole('button', { name: /present join screen/i }));
+        expect(screen.getByRole('dialog', { name: 'Join this workshop' })).toBeInTheDocument();
+        fireEvent.keyDown(window, { key: 'Escape' });
+        fireEvent.click(within(screen.getByRole('status', { name: 'Workshop created' })).getByRole('button', { name: 'Dismiss' }));
+        expect(screen.queryByRole('status', { name: 'Workshop created' })).not.toBeInTheDocument();
     });
 });

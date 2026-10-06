@@ -346,7 +346,7 @@ export function ParticipantMatrix() {
                             </button>
                             <div className="min-w-0">
                                 <h1 className="text-sm sm:text-xl font-bold theme-text-primary truncate">
-                                    Strategic Prioritization
+                                    Prioritization matrix
                                 </h1>
                                 <p className="text-[10px] sm:text-sm theme-text-secondary truncate">
                                     {workshopTitle}
@@ -431,7 +431,7 @@ export function ParticipantMatrix() {
                     <aside className="hidden lg:block space-y-4 sticky top-[140px] z-30">
                         <div className="flex items-center justify-between px-1">
                             <h3 className="font-bold theme-text-secondary text-xs uppercase tracking-wider">
-                                Categories
+                                Criteria
                             </h3>
                             <span className="text-[10px] bg-theme-bg-tertiary px-2 py-0.5 rounded-full theme-text-muted">
                                 {activeCriterionIndex + 1} / {workshopCriteria.length}
@@ -502,6 +502,11 @@ export function ParticipantMatrix() {
                             {workshopCriteria[activeCriterionIndex]?.description && (
                                 <p className="text-xs sm:text-sm theme-text-secondary mt-1.5 sm:mt-2 italic max-w-2xl mx-auto">
                                     &ldquo;{workshopCriteria[activeCriterionIndex].description}&rdquo;
+                                </p>
+                            )}
+                            {useCases.length > 0 && (
+                                <p className="text-xs font-medium text-brand-violet mt-1.5" aria-live="polite">
+                                    {ratedUseCases.length} of {useCases.length} rated for this criterion
                                 </p>
                             )}
                         </div>

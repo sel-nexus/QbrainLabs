@@ -125,7 +125,7 @@ function App() {
 
           {/* Facilitator Routes (Protected) - All wrapped with AuthenticatedLayout for consistent header */}
           <Route path="/facilitator/dashboard" element={<AuthenticatedRoute showBackButton={false}><FacilitatorDashboard /></AuthenticatedRoute>} />
-          <Route path="/facilitator/create" element={<AuthenticatedRoute requireAdmin title="Create Workshop"><CreateWorkshop /></AuthenticatedRoute>} />
+          <Route path="/facilitator/create" element={<AuthenticatedRoute title="Create Workshop"><CreateWorkshop /></AuthenticatedRoute>} />
           <Route path="/facilitator/knowledge-base" element={<AuthenticatedRoute title="Knowledge Base"><KnowledgeBase /></AuthenticatedRoute>} />
           <Route path="/facilitator/usecases" element={<AuthenticatedRoute title="All Use Cases"><AllUseCases /></AuthenticatedRoute>} />
           <Route path="/facilitator/challenge-planner" element={<AuthenticatedRoute title="Business Challenge Planner"><BusinessChallengePlanner /></AuthenticatedRoute>} />
