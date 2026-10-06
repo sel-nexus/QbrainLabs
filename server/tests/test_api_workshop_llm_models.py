@@ -12,36 +12,6 @@ from app.api.auth import hash_password
 
 
 @pytest.fixture
-async def admin_user(db_session: AsyncSession) -> User:
-    # Generate unique email per test to avoid constraint violations
-    unique_suffix = str(uuid4())[:8]
-    email = f"wsllmadmin_{unique_suffix}@test.com"
-
-    user = User(
-        email=email,
-        password_hash=hash_password("adminpass123"),
-        full_name="Workshop LLM Admin",
-        role=UserRole.ADMIN,
-        status=AccountStatus.ACTIVE,
-    )
-    db_session.add(user)
-    await db_session.commit()
-    await db_session.refresh(user)
-
-    return user
-
-
-@pytest.fixture
-async def admin_token(client: AsyncClient, admin_user: User) -> str:
-    response = await client.post(
-        "/api/auth/login",
-        json={"email": admin_user.email, "password": "adminpass123"},
-    )
-    assert response.status_code == 200
-    return response.json()["access_token"]
-
-
-@pytest.fixture
 async def other_facilitator_user(db_session: AsyncSession) -> User:
     # A facilitator with no ownership/assignment relationship to `workshop_id`
     unique_suffix = str(uuid4())[:8]

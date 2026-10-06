@@ -67,7 +67,8 @@ class TestSettingsService:
         
         assert value == 42
 
-    async def test_update_setting(self, db_session: AsyncSession):
+    async def test_update_setting(self, db_session: AsyncSession, make_user):
+        admin_id = str((await make_user(role="admin")).id)
         """Test updating a setting value"""
         await settings_service.seed_default_settings(db_session)
         
@@ -76,15 +77,16 @@ class TestSettingsService:
             db_session,
             "rate_limit.registration.daily",
             15,
-            updated_by="test-user-id",
+            updated_by=admin_id,
             ip_address="127.0.0.1"
         )
         
         assert updated is not None
         assert updated.value == 15
-        assert updated.updated_by == "test-user-id"
+        assert str(updated.updated_by) == admin_id
 
-    async def test_update_setting_creates_audit_log(self, db_session: AsyncSession):
+    async def test_update_setting_creates_audit_log(self, db_session: AsyncSession, make_user):
+        admin_id = str((await make_user(role="admin")).id)
         """Test that updating creates audit log entry"""
         await settings_service.seed_default_settings(db_session)
         
@@ -93,7 +95,7 @@ class TestSettingsService:
             db_session,
             "rate_limit.registration.daily",
             20,
-            updated_by="test-user-id",
+            updated_by=admin_id,
             ip_address="127.0.0.1"
         )
         
@@ -107,9 +109,10 @@ class TestSettingsService:
         assert len(logs) > 0
         assert logs[0].setting_key == "rate_limit.registration.daily"
         assert logs[0].new_value == 20
-        assert logs[0].changed_by == "test-user-id"
+        assert str(logs[0].changed_by) == admin_id
 
-    async def test_update_setting_validation(self, db_session: AsyncSession):
+    async def test_update_setting_validation(self, db_session: AsyncSession, make_user):
+        admin_id = str((await make_user(role="admin")).id)
         """Test that validation rules are enforced"""
         await settings_service.seed_default_settings(db_session)
         
@@ -119,10 +122,11 @@ class TestSettingsService:
                 db_session,
                 "rate_limit.registration.daily",
                 9999,  # Exceeds max of 1000
-                updated_by="test-user-id"
+                updated_by=admin_id
             )
 
-    async def test_reset_setting_to_default(self, db_session: AsyncSession):
+    async def test_reset_setting_to_default(self, db_session: AsyncSession, make_user):
+        admin_id = str((await make_user(role="admin")).id)
         """Test resetting a setting to default value"""
         await settings_service.seed_default_settings(db_session)
         
@@ -137,7 +141,7 @@ class TestSettingsService:
         reset = await settings_service.reset_setting_to_default(
             db_session,
             "rate_limit.registration.daily",
-            updated_by="test-user-id"
+            updated_by=admin_id
         )
         
         assert reset is not None

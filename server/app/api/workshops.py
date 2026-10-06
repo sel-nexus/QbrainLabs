@@ -38,6 +38,10 @@ async def list_workshops(
     if not current_user:
         return []
     
+    # Signed-in accounts awaiting approval (or disabled) see nothing yet.
+    if not current_user.is_admin_user and current_user.status != AccountStatus.ACTIVE.value:
+        raise HTTPException(status_code=403, detail="Account is not active")
+
     # Admins can see all workshops (excluding deleted)
     if current_user.is_admin_user:
         result = await db.execute(

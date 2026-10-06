@@ -42,6 +42,7 @@ def mock_participants():
         p.id = uuid.uuid4()
         p.display_name = f"Participant {i+1}"
         p.role = "PARTICIPANT"
+        p.engagement_records = []  # no activity history (a bare MagicMock would fake one)
         participants.append(p)
     return participants
 
@@ -312,7 +313,7 @@ class TestDiscussionPrompts:
         assert len(prompts) > 0
         # Should have alignment prompt for high variance
         categories = [p["category"] for p in prompts]
-        assert "alignment" in categories
+        assert "Alignment" in categories
 
 
 class TestSummaryGeneration:

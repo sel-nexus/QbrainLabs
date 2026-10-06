@@ -108,6 +108,42 @@ async def get_all_settings(
     )
 
 
+# Must be declared before the /{key:path} catch-all, or it is unreachable.
+@router.get("/audit/log", response_model=AuditLogResponse)
+async def get_audit_log(
+    setting_key: Optional[str] = None,
+    limit: int = 50,
+    admin: User = Depends(require_admin),
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    Get settings audit log entries.
+    Admin only.
+    """
+    entries = await settings_service.get_settings_audit_log(
+        db=db,
+        setting_key=setting_key,
+        limit=limit
+    )
+    
+    return AuditLogResponse(
+        entries=[
+            AuditLogEntry(
+                id=str(e.id),
+                setting_id=str(e.setting_id) if e.setting_id else None,
+                setting_key=e.setting_key,
+                old_value=e.old_value,
+                new_value=e.new_value,
+                changed_by=str(e.changed_by) if e.changed_by else None,
+                changed_at=e.changed_at,
+                ip_address=e.ip_address
+            )
+            for e in entries
+        ],
+        total=len(entries)
+    )
+
+
 @router.get("/{key:path}", response_model=SettingResponse)
 async def get_setting(
     key: str,
@@ -245,41 +281,6 @@ async def reset_setting_to_default(
         validation_rules=setting.validation_rules,
         updated_at=setting.updated_at,
         created_at=setting.created_at
-    )
-
-
-@router.get("/audit/log", response_model=AuditLogResponse)
-async def get_audit_log(
-    setting_key: Optional[str] = None,
-    limit: int = 50,
-    admin: User = Depends(require_admin),
-    db: AsyncSession = Depends(get_db)
-):
-    """
-    Get settings audit log entries.
-    Admin only.
-    """
-    entries = await settings_service.get_settings_audit_log(
-        db=db,
-        setting_key=setting_key,
-        limit=limit
-    )
-    
-    return AuditLogResponse(
-        entries=[
-            AuditLogEntry(
-                id=str(e.id),
-                setting_id=str(e.setting_id) if e.setting_id else None,
-                setting_key=e.setting_key,
-                old_value=e.old_value,
-                new_value=e.new_value,
-                changed_by=str(e.changed_by) if e.changed_by else None,
-                changed_at=e.changed_at,
-                ip_address=e.ip_address
-            )
-            for e in entries
-        ],
-        total=len(entries)
     )
 
 

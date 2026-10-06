@@ -40,6 +40,17 @@ async def submit_vote(
     vote_in: VoteSubmit,
     db: AsyncSession = Depends(get_db)
 ):
+    # Only real participants of the use case's own workshop may vote; anything
+    # else would add orphaned votes that skew the results.
+    use_case = await db.get(UseCase, vote_in.use_case_id)
+    if not use_case:
+        raise HTTPException(status_code=404, detail="Use case not found")
+    participant = await db.get(Participant, vote_in.participant_id)
+    if not participant:
+        raise HTTPException(status_code=404, detail="Participant not found")
+    if participant.workshop_id != use_case.workshop_id:
+        raise HTTPException(status_code=403, detail="Participant is not part of this workshop")
+
     existing = await db.execute(
         select(Vote).where(
             Vote.use_case_id == vote_in.use_case_id,

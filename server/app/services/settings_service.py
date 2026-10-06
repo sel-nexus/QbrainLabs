@@ -127,11 +127,10 @@ async def update_setting(
         logger.warning(f"Setting not found: {key}")
         return None
     
-    # Validate value if rules exist
-    if setting.validation_rules:
-        validation_error = _validate_value(value, setting.value_type, setting.validation_rules)
-        if validation_error:
-            raise ValueError(validation_error)
+    # Always check the value's type; min/max/length rules apply only when set.
+    validation_error = _validate_value(value, setting.value_type, setting.validation_rules or {})
+    if validation_error:
+        raise ValueError(validation_error)
     
     old_value = setting.value
     

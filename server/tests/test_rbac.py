@@ -182,7 +182,7 @@ class TestAdminEndpoints:
                 # Should succeed or return empty list
                 assert response.status_code in [200, 500]  # 500 if DB not set up
         finally:
-            app.dependency_overrides.clear()
+            app.dependency_overrides.pop(get_current_user, None)
 
     @pytest.mark.asyncio
     async def test_facilitator_cannot_access_admin_endpoints(self, facilitator_user_data):
@@ -198,7 +198,7 @@ class TestAdminEndpoints:
                 response = await client.get("/api/admin/facilitators")
                 assert response.status_code == 403
         finally:
-            app.dependency_overrides.clear()
+            app.dependency_overrides.pop(get_current_user, None)
 
     @pytest.mark.asyncio
     async def test_unauthenticated_cannot_access_admin_endpoints(self):
@@ -229,7 +229,7 @@ class TestFacilitatorEndpoints:
                 # Should succeed or DB error
                 assert response.status_code in [200, 500]
         finally:
-            app.dependency_overrides.clear()
+            app.dependency_overrides.pop(get_current_user, None)
 
     @pytest.mark.asyncio
     async def test_admin_can_access_facilitator_endpoints(self, admin_user_data):
@@ -246,7 +246,7 @@ class TestFacilitatorEndpoints:
                 # Should succeed or DB error
                 assert response.status_code in [200, 500]
         finally:
-            app.dependency_overrides.clear()
+            app.dependency_overrides.pop(get_current_user, None)
 
 
 class TestMemberEndpoints:
@@ -345,7 +345,7 @@ class TestWorkshopAccess:
                 # 403 (forbidden) or 405 (method not allowed if endpoint doesn't exist)
                 assert response.status_code in [403, 405]
         finally:
-            app.dependency_overrides.clear()
+            app.dependency_overrides.pop(get_current_user, None)
 
     @pytest.mark.asyncio
     async def test_facilitator_cannot_access_unassigned_workshop(self, facilitator_user_data):
@@ -365,7 +365,7 @@ class TestWorkshopAccess:
                 # Should be 403 (not assigned) or 404 (not found) or 500 (DB error)
                 assert response.status_code in [403, 404, 500]
         finally:
-            app.dependency_overrides.clear()
+            app.dependency_overrides.pop(get_current_user, None)
 
 
 class TestAuditLogging:

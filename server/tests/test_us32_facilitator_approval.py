@@ -81,7 +81,7 @@ class TestPendingFacilitatorLogin:
         )
         
         assert response.status_code == 403
-        assert "disabled" in response.json()["detail"].lower()
+        assert "disabled" in response.json()["error"]["message"].lower()
 
 
 class TestRegistrationRateLimiting:
@@ -186,7 +186,8 @@ class TestWorkshopFacilitatorLimit:
             is_admin=True
         )
         db_session.add(admin)
-        
+        await db_session.flush()  # assign admin.id before it is used below
+
         # Create workshop
         workshop = Workshop(
             facilitator_id=admin.id,
@@ -280,9 +281,10 @@ class TestFacilitatorAccessRequests:
         
         assert request_id.startswith("FAR-")
         parts = request_id.split("-")
-        assert len(parts) == 3
-        # Year-MonthDay format
-        assert len(parts[1]) == 8  # YYYY + MMDD
+        assert len(parts) == 4
+        assert len(parts[1]) == 4 and parts[1].isdigit()  # YYYY
+        assert len(parts[2]) == 4 and parts[2].isdigit()  # MMDD
+        assert parts[3].isdigit()  # NNN
 
     @pytest.mark.asyncio
     async def test_approve_facilitator_request(self, db_session: AsyncSession):
