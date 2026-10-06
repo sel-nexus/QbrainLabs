@@ -58,25 +58,20 @@ vi.mock('../lib/socket', () => ({
   },
 }));
 
-// Mock react-i18next
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key: string, options?: any) => {
-      if (typeof options === 'string') return options;
-      if (options && typeof options === 'object' && options.defaultValue) return options.defaultValue;
-      return key;
-    },
-    i18n: {
-      changeLanguage: vi.fn(),
-      language: 'en',
-    },
-  }),
-  Trans: ({ children }: any) => children,
-  initReactI18next: {
-    type: '3rdParty',
-    init: vi.fn(),
-  },
-}));
+// react-i18next backed by a real i18next instance with the English bundle, so
+// components render the same text as the app (keys, interpolation, plurals).
+vi.mock('react-i18next', async () => {
+  const { default: i18next } = await import('i18next');
+  const { default: en } = await import('../../public/locales/en/translation.json');
+  const i18n = i18next.createInstance();
+  await i18n.init({ lng: 'en', fallbackLng: 'en', resources: { en: { translation: en } }, interpolation: { escapeValue: false } });
+  const t = i18n.t.bind(i18n);
+  return {
+    useTranslation: () => ({ t, i18n: Object.assign(i18n, { changeLanguage: vi.fn() }) }),
+    Trans: ({ children }: any) => children,
+    initReactI18next: { type: '3rdParty', init: vi.fn() },
+  };
+});
 
 // Mock Element.scrollTo for carousel components
 Element.prototype.scrollTo = vi.fn() as any;

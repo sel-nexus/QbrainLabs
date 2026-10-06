@@ -221,8 +221,13 @@
             "uploadHelp": "Téléchargez des documents PDF, PPT, Word ou des images (JPG, PNG) pour enrichir la base de connaissances IA.",
             "importSuccess": "{{name}} importé avec succès",
             "failedLoad": "Échec du chargement de la base de connaissances",
-            "failedLoadIndustry": "Échec du chargement des détails du secteur"
-        }
+            "failedLoadIndustry": "Échec du chargement des détails du secteur",
+            "showingKeyAIUseCases": "Affichage des principaux cas d’usage IA"
+        },
+        "failedLoadUsers": "Impossible de charger les animateurs",
+        "recentActivityWarning": "Cet utilisateur a été actif récemment.",
+        "deleteSuccess": "Utilisateur supprimé",
+        "deleteError": "Impossible de supprimer l’utilisateur"
     },
     "workshop": {
         "title": "Atelier",
@@ -262,5 +267,448 @@
             "prioritization": "Priorisation",
             "roadmap": "Feuille de route"
         }
+    },
+    "dashboard": {
+        "facilitator": {
+            "title": "Tableau de bord de l’animateur",
+            "myWorkshops": "Mes ateliers",
+            "createWorkshop": "Créer un atelier",
+            "selectWorkshop": "Sélectionnez un atelier pour voir ses cas d’usage.",
+            "noWorkshops": "Aucun atelier attribué. Sélectionnez un atelier dès qu’il est disponible pour voir ses cas d’usage.",
+            "emptyState": "Vous n’avez encore créé aucun atelier.",
+            "createNew": "Créez votre premier atelier pour commencer.",
+            "quickStats": "Statistiques rapides",
+            "activeSessions": "Sessions actives",
+            "totalParticipants": "Participants au total",
+            "avgEngagement": "Engagement moyen"
+        },
+        "participant": {
+            "title": "Tableau de bord du participant",
+            "welcome": "Bon retour",
+            "points": "Points",
+            "rank": "Classement",
+            "badges": "Badges",
+            "activeSession": "Session active",
+            "noActiveSession": "Aucune session active",
+            "joinSession": "Rejoindre une session",
+            "enterPin": "Saisissez le code PIN pour rejoindre",
+            "myContributions": "Mes contributions",
+            "ideasSubmitted": "Idées envoyées",
+            "votesCast": "Notes données",
+            "achievements": "Réussites",
+            "tiles": {
+                "useCases": {
+                    "title": "Cas d’usage",
+                    "description": "Consultez et commentez les cas d’usage proposés"
+                },
+                "addUseCase": {
+                    "title": "Ajouter un cas d’usage",
+                    "description": "Proposez une nouvelle idée à prioriser"
+                },
+                "survey": {
+                    "title": "Répondre à l’enquête",
+                    "description": "Donnez votre avis",
+                    "pending": "En attente",
+                    "done": "Terminée",
+                    "noSurveys": "Aucune enquête",
+                    "unavailable": "Aucune enquête active",
+                    "completed": "Terminée"
+                },
+                "prioritize": {
+                    "title": "Prioriser",
+                    "description": "Notez les cas d’usage",
+                    "available": "Cas d’usage",
+                    "noUseCases": "Aucun cas d’usage à prioriser"
+                },
+                "submitUseCase": {
+                    "title": "Proposer un cas d’usage",
+                    "badge": "proposés"
+                }
+            }
+        },
+        "columns": {
+            "workshop": "Atelier",
+            "pin": "PIN",
+            "phase": "Phase",
+            "status": "Statut",
+            "participants": "Participants",
+            "useCases": "Cas d’usage",
+            "created": "Créé le",
+            "actions": "Actions"
+        },
+        "status": {
+            "draft": "Brouillon",
+            "open": "Ouvert",
+            "in_progress": "En cours",
+            "completed": "Terminé",
+            "paused": "En pause",
+            "closed": "Fermé"
+        },
+        "phases": {
+            "setup": "Configuration",
+            "intake": "Collecte",
+            "prioritization": "Priorisation",
+            "analysis": "Analyse",
+            "voting": "Notation",
+            "results": "Résultats"
+        }
+    },
+    "join": {
+        "title": "Rejoindre la session",
+        "currentWorkshop": "votre atelier actuel",
+        "stillIn": "Vous êtes toujours dans « {{title}} ».",
+        "differentWorkshop": "Ce lien concerne un autre atelier (PIN {{pin}}). Quitter l’atelier actuel et rejoindre celui-ci ?",
+        "leaveAndJoin": "Quitter et rejoindre cet atelier",
+        "stayCurrent": "Rester dans l’atelier actuel",
+        "pinLabel": "Code PIN de l’atelier (6 caractères)",
+        "pinPlaceholder": "Saisissez le PIN",
+        "nameLabel": "Votre nom (visible par les autres participants)",
+        "namePlaceholder": "Votre nom",
+        "joinFailed": "Impossible de rejoindre. Vérifiez le PIN et réessayez.",
+        "hosting": "Vous animez cet atelier ?",
+        "joinAs": "Rejoindre en tant que :",
+        "asParticipant": "Participant (par défaut)",
+        "requestFacilitator": "Demander un accès animateur",
+        "emailPlaceholder": "E-mail (facultatif, pour les notifications)",
+        "emailHelp": "Indiquez votre e-mail pour être prévenu de la validation",
+        "join": "Rejoindre",
+        "signIn": "Connectez-vous pour suivre vos contributions",
+        "backHome": "← Retour à l’accueil",
+        "authTitle": "Rejoindre l’atelier",
+        "pinPrefix": "PIN de l’atelier :",
+        "enterPinToJoin": "Saisissez le PIN d’un atelier pour le rejoindre",
+        "sessionFailed": "Impossible de démarrer la session",
+        "requestSubmittedToast": "Demande d’accès animateur envoyée !",
+        "requestSubmitted": "Demande envoyée",
+        "requestSubmittedBody": "Votre demande pour rejoindre l’atelier en tant qu’animateur a été envoyée pour validation.",
+        "yourName": "Votre nom :",
+        "requestId": "Identifiant de la demande :",
+        "whatNext": "Et ensuite ?",
+        "next1": "Un administrateur examinera votre demande",
+        "next2": "Vous recevrez un e-mail une fois la demande acceptée ou refusée",
+        "next3": "Si elle est acceptée, vous aurez accès aux fonctions d’animateur",
+        "joinAsParticipantNow": "Rejoindre maintenant comme participant",
+        "returnHome": "Retour à l’accueil"
+    },
+    "phases": {
+        "DRAFT": "Pas commencé",
+        "LOBBY": "Pas commencé",
+        "INTAKE": "Collecte des idées",
+        "SCORING": "Notation",
+        "ANALYSIS": "Résultats",
+        "COMPLETE": "Terminé",
+        "COMPLETED": "Terminé"
+    },
+    "participantDashboard": {
+        "complete": {
+            "title": "L’atelier est terminé, merci !",
+            "detail": "Voici les cas d’usage les mieux classés par le groupe.",
+            "badge": "Terminé"
+        },
+        "seeTopUseCases": "Voir les meilleurs cas d’usage",
+        "stepOf": "Étape {{step}} sur {{total}}",
+        "intake": {
+            "title": "Ajoutez vos idées de cas d’usage IA",
+            "detail": "Décrivez un problème que l’IA pourrait aider à résoudre. Vous pouvez en ajouter autant que vous voulez.",
+            "action": "Ajouter un cas d’usage"
+        },
+        "scoring": {
+            "title": "Notez les cas d’usage",
+            "detail": "L’animateur présente chaque cas d’usage ; notez-le selon les critères.",
+            "action": "Aller à la notation"
+        },
+        "results": {
+            "title": "Voir les résultats",
+            "detail": "La notation est terminée. Découvrez les cas d’usage arrivés en tête."
+        },
+        "waiting": {
+            "title": "En attente du démarrage par l’animateur",
+            "detail": "Vous êtes inscrit. Cette page se met à jour automatiquement au début de l’atelier."
+        },
+        "loading": "Chargement de l’atelier...",
+        "workshopFallback": "Atelier",
+        "welcome": "Bienvenue, {{name}}",
+        "leaderboard": "Classement",
+        "badges": "Badges",
+        "qa": "Questions",
+        "qaLabel": "Questions et réponses",
+        "totalBadge": "{{count}} au total",
+        "available": "Disponible",
+        "matrixTitle": "Matrice de priorisation",
+        "notAvailable": "Indisponible",
+        "toReview": "0 à examiner",
+        "useCasesHeading": "Cas d’usage de l’atelier ({{count}})",
+        "filterLabel": "Filtrer les cas d’usage",
+        "filterAll": "Tous",
+        "filterMine": "Les miens ({{count}})",
+        "empty": "Aucun cas d’usage pour l’instant. Soyez le premier à en proposer un !",
+        "mineBadge": "Le mien · touchez pour modifier",
+        "close": "Fermer",
+        "closeDraftSaved": "Fermer (votre brouillon est enregistré)",
+        "scoringStarted": {
+            "title": "L’animateur a lancé la notation.",
+            "detail": "Terminez et envoyez votre cas d’usage (votre brouillon est enregistré), puis vous passerez à la notation.",
+            "action": "Aller à la notation maintenant (garder mon brouillon)"
+        },
+        "topUseCases": "Meilleurs cas d’usage",
+        "yourBadges": "Vos badges"
+    },
+    "useCaseForm": {
+        "fields": {
+            "title": {
+                "label": "Donnez un nom court à votre idée",
+                "placeholder": "ex. Support client automatisé"
+            },
+            "target_user": {
+                "label": "Qui rencontre ce problème ?",
+                "placeholder": "ex. Agents du support",
+                "example": "Les agents du centre de contact client EMEA"
+            },
+            "description": {
+                "label": "Quel est le problème aujourd’hui ?",
+                "placeholder": "Décrivez la difficulté...",
+                "hint": "Décrivez ce qui se passe aujourd’hui et pourquoi c’est pénible, sans détail technique.",
+                "example": "Les agents passent environ 6 minutes par ticket à chercher l’historique de commande dans trois systèmes, alors les clients attendent et se répètent."
+            },
+            "proposed_solution": {
+                "label": "Comment l’IA pourrait-elle aider ?",
+                "placeholder": "Comment l’IA le résout-elle ?",
+                "hint": "Facultatif : vous pouvez laisser ce point à l’équipe informatique.",
+                "example": "Un assistant qui résume l’historique du client et propose une réponse pendant que l’agent lit le ticket."
+            },
+            "kpi": {
+                "label": "Comment mesurer le succès ?",
+                "placeholder": "ex. Réduire le temps de traitement de 20 %",
+                "example": "Le temps moyen de traitement passe de 9 à 6 minutes"
+            }
+        },
+        "errors": {
+            "required": "Veuillez remplir ce champ",
+            "tooLong": "Restez sous les {{max}} caractères"
+        },
+        "submit": "Envoyer le cas d’usage",
+        "submitFailed": "Impossible d’envoyer votre cas d’usage.",
+        "textKept": "Votre texte a été conservé, veuillez réessayer.",
+        "ai": {
+            "needProblem": "Décrivez d’abord le problème, l’IA pourra ensuite proposer des améliorations.",
+            "noChanges": "L’IA n’a aucune modification à proposer.",
+            "unavailable": "Les suggestions de l’IA ne sont pas disponibles pour le moment.",
+            "needSolution": "Décrivez d’abord comment l’IA pourrait aider.",
+            "feasibilityFailed": "La vérification de faisabilité a échoué.",
+            "needNameAndProblem": "Ajoutez d’abord un nom et décrivez le problème.",
+            "measureFailed": "Impossible de proposer une mesure pour le moment.",
+            "needNameAndSolution": "Ajoutez d’abord un nom et décrivez comment l’IA pourrait aider.",
+            "technicalFailed": "L’analyse technique a échoué."
+        },
+        "optional": "(facultatif)",
+        "hideExample": "Masquer l’exemple",
+        "seeExample": "Voir un exemple",
+        "suggestionFields": {
+            "title": "Nom",
+            "description": "Problème",
+            "proposed_solution": "Comment l’IA pourrait aider",
+            "kpi": "Mesure du succès"
+        },
+        "draftRestored": "Nous avons restauré votre brouillon non enregistré.",
+        "aiType": "Type d’IA",
+        "aiTypes": {
+            "notSure": "Je ne sais pas",
+            "generative": "IA générative",
+            "predictive": "ML prédictif",
+            "vision": "Vision par ordinateur",
+            "robotics": "Robotique",
+            "other": "Autre"
+        },
+        "improveWithAi": "Améliorer avec l’IA",
+        "aiSuggestions": "Suggestions de l’IA",
+        "useAll": "Tout utiliser",
+        "yours": "Votre texte",
+        "empty": "vide",
+        "suggestion": "Suggestion",
+        "useSuggestion": "Utiliser la suggestion",
+        "keepMine": "Garder le mien",
+        "undoAi": "Annuler les modifications de l’IA",
+        "suggestMeasure": "Proposer une mesure",
+        "businessImpact": "Impact métier",
+        "waysToMeasure": "Façons de le mesurer",
+        "itReviewers": "Pour les relecteurs informatiques (facultatif)",
+        "checkFeasibility": "Vérifier la faisabilité",
+        "deepDive": "Analyse technique approfondie",
+        "feasibility": "Faisabilité : {{score}}",
+        "recommendedStack": "Technologies recommandées",
+        "implementationSteps": "Étapes de mise en œuvre",
+        "technicalRisks": "Risques techniques",
+        "complexity": "Complexité estimée",
+        "fixHighlighted": "Veuillez remplir les champs signalés.",
+        "duplicate": {
+            "title": "Idée similaire détectée",
+            "heading": "Attendez ! Nous avons trouvé une proposition similaire.",
+            "yourTitle": "Votre titre",
+            "existingTitle": "Titre existant",
+            "cancelEdit": "Annuler et modifier",
+            "submitAnyway": "Envoyer quand même"
+        },
+        "submitted": "Cas d’usage envoyé !",
+        "newTitle": "Nouveau cas d’usage"
+    },
+    "scoring": {
+        "notSaved": "Votre note n’a pas été enregistrée.",
+        "tryAgain": "Veuillez réessayer.",
+        "recorded": "Note enregistrée",
+        "waitingOthers": "En attente des autres participants...",
+        "change": "Modifier ma note",
+        "waiting": "En attente",
+        "waitingCard": "En attente de la présentation d’une carte par l’animateur...",
+        "now": "Notation en cours",
+        "cardOf": "Carte {{position}} sur {{total}}",
+        "solution": "Solution :",
+        "low": "Faible",
+        "high": "Élevé",
+        "submit": "Envoyer la note",
+        "loadFailed": "Impossible de charger la session de notation.",
+        "loading": "Chargement de la session de notation",
+        "dashboard": "Tableau de bord",
+        "leave": "Quitter",
+        "waitItem": "Attendez que l’animateur présente un élément.",
+        "leaveTitle": "Quitter l’atelier ?",
+        "leaveMessage": "Vous arrêterez de noter et quitterez cet atelier. Vous pourrez revenir plus tard avec le même PIN et le même nom.",
+        "leaveConfirm": "Quitter l’atelier",
+        "stay": "Rester"
+    },
+    "participantMatrix": {
+        "participant": "Participant",
+        "unknown": "Inconnu",
+        "allSaved": "Toutes les modifications sont enregistrées",
+        "someNotSaved": "Certaines notes n’ont pas été enregistrées. Vérifiez votre connexion et touchez Réessayer.",
+        "added": "« {{title}} » ajouté ! Faites-le glisser sur l’échelle pour le noter.",
+        "workshop": "Atelier",
+        "loadFailed": "Impossible de charger les données de la matrice",
+        "saveFailed": "Impossible d’enregistrer votre note. Touchez Réessayer en haut quand vous serez de nouveau en ligne.",
+        "loading": "Chargement de la priorisation...",
+        "goBack": "Retour",
+        "title": "Matrice de priorisation",
+        "saving": "Enregistrement…",
+        "retry": "Non enregistré — Réessayer ({{count}})",
+        "category": "Critère",
+        "criteria": "Critères",
+        "noCriteria": "Aucun critère de priorisation défini.",
+        "ratedProgress": "{{rated}} sur {{total}} notés pour ce critère",
+        "pending": "À noter",
+        "allRated": "Tout est noté pour ce critère",
+        "tapToRate": "Touchez pour noter",
+        "rated": "Notés",
+        "changeRating": "Modifier la note",
+        "unsure": "Je ne sais pas",
+        "removeRating": "Retirer la note",
+        "removeRatingFor": "Retirer la note de {{title}}",
+        "rate": "Noter : {{title}}",
+        "low": "Faible",
+        "high": "Élevé",
+        "unsureDontKnow": "Incertain / Je ne sais pas",
+        "cancel": "Annuler",
+        "participantScore": "{{name}} - {{score}} pour {{title}}",
+        "useCase": "Cas d’usage",
+        "doesNotKnow": "Ne sait pas",
+        "dragUnsure": "Faites glisser ici si vous n’êtes pas sûr de la priorité",
+        "tapUnsure": "Touchez un élément et choisissez « Je ne sais pas »",
+        "lowCriterion": "{{criterion}} faible",
+        "highCriterion": "{{criterion}} élevé"
+    },
+    "polls": {
+        "newPoll": "Nouveau sondage disponible !",
+        "view": "Voir",
+        "voteRecorded": "Réponse enregistrée",
+        "noLongerActive": "Ce sondage n’est plus actif.",
+        "voteFailed": "Impossible d’envoyer votre réponse. Veuillez réessayer.",
+        "selectOne": "Sélectionnez au moins une option",
+        "enterResponse": "Saisissez une réponse",
+        "submitSelected": "Envoyer ({{count}} sélectionnées)",
+        "typeResponse": "Saisissez votre réponse...",
+        "submit": "Envoyer",
+        "submitRanking": "Envoyer le classement",
+        "skip": "Ignorer ce sondage",
+        "moveUp": "Monter {{option}}",
+        "moveDown": "Descendre {{option}}"
+    },
+    "reactions": {
+        "agree": "D’accord",
+        "disagree": "Pas d’accord",
+        "love": "J’adore",
+        "thinking": "Je réfléchis",
+        "insight": "Bonne idée",
+        "exciting": "Enthousiasmant",
+        "concern": "Inquiétude",
+        "question": "Question",
+        "close": "Fermer les réactions",
+        "open": "Réagir",
+        "group": "Envoyer une réaction"
+    },
+    "gamification": {
+        "noRankings": "Pas encore de classement. Soyez le premier à gagner des points !",
+        "leaderboard": "Classement",
+        "you": "(Vous)",
+        "badgeCount_one": "{{count}} badge",
+        "badgeCount_other": "{{count}} badges",
+        "earnedOn": "Obtenu le {{date}}",
+        "earned": "Obtenu",
+        "pointsEarned_one": "+{{count}} point",
+        "pointsEarned_other": "+{{count}} points",
+        "badgeUnlocked": "Badge débloqué : {{names}}"
+    },
+    "status": {
+        "reconnecting": "Connexion perdue, reconnexion… Votre travail est enregistré sur cet appareil.",
+        "notFound": {
+            "title": "Page introuvable",
+            "message": "Le lien est peut-être obsolète ou la page a été déplacée."
+        },
+        "goHome": "Accueil",
+        "joinWorkshop": "Rejoindre un atelier",
+        "denied": {
+            "title": "Vous n’avez pas accès à cette page",
+            "message": "Contactez un administrateur si vous pensez que vous devriez y avoir accès."
+        },
+        "backToDashboard": "Retour au tableau de bord",
+        "loadError": {
+            "title": "Impossible de charger cette page",
+            "message": "Vérifiez votre connexion et réessayez."
+        },
+        "retry": "Réessayer"
+    },
+    "topIdeas": {
+        "loadFailed": "Impossible de charger les résultats.",
+        "loading": "Chargement des résultats…",
+        "empty": "Pas encore de résultats.",
+        "label": "Meilleurs cas d’usage",
+        "first": "1er"
+    },
+    "useCaseDetail": {
+        "updated": "Cas d’usage mis à jour",
+        "updateFailed": "Impossible de mettre à jour le cas d’usage",
+        "withdrawn": "Cas d’usage retiré",
+        "withdrawFailed": "Impossible de retirer le cas d’usage",
+        "enterFeedback": "Saisissez votre commentaire",
+        "feedbackTooLong": "Le commentaire ne doit pas dépasser 500 caractères",
+        "feedbackSubmitted": "Commentaire envoyé",
+        "feedbackFailed": "Impossible d’envoyer le commentaire",
+        "title": "Détails du cas d’usage",
+        "yours": "Votre cas d’usage",
+        "viewOnly": "Lecture seule",
+        "notSpecified": "Non précisé",
+        "yourFeedback": "Votre commentaire",
+        "feedbackPlaceholder": "Partagez votre avis sur ce cas d’usage...",
+        "characters": "{{count}}/{{max}} caractères",
+        "feedbackWillUpdate": "Votre commentaire précédent sera mis à jour",
+        "withdraw": "Retirer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "saving": "Enregistrement...",
+        "save": "Enregistrer",
+        "edit": "Modifier",
+        "submitting": "Envoi...",
+        "updateFeedback": "Mettre à jour le commentaire",
+        "submitFeedback": "Envoyer le commentaire",
+        "withdrawTitle": "Retirer ce cas d’usage ?",
+        "withdrawMessage": "Il sera supprimé de l’atelier, ainsi que les notes qu’il a reçues. Cette action est irréversible.",
+        "keep": "Le garder"
     }
 }

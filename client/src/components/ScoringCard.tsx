@@ -7,6 +7,7 @@ import { motion } from 'framer-motion';
 import { PointsAnimation } from './gamification/PointsAnimation';
 import { toast } from 'sonner';
 import { errorMessage } from '../lib/apiErrors';
+import { useTranslation } from 'react-i18next';
 
 interface ScoringCardProps {
     session: any;
@@ -20,6 +21,7 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
     const [loading, setLoading] = useState(false);
     const [submitted, setSubmitted] = useState(false);
     const [pointsEarned, setPointsEarned] = useState<number | null>(null);
+    const { t } = useTranslation();
 
     const is10Point = templateId === '7_POINT_COMPREHENSIVE';
     const minVal = is10Point ? 1 : 0;
@@ -90,7 +92,7 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
             setSubmitted(true);
         } catch (e) {
             console.error(e);
-            toast.error(errorMessage(e, 'Your score was not saved.') + ' Please try again.');
+            toast.error(`${errorMessage(e, t('scoring.notSaved'))} ${t('scoring.tryAgain')}`);
         } finally {
             setLoading(false);
         }
@@ -101,10 +103,10 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
         return (
             <div className="flex flex-col items-center justify-center p-8 theme-bg-secondary rounded-xl border theme-border" role="status">
                 <div className="text-4xl mb-4" aria-hidden="true">🙌</div>
-                <h3 className="text-xl font-bold mb-2">Score recorded</h3>
-                <p className="contrast-muted mb-4">Waiting for other participants...</p>
+                <h3 className="text-xl font-bold mb-2">{t('scoring.recorded')}</h3>
+                <p className="contrast-muted mb-4">{t('scoring.waitingOthers')}</p>
                 <Button variant="secondary" onClick={() => setSubmitted(false)}>
-                    Change my score
+                    {t('scoring.change')}
                 </Button>
             </div>
         );
@@ -113,8 +115,8 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
     if (!activeCard) {
         return (
             <div className="flex flex-col items-center justify-center p-8 theme-bg-secondary rounded-xl border theme-border">
-                <h3 className="text-xl font-bold mb-2 theme-text-primary">Waiting</h3>
-                <p className="contrast-muted">Waiting for the facilitator to present a card...</p>
+                <h3 className="text-xl font-bold mb-2 theme-text-primary">{t('scoring.waiting')}</h3>
+                <p className="contrast-muted">{t('scoring.waitingCard')}</p>
             </div>
         );
     }
@@ -135,13 +137,13 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
             >
                 <div className="mb-6">
                     <span className="text-xs text-brand-violet font-mono uppercase tracking-wider">
-                        Now scoring{activeCard.position && activeCard.total ? ` · Card ${activeCard.position} of ${activeCard.total}` : ''}
+                        {t('scoring.now')}{activeCard.position && activeCard.total ? ` · ${t('scoring.cardOf', { position: activeCard.position, total: activeCard.total })}` : ''}
                     </span>
                     <h2 className="text-2xl font-bold theme-text-primary mt-1 ">{activeCard.title}</h2>
                     <p className="theme-text-secondary mt-2 text-sm">{activeCard.description}</p>
                     {activeCard.proposed_solution && (
                         <p className="contrast-muted text-xs mt-2 theme-bg-tertiary p-2 rounded">
-                            <span className="font-bold">Solution:</span> {activeCard.proposed_solution}
+                            <span className="font-bold">{t('scoring.solution')}</span> {activeCard.proposed_solution}
                         </p>
                     )}
                 </div>
@@ -172,15 +174,15 @@ export function ScoringCard({ session, activeCard, criteria, templateId }: Scori
                             />
                             {/* Same anchors as the prioritization matrix: low on the left, high on the right */}
                             <div className="flex justify-between text-xs contrast-muted mt-1" aria-hidden="true">
-                                <span>{minVal} · Low</span>
-                                <span>{maxVal} · High</span>
+                                <span>{minVal} · {t('scoring.low')}</span>
+                                <span>{maxVal} · {t('scoring.high')}</span>
                             </div>
                         </div>
                     ))}
                 </div>
 
                 <Button className="w-full justify-center" onClick={handleSubmit} disabled={loading}>
-                    {loading ? <Loader2 className="animate-spin" /> : 'Submit score'}
+                    {loading ? <Loader2 className="animate-spin" /> : t('scoring.submit')}
                 </Button>
             </motion.div>
         </>

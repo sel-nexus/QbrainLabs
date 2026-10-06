@@ -1,5 +1,7 @@
 // Friendly, consistent names for workshop phases. Raw codes (INTAKE,
 // SCORING, ANALYSIS) are API values and should never be shown to users.
+// Labels are translated (keys under `phases.*`); English here is the fallback.
+import { tr } from './tr';
 
 export type PhaseCode = 'DRAFT' | 'INTAKE' | 'SCORING' | 'ANALYSIS';
 
@@ -21,6 +23,7 @@ const LABELS: Record<string, string> = {
 };
 
 export function phaseLabel(code?: string | null): string {
-    if (!code) return 'Not started';
-    return LABELS[code.toUpperCase()] || code.charAt(0) + code.slice(1).toLowerCase();
+    const key = (code || 'DRAFT').toUpperCase();
+    const english = LABELS[key];
+    return english ? tr(`phases.${key}`, english) : key.charAt(0) + key.slice(1).toLowerCase();
 }

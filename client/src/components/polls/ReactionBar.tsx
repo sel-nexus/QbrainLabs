@@ -3,20 +3,22 @@ import { motion } from 'framer-motion';
 import { ThumbsUp, ThumbsDown, Heart, Zap, AlertTriangle, HelpCircle, Lightbulb, Brain, Smile, X } from 'lucide-react';
 import { PollService } from '../../lib/api/polls';
 import { useSession } from '../../context/SessionContext';
+import { useTranslation } from 'react-i18next';
 
 const REACTIONS = [
-    { type: '👍', icon: ThumbsUp, color: 'text-blue-400', label: 'Agree' },
-    { type: '👎', icon: ThumbsDown, color: 'text-blue-300', label: 'Disagree' },
-    { type: '❤️', icon: Heart, color: 'text-red-400', label: 'Love' },
-    { type: '🤔', icon: Brain, color: 'text-purple-400', label: 'Thinking' },
-    { type: '💡', icon: Lightbulb, color: 'text-yellow-400', label: 'Insight' },
-    { type: '🔥', icon: Zap, color: 'text-orange-400', label: 'Exciting' },
-    { type: '⚠️', icon: AlertTriangle, color: 'text-yellow-500', label: 'Concern' },
-    { type: '❓', icon: HelpCircle, color: 'text-purple-300', label: 'Question' },
+    { type: '👍', icon: ThumbsUp, color: 'text-blue-400', label: 'agree' },
+    { type: '👎', icon: ThumbsDown, color: 'text-blue-300', label: 'disagree' },
+    { type: '❤️', icon: Heart, color: 'text-red-400', label: 'love' },
+    { type: '🤔', icon: Brain, color: 'text-purple-400', label: 'thinking' },
+    { type: '💡', icon: Lightbulb, color: 'text-yellow-400', label: 'insight' },
+    { type: '🔥', icon: Zap, color: 'text-orange-400', label: 'exciting' },
+    { type: '⚠️', icon: AlertTriangle, color: 'text-yellow-500', label: 'concern' },
+    { type: '❓', icon: HelpCircle, color: 'text-purple-300', label: 'question' },
 ];
 
 export function ReactionBar() {
     const { session } = useSession();
+    const { t } = useTranslation();
 
     const handleReact = async (type: string) => {
         if (!session?.workshopId || !session?.participantId) return;
@@ -35,7 +37,7 @@ export function ReactionBar() {
     return (
         <div className="fixed bottom-6 right-4 z-40 flex items-center gap-2">
             {open && (
-                <div role="group" aria-label="Send a reaction" className="theme-bg-secondary backdrop-blur border theme-border rounded-full px-2 py-1.5 shadow-xl flex flex-wrap gap-1 items-center max-w-[calc(100vw-6rem)]">
+                <div role="group" aria-label={t('reactions.group')} className="theme-bg-secondary backdrop-blur border theme-border rounded-full px-2 py-1.5 shadow-xl flex flex-wrap gap-1 items-center max-w-[calc(100vw-6rem)]">
                     {REACTIONS.map((r) => (
                         <motion.button
                             key={r.type}
@@ -47,8 +49,8 @@ export function ReactionBar() {
                                 setOpen(false);
                             }}
                             className={`p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 ${r.color}`}
-                            aria-label={r.label}
-                            title={r.label}
+                            aria-label={t(`reactions.${r.label}`)}
+                            title={t(`reactions.${r.label}`)}
                         >
                             <span className="text-xl" aria-hidden="true">{r.type}</span>
                         </motion.button>
@@ -59,7 +61,7 @@ export function ReactionBar() {
                 type="button"
                 onClick={() => setOpen((v) => !v)}
                 aria-expanded={open}
-                aria-label={open ? 'Close reactions' : 'React'}
+                aria-label={open ? t('reactions.close') : t('reactions.open')}
                 className="w-12 h-12 rounded-full bg-brand-violet text-white shadow-xl flex items-center justify-center"
             >
                 {open ? <X className="w-5 h-5" aria-hidden="true" /> : <Smile className="w-5 h-5" aria-hidden="true" />}

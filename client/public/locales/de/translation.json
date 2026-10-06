@@ -221,8 +221,13 @@
             "uploadHelp": "Laden Sie PDF-, PPT-, Word-Dokumente oder Bilder (JPG, PNG) hoch, um die KI-Wissensdatenbank zu erweitern.",
             "importSuccess": "{{name}} erfolgreich importiert",
             "failedLoad": "Wissensdatenbank konnte nicht geladen werden",
-            "failedLoadIndustry": "Branchendetails konnten nicht geladen werden"
-        }
+            "failedLoadIndustry": "Branchendetails konnten nicht geladen werden",
+            "showingKeyAIUseCases": "Wichtige KI-Anwendungsfälle werden angezeigt"
+        },
+        "failedLoadUsers": "Moderatoren konnten nicht geladen werden",
+        "recentActivityWarning": "Dieser Benutzer war vor Kurzem aktiv.",
+        "deleteSuccess": "Benutzer gelöscht",
+        "deleteError": "Benutzer konnte nicht gelöscht werden"
     },
     "workshop": {
         "title": "Workshop",
@@ -262,5 +267,448 @@
             "prioritization": "Priorisierung",
             "roadmap": "Roadmap"
         }
+    },
+    "dashboard": {
+        "facilitator": {
+            "title": "Moderator-Dashboard",
+            "myWorkshops": "Meine Workshops",
+            "createWorkshop": "Workshop erstellen",
+            "selectWorkshop": "Wähle einen Workshop, um seine Anwendungsfälle zu sehen.",
+            "noWorkshops": "Keine Workshops zugewiesen. Wähle einen Workshop, sobald einer verfügbar ist, um seine Anwendungsfälle zu sehen.",
+            "emptyState": "Du hast noch keine Workshops erstellt.",
+            "createNew": "Erstelle deinen ersten Workshop, um loszulegen.",
+            "quickStats": "Kurzübersicht",
+            "activeSessions": "Aktive Sitzungen",
+            "totalParticipants": "Teilnehmende gesamt",
+            "avgEngagement": "Durchschn. Beteiligung"
+        },
+        "participant": {
+            "title": "Teilnehmer-Dashboard",
+            "welcome": "Willkommen zurück",
+            "points": "Punkte",
+            "rank": "Rang",
+            "badges": "Abzeichen",
+            "activeSession": "Aktive Sitzung",
+            "noActiveSession": "Keine aktive Sitzung",
+            "joinSession": "Sitzung beitreten",
+            "enterPin": "PIN zum Beitreten eingeben",
+            "myContributions": "Meine Beiträge",
+            "ideasSubmitted": "Eingereichte Ideen",
+            "votesCast": "Abgegebene Bewertungen",
+            "achievements": "Erfolge",
+            "tiles": {
+                "useCases": {
+                    "title": "Anwendungsfälle",
+                    "description": "Eingereichte Anwendungsfälle ansehen und diskutieren"
+                },
+                "addUseCase": {
+                    "title": "Anwendungsfall hinzufügen",
+                    "description": "Eine neue Idee zur Priorisierung einreichen"
+                },
+                "survey": {
+                    "title": "Umfrage ausfüllen",
+                    "description": "Teile dein Feedback",
+                    "pending": "Offen",
+                    "done": "Erledigt",
+                    "noSurveys": "Keine Umfragen",
+                    "unavailable": "Keine aktiven Umfragen",
+                    "completed": "Abgeschlossen"
+                },
+                "prioritize": {
+                    "title": "Priorisieren",
+                    "description": "Anwendungsfälle bewerten",
+                    "available": "Anwendungsfälle",
+                    "noUseCases": "Keine Anwendungsfälle zum Priorisieren"
+                },
+                "submitUseCase": {
+                    "title": "Anwendungsfall einreichen",
+                    "badge": "eingereicht"
+                }
+            }
+        },
+        "columns": {
+            "workshop": "Workshop",
+            "pin": "PIN",
+            "phase": "Phase",
+            "status": "Status",
+            "participants": "Teilnehmende",
+            "useCases": "Anwendungsfälle",
+            "created": "Erstellt",
+            "actions": "Aktionen"
+        },
+        "status": {
+            "draft": "Entwurf",
+            "open": "Offen",
+            "in_progress": "Läuft",
+            "completed": "Abgeschlossen",
+            "paused": "Pausiert",
+            "closed": "Geschlossen"
+        },
+        "phases": {
+            "setup": "Einrichtung",
+            "intake": "Ideensammlung",
+            "prioritization": "Priorisierung",
+            "analysis": "Analyse",
+            "voting": "Bewertung",
+            "results": "Ergebnisse"
+        }
+    },
+    "join": {
+        "title": "Sitzung beitreten",
+        "currentWorkshop": "deinem aktuellen Workshop",
+        "stillIn": "Du bist noch in „{{title}}“.",
+        "differentWorkshop": "Dieser Link gehört zu einem anderen Workshop (PIN {{pin}}). Den aktuellen verlassen und diesem Workshop beitreten?",
+        "leaveAndJoin": "Verlassen und diesem Workshop beitreten",
+        "stayCurrent": "Im aktuellen Workshop bleiben",
+        "pinLabel": "Workshop-PIN (6 Zeichen)",
+        "pinPlaceholder": "PIN eingeben",
+        "nameLabel": "Dein Name (für andere im Workshop sichtbar)",
+        "namePlaceholder": "Dein Name",
+        "joinFailed": "Beitritt fehlgeschlagen. Bitte PIN prüfen und erneut versuchen.",
+        "hosting": "Leitest du diesen Workshop?",
+        "joinAs": "Beitreten als:",
+        "asParticipant": "Teilnehmer:in (Standard)",
+        "requestFacilitator": "Moderatorzugang anfragen",
+        "emailPlaceholder": "E-Mail (optional, für Benachrichtigungen)",
+        "emailHelp": "Gib deine E-Mail an, um über die Freigabe informiert zu werden",
+        "join": "Beitreten",
+        "signIn": "Anmelden, um deine Beiträge zu verfolgen",
+        "backHome": "← Zurück zur Startseite",
+        "authTitle": "Workshop beitreten",
+        "pinPrefix": "Workshop-PIN:",
+        "enterPinToJoin": "Bitte gib eine Workshop-PIN ein, um beizutreten",
+        "sessionFailed": "Sitzung konnte nicht eingerichtet werden",
+        "requestSubmittedToast": "Anfrage für Moderatorzugang gesendet!",
+        "requestSubmitted": "Anfrage gesendet",
+        "requestSubmittedBody": "Deine Anfrage, als Moderator:in beizutreten, wurde zur Freigabe eingereicht.",
+        "yourName": "Dein Name:",
+        "requestId": "Anfrage-ID:",
+        "whatNext": "Wie geht es weiter?",
+        "next1": "Eine Administratorin oder ein Administrator prüft deine Anfrage",
+        "next2": "Du erhältst eine E-Mail, sobald sie angenommen oder abgelehnt wurde",
+        "next3": "Nach der Freigabe kannst du die Moderatorfunktionen nutzen",
+        "joinAsParticipantNow": "Jetzt als Teilnehmer:in beitreten",
+        "returnHome": "Zur Startseite"
+    },
+    "phases": {
+        "DRAFT": "Nicht gestartet",
+        "LOBBY": "Nicht gestartet",
+        "INTAKE": "Ideen sammeln",
+        "SCORING": "Bewerten",
+        "ANALYSIS": "Ergebnisse",
+        "COMPLETE": "Abgeschlossen",
+        "COMPLETED": "Abgeschlossen"
+    },
+    "participantDashboard": {
+        "complete": {
+            "title": "Der Workshop ist abgeschlossen – vielen Dank!",
+            "detail": "Hier sind die Anwendungsfälle, die die Gruppe am höchsten bewertet hat.",
+            "badge": "Abgeschlossen"
+        },
+        "seeTopUseCases": "Top-Anwendungsfälle ansehen",
+        "stepOf": "Schritt {{step}} von {{total}}",
+        "intake": {
+            "title": "Füge deine KI-Ideen hinzu",
+            "detail": "Beschreibe ein Problem, bei dem KI helfen könnte. Du kannst beliebig viele hinzufügen.",
+            "action": "Anwendungsfall hinzufügen"
+        },
+        "scoring": {
+            "title": "Bewerte die Anwendungsfälle",
+            "detail": "Die Moderation stellt jeden Anwendungsfall vor; bewerte ihn anhand der Kriterien.",
+            "action": "Zur Bewertung"
+        },
+        "results": {
+            "title": "Ergebnisse ansehen",
+            "detail": "Die Bewertung ist abgeschlossen. Sieh dir an, welche Anwendungsfälle vorne liegen."
+        },
+        "waiting": {
+            "title": "Warten auf den Start durch die Moderation",
+            "detail": "Du bist dabei. Diese Seite aktualisiert sich automatisch, wenn der Workshop beginnt."
+        },
+        "loading": "Workshop wird geladen...",
+        "workshopFallback": "Workshop",
+        "welcome": "Willkommen, {{name}}",
+        "leaderboard": "Rangliste",
+        "badges": "Abzeichen",
+        "qa": "Fragen",
+        "qaLabel": "Fragen und Antworten",
+        "totalBadge": "{{count}} insgesamt",
+        "available": "Verfügbar",
+        "matrixTitle": "Priorisierungsmatrix",
+        "notAvailable": "Nicht verfügbar",
+        "toReview": "0 zu prüfen",
+        "useCasesHeading": "Anwendungsfälle des Workshops ({{count}})",
+        "filterLabel": "Anwendungsfälle filtern",
+        "filterAll": "Alle",
+        "filterMine": "Meine ({{count}})",
+        "empty": "Noch keine Anwendungsfälle. Reiche als Erste:r einen ein!",
+        "mineBadge": "Meiner · zum Bearbeiten tippen",
+        "close": "Schließen",
+        "closeDraftSaved": "Schließen (dein Entwurf ist gespeichert)",
+        "scoringStarted": {
+            "title": "Die Moderation hat die Bewertung gestartet.",
+            "detail": "Stelle deinen Anwendungsfall fertig und reiche ihn ein – dein Entwurf ist gespeichert – danach geht es zur Bewertung.",
+            "action": "Jetzt zur Bewertung (Entwurf behalten)"
+        },
+        "topUseCases": "Top-Anwendungsfälle",
+        "yourBadges": "Deine Abzeichen"
+    },
+    "useCaseForm": {
+        "fields": {
+            "title": {
+                "label": "Gib deiner Idee einen kurzen Namen",
+                "placeholder": "z. B. Automatisierter Kundensupport"
+            },
+            "target_user": {
+                "label": "Wer hat dieses Problem?",
+                "placeholder": "z. B. Support-Mitarbeitende",
+                "example": "Kundensupport-Mitarbeitende im EMEA-Kontaktcenter"
+            },
+            "description": {
+                "label": "Was ist heute das Problem?",
+                "placeholder": "Beschreibe das Problem...",
+                "hint": "Beschreibe, was heute passiert und warum es schmerzt – technische Details sind nicht nötig.",
+                "example": "Mitarbeitende suchen pro Ticket etwa 6 Minuten in drei Systemen nach der Bestellhistorie, deshalb warten Kunden und müssen sich wiederholen."
+            },
+            "proposed_solution": {
+                "label": "Wie könnte KI helfen?",
+                "placeholder": "Wie löst KI das?",
+                "hint": "Optional – das kann auch das IT-Team ergänzen.",
+                "example": "Ein Assistent, der die Kundenhistorie zusammenfasst und eine Antwort vorschlägt, während das Ticket gelesen wird."
+            },
+            "kpi": {
+                "label": "Wie würden wir den Erfolg messen?",
+                "placeholder": "z. B. Bearbeitungszeit um 20 % senken",
+                "example": "Die durchschnittliche Bearbeitungszeit sinkt von 9 auf 6 Minuten"
+            }
+        },
+        "errors": {
+            "required": "Bitte ausfüllen",
+            "tooLong": "Bitte unter {{max}} Zeichen bleiben"
+        },
+        "submit": "Anwendungsfall einreichen",
+        "submitFailed": "Dein Anwendungsfall konnte nicht eingereicht werden.",
+        "textKept": "Dein Text wurde behalten – bitte erneut versuchen.",
+        "ai": {
+            "needProblem": "Beschreibe zuerst das Problem, dann kann die KI Verbesserungen vorschlagen.",
+            "noChanges": "Die KI hat keine Änderungsvorschläge.",
+            "unavailable": "KI-Vorschläge sind gerade nicht verfügbar.",
+            "needSolution": "Beschreibe zuerst, wie KI helfen könnte.",
+            "feasibilityFailed": "Machbarkeitsprüfung fehlgeschlagen.",
+            "needNameAndProblem": "Gib zuerst einen Namen ein und beschreibe das Problem.",
+            "measureFailed": "Gerade kann keine Messgröße vorgeschlagen werden.",
+            "needNameAndSolution": "Gib zuerst einen Namen ein und beschreibe, wie KI helfen könnte.",
+            "technicalFailed": "Technische Analyse fehlgeschlagen."
+        },
+        "optional": "(optional)",
+        "hideExample": "Beispiel ausblenden",
+        "seeExample": "Beispiel ansehen",
+        "suggestionFields": {
+            "title": "Name",
+            "description": "Problem",
+            "proposed_solution": "Wie KI helfen könnte",
+            "kpi": "Erfolgsmessung"
+        },
+        "draftRestored": "Wir haben deinen ungespeicherten Entwurf wiederhergestellt.",
+        "aiType": "Art der KI",
+        "aiTypes": {
+            "notSure": "Weiß nicht",
+            "generative": "Generative KI",
+            "predictive": "Prädiktives ML",
+            "vision": "Computer Vision",
+            "robotics": "Robotik",
+            "other": "Sonstiges"
+        },
+        "improveWithAi": "Mit KI verbessern",
+        "aiSuggestions": "KI-Vorschläge",
+        "useAll": "Alle übernehmen",
+        "yours": "Dein Text",
+        "empty": "leer",
+        "suggestion": "Vorschlag",
+        "useSuggestion": "Vorschlag übernehmen",
+        "keepMine": "Meinen behalten",
+        "undoAi": "KI-Änderungen rückgängig machen",
+        "suggestMeasure": "Messgröße vorschlagen",
+        "businessImpact": "Geschäftlicher Nutzen",
+        "waysToMeasure": "Möglichkeiten zur Messung",
+        "itReviewers": "Für IT-Prüfende (optional)",
+        "checkFeasibility": "Machbarkeit prüfen",
+        "deepDive": "Technische Detailanalyse",
+        "feasibility": "Machbarkeit: {{score}}",
+        "recommendedStack": "Empfohlene Technologien",
+        "implementationSteps": "Umsetzungsschritte",
+        "technicalRisks": "Technische Risiken",
+        "complexity": "Geschätzte Komplexität",
+        "fixHighlighted": "Bitte fülle die markierten Felder aus.",
+        "duplicate": {
+            "title": "Ähnliche Idee gefunden",
+            "heading": "Moment! Wir haben einen ähnlichen Beitrag gefunden.",
+            "yourTitle": "Dein Titel",
+            "existingTitle": "Vorhandener Titel",
+            "cancelEdit": "Abbrechen und bearbeiten",
+            "submitAnyway": "Trotzdem einreichen"
+        },
+        "submitted": "Anwendungsfall eingereicht!",
+        "newTitle": "Neuer Anwendungsfall"
+    },
+    "scoring": {
+        "notSaved": "Deine Bewertung wurde nicht gespeichert.",
+        "tryAgain": "Bitte erneut versuchen.",
+        "recorded": "Bewertung gespeichert",
+        "waitingOthers": "Warten auf die anderen Teilnehmenden...",
+        "change": "Meine Bewertung ändern",
+        "waiting": "Warten",
+        "waitingCard": "Warten, bis die Moderation eine Karte vorstellt...",
+        "now": "Jetzt bewerten",
+        "cardOf": "Karte {{position}} von {{total}}",
+        "solution": "Lösung:",
+        "low": "Niedrig",
+        "high": "Hoch",
+        "submit": "Bewertung absenden",
+        "loadFailed": "Die Bewertungssitzung konnte nicht geladen werden.",
+        "loading": "Bewertungssitzung wird geladen",
+        "dashboard": "Dashboard",
+        "leave": "Verlassen",
+        "waitItem": "Warte, bis die Moderation einen Eintrag vorstellt.",
+        "leaveTitle": "Workshop verlassen?",
+        "leaveMessage": "Du hörst auf zu bewerten und verlässt diesen Workshop. Du kannst später mit derselben PIN und demselben Namen wieder beitreten.",
+        "leaveConfirm": "Workshop verlassen",
+        "stay": "Bleiben"
+    },
+    "participantMatrix": {
+        "participant": "Teilnehmer:in",
+        "unknown": "Unbekannt",
+        "allSaved": "Alle Änderungen gespeichert",
+        "someNotSaved": "Einige Bewertungen wurden nicht gespeichert. Prüfe deine Verbindung und tippe auf Erneut versuchen.",
+        "added": "„{{title}}“ hinzugefügt! Ziehe es auf die Skala, um es zu bewerten.",
+        "workshop": "Workshop",
+        "loadFailed": "Matrixdaten konnten nicht geladen werden",
+        "saveFailed": "Deine Bewertung konnte nicht gespeichert werden. Tippe oben auf Erneut versuchen, sobald du wieder online bist.",
+        "loading": "Priorisierung wird geladen...",
+        "goBack": "Zurück",
+        "title": "Priorisierungsmatrix",
+        "saving": "Wird gespeichert…",
+        "retry": "Nicht gespeichert – Erneut versuchen ({{count}})",
+        "category": "Kriterium",
+        "criteria": "Kriterien",
+        "noCriteria": "Keine Priorisierungskriterien festgelegt.",
+        "ratedProgress": "{{rated}} von {{total}} für dieses Kriterium bewertet",
+        "pending": "Noch offen",
+        "allRated": "Alles für dieses Kriterium bewertet",
+        "tapToRate": "Zum Bewerten tippen",
+        "rated": "Bewertet",
+        "changeRating": "Bewertung ändern",
+        "unsure": "Unsicher",
+        "removeRating": "Bewertung entfernen",
+        "removeRatingFor": "Bewertung für {{title}} entfernen",
+        "rate": "Bewerten: {{title}}",
+        "low": "Niedrig",
+        "high": "Hoch",
+        "unsureDontKnow": "Unsicher / Weiß nicht",
+        "cancel": "Abbrechen",
+        "participantScore": "{{name}} - {{score}} für {{title}}",
+        "useCase": "Anwendungsfall",
+        "doesNotKnow": "Weiß nicht",
+        "dragUnsure": "Hierher ziehen, wenn du dir bei der Priorität unsicher bist",
+        "tapUnsure": "Tippe auf einen Eintrag und wähle „Unsicher“",
+        "lowCriterion": "{{criterion}} niedrig",
+        "highCriterion": "{{criterion}} hoch"
+    },
+    "polls": {
+        "newPoll": "Neue Umfrage verfügbar!",
+        "view": "Ansehen",
+        "voteRecorded": "Antwort gespeichert",
+        "noLongerActive": "Diese Umfrage ist nicht mehr aktiv.",
+        "voteFailed": "Deine Antwort konnte nicht gesendet werden. Bitte erneut versuchen.",
+        "selectOne": "Bitte wähle mindestens eine Option",
+        "enterResponse": "Bitte gib eine Antwort ein",
+        "submitSelected": "Absenden ({{count}} ausgewählt)",
+        "typeResponse": "Deine Antwort...",
+        "submit": "Absenden",
+        "submitRanking": "Reihenfolge absenden",
+        "skip": "Umfrage überspringen",
+        "moveUp": "{{option}} nach oben",
+        "moveDown": "{{option}} nach unten"
+    },
+    "reactions": {
+        "agree": "Zustimmung",
+        "disagree": "Ablehnung",
+        "love": "Super",
+        "thinking": "Nachdenklich",
+        "insight": "Gute Idee",
+        "exciting": "Spannend",
+        "concern": "Bedenken",
+        "question": "Frage",
+        "close": "Reaktionen schließen",
+        "open": "Reagieren",
+        "group": "Reaktion senden"
+    },
+    "gamification": {
+        "noRankings": "Noch keine Rangliste. Sammle als Erste:r Punkte!",
+        "leaderboard": "Rangliste",
+        "you": "(Du)",
+        "badgeCount_one": "{{count}} Abzeichen",
+        "badgeCount_other": "{{count}} Abzeichen",
+        "earnedOn": "Erhalten am {{date}}",
+        "earned": "Erhalten",
+        "pointsEarned_one": "+{{count}} Punkt",
+        "pointsEarned_other": "+{{count}} Punkte",
+        "badgeUnlocked": "Abzeichen freigeschaltet: {{names}}"
+    },
+    "status": {
+        "reconnecting": "Verbindung unterbrochen – neue Verbindung wird aufgebaut… Deine Arbeit ist auf diesem Gerät gespeichert.",
+        "notFound": {
+            "title": "Seite nicht gefunden",
+            "message": "Der Link ist vielleicht veraltet oder die Seite wurde verschoben."
+        },
+        "goHome": "Zur Startseite",
+        "joinWorkshop": "Workshop beitreten",
+        "denied": {
+            "title": "Du hast keinen Zugriff auf diese Seite",
+            "message": "Wende dich an eine Administratorin oder einen Administrator, wenn du Zugriff haben solltest."
+        },
+        "backToDashboard": "Zurück zum Dashboard",
+        "loadError": {
+            "title": "Diese Seite konnte nicht geladen werden",
+            "message": "Prüfe deine Verbindung und versuche es erneut."
+        },
+        "retry": "Erneut versuchen"
+    },
+    "topIdeas": {
+        "loadFailed": "Die Ergebnisse konnten nicht geladen werden.",
+        "loading": "Ergebnisse werden geladen…",
+        "empty": "Noch keine Ergebnisse.",
+        "label": "Top-Anwendungsfälle",
+        "first": "1."
+    },
+    "useCaseDetail": {
+        "updated": "Anwendungsfall aktualisiert",
+        "updateFailed": "Anwendungsfall konnte nicht aktualisiert werden",
+        "withdrawn": "Anwendungsfall zurückgezogen",
+        "withdrawFailed": "Anwendungsfall konnte nicht zurückgezogen werden",
+        "enterFeedback": "Bitte gib Feedback ein",
+        "feedbackTooLong": "Das Feedback darf höchstens 500 Zeichen lang sein",
+        "feedbackSubmitted": "Feedback gesendet",
+        "feedbackFailed": "Feedback konnte nicht gesendet werden",
+        "title": "Details zum Anwendungsfall",
+        "yours": "Dein Anwendungsfall",
+        "viewOnly": "Nur ansehen",
+        "notSpecified": "Nicht angegeben",
+        "yourFeedback": "Dein Feedback",
+        "feedbackPlaceholder": "Was hältst du von diesem Anwendungsfall?",
+        "characters": "{{count}}/{{max}} Zeichen",
+        "feedbackWillUpdate": "Dein früheres Feedback wird aktualisiert",
+        "withdraw": "Zurückziehen",
+        "cancel": "Abbrechen",
+        "close": "Schließen",
+        "saving": "Wird gespeichert...",
+        "save": "Änderungen speichern",
+        "edit": "Bearbeiten",
+        "submitting": "Wird gesendet...",
+        "updateFeedback": "Feedback aktualisieren",
+        "submitFeedback": "Feedback senden",
+        "withdrawTitle": "Diesen Anwendungsfall zurückziehen?",
+        "withdrawMessage": "Er wird aus dem Workshop entfernt, einschließlich aller erhaltenen Bewertungen. Das kann nicht rückgängig gemacht werden.",
+        "keep": "Behalten"
     }
 }

@@ -9,6 +9,7 @@ import { ConfirmationModal } from '../ConfirmationModal';
 import { FIELDS, validateUseCase, type FieldKey } from '../../lib/useCaseFields';
 import { errorMessage as apiErrorMessage } from '../../lib/apiErrors';
 import { useTheme } from '../../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
 
 interface UseCase {
     id: string;
@@ -39,6 +40,7 @@ export function UseCaseDetailModal({
 }: UseCaseDetailModalProps) {
     const { theme } = useTheme();
     const [isEditing, setIsEditing] = useState(isOwner);
+    const { t } = useTranslation();
     const [formData, setFormData] = useState<UseCase | null>(null);
     const [feedback, setFeedback] = useState('');
     const [existingFeedback, setExistingFeedback] = useState<string>('');
@@ -90,7 +92,7 @@ export function UseCaseDetailModal({
         });
         setFieldErrors(found);
         if (Object.values(found).some(Boolean)) {
-            toast.error('Please fill in the highlighted fields.');
+            toast.error(t('useCaseForm.fixHighlighted'));
             return;
         }
 
@@ -105,14 +107,14 @@ export function UseCaseDetailModal({
                 category: formData.category || ''
             });
 
-            toast.success('Use case updated successfully');
+            toast.success(t('useCaseDetail.updated'));
             setIsEditing(false);
             if (onUpdate) {
                 onUpdate();
             }
         } catch (error: any) {
             console.error('Failed to update use case:', error);
-            toast.error(apiErrorMessage(error, 'Failed to update use case'));
+            toast.error(apiErrorMessage(error, t('useCaseDetail.updateFailed')));
         } finally {
             setSubmitting(false);
         }
@@ -123,11 +125,11 @@ export function UseCaseDetailModal({
         try {
             setSubmitting(true);
             await api.delete(`/usecases/${useCase.id}`, { params: { participant_id: participantId } });
-            toast.success('Use case withdrawn');
+            toast.success(t('useCaseDetail.withdrawn'));
             onUpdate?.();
             onClose();
         } catch (error) {
-            toast.error(apiErrorMessage(error, 'Failed to withdraw the use case'));
+            toast.error(apiErrorMessage(error, t('useCaseDetail.withdrawFailed')));
         } finally {
             setSubmitting(false);
         }
@@ -135,12 +137,12 @@ export function UseCaseDetailModal({
 
     const handleSubmitFeedback = async () => {
         if (!useCase || !feedback.trim()) {
-            toast.error('Please enter feedback');
+            toast.error(t('useCaseDetail.enterFeedback'));
             return;
         }
 
         if (feedback.length > 500) {
-            toast.error('Feedback must be 500 characters or less');
+            toast.error(t('useCaseDetail.feedbackTooLong'));
             return;
         }
 
@@ -152,15 +154,14 @@ export function UseCaseDetailModal({
                 params: { participant_id: participantId }
             });
 
-            toast.success('Feedback submitted successfully');
+            toast.success(t('useCaseDetail.feedbackSubmitted'));
             setExistingFeedback(feedback);
             if (onUpdate) {
                 onUpdate();
             }
         } catch (error: any) {
             console.error('Failed to submit feedback:', error);
-            const errorMessage = error.response?.data?.detail || error.message || 'Failed to submit feedback';
-            toast.error(errorMessage);
+            toast.error(apiErrorMessage(error, t('useCaseDetail.feedbackFailed')));
         } finally {
             setSubmitting(false);
         }
@@ -171,7 +172,7 @@ export function UseCaseDetailModal({
     }
 
     return (
-        <Modal isOpen={true} onClose={onClose} title="Use Case Details" size="large">
+        <Modal isOpen={true} onClose={onClose} title={t('useCaseDetail.title')} size="large">
             <div className="space-y-6">
                 {/* Owner Badge */}
                 <div className={`flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium w-fit ${
@@ -182,12 +183,12 @@ export function UseCaseDetailModal({
                     {isOwner ? (
                         <>
                             <Edit2 className="w-4 h-4" />
-                            Your Use Case
+                            {t('useCaseDetail.yours')}
                         </>
                     ) : (
                         <>
                             <Eye className="w-4 h-4" />
-                            View Only
+                            {t('useCaseDetail.viewOnly')}
                         </>
                     )}
                 </div>
@@ -201,7 +202,7 @@ export function UseCaseDetailModal({
                         <Input
                             value={formData.title}
                             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                            placeholder="Use case title"
+                            placeholder={FIELDS.title.placeholder}
                         />
                     ) : (
                         <div className="px-4 py-3 rounded-lg theme-bg-tertiary theme-text-primary">
@@ -219,7 +220,7 @@ export function UseCaseDetailModal({
                         <textarea
                             value={formData.description}
                             onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                            placeholder="Describe the problem..."
+                            placeholder={FIELDS.description.placeholder}
                             rows={4}
                             className="w-full px-4 py-3 rounded-lg theme-input-bg theme-border border theme-text-primary placeholder:theme-text-secondary focus:outline-none focus:ring-2 focus:ring-brand-violet resize-none"
                         />
@@ -239,13 +240,13 @@ export function UseCaseDetailModal({
                         <textarea
                             value={formData.proposed_solution || ''}
                             onChange={(e) => setFormData({ ...formData, proposed_solution: e.target.value })}
-                            placeholder="How does AI solve it?"
+                            placeholder={FIELDS.proposed_solution.placeholder}
                             rows={4}
                             className="w-full px-4 py-3 rounded-lg theme-input-bg theme-border border theme-text-primary placeholder:theme-text-secondary focus:outline-none focus:ring-2 focus:ring-brand-violet resize-none"
                         />
                     ) : (
                         <div className="px-4 py-3 rounded-lg theme-bg-tertiary theme-text-primary whitespace-pre-wrap">
-                            {formData.proposed_solution || 'Not specified'}
+                            {formData.proposed_solution || t('useCaseDetail.notSpecified')}
                         </div>
                     )}
                 </div>
@@ -264,7 +265,7 @@ export function UseCaseDetailModal({
                             />
                         ) : (
                             <div className="px-4 py-3 rounded-lg theme-bg-tertiary theme-text-primary">
-                                {formData.kpi || 'Not specified'}
+                                {formData.kpi || t('useCaseDetail.notSpecified')}
                             </div>
                         )}
                     </div>
@@ -281,14 +282,14 @@ export function UseCaseDetailModal({
                             />
                         ) : (
                             <div className="px-4 py-3 rounded-lg theme-bg-tertiary theme-text-primary">
-                                {formData.target_user || 'Not specified'}
+                                {formData.target_user || t('useCaseDetail.notSpecified')}
                             </div>
                         )}
                     </div>
 
                     <div>
                         <label className="text-sm font-medium theme-text-secondary mb-1.5 block">
-                            Type of AI
+                            {t('useCaseForm.aiType')}
                         </label>
                         {isEditing ? (
                             <select
@@ -296,15 +297,15 @@ export function UseCaseDetailModal({
                                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                                 className="w-full px-4 py-3 rounded-lg theme-input-bg theme-border border theme-text-primary focus:outline-none focus:ring-2 focus:ring-brand-violet"
                             >
-                                <option>Generative AI</option>
-                                <option>Predictive ML</option>
-                                <option>Computer Vision</option>
-                                <option>Robotics</option>
-                                <option>Other</option>
+                                <option value="Generative AI">{t('useCaseForm.aiTypes.generative')}</option>
+                                <option value="Predictive ML">{t('useCaseForm.aiTypes.predictive')}</option>
+                                <option value="Computer Vision">{t('useCaseForm.aiTypes.vision')}</option>
+                                <option value="Robotics">{t('useCaseForm.aiTypes.robotics')}</option>
+                                <option value="Other">{t('useCaseForm.aiTypes.other')}</option>
                             </select>
                         ) : (
                             <div className="px-4 py-3 rounded-lg theme-bg-tertiary theme-text-primary">
-                                {formData.category || 'Not specified'}
+                                {formData.category || t('useCaseDetail.notSpecified')}
                             </div>
                         )}
                     </div>
@@ -315,23 +316,23 @@ export function UseCaseDetailModal({
                     <div>
                         <label className="text-sm font-medium theme-text-secondary mb-1.5 block flex items-center gap-2">
                             <MessageSquare className="w-4 h-4" />
-                            Your Feedback
+                            {t('useCaseDetail.yourFeedback')}
                         </label>
                         <textarea
                             value={feedback}
                             onChange={(e) => setFeedback(e.target.value)}
-                            placeholder="Share your thoughts on this use case..."
+                            placeholder={t('useCaseDetail.feedbackPlaceholder')}
                             rows={4}
                             maxLength={500}
                             className="w-full px-4 py-3 rounded-lg theme-input-bg theme-border border theme-text-primary placeholder:theme-text-secondary focus:outline-none focus:ring-2 focus:ring-brand-violet resize-none"
                         />
                         <div className="flex items-center justify-between mt-1">
                             <span className="text-xs theme-text-secondary">
-                                {feedback.length}/500 characters
+                                {t('useCaseDetail.characters', { count: feedback.length, max: 500 })}
                             </span>
                             {existingFeedback && (
                                 <span className="text-xs theme-text-secondary">
-                                    Previously submitted feedback will be updated
+                                    {t('useCaseDetail.feedbackWillUpdate')}
                                 </span>
                             )}
                         </div>
@@ -355,7 +356,7 @@ export function UseCaseDetailModal({
                             onClick={() => setConfirmWithdraw(true)}
                             disabled={submitting}
                         >
-                            <Trash2 className="w-4 h-4 mr-2" aria-hidden="true" /> Withdraw
+                            <Trash2 className="w-4 h-4 mr-2" aria-hidden="true" /> {t('useCaseDetail.withdraw')}
                         </Button>
                     )}
                     <Button
@@ -363,7 +364,7 @@ export function UseCaseDetailModal({
                         onClick={onClose}
                         disabled={submitting}
                     >
-                        {isOwner && isEditing ? 'Cancel' : 'Close'}
+                        {isOwner && isEditing ? t('useCaseDetail.cancel') : t('useCaseDetail.close')}
                     </Button>
                     {isOwner && isEditing ? (
                         <Button
@@ -373,12 +374,12 @@ export function UseCaseDetailModal({
                             {submitting ? (
                                 <>
                                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                    Saving...
+                                    {t('useCaseDetail.saving')}
                                 </>
                             ) : (
                                 <>
                                     <Save className="w-4 h-4 mr-2" />
-                                    Save Changes
+                                    {t('useCaseDetail.save')}
                                 </>
                             )}
                         </Button>
@@ -387,7 +388,7 @@ export function UseCaseDetailModal({
                             onClick={() => setIsEditing(true)}
                         >
                             <Edit2 className="w-4 h-4 mr-2" />
-                            Edit
+                            {t('useCaseDetail.edit')}
                         </Button>
                     ) : (
                         <Button
@@ -397,12 +398,12 @@ export function UseCaseDetailModal({
                             {submitting ? (
                                 <>
                                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                                    Submitting...
+                                    {t('useCaseDetail.submitting')}
                                 </>
                             ) : (
                                 <>
                                     <MessageSquare className="w-4 h-4 mr-2" />
-                                    {existingFeedback ? 'Update Feedback' : 'Submit Feedback'}
+                                    {existingFeedback ? t('useCaseDetail.updateFeedback') : t('useCaseDetail.submitFeedback')}
                                 </>
                             )}
                         </Button>
@@ -413,10 +414,10 @@ export function UseCaseDetailModal({
                 isOpen={confirmWithdraw}
                 onClose={() => setConfirmWithdraw(false)}
                 onConfirm={handleWithdraw}
-                title="Withdraw this use case?"
-                message="It will be removed from the workshop, including any scores it has received. This can't be undone."
-                confirmText="Withdraw"
-                cancelText="Keep it"
+                title={t('useCaseDetail.withdrawTitle')}
+                message={t('useCaseDetail.withdrawMessage')}
+                confirmText={t('useCaseDetail.withdraw')}
+                cancelText={t('useCaseDetail.keep')}
                 variant="danger"
             />
         </Modal>

@@ -64,7 +64,7 @@ describe('AdminSettings', () => {
 
     it('should render component successfully', async () => {
         render(<AdminSettings />);
-        const title = await screen.findByText(/System Settings/i);
+        const title = await screen.findByRole('heading', { name: /System Settings/i });
         expect(title).toBeInTheDocument();
     });
 

@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { socket } from '../../lib/socket';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 
 interface AchievementToastProps {
     participantId: string;
@@ -13,6 +14,8 @@ const BATCH_MS = 800;
  * (the server sends them back-to-back) are merged instead of stacking up.
  */
 export function AchievementToast({ participantId }: AchievementToastProps) {
+    const { i18n } = useTranslation();
+
     useEffect(() => {
         let points = 0;
         let badges: string[] = [];
@@ -20,8 +23,8 @@ export function AchievementToast({ participantId }: AchievementToastProps) {
 
         const flush = () => {
             const parts = [
-                points > 0 ? `+${points} points` : '',
-                badges.length ? `Badge unlocked: ${badges.join(', ')}` : '',
+                points > 0 ? i18n.t('gamification.pointsEarned', { count: points }) : '',
+                badges.length ? i18n.t('gamification.badgeUnlocked', { names: badges.join(', ') }) : '',
             ].filter(Boolean);
             if (parts.length) toast.success(parts.join(' · '), { id: 'reward', icon: badges.length ? '🏅' : '🪙', duration: 3000 });
             points = 0;
@@ -50,7 +53,7 @@ export function AchievementToast({ participantId }: AchievementToastProps) {
             socket.off('gamification:badge_unlocked', handleBadgeUnlocked);
             socket.off('gamification:points_earned', handlePointsEarned);
         };
-    }, [participantId]);
+    }, [participantId, i18n]);
 
     return null;
 }

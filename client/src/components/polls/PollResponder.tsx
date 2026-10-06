@@ -9,10 +9,12 @@ import { toast } from 'sonner';
 import { CheckCircle, Circle, GripVertical, X } from 'lucide-react';
 import { errorMessage } from '../../lib/apiErrors';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 export function PollResponder() {
     const { session } = useSession();
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const [activePolls, setActivePolls] = useState<Poll[]>([]);
     const [textResponses, setTextResponses] = useState<Record<string, string>>({});
     const [selectedOptions, setSelectedOptions] = useState<Record<string, string[]>>({});
@@ -28,9 +30,9 @@ export function PollResponder() {
             // Add new poll if active
             if (poll.status === 'ACTIVE') {
                 setActivePolls(prev => [poll, ...prev]);
-                toast("New poll available!", {
+                toast(t('polls.newPoll'), {
                     description: poll.question_text,
-                    action: { label: "View", onClick: () => { } }
+                    action: { label: t('polls.view'), onClick: () => { } }
                 });
             }
         };
@@ -84,10 +86,10 @@ export function PollResponder() {
                 }
                 return p;
             }));
-            toast.success("Vote recorded");
+            toast.success(t('polls.voteRecorded'));
         } catch (err: any) {
             console.error('Failed to vote on poll:', err);
-            toast.error(err?.response?.status === 404 ? 'This poll is no longer active.' : errorMessage(err, 'Failed to submit your vote. Please try again.'));
+            toast.error(err?.response?.status === 404 ? t('polls.noLongerActive') : errorMessage(err, t('polls.voteFailed')));
         }
     };
 
@@ -102,7 +104,7 @@ export function PollResponder() {
     const handleSubmitMultipleSelect = async (pollId: string) => {
         const selected = selectedOptions[pollId] || [];
         if (selected.length === 0) {
-            toast.error("Please select at least one option");
+            toast.error(t('polls.selectOne'));
             return;
         }
         await handleVote(pollId, selected);
@@ -112,7 +114,7 @@ export function PollResponder() {
     const handleTextSubmit = async (pollId: string) => {
         const text = textResponses[pollId]?.trim();
         if (!text) {
-            toast.error("Please enter a response");
+            toast.error(t('polls.enterResponse'));
             return;
         }
         await handleVote(pollId, text);
@@ -180,7 +182,7 @@ export function PollResponder() {
                         </label>
                     ))}
                     <Button onClick={() => handleSubmitMultipleSelect(poll.id)} className="w-full mt-2" disabled={selected.length === 0}>
-                        Submit ({selected.length} selected)
+                        {t('polls.submitSelected', { count: selected.length })}
                     </Button>
                 </div>
             );
@@ -215,10 +217,10 @@ export function PollResponder() {
                     <Input
                         value={textResponses[poll.id] || ''}
                         onChange={e => setTextResponses({ ...textResponses, [poll.id]: e.target.value })}
-                        placeholder="Type your response..."
+                        placeholder={t('polls.typeResponse')}
                     />
                     <Button onClick={() => handleTextSubmit(poll.id)} className="w-full" disabled={!textResponses[poll.id]?.trim()}>
-                        Submit
+                        {t('polls.submit')}
                     </Button>
                 </div>
             );
@@ -235,6 +237,8 @@ export function PollResponder() {
                             <span className="flex-1 text-sm theme-text-primary">{opt}</span>
                             <div className="flex flex-col gap-1">
                                 <button
+                                    type="button"
+                                    aria-label={t('polls.moveUp', { option: opt })}
                                     onClick={() => handleRankingMove(poll.id, opt, 'up', pollOptions)}
                                     disabled={idx === 0}
                                     className="text-xs px-2 py-0.5 rounded theme-bg-secondary disabled:opacity-30 theme-text-primary"
@@ -242,6 +246,8 @@ export function PollResponder() {
                                     ↑
                                 </button>
                                 <button
+                                    type="button"
+                                    aria-label={t('polls.moveDown', { option: opt })}
                                     onClick={() => handleRankingMove(poll.id, opt, 'down', pollOptions)}
                                     disabled={idx === currentRanking.length - 1}
                                     className="text-xs px-2 py-0.5 rounded theme-bg-secondary disabled:opacity-30 theme-text-primary"
@@ -252,7 +258,7 @@ export function PollResponder() {
                         </div>
                     ))}
                     <Button onClick={() => handleRankingSubmit(poll.id, pollOptions)} className="w-full mt-2">
-                        Submit Ranking
+                        {t('polls.submitRanking')}
                     </Button>
                 </div>
             );
@@ -276,7 +282,7 @@ export function PollResponder() {
                         <button
                             type="button"
                             onClick={() => setDismissed(prev => [...prev, poll.id])}
-                            aria-label="Skip this poll"
+                            aria-label={t('polls.skip')}
                             className="absolute top-2 right-2 p-1.5 rounded-full theme-text-secondary hover:theme-bg-tertiary"
                         >
                             <X className="w-4 h-4" aria-hidden="true" />

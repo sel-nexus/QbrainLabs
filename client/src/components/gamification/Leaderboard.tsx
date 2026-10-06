@@ -3,6 +3,7 @@ import { getWorkshopLeaderboard, type LeaderboardEntry } from '../../lib/api/gam
 import { useTheme } from '../../context/ThemeContext';
 import { Trophy, Medal, Award, Loader2 } from 'lucide-react';
 import { useLiveRefresh } from '../../hooks/useLiveRefresh';
+import { useTranslation } from 'react-i18next';
 
 interface LeaderboardProps {
     workshopPin: string;
@@ -12,6 +13,7 @@ interface LeaderboardProps {
 
 export function Leaderboard({ workshopPin, currentParticipantId, className = '' }: LeaderboardProps) {
     const { theme } = useTheme();
+    const { t } = useTranslation();
     const [rankings, setRankings] = useState<LeaderboardEntry[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -45,7 +47,7 @@ export function Leaderboard({ workshopPin, currentParticipantId, className = '' 
         return (
             <div className={`p-8 text-center ${theme === 'light' ? 'bg-white' : 'bg-surface-800'} rounded-xl ${className}`}>
                 <p className={`text-sm ${theme === 'light' ? 'text-gray-500' : 'text-gray-400'}`}>
-                    No rankings yet. Be the first to earn points!
+                    {t('gamification.noRankings')}
                 </p>
             </div>
         );
@@ -55,7 +57,7 @@ export function Leaderboard({ workshopPin, currentParticipantId, className = '' 
         <div className={`${theme === 'light' ? 'bg-white' : 'bg-surface-800'} rounded-xl overflow-hidden ${className}`}>
             <div className={`p-4 border-b ${theme === 'light' ? 'border-gray-200' : 'border-white/10'}`}>
                 <h3 className={`text-lg font-semibold ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
-                    Leaderboard
+                    {t('gamification.leaderboard')}
                 </h3>
             </div>
             <div className="divide-y divide-white/10">
@@ -82,12 +84,12 @@ export function Leaderboard({ workshopPin, currentParticipantId, className = '' 
                                     <div className={`font-medium ${theme === 'light' ? 'text-gray-900' : 'text-white'}`}>
                                         {entry.display_name}
                                         {isCurrentUser && (
-                                            <span className="ml-2 text-xs text-yellow-500">(You)</span>
+                                            <span className="ml-2 text-xs text-yellow-500">{t('gamification.you')}</span>
                                         )}
                                     </div>
                                     {entry.badges_count > 0 && (
                                         <div className="text-xs text-gray-400">
-                                            {entry.badges_count} badge{entry.badges_count !== 1 ? 's' : ''}
+                                            {t('gamification.badgeCount', { count: entry.badges_count })}
                                         </div>
                                     )}
                                 </div>
