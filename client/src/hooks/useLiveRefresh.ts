@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { socket } from '../lib/socket';
 
 /** Slow safety-net poll; socket events do the real-time work. */
@@ -10,7 +10,9 @@ export const FALLBACK_REFRESH_MS = 60_000;
  */
 export function useLiveRefresh(refresh: () => void, events: string[], enabled = true, fallbackMs = FALLBACK_REFRESH_MS) {
     const refreshRef = useRef(refresh);
-    refreshRef.current = refresh;
+    useLayoutEffect(() => {
+        refreshRef.current = refresh;
+    });
     const eventKey = events.join('|');
 
     useEffect(() => {

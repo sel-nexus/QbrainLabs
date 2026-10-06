@@ -1,4 +1,4 @@
-import { useEffect, useRef, type RefObject } from 'react';
+import { useEffect, useLayoutEffect, useRef, type RefObject } from 'react';
 
 const FOCUSABLE = 'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
@@ -8,7 +8,9 @@ const FOCUSABLE = 'a[href], button:not([disabled]), textarea:not([disabled]), in
  */
 export function useDialog(ref: RefObject<HTMLElement | null>, isOpen: boolean, onClose: () => void) {
     const onCloseRef = useRef(onClose);
-    onCloseRef.current = onClose;
+    useLayoutEffect(() => {
+        onCloseRef.current = onClose;
+    });
 
     useEffect(() => {
         if (!isOpen) return;

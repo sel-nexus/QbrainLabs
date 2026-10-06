@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { NavLink, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
     LayoutDashboard,
@@ -26,10 +26,8 @@ export function AdminLayout({ children, title, actions }: AdminLayoutProps) {
     const { t } = useTranslation();
     const { theme } = useTheme();
     const isLight = theme === 'light';
-    // Below md the sidebar is a drawer; close it on navigation.
+    // Below md the sidebar is a drawer; it closes when a link is chosen.
     const [drawerOpen, setDrawerOpen] = useState(false);
-    const location = useLocation();
-    useEffect(() => setDrawerOpen(false), [location.pathname]);
     // Auth check is handled by AdminGuard wrapper in routes
 
     const navItems = [
@@ -71,6 +69,7 @@ export function AdminLayout({ children, title, actions }: AdminLayoutProps) {
                                     key={item.path}
                                     to={item.path}
                                     end={end}
+                                    onClick={() => setDrawerOpen(false)}
                                     className={({ isActive }) =>
                                         `w-full flex items-center gap-3 px-4 py-3 rounded-lg transition min-w-0 ${isActive
                                             ? 'bg-amber-500/10 text-amber-600 hover:bg-amber-500/20'

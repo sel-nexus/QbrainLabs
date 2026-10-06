@@ -16,7 +16,9 @@ vi.mock('../lib/socket', () => ({
 const toastSuccess = vi.fn();
 vi.mock('sonner', () => ({ toast: { success: (...args: unknown[]) => toastSuccess(...args), error: vi.fn() } }));
 
-beforeEach(() => vi.clearAllMocks());
+beforeEach(() => {
+    vi.clearAllMocks();
+});
 
 describe('Modal', () => {
     it('is a labelled dialog that closes on Escape and returns focus to the opener', async () => {

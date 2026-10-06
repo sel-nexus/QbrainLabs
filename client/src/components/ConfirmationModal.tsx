@@ -1,4 +1,4 @@
-import { useEffect, useId, useRef, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import { AlertTriangle, X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { useDialog } from '../hooks/useDialog';
@@ -41,18 +41,19 @@ export function ConfirmationModal({
     const messageId = useId();
     const reasonId = useId();
     const [reason, setReason] = useState('');
-    useDialog(panelRef, isOpen, onClose);
-
-    useEffect(() => {
-        if (isOpen) setReason('');
-    }, [isOpen]);
+    // Clear the reason whenever the dialog closes, so the next prompt starts empty.
+    const close = () => {
+        setReason('');
+        onClose();
+    };
+    useDialog(panelRef, isOpen, close);
 
     if (!isOpen) return null;
     const styles = VARIANTS[variant];
 
     return (
         <div className="relative z-[60]">
-            <div className="fixed inset-0 bg-gray-900/75" onClick={onClose} aria-hidden="true" />
+            <div className="fixed inset-0 bg-gray-900/75" onClick={close} aria-hidden="true" />
 
             <div className="fixed inset-0 z-10 overflow-y-auto pointer-events-none">
                 <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -69,7 +70,7 @@ export function ConfirmationModal({
                             <button
                                 type="button"
                                 className={`rounded-md p-1 ${isLight ? 'text-gray-400 hover:text-gray-500' : 'text-gray-400 hover:text-gray-300'}`}
-                                onClick={onClose}
+                                onClick={close}
                                 aria-label="Close dialog"
                             >
                                 <X className="h-6 w-6" aria-hidden="true" />
@@ -113,7 +114,7 @@ export function ConfirmationModal({
                                 className={`inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-white shadow-sm sm:ml-3 sm:w-auto ${styles.buttonBg}`}
                                 onClick={() => {
                                     onConfirm(reasonLabel ? reason.trim() : undefined);
-                                    onClose();
+                                    close();
                                 }}
                             >
                                 {confirmText}
@@ -122,7 +123,7 @@ export function ConfirmationModal({
                                 type="button"
                                 autoFocus={!reasonLabel}
                                 className={`mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset sm:mt-0 sm:w-auto ${isLight ? 'bg-white text-gray-900 ring-gray-300 hover:bg-gray-50' : 'bg-surface-700 text-white ring-white/10 hover:bg-white/5'}`}
-                                onClick={onClose}
+                                onClick={close}
                             >
                                 {cancelText}
                             </button>
